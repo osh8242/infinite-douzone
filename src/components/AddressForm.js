@@ -40,6 +40,7 @@ const AddressForm = () => {
           name="zonecode"
           value={zonecode}
           onChange={onChangeZoncode}
+          size={5}
           readOnly
         />
         <input
@@ -47,6 +48,7 @@ const AddressForm = () => {
           name="address"
           value={address}
           onChange={onChangeAddress}
+          size={45}
           readOnly
         />
 
