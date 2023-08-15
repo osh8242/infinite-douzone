@@ -1,9 +1,12 @@
+import { Container } from "react-bootstrap";
 import "./App.css";
+import Header from "./templates/Header";
 
 function App() {
   return (
     <div>
-      <h1>Hello World!</h1>
+      <Header />
+      <Container></Container>
     </div>
   );
 }
