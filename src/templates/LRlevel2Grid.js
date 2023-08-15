@@ -1,0 +1,62 @@
+import React from "react";
+import { Col, Row } from "react-bootstrap";
+import MenuTab from "../components/MenuTab";
+import SelectForm from "../components/SelectForm";
+import SearchPanel from "../components/SearchPanel";
+
+//grid : 좌측 그리드의 테이블 데이터 grid.data
+//mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
+//subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
+const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
+  const data = [
+    { name: "홍길동", age: "20", gender: "남" },
+    { name: "유관순", age: "35", gender: "여" },
+    { name: "김유신", age: "16", gender: "남" },
+  ];
+
+  const menuList1 = ["기초정보", "인적정보"];
+  const menuList2 = ["가족", "학력", "경력", "신체", "병역"];
+
+  const optionList = [
+    { key: "ename", value: "이름" },
+    { key: "ecode", value: "사원번호" },
+  ];
+
+  return (
+    <>
+      <SearchPanel optionList={optionList} />
+      <Row>
+        <Col md="3">
+          <SelectForm label="영문성명" optionList={optionList} />
+        </Col>
+        <Col md="9">
+          <MenuTab menuList={menuList1} />
+          <Row className="mb-5">
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <SelectForm label="영문성명" optionList={optionList} />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <SelectForm label="한자성명" optionList={optionList} />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <SelectForm label="주민등록번호" optionList={optionList} />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <SelectForm label="성별" optionList={optionList} />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <SelectForm label={"생년월일"} optionList={optionList} />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <SelectForm label={"구분"} optionList={optionList} />
+            </Col>
+          </Row>
+          <MenuTab menuList={menuList2} />
+          <SelectForm label="영문성명" optionList={optionList} />
+        </Col>
+      </Row>
+    </>
+  );
+};
+
+export default LRlevel2Grid;
