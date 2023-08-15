@@ -18,7 +18,11 @@ class Header extends Component {
     return (
       <>
         <Navbar bg="light" expand="lg">
-          <Button onClick={this.toggleSidebar} variant="outline-secondary">
+          <Button
+            className="mx-2"
+            onClick={this.toggleSidebar}
+            variant="outline-secondary"
+          >
             <i className={`fa fa-bars`} />
           </Button>
           <Navbar.Brand className="mx-5" href="#home">
