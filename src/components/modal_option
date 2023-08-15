@@ -1,0 +1,19 @@
+ {/* 
+        size = 안보내면 일반크기 500px
+              ,sm 작은창 300px
+              lg 큰창 	800px
+              ,xl 왕짱큰창 1140px
+
+        backdrop={"static"} 옵션 넣으면 모달창 이외 화면 클릭 안된다.
+        title={"모달창 제목"} 제목 넣기
+        animation={false} 애니메이션 없애기
+        
+        centered 위치 가운데
+        closeButton header에 close버튼옵션
+        form에 autoFocus 넣으면 focusing 효과가 난다
+
+        만약 onConfirm 속성을 넘기면 확인버튼 누를 수 있고 
+        없으면 안나옴
+
+        자식 컴포넌트들은 
+        */}
