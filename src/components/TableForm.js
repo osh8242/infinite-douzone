@@ -1,5 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowDown,
+  faArrowUp,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 // const dummyData = [
 //   {
@@ -52,6 +58,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
   const [activeRowIndex, setActiveRowIndex] = useState(null);
+  const [arrowDirection, setArrowDirection] = useState(true);
 
   // 이후 체크박스 ... 수정
   //const handleCheckboxChange = (event, id) => {
@@ -80,8 +87,11 @@ const TableForm = ({ showCheckbox, tableData }) => {
     if (editableRowIndex !== null && editableRowIndex !== activeRowIndex) {
       setEditableRowIndex(null);
     }
-
     setActiveRowIndex(rowIndex);
+  };
+
+  const handleArrowDirection = (e) => {
+    setArrowDirection(!arrowDirection);
   };
 
   return (
@@ -90,10 +100,26 @@ const TableForm = ({ showCheckbox, tableData }) => {
         <thead>
           <tr>
             {showCheckbox && (
-              <th>{/* <i className="fa-solid fa-check"></i> */}</th>
+              <th>
+                <FontAwesomeIcon icon={faCheck} />
+              </th>
             )}
             {columns.map((columnName, index) => (
-              <th key={index}>{columnName}</th>
+              <th key={index}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>{columnName}</div>
+                  {/* toggle event 로 전환 */}
+                  <div onClick={handleArrowDirection}>
+                    {arrowDirection ? (
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    )}
+                  </div>
+                </div>
+              </th>
             ))}
           </tr>
         </thead>
