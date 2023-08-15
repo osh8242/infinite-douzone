@@ -1,39 +1,135 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 
-// const initialData = [
-//   { row1: "col1_value1", row2: "col2_value1", row3: "col3_value1" },
-//   { row1: "col1_value2", row2: "col2_value2", row3: "col3_value2" },
-//   { row1: "col1_value3", row2: "col2_value3", row3: "col3_value3" },
+// const dummyData = [
+//   {
+//     code: "A1234567",
+//     사원명: "오승환",
+//     "내/외": "내국인",
+//     주민번호: "910101-1234567",
+//     구분: "재직",
+//   },
+//   {
+//     code: "B2345678",
+//     사원명: "이서연",
+//     "내/외": "외국인",
+//     주민번호: "920202-2345678",
+//     구분: "재직",
+//   },
+//   {
+//     code: "C3456789",
+//     사원명: "현소현",
+//     "내/외": "내국인",
+//     주민번호: "930303-3456789",
+//     구분: "퇴직",
+//   },
+//   {
+//     code: "D4567890",
+//     사원명: "김진",
+//     "내/외": "외국인",
+//     주민번호: "940404-4567890",
+//     구분: "재직",
+//   },
+//   {
+//     code: "E5678901",
+//     사원명: "김이긴",
+//     "내/외": "내국인",
+//     주민번호: "950505-5678901",
+//     구분: "퇴직",
+//   },
 // ];
 
-const TableForm = (props) => {
-  const { data } = props;
+const TableForm = ({ showCheckbox, tableData }) => {
+  // 예외처리 방법은 추후 수정
+  // if (!tableData || tableData.length === 0) {
+  //   return (
+  //     <div>
+  //       <h3>해당되는 데이터가 존재하지 않습니다.</h3>
+  //     </div>
+  //   );
+  // }
+  const columns = Object.keys(tableData[0]);
+  const [editableRowIndex, setEditableRowIndex] = useState(null);
+  const [editedData, setEditedData] = useState({});
+  const [activeRowIndex, setActiveRowIndex] = useState(null);
 
-  if (data.length === 0) {
-    return <div>No data available</div>;
-  }
+  // 이후 체크박스 ... 수정
+  //const handleCheckboxChange = (event, id) => {
+  //   // ...
+  // };
 
-  const columns = Object.keys(data[0]);
+  const handleDoubleClick = (rowIndex) => {
+    setEditableRowIndex(rowIndex);
+    setActiveRowIndex(rowIndex);
+  };
+
+  const handleInputChange = (event, rowIndex, columnName) => {
+    const updatedEditedData = { ...editedData };
+    updatedEditedData[rowIndex] = {
+      ...updatedEditedData[rowIndex],
+      [columnName]: event.target.value,
+    };
+    setEditedData(updatedEditedData);
+  };
+
+  const handleRowClick = (rowIndex) => {
+    if (activeRowIndex === rowIndex) {
+      return;
+    }
+    // 활성화 이후 다른 곳 클릭 시 활성화 제거
+    if (editableRowIndex !== null && editableRowIndex !== activeRowIndex) {
+      setEditableRowIndex(null);
+    }
+
+    setActiveRowIndex(rowIndex);
+  };
 
   return (
     <>
       <Table striped bordered hover>
         <thead>
           <tr>
+            {showCheckbox && (
+              <th>{/* <i className="fa-solid fa-check"></i> */}</th>
+            )}
             {columns.map((columnName, index) => (
               <th key={index}>{columnName}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.map((item, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((columnName, columnIndex) => (
-                <td key={columnIndex}>{item[columnName]}</td>
-              ))}
-            </tr>
-          ))}
+          {tableData.map((item, rowIndex) => {
+            return (
+              <tr
+                key={rowIndex}
+                onDoubleClick={() => handleDoubleClick(rowIndex)}
+                onClick={() => handleRowClick(rowIndex)}
+              >
+                {showCheckbox && (
+                  <td>
+                    <input type="checkbox" />
+                  </td>
+                )}
+                {columns.map((columnName, columnIndex) => (
+                  <td key={columnIndex}>
+                    {editableRowIndex === rowIndex ? (
+                      <input
+                        type="text"
+                        value={
+                          editedData[rowIndex]?.[columnName] || item[columnName]
+                        }
+                        onChange={(event) =>
+                          handleInputChange(event, rowIndex, columnName)
+                        }
+                      />
+                    ) : (
+                      item[columnName]
+                    )}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </>
