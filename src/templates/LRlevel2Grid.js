@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import MenuTab from "../components/MenuTab";
 import SelectForm from "../components/SelectForm";
 import SearchPanel from "../components/SearchPanel";
+import DateForm from "../components/DateForm";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -28,6 +29,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       <Row>
         <Col md="3">
           <SelectForm label="영문성명" optionList={optionList} />
+          <DateForm label="입사일" />
         </Col>
         <Col md="9">
           <MenuTab menuList={menuList1} />
