@@ -1,30 +1,25 @@
 import React, { useState } from "react";
 
-function RadioForm() {
-  const options = [
-    { id: "1", label: "one" },
-    { id: "2", label: "two" },
-    { id: "3", label: "two" },
-  ];
-
-  const [selectedOption, setSelectedOption] = useState(options[0].id);
+function RadioForm({ label, optionList }) {
+  const [selectedOption, setSelectedOption] = useState(optionList[0].key);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
-    console.log(event.target.value);
+    console.log(event.target.checked);
   };
 
   return (
     <div>
-      {options.map((option) => (
-        <label key={option.id}>
+      {label}
+      {optionList.map((option) => (
+        <label>
           <input
             type="radio"
-            value={option.id}
-            checked={selectedOption === option.id}
+            value={option.key}
+            checked={selectedOption === option.key}
             onChange={handleOptionChange}
           />
-          {option.label}
+          {option.value}
         </label>
       ))}
     </div>
@@ -33,49 +28,25 @@ function RadioForm() {
 
 export default RadioForm;
 
-// import React, { useState } from "react";
+// test data : App.js
 
-// function RadioForm() {
-//   const [selectedOption, setSelectedOption] = useState(null);
+// import { Container } from "react-bootstrap";
+// import "./App.css";
+// import RadioForm from "./components/RadioForm";
 
-//   const handleOptionChange = (event) => {
-//     setSelectedOption(event.target.value);
-//     console.log(event.target.value);
-//   };
+// function App() {
+//   const radioList = [
+//     { key: "M", value: "남자" },
+//     { key: "F", value: "여자" },
+//   ];
 
 //   return (
 //     <div>
-//       <label>
-//         <input
-//           type="radio"
-//           value="one"
-//           checked={selectedOption === "one"}
-//           onChange={handleOptionChange}
-//         />
-//         one
-//       </label>
-//       <br />
-//       <label>
-//         <input
-//           type="radio"
-//           value="two"
-//           checked={selectedOption === "two"}
-//           onChange={handleOptionChange}
-//         />
-//         two
-//       </label>
-//       <br />
-//       <label>
-//         <input
-//           type="radio"
-//           value="three"
-//           checked={selectedOption === "three"}
-//           onChange={handleOptionChange}
-//         />
-//         three
-//       </label>
+//       <Container>
+//         <RadioForm label={"Gender"} optionList={radioList} />
+//       </Container>
 //     </div>
 //   );
 // }
 
-// export default RadioForm;
+// export default App;

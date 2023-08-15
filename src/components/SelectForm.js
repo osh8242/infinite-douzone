@@ -1,5 +1,5 @@
-import { Col, Row } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Col, Row } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
 function SelectForm({ label, optionsList }) {
   return (
