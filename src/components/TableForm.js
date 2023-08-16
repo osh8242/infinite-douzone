@@ -1,7 +1,10 @@
 /*
   작성자 : 김진
-  parameter : showCheckbox, tableData
+  
+  parameter : showCheckbox, showHeaderArrow, tableData
+
   showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
+  showHeaderArrow : true 일 경우 table header 에 arrow icon 생성, false arrow icon 제거
   tableData : table 로 만들 데이터
 */
 
@@ -53,7 +56,7 @@ import "../styles/tableForm.css";
 //   },
 // ];
 
-const TableForm = ({ showCheckbox, tableData }) => {
+const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
   //   return (
@@ -155,15 +158,20 @@ const TableForm = ({ showCheckbox, tableData }) => {
             {/* th columns */}
             {columns.map((columnName, index) => (
               <th key={index}>
-                <div id="tableHeader">
-                  <div>{columnName}</div>
-                  <div onClick={() => handleArrowDirection(columnName)}>
-                    {arrowDirections[columnName] ? (
-                      <FontAwesomeIcon icon={faArrowUp} />
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown} />
-                    )}
-                  </div>
+                <div
+                  id="tableHeader"
+                  onClick={() => handleArrowDirection(columnName)}
+                >
+                  {columnName}
+                  {showHeaderArrow && (
+                    <div id="tableHeader-arrow">
+                      {arrowDirections[columnName] ? (
+                        <FontAwesomeIcon icon={faArrowUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faArrowDown} />
+                      )}
+                    </div>
+                  )}
                 </div>
               </th>
             ))}

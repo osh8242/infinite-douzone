@@ -1,8 +1,16 @@
 #tableCheckBoxArea {
   width: 5px;
+  cursor: pointer;
 }
 
 #tableHeader {
   display: flex;
-  justify-content: space-between;
+  position: relative;
+  justify-content: center;
+}
+
+#tableHeader-arrow {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
 }

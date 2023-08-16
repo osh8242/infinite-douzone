@@ -96,7 +96,11 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           </Row>
           <MenuTab menuList={menuList2} />
           <SelectForm label="영문성명" optionList={optionList} />
-          <TableForm showCheckbox={true} tableData={dummyData} />
+          <TableForm
+            showCheckbox={true}
+            showHeaderArrow={true}
+            tableData={dummyData}
+          />
         </Col>
       </Row>
     </>
