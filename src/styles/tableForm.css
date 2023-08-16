@@ -1,3 +1,8 @@
 #tableCheckBoxArea {
   width: 5px;
 }
+
+#tableHeader {
+  display: flex;
+  justify-content: space-between;
+}

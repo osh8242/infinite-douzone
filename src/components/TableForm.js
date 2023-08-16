@@ -155,9 +155,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
             {/* th columns */}
             {columns.map((columnName, index) => (
               <th key={index}>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
+                <div id="tableHeader">
                   <div>{columnName}</div>
                   <div onClick={() => handleArrowDirection(columnName)}>
                     {arrowDirections[columnName] ? (
