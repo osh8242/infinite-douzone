@@ -159,10 +159,10 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
             {columns.map((columnName, index) => (
               <th key={index}>
                 <div
-                  id="tableHeader"
+                  className="tableHeader"
                   onClick={() => handleArrowDirection(columnName)}
                 >
-                  {columnName}
+                  <div>{columnName}</div>
                   {showHeaderArrow && (
                     <div id="tableHeader-arrow">
                       {arrowDirections[columnName] ? (

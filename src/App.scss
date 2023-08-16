@@ -1,0 +1,15 @@
+/* The following block can be included in a custom.scss */
+
+/* make the customizations */
+.input-align {
+  display: flex !important;
+  justify-items: center !important;
+  align-items: center !important;
+}
+
+.nav {
+  --bs-nav-link-color: var(--bs-secondary-color) !important;
+}
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";

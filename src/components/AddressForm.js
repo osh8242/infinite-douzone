@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 
@@ -53,12 +53,12 @@ const AddressForm = ({ label, isZonecode }) => {
         </Col>
         <Col>
           {/* 버튼 클릭 시 Post 모달 호출 */}
-          <button
-            type="button"
+          <Button
+            variant="secondary"
             onClick={() => setModalState({ ...modalState, show: true })}
           >
             주소검색
-          </button>
+          </Button>
         </Col>
       </Row>
 

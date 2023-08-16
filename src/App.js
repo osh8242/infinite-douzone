@@ -1,15 +1,15 @@
 import { Container } from "react-bootstrap";
-import "./App.css";
-import SelectForm from "./components/SelectForm";
+import "./App.scss";
 import Header from "./templates/Header";
-import TestGrid from "./templates/TestGrid";
-import SearchPanel from "./components/SearchPanel";
+import LRlevel2Grid from "./templates/LRlevel2Grid";
 
 function App() {
   return (
     <div>
       <Header />
-      <Container></Container>
+      <Container>
+        <LRlevel2Grid />
+      </Container>
     </div>
   );
 }

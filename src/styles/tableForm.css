@@ -3,15 +3,10 @@
   cursor: pointer;
 }
 
-#tableHeader {
+.tableHeader {
   display: flex;
   position: relative;
   justify-content: center;
-}
-
-#tableHeader-arrow {
-  position: absolute;
-  right: 0;
   cursor: pointer;
 }
 
