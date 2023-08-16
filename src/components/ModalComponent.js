@@ -6,7 +6,7 @@ function ModalComponent(props) {
 
   return (
     <Modal {...props} 
-      size={props.size} //lg,sm,xl
+      size={props.size}
       backdrop={props.backdrop}
       animation = {props.animation}
       centered

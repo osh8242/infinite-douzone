@@ -5,6 +5,7 @@ import MenuTab from "../components/MenuTab";
 import SelectForm from "../components/SelectForm";
 import SearchPanel from "../components/SearchPanel";
 import DateForm from "../components/DateForm";
+import TextBoxComponent from "../components/TextBoxComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -35,15 +36,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         <Col md="9">
           <MenuTab menuList={menuList1} />
           <Row className="mb-5">
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="영문성명" optionList={optionList} />
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="한자성명" optionList={optionList} />
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="주민등록번호" optionList={optionList} />
-            </Col>
+            
+            
             <Col xs md={{ span: 5, offset: 1 }}>
               <SelectForm label="성별" optionList={optionList} />
             </Col>
@@ -53,6 +47,37 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             <Col xs md={{ span: 5, offset: 1 }}>
               <SelectForm label={"구분"} optionList={optionList} />
             </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="비고" type="textarea" rows="3"/>
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="첨부파일" type="file"/>
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="숫자" type="number"/>
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="영문성명" placeholder="영문성명 입력" />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="퍼센트" type="rate" />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="원화" type="won" />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="날짜" type="date" />
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="주민번호" type="regNum"/>
+            </Col>
+            <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="비밀번호" type="password" />
+            </Col>
+            {/* <Col xs md={{ span: 5, offset: 1 }}>
+              <TextBoxComponent label="커스텀format" type="customformat" format="#/#/#" />
+            </Col> */}
+            
           </Row>
           <MenuTab menuList={menuList2} />
           <SelectForm label="영문성명" optionList={optionList} />
