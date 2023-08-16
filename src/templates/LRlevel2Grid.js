@@ -5,10 +5,50 @@ import MenuTab from "../components/MenuTab";
 import SelectForm from "../components/SelectForm";
 import SearchPanel from "../components/SearchPanel";
 import DateForm from "../components/DateForm";
+import TableForm from "../components/TableForm";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
+
+const dummyData = [
+  {
+    code: "A1234567",
+    사원명: "오승환",
+    "내/외": "내국인",
+    주민번호: "910101-1234567",
+    구분: "재직",
+  },
+  {
+    code: "B2345678",
+    사원명: "이서연",
+    "내/외": "외국인",
+    주민번호: "920202-2345678",
+    구분: "재직",
+  },
+  {
+    code: "C3456789",
+    사원명: "현소현",
+    "내/외": "내국인",
+    주민번호: "930303-3456789",
+    구분: "퇴직",
+  },
+  {
+    code: "D4567890",
+    사원명: "김진",
+    "내/외": "외국인",
+    주민번호: "940404-4567890",
+    구분: "재직",
+  },
+  {
+    code: "E5678901",
+    사원명: "김이긴",
+    "내/외": "내국인",
+    주민번호: "950505-5678901",
+    구분: "퇴직",
+  },
+];
+
 const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   const data = [
     { name: "홍길동", age: "20", gender: "남" },
@@ -56,6 +96,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           </Row>
           <MenuTab menuList={menuList2} />
           <SelectForm label="영문성명" optionList={optionList} />
+          <TableForm showCheckbox={true} tableData={dummyData} />
         </Col>
       </Row>
     </>
