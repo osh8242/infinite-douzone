@@ -64,6 +64,11 @@ const TableForm = ({ showCheckbox, tableData }) => {
   const [editedData, setEditedData] = useState({});
   const [activeRowIndex, setActiveRowIndex] = useState(null);
 
+  const [allCheckBoxChecked, setAllCheckBoxChecked] = useState(false);
+  const [checkboxStates, setCheckboxStates] = useState(
+    tableData.map(() => false)
+  );
+
   const [arrowDirections, setArrowDirections] = useState(
     columns.reduce((acc, col) => {
       acc[col] = true;
@@ -99,6 +104,31 @@ const TableForm = ({ showCheckbox, tableData }) => {
     setActiveRowIndex(rowIndex);
   };
 
+  // handle all check
+  const handleAllCheckboxChange = () => {
+    if (checkboxStates.some((state) => !state)) {
+      setCheckboxStates(tableData.map(() => true));
+      setAllCheckBoxChecked(true);
+    } else {
+      setCheckboxStates(tableData.map(() => false));
+      setAllCheckBoxChecked(false);
+    }
+  };
+
+  // handle check
+  const handleCheckboxChange = (index) => {
+    setCheckboxStates((prevStates) => {
+      const newStates = [...prevStates];
+      newStates[index] = !newStates[index];
+      return newStates;
+    });
+    if (checkboxStates.every((state) => state)) {
+      setAllCheckBoxChecked(true);
+    } else {
+      setAllCheckBoxChecked(false);
+    }
+  };
+
   // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
   const handleArrowDirection = (columnName) => {
     setArrowDirections((prevDirections) => ({
@@ -115,7 +145,10 @@ const TableForm = ({ showCheckbox, tableData }) => {
           <tr>
             {showCheckbox && (
               <th>
-                <FontAwesomeIcon icon={faCheck} />
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  onClick={handleAllCheckboxChange}
+                />
               </th>
             )}
             {columns.map((columnName, index) => (
@@ -147,7 +180,11 @@ const TableForm = ({ showCheckbox, tableData }) => {
               >
                 {showCheckbox && (
                   <td>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={checkboxStates[rowIndex]}
+                      onChange={() => handleCheckboxChange(rowIndex)}
+                    />
                   </td>
                 )}
                 {columns.map((columnName, columnIndex) => (
