@@ -11,6 +11,7 @@ import {
   faArrowUp,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import "../styles/tableForm.css";
 
 // const dummyData = [
 //   {
@@ -141,7 +142,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
         <thead>
           <tr>
             {showCheckbox && (
-              <th>
+              <th id="tableCheckBoxArea">
                 <FontAwesomeIcon
                   icon={faCheck}
                   onClick={handleAllCheckboxChange}
