@@ -1,11 +1,18 @@
-import React from "react";
+import { Container } from "react-bootstrap";
 import "./App.css";
-import DateForm from "./components/RadioForm";
+import DateForm from "./components/DateForm";
 
 function App() {
+  const radioList = [
+    { key: "M", value: "남자" },
+    { key: "F", value: "여자" },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header"></header>
+    <div>
+      <Container>
+        <DateForm />
+      </Container>
     </div>
   );
 }
