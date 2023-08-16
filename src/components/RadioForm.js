@@ -7,7 +7,6 @@ function RadioForm({ label, optionList }) {
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
-    //    console.log(event.target.checked);
   };
 
   return (
@@ -15,17 +14,19 @@ function RadioForm({ label, optionList }) {
       <Col md="4" className="d-flex align-items-center justify-content-center">
         {label}
       </Col>
-      <Col md="8" className="d-flex align-items-center justify-content-center">
+      <Col
+        md="8"
+        className="d-flex align-items-center justify-content-start align-self-center"
+      >
         {optionList.map((option) => (
-          <div class="form-check form-check-inline">
-            <label>
+          <div className="form-check form-check-inline" key={option.key}>
+            <label className="form-check-label">
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="radio"
                 value={option.key}
                 checked={selectedOption === option.key}
                 onChange={handleOptionChange}
-                //disabled
               />
               {option.value}
             </label>

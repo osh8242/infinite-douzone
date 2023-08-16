@@ -1,4 +1,3 @@
-// 작성자 : 오승환
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import MenuTab from "../components/MenuTab";
@@ -7,6 +6,7 @@ import RadioForm from "../components/RadioForm";
 import SearchPanel from "../components/SearchPanel";
 import DateTest from "../components/DateTest";
 import DateForm from "../components/DateForm";
+import Test from "../components/Test";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -36,7 +36,7 @@ const TestGrid = ({ grid, mainTab, subTab }) => {
       <Row>
         <Col md="3">
           <SelectForm label="영문성명" optionList={optionList} />
-          <DateTest label="입사일" />
+          <DateForm label="입사일" />
         </Col>
         <Col md="9">
           <MenuTab menuList={menuList1} />
@@ -54,7 +54,7 @@ const TestGrid = ({ grid, mainTab, subTab }) => {
               <RadioForm label={"성별"} optionList={radioList} />
             </Col>
             <Col xs md={{ span: 5, offset: 1 }}>
-              <DateForm label={"생년월일"} />
+              <DateTest label={"생년월일"} />
             </Col>
             <Col xs md={{ span: 5, offset: 1 }}>
               <SelectForm label={"구분"} optionList={optionList} />
