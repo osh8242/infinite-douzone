@@ -9,6 +9,7 @@ import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
 import RadioForm from "../components/RadioForm";
 import DateTest from "../components/DateTest";
+import TextBoxComponent from "../components/TextBoxComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -84,13 +85,13 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           <MenuTab menuList={menuList1} />
           <Row className="mb-5">
             <Col xs md="6">
-              <SelectForm label="영문성명" optionList={optionList} />
+              <TextBoxComponent label="영문성명" placeholder="영문성명을 입력" />
             </Col>
             <Col xs md="6">
-              <SelectForm label="한자성명" optionList={optionList} />
+              <TextBoxComponent label="한자성명" placeholder="한자성명을 입력" />
             </Col>
             <Col xs md="6">
-              <SelectForm label="주민등록번호" optionList={optionList} />
+              <TextBoxComponent type="regNum" label="주민등록번호" />
             </Col>
             <Col xs md="6">
               <RadioForm label={"성별"} optionList={radioList} />
