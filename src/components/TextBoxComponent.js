@@ -2,19 +2,40 @@ import React, { useState } from 'react';
 import { Col, Form, Row } from "react-bootstrap";
 import { NumericFormat, PatternFormat } from 'react-number-format';
 
+//css
+const textBoxStyle = {
+  width: '100%',
+  fontSize: '1rem',
+  fontWeight: '400',
+  lineHeight: '1.5',
+  appearance: 'none',
+  backgroundColor: 'var(--bs-body-bg)',
+  backgroundClip: 'padding-box',
+  border: 'var(--bs-border-width) solid var(--bs-border-color)',
+  borderRadius: 'var(--bs-border-radius)',
+  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+  padding: '0.375rem 0.75rem'
+};
+
 function TextBoxComponent(props) {
   
   //props 속성들
-  const { type, label, rows, size, disabled, readOnly, plaintext, value } = props;
+  const { type, label, rows, size, disabled, readOnly, plaintext, setValue } = props;
 
   //입력값
-  const [ inputValue, setInputValue] = useState('');
+  const [ inputValue, setInputValue] = useState(props.setValue);
   
   //마스킹 함수 
   const handleInputValueChange = (event) => {
     const input = event.target.value;
-    // const maskedNumber = input.replace(/(\d{6})(\d+)/, '$1-*******');
-    setInputValue(input);
+    
+    const maskedNumber = input.replace(/^(\d{6})(\d+)/, (match, group1, group2) => {
+      const maskedGroup2 = group2.replace(/./g, '*');
+      console.log('group1내용 : ' + group1);
+      return `${group1}-${maskedGroup2}`;
+    });
+  
+    setInputValue(maskedNumber); 
   };
 
   //custom type 정의(0)_TextArea
@@ -53,20 +74,9 @@ function TextBoxComponent(props) {
             thousandSeparator={thousandSeparator} 
             suffix={suffix}
             placeholder={props.placeholder} 
-            value={value}
-            style={{
-              width: '100%',
-              fontSize: '1rem',
-              fontWeight: '400',
-              lineHeight: '1.5',
-              appearance: 'none',
-              backgroundColor: 'var(--bs-body-bg)',
-              backgroundClip: 'padding-box',
-              border: 'var(--bs-border-width) solid var(--bs-border-color)',
-              borderRadius: 'var(--bs-border-radius)',
-              transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-              padding: '0.375rem 0.75rem'
-            }}
+            value={inputValue}
+            onChange={handleInputValueChange}
+            style={textBoxStyle}
             />
         </Col>  
       </Row>
@@ -79,7 +89,7 @@ function TextBoxComponent(props) {
     let placeholder = '';
 
     if(type === "regNum"){ //주민번호 format
-      format='#####-#######';
+      format='######-#######';
       placeholder = 'YYMMDD-XXXXXXX';
     }else{  //포멧지정
       format=props.format;
@@ -97,19 +107,7 @@ function TextBoxComponent(props) {
             format={format}
             value={inputValue}
             onChange={handleInputValueChange}
-            style={{
-              width: '100%',
-              fontSize: '1rem',
-              fontWeight: '400',
-              lineHeight: '1.5',
-              appearance: 'none',
-              backgroundColor: 'var(--bs-body-bg)',
-              backgroundClip: 'padding-box',
-              border: 'var(--bs-border-width) solid var(--bs-border-color)',
-              borderRadius: 'var(--bs-border-radius)',
-              transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-              padding: '0.375rem 0.75rem'
-            }}
+            style={textBoxStyle}
           />
         </Col>
       </Row>
@@ -130,7 +128,8 @@ function TextBoxComponent(props) {
             disabled={disabled}
             readOnly={readOnly}
             plaintext={plaintext}
-            value={value}
+            value={inputValue}
+            onChange={handleInputValueChange}
           />
         </Col>
       </Row>

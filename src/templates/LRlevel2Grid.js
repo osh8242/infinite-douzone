@@ -1,15 +1,58 @@
 // 작성자 : 오승환
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import MenuTab from "../components/MenuTab";
-import SelectForm from "../components/SelectForm";
-import SearchPanel from "../components/SearchPanel";
+import AddressForm from "../components/AddressForm";
 import DateForm from "../components/DateForm";
+import MenuTab from "../components/MenuTab";
+import SearchPanel from "../components/SearchPanel";
+import SelectForm from "../components/SelectForm";
+import TableForm from "../components/TableForm";
+import RadioForm from "../components/RadioForm";
+import DateTest from "../components/DateTest";
 import TextBoxComponent from "../components/TextBoxComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
+
+const dummyData = [
+  {
+    code: "A1234567",
+    사원명: "오승환",
+    "내/외": "내국인",
+    주민번호: "910101-1234567",
+    구분: "재직",
+  },
+  {
+    code: "B2345678",
+    사원명: "이서연",
+    "내/외": "외국인",
+    주민번호: "920202-2345678",
+    구분: "재직",
+  },
+  {
+    code: "C3456789",
+    사원명: "현소현",
+    "내/외": "내국인",
+    주민번호: "930303-3456789",
+    구분: "퇴직",
+  },
+  {
+    code: "D4567890",
+    사원명: "김진",
+    "내/외": "외국인",
+    주민번호: "940404-4567890",
+    구분: "재직",
+  },
+  {
+    code: "E5678901",
+    사원명: "김이긴",
+    "내/외": "내국인",
+    주민번호: "950505-5678901",
+    구분: "퇴직",
+  },
+];
+
 const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   const data = [
     { name: "홍길동", age: "20", gender: "남" },
@@ -25,6 +68,11 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     { key: "ecode", value: "사원번호" },
   ];
 
+  const radioList = [
+    { key: "M", value: "남자" },
+    { key: "F", value: "여자" },
+  ];
+
   return (
     <>
       <SearchPanel optionList={optionList} />
@@ -36,51 +84,34 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         <Col md="9">
           <MenuTab menuList={menuList1} />
           <Row className="mb-5">
-            
-            
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="성별" optionList={optionList} />
+            <Col xs md="6">
+              <TextBoxComponent label="영문성명" placeholder="영문성명을 입력" />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label={"생년월일"} optionList={optionList} />
+            <Col xs md="6">
+              <TextBoxComponent label="한자성명" placeholder="한자성명을 입력" />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
+            <Col xs md="6">
+              <TextBoxComponent type="regNum" label="주민등록번호" />
+            </Col>
+            <Col xs md="6">
+              <RadioForm label={"성별"} optionList={radioList} />
+            </Col>
+            <Col xs md="6">
+              <DateTest label={"생년월일"} />
+            </Col>
+            <Col xs md="6">
               <SelectForm label={"구분"} optionList={optionList} />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="비고" type="textarea" rows="3"/>
+            <Col>
+              <AddressForm label="주소" isZonecode={true} />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="첨부파일" type="file"/>
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="숫자" type="number"/>
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="영문성명" placeholder="영문성명 입력" />
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="퍼센트" type="rate" />
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="원화" type="won" />
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="날짜" type="date" />
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="주민번호" type="regNum"/>
-            </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="비밀번호" type="password" />
-            </Col>
-            {/* <Col xs md={{ span: 5, offset: 1 }}>
-              <TextBoxComponent label="커스텀format" type="customformat" format="#/#/#" />
-            </Col> */}
-            
           </Row>
           <MenuTab menuList={menuList2} />
-          <SelectForm label="영문성명" optionList={optionList} />
+          <TableForm
+            showCheckbox={true}
+            showHeaderArrow={true}
+            tableData={dummyData}
+          />
         </Col>
       </Row>
     </>
