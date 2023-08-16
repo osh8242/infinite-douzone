@@ -6,19 +6,22 @@ function DateTest({ label }) {
   const [selectDate, setSelectDate] = useState(new Date());
 
   const dateForPicker = (dateString) => {
-    return moment(new Date(dateString)).format("YYYY-MM-DD");
+    return moment(new Date(dateString)).format("YYYY.MM.DD");
   };
+
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <div class="container">
-          <form>
-            <Form.Control type="date" placeholder={"dd/mm/yyyy"} />
-          </form>
-        </div>
+        <form>
+          <Form.Control
+            type="date"
+            placeholder="YYYY.MM.DD"
+            //className="w-100"
+          />
+        </form>
       </Col>
     </Row>
   );

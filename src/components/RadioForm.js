@@ -11,12 +11,15 @@ function RadioForm({ label, optionList }) {
 
   return (
     <Row className="py-1">
-      <Col md="4" className="d-flex align-items-center justify-content-center">
+      <Col
+        md="4"
+        className="d-flex align-items-center justify-content-center mt-1"
+      >
         {label}
       </Col>
       <Col
         md="8"
-        className="d-flex align-items-center justify-content-start align-self-center"
+        className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"
       >
         {optionList.map((option) => (
           <div className="form-check form-check-inline" key={option.key}>
