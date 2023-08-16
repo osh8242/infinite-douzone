@@ -1,26 +1,15 @@
 // 작성자 : 이서연
-import React, { useState } from "react";
-import moment from "moment";
+import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest({ label }) {
-  const [selectDate, setSelectDate] = useState(new Date());
-
-  const dateForPicker = (dateString) => {
-    return moment(new Date(dateString)).format("YYYY.MM.DD");
-  };
-
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control
-          type="date"
-          placeholder="YYYY.MM.DD"
-          //className="w-100"
-        />
+        <Form.Control type="date" placeholder="YYYY.MM.DD" />
       </Col>
     </Row>
   );
