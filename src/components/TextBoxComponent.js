@@ -13,9 +13,8 @@ function TextBoxComponent(props) {
   //마스킹 함수 
   const handleInputValueChange = (event) => {
     const input = event.target.value;
-    const maskedNumber = input.replace(/(\d{6})(\d+)/, '$1-*******');
-    alert(maskedNumber);
-    setInputValue(maskedNumber);
+    // const maskedNumber = input.replace(/(\d{6})(\d+)/, '$1-*******');
+    setInputValue(input);
   };
 
   //custom type 정의(0)_TextArea
