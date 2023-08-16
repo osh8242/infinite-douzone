@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
-import { ListGroup } from 'react-bootstrap';
+// 작성자 : 오승환
+import React, { Component } from "react";
+import { ListGroup } from "react-bootstrap";
 
 class Menubar extends Component {
   render() {
     const { showSidebar } = this.props;
     return (
       <div
-        id="meneBar"
+        id="sideBar"
         style={{
-          width: '250px',
-          height: 'calc(100% - 56px)',
-          top: '56px',
-          position: 'fixed',
-          left: showSidebar ? '0' : '-250px',
-          background: '#f8f9fa',
-          transition: 'left 0.3s',
-          overflow: 'hidden',
+          width: "250px",
+          height: "calc(100% - 56px)",
+          top: "56px",
+          position: "fixed",
+          left: showSidebar ? "0" : "-250px",
+          background: "#f8f9fa",
+          transition: "left 0.3s",
+          overflow: "hidden",
         }}
       >
         {/* 메뉴 리스트 */}
