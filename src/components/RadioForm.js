@@ -1,25 +1,7 @@
 // 작성자 : 이서연
 
-// test data : App.js
-
-// import { Container } from "react-bootstrap";
-// import "./App.css";
-// import RadioForm from "./components/RadioForm";
-
-// function App() {
-//   const radioList = [
-//     { key: "M", value: "남자" },
-//     { key: "F", value: "여자" },
-//   ];
-//   return (
-//     <div>
-//       <Container>
-//         <RadioForm label={"Gender"} optionList={radioList} />
-//       </Container>
-//     </div>
-//   );
-// }
-// export default App;
+// TestCode
+// <RadioForm label={"성별"} optionList={radioList} />
 
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
@@ -63,3 +45,24 @@ function RadioForm({ label, optionList }) {
 }
 
 export default RadioForm;
+
+// test data : App.js
+
+// import { Container } from "react-bootstrap";
+// import "./App.css";
+// import RadioForm from "./components/RadioForm";
+
+// function App() {
+//   const radioList = [
+//     { key: "M", value: "남자" },
+//     { key: "F", value: "여자" },
+//   ];
+//   return (
+//     <div>
+//       <Container>
+//         <RadioForm label={"Gender"} optionList={radioList} />
+//       </Container>
+//     </div>
+//   );
+// }
+// export default App;

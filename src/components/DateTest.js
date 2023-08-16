@@ -1,4 +1,7 @@
 // 작성자 : 이서연
+
+// Test Code
+// <DateTest label={"생년월일"} />
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
@@ -17,7 +20,7 @@ function DateTest({ label }) {
 
 export default DateTest;
 
-// export default class DateTest extends React.Component {
+// export default class DateTesㅌ`ㅌt extends React.Component {
 //   constructor(props) {
 //     super(props);
 //     this.handleDayChange = this.handleDayChange.bind(this);
