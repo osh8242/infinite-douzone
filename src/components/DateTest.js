@@ -1,3 +1,4 @@
+// 작성자 : 이서연
 import React, { useState } from "react";
 import moment from "moment";
 import { Col, Form, Row } from "react-bootstrap";
@@ -15,13 +16,11 @@ function DateTest({ label }) {
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <form>
-          <Form.Control
-            type="date"
-            placeholder="YYYY.MM.DD"
-            //className="w-100"
-          />
-        </form>
+        <Form.Control
+          type="date"
+          placeholder="YYYY.MM.DD"
+          //className="w-100"
+        />
       </Col>
     </Row>
   );
