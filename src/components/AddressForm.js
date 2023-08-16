@@ -1,31 +1,26 @@
-import React, { useState, useCallback } from "react";
-import Post from "./Post";
+import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
+import ModalComponent from "./ModalComponent";
+import Post from "./Post";
 
 const AddressForm = ({ label, isZonecode }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const [zonecode, setZonecode] = useState("");
   const [address, setAddress] = useState("");
-
-  const openModal = useCallback(() => {
-    setModalVisible(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setModalVisible(false);
-  }, []);
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {
     setAddress(address);
     setZonecode(zonecode);
-    closeModal();
+    setModalState({ ...modalState, show: false });
   };
+
+  const [modalState, setModalState] = useState({
+    show: false,
+    props: {},
+  });
 
   return (
     <>
-      {/* Post 컴포넌트를 모달에 띄움, 우편번호, 상세주소, 주소 등을 가져옴. */}
-      {modalVisible && <Post onAddressSelected={handleAddressSelected} />}
       <Row>
         <Col>
           <div>{label}</div>
@@ -58,11 +53,23 @@ const AddressForm = ({ label, isZonecode }) => {
         </Col>
         <Col>
           {/* 버튼 클릭 시 Post 모달 호출 */}
-          <button type="button" onClick={openModal}>
+          <button
+            type="button"
+            onClick={() => setModalState({ ...modalState, show: true })}
+          >
             주소검색
           </button>
         </Col>
       </Row>
+
+      <ModalComponent
+        size="lg"
+        show={modalState.show}
+        onHide={() => setModalState({ ...modalState, show: false })}
+        {...modalState.props}
+      >
+        <Post onAddressSelected={handleAddressSelected} />
+      </ModalComponent>
     </>
   );
 };

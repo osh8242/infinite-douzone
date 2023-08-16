@@ -1,10 +1,11 @@
 // 작성자 : 오승환
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import MenuTab from "../components/MenuTab";
-import SelectForm from "../components/SelectForm";
-import SearchPanel from "../components/SearchPanel";
+import AddressForm from "../components/AddressForm";
 import DateForm from "../components/DateForm";
+import MenuTab from "../components/MenuTab";
+import SearchPanel from "../components/SearchPanel";
+import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -71,6 +72,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         <Col md="3">
           <SelectForm label="영문성명" optionList={optionList} />
           <DateForm label="입사일" />
+          <AddressForm label="주소" isZonecode={true} />
         </Col>
         <Col md="9">
           <MenuTab menuList={menuList1} />
