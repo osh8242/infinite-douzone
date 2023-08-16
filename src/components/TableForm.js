@@ -1,3 +1,8 @@
+// 작성자 : 김진
+// parameter : showCheckbox, tableData
+// showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
+// tableData : table 로 만들 데이터
+
 import React, { useCallback, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -58,18 +63,21 @@ const TableForm = ({ showCheckbox, tableData }) => {
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
   const [activeRowIndex, setActiveRowIndex] = useState(null);
-  const [arrowDirection, setArrowDirection] = useState(true);
 
-  // 이후 체크박스 ... 수정
-  //const handleCheckboxChange = (event, id) => {
-  //   // ...
-  // };
+  const [arrowDirections, setArrowDirections] = useState(
+    columns.reduce((acc, col) => {
+      acc[col] = true;
+      return acc;
+    }, {})
+  );
 
+  // 더블 클릭 시 편집 가능
   const handleDoubleClick = (rowIndex) => {
     setEditableRowIndex(rowIndex);
     setActiveRowIndex(rowIndex);
   };
 
+  // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
   const handleInputChange = (event, rowIndex, columnName) => {
     const updatedEditedData = { ...editedData };
     updatedEditedData[rowIndex] = {
@@ -79,6 +87,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
     setEditedData(updatedEditedData);
   };
 
+  // focus 외 요소 클릭 시 readOnly 속성 부여 (비활성화)
   const handleRowClick = (rowIndex) => {
     if (activeRowIndex === rowIndex) {
       return;
@@ -90,13 +99,18 @@ const TableForm = ({ showCheckbox, tableData }) => {
     setActiveRowIndex(rowIndex);
   };
 
-  const handleArrowDirection = (e) => {
-    setArrowDirection(!arrowDirection);
+  // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
+  const handleArrowDirection = (columnName) => {
+    setArrowDirections((prevDirections) => ({
+      ...prevDirections,
+      [columnName]: !prevDirections[columnName],
+    }));
   };
 
   return (
     <>
       <Table striped bordered hover>
+        {/* header */}
         <thead>
           <tr>
             {showCheckbox && (
@@ -110,9 +124,8 @@ const TableForm = ({ showCheckbox, tableData }) => {
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <div>{columnName}</div>
-                  {/* toggle event 로 전환 */}
-                  <div onClick={handleArrowDirection}>
-                    {arrowDirection ? (
+                  <div onClick={() => handleArrowDirection(columnName)}>
+                    {arrowDirections[columnName] ? (
                       <FontAwesomeIcon icon={faArrowUp} />
                     ) : (
                       <FontAwesomeIcon icon={faArrowDown} />
@@ -123,6 +136,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
             ))}
           </tr>
         </thead>
+        {/* content */}
         <tbody>
           {tableData.map((item, rowIndex) => {
             return (
