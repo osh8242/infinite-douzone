@@ -22,10 +22,10 @@
   color: var(--bs-body-color);
 }
 
-svg {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    z-index: 2;
+.react-datepicker__input-container svg {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  z-index: 2;
 }
