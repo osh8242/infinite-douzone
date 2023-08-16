@@ -1,3 +1,29 @@
-#tableCheckBoxArea {
-  width: 5px;
+#tableCheckBoxHeader {
+  width: 28px;
+  cursor: pointer;
+}
+
+#tableHeader {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+
+#tableHeader-arrow {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.tableContents {
+  margin: 2px 0px;
+}
+
+.tableCheckBoxArea {
+  height: 100%;
+  margin-top: 2px;
+}
+
+table {
+  table-layout: fixed;
 }
