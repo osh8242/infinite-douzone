@@ -92,16 +92,13 @@ const TableForm = ({ showCheckbox, tableData }) => {
     setEditedData(updatedEditedData);
   };
 
-  // focus 외 요소 클릭 시 readOnly 속성 부여 (비활성화)
+  // active row 외 요소 클릭 시 비활성화
   const handleRowClick = (rowIndex) => {
-    if (activeRowIndex === rowIndex) {
-      return;
+    if (activeRowIndex !== rowIndex) {
+      setActiveRowIndex(null);
+    } else {
+      setActiveRowIndex(rowIndex);
     }
-    // 활성화 이후 다른 곳 클릭 시 활성화 제거
-    if (editableRowIndex !== null && editableRowIndex !== activeRowIndex) {
-      setEditableRowIndex(null);
-    }
-    setActiveRowIndex(rowIndex);
   };
 
   // handle all check
@@ -190,15 +187,20 @@ const TableForm = ({ showCheckbox, tableData }) => {
                 {columns.map((columnName, columnIndex) => (
                   <td key={columnIndex}>
                     {editableRowIndex === rowIndex ? (
-                      <input
-                        type="text"
-                        value={
-                          editedData[rowIndex]?.[columnName] || item[columnName]
-                        }
-                        onChange={(event) =>
-                          handleInputChange(event, rowIndex, columnName)
-                        }
-                      />
+                      activeRowIndex === rowIndex ? (
+                        <input
+                          type="text"
+                          value={
+                            editedData[rowIndex]?.[columnName] ||
+                            item[columnName]
+                          }
+                          onChange={(event) =>
+                            handleInputChange(event, rowIndex, columnName)
+                          }
+                        />
+                      ) : (
+                        editedData[rowIndex]?.[columnName] || item[columnName]
+                      )
                     ) : (
                       item[columnName]
                     )}
