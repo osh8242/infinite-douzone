@@ -1,10 +1,12 @@
-// 작성자 : 김진
-// parameter : showCheckbox, tableData
-// showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
-// tableData : table 로 만들 데이터
+/*
+  작성자 : 김진
+  parameter : showCheckbox, tableData
+  showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
+  tableData : table 로 만들 데이터
+*/
 
-import React, { useCallback, useRef, useState } from "react";
-import { Table } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
@@ -60,30 +62,29 @@ const TableForm = ({ showCheckbox, tableData }) => {
   //     </div>
   //   );
   // }
+
   const columns = Object.keys(tableData[0]);
+
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
-  const [activeRowIndex, setActiveRowIndex] = useState(null);
 
-  const [allCheckBoxChecked, setAllCheckBoxChecked] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState(
+  const [checkBoxStates, setCheckBoxStates] = useState(
     tableData.map(() => false)
   );
 
   const [arrowDirections, setArrowDirections] = useState(
-    columns.reduce((acc, col) => {
-      acc[col] = true;
-      return acc;
+    columns.reduce((arrowStates, columnName) => {
+      arrowStates[columnName] = true;
+      return arrowStates;
     }, {})
   );
 
-  // 더블 클릭 시 편집 가능
+  // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (rowIndex) => {
     setEditableRowIndex(rowIndex);
-    setActiveRowIndex(rowIndex);
   };
 
-  // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
+  // //////////////////////////////////////////////////////////////// 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
   const handleInputChange = (event, rowIndex, columnName) => {
     const updatedEditedData = { ...editedData };
     updatedEditedData[rowIndex] = {
@@ -92,45 +93,46 @@ const TableForm = ({ showCheckbox, tableData }) => {
     };
     setEditedData(updatedEditedData);
   };
+  /////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // active row 외 요소 클릭 시 비활성화
+  // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (rowIndex) => {
-    if (activeRowIndex !== rowIndex) {
-      setActiveRowIndex(null);
+    if (editableRowIndex !== rowIndex) {
+      setEditableRowIndex(null);
     } else {
-      setActiveRowIndex(rowIndex);
+      setEditableRowIndex(rowIndex);
     }
   };
 
   // handle all check
   const handleAllCheckboxChange = () => {
-    if (checkboxStates.some((state) => !state)) {
-      setCheckboxStates(tableData.map(() => true));
-      setAllCheckBoxChecked(true);
+    // checkboxStates 배열 중 false 인 요소가 하나라도 있는지 확인
+    // 하나 이상 있는 경우 아이콘 클릭 시 전체 checkBox checked
+    if (checkBoxStates.some((state) => !state)) {
+      setCheckBoxStates(tableData.map(() => true));
     } else {
-      setCheckboxStates(tableData.map(() => false));
-      setAllCheckBoxChecked(false);
+      // 전체 unchecked
+      setCheckBoxStates(tableData.map(() => false));
     }
   };
 
   // handle check
   const handleCheckboxChange = (index) => {
-    setCheckboxStates((prevStates) => {
+    // checkBox 의 Status 복제
+    setCheckBoxStates((prevStates) => {
       const newStates = [...prevStates];
+      // check <-> unchecked
       newStates[index] = !newStates[index];
       return newStates;
     });
-    if (checkboxStates.every((state) => state)) {
-      setAllCheckBoxChecked(true);
-    } else {
-      setAllCheckBoxChecked(false);
-    }
   };
 
   // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
   const handleArrowDirection = (columnName) => {
+    // arrowDirection 의 Status 복제
     setArrowDirections((prevDirections) => ({
       ...prevDirections,
+      // 클릭 시 arrowDirection toggle
       [columnName]: !prevDirections[columnName],
     }));
   };
@@ -141,6 +143,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
         {/* header */}
         <thead>
           <tr>
+            {/* checkBox 상단 아이콘 */}
             {showCheckbox && (
               <th id="tableCheckBoxArea">
                 <FontAwesomeIcon
@@ -149,6 +152,7 @@ const TableForm = ({ showCheckbox, tableData }) => {
                 />
               </th>
             )}
+            {/* th columns */}
             {columns.map((columnName, index) => (
               <th key={index}>
                 <div
@@ -176,32 +180,30 @@ const TableForm = ({ showCheckbox, tableData }) => {
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
                 onClick={() => handleRowClick(rowIndex)}
               >
+                {/* 각 row 의 checkBox */}
                 {showCheckbox && (
                   <td>
                     <input
                       type="checkbox"
-                      checked={checkboxStates[rowIndex]}
+                      checked={checkBoxStates[rowIndex]}
                       onChange={() => handleCheckboxChange(rowIndex)}
                     />
                   </td>
                 )}
+                {/* 각 row 의 content */}
                 {columns.map((columnName, columnIndex) => (
                   <td key={columnIndex}>
+                    {/* editable 상태인 경우 input 요소로 렌더링 */}
                     {editableRowIndex === rowIndex ? (
-                      activeRowIndex === rowIndex ? (
-                        <input
-                          type="text"
-                          value={
-                            editedData[rowIndex]?.[columnName] ||
-                            item[columnName]
-                          }
-                          onChange={(event) =>
-                            handleInputChange(event, rowIndex, columnName)
-                          }
-                        />
-                      ) : (
-                        editedData[rowIndex]?.[columnName] || item[columnName]
-                      )
+                      <Form.Control
+                        size="text"
+                        value={
+                          editedData[rowIndex]?.[columnName] || item[columnName]
+                        }
+                        onChange={(event) =>
+                          handleInputChange(event, rowIndex, columnName)
+                        }
+                      />
                     ) : (
                       item[columnName]
                     )}
