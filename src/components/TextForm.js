@@ -1,26 +1,19 @@
- 
 // 작성자 : 오승환
- 
-import { Col, Row } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 
-function SelectForm({ label, optionList }) {
+function TextForm({ label }) {
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Select>
-          {optionList.map((option, index) => (
-            <option value={option.key} key={index}>
-              {option.value}
-            </option>
-          ))}
-        </Form.Select>
+        <Form.Control type="text" />
       </Col>
     </Row>
   );
 }
 
-export default SelectForm;
+export default TextForm;
