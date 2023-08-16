@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import moment from "moment";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest({ label }) {
+  const [selectDate, setSelectDate] = useState(new Date());
+
+  const dateForPicker = (dateString) => {
+    return moment(new Date(dateString)).format("YYYY-MM-DD");
+  };
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
@@ -10,7 +16,7 @@ function DateTest({ label }) {
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <div class="container">
           <form>
-            <Form.Control type="date" format />
+            <Form.Control type="date" placeholder={"dd/mm/yyyy"} />
           </form>
         </div>
       </Col>
