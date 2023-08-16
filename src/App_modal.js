@@ -41,7 +41,7 @@ function App() {
 
   /* modal창 영역============================================== */
   const ModalClickHandler =()=>{
-       const modalAddProps = {
+      const modalAddProps = {
       title: '모달창제목',
       size: 'lg',
       backdrop: 'static',
@@ -57,16 +57,24 @@ function App() {
       props: modalAddProps,
     });
   }
+
+  const [formData, setFormData] = useState('');
+
+  const handleFormSubmit = (data) => {
+    setFormData(data);
+  };
   
   return (
     <>
       <Button variant="primary" onClick={ModalClickHandler}>모달창 버튼</Button>
       <Button variant="primary" onClick={ConfirmClickHandler}>confirm창 버튼</Button>
       
+      <p>입력한 email: {formData}</p>
+      
       <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} {...modalState.props}>
-        <TestFormComponent />
+        <TestFormComponent onSubmit={handleFormSubmit}/>
       </ModalComponent>
-
+      
       <ConfirmComponent show={confirmState.show} onHide={() => setConfirmState({ ...confirmState, show: false })} {...confirmState.props} />
     </>
   );
