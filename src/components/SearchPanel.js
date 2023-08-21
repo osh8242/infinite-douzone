@@ -1,3 +1,9 @@
+/* 작성자 : 현소현 */
+
+
+
+import { faArrowDown, faArrowDown19 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Accordion, Button, Card, Col, Row, useAccordionButton } from "react-bootstrap";
 
@@ -24,7 +30,7 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                   </Col>
                   <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
                     <Button variant="secondary" onClick={onSearch}>조회</Button>
-                    <CustomToggle eventKey="0">Click</CustomToggle>
+                    <CustomToggle eventKey="0" ><Button variant="light"><FontAwesomeIcon icon={faArrowDown} /></Button></CustomToggle>
                   </Col>
                 </Row>
               </Card.Header>
