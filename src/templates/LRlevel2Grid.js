@@ -85,8 +85,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   ];
 
   const marryRadioList = [
-    { key: 'true', value: '남자' },
-    { key: 'false', value: '여자' },
+    { key: 'true', value: '기혼' },
+    { key: 'false', value: '미혼' },
   ];
 
   const contractRadioList = [

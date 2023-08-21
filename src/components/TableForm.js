@@ -18,44 +18,6 @@ import { useCallback, useState } from 'react';
 import { Form, Table } from 'react-bootstrap';
 import '../styles/tableForm.css';
 
-// const dummyData = [
-//   {
-//     code: "A1234567",
-//     사원명: "오승환",
-//     "내/외": "내국인",
-//     주민번호: "910101-1234567",
-//     구분: "재직",
-//   },
-//   {
-//     code: "B2345678",
-//     사원명: "이서연",
-//     "내/외": "외국인",
-//     주민번호: "920202-2345678",
-//     구분: "재직",
-//   },
-//   {
-//     code: "C3456789",
-//     사원명: "현소현",
-//     "내/외": "내국인",
-//     주민번호: "930303-3456789",
-//     구분: "퇴직",
-//   },
-//   {
-//     code: "D4567890",
-//     사원명: "김진",
-//     "내/외": "외국인",
-//     주민번호: "940404-4567890",
-//     구분: "재직",
-//   },
-//   {
-//     code: "E5678901",
-//     사원명: "김이긴",
-//     "내/외": "내국인",
-//     주민번호: "950505-5678901",
-//     구분: "퇴직",
-//   },
-// ];
-
 const TableForm = ({
   showCheckbox,
   showHeaderArrow,
@@ -106,12 +68,14 @@ const TableForm = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback((e, rowIndex) => {
+    let id = e.currentTarget.children[1].children[0].textContent;
+    console.log('id', id);
+    if (rowClickHandler) rowClickHandler(id);
     if (editableRowIndex !== rowIndex) {
       setEditableRowIndex(null);
     } else {
       setEditableRowIndex(rowIndex);
     }
-    if (rowClickHandler) rowClickHandler(e.currentTarget.id);
   });
 
   // handle all check
@@ -190,7 +154,6 @@ const TableForm = ({
             return (
               <tr
                 key={rowIndex}
-                id={item[0]}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
                 onClick={(e) => handleRowClick(e, rowIndex)}
               >

@@ -5,8 +5,10 @@ const LRlevel2GridModel = () => {
   const url = 'http://localhost:8888';
 
   const [leftTableData, setLeftTableData] = useState();
-  const [cdEmp, setCdEmp] = useState();
+  const [cdEmp, setCdEmp] = useState('hong');
   const [mainTabData, setMainTabData] = useState();
+
+  console.log('mainTabData', mainTabData);
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
@@ -29,23 +31,28 @@ const LRlevel2GridModel = () => {
 
   //
   useEffect(() => {
+    console.log('cdEmp', cdEmp);
     axios
-      .get(url + '/empAdd/getEmpAddByCdEmp', { cdEmp: cdEmp })
+      .post(
+        url + '/empAdd/getEmpAddByCdEmp',
+        { cdEmp: cdEmp },
+        { 'Content-Type': 'application/json' },
+      )
       .then((response) => {
         console.log('LRlevel2GridModel', response.data);
         const data = response.data.map((item) => ({
-          영문성명: item.nmEnname,
-          한자성명: item.nmChname,
-          주민등록번호: item.noSocial,
-          성별: item.fgSex,
-          생년월일: item.daBirth,
-          결혼여부: item.fgWedding,
-          부서: item.cdDept,
-          직급: item.rankNo,
-          직무: item.cdOffduty,
-          근로계약서: item.ynDrawcontracts,
-          입사년월: item.daEnter,
-          퇴사년월일: item.daRetire,
+          nmEnname: item.nmEnname,
+          nmChname: item.nmChname,
+          noSocial: item.noSocial,
+          fgSex: item.fgSex,
+          daBirth: item.daBirth,
+          fgWedding: item.fgWedding,
+          cdDept: item.cdDept,
+          rankNo: item.rankNo,
+          cdOffduty: item.cdOffduty,
+          ynDrawcontracts: item.ynDrawcontracts,
+          daEnter: item.daEnter,
+          daRetire: item.daRetire,
         }));
         setMainTabData(data);
       })
