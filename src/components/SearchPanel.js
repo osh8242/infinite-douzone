@@ -3,17 +3,17 @@ import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import SelectForm from "./SelectForm";
 
-const SearchPanel = ({ optionList }) => {
+const SearchPanel = ({ searchOption, orderList }) => {
   return (
     <>
       <Row className="border my-3 mx-1">
         <Col className="my-1" md="6">
           <Row>
             <Col>
-              <SelectForm label={"구분"} optionList={optionList} />
+              <SelectForm label={"구분"} optionList={searchOption} />
             </Col>
             <Col>
-              <SelectForm label={"정렬"} optionList={optionList} />
+              <SelectForm label={"정렬"} optionList={orderList} />
             </Col>
           </Row>
         </Col>

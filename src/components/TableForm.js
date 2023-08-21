@@ -8,15 +8,15 @@
   tableData : table 로 만들 데이터
 */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { Form, Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
   faArrowUp,
   faCheck,
-} from "@fortawesome/free-solid-svg-icons";
-import "../styles/tableForm.css";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useCallback, useState } from 'react';
+import { Form, Table } from 'react-bootstrap';
+import '../styles/tableForm.css';
 
 // const dummyData = [
 //   {
@@ -65,6 +65,7 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   //     </div>
   //   );
   // }
+  console.log('tableForm.js >', 'tableData : ', tableData);
 
   const columns = Object.keys(tableData[0]);
 
@@ -72,14 +73,14 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   const [editedData, setEditedData] = useState({});
 
   const [checkBoxStates, setCheckBoxStates] = useState(
-    tableData.map(() => false)
+    tableData.map(() => false),
   );
 
   const [arrowDirections, setArrowDirections] = useState(
     columns.reduce((arrowStates, columnName) => {
       arrowStates[columnName] = true;
       return arrowStates;
-    }, {})
+    }, {}),
   );
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
