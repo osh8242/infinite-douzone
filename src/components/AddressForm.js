@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 
@@ -21,47 +21,63 @@ const AddressForm = ({ label, isZonecode }) => {
 
   return (
     <>
-      <Row>
-        <Col>
-          <div>{label}</div>
+      <Row className="pt-3">
+        <Col
+          md="2"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>우편번호</div>
         </Col>
         {/* 우편번호 */}
         {isZonecode && (
-          <Col>
+          <Col
+            md="2"
+            className="d-flex align-items-center justify-content-center"
+          >
             <div>
-              <input
+              <Form.Control
                 type="text"
                 name="zonecode"
                 value={zonecode}
                 size={5}
-                readOnly
+                disabled
               />
             </div>
           </Col>
         )}
-        {/* 주소 */}
-        <Col>
-          <div>
-            <input
-              type="text"
-              name="address"
-              value={address}
-              size={45}
-              readOnly
-            />
-          </div>
-        </Col>
-        <Col>
+        <Col md="2">
           {/* 버튼 클릭 시 Post 모달 호출 */}
-          <button
-            type="button"
+          <Button
+            variant="secondary"
             onClick={() => setModalState({ ...modalState, show: true })}
           >
             주소검색
-          </button>
+          </Button>
         </Col>
       </Row>
-
+      <Row className="py-2">
+        <Col
+          md="2"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>주소</div>
+        </Col>
+        {/* 주소 */}
+        <Col md="4">
+          <div>
+            <Form.Control type="text" name="address" value={address} disabled />
+          </div>
+        </Col>
+        <Col md="6">
+          <div>
+            <Form.Control
+              type="text"
+              name="address-detail"
+              placeholder="상세주소 입력"
+            />
+          </div>
+        </Col>
+      </Row>
       <ModalComponent
         size="lg"
         show={modalState.show}

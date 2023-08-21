@@ -7,6 +7,9 @@ import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
+import RadioForm from "../components/RadioForm";
+import DateTest from "../components/DateTest";
+import TextBoxComponent from "../components/TextBoxComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -65,6 +68,11 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     { key: "ecode", value: "사원번호" },
   ];
 
+  const radioList = [
+    { key: "M", value: "남자" },
+    { key: "F", value: "여자" },
+  ];
+
   return (
     <>
       <SearchPanel optionList={optionList} />
@@ -72,33 +80,38 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         <Col md="3">
           <SelectForm label="영문성명" optionList={optionList} />
           <DateForm label="입사일" />
-          <AddressForm label="주소" isZonecode={true} />
         </Col>
         <Col md="9">
           <MenuTab menuList={menuList1} />
           <Row className="mb-5">
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="영문성명" optionList={optionList} />
+            <Col xs md="6">
+              <TextBoxComponent label="영문성명" placeholder="영문성명을 입력" />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="한자성명" optionList={optionList} />
+            <Col xs md="6">
+              <TextBoxComponent label="한자성명" placeholder="한자성명을 입력" />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="주민등록번호" optionList={optionList} />
+            <Col xs md="6">
+              <TextBoxComponent type="regNum" label="주민등록번호" />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label="성별" optionList={optionList} />
+            <Col xs md="6">
+              <RadioForm label={"성별"} optionList={radioList} />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
-              <SelectForm label={"생년월일"} optionList={optionList} />
+            <Col xs md="6">
+              <DateTest label={"생년월일"} />
             </Col>
-            <Col xs md={{ span: 5, offset: 1 }}>
+            <Col xs md="6">
               <SelectForm label={"구분"} optionList={optionList} />
+            </Col>
+            <Col>
+              <AddressForm label="주소" isZonecode={true} />
             </Col>
           </Row>
           <MenuTab menuList={menuList2} />
-          <SelectForm label="영문성명" optionList={optionList} />
-          <TableForm showCheckbox={true} tableData={dummyData} />
+          <TableForm
+            showCheckbox={true}
+            showHeaderArrow={true}
+            tableData={dummyData}
+          />
         </Col>
       </Row>
     </>
