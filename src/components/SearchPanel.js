@@ -1,15 +1,27 @@
 import React from "react";
-import { Accordion, Button, Card, Col, Row, useAccordionButton } from "react-bootstrap";
+import {
+  Accordion,
+  Button,
+  Card,
+  Col,
+  Row,
+  useAccordionButton,
+} from "react-bootstrap";
 
 const CustomToggle = ({ children, eventKey }) => {
   const decoratedOnClick = useAccordionButton(eventKey, () =>
-    console.log('totally custom!')
+    console.log("totally custom!")
   );
 
-  return ( <button type="button" onClick={decoratedOnClick}> {children} </button> );
+  return (
+    <button type="button" onClick={decoratedOnClick}>
+      {" "}
+      {children}{" "}
+    </button>
+  );
 };
 
-const SearchPanel = ({ children, onSearch, showAccordion = false }) => {  
+const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
   return (
     <>
       <Row>
@@ -22,8 +34,13 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                   <Col className="my-1" md="8">
                     {children[0]} {/* 기본 검색조건 */}
                   </Col>
-                  <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
-                    <Button variant="secondary" onClick={onSearch}>조회</Button>
+                  <Col
+                    className="d-flex align-items-center justify-content-center"
+                    md={{ span: 2, offset: 2 }}
+                  >
+                    <Button variant="secondary" onClick={onSearch}>
+                      조회
+                    </Button>
                     <CustomToggle eventKey="0">Click</CustomToggle>
                   </Col>
                 </Row>
@@ -32,13 +49,13 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
                   <Row className="border my-3 mx-1">
-                      {children[1]} {/* 상세 검색조건 */}
+                    {children[1]} {/* 상세 검색조건 */}
                   </Row>
                   <Row>
                     <Col className="d-flex justify-content-md-center">
-                    <Button variant="secondary" onClick={onSearch}>
-                      조회
-                    </Button>
+                      <Button variant="secondary" onClick={onSearch}>
+                        조회
+                      </Button>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -53,7 +70,10 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 <Col className="my-1" md="8">
                   {children} {/* 기본 검색조건 */}
                 </Col>
-                <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
+                <Col
+                  className="d-flex align-items-center justify-content-center"
+                  md={{ span: 2, offset: 2 }}
+                >
                   <Button variant="secondary" onClick={onSearch}>
                     조회
                   </Button>
