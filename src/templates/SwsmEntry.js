@@ -1,4 +1,6 @@
 import React from "react";
+import { Scrollbars } from "react-custom-scrollbars";
+
 import { Col, Row } from "react-bootstrap";
 import MenuTab from "../components/MenuTab";
 import SelectForm from "../components/SelectForm";
@@ -23,11 +25,6 @@ const SwsmEntry = ({ grid, mainTab, subTab }) => {
   const menuList = ["계약서 작성", "계약서 조회"];
   const menuList1 = ["근로정보"];
   const menuList2 = ["기타급여"];
-
-  const radioList = [
-    { key: "M", value: "남자" },
-    { key: "F", value: "여자" },
-  ];
 
   const tableDummyData = [
     {
@@ -127,109 +124,110 @@ const SwsmEntry = ({ grid, mainTab, subTab }) => {
         <Row>
           <Col md="3">
             <TableForm
-              showCheckbox={false}
+              showCheckbox={true}
               showHeaderArrow={false}
               tableData={tableDummyData}
             />
           </Col>
           <Col md="9">
             <MenuTab menuList={menuList1} />
-            <Row className="mb-5">
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <DateTest label="근로계약기간" />
-              </Col>
-            </Row>
-            {/* <Row>
-            <Col xs md={{ span: 5, offset: 1 }}>
-            <AddressForm label="근무장소" isZonecode={false} />
-            </Col>
-        </Row> */}
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <TextBoxComponent label={"업무의내용"} />
-              </Col>
-            </Row>
-            {/* 기간으로 변경 필요 */}
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <TextBoxComponent label={"소정근로시간"} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <TextBoxComponent label={"휴게시간"} />
-              </Col>
-            </Row>
-            {/* 컴포넌트 사이 글자 추가 필요 */}
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <TextBoxComponent label={"근무일"} />
-              </Col>
-            </Row>
-            {/* 컴포넌트 사이 글자 추가 필요 */}
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <TextBoxComponent label={"주휴일"} />
-              </Col>
-            </Row>
+            <Scrollbars style={{ height: 300 }}>
+              {/* your content */}
 
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="임금유형" optionList={optionList} />
-                {/* 한 라인 안에 들어가게 변경 필요 */}
-                {/* <TextBoxComponent />원 */}
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="기타급여(제수당)" optionList={optionList2} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="상여금" optionList={optionList3} />
-                {/* 한 라인 안에 들어가게 변경 필요 */}
-                {/* <TextBoxComponent />원 */}
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="임금지급일" optionList={optionList4} />
-                {/* 한 라인 안에 들어가게 변경 필요 */}
-                {/* <TextBoxComponent />원 */}
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="지급방법" optionList={optionList5} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="고용보험" optionList={optionList6} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="산재보험" optionList={optionList7} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <SelectForm label="건강보험" optionList={optionList8} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}>
-                <DateTest label="작성일자" />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}></Col>
-            </Row>
-            <Row>
-              <Col xs md={{ span: 5, offset: 1 }}></Col>
-            </Row>
+              <Row className="mb-5">
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <DateTest label="근로계약기간" />
+                </Col>
+              </Row>
+              {/* <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                <AddressForm label="근무장소" isZonecode={false} />
+                </Col>
+                </Row> */}
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TextBoxComponent label={"업무의내용"} />
+                </Col>
+              </Row>
+              {/* 기간으로 변경 필요 */}
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TextBoxComponent label={"소정근로시간"} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TextBoxComponent label={"휴게시간"} />
+                </Col>
+              </Row>
+              {/* 컴포넌트 사이 글자 추가 필요 */}
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TextBoxComponent label={"근무일"} />
+                </Col>
+              </Row>
+              {/* 컴포넌트 사이 글자 추가 필요 */}
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TextBoxComponent label={"주휴일"} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="임금유형" optionList={optionList} />
+                  {/* 한 라인 안에 들어가게 변경 필요 */}
+                  {/* <TextBoxComponent />원 */}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm
+                    label="기타급여(제수당)"
+                    optionList={optionList2}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="상여금" optionList={optionList3} />
+                  {/* 한 라인 안에 들어가게 변경 필요 */}
+                  {/* <TextBoxComponent />원 */}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="임금지급일" optionList={optionList4} />
+                  {/* 한 라인 안에 들어가게 변경 필요 */}
+                  {/* <TextBoxComponent />원 */}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="지급방법" optionList={optionList5} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="고용보험" optionList={optionList6} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="산재보험" optionList={optionList7} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <SelectForm label="건강보험" optionList={optionList8} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <DateTest label="작성일자" />
+                </Col>
+              </Row>
+            </Scrollbars>
+
             <MenuTab menuList={menuList2} />
             <TableForm
               showCheckbox={true}
