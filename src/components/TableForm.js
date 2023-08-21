@@ -56,7 +56,12 @@ import '../styles/tableForm.css';
 //   },
 // ];
 
-const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
+const TableForm = ({
+  showCheckbox,
+  showHeaderArrow,
+  tableData,
+  rowClickHandler,
+}) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
   //   return (
@@ -100,12 +105,13 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
-  const handleRowClick = useCallback((rowIndex) => {
+  const handleRowClick = useCallback((e, rowIndex) => {
     if (editableRowIndex !== rowIndex) {
       setEditableRowIndex(null);
     } else {
       setEditableRowIndex(rowIndex);
     }
+    if (rowClickHandler) rowClickHandler(e.currentTarget.id);
   });
 
   // handle all check
@@ -184,8 +190,9 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
             return (
               <tr
                 key={rowIndex}
+                id={item[0]}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
-                onClick={() => handleRowClick(rowIndex)}
+                onClick={(e) => handleRowClick(e, rowIndex)}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (

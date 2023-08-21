@@ -4,6 +4,7 @@ import DateTest from '../components/DateTest';
 import MenuTab from '../components/MenuTab';
 import RadioForm from '../components/RadioForm';
 import SearchPanel from '../components/SearchPanel';
+import SelectForm from '../components/SelectForm';
 import TableForm from '../components/TableForm';
 import TextBoxComponent from '../components/TextBoxComponent';
 import LRlevel2GridModel from '../model/LRlevel2GridModel';
@@ -64,9 +65,16 @@ const dummyData = [
 ];
 
 const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
-  const { tableData } = LRlevel2GridModel();
+  const {
+    leftTableData,
+    setLeftTableData,
+    cdEmp,
+    setCdEmp,
+    mainTabData,
+    setMainTabData,
+  } = LRlevel2GridModel();
 
-  console.log('axios tableData : ', tableData);
+  console.log('axios tableData : ', leftTableData);
 
   const menuList1 = ['기초정보', '인적정보'];
   const menuList2 = ['가족', '학력', '경력', '신체', '병역'];
@@ -86,16 +94,30 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     { key: 'false', value: '미작성' },
   ];
 
+  const onSearch = () => {
+    console.log('rjhat');
+  };
+
   return (
     <>
-      <SearchPanel searchOption={searchOption} orderList={orderList} />
+      <SearchPanel onSearch={onSearch}>
+        <Row>
+          <Col>
+            <SelectForm label={'구분'} optionList={searchOption} />
+          </Col>
+          <Col>
+            <SelectForm label={'정렬'} optionList={orderList} />
+          </Col>
+        </Row>
+      </SearchPanel>
       <Row>
         <Col md="3">
-          {tableData ? ( // tableData가 준비되었을 때만 TableForm 컴포넌트 렌더링
+          {leftTableData ? ( // tableData가 준비되었을 때만 TableForm 컴포넌트 렌더링
             <TableForm
               showCheckbox={true}
               showHeaderArrow={true}
-              tableData={tableData}
+              tableData={leftTableData}
+              rowClickHandler={setCdEmp}
             />
           ) : (
             <div>Loading...</div> // 로딩 중일 때 표시할 내용
