@@ -9,7 +9,9 @@ function App() {
   return (
     <div>
       <Header />
-      <Container></Container>
+      <Container>
+        <TestGrid />
+      </Container>
     </div>
   );
 }

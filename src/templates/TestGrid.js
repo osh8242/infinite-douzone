@@ -54,7 +54,7 @@ const TestGrid = ({ grid, mainTab, subTab }) => {
               <RadioForm label={"성별"} optionList={radioList} />
             </Col>
             <Col xs md={{ span: 5, offset: 1 }}>
-              <DateTest label={"생년월일"} />
+              <DateTest label={"생년월일"} type={"month"} />
             </Col>
             <Col xs md={{ span: 5, offset: 1 }}>
               <SelectForm label={"구분"} optionList={optionList} />
