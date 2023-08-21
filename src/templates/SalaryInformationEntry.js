@@ -110,83 +110,84 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
 
   //조회구분 검색조건 옵션
   const optionList2 = [
+    { key: "EmpAllThisMonth", value: "1.전체사원 당월" },
     { key: "EmpAllThisMonth", value: "2.전체사원 당월" },
-    { key: "ecode", value: "사원번호" },
   ];
 
+  //검색버튼 이벤트
+  const onSearch = () => {
+    alert("검색버튼 눌러뗭><");
+  }
 
   return (
     <>
-      {/* 검색조건 */}
-      <Row className="border my-3 mx-1">
-        <Col className="my-1" md="8">
+      {/* 기본 검색조건 */}
+      <SearchPanel onSearch={onSearch} showAccordion>        
+        <Row>
+          <Col>
+            <DateForm label={"귀속연월"} />
+          </Col>
+          <Col>
+            <SelectForm label={"구분"} optionList={optionList} />
+          </Col>
+          <Col>
+            <DateForm label={"지급일"} />
+          </Col>
+        </Row>
+      {/* 상세 검색조건 */}
+        <div>
           <Row>
             <Col>
-              <DateForm label={"귀속연월"}/>
+              <TextBoxComponent label={"사원코드"} />
             </Col>
             <Col>
-              <SelectForm label={"구분"} optionList={optionList} />
-            </Col>
-            <Col>
-              <DateForm label={"지급일"} />
+              <TextBoxComponent label={"부서코드"} />
             </Col>
           </Row>
-        </Col>
-        <Col className="d-flex align-items-center justify-content-center" md={{ span: 1, offset: 3 }}>
-          <Button variant="secondary">조회</Button>
-        </Col>
-      </Row>
-      {/* 검색조건 */}
+
+          <Row>
+            <Col>
+              <TextBoxComponent label={"직급코드"} />
+            </Col>
+            <Col>
+              <TextBoxComponent label={"직책코드"} />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <TextBoxComponent label={"현장코드"} />
+            </Col>
+            <Col>
+              <TextBoxComponent label={"프로젝트코드"} />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <Row>
+                <SelectForm
+                  label={"생산식여부"}
+                  optionList={[
+                    { key: "y", value: "생산직" },
+                    { key: "n", value: "비생산직" },
+                  ]}
+                />
+                <SelectForm
+                  label={"국외근로여부"}
+                  optionList={[
+                    { key: "y", value: "국외근로" },
+                    { key: "n", value: "국내근로" },
+                  ]}
+                />
+              </Row>
+            </Col>
+            <Col></Col>
+          </Row>
+        </div>
+      </SearchPanel>
       {/* 검색조건2 */}
-      <Row className="border my-3 mx-1">
-        <Col className="my-1" md="12">
 
-            <Row>
-              <Col>
-                <TextBoxComponent label={"사원코드"}/>
-              </Col>
-              <Col>
-                <TextBoxComponent label={"부서코드"} />
-              </Col>
-            </Row>
-            
-            <Row>
-              <Col>
-                <TextBoxComponent label={"직급코드"}/>
-              </Col>
-              <Col>
-                <TextBoxComponent label={"직책코드"} />
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                <TextBoxComponent label={"현장코드"}/>
-              </Col>
-              <Col>
-                <TextBoxComponent label={"프로젝트코드"} />
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                <Row>
-                  <SelectForm label={"생산식여부"}  optionList={ [ { key: "y", value: "생산직" },{ key: "n", value: "비생산직" }, ]} />
-                  <SelectForm label={"국외근로여부"}  optionList={[{ key: "y", value: "국외근로" },{ key: "n", value: "국내근로" } ]} />
-                </Row>
-              </Col>
-              <Col>
-                
-              </Col>
-            </Row>
-
-          
-        </Col>
-        <Col className="d-flex align-items-center justify-content-center" md={{ span: 1, offset: 6 }}>
-          <Button variant="secondary">조회</Button>
-        </Col>
-      </Row>
-      {/* 검색조건2 */}
       <Row>
         <Col md="3">
           {/* 사원정보 table영역 */}

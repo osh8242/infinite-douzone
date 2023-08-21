@@ -73,9 +73,23 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     { key: "F", value: "여자" },
   ];
 
+  const onSearch = () => {
+    alert("검색버튼 눌러쪄용");
+  }
   return (
     <>
-      <SearchPanel optionList={optionList} />
+      {/* 조회영역 */}
+      <SearchPanel onSearch={onSearch}>
+        <Row>
+          <Col>
+            <SelectForm label={"구분"} optionList={optionList} />
+          </Col>
+          <Col>
+            <SelectForm label={"정렬"} optionList={optionList} />
+          </Col>
+        </Row>
+      </SearchPanel>
+
       <Row>
         <Col md="3">
           <SelectForm label="영문성명" optionList={optionList} />
@@ -85,10 +99,16 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           <MenuTab menuList={menuList1} />
           <Row className="mb-5">
             <Col xs md="6">
-              <TextBoxComponent label="영문성명" placeholder="영문성명을 입력" />
+              <TextBoxComponent
+                label="영문성명"
+                placeholder="영문성명을 입력"
+              />
             </Col>
             <Col xs md="6">
-              <TextBoxComponent label="한자성명" placeholder="한자성명을 입력" />
+              <TextBoxComponent
+                label="한자성명"
+                placeholder="한자성명을 입력"
+              />
             </Col>
             <Col xs md="6">
               <TextBoxComponent type="regNum" label="주민등록번호" />
