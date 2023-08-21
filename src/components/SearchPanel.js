@@ -1,29 +1,67 @@
-// 작성자 : 오승환
 import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import SelectForm from "./SelectForm";
+import { Accordion, Button, Card, Col, Row, useAccordionButton } from "react-bootstrap";
 
-const SearchPanel = ({ optionList }) => {
+const CustomToggle = ({ children, eventKey }) => {
+  const decoratedOnClick = useAccordionButton(eventKey, () =>
+    console.log('totally custom!')
+  );
+
+  return ( <button type="button" onClick={decoratedOnClick}> {children} </button> );
+};
+
+const SearchPanel = ({ children, onSearch, showAccordion = false }) => {  
   return (
     <>
-      <Row className="border my-3 mx-1">
-        <Col className="my-1" md="6">
-          <Row>
-            <Col>
-              <SelectForm label={"구분"} optionList={optionList} />
-            </Col>
-            <Col>
-              <SelectForm label={"정렬"} optionList={optionList} />
-            </Col>
-          </Row>
-        </Col>
+      <Row>
+        {showAccordion ? (
+          //더보기 +
+          <Accordion defaultActiveKey="0">
+            <Card>
+              <Card.Header>
+                <Row className="border my-3 mx-1">
+                  <Col className="my-1" md="8">
+                    {children[0]} {/* 기본 검색조건 */}
+                  </Col>
+                  <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
+                    <Button variant="secondary" onClick={onSearch}>조회</Button>
+                    <CustomToggle eventKey="0">Click</CustomToggle>
+                  </Col>
+                </Row>
+              </Card.Header>
 
-        <Col
-          className="my-1 d-flex align-items-center justify-content-center"
-          md={{ span: 1, offset: 5 }}
-        >
-          <Button variant="secondary">조회</Button>
-        </Col>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  <Row className="border my-3 mx-1">
+                      {children[1]} {/* 상세 검색조건 */}
+                  </Row>
+                  <Row>
+                    <Col className="d-flex justify-content-md-center">
+                    <Button variant="secondary" onClick={onSearch}>
+                      조회
+                    </Button>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+        ) : (
+          //더보기 없음
+          <Card>
+            <Card.Header>
+              <Row className="border my-3 mx-1">
+                <Col className="my-1" md="8">
+                  {children} {/* 기본 검색조건 */}
+                </Col>
+                <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
+                  <Button variant="secondary" onClick={onSearch}>
+                    조회
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Header>
+          </Card>
+        )}
       </Row>
     </>
   );
