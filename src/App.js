@@ -3,7 +3,7 @@ import './App.scss';
 import Header from './templates/Header';
 import LRlevel2Grid from './templates/LRlevel2Grid';
 import SalaryInfomationEntry from './templates/SalaryInformationEntry';
-import SwsmGrid from './templates/SwsmGrid';
+import SwsmGrid from './templates/SwsmSearchGrid';
 
 function App() {
   return (
