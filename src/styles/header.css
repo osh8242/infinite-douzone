@@ -13,11 +13,16 @@
 
 #topNotificationHeader #topLeftNotificationHeader {
   display: flex;
+  margin-left: 16px;
+  align-items: center;
+  gap: 12px;
 }
 
 #topNotificationHeader #topRightNotificationHeader {
   display: flex;
-  gap: 4px;
+  margin-right: 16px;
+  align-items: center;
+  gap: 12px;
 }
 
 #secondTopHeader {
@@ -39,23 +44,38 @@
 }
 
 #logo {
-  width: 160px;
   margin-left: 10px;
-  margin-right: -20px;
+  margin-right: -8px;
   overflow: hidden;
 }
 
 #companySelectForm {
-  width: 200px;
+  width: 160px;
+  height: fit-content;
+  padding: 2px;
+  color: rgb(127, 127, 127);
+  border-color: rgb(230, 230, 230);
+}
+
+#periodSelectForm {
+  width: 272px;
+  height: fit-content;
+  padding: 2px;
+  color: rgb(127, 127, 127);
+  border-color: rgb(230, 230, 230);
+}
+
+#findMenuBar {
+  width: 256px;
+  height: fit-content;
+  padding: 2px;
+  border-color: rgb(230, 230, 230);
 }
 
 #secondTopHeaderMenuList {
   margin-right: 16px;
   display: flex;
   gap: 4px;
-}
-
-#periodSelectForm {
 }
 
 .colorWhite {
@@ -69,4 +89,8 @@
 .backgroundBorderNone {
   border: none;
   background-color: transparent;
+}
+
+#personalMenu {
+  border: none;
 }

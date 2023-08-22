@@ -19,7 +19,14 @@ import {
   faTrashCan,
 } from '@fortawesome/free-regular-svg-icons';
 import '../styles/header.css';
-import logo from '../styles/img/empRegisterLogo.png';
+import emp from '../styles/img/empRegisterLogo.png';
+import empAdd from '../styles/img/empAddLogo.png';
+
+// 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
+const logoUrl = {
+  emp: '../styles/img/empRegisterLogo.png',
+  empAdd: '../styles/img/empAddLogo.png',
+};
 
 class Header extends Component {
   constructor(props) {
@@ -34,19 +41,32 @@ class Header extends Component {
   };
 
   render() {
-    const optionList = [{ key: '더존비즈온', value: '더존비즈온' }];
     const optionList2 = [
       { key: '김회계 주임연구원', value: '김회계 주임연구원' },
     ];
+
     return (
       <div>
+        {/* white color header (고정) */}
         <div id="topNotificationHeader">
           <div id="topLeftNotificationHeader">
-            <SelectForm id="companySelectForm" optionList={optionList} />
-            <SelectForm id="periodSelectForm" optionList={optionList} />
+            <select id="companySelectForm" defaultValue={'douzone'}>
+              <option id="douzone">더존비즈온</option>
+            </select>
+            <select id="periodSelectForm" defaultValue={'5'}>
+              <option id="5">5기 2023.03.13~2023.10.17 (2023년도)</option>
+              <option id="4">4기 2023.03.13~2023.10.17 (2023년도)</option>
+              <option id="3">3기 2023.03.13~2023.10.17 (2023년도)</option>
+              <option id="2">2기 2023.03.13~2023.10.17 (2023년도)</option>
+              <option id="1">1기 2023.03.13~2023.10.17 (2023년도)</option>
+            </select>
           </div>
           <div id="topRightNotificationHeader">
-            <TextBoxComponent placeholder={'찾고싶은 메뉴를 검색하세요'} />
+            <input
+              type="text"
+              id="findMenuBar"
+              placeholder={'찾고싶은 메뉴를 검색하세요'}
+            />
             <button className="backgroundBorderNone">
               <FontAwesomeIcon icon={faPlus} className="colorDark" />
             </button>
@@ -56,9 +76,14 @@ class Header extends Component {
             <button className="backgroundBorderNone">
               <FontAwesomeIcon icon={faQuestionCircle} className="colorDark" />
             </button>
-            <SelectForm optionList={optionList2} />
+            <select id="personalMenu">
+              {/* 이름과 직종은 추후 변수로 변경 */}
+              <option>김회계 주임연구원</option>
+              {/* 하단에 추가할 메뉴를 넣습니다 */}
+            </select>
           </div>
         </div>
+        {/* blue color header (변동) */}
         <div id="secondTopHeader">
           <div id="secondTopHeaderContents">
             <Button
@@ -69,7 +94,7 @@ class Header extends Component {
               <i className={`fa fa-bars colorWhite`} />
             </Button>
             {/* 로고 */}
-            <img id="logo" src={logo} alt="" />
+            <img id="logo" src={empAdd} alt="" />
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faArrowUpRightFromSquare}
