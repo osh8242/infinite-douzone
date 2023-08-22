@@ -72,6 +72,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     setCdEmp,
     mainTabData,
     setMainTabData,
+    subTableData,
+    setSubTableData,
   } = LRlevel2GridModel();
 
   console.log('axios tableData : ', leftTableData);
@@ -207,7 +209,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             <TableForm
               showCheckbox={true}
               showHeaderArrow={true}
-              tableData={dummyData}
+              tableData={subTableData}
             />
           </Col>
         ) : (
