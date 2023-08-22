@@ -29,22 +29,15 @@ const SwsmModel = () => {
   }, []);
   //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    console.log(
-      'LRlevel2GridModel > /empAdd/getEmpAddByCdEmp',
-      'cdEmp : ',
-      cdEmp,
-    );
+    console.log('SwsmModel > /swsm/getAllByEmpCode', 'cdEmp : ', cdEmp);
     axios
       .post(
-        url + '/empAdd/getEmpAddByCdEmp',
-        { cdEmp: cdEmp },
+        url + '/swsm/getAllByEmpCode',
+        { empCode: cdEmp },
         { 'Content-Type': 'application/json' },
       )
       .then((response) => {
-        console.log(
-          'LRlevel2GridModel > /empAdd/getEmpAddByCdEmp',
-          response.data,
-        );
+        console.log('SwsmModel > /swsm/getAllByEmpCode', response.data);
         setMainTabData(response.data);
       })
       .catch((error) => {
