@@ -8,8 +8,8 @@ function App() {
   return (
     <div>
       <Header />
-      <Container>
-        <EmpRegisterationLayout />
+      <Container fluid>
+        <LRlevel2Grid />
       </Container>
     </div>
   );

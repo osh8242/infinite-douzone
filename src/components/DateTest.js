@@ -2,17 +2,20 @@
 
 // Test Code
 // <DateTest label={"생년월일"} />
-import React from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row } from 'react-bootstrap';
 
-function DateTest({ label }) {
+function DateTest({ label, defaultValue }) {
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type="date" placeholder="YYYY.MM.DD" />
+        <Form.Control
+          type="date"
+          placeholder="YYYY.MM.DD"
+          defaultValue={defaultValue}
+        />
       </Col>
     </Row>
   );
