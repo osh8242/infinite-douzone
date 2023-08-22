@@ -1,3 +1,5 @@
+import { faC } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Col, Form, Row } from "react-bootstrap";
 import { NumericFormat, PatternFormat } from 'react-number-format';
@@ -20,7 +22,7 @@ const textBoxStyle = {
 function TextBoxComponent(props) {
   
   //props 속성들
-  const { type, label, rows, size, disabled, readOnly, plaintext, value, onChange } = props;
+  const { type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;
   
   //커스텀 type 속성
   const TYPE_TEXTAREA = 'textarea';               // textarea
@@ -33,6 +35,7 @@ function TextBoxComponent(props) {
 
 
   switch (type) {
+
     //custom type 정의(1)_TextArea
     case TYPE_TEXTAREA:  
       return (
@@ -106,6 +109,30 @@ function TextBoxComponent(props) {
             onChange={onChange}
             style={textBoxStyle}
           />
+        </Col>
+      </Row>
+    );
+
+    //custom type 정의(4)_CodeHelper 코드도움 컴포넌트
+    case TYPE_CODE_HEPLER:  
+
+    const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+      <div className="react-datepicker__input-container" ref={ref}>
+        <Form.Control type="text" value={value} />
+        <FontAwesomeIcon icon={faC} onClick={onClick}/>
+      </div>
+    ));
+
+      return (
+        <Row className="py-1">
+        <Col md="4" className="d-flex align-items-center justify-content-center">
+          <div>{label}</div>
+        </Col>
+  
+        <Col md="8" className="d-flex align-items-center justify-content-center">
+          <div className="react-datepicker-wrapper">
+            <CustomInput onClick={onClick}/>
+          </div>
         </Col>
       </Row>
     );

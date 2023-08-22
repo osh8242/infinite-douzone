@@ -155,7 +155,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ko } from "date-fns/esm/locale";
 import { Col, Form, Row } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
-import "./DateForm.scss";
+import "./CustomInput.scss";
 
 const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
   <div className="custom-date-input" onClick={onClick} ref={ref}>

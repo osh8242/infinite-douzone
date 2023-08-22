@@ -1,19 +1,13 @@
 // 작성자 : 오승환
-import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import AddressForm from "../components/AddressForm";
+import React, { useCallback, useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import DateForm from "../components/DateForm";
-import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
-import RadioForm from "../components/RadioForm";
-import DateTest from "../components/DateTest";
+import ModalComponent from "../components/ModalComponent";
+import CodeHelperTable from "../components/CodeHelperTable";
 import TextBoxComponent from "../components/TextBoxComponent";
-
-//grid : 좌측 그리드의 테이블 데이터 grid.data
-//mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
-//subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 //사원테이블
 const EmpData = [
@@ -94,95 +88,131 @@ const DeductionData = [
   },
 ]
 
+//구분 옵션
+const salOptionList = [
+  { key: "sal"      , value: "1.급여" },
+  { key: "sal+bonus", value: "2.급여+상여" },
+  { key: "bonus"    , value: "3.상여" },
+  { key: "plusSal"  , value: "5.추급" },
+  { key: "plusBonus", value: "6.추상" },
+];
 
-const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
-  const data = [
-    { name: "홍길동", age: "20", gender: "남" },
-    { name: "유관순", age: "35", gender: "여" },
-    { name: "김유신", age: "16", gender: "남" },
-  ];
+//조회구분 검색조건 옵션
+const salOptionByPeriodList = [
+  { key: "EmpAllThisMonth", value: "0.전체사원 당월" },
+  { key: "EmpOneThisMonth", value: "1.현재사원 당월" },
+  { key: "EmpAlleCurrent",  value: "2.전체사원 현재" },
+  { key: "EmpOneCurrent",   value: "3.현재사원 현재" },
+  { key: "EmpAllThisMonth", value: "4.전체사원 연간" },
+  { key: "EmpOneThisYear",  value: "5.현재사원 연간" },
+];
 
-  //검색패널 옵션
-  const optionList = [
-    { key: "ename", value: "이름" },
-    { key: "ecode", value: "사원번호" },
-  ];
+//부서코드도움 테이블
+const deptCodeTable = [
+  { key: "DE_HR", value: "인사팀" },
+  { key: "DE_", value: "플랫폼팀" },
+  { key: "DE_ERP", value: "ERP팀" },
+];
 
-  //조회구분 검색조건 옵션
-  const optionList2 = [
-    { key: "EmpAllThisMonth", value: "1.전체사원 당월" },
-    { key: "EmpAllThisMonth", value: "2.전체사원 당월" },
-  ];
+const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
+  
+  const [modalState, setModalState] = useState({
+    show: false
+    , modalData: null 
+  });
 
-  //검색버튼 이벤트
+  useEffect(() => {
+    setModalState({  show: true  });
+  }, []);
+
+  // 코드도움 아이콘 클릭
+  const handleCodeHelperShow = useCallback((tableData) => {
+    
+    setModalState({
+      show: true,
+      modalData: tableData, 
+    });
+    
+  }, []);
+
+
+ // 조회버튼 이벤트
   const onSearch = () => {
     alert("검색버튼 눌러뗭><");
   }
+  
 
   return (
     <>
+      {/* 코드도움 모달 영역 */}
+      {/* <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })}>
+        {modalState.modalData && ( 
+          <CodeHelperTable codeTableData={modalState.modalData} />
+        )}
+      </ModalComponent> */}
+
       {/* 기본 검색조건 */}
-      <SearchPanel onSearch={onSearch} showAccordion>        
+      <SearchPanel onSearch={onSearch} showAccordion>
         <Row>
           <Col>
             <DateForm label={"귀속연월"} />
           </Col>
           <Col>
-            <SelectForm label={"구분"} optionList={optionList} />
+            <SelectForm label={"구분"} optionList={salOptionList} />
           </Col>
           <Col>
             <DateForm label={"지급일"} />
           </Col>
         </Row>
-      {/* 상세 검색조건 */}
+
+        {/* 상세 검색조건 */}
         <div>
           <Row>
             <Col>
-              <TextBoxComponent label={"사원코드"} />
+              <TextBoxComponent type='codeHelper' label={"사원코드"}/>
             </Col>
             <Col>
-              <TextBoxComponent label={"부서코드"} />
+              {/* <TextBoxComponent type='codeHelper' label={"부서코드"} onClick={handleCodeHelperShow} tableData={deptCodeTable}/> */}
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent label={"직급코드"} />
+              <TextBoxComponent type='codeHelper' label={"직급코드"} />
             </Col>
             <Col>
-              <TextBoxComponent label={"직책코드"} />
+              <TextBoxComponent type='codeHelper' label={"직책코드"} />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent label={"현장코드"} />
+              <TextBoxComponent type='codeHelper' label={"현장코드"} />
             </Col>
             <Col>
-              <TextBoxComponent label={"프로젝트코드"} />
+              <TextBoxComponent type='codeHelper' label={"프로젝트코드"} />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <Row>
-                <SelectForm
-                  label={"생산식여부"}
-                  optionList={[
-                    { key: "y", value: "생산직" },
-                    { key: "n", value: "비생산직" },
-                  ]}
-                />
-                <SelectForm
-                  label={"국외근로여부"}
-                  optionList={[
-                    { key: "y", value: "국외근로" },
-                    { key: "n", value: "국내근로" },
-                  ]}
-                />
-              </Row>
+              <SelectForm
+                label={"생산직여부"}
+                optionList={[
+                  { key: "y", value: "생산직" },
+                  { key: "n", value: "비생산직" },
+                ]}
+              />
             </Col>
-            <Col></Col>
+            <Col>
+              <SelectForm
+                label={"국외근로여부"}
+                optionList={[
+                  { key: "y", value: "국외근로" },
+                  { key: "n", value: "국내근로" },
+                ]}
+              />
+            </Col>
           </Row>
         </div>
       </SearchPanel>
@@ -207,7 +237,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         </Col>
         <Col md="3">
           {/* 조회구분 */}
-          <SelectForm label="조회구분" optionList={optionList2} />
+          <SelectForm label="조회구분" optionList={salOptionByPeriodList} />
           <Row>
             <TableForm tableData={DeductionData} />
           </Row>
@@ -220,4 +250,4 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   );
 };
 
-export default LRlevel2Grid;
+export default SalaryInformationEntry;
