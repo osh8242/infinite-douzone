@@ -1,5 +1,17 @@
 const CommonConstant = () => {
   return {
+    searchOption: [
+      {
+        key: 'incumbentAndRetiringOnThisYear',
+        value: '재직자 + 당해년도 퇴사자',
+      },
+      { key: 'incumbent', value: '재직자' },
+      { key: 'retiree', value: '퇴직자' },
+    ],
+    orderList: [
+      { key: 'cdEmp', value: '코드순' },
+      { key: 'nM', value: '이름순' },
+    ],
     mainTabMenuList: ['기초정보', '인적정보'],
     subTabMenuList: ['가족', '학력', '경력', '신체', '병역'],
     genderRadioList: [
