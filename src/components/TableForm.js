@@ -155,7 +155,9 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
-                onClick={(e) => handleRowClick(e, rowIndex)}
+                onClick={(e) => {
+                  if (!editableRowIndex) handleRowClick(e, rowIndex);
+                }}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
