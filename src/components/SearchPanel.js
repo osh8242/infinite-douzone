@@ -17,7 +17,7 @@ const CustomToggle = ({ children, eventKey }) => {
 
 const SearchPanel = ({ children, onSearch, showAccordion = false }) => {  
   return (
-    <>
+    <> 
       <Row>
         {showAccordion ? (
           //더보기 +
