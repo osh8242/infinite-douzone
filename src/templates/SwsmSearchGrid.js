@@ -140,7 +140,7 @@ const SwsmGrid = () => {
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent
                     label={'근무일'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    value={mainTabData ? mainTabData.workingDay : ''}
                   />
                 </Col>
               </Row>
@@ -148,7 +148,7 @@ const SwsmGrid = () => {
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent
                     label={'주휴일'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    value={mainTabData ? mainTabData.dayOff : ''}
                   />
                 </Col>
               </Row>
