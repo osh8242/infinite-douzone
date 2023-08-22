@@ -113,7 +113,7 @@ const TableForm = ({
 
   return (
     <>
-      <Table striped bordered hover>
+      <Table size={'sm'} striped bordered hover>
         {/* header */}
         <thead>
           <tr>
