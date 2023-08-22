@@ -11,28 +11,17 @@ import '../styles/empRegisterationLayout.css';
 import EmpRegisterationModel from '../model/EmpRegisterationModel';
 
 function EmpRegisterationLayout() {
-  const allListEmp = EmpRegisterationModel();
+  //Model로 관리되는 state들
+  const {
+    leftTableData,
+    setLeftTableData,
+    mainTableData,
+    setMainTableData,
+    subTableData,
+    setSubTableData,
+  } = EmpRegisterationModel();
+
   const menuList = ['기초자료', '가족사항'];
-
-  console.log('allListEmp => ', allListEmp);
-  console.log('allListEmp[0] => ', allListEmp[0]);
-  console.log('allListEmp[1] => ', allListEmp[1]);
-
-  const tableData = [
-    { column: 'data1', column2: 'data12', column3: 'data123' },
-    { column: 'data2', column2: 'data22', column3: 'data223' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-    { column: 'data3', column2: 'data32', column3: 'data323' },
-  ];
 
   const genderList = [
     { key: '0', value: '0.남성' },
@@ -47,37 +36,103 @@ function EmpRegisterationLayout() {
   return (
     <>
       <Row id="empRegisterLayout">
-        <Col>
+        <Col md="3" id="empRegisterLayoutLeft">
           {/* 좌측 사원목록 테이블 */}
-          <TableForm showCheckbox={true} tableData={tableData} />
+          {leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
+            <TableForm showCheckbox={true} tableData={leftTableData} />
+          ) : (
+            <div>Loading...</div> //로딩중 화면 표시 내용
+          )}
         </Col>
-        <Col>
+        <Col md="6" id="empRegisterLayoutRight">
           <Row id="empDataSortedMenuArea">
             <MenuTab menuList={menuList} />
             <div id="empDataSortedLine"></div>
           </Row>
           {/* 사원정보 편집 */}
           <Row id="baseData">
-            <DateForm label={'입사일자'} />
-            <TextBoxComponent label={'주민번호'} type={'text'} />
-            <SelectForm label={'거주지국'} optionList={residentList} />
-            <SelectForm label={'국적'} optionList={residentList} />
-            <AddressForm label={'주소'} isZonecode={true} />
-            <TextBoxComponent label={'전화번호'} type={'text'} />
-            <TextBoxComponent label={'모바일번호'} type={'text'} />
-            <TextBoxComponent label={'이메일'} type={'text'} />
-            <TextBoxComponent label={'메신저ID'} type={'text'} />
-            <SelectForm label={'부서'} optionList={genderList} />
-            <SelectForm label={'직종'} optionList={genderList} />
-            <SelectForm label={'직급'} optionList={genderList} />
-            <SelectForm label={'호봉'} optionList={genderList} />
-            <TextBoxComponent label={'현장'} type={'text'} />
-            <TextBoxComponent label={'프로젝트'} type={'text'} />
-            <DateForm label={'퇴사일자'} />
-            <TextBoxComponent label={'급여이체은행'} type={'text'} />
+            {mainTableData ? (
+              <div>
+                <DateForm label={'입사일자'} value={mainTableData.daEnter} />
+                <TextBoxComponent
+                  label={'주민번호'}
+                  value={mainTableData.noSocial}
+                />
+                <TextBoxComponent
+                  label={'거주지국'}
+                  value={mainTableData.addNation}
+                />
+                <TextBoxComponent
+                  label={'국적'}
+                  value={mainTableData.cdNation}
+                />
+                <AddressForm
+                  label={'주소'}
+                  isZonecode={true}
+                  value={(mainTableData.addHome, mainTableData.addHome2)}
+                />
+                <TextBoxComponent
+                  label={'전화번호'}
+                  value={
+                    mainTableData.telHome1 +
+                    '-' +
+                    mainTableData.telHome2 +
+                    '-' +
+                    mainTableData.telHome3
+                  }
+                />
+                <TextBoxComponent
+                  label={'모바일번호'}
+                  value={
+                    mainTableData.celEmp1 +
+                    '-' +
+                    mainTableData.celEmp2 +
+                    '-' +
+                    mainTableData.celEmp3
+                  }
+                />
+                <TextBoxComponent
+                  label={'이메일'}
+                  value={mainTableData.emEmp}
+                />
+                <TextBoxComponent
+                  label={'메신저ID'}
+                  value={mainTableData.idMsn}
+                />
+                <TextBoxComponent label={'부서'} value={mainTableData.cdDept} />
+                <TextBoxComponent
+                  label={'직종'}
+                  value={mainTableData.cdOccup}
+                />
+                <TextBoxComponent label={'직급'} value={mainTableData.rankNo} />
+                <TextBoxComponent
+                  label={'호봉'}
+                  value={mainTableData.cdSalcls}
+                />
+                <TextBoxComponent
+                  label={'현장'}
+                  value={mainTableData.cdField}
+                />
+                <TextBoxComponent
+                  label={'프로젝트'}
+                  value={mainTableData.cdProject}
+                />
+                <DateForm label={'퇴사일자'} value={mainTableData.daRetire} />
+                <TextBoxComponent
+                  label={'급여이체은행'}
+                  value={mainTableData.cdBank}
+                />
+              </div>
+            ) : (
+              <div>Loading...</div>
+            )}
           </Row>
           <Row id="familyData">
-            <TableForm showCheckbox={true} tableData={tableData} />
+            {subTableData ? (
+              <TableForm showCheckbox={true} tableData={subTableData} />
+            ) : (
+              <div>Loading...</div>
+            )}
           </Row>
         </Col>
       </Row>

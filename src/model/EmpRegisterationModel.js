@@ -1,33 +1,95 @@
-import React, { useCallback, useEffect, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 import axios from '../../node_modules/axios/index';
 
-const reducerEmp = (emp, action) => {
-  switch (action.type) {
-    case 'ALL_LIST_EMP':
-      return action.emp;
-    default:
-      return emp;
-  }
-};
 function EmpRegisterationModel() {
-  const [emp, dispatch] = useReducer(reducerEmp, []);
+  const url = 'http://localhost:8888';
 
+  const [cdEmp, setCdEmp] = useState('hong');
+  const [leftTableData, setLeftTableData] = useState();
+  const [mainTableData, setMainTableData] = useState();
+  const [subTableData, setSubTableData] = useState();
+
+  //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
-    console.log('useEffect !!');
-    getAllEmp();
+    axios
+      .get(url + '/emp/getAll')
+      .then((response) => {
+        console.log('EmpRegisterationModel > /emp/getAll => ', response.data);
+        const data = response.data.map((item) => ({
+          code: item.cdEmp,
+          사원명: item.nmKrname,
+          내외국인: item.ynFor,
+          주민번호: item.noSocial,
+          구분: item.jobOk,
+        }));
+        setLeftTableData(data);
+      })
+      .catch((error) => {
+        console.log('에러발생: ', error);
+        //에러 처리
+      });
   }, []);
 
-  const getAllEmp = useCallback(() => {
-    axios.get('http://localhost:8888/emp/getAll').then((response) => {
-      console.log('response.data => ', response.data);
-      dispatch({
-        type: 'ALL_LIST_EMP',
-        emp: response.data,
+  //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료 정보)
+  useEffect(() => {
+    console.log(
+      'EmpREgisterationModel > /emp/getOneByCdEmp',
+      'cdEmp : ',
+      cdEmp,
+    );
+    axios
+      .post(
+        url + '/emp/getOneByCdEmp',
+        { cdEmp: cdEmp },
+        { ContentType: 'application/json' },
+      )
+      .then((response) => {
+        console.log(
+          'EmpRegisterationModel > /emp/getOneByCdEmp',
+          response.data,
+        );
+        setMainTableData(response.data);
+      })
+      .catch((error) => {
+        console.error('에러발생: ', error);
       });
-    });
-  });
+  }, [cdEmp]);
 
-  return { emp };
+  //subTableData 가져오는 비동기 GET 요청 (사원의 가족사항 정보)
+  useEffect(() => {
+    console.log('EmpRegisterationModel > /empfam/getAll', 'cdEmp : ', cdEmp);
+    axios
+      .get(url + '/empfam/getAll')
+      .then((response) => {
+        console.log(
+          'EmpRegisterationModel > /empfam/getAll => ',
+          response.data,
+        );
+        const data = response.data.map((item) => ({
+          연말정산관계: item.cdCalrel,
+          성명: item.nmKrname,
+          내외국민: item.ynFor,
+          주민번호: item.noSocial,
+          위탁자관계: item.cdFamrel,
+        }));
+        setSubTableData(data);
+      })
+      .catch((error) => {
+        console.log('에러발생: ', error);
+        //에러처리
+      });
+  }, [cdEmp]);
+
+  return {
+    cdEmp: cdEmp,
+    setCdEmp,
+    leftTableData: leftTableData,
+    setLeftTableData,
+    mainTableData: mainTableData,
+    setMainTableData,
+    subTableData: subTableData,
+    setSubTableData,
+  };
 }
 
 export default EmpRegisterationModel;
