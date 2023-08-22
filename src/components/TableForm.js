@@ -8,55 +8,22 @@
   tableData : table 로 만들 데이터
 */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { Form, Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
   faArrowUp,
   faCheck,
-} from "@fortawesome/free-solid-svg-icons";
-import "../styles/tableForm.css";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useCallback, useState } from 'react';
+import { Form, Table } from 'react-bootstrap';
+import '../styles/tableForm.css';
 
-// const dummyData = [
-//   {
-//     code: "A1234567",
-//     사원명: "오승환",
-//     "내/외": "내국인",
-//     주민번호: "910101-1234567",
-//     구분: "재직",
-//   },
-//   {
-//     code: "B2345678",
-//     사원명: "이서연",
-//     "내/외": "외국인",
-//     주민번호: "920202-2345678",
-//     구분: "재직",
-//   },
-//   {
-//     code: "C3456789",
-//     사원명: "현소현",
-//     "내/외": "내국인",
-//     주민번호: "930303-3456789",
-//     구분: "퇴직",
-//   },
-//   {
-//     code: "D4567890",
-//     사원명: "김진",
-//     "내/외": "외국인",
-//     주민번호: "940404-4567890",
-//     구분: "재직",
-//   },
-//   {
-//     code: "E5678901",
-//     사원명: "김이긴",
-//     "내/외": "내국인",
-//     주민번호: "950505-5678901",
-//     구분: "퇴직",
-//   },
-// ];
-
-const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
+const TableForm = ({
+  showCheckbox,
+  showHeaderArrow,
+  tableData,
+  rowClickHandler,
+}) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
   //   return (
@@ -65,6 +32,7 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   //     </div>
   //   );
   // }
+  console.log('tableForm.js >', 'tableData : ', tableData);
 
   const columns = Object.keys(tableData[0]);
 
@@ -72,14 +40,14 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   const [editedData, setEditedData] = useState({});
 
   const [checkBoxStates, setCheckBoxStates] = useState(
-    tableData.map(() => false)
+    tableData.map(() => false),
   );
 
   const [arrowDirections, setArrowDirections] = useState(
     columns.reduce((arrowStates, columnName) => {
       arrowStates[columnName] = true;
       return arrowStates;
-    }, {})
+    }, {}),
   );
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
@@ -99,7 +67,10 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
-  const handleRowClick = useCallback((rowIndex) => {
+  const handleRowClick = useCallback((e, rowIndex) => {
+    let index ={showCheckbox} ? 1 : 0;
+    let id = e.currentTarget.children[index].children[0].textContent;
+    if (rowClickHandler) rowClickHandler(id);
     if (editableRowIndex !== rowIndex) {
       setEditableRowIndex(null);
     } else {
@@ -184,7 +155,7 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
               <tr
                 key={rowIndex}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
-                onClick={() => handleRowClick(rowIndex)}
+                onClick={(e) => handleRowClick(e, rowIndex)}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (

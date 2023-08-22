@@ -22,7 +22,7 @@ function DateTest({ label, type }) {
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type="month" placeholder="YYYY.MM.DD" />
+        <Form.Control type="date" placeholder="YYYY.MM.DD" />
       </Col>
     </Row>
   );
