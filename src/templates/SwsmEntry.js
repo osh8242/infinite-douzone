@@ -19,7 +19,7 @@ import TextBoxComponent from "../components/TextBoxComponent";
 const SwsmEntry = ({ grid, mainTab, subTab }) => {
   const searchChild = [
     { key: "opt1", value: "1. 사원등록" },
-    { key: "opt2", value: "2.일용직 사원등록" },
+    { key: "opt2", value: "2. 일용직 사원등록" },
   ];
 
   const menuList = ["계약서 작성", "계약서 조회"];
@@ -111,16 +111,16 @@ const SwsmEntry = ({ grid, mainTab, subTab }) => {
     <>
       <Row>
         <MenuTab menuList={menuList} />
-        <Row>
-          <Col>
-            <SearchPanel
-              children={<DateTest label={"작성년월"} />}
-              optionList={optionList}
-              // 아코디언 사용 시 children 속성 사라짐
-              // showAccordion={false}
-            />
-          </Col>
-        </Row>
+        <SearchPanel>
+          <Row>
+            <Col md="4">
+              <DateTest label={"작성년월"} />
+            </Col>
+            <Col md="4">
+              <SelectForm label={"소득구분"} optionList={searchChild} />
+            </Col>
+          </Row>
+        </SearchPanel>
         <Row>
           <Col md="3">
             <TableForm
@@ -131,9 +131,7 @@ const SwsmEntry = ({ grid, mainTab, subTab }) => {
           </Col>
           <Col md="9">
             <MenuTab menuList={menuList1} />
-            <Scrollbars style={{ height: 300 }}>
-              {/* your content */}
-
+            <Scrollbars style={{ height: 400, overflow: "hidden" }}>
               <Row className="mb-5">
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <DateTest label="근로계약기간" />
