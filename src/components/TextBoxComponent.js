@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { NumericFormat, PatternFormat } from 'react-number-format';
 
@@ -19,11 +19,15 @@ const textBoxStyle = {
 
 function TextBoxComponent(props) {
   //props 속성들
-  const { type, label, rows, size, disabled, readOnly, plaintext, setValue } =
+  const { type, label, rows, size, disabled, readOnly, plaintext, value } =
     props;
 
   //입력값
-  const [inputValue, setInputValue] = useState(props.setValue);
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(props.value);
+  }, [value]);
 
   //마스킹 함수
   const handleInputValueChange = (event) => {

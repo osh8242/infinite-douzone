@@ -15,7 +15,7 @@ const LRlevel2GridModel = () => {
     axios
       .get(url + '/emp/getAll')
       .then((response) => {
-        console.log('LRlevel2GridModel', response.data);
+        console.log('LRlevel2GridModel > /emp/getAll', response.data);
 
         const data = response.data.map((item) => ({
           사원코드: item.cdEmp,
@@ -29,9 +29,13 @@ const LRlevel2GridModel = () => {
       });
   }, []);
 
-  //
+  //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    console.log('cdEmp', cdEmp);
+    console.log(
+      'LRlevel2GridModel > /empAdd/getEmpAddByCdEmp',
+      'cdEmp : ',
+      cdEmp,
+    );
     axios
       .post(
         url + '/empAdd/getEmpAddByCdEmp',
@@ -39,22 +43,11 @@ const LRlevel2GridModel = () => {
         { 'Content-Type': 'application/json' },
       )
       .then((response) => {
-        console.log('LRlevel2GridModel', response.data);
-        const data = response.data.map((item) => ({
-          nmEnname: item.nmEnname,
-          nmChname: item.nmChname,
-          noSocial: item.noSocial,
-          fgSex: item.fgSex,
-          daBirth: item.daBirth,
-          fgWedding: item.fgWedding,
-          cdDept: item.cdDept,
-          rankNo: item.rankNo,
-          cdOffduty: item.cdOffduty,
-          ynDrawcontracts: item.ynDrawcontracts,
-          daEnter: item.daEnter,
-          daRetire: item.daRetire,
-        }));
-        setMainTabData(data);
+        console.log(
+          'LRlevel2GridModel > /empAdd/getEmpAddByCdEmp',
+          response.data,
+        );
+        setMainTabData(response.data);
       })
       .catch((error) => {
         console.error('에러발생: ', error);

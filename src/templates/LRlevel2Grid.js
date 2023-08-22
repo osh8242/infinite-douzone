@@ -130,12 +130,14 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               <TextBoxComponent
                 label="영문성명"
                 placeholder="영문성명을 입력"
+                value={mainTabData ? mainTabData.nmEnName : ''}
               />
             </Col>
             <Col xs md="6">
               <TextBoxComponent
                 label="한자성명"
                 placeholder="한자성명을 입력"
+                value={mainTabData ? mainTabData.nmChName : ''}
               />
             </Col>
             <Col xs md="6">
@@ -143,6 +145,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                 type="regNum"
                 label="주민등록번호"
                 disabled={true}
+                value={mainTabData ? mainTabData.noSocial : ''}
               />
             </Col>
             <Col xs md="6">
