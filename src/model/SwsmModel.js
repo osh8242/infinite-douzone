@@ -27,17 +27,18 @@ const SwsmModel = () => {
         console.error('에러 : ', error);
       });
   }, []);
-  //mainTabData 가져오는 비동기 post 요청
+
   useEffect(() => {
-    console.log('SwsmModel > /swsm/getAllByEmpCode', 'cdEmp : ', cdEmp);
+    console.log('SwsmModel > /swsm/getSwsmByEmpCode', 'cdEmp : ', cdEmp);
     axios
       .post(
-        url + '/swsm/getAllByEmpCode',
+        url + '/swsm/getSwsmByEmpCode',
         { empCode: cdEmp },
         { 'Content-Type': 'application/json' },
       )
       .then((response) => {
-        console.log('SwsmModel > /swsm/getAllByEmpCode', response.data);
+        console.log('==============================================');
+        console.log('SwsmModel > /swsm/getSwsmByEmpCode', response.data);
         setMainTabData(response.data);
       })
       .catch((error) => {
