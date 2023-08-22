@@ -85,13 +85,13 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   ];
 
   const marryRadioList = [
-    { key: 'true', value: '기혼' },
-    { key: 'false', value: '미혼' },
+    { key: 'Y', value: '기혼' },
+    { key: 'N', value: '미혼' },
   ];
 
   const contractRadioList = [
-    { key: 'true', value: '작성' },
-    { key: 'false', value: '미작성' },
+    { key: 'Y', value: '작성' },
+    { key: 'N', value: '미작성' },
   ];
 
   const onSearch = () => {
@@ -123,66 +123,96 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             <div>Loading...</div> // 로딩 중일 때 표시할 내용
           )}
         </Col>
-        <Col md="9">
-          <MenuTab menuList={menuList1} />
-          <Row className="mb-5">
-            <Col xs md="6">
-              <TextBoxComponent
-                label="영문성명"
-                placeholder="영문성명을 입력"
-                value={mainTabData ? mainTabData.nmEnName : ''}
-              />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent
-                label="한자성명"
-                placeholder="한자성명을 입력"
-                value={mainTabData ? mainTabData.nmChName : ''}
-              />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent
-                type="regNum"
-                label="주민등록번호"
-                disabled={true}
-                value={mainTabData ? mainTabData.noSocial : ''}
-              />
-            </Col>
-            <Col xs md="6">
-              <RadioForm label="성별" optionList={genderRadioList} />
-            </Col>
-            <Col xs md="6">
-              <DateTest label="생년월일" />
-            </Col>
-            <Col xs md="6">
-              <RadioForm label="결혼여부" optionList={marryRadioList} />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent label="부서" disabled={true} />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent label="직급" disabled={true} />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent label="직무" />
-            </Col>
-            <Col xs md="6">
-              <RadioForm label={'근로계약서'} optionList={contractRadioList} />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent label="입사년월일" disabled={true} />
-            </Col>
-            <Col xs md="6">
-              <TextBoxComponent label="퇴사년월일" disabled={true} />
-            </Col>
-          </Row>
-          <MenuTab menuList={menuList2} />
-          <TableForm
-            showCheckbox={true}
-            showHeaderArrow={true}
-            tableData={dummyData}
-          />
-        </Col>
+        {mainTabData ? (
+          <Col md="9">
+            <MenuTab menuList={menuList1} />
+            <Row className="mb-5">
+              <Col xs md="6">
+                <TextBoxComponent
+                  label="영문성명"
+                  value={mainTabData.nmEnName}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent
+                  label="한자성명"
+                  value={mainTabData.nmChName}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent
+                  type="regNum"
+                  label="주민등록번호"
+                  disabled={true}
+                  value={mainTabData.noSocial}
+                />
+              </Col>
+              <Col xs md="6">
+                <RadioForm
+                  label="성별"
+                  optionList={genderRadioList}
+                  checked={mainTabData.fgSex}
+                />
+              </Col>
+              <Col xs md="6">
+                <DateTest label="생년월일" defaultValue={mainTabData.daBirth} />
+              </Col>
+              <Col xs md="6">
+                <RadioForm
+                  label="결혼여부"
+                  optionList={marryRadioList}
+                  checked={mainTabData.fgWedding}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent
+                  label="부서"
+                  disabled={true}
+                  value={mainTabData.cdDept}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent
+                  label="직급"
+                  disabled={true}
+                  value={mainTabData.rankNo}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent label="직무" value={mainTabData.cdOffduty} />
+              </Col>
+              <Col xs md="6">
+                <RadioForm
+                  label={'근로계약서'}
+                  optionList={contractRadioList}
+                  checked={mainTabData.ynDrawContracts}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent
+                  label="입사년월일"
+                  disabled={true}
+                  value={mainTabData.daEnter}
+                />
+              </Col>
+              <Col xs md="6">
+                <TextBoxComponent
+                  label="퇴사년월일"
+                  disabled={true}
+                  value={mainTabData.rankNo}
+                />
+              </Col>
+            </Row>
+            <MenuTab menuList={menuList2} />
+            <TableForm
+              showCheckbox={true}
+              showHeaderArrow={true}
+              tableData={dummyData}
+            />
+          </Col>
+        ) : (
+          <div>Loading...</div> // 로딩 중일 때 표시할 내용
+        )}
       </Row>
     </>
   );
