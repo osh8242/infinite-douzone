@@ -8,22 +8,42 @@ import DateForm from '../components/DateForm';
 import SelectForm from '../components/SelectForm';
 import AddressForm from '../components/AddressForm';
 import '../styles/empRegisterationLayout.css';
+import EmpRegisterationModel from '../model/EmpRegisterationModel';
 
 function EmpRegisterationLayout() {
+  const allListEmp = EmpRegisterationModel();
   const menuList = ['기초자료', '가족사항'];
+
+  console.log('allListEmp => ', allListEmp);
+  console.log('allListEmp[0] => ', allListEmp[0]);
+  console.log('allListEmp[1] => ', allListEmp[1]);
+
   const tableData = [
-    { key: '1', value: '1' },
-    { key: '2', value: '2' },
-    { key: '3', value: '3' },
+    { column: 'data1', column2: 'data12', column3: 'data123' },
+    { column: 'data2', column2: 'data22', column3: 'data223' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
+    { column: 'data3', column2: 'data32', column3: 'data323' },
   ];
+
   const genderList = [
     { key: '0', value: '0.남성' },
     { key: '1', value: '1.여성' },
   ];
+
   const residentList = [
     { key: '0', value: '0.거주' },
     { key: '1', value: '1.미거주' },
   ];
+
   return (
     <>
       <Row id="empRegisterLayout">
