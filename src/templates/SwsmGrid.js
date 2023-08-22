@@ -1,21 +1,13 @@
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import SwsmModel from '../model/SwsmModel';
-import { Col, Row } from 'react-bootstrap';
-import MenuTab from '../components/MenuTab';
-import SelectForm from '../components/SelectForm';
-import RadioForm from '../components/RadioForm';
-import SearchPanel from '../components/SearchPanel';
-import DateTest from '../components/DateTest';
-import DateForm from '../components/DateForm';
-import Test from '../components/Test';
 import TableForm from '../components/TableForm';
-import AddressForm from '../components/AddressForm';
+import DateTest from '../components/DateTest';
+import SearchPanel from '../components/SearchPanel';
+import MenuTab from '../components/MenuTab';
+import { Col, Row } from 'react-bootstrap';
+import SelectForm from '../components/SelectForm';
+import { Scrollbars } from 'react-custom-scrollbars';
 import TextBoxComponent from '../components/TextBoxComponent';
-
-//grid : 좌측 그리드의 테이블 데이터 grid.data
-//mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
-//subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 const searchChild = [
   { key: 'opt1', value: '1. 사원등록' },
@@ -79,13 +71,12 @@ const optionList3 = [
 // 임금지급일
 const optionList4 = [
   { key: 'otherBenefits', value: '1.매월' },
-  { key: 'otherBenefits', value: '2.매주' },
-  { key: 'otherBenefits', value: '3.매일' },
+  { key: 'otherBenefits', value: '2.' },
 ];
 // 지급방법
 const optionList5 = [
-  { key: 'otherBenefits', value: '1. 예금통장에 입금' },
-  { key: 'otherBenefits', value: '2. ' },
+  { key: 'otherBenefits', value: '1.예금통장에 입금' },
+  { key: 'otherBenefits', value: '2.' },
 ];
 // 고용보험
 const optionList6 = [
@@ -108,18 +99,12 @@ const optionList9 = [
   { key: 'otherBenefits', value: '1.부' },
 ];
 
-const SwsmEntry = () => {
-  const {
-    leftTableData,
-    setLeftTableData,
-    cdEmp,
-    setCdEmp,
-    mainTabData,
-    setMainTabData,
-  } = SwsmModel();
+const url = 'http://localhost:8888';
+
+const SwsmGrid = () => {
+  const { leftTableData, setLeftTableData } = SwsmModel();
 
   console.log('test' + leftTableData);
-
   return (
     <>
       <Row>
@@ -135,32 +120,30 @@ const SwsmEntry = () => {
           </Row>
         </SearchPanel>
         <Row>
-          <Col md="4">
-            <TableForm
-              showCheckbox={true}
-              showHeaderArrow={false}
-              tableData={tableDummyData}
-            />
+          <Col md="3">
+            {leftTableData ? (
+              <TableForm
+                showCheckbox={true}
+                showHeaderArrow={false}
+                tableData={leftTableData}
+              />
+            ) : (
+              <div>Loading...</div> // 로딩 중일 때 표시할 내용
+            )}
           </Col>
-          <Col md="7">
+          <Col md="9">
             <MenuTab menuList={menuList1} />
-            <Scrollbars style={{ height: 350, overflow: 'hidden' }}>
-              <Row className="mb-6">
+            <Scrollbars style={{ height: 400, overflow: 'hidden' }}>
+              <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <DateTest label="근로계약기간" />
                 </Col>
               </Row>
-              {/* <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                <AddressForm label="근무장소" isZonecode={false} />
-                </Col>
-                </Row> */}
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent label={'업무의내용'} />
                 </Col>
               </Row>
-              {/* 기간으로 변경 필요 */}
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent label={'소정근로시간'} />
@@ -171,13 +154,11 @@ const SwsmEntry = () => {
                   <TextBoxComponent label={'휴게시간'} />
                 </Col>
               </Row>
-              {/* 컴포넌트 사이 글자 추가 필요 */}
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent label={'근무일'} />
                 </Col>
               </Row>
-              {/* 컴포넌트 사이 글자 추가 필요 */}
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent label={'주휴일'} />
@@ -189,13 +170,10 @@ const SwsmEntry = () => {
                   {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
                 </Col>
-              </Row>
+              </Row>{' '}
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="기타급여(제수당)"
-                    optionList={optionList2}
-                  />
+                  <SelectForm label="기타급여" optionList={optionList2} />
                 </Col>
               </Row>
               <Row>
@@ -238,7 +216,6 @@ const SwsmEntry = () => {
                 </Col>
               </Row>
             </Scrollbars>
-
             <MenuTab menuList={menuList2} />
             <TableForm
               showCheckbox={true}
@@ -252,4 +229,4 @@ const SwsmEntry = () => {
   );
 };
 
-export default SwsmEntry;
+export default SwsmGrid;

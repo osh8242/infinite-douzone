@@ -2,18 +2,18 @@
 
 // Test Code
 // <DateTest label={"생년월일"} />
-import React, { useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Col, Form, Row } from 'react-bootstrap';
 
 function DateTest({ label, type }) {
-  const [choice, setChoice] = useState("month");
-  console.log("before: " + choice);
-  console.log("label: " + label);
-  console.log("type: " + type);
+  const [choice, setChoice] = useState('month');
+  // console.log('before: ' + choice);
+  // console.log('label: ' + label);
+  // console.log('type: ' + type);
 
-  if (type === "month") {
-    console.log("month");
-  }
+  // if (type === 'month') {
+  //   // console.log('month');
+  // }
 
   console.log(choice);
   return (

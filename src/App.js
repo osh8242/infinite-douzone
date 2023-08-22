@@ -3,14 +3,14 @@ import './App.scss';
 import Header from './templates/Header';
 import LRlevel2Grid from './templates/LRlevel2Grid';
 import SalaryInfomationEntry from './templates/SalaryInformationEntry';
-import SwsmEntry from './templates/SwsmEntry';
+import SwsmGrid from './templates/SwsmGrid';
 
 function App() {
   return (
     <div>
       <Header />
       <Container>
-        <LRlevel2Grid />
+        <SwsmGrid />
       </Container>
     </div>
   );
