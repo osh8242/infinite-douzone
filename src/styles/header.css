@@ -1,4 +1,72 @@
 * {
-  font-family: "Font Awesome 5 Free";
+  font-family: 'Font Awesome 5 Free';
   font-weight: 900;
+  font-size: small;
+}
+
+#topNotificationHeader {
+  height: 52px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(230, 230, 230, 0.2);
+}
+
+#topNotificationHeader #topLeftNotificationHeader {
+  display: flex;
+}
+
+#topNotificationHeader #topRightNotificationHeader {
+  display: flex;
+  gap: 4px;
+}
+
+#secondTopHeader {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(48, 150, 255);
+}
+
+#secondTopHeader #secondTopHeaderContents {
+  display: flex;
+}
+
+#toggleSidebarBtn {
+  width: 40px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+}
+
+#logo {
+  width: 160px;
+  margin-left: 10px;
+  margin-right: -20px;
+  overflow: hidden;
+}
+
+#companySelectForm {
+  width: 200px;
+}
+
+#secondTopHeaderMenuList {
+  margin-right: 16px;
+  display: flex;
+  gap: 4px;
+}
+
+#periodSelectForm {
+}
+
+.colorWhite {
+  color: white;
+}
+
+.colorDark {
+  color: rgb(57, 63, 80);
+}
+
+.backgroundBorderNone {
+  border: none;
+  background-color: transparent;
 }

@@ -1,0 +1,17 @@
+* {
+  font-size: small;
+}
+
+#empRegisterLayout {
+  margin-top: 16px;
+}
+
+#empDataSortedLine {
+  position: absolute;
+  bottom: 16px;
+  border-top: solid 2px rgb(230, 230, 230);
+}
+
+#empDataSortedMenuArea {
+  position: relative;
+}
