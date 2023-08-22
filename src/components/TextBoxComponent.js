@@ -29,6 +29,7 @@ function TextBoxComponent(props) {
   const TYPE_WON = 'won';                         // 원화(뒤에 원화표기)
   const TYPE_REG_NUM = 'regNum';                  // 주민번호(뒷자리 마스킹)
   const TYPE_CUSTOM_FORMAT = 'customformat';      // 커스텀 포멧(패턴지정)
+  const TYPE_CODE_HEPLER = 'codeHelper';          // 코드헬퍼
 
 
   switch (type) {
@@ -109,6 +110,7 @@ function TextBoxComponent(props) {
       </Row>
     );
 
+    
   //bootstrap 제공 Textbox type들... ex) email,password,file,date,color... 
   default:
     return (
