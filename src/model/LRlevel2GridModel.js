@@ -18,8 +18,8 @@ const LRlevel2GridModel = () => {
       .then((response) => {
         console.log('LRlevel2GridModel > /emp/getAll', response.data);
         const data = response.data.map((item) => ({
-          사원코드: item.cdEmp,
-          사원이름: item.nmKrname,
+          [labels.cdEmp]: item.cdEmp,
+          [labels.nmKrname]: item.nmKrname,
         }));
         setLeftTableData(data);
       })
