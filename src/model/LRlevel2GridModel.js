@@ -5,6 +5,7 @@ import CommonConstant from './CommonConstant';
 const LRlevel2GridModel = () => {
   const url = 'http://localhost:8888';
   const { labels } = CommonConstant();
+  const [reloadTrigger, setReloadTrigger] = useState(false);
   const [cdEmp, setCdEmp] = useState('hong'); // 초기값 : 로그인한 유저의 사원코드 cdEmp
   const [leftTableData, setLeftTableData] = useState();
   const [mainTabData, setMainTabData] = useState();
@@ -27,7 +28,7 @@ const LRlevel2GridModel = () => {
         console.error('에러발생: ', error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, []);
+  }, [reloadTrigger]);
 
   //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -54,7 +55,7 @@ const LRlevel2GridModel = () => {
         console.error('에러발생: ', error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [cdEmp]);
+  }, [cdEmp, reloadTrigger]);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -88,7 +89,9 @@ const LRlevel2GridModel = () => {
         console.error('에러발생: ', error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [cdEmp]);
+  }, [cdEmp, reloadTrigger]);
+
+  const reloadStates = () => setReloadTrigger(!reloadTrigger);
 
   return {
     leftTableData: leftTableData,
@@ -99,6 +102,7 @@ const LRlevel2GridModel = () => {
     setMainTabData,
     subTableData: subTableData,
     setSubTableData,
+    reloadStates,
   };
 };
 
