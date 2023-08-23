@@ -44,19 +44,21 @@ function EmpRegisterationLayout() {
   return (
     <>
       <Row id="empRegisterLayout">
-        <Col md="3" id="empRegisterLayoutLeft">
+        <Col md="4" id="empRegisterLayoutLeft">
           {/* 좌측 사원목록 테이블 */}
           {leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
             <TableForm
               showCheckbox={true}
+              showHeaderArrow={true}
               tableData={leftTableData}
               rowClickHandler={setCdEmp}
+              minRow={20}
             />
           ) : (
             <div>Loading...</div> //로딩중 화면 표시 내용
           )}
         </Col>
-        <Col md="6" id="empRegisterLayoutRight">
+        <Col id="empRegisterLayoutRight">
           <Row id="empDataSortedMenuArea">
             <MenuTab menuList={mainTabMenuListForEmpRegister} />
             <div id="empDataSortedLine"></div>
@@ -142,9 +144,9 @@ function EmpRegisterationLayout() {
                   value={mainTableData.cdProject}
                 />
                 {mainTableData.daRetire ? (
-                  <DateForm
+                  <DateTest
                     label={labels.daRetire}
-                    value={mainTableData.daRetire}
+                    defaultValue={mainTableData.daRetire}
                   />
                 ) : (
                   <TextBoxComponent
@@ -164,7 +166,7 @@ function EmpRegisterationLayout() {
               <div>Loading...</div>
             )}
           </Row>
-          <div style={{ display: 'none' }}>
+          {/* <div style={{ display: 'none' }}>
             <Row id="familyData">
               {subTableData ? (
                 <TableForm showCheckbox={true} tableData={subTableData} />
@@ -172,7 +174,7 @@ function EmpRegisterationLayout() {
                 <div>Loading...</div>
               )}
             </Row>
-          </div>
+          </div> */}
         </Col>
       </Row>
     </>
