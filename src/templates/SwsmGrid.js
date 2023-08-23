@@ -145,30 +145,35 @@ const SwsmGrid = () => {
                 </Col>
               </Row>
               <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
+                <Col xs md={{ span: 10, offset: 1 }}>
                   <TempText
                     label={'휴게시간'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    md={2}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TempText
+                    label={'근무일'}
                     label2={'매 주 '}
                     label3={'일'}
-                    subLabel={true}
                     value={mainTabData ? mainTabData.jobDescription : ''}
+                    subLabel={true}
                     md={4}
                   />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
-                    label={'근무일'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
+                  <TempText
                     label={'주휴일'}
+                    label2={'매 주 '}
+                    label3={'일'}
                     value={mainTabData ? mainTabData.jobDescription : ''}
+                    subLabel={true}
+                    md={4}
                   />
                 </Col>
               </Row>
