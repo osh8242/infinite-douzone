@@ -168,16 +168,22 @@ function TempText(props) {
       <Row className="py-1">
         {/* 추가 있을때만 2 기본 4 */}
         <Col
-          md="4"
+          md={md}
           className="d-flex align-items-center justify-content-center"
         >
           <div>{label}</div>
         </Col>
 
-        <Col md="" className="d-flex align-items-center justify-content-center">
+        <Col
+          md={!subLabel && '9'}
+          className="d-flex align-items-center justify-content-center"
+        >
           {/* subLabel 사용 시 */}
-
-          <Col md="2">{subLabel && <div>{label2}</div>}</Col>
+          {subLabel && (
+            <Col md="2">
+              <div>{label2}</div>
+            </Col>
+          )}
           {/* 기본 text */}
           <Form.Control
             type={type}
