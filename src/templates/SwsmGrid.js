@@ -1,4 +1,5 @@
 import React from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import SwsmModel from '../model/SwsmModel';
 import TableForm from '../components/TableForm';
 import DateTest from '../components/DateTest';
@@ -112,7 +113,7 @@ const SwsmGrid = () => {
                 rowClickHandler={setCdEmp}
               />
             ) : (
-              <div>Loading...</div> // 로딩 중일 때 표시할 내용
+              <Spinner animation="border" variant="primary" />
             )}
           </Col>
           <Col md="9">
