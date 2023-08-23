@@ -42,7 +42,7 @@ const CommonConstant = () => {
       daRetire: '퇴사년월일',
       cdFamrel: '관계',
       nmKrname: '성명',
-      ynFor: '내국인',
+      ynFor: '외국인',
       fgSchool: '학력',
       fgGraduation: '졸업구분',
       ynTogether: '동거',

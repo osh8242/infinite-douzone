@@ -14,7 +14,10 @@ function EmpRegisterationModel() {
     axios
       .get(url + '/emp/getAll')
       .then((response) => {
-        console.log('EmpRegisterationModel > /emp/getAll => ', response.data);
+        console.log(
+          'EmpRegisterationModel > /emp/getAllEmpAdd => ',
+          response.data,
+        );
         const data = response.data.map((item) => ({
           code: item.cdEmp,
           사원명: item.nmKrname,
