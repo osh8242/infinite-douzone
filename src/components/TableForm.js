@@ -35,7 +35,7 @@ const TableForm = ({
   // }
   console.log('tableForm.js >', 'tableData : ', tableData);
 
-  const columns = tableData ? Object.keys(tableData[0]) : [];
+  const columns = tableData?.[0] ? Object.keys(tableData[0]) : [];
 
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
@@ -177,7 +177,7 @@ const TableForm = ({
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
                       {editableRowIndex === rowIndex ? (
                         <Form.Control
-                          size="text"
+                          type="text"
                           value={
                             editedData[rowIndex]?.[columnName] ||
                             item[columnName]

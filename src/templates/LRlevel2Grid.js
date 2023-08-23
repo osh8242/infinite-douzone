@@ -48,9 +48,11 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     labels, // 속성명
   } = CommonConstant();
 
+  //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
   const orderRefRef = useRef();
 
+  //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
     setOrderRef(orderRefRef.current.value);
     if (jobOkRef.current.value === 'yAndOnThisYear') {
