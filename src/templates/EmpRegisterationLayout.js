@@ -64,7 +64,8 @@ function EmpRegisterationLayout() {
           {/* 사원정보 편집 */}
           <Row id="baseData">
             {mainTableData ? (
-              <div>
+              <div id="baseDataContents">
+                <div id="baseDataContentsBackground"></div>
                 <DateTest
                   label={labels.daEnterForEmpRegister}
                   defaultValue={mainTableData.daEnter}

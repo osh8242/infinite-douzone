@@ -20,3 +20,21 @@
 #empDataSortedMenuArea {
   position: relative;
 }
+
+#baseDataContents {
+  position: relative;
+}
+
+#baseDataContents > div {
+  justify-content: right;
+}
+
+#baseDataContentsBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32%;
+  height: 100%;
+  z-index: -1;
+  background-color: rgba(2, 7, 21, 0.1);
+}
