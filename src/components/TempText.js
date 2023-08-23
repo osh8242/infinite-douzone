@@ -177,7 +177,7 @@ function TempText(props) {
         <Col md="" className="d-flex align-items-center justify-content-center">
           {/* subLabel 사용 시 */}
 
-          <Col md="">{subLabel && <div>{label2}</div>}</Col>
+          <Col md="2">{subLabel && <div>{label2}</div>}</Col>
           {/* 기본 text */}
           <Form.Control
             type={type}
