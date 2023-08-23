@@ -49,10 +49,10 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       <SearchPanel onSearch={onSearch}>
         <Row>
           <Col>
-            <SelectForm label={"구분"} optionList={optionList} />
+            <SelectForm label={"구분"}  />
           </Col>
           <Col>
-            <SelectForm label={"정렬"} optionList={optionList} />
+            <SelectForm label={"정렬"} />
           </Col>
         </Row>
       </SearchPanel>

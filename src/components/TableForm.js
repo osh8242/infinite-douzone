@@ -56,7 +56,7 @@ import "../styles/tableForm.css";
 //   },
 // ];
 
-const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
+const TableForm = ({ showCheckbox, showHeaderArrow, tableData, rowClickHandler}) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
   //   return (
