@@ -1,6 +1,6 @@
 import { faC } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Form, Row } from "react-bootstrap";
 import { NumericFormat, PatternFormat } from 'react-number-format';
 
@@ -16,14 +16,21 @@ const textBoxStyle = {
   border: 'var(--bs-border-width) solid var(--bs-border-color)',
   borderRadius: 'var(--bs-border-radius)',
   transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-  padding: '0.375rem 0.75rem'
+  padding: '0.375rem 0.75rem',
 };
 
 function TextBoxComponent(props) {
-  
   //props 속성들
-  const { type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;
-  
+  const { type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;  
+
+  //입력값
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(props.value);
+  }, [value]);
+
+
   //커스텀 type 속성
   const TYPE_TEXTAREA = 'textarea';               // textarea
   const TYPE_NUMBER = 'number';                   // 숫자(세자리 콤마)
@@ -40,7 +47,10 @@ function TextBoxComponent(props) {
     case TYPE_TEXTAREA:  
       return (
       <Row className="py-1">
-        <Col md="4" className="d-flex align-items-center justify-content-center">
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
           <div>{label}</div>
         </Col>
         <Col md="8" className="d-flex align-items-center justify-content-center">                                  
@@ -58,27 +68,32 @@ function TextBoxComponent(props) {
     let placeholder = '';         // placeholder
     let thousandSeparator = true; // 세자리 콤마
 
-    if (type === "rate") {
+    if (type === 'rate') {
       suffix = '%';
-    } else if (type === "won") {
+    } else if (type === 'won') {
       suffix = '원';
     }
 
-    return(
+    return (
       <Row className="py-1">
-        <Col md="4" className="d-flex align-items-center justify-content-center">
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
           <div>{label}</div>
         </Col>
-        <Col md="8" className="d-flex align-items-center justify-content-center">
-          <NumericFormat 
-            thousandSeparator={thousandSeparator} 
+        <Col
+          md="8"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <NumericFormat
+            thousandSeparator={thousandSeparator}
             suffix={suffix}
-            placeholder={props.placeholder} 
-            value={value}
-            onChange={onChange}
+            placeholder={props.placeholder}
+            value={inputValue}
             style={textBoxStyle}
-            />
-        </Col>  
+          />
+        </Col>
       </Row>
     );
   
@@ -96,14 +111,20 @@ function TextBoxComponent(props) {
       format=props.placeholder;
     }
 
-    return(
+    return (
       <Row className="py-1">
-        <Col md="4" className="d-flex align-items-center justify-content-center">
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
           <div>{label}</div>
         </Col>
-        <Col md="8" className="d-flex align-items-center justify-content-center">
-          <PatternFormat 
-            placeholder={placeholder} 
+        <Col
+          md="8"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <PatternFormat
+            placeholder={placeholder}
             format={format}
             value={value}
             onChange={onChange}
@@ -142,11 +163,17 @@ function TextBoxComponent(props) {
   default:
     return (
       <Row className="py-1">
-        <Col md="4" className="d-flex align-items-center justify-content-center">
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
           <div>{label}</div>
         </Col>
-        <Col md="8" className="d-flex align-items-center justify-content-center">
-         <Form.Control
+        <Col
+          md="8"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <Form.Control
             type={type}
             placeholder={props.placeholder}
             size={size}
@@ -159,9 +186,7 @@ function TextBoxComponent(props) {
         </Col>
       </Row>
     );
-  }  
-
-  
+  }
 }
 
 export default TextBoxComponent;

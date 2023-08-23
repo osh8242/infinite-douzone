@@ -1,13 +1,8 @@
 /* 작성자 : 현소현 */
-
-import {
-  Accordion,
-  Button,
-  Col,
-  Row,
-} from 'react-bootstrap';
+import {  Accordion, Button, Col, Row,} from 'react-bootstrap';
 
 const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
+  
   return (
     <>
       <Row>
@@ -34,13 +29,13 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 <Row>
                   {children[1]} {/* 상세 검색조건 */}
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col className="d-flex justify-content-md-center">
                     <Button variant="secondary" onClick={onSearch}>
                       조회
                     </Button>
                   </Col>
-                </Row>
+                </Row> */}
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>

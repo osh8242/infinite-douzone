@@ -5,87 +5,30 @@ import DateForm from "../components/DateForm";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
-import ModalComponent from "../components/ModalComponent";
-import CodeHelperTable from "../components/CodeHelperTable";
 import TextBoxComponent from "../components/TextBoxComponent";
+import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
+import ModalComponent from "../components/ModalComponent";
 
-//사원테이블
-const EmpData = [
-  {
-    code: "A1234567",
-    사원명: "오승환",
-    직급: "대리",
-    감면율: "재직",
-  },
-  {
-    code: "B2345678",
-    사원명: "이서연",
-    직급: "",
-    감면율: "재직",
-  },
-  {
-    code: "C3456789",
-    사원명: "현소현",
-    직급: "",
-    감면율: "퇴직",
-  },
-  {
-    code: "D4567890",
-    사원명: "김진",
-    직급: "",
-    감면율: "재직",
-  },
-  {
-    code: "E5678901",
-    사원명: "김이긴",
-    "내/외": "내국인",
-    주민번호: "950505-5678901",
-    구분: "퇴직",
-  },
-];
-
-//  사원별 급여항목
-const SalData = [
-  {
-    급여항목: "기본급",
-    금액: "500000",  
-  },
-  {
-    급여항목: "연장근로",
-    금액: "50000",  
-  },
-  {
-    급여항목: "식대",
-    금액: "500000",  
-  },
-  {
-    급여항목: "연구개발비",
-    금액: "",  
-  },
+// nodata 급여_사원리스트
+const basicSaEmpData = [
+  { 사원코드 : "", 사원이름 : "", 직급 : "", 감면율 : ""},
 ]
 
-//  사원별 공제항목
-const DeductionData = [
-  {
-    공제항목: "국민연금",
-    금액: "500000",  
-  },
-  {
-    공제항목: "건강보험",
-    금액: "50000",  
-  },
-  {
-    공제항목: "고용보험",
-    금액: "500000",  
-  },
-  {
-    공제항목: "장기요양보험료",
-    금액: "",  
-  },
-  {
-    공제항목: "대출",
-    금액: "",  
-  },
+// nodata 급여항목
+const basicSalData = [
+  { 공제항목 : "기본급",지급금액 : ""},
+  { 공제항목 : "연장근로", 지급금액 : ""},
+  { 공제항목 : "식대",지급금액 : ""},
+  { 공제항목 : "연구개발비",지급금액 : ""}
+]
+
+// nodata 사원별 공제항목
+const basicDeductData = [
+  {공제항목: "국민연금",  금액: ""},
+  {공제항목: "건강보험",  금액: ""},
+  {공제항목: "고용보험",  금액: ""},
+  {공제항목: "장기요양보험료",  금액: ""},
+  {공제항목: "대출",  금액: ""}
 ]
 
 //구분 옵션
@@ -107,6 +50,18 @@ const salOptionByPeriodList = [
   { key: "EmpOneThisYear",  value: "5.현재사원 연간" },
 ];
 
+//생산직 여부 검색조건 옵션
+const unitOption = [
+  { key: "y", value: "생산직" },
+  { key: "n", value: "비생산직" },
+];
+
+//국외 근로여부 검색조건 옵션
+const forLaborOption =[
+  { key: "y", value: "국외근로" },
+  { key: "n", value: "국내근로" },
+]
+
 //부서코드도움 테이블
 const deptCodeTable = [
   { key: "DE_HR", value: "인사팀" },
@@ -115,41 +70,41 @@ const deptCodeTable = [
 ];
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
-  
-  const [modalState, setModalState] = useState({
-    show: false
-    , modalData: null 
-  });
 
-  useEffect(() => {
-    setModalState({  show: true  });
-  }, []);
+  const {
+    saInfoListData,
+    salData,
+    cdEmp,
+    setCdEmp,
+    allowMonth,
+    deductData,
+    setDeductData,
+    mainTabData,
+    modalState,
+    setModalState,
+    onSearch
+  } = SalaryInformationEntryModel();
 
   // 코드도움 아이콘 클릭
-  const handleCodeHelperShow = useCallback((tableData) => {
-    
-    setModalState({
-      show: true,
-      modalData: tableData, 
-    });
-    
+  const codeHelperShow = useCallback((tableData) => {
+    setModalState({ show: true, modalData: tableData });
   }, []);
-
-
- // 조회버튼 이벤트
-  const onSearch = () => {
-    alert("검색버튼 눌러뗭><");
-  }
   
 
   return (
     <>
       {/* 코드도움 모달 영역 */}
-      {/* <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })}>
+      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })}>
+
         {modalState.modalData && ( 
-          <CodeHelperTable codeTableData={modalState.modalData} />
+          // <CodeHelperTable codeTableData={modalState.basicDeductData} />
+          <TableForm
+            showCheckbox={true}
+            showHeaderArrow={true}
+            tableData={basicDeductData}
+            rowClickHandler={setCdEmp}/>
         )}
-      </ModalComponent> */}
+      </ModalComponent>
 
       {/* 기본 검색조건 */}
       <SearchPanel onSearch={onSearch} showAccordion>
@@ -172,7 +127,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               <TextBoxComponent type='codeHelper' label={"사원코드"}/>
             </Col>
             <Col>
-              {/* <TextBoxComponent type='codeHelper' label={"부서코드"} onClick={handleCodeHelperShow} tableData={deptCodeTable}/> */}
+              <TextBoxComponent type='codeHelper' label={"부서코드"} onClick={codeHelperShow} tableData={deptCodeTable}/>
             </Col>
           </Row>
 
@@ -196,53 +151,61 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
           <Row>
             <Col>
-              <SelectForm
-                label={"생산직여부"}
-                optionList={[
-                  { key: "y", value: "생산직" },
-                  { key: "n", value: "비생산직" },
-                ]}
-              />
+              <SelectForm label={"생산직여부"} optionList={unitOption} />
             </Col>
             <Col>
-              <SelectForm
-                label={"국외근로여부"}
-                optionList={[
-                  { key: "y", value: "국외근로" },
-                  { key: "n", value: "국내근로" },
-                ]}
-              />
+              <SelectForm label={"국외근로여부"} optionList={forLaborOption} />
             </Col>
           </Row>
         </div>
       </SearchPanel>
-      {/* 검색조건2 */}
 
       <Row>
         <Col md="3">
           {/* 사원정보 table영역 */}
+          {saInfoListData ? ( 
           <TableForm
             showCheckbox={true}
             showHeaderArrow={true}
-            tableData={EmpData}
+            tableData={saInfoListData}
+            rowClickHandler={setCdEmp}
           />
+          ) : (
+            <TableForm tableData={basicSaEmpData}/>
+          )}
         </Col>
         <Col md="3">
           {/* 급여항목 table영역 */}
-          <TableForm tableData={SalData} />
+          {salData ? ( 
+          <TableForm
+            showCheckbox={false}
+            showHeaderArrow={false}
+            tableData={salData}
+          />
+          ) : (
+            <TableForm tableData={basicSalData}/>
+          )}
         </Col>
         <Col md="3">
           {/* 공제항목 table영역 */}
-          <TableForm tableData={DeductionData} />
+          {deductData ? ( 
+          <TableForm
+            showCheckbox={false}
+            showHeaderArrow={false}
+            tableData={deductData}
+          />
+          ) : (
+            <TableForm tableData={basicDeductData} />
+          )}
         </Col>
         <Col md="3">
           {/* 조회구분 */}
           <SelectForm label="조회구분" optionList={salOptionByPeriodList} />
           <Row>
-            <TableForm tableData={DeductionData} />
+            <TableForm tableData={basicDeductData} />
           </Row>
           <Row>
-            <TableForm tableData={EmpData} />
+            <TableForm tableData={basicDeductData} />
           </Row>
         </Col>
       </Row>
