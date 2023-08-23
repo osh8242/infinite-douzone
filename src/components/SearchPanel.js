@@ -16,8 +16,7 @@ const CustomToggle = ({ children, eventKey }) => {
 
   return (
     <button type="button" onClick={decoratedOnClick}>
-      {' '}
-      {children}{' '}
+      {children}
     </button>
   );
 };

@@ -15,7 +15,7 @@
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
-function SelectForm({ label, optionList }) {
+function SelectForm({ label, optionList, selectRef }) {
   return (
     <Row className="py-1">
       {label && (
@@ -27,7 +27,7 @@ function SelectForm({ label, optionList }) {
         </Col>
       )}
       <Col className="d-flex align-items-center justify-content-center">
-        <Form.Select>
+        <Form.Select ref={selectRef}>
           {optionList.map((option, index) => (
             <option value={option.key} key={index}>
               {option.value}

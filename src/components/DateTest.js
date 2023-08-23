@@ -2,10 +2,10 @@
 
 // Test Code
 // <DateTest label={"생년월일"} />
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 
-function DateTest({ label, type }) {
+function DateTest({ label, type, defaultValue }) {
   const [choice, setChoice] = useState('month');
   console.log('before: ' + choice);
   console.log('label: ' + label);
@@ -27,7 +27,11 @@ function DateTest({ label, type }) {
         </Col>
       )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type="month" placeholder="YYYY.MM.DD" />
+        <Form.Control
+          type={type ? type : 'date'}
+          placeholder="YYYY.MM.DD"
+          defaultValue={defaultValue}
+        />
       </Col>
     </Row>
   );

@@ -1,4 +1,5 @@
 // 작성자 : 오승환
+import { useRef } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import DateTest from '../components/DateTest';
@@ -26,6 +27,13 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     setMainTabData,
     subTableData,
     setSubTableData,
+    jobOk: jobOk,
+    setJobOk,
+    refYear: refYear,
+    setRefYear,
+    orderRef: orderRef,
+    setOrderRef,
+    reloadStates,
   } = LRlevel2GridModel();
 
   //실행중에는 값이 고정인 Constant들
@@ -40,8 +48,18 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     labels, // 속성명
   } = CommonConstant();
 
+  const jobOkRef = useRef();
+  const orderRefRef = useRef();
+
   const onSearch = () => {
-    console.log('rjhat');
+    setOrderRef(orderRefRef.current.value);
+    if (jobOkRef.current.value === 'yAndOnThisYear') {
+      setRefYear(new Date().getFullYear());
+      setJobOk('Y');
+    } else {
+      setRefYear();
+      setJobOk(jobOkRef.current.value);
+    }
   };
 
   return (
@@ -49,28 +67,29 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       <SearchPanel onSearch={onSearch}>
         <Row>
           <Col>
-            <SelectForm label={'구분'} optionList={searchOption} />
+            <SelectForm
+              label={'구분'}
+              optionList={searchOption}
+              selectRef={jobOkRef}
+            />
           </Col>
           <Col>
-            <SelectForm label={'정렬'} optionList={orderList} />
+            <SelectForm
+              label={'정렬'}
+              optionList={orderList}
+              selectRef={orderRefRef}
+            />
           </Col>
         </Row>
       </SearchPanel>
       <Row>
         <Col md="3">
-          {
-            leftTableData ? ( // tableData가 준비되었을 때만 TableForm 컴포넌트 렌더링
-              <TableForm
-                showCheckbox={true}
-                showHeaderArrow={true}
-                tableData={leftTableData}
-                rowClickHandler={setCdEmp}
-              />
-            ) : (
-              <Spinner animation="border" variant="primary" />
-            )
-            // 로딩 중일 때 표시할 내용
-          }
+          <TableForm
+            showCheckbox={true}
+            showHeaderArrow={true}
+            tableData={leftTableData}
+            rowClickHandler={setCdEmp}
+          />
         </Col>
         {mainTabData ? (
           <Col md="9">

@@ -2,15 +2,15 @@ const CommonConstant = () => {
   return {
     searchOption: [
       {
-        key: 'employedAndRetiredOnThisYear',
+        key: 'yAndOnThisYear',
         value: '재직자 + 당해년도 퇴사자',
       },
-      { key: 'employed', value: '재직자' },
-      { key: 'retired', value: '퇴직자' },
+      { key: 'Y', value: '재직자' },
+      { key: 'N', value: '퇴직자' },
     ],
     orderList: [
       { key: 'cdEmp', value: '코드순' },
-      { key: 'nM', value: '이름순' },
+      { key: 'nmKrname', value: '이름순' },
     ],
     mainTabMenuList: ['기초정보', '인적정보'],
     mainTabMenuListForEmpRegister: ['기초정보', '가족사항'],
@@ -44,6 +44,7 @@ const CommonConstant = () => {
     ],
 
     labels: {
+      cdEmp: '사원코드',
       nmEnName: '영문성명',
       nmChName: '한자성명',
       noSocial: '주민등록번호',
@@ -58,7 +59,7 @@ const CommonConstant = () => {
       daRetire: '퇴사년월일',
       cdFamrel: '관계',
       nmKrname: '성명',
-      ynFor: '내국인',
+      ynFor: '외국인',
       fgSchool: '학력',
       fgGraduation: '졸업구분',
       ynTogether: '동거',

@@ -16,6 +16,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCallback, useState } from 'react';
 import { Form, Table } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 import '../styles/tableForm.css';
 
 const TableForm = ({
@@ -34,13 +35,13 @@ const TableForm = ({
   // }
   console.log('tableForm.js >', 'tableData : ', tableData);
 
-  const columns = Object.keys(tableData[0]);
+  const columns = tableData ? Object.keys(tableData[0]) : [];
 
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
 
   const [checkBoxStates, setCheckBoxStates] = useState(
-    tableData.map(() => false),
+    columns.map(() => false),
   );
 
   const [arrowDirections, setArrowDirections] = useState(
@@ -68,10 +69,10 @@ const TableForm = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback((e, rowIndex) => {
-    let index = { showCheckbox } ? 1 : 0;
-    let id = e.currentTarget.children[index].children[0].textContent;
-    if (rowClickHandler) rowClickHandler(id);
     if (editableRowIndex !== rowIndex) {
+      let index = showCheckbox ? 1 : 0;
+      let id = e.currentTarget.children[index].children[0].textContent;
+      if (rowClickHandler) rowClickHandler(id);
       setEditableRowIndex(null);
     } else {
       setEditableRowIndex(rowIndex);
@@ -83,10 +84,10 @@ const TableForm = ({
     // checkboxStates 배열 중 false 인 요소가 하나라도 있는지 확인
     // 하나 이상 있는 경우 아이콘 클릭 시 전체 checkBox checked
     if (checkBoxStates.some((state) => !state)) {
-      setCheckBoxStates(tableData.map(() => true));
+      setCheckBoxStates(columns.map(() => true));
     } else {
       // 전체 unchecked
-      setCheckBoxStates(tableData.map(() => false));
+      setCheckBoxStates(columns.map(() => false));
     }
   });
 
@@ -111,7 +112,7 @@ const TableForm = ({
     }));
   });
 
-  return (
+  return columns.length > 0 ? (
     <>
       <Table size={'sm'} striped bordered hover>
         {/* header */}
@@ -155,9 +156,7 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
-                onClick={(e) => {
-                  if (!editableRowIndex) handleRowClick(e, rowIndex);
-                }}
+                onClick={(e) => handleRowClick(e, rowIndex)}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
@@ -199,6 +198,8 @@ const TableForm = ({
         </tbody>
       </Table>
     </>
+  ) : (
+    <Spinner animation="border" variant="primary" />
   );
 };
 
