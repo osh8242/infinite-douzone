@@ -1,0 +1,96 @@
+* {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: small;
+}
+
+#topNotificationHeader {
+  height: 52px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(230, 230, 230, 0.2);
+}
+
+#topNotificationHeader #topLeftNotificationHeader {
+  display: flex;
+  margin-left: 16px;
+  align-items: center;
+  gap: 12px;
+}
+
+#topNotificationHeader #topRightNotificationHeader {
+  display: flex;
+  margin-right: 16px;
+  align-items: center;
+  gap: 12px;
+}
+
+#secondTopHeader {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(48, 150, 255);
+}
+
+#secondTopHeader #secondTopHeaderContents {
+  display: flex;
+}
+
+#toggleSidebarBtn {
+  width: 40px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+}
+
+#logo {
+  margin-left: 10px;
+  margin-right: -8px;
+  overflow: hidden;
+}
+
+#companySelectForm {
+  width: 160px;
+  height: fit-content;
+  padding: 2px;
+  color: rgb(127, 127, 127);
+  border-color: rgb(230, 230, 230);
+}
+
+#periodSelectForm {
+  width: 272px;
+  height: fit-content;
+  padding: 2px;
+  color: rgb(127, 127, 127);
+  border-color: rgb(230, 230, 230);
+}
+
+#findMenuBar {
+  width: 256px;
+  height: fit-content;
+  padding: 2px;
+  border-color: rgb(230, 230, 230);
+}
+
+#secondTopHeaderMenuList {
+  margin-right: 16px;
+  display: flex;
+  gap: 4px;
+}
+
+.colorWhite {
+  color: white;
+}
+
+.colorDark {
+  color: rgb(57, 63, 80);
+}
+
+.backgroundBorderNone {
+  border: none;
+  background-color: transparent;
+}
+
+#personalMenu {
+  border: none;
+}
