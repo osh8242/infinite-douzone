@@ -128,12 +128,19 @@ const SwsmGrid = () => {
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'소정근로시간'} />
+                  <TextBoxComponent
+                    label={'소정근로시간'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'휴게시간'} />
+                  <TextBoxComponent
+                    label={'휴게시간'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    md={2}
+                  />
                 </Col>
               </Row>
               <Row>
@@ -154,48 +161,80 @@ const SwsmGrid = () => {
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="임금유형" optionList={optionList} />
+                  <SelectForm
+                    label="임금유형"
+                    optionList={optionList}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                   {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
                 </Col>
               </Row>{' '}
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="기타급여" optionList={optionList2} />
+                  <SelectForm
+                    label="기타급여"
+                    optionList={optionList2}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="상여금" optionList={optionList3} />
+                  <SelectForm
+                    label="상여금"
+                    optionList={optionList3}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                   {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="임금지급일" optionList={optionList4} />
+                  <SelectForm
+                    label="임금지급일"
+                    optionList={optionList4}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                   {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="지급방법" optionList={optionList5} />
+                  <SelectForm
+                    label="지급방법"
+                    optionList={optionList5}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="고용보험" optionList={optionList6} />
+                  <SelectForm
+                    label="고용보험"
+                    optionList={optionList6}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="산재보험" optionList={optionList6} />
+                  <SelectForm
+                    label="산재보험"
+                    optionList={optionList6}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="건강보험" optionList={optionList6} />
+                  <SelectForm
+                    label="건강보험"
+                    optionList={optionList6}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>

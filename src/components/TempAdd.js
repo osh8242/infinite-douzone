@@ -4,7 +4,7 @@ import ModalComponent from './ModalComponent';
 import Post from './Post';
 import '../styles/addressForm.css';
 
-const AddressForm = ({ label, isZonecode }) => {
+const TempAdd = ({ label, isZonecode }) => {
   const [zonecode, setZonecode] = useState('');
   const [address, setAddress] = useState('');
 
@@ -24,7 +24,7 @@ const AddressForm = ({ label, isZonecode }) => {
     <>
       <Row className="py-1">
         <Col
-          md="4"
+          md="2"
           className="d-flex align-items-center justify-content-center"
         >
           <div>주소</div>
@@ -38,7 +38,7 @@ const AddressForm = ({ label, isZonecode }) => {
               name="zonecode"
               value={zonecode}
               // size={5}
-              disabled
+              // disabled
             />
           )}
 
@@ -48,7 +48,7 @@ const AddressForm = ({ label, isZonecode }) => {
             type="text"
             name="address"
             value={address}
-            disabled
+            //disabled
           />
 
           {/* 버튼 클릭 시 Post 모달 호출 */}
@@ -64,7 +64,7 @@ const AddressForm = ({ label, isZonecode }) => {
       {/* 상세주소 */}
       <Row className="py-1">
         <Col
-          md="4"
+          md="2"
           className="d-flex align-items-center justify-content-center"
         >
           <div>상세주소</div>
@@ -85,4 +85,4 @@ const AddressForm = ({ label, isZonecode }) => {
   );
 };
 
-export default AddressForm;
+export default TempAdd;

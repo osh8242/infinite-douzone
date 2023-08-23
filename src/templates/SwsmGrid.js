@@ -8,6 +8,10 @@ import { Col, Row } from 'react-bootstrap';
 import SelectForm from '../components/SelectForm';
 import { Scrollbars } from 'react-custom-scrollbars';
 import TextBoxComponent from '../components/TextBoxComponent';
+import AddressForm from '../components/AddressForm';
+import TempAdd from '../components/TempAdd';
+import TempText from '../components/TempText';
+import TempSelect from '../components/TempSelect';
 
 const searchChild = [
   { key: 'opt1', value: '1. 사원등록' },
@@ -119,37 +123,61 @@ const SwsmGrid = () => {
                 </Col>
               </Row>
               <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'업무의내용'} />
+                <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempAdd label="근무장소" isZonecode={false} />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempText
+                    label={'업무의내용'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    md={2}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'소정근로시간'} />
+                  <TextBoxComponent
+                    label={'소정근로시간'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'휴게시간'} />
+                  <TempText
+                    label={'휴게시간'}
+                    label2={'매 주 '}
+                    label3={'일'}
+                    subLabel={true}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    md={4}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'근무일'} />
+                  <TextBoxComponent
+                    label={'근무일'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent label={'주휴일'} />
+                  <TextBoxComponent
+                    label={'주휴일'}
+                    value={mainTabData ? mainTabData.jobDescription : ''}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm label="임금유형" optionList={optionList} />
-                  {/* 한 라인 안에 들어가게 변경 필요 */}
+                  <TempSelect label="임금유형" optionList={optionList} />
                   {/* <TextBoxComponent />원 */}
                 </Col>
-              </Row>{' '}
+              </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <SelectForm label="기타급여" optionList={optionList2} />

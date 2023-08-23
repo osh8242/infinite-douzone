@@ -68,11 +68,6 @@ const TableForm = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback((e, rowIndex) => {
-    // console.log(
-    //   'handleRowClick: ' +
-    //     e.currentTarget.children[rowIndex].children[0].textContent +
-    //     rowIndex,
-    // );
     let index = { showCheckbox } ? 1 : 0;
     let id = e.currentTarget.children[index].children[0].textContent;
 
@@ -119,7 +114,7 @@ const TableForm = ({
 
   return (
     <>
-      <Table striped bordered hover>
+      <Table size={'sm'} striped bordered hover>
         {/* header */}
         <thead>
           <tr>

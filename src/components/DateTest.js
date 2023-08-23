@@ -7,13 +7,13 @@ import { Col, Form, Row } from 'react-bootstrap';
 
 function DateTest({ label, type }) {
   const [choice, setChoice] = useState('month');
-  // console.log('before: ' + choice);
-  // console.log('label: ' + label);
-  // console.log('type: ' + type);
+  console.log('before: ' + choice);
+  console.log('label: ' + label);
+  console.log('type: ' + type);
 
-  // if (type === 'month') {
-  //   // console.log('month');
-  // }
+  if (type === 'month') {
+    console.log('month');
+  }
 
   console.log(choice);
   return (
@@ -22,7 +22,7 @@ function DateTest({ label, type }) {
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type="date" placeholder="YYYY.MM.DD" />
+        <Form.Control type="month" placeholder="YYYY.MM.DD" />
       </Col>
     </Row>
   );
