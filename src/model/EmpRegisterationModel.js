@@ -4,7 +4,7 @@ import axios from '../../node_modules/axios/index';
 function EmpRegisterationModel() {
   const url = 'http://localhost:8888';
 
-  const [cdEmp, setCdEmp] = useState('hong');
+  const [cdEmp, setCdEmp] = useState();
   const [leftTableData, setLeftTableData] = useState();
   const [mainTableData, setMainTableData] = useState();
   const [subTableData, setSubTableData] = useState();
@@ -33,19 +33,19 @@ function EmpRegisterationModel() {
   //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료 정보)
   useEffect(() => {
     console.log(
-      'EmpREgisterationModel > /emp/getOneByCdEmp',
+      'EmpREgisterationModel > /emp/getEmpByCdEmp',
       'cdEmp : ',
       cdEmp,
     );
     axios
       .post(
-        url + '/emp/getOneByCdEmp',
+        url + '/emp/getEmpByCdEmp',
         { cdEmp: cdEmp },
         { ContentType: 'application/json' },
       )
       .then((response) => {
         console.log(
-          'EmpRegisterationModel > /emp/getOneByCdEmp',
+          'EmpRegisterationModel > /emp/getEmpByCdEmp',
           response.data,
         );
         setMainTableData(response.data);
@@ -55,14 +55,22 @@ function EmpRegisterationModel() {
       });
   }, [cdEmp]);
 
-  //subTableData 가져오는 비동기 GET 요청 (사원의 가족사항 정보)
+  //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항 정보)
   useEffect(() => {
-    console.log('EmpRegisterationModel > /empfam/getAll', 'cdEmp : ', cdEmp);
+    console.log(
+      'EmpRegisterationModel > /empFam/getListEmpFamByCdEmp',
+      'cdEmp : ',
+      cdEmp,
+    );
     axios
-      .get(url + '/empfam/getAll')
+      .post(
+        url + '/empFam/getListEmpFamByCdEmp',
+        { cdEmp: cdEmp },
+        { ContentType: 'application/json' },
+      )
       .then((response) => {
         console.log(
-          'EmpRegisterationModel > /empfam/getAll => ',
+          'EmpRegisterationModel > /empFam/getListEmpFamByCdEmp => ',
           response.data,
         );
         const data = response.data.map((item) => ({
