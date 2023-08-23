@@ -59,4 +59,6 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
     </>
   );
 };
+
 export default SearchPanel;
+

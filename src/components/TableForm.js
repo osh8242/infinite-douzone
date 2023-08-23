@@ -99,7 +99,10 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
-  const handleRowClick = useCallback((rowIndex) => {
+  const handleRowClick = useCallback((e, rowIndex) => {
+    let index = { showCheckbox } ? 1 : 0;
+    let id = e.currentTarget.children[index].children[0].textContent;
+    if (rowClickHandler) rowClickHandler(id);
     if (editableRowIndex !== rowIndex) {
       setEditableRowIndex(null);
     } else {
@@ -142,7 +145,7 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
 
   return (
     <>
-      <Table striped bordered hover>
+      <Table size={'sm'} striped bordered hover>
         {/* header */}
         <thead>
           <tr>
@@ -184,7 +187,9 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData }) => {
               <tr
                 key={rowIndex}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
-                onClick={() => handleRowClick(rowIndex)}
+                onClick={(e) => {
+                  if (!editableRowIndex) handleRowClick(e, rowIndex);
+                }}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
