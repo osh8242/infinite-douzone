@@ -1,6 +1,6 @@
 // 작성자 : 오승환
 import React, { useCallback, useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import DateForm from "../components/DateForm";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
@@ -8,6 +8,7 @@ import TableForm from "../components/TableForm";
 import TextBoxComponent from "../components/TextBoxComponent";
 import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
 import ModalComponent from "../components/ModalComponent";
+import DateTest from "../components/DateTest";
 
 // nodata 급여_사원리스트
 const basicSaEmpData = [
@@ -72,32 +73,32 @@ const deptCodeTable = [
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   const {
-    saInfoListData,
-    salData,
-    cdEmp,
-    setCdEmp,
-    allowMonth,
-    deductData,
-    setDeductData,
-    mainTabData,
-    modalState,
-    setModalState,
-    onSearch
+    saInfoListData
+    , setSaInfoListData 
+    , salData
+    , setDeductData
+    , deductData
+    , saInfoDetailData
+    , setSaInfoDetailData
+    , setModalState    
+    , modalState
+    , onSearch
+    , setCdEmp
+    , setSalData
+    , setSalDivision
+    , searchVo 
   } = SalaryInformationEntryModel();
 
   // 코드도움 아이콘 클릭
   const codeHelperShow = useCallback((tableData) => {
-    setModalState({ show: true, modalData: tableData });
+    setModalState({ show: true });
   }, []);
   
-
   return (
     <>
       {/* 코드도움 모달 영역 */}
-      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })}>
-
+      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size='lg' centered>
         {modalState.modalData && ( 
-          // <CodeHelperTable codeTableData={modalState.basicDeductData} />
           <TableForm
             showCheckbox={true}
             showHeaderArrow={true}
@@ -108,15 +109,16 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
       {/* 기본 검색조건 */}
       <SearchPanel onSearch={onSearch} showAccordion>
+      <form id='searchForm'>
         <Row>
           <Col>
-            <DateForm label={"귀속연월"} />
+            <DateTest type='month' label={"귀속연월"} />
           </Col>
           <Col>
             <SelectForm label={"구분"} optionList={salOptionList} />
           </Col>
           <Col>
-            <DateForm label={"지급일"} />
+            <DateTest label={"지급일"} />
           </Col>
         </Row>
 
@@ -124,28 +126,28 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <div>
           <Row>
             <Col>
-              <TextBoxComponent type='codeHelper' label={"사원코드"}/>
+              <TextBoxComponent type='codeHelper' name='searchEmpCd' label={"사원코드"}/>
             </Col>
             <Col>
-              <TextBoxComponent type='codeHelper' label={"부서코드"} onClick={codeHelperShow} tableData={deptCodeTable}/>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <TextBoxComponent type='codeHelper' label={"직급코드"} />
-            </Col>
-            <Col>
-              <TextBoxComponent type='codeHelper' label={"직책코드"} />
+              <TextBoxComponent type='codeHelper' name='searchDeptCd' label={"부서코드"} onClick={codeHelperShow}/>
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent type='codeHelper' label={"현장코드"} />
+              <TextBoxComponent type='codeHelper' name='searchRankNo' label={"직급코드"} />
             </Col>
             <Col>
-              <TextBoxComponent type='codeHelper' label={"프로젝트코드"} />
+              <TextBoxComponent type='codeHelper' name='searchCdOccup' label={"직책코드"} />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <TextBoxComponent type='codeHelper' name='searchCdField' label={"현장코드"} />
+            </Col>
+            <Col>
+              <TextBoxComponent type='codeHelper' name='searchCdProject' label={"프로젝트코드"} />
             </Col>
           </Row>
 
@@ -158,6 +160,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             </Col>
           </Row>
         </div>
+      </form>
       </SearchPanel>
 
       <Row>
@@ -199,7 +202,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           )}
         </Col>
         <Col md="3">
-          {/* 조회구분 */}
+          {/* 조회구분 영역*/}
           <SelectForm label="조회구분" optionList={salOptionByPeriodList} />
           <Row>
             <TableForm tableData={basicDeductData} />
@@ -207,6 +210,29 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           <Row>
             <TableForm tableData={basicDeductData} />
           </Row>
+        </Col>
+        <Col md="3">
+          {/* 사원 상세정보 영역 */}
+          <div>
+            <Card>
+              <Card.Header as="h5">사원정보</Card.Header>
+              <Card.Body>
+                <TextBoxComponent label='입사일' value={saInfoDetailData.daEnter}/>
+                <TextBoxComponent label='배우자공제' value={saInfoDetailData.ynMateDed}/>
+                <TextBoxComponent label='20세/60세/다자녀' value={saInfoDetailData.num20Family + '/' + saInfoDetailData.num60Family + '/' + saInfoDetailData.numManyFamily}/>
+                <TextBoxComponent label='조정율' value='구현중'/>
+                <TextBoxComponent label='거주구분' value={saInfoDetailData.ynResident}/>
+                <TextBoxComponent label='생산/국외' value={saInfoDetailData.ynUnit + '/' + saInfoDetailData.ynForLabor}/>
+                <TextBoxComponent label='연장근로비과세' value={saInfoDetailData.ynOverwork}/>
+                <TextBoxComponent label='퇴사일' value={saInfoDetailData.daRetire}/>
+                <TextBoxComponent label='직종' value={saInfoDetailData.cdOccup}/>
+                <TextBoxComponent label='부서' value={saInfoDetailData.cdDept}/>
+                <TextBoxComponent label='현장' value={saInfoDetailData.cdField}/>
+                <TextBoxComponent label='프로젝트' value={saInfoDetailData.cdProject}/>
+                <TextBoxComponent label='주민(외국인)번호' value={saInfoDetailData.noSocial}/>
+              </Card.Body>
+            </Card>
+          </div>
         </Col>
       </Row>
     </>

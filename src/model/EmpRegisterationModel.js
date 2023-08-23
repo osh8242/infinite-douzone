@@ -4,6 +4,13 @@ import axios from '../../node_modules/axios/index';
 function EmpRegisterationModel() {
   const url = 'http://localhost:8888';
 
+  // 현재 달
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const monthIndex = currentDate.getMonth();
+  const month = (monthIndex + 1).toString().padStart(2, '0'); // 0을 붙여 두 자릿수로 만듦
+
+  const currentMonth = `${year}-${month}`;
   const [cdEmp, setCdEmp] = useState('hong');
   const [leftTableData, setLeftTableData] = useState();
   const [mainTableData, setMainTableData] = useState();

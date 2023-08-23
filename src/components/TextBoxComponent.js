@@ -21,7 +21,7 @@ const textBoxStyle = {
 
 function TextBoxComponent(props) {
   //props 속성들
-  const { type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;  
+  const { id, name, type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;  
 
   //입력값
   const [inputValue, setInputValue] = useState(value);
@@ -54,7 +54,7 @@ function TextBoxComponent(props) {
           <div>{label}</div>
         </Col>
         <Col md="8" className="d-flex align-items-center justify-content-center">                                  
-          <Form.Control as="textarea" rows={rows} placeholder={props.placeholder}/>
+          <Form.Control as="textarea" id={id} name={name} rows={rows} placeholder={props.placeholder}/>
         </Col>
       </Row>
     );
@@ -92,6 +92,10 @@ function TextBoxComponent(props) {
             placeholder={props.placeholder}
             value={inputValue}
             style={textBoxStyle}
+            inputProps={{
+              id: id, 
+              name:name, 
+            }}
           />
         </Col>
       </Row>
@@ -139,7 +143,7 @@ function TextBoxComponent(props) {
 
     const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
       <div className="react-datepicker__input-container" ref={ref}>
-        <Form.Control type="text" value={value} />
+        <Form.Control type="text" id={id} name={name} value={value} />
         <FontAwesomeIcon icon={faC} onClick={onClick}/>
       </div>
     ));
@@ -175,6 +179,8 @@ function TextBoxComponent(props) {
         >
           <Form.Control
             type={type}
+            id={id} 
+            name={name}
             placeholder={props.placeholder}
             size={size}
             disabled={disabled}
