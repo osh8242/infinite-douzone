@@ -45,8 +45,6 @@ function TextBoxComponent(props) {
     setInputValue(maskedNumber);
   };
 
-  console.log('ㄹ벨', label);
-
   //custom type 정의(0)_TextArea
   if (type === 'textarea') {
     //Textarea
