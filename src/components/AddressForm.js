@@ -4,7 +4,7 @@ import ModalComponent from './ModalComponent';
 import Post from './Post';
 import '../styles/addressForm.css';
 
-const AddressForm = ({ label, isZonecode }) => {
+const AddressForm = ({ isZonecode }) => {
   const [zonecode, setZonecode] = useState('');
   const [address, setAddress] = useState('');
 
