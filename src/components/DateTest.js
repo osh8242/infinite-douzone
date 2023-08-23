@@ -10,8 +10,8 @@ import React, { useState, useEffect } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 
 function DateTest(props) {
-  const { label, isPeriod, type, value } = props;
-
+  const { label, isPeriod, type, value, value2 } = props;
+  const [date, setDate] = useState(new Date());
   DateTest.defaultProps = {
     label: '',
     isPeriod: false,
@@ -24,11 +24,11 @@ function DateTest(props) {
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type={type} placeholder="YYYY.MM.DD" />
+        <Form.Control type={type} placeholder="YYYY.MM.DD" value={value} />
         {isPeriod && (
           <>
             ~
-            <Form.Control type={type} placeholder="YYYY.MM.DD" />
+            <Form.Control type={type} placeholder="YYYY.MM.DD" value={value2} />
           </>
         )}
       </Col>

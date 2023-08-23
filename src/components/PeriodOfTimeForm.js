@@ -32,6 +32,7 @@ function PeriodOfTimeForm(props) {
     subLabel,
     label2,
     label3,
+    isPeriod,
   } = props;
 
   PeriodOfTimeForm.defaultProps = {
@@ -165,6 +166,8 @@ function PeriodOfTimeForm(props) {
     //bootstrap 제공 Textbox type들... ex) email,password,file,date,color...
   } else if (type === 'periodOfTime') {
     console.log('periodOfTime');
+  } else if (isPeriod) {
+    return <>test</>;
   } else {
     return (
       <Row className="py-1">

@@ -5,6 +5,7 @@ const SwsmModel = () => {
   const url = 'http://localhost:8888';
 
   const [leftTableData, setLeftTableData] = useState();
+  const [otherTableData, setOtherTableData] = useState();
   const [cdEmp, setCdEmp] = useState('hong');
   const [mainTabData, setMainTabData] = useState();
 
@@ -26,7 +27,25 @@ const SwsmModel = () => {
         console.error('에러 : ', error);
       });
   }, []);
+  useEffect(() => {
+    axios
+      .get(url + '/swsm/getSwsmOtherListByEmpCode')
+      .then((response) => {
+        console.log(
+          'SwsmModel > /swsm/getSwsmOtherListByEmpCode',
+          response.data,
+        );
+        const data = response.data.map((item) => ({
+          항목: item.otherType,
+          금액: item.otherMoney,
+        }));
 
+        setOtherTableData(data);
+      })
+      .catch((error) => {
+        console.error('에러 : ', error);
+      });
+  }, []);
   useEffect(() => {
     console.log('SwsmModel > /swsm/getSwsmByEmpCode', 'cdEmp : ', cdEmp);
     axios
@@ -48,6 +67,8 @@ const SwsmModel = () => {
   return {
     leftTableData: leftTableData,
     setLeftTableData,
+    otherTableData: otherTableData,
+    setOtherTableData,
     cdEmp: cdEmp,
     setCdEmp,
     mainTabData: mainTabData,

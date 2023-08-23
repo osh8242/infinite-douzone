@@ -17,21 +17,32 @@ import Form from 'react-bootstrap/Form';
 import TextBoxComponent from './TextBoxComponent';
 import TempText from './TempText';
 
-function TempSelect({ label, optionList }) {
+function TempSelect({ label, optionList, subLabel, subValue }) {
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         {label}
       </Col>
       <Col md="8" id="fullAddressArea">
-        <Form.Select>
-          {optionList.map((option, index) => (
-            <option value={option.key} key={index}>
-              {option.value}
-            </option>
-          ))}
-        </Form.Select>
-        <Form.Control id="TextArea" type="text" />
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <Form.Select>
+            {optionList.map((option, index) => (
+              <option value={option.key} key={index}>
+                {option.value}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+        <Form.Control id="TextArea" type="text" value={subValue} />
+        <Col
+          md="1"
+          className="d-flex align-items-center justify-content-center"
+        >
+          {subLabel}
+        </Col>
       </Col>
     </Row>
   );

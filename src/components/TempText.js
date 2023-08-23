@@ -32,6 +32,7 @@ function TempText(props) {
     subLabel,
     label2,
     label3,
+    isPeriod,
   } = props;
 
   TempText.defaultProps = {
@@ -163,7 +164,7 @@ function TempText(props) {
     );
 
     //bootstrap 제공 Textbox type들... ex) email,password,file,date,color...
-  } else {
+  } else if (isPeriod) {
     return (
       <Row className="py-1">
         {/* 추가 있을때만 2 기본 4 */}
@@ -175,7 +176,7 @@ function TempText(props) {
         </Col>
 
         <Col
-          md={!subLabel && '9'}
+          md={!subLabel && '7'}
           className="d-flex align-items-center justify-content-center"
         >
           {/* subLabel 사용 시 */}
@@ -195,6 +196,22 @@ function TempText(props) {
             value={inputValue}
             onChange={handleInputValueChange}
           />
+          {isPeriod && (
+            <>
+              ~
+              <Form.Control
+                type={type}
+                placeholder={props.placeholder}
+                size={size}
+                disabled={disabled}
+                readOnly={readOnly}
+                plaintext={plaintext}
+                value={inputValue}
+                onChange={handleInputValueChange}
+              />
+            </>
+          )}
+
           <Col
             md="2"
             className="d-flex align-items-center justify-content-center"
@@ -203,6 +220,123 @@ function TempText(props) {
           </Col>
         </Col>
       </Row>
+    );
+  } else if (subLabel) {
+    return (
+      <Row className="py-1">
+        {/* 추가 있을때만 2 기본 4 */}
+        <Col
+          md={2}
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>{label}</div>
+        </Col>
+
+        <Col
+          md={'2'}
+          className="d-flex align-items-center justify-content-center"
+        >
+          {/* subLabel 사용 시 */}
+          {subLabel && (
+            <Col md="4">
+              <div>{label2}</div>
+            </Col>
+          )}
+          {/* 기본 text */}{' '}
+          <Col md="4">
+            <Form.Control
+              type={type}
+              placeholder={props.placeholder}
+              size={5}
+              disabled={disabled}
+              readOnly={readOnly}
+              plaintext={plaintext}
+              value={inputValue}
+              onChange={handleInputValueChange}
+            />
+          </Col>
+          {isPeriod && (
+            <>
+              ~
+              <Form.Control
+                type={type}
+                placeholder={props.placeholder}
+                size={size}
+                disabled={disabled}
+                readOnly={readOnly}
+                plaintext={plaintext}
+                value={inputValue}
+                onChange={handleInputValueChange}
+              />
+            </>
+          )}
+          <Col
+            md="3"
+            className="d-flex align-items-center justify-content-center"
+          >
+            {subLabel && <div>{label3}</div>}
+          </Col>
+        </Col>
+      </Row>
+    );
+  } else {
+    return (
+      <>
+        <Row className="py-1">
+          {/* 추가 있을때만 2 기본 4 */}
+          <Col
+            md={md}
+            className="d-flex align-items-center justify-content-center"
+          >
+            <div>{label}</div>
+          </Col>
+
+          <Col
+            md={!subLabel && '7'}
+            className="d-flex align-items-center justify-content-center"
+          >
+            {/* subLabel 사용 시 */}
+            {subLabel && (
+              <Col md="2">
+                <div>{label2}</div>
+              </Col>
+            )}
+            {/* 기본 text */}
+            <Form.Control
+              type={type}
+              placeholder={props.placeholder}
+              size={size}
+              disabled={disabled}
+              readOnly={readOnly}
+              plaintext={plaintext}
+              value={inputValue}
+              onChange={handleInputValueChange}
+            />
+            {isPeriod && (
+              <>
+                ~
+                <Form.Control
+                  type={type}
+                  placeholder={props.placeholder}
+                  size={size}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  plaintext={plaintext}
+                  value={inputValue}
+                  onChange={handleInputValueChange}
+                />
+              </>
+            )}
+
+            <Col
+              md="2"
+              className="d-flex align-items-center justify-content-center"
+            >
+              {subLabel && <div>{label3}</div>}
+            </Col>
+          </Col>
+        </Row>
+      </>
     );
   }
 }
