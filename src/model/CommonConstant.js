@@ -27,6 +27,7 @@ const CommonConstant = () => {
       { key: 'N', value: '미작성' },
     ],
     labels: {
+      cdEmp: '사원코드',
       nmEnName: '영문성명',
       nmChName: '한자성명',
       noSocial: '주민등록번호',
