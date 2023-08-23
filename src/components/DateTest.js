@@ -1,28 +1,36 @@
 // 작성자 : 이서연
 
+// 사용법
+// label: 라벨, isPeriod: 기간 여부(T/F), type: 월/일 여부(date/month)
+// 기본값 - isPeriod : False, type: Date
+
 // Test Code
-// <DateTest label={"생년월일"} />
-import React, { useState } from 'react';
+// <DateTest label={"생년월일"} isPeriod={true} type={"month"} />
+import React, { useState, useEffect } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 
-function DateTest({ label, type }) {
-  const [choice, setChoice] = useState('month');
-  console.log('before: ' + choice);
-  console.log('label: ' + label);
-  console.log('type: ' + type);
+function DateTest(props) {
+  const { label, isPeriod, type, value } = props;
 
-  if (type === 'month') {
-    console.log('month');
-  }
+  DateTest.defaultProps = {
+    label: '',
+    isPeriod: false,
+    type: 'date',
+  };
 
-  console.log(choice);
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type="month" placeholder="YYYY.MM.DD" />
+        <Form.Control type={type} placeholder="YYYY.MM.DD" />
+        {isPeriod && (
+          <>
+            ~
+            <Form.Control type={type} placeholder="YYYY.MM.DD" />
+          </>
+        )}
       </Col>
     </Row>
   );

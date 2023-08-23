@@ -118,7 +118,7 @@ const SwsmGrid = () => {
             <Scrollbars style={{ height: 400, overflow: 'hidden' }}>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <DateTest label="근로계약기간" />
+                  <DateTest label="근로계약기간" isPeriod={true} />
                 </Col>
               </Row>
               <Row>
