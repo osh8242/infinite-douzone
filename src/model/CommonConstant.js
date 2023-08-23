@@ -2,11 +2,11 @@ const CommonConstant = () => {
   return {
     searchOption: [
       {
-        key: 'incumbentAndRetiringOnThisYear',
+        key: 'employedAndRetiredOnThisYear',
         value: '재직자 + 당해년도 퇴사자',
       },
-      { key: 'incumbent', value: '재직자' },
-      { key: 'retiree', value: '퇴직자' },
+      { key: 'employed', value: '재직자' },
+      { key: 'retired', value: '퇴직자' },
     ],
     orderList: [
       { key: 'cdEmp', value: '코드순' },
@@ -39,6 +39,16 @@ const CommonConstant = () => {
       ynDrawContracts: '근로계약서',
       daEnter: '입사년월일',
       daRetire: '퇴사년월일',
+      cdFamrel: '관계',
+      nmKrname: '성명',
+      ynFor: '내국인',
+      fgSchool: '학력',
+      fgGraduation: '졸업구분',
+      ynTogether: '동거',
+      ynLunarbir: '양음',
+      cdJob: '직업',
+      nmKrcom: '직장명',
+      cdOffpos: '직급',
     },
   };
 };

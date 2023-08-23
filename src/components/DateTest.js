@@ -2,20 +2,27 @@
 
 // Test Code
 // <DateTest label={"생년월일"} />
-import { Col, Form, Row } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
 
-function DateTest({ label, defaultValue }) {
+function DateTest({ label, type }) {
+  const [choice, setChoice] = useState("month");
+  console.log("before: " + choice);
+  console.log("label: " + label);
+  console.log("type: " + type);
+
+  if (type === "month") {
+    console.log("month");
+  }
+
+  console.log(choice);
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control
-          type="date"
-          placeholder="YYYY.MM.DD"
-          defaultValue={defaultValue}
-        />
+        <Form.Control type="month" placeholder="YYYY.MM.DD" />
       </Col>
     </Row>
   );
@@ -23,7 +30,7 @@ function DateTest({ label, defaultValue }) {
 
 export default DateTest;
 
-// export default class DateTesㅌ`ㅌt extends React.Component {
+// export default class DateTest extends React.Component {
 //   constructor(props) {
 //     super(props);
 //     this.handleDayChange = this.handleDayChange.bind(this);

@@ -1,5 +1,6 @@
 // 작성자 : 오승환
 import { Col, Row } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 import DateTest from '../components/DateTest';
 import MenuTab from '../components/MenuTab';
 import RadioForm from '../components/RadioForm';
@@ -57,16 +58,19 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       </SearchPanel>
       <Row>
         <Col md="3">
-          {leftTableData ? ( // tableData가 준비되었을 때만 TableForm 컴포넌트 렌더링
-            <TableForm
-              showCheckbox={true}
-              showHeaderArrow={true}
-              tableData={leftTableData}
-              rowClickHandler={setCdEmp}
-            />
-          ) : (
-            <div>Loading...</div> // 로딩 중일 때 표시할 내용
-          )}
+          {
+            leftTableData ? ( // tableData가 준비되었을 때만 TableForm 컴포넌트 렌더링
+              <TableForm
+                showCheckbox={true}
+                showHeaderArrow={true}
+                tableData={leftTableData}
+                rowClickHandler={setCdEmp}
+              />
+            ) : (
+              <Spinner animation="border" variant="primary" />
+            )
+            // 로딩 중일 때 표시할 내용
+          }
         </Col>
         {mainTabData ? (
           <Col md="9">
@@ -162,7 +166,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             />
           </Col>
         ) : (
-          <div>Loading...</div> // 로딩 중일 때 표시할 내용
+          <Spinner animation="border" variant="primary" />
         )}
       </Row>
     </>
