@@ -70,7 +70,6 @@ const TableForm = ({
   const handleRowClick = useCallback((e, rowIndex) => {
     let index = { showCheckbox } ? 1 : 0;
     let id = e.currentTarget.children[index].children[0].textContent;
-
     if (rowClickHandler) rowClickHandler(id);
     if (editableRowIndex !== rowIndex) {
       setEditableRowIndex(null);

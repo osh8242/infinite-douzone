@@ -8,7 +8,6 @@ const SwsmModel = () => {
   const [cdEmp, setCdEmp] = useState('hong');
   const [mainTabData, setMainTabData] = useState();
 
-  //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
     axios
       .get(url + '/emp/getAll')

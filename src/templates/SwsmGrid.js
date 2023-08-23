@@ -86,10 +86,9 @@ const SwsmGrid = () => {
     setMainTabData,
   } = SwsmModel();
 
-  console.log('test' + leftTableData);
   return (
     <>
-      <Row>
+      <Row className="py-1">
         <MenuTab menuList={menuList} />
         <SearchPanel>
           <Row>
@@ -124,7 +123,12 @@ const SwsmGrid = () => {
               </Row>
               <Row>
                 <Col xs md={{ span: 10, offset: 1 }}>
-                  <TempAdd label="근무장소" isZonecode={false} />
+                  <TempAdd
+                    label="근무장소"
+                    isZonecode={false}
+                    value={mainTabData ? mainTabData.address : ''}
+                    value2={mainTabData ? mainTabData.addDetail : ''}
+                  />
                 </Col>
               </Row>
               <Row>
@@ -140,7 +144,7 @@ const SwsmGrid = () => {
                 <Col xs md={{ span: 5, offset: 1 }}>
                   <TextBoxComponent
                     label={'소정근로시간'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    value={mainTabData ? mainTabData.startBreakTime : ''}
                   />
                 </Col>
               </Row>
@@ -150,6 +154,7 @@ const SwsmGrid = () => {
                     label={'휴게시간'}
                     value={mainTabData ? mainTabData.jobDescription : ''}
                     md={2}
+                    size={1}
                   />
                 </Col>
               </Row>
@@ -159,7 +164,7 @@ const SwsmGrid = () => {
                     label={'근무일'}
                     label2={'매 주 '}
                     label3={'일'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    value={mainTabData ? mainTabData.workingDay : ''}
                     subLabel={true}
                     md={4}
                   />
@@ -171,7 +176,7 @@ const SwsmGrid = () => {
                     label={'주휴일'}
                     label2={'매 주 '}
                     label3={'일'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    value={mainTabData ? mainTabData.dayOff : ''}
                     subLabel={true}
                     md={4}
                   />

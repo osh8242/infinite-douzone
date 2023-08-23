@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import ModalComponent from './ModalComponent';
 import Post from './Post';
 import '../styles/addressForm.css';
 
-const TempAdd = ({ label, isZonecode }) => {
+const TempAdd = (props) => {
+  const { label, isZonecode, value, value2 } = props;
   const [zonecode, setZonecode] = useState('');
   const [address, setAddress] = useState('');
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(props.value);
+  }, [value]);
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {
@@ -27,7 +33,7 @@ const TempAdd = ({ label, isZonecode }) => {
           md="2"
           className="d-flex align-items-center justify-content-center"
         >
-          <div>주소</div>
+          <div>{label}</div>
         </Col>
         <Col md="8" id="fullAddressArea">
           {/* 우편번호 */}
@@ -47,7 +53,7 @@ const TempAdd = ({ label, isZonecode }) => {
             id="addressArea"
             type="text"
             name="address"
-            value={address}
+            value={value}
             //disabled
           />
 
@@ -70,7 +76,7 @@ const TempAdd = ({ label, isZonecode }) => {
           <div>상세주소</div>
         </Col>
         <Col md="8">
-          <Form.Control type="text" name="address-detail" />
+          <Form.Control type="text" name="address-detail" value={value2} />
         </Col>
       </Row>
       <ModalComponent
