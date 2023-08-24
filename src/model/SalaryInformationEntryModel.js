@@ -8,8 +8,10 @@ const SalaryInformationEntryModel = () => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const monthIndex = currentDate.getMonth();
-  const month = (monthIndex + 1).toString().padStart(2, '0'); // 0을 붙여 두 자릿수로 만듦
+  const month = (monthIndex + 1).toString().padStart(2, '0'); 
   const currentMonth = `${year}-${month}`;
+  const day = currentDate.getDate().toString().padStart(2, '0');
+  const nowdate = `${year}-${month}-${day}`;
 
   /* 영역에 뿌릴 Data */
   const [saInfoListData, setSaInfoListData] = useState();     //사원 테이블 리스트
@@ -21,8 +23,9 @@ const SalaryInformationEntryModel = () => {
   const [cdEmp, setCdEmp] = useState();                         //사원번호
   const [allowMonth, setAllowMonth] = useState(currentMonth);   //귀속년월
   const [salDivision, setSalDivision] = useState();             //구분
+  const [paymentDate, setPaymentDate] = useState();             //지급일
 
-  const [searchVo , setSerchVo] = useState({cdEmp},{allowMonth},{salDivision})    //검색조건
+  const [searchVo , setSerchVo] = useState({cdEmp},{allowMonth},{salDivision},{paymentDate})    //검색조건
 
   /* 상태 Data */
   const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
@@ -47,7 +50,8 @@ const SalaryInformationEntryModel = () => {
           감면율: item.MnReduction,
           }
         ));
-        setCdEmp(data[0].cdEmp);//리스트 첫번째 사원코드가 선택
+
+        setCdEmp(response.data[0].cdEmp);//리스트 첫번째 사원코드가 선택
         setSaInfoListData(data);
       })
 
@@ -118,7 +122,7 @@ const SalaryInformationEntryModel = () => {
         console.error('에러발생: ', error);
       });
 
-  }, [searchVo]);
+  }, [cdEmp]);
 
 
   return {
@@ -137,7 +141,11 @@ const SalaryInformationEntryModel = () => {
     , setCdEmp
     , setSalDivision
     , setAllowMonth
-    , searchVo : {cdEmp,allowMonth,salDivision,}
+    , setPaymentDate
+//    , searchVo : {cdEmp,allowMonth,salDivision,paymentDate}
+    , searchVo : searchVo
+    , setSerchVo
+    , date : {currentMonth,nowdate}
   };
 };
 

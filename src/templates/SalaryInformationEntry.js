@@ -1,7 +1,6 @@
 // 작성자 : 오승환
 import React, { useCallback, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import DateForm from "../components/DateForm";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
@@ -82,43 +81,55 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     , setSaInfoDetailData
     , setModalState    
     , modalState
-    , onSearch
+    , cdEmp
+    , salDivision
+    , allonMonth
+    , paymentDate
     , setCdEmp
     , setSalData
     , setSalDivision
-    , searchVo 
+    , setAllowMonth
+    , setPaymentDate
+    , searchVo
+    , setSearchVo
+    , date
   } = SalaryInformationEntryModel();
 
+  console.log(date);
+  
   // 코드도움 아이콘 클릭
   const codeHelperShow = useCallback((tableData) => {
     setModalState({ show: true });
   }, []);
+
+  //검색조건 버튼
+  const onSearch = () => {
+    setSearchVo({})
+  };
   
   return (
     <>
       {/* 코드도움 모달 영역 */}
-      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size='lg' centered>
-        {modalState.modalData && ( 
-          <TableForm
-            showCheckbox={true}
-            showHeaderArrow={true}
-            tableData={basicDeductData}
-            rowClickHandler={setCdEmp}/>
-        )}
+      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })}
+        size="lg" centered>
+        <TableForm
+          showCheckbox={false}
+          showHeaderArrow={false}
+          tableData={saInfoListData}
+        ></TableForm>
       </ModalComponent>
 
       {/* 기본 검색조건 */}
       <SearchPanel onSearch={onSearch} showAccordion>
-      <form id='searchForm'>
         <Row>
           <Col>
-            <DateTest type='month' label={"귀속연월"} />
+            <DateTest type="month" label={"귀속연월"} value={date.currentMonth} onChange={setAllowMonth}/>
           </Col>
           <Col>
-            <SelectForm label={"구분"} optionList={salOptionList} />
+            <SelectForm label={"구분"} optionList={salOptionList} onChange={setSalDivision}/>
           </Col>
           <Col>
-            <DateTest label={"지급일"} />
+            <DateTest label={"지급일"} value={date.nowdate} onChange={setPaymentDate}/>
           </Col>
         </Row>
 
@@ -126,28 +137,53 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <div>
           <Row>
             <Col>
-              <TextBoxComponent type='codeHelper' name='searchEmpCd' label={"사원코드"}/>
+              <TextBoxComponent
+                type="codeHelper"
+                name="searchEmpCd"
+                label={"사원코드"}
+              />
             </Col>
             <Col>
-              <TextBoxComponent type='codeHelper' name='searchDeptCd' label={"부서코드"} onClick={codeHelperShow}/>
+              <TextBoxComponent
+                type="codeHelper"
+                name="searchDeptCd"
+                label={"부서코드"}
+                onClick={codeHelperShow}
+              />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent type='codeHelper' name='searchRankNo' label={"직급코드"} />
+              <TextBoxComponent
+                type="codeHelper"
+                name="searchRankNo"
+                label={"직급코드"}
+              />
             </Col>
             <Col>
-              <TextBoxComponent type='codeHelper' name='searchCdOccup' label={"직책코드"} />
+              <TextBoxComponent
+                type="codeHelper"
+                name="searchCdOccup"
+                label={"직책코드"}
+              />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent type='codeHelper' name='searchCdField' label={"현장코드"} />
+              <TextBoxComponent
+                type="codeHelper"
+                name="searchCdField"
+                label={"현장코드"}
+              />
             </Col>
             <Col>
-              <TextBoxComponent type='codeHelper' name='searchCdProject' label={"프로젝트코드"} />
+              <TextBoxComponent
+                type="codeHelper"
+                name="searchCdProject"
+                label={"프로젝트코드"}
+              />
             </Col>
           </Row>
 
@@ -160,43 +196,43 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             </Col>
           </Row>
         </div>
-      </form>
       </SearchPanel>
 
       <Row>
         <Col md="3">
           {/* 사원정보 table영역 */}
-          {saInfoListData ? ( 
-          <TableForm
-            showCheckbox={true}
-            showHeaderArrow={true}
-            tableData={saInfoListData}
-            rowClickHandler={setCdEmp}
-          />
+          {saInfoListData ? (
+            <TableForm
+              showCheckbox={true}
+              showHeaderArrow={true}
+              tableData={saInfoListData}
+              rowClickHandler={setCdEmp}
+            />
           ) : (
-            <TableForm tableData={basicSaEmpData}/>
+            <TableForm tableData={basicSaEmpData} />
           )}
         </Col>
         <Col md="3">
           {/* 급여항목 table영역 */}
-          {salData ? ( 
-          <TableForm
-            showCheckbox={false}
-            showHeaderArrow={false}
-            tableData={salData}
-          />
+          {salData ? (
+            <TableForm
+              showCheckbox={false}
+              showHeaderArrow={false}
+              tableData={salData}
+              rowClickHandler={setCdEmp}
+            />
           ) : (
-            <TableForm tableData={basicSalData}/>
+            <TableForm tableData={basicSalData} />
           )}
         </Col>
         <Col md="3">
           {/* 공제항목 table영역 */}
-          {deductData ? ( 
-          <TableForm
-            showCheckbox={false}
-            showHeaderArrow={false}
-            tableData={deductData}
-          />
+          {deductData ? (
+            <TableForm
+              showCheckbox={false}
+              showHeaderArrow={false}
+              tableData={deductData}
+            />
           ) : (
             <TableForm tableData={basicDeductData} />
           )}
@@ -217,19 +253,26 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             <Card>
               <Card.Header as="h5">사원정보</Card.Header>
               <Card.Body>
-                <TextBoxComponent label='입사일' value={saInfoDetailData.daEnter}/>
-                <TextBoxComponent label='배우자공제' value={saInfoDetailData.ynMateDed}/>
-                <TextBoxComponent label='20세/60세/다자녀' value={saInfoDetailData.num20Family + '/' + saInfoDetailData.num60Family + '/' + saInfoDetailData.numManyFamily}/>
-                <TextBoxComponent label='조정율' value='구현중'/>
-                <TextBoxComponent label='거주구분' value={saInfoDetailData.ynResident}/>
-                <TextBoxComponent label='생산/국외' value={saInfoDetailData.ynUnit + '/' + saInfoDetailData.ynForLabor}/>
-                <TextBoxComponent label='연장근로비과세' value={saInfoDetailData.ynOverwork}/>
-                <TextBoxComponent label='퇴사일' value={saInfoDetailData.daRetire}/>
-                <TextBoxComponent label='직종' value={saInfoDetailData.cdOccup}/>
-                <TextBoxComponent label='부서' value={saInfoDetailData.cdDept}/>
-                <TextBoxComponent label='현장' value={saInfoDetailData.cdField}/>
-                <TextBoxComponent label='프로젝트' value={saInfoDetailData.cdProject}/>
-                <TextBoxComponent label='주민(외국인)번호' value={saInfoDetailData.noSocial}/>
+                {saInfoDetailData ? (
+                  <>
+                  <TextBoxComponent label='입사일' value={saInfoDetailData.daEnter}/>
+                  <TextBoxComponent label='배우자공제' value={saInfoDetailData.ynMateDed}/>
+                  <TextBoxComponent label='20세/60세/다자녀' value={saInfoDetailData.num20Family + '/' + saInfoDetailData.num60Family + '/' + saInfoDetailData.numManyFamily}/>
+                  <TextBoxComponent label='조정율' value='구현중'/>
+                  <TextBoxComponent label='거주구분' value={saInfoDetailData.ynResident}/>
+                  <TextBoxComponent label='생산/국외' value={saInfoDetailData.ynUnit + '/' + saInfoDetailData.ynForLabor}/>
+                  <TextBoxComponent label='연장근로비과세' value={saInfoDetailData.ynOverwork}/>
+                  <TextBoxComponent label='퇴사일' value={saInfoDetailData.daRetire}/>
+                  <TextBoxComponent label='직종' value={saInfoDetailData.cdOccup}/>
+                  <TextBoxComponent label='부서' value={saInfoDetailData.cdDept}/>
+                  <TextBoxComponent label='현장' value={saInfoDetailData.cdField}/>
+                  <TextBoxComponent label='프로젝트' value={saInfoDetailData.cdProject}/>
+                  <TextBoxComponent label='주민(외국인)번호' value={saInfoDetailData.noSocial}/>
+                  </>
+                ) : (
+                  <p>데이터가 없습니다.</p>
+                )}
+              
               </Card.Body>
             </Card>
           </div>

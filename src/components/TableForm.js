@@ -16,9 +16,6 @@ import {
   faArrowUp,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCallback, useState } from 'react';
-import { Form, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import '../styles/tableForm.css';
 
@@ -182,6 +179,7 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData, rowClickHandler})
                           onChange={(event) =>
                             handleInputChange(event, rowIndex, columnName)
                           }
+                          onClick={(event)}
                         />
                       ) : (
                         item[columnName]
