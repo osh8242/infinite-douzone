@@ -15,7 +15,7 @@ function DateTest({ label, type, defaultValue , onChange , value}) {
     // console.log('month');
   }
 
-  const changeHandeler = (e) =>{
+  const onChangeHandeler = (e) =>{
     onChange(e.value);
   }
 
@@ -30,7 +30,7 @@ function DateTest({ label, type, defaultValue , onChange , value}) {
           type={type ? type : 'date'}
           placeholder="YYYY.MM.DD"
           defaultValue={defaultValue}
-          onChange={changeHandeler}
+          onChange={onChangeHandeler}
           value = {value}
         />
       </Col>

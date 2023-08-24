@@ -75,27 +75,27 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     saInfoListData
     , setSaInfoListData 
     , salData
-    , setDeductData
+    , setSalData
     , deductData
+    , setDeductData
     , saInfoDetailData
     , setSaInfoDetailData
-    , setModalState    
+    
     , modalState
+    , setModalState    
+ 
     , cdEmp
-    , salDivision
-    , allonMonth
-    , paymentDate
     , setCdEmp
-    , setSalData
+    , salDivision
     , setSalDivision
+    , allowMonth
     , setAllowMonth
+    , paymentDate
     , setPaymentDate
     , searchVo
     , setSearchVo
-    , date
   } = SalaryInformationEntryModel();
-
-  console.log(date);
+  
   
   // 코드도움 아이콘 클릭
   const codeHelperShow = useCallback((tableData) => {
@@ -104,14 +104,15 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   //검색조건 버튼
   const onSearch = () => {
-    setSearchVo({})
+    // console.log('allowMonth >>' ); console.log(allowMonth);
+    // console.log('cdEmp >>' ); console.log(cdEmp);
+    // console.log('paymentDate >>' ); console.log(paymentDate);
   };
   
   return (
     <>
       {/* 코드도움 모달 영역 */}
-      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })}
-        size="lg" centered>
+      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
         <TableForm
           showCheckbox={false}
           showHeaderArrow={false}
@@ -123,13 +124,13 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
       <SearchPanel onSearch={onSearch} showAccordion>
         <Row>
           <Col>
-            <DateTest type="month" label={"귀속연월"} value={date.currentMonth} onChange={setAllowMonth}/>
+            <DateTest type="month" label={"귀속연월"} value={allowMonth} onChange={setAllowMonth}/>
           </Col>
           <Col>
             <SelectForm label={"구분"} optionList={salOptionList} onChange={setSalDivision}/>
           </Col>
           <Col>
-            <DateTest label={"지급일"} value={date.nowdate} onChange={setPaymentDate}/>
+            <DateTest label={"지급일"} value={paymentDate} onChange={setPaymentDate}/>
           </Col>
         </Row>
 

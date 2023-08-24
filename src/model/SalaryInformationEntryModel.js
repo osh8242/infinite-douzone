@@ -20,20 +20,13 @@ const SalaryInformationEntryModel = () => {
   const [saInfoDetailData, setSaInfoDetailData] = useState(); //사원상세조회
 
   /* 검색조건 Data */
-  const [cdEmp, setCdEmp] = useState();                         //사원번호
+  const [cdEmp, setCdEmp] = useState('Y701');                   //사원번호
   const [allowMonth, setAllowMonth] = useState(currentMonth);   //귀속년월
   const [salDivision, setSalDivision] = useState();             //구분
-  const [paymentDate, setPaymentDate] = useState();             //지급일
-
-  const [searchVo , setSerchVo] = useState({cdEmp},{allowMonth},{salDivision},{paymentDate})    //검색조건
+  const [paymentDate, setPaymentDate] = useState(nowdate);      //지급일
 
   /* 상태 Data */
   const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
-
-  /* 검색버튼 */
-  const onSearch = () => {
-    alert('검색버튼 클릭');
-  }
 
   useEffect(() => {
 
@@ -51,7 +44,8 @@ const SalaryInformationEntryModel = () => {
           }
         ));
 
-        setCdEmp(response.data[0].cdEmp);//리스트 첫번째 사원코드가 선택
+        setCdEmp(response.data[0].cdEmp); //리스트 첫번째 사원코드가 선택
+          
         setSaInfoListData(data);
       })
 
@@ -62,7 +56,14 @@ const SalaryInformationEntryModel = () => {
 
   
   useEffect(() => {
-    
+    const searchVo = {
+      cdEmp: cdEmp,
+      allowMonth: allowMonth,
+      salDivision: salDivision,
+      paymentDate: paymentDate,
+    };
+     console.log(searchVo);
+
     /* 급여정보_급여 항목 리스트 */
     axios.post(
       url + '/saallowpay/getSaAllowPayByCdEmp',
@@ -102,6 +103,7 @@ const SalaryInformationEntryModel = () => {
         }));
 
         setDeductData(data);
+
       })
       .catch((error) => {
         console.error('에러발생: ', error);
@@ -122,8 +124,7 @@ const SalaryInformationEntryModel = () => {
         console.error('에러발생: ', error);
       });
 
-  }, [cdEmp]);
-
+    }, [cdEmp, allowMonth, salDivision, paymentDate]); 
 
   return {
     saInfoListData: saInfoListData
@@ -136,16 +137,14 @@ const SalaryInformationEntryModel = () => {
     , setSaInfoDetailData
 
     , modalState : modalState
+    
     , setModalState
-    , onSearch
     , setCdEmp
     , setSalDivision
     , setAllowMonth
     , setPaymentDate
-//    , searchVo : {cdEmp,allowMonth,salDivision,paymentDate}
-    , searchVo : searchVo
-    , setSerchVo
-    , date : {currentMonth,nowdate}
+    , allowMonth
+    , paymentDate
   };
 };
 
