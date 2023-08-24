@@ -69,11 +69,7 @@ function TextBoxComponent(props) {
             md="8"
             className="d-flex align-items-center justify-content-center"
           >
-            <Form.Control
-              as="textarea"
-              rows={rows}
-              placeholder={props.placeholder}
-            />
+            <Form.Control as="textarea" rows={rows} />
           </Col>
         </Row>
       );
@@ -83,7 +79,6 @@ function TextBoxComponent(props) {
     case TYPE_RATE:
     case TYPE_WON:
       let suffix = ""; // 단위(뒤) 앞은 prefix
-      let placeholder = ""; // placeholder
       let thousandSeparator = true; // 세자리 콤마
 
       if (type === "rate") {
@@ -109,7 +104,6 @@ function TextBoxComponent(props) {
             <NumericFormat
               thousandSeparator={thousandSeparator}
               suffix={suffix}
-              placeholder={props.placeholder}
               value={inputValue}
               style={textBoxStyle}
               inputProps={{
@@ -127,11 +121,9 @@ function TextBoxComponent(props) {
       let format = "";
       if (type === TYPE_REG_NUM) {
         format = "######-#######";
-        placeholder = "YYMMDD-XXXXXXX";
       }
       if (type === TYPE_CUSTOM_FORMAT) {
         format = props.format;
-        format = props.placeholder;
       }
 
       console.log("라벨", label);
@@ -149,7 +141,6 @@ function TextBoxComponent(props) {
 
           <Col className="d-flex align-items-center justify-content-center">
             <PatternFormat
-              placeholder={placeholder}
               format={format}
               value={value}
               onChange={onChange}
@@ -205,7 +196,6 @@ function TextBoxComponent(props) {
               type={type}
               id={id}
               name={name}
-              placeholder={props.placeholder}
               size={size}
               disabled={disabled}
               readOnly={readOnly}

@@ -16,9 +16,6 @@ import {
   faSortDown,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useState } from "react";
-import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
@@ -27,6 +24,7 @@ const TableForm = ({
   showHeaderArrow,
   tableData,
   rowClickHandler,
+  minRow,
 }) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
@@ -43,14 +41,9 @@ const TableForm = ({
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
 
-  // Checkbox 상태 관리
-  const [checkBoxStates, setCheckBoxStates] = useState(
-    columns.map(() => false)
-  );
-
   // 테이블 헤더의 화살표 방향 상태 관리 (첫 행이 존재할 때만 초기화)
   const [arrowDirections, setArrowDirections] = useState(
-    tableData.length > 0
+    columns.length > 0
       ? Object.keys(tableData[0]).reduce((arrowStates, columnName) => {
           arrowStates[columnName] = true;
           return arrowStates;
@@ -86,29 +79,6 @@ const TableForm = ({
     }
   };
 
-  // handle all check
-  const handleAllCheckboxChange = () => {
-    // checkboxStates 배열 중 false 인 요소가 하나라도 있는지 확인
-    // 하나 이상 있는 경우 아이콘 클릭 시 전체 checkBox checked
-    if (checkBoxStates.some((state) => !state)) {
-      setCheckBoxStates(columns.map(() => true));
-    } else {
-      // 전체 unchecked
-      setCheckBoxStates(columns.map(() => false));
-    }
-  };
-
-  // handle check
-  const handleCheckboxChange = (index) => {
-    // checkBox 의 Status 복제
-    setCheckBoxStates((prevStates) => {
-      const newStates = [...prevStates];
-      // check <-> unchecked
-      newStates[index] = !newStates[index];
-      return newStates;
-    });
-  };
-
   // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
   const handleArrowDirection = (columnName) => {
     // arrowDirection 의 Status 복제
@@ -128,10 +98,7 @@ const TableForm = ({
             {/* checkBox 상단 아이콘 */}
             {showCheckbox && (
               <th id="tableCheckBoxHeader">
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  onClick={handleAllCheckboxChange}
-                />
+                <FontAwesomeIcon icon={faCheck} />
               </th>
             )}
             {/* th columns */}
@@ -166,11 +133,7 @@ const TableForm = ({
                 {showCheckbox && (
                   <td>
                     <div className="tableCheckBoxArea">
-                      <input
-                        type="checkbox"
-                        checked={checkBoxStates[rowIndex]}
-                        onChange={() => handleCheckboxChange(rowIndex)}
-                      />
+                      <input type="checkbox" />
                     </div>
                   </td>
                 )}
