@@ -18,9 +18,14 @@ function DateTest({ label, type, defaultValue }) {
   console.log(choice);
   return (
     <Row className="py-1">
-      <Col md="4" className="d-flex align-items-center justify-content-center">
-        <div>{label}</div>
-      </Col>
+      {label && (
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>{label}</div>
+        </Col>
+      )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <Form.Control
           type={type ? type : 'date'}

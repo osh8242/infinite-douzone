@@ -13,6 +13,7 @@ const CommonConstant = () => {
       { key: 'nmKrname', value: '이름순' },
     ],
     mainTabMenuList: ['기초정보', '인적정보'],
+    mainTabMenuListForEmpRegister: ['기초정보', '가족사항'],
     subTabMenuList: ['가족', '학력', '경력', '신체', '병역'],
     genderRadioList: [
       { key: 'M', value: '남자' },
@@ -26,6 +27,22 @@ const CommonConstant = () => {
       { key: 'Y', value: '작성' },
       { key: 'N', value: '미작성' },
     ],
+    emailList: [
+      { key: 'daum.net', value: '@daum.net' },
+      { key: 'gmail.com', value: '@gmail.com' },
+      { key: 'hanmail.net', value: '@hanmail.net' },
+      { key: 'kakao.com', value: '@kakao.com' },
+      { key: 'msn.com', value: '@msn.com' },
+      { key: 'mail.com', value: '@mail.com' },
+      { key: 'nate.com', value: '@nate.com' },
+      { key: 'naver.com', value: '@naver.com' },
+      { key: 'tistory.com', value: '@tistory.com' },
+    ],
+    ynForList: [
+      { key: '0', value: '내국인' },
+      { key: '1', value: '외국인' },
+    ],
+
     labels: {
       cdEmp: '사원코드',
       nmEnName: '영문성명',
@@ -50,6 +67,18 @@ const CommonConstant = () => {
       cdJob: '직업',
       nmKrcom: '직장명',
       cdOffpos: '직급',
+      daEnterForEmpRegister: '입사일자',
+      addNation: '거주지국',
+      cdNation: '국적',
+      telHome: '전화번호',
+      calEmp: '모바일번호',
+      emEmp: '이메일',
+      idMsn: '메신저ID',
+      cdOccup: '직종',
+      cdSalcls: '호봉',
+      cdField: '현장',
+      cdProject: '프로젝트',
+      cdBank: '급여이체은행',
     },
   };
 };
