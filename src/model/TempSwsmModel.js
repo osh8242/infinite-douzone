@@ -26,13 +26,16 @@ const SwsmModel = () => {
 
   useEffect(() => {
     axios
-      .get(url + '/emp/getAllEmp')
+      .get(url + '/emp/getAll')
       .then((response) => {
-        console.log('SwsmModel > /emp/getAllEmp', response.data);
+        console.log('SwsmModel > /emp/getAll', response.data);
+
         const data = response.data.map((item) => ({
           Code: item.cdEmp,
           성명: item.nmKrname,
           주민등록번호: item.noSocial,
+          isSelect: false,
+          isCheck: false,
         }));
         setLeftTableData(data);
       })

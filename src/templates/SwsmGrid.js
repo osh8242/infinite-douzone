@@ -1,15 +1,17 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import SwsmModel from '../model/SwsmModel';
+import TempSwsmModel from '../model/TempSwsmModel';
 import TableForm from '../components/TableForm';
+import TempTable from '../components/TempTable';
 import DateTest from '../components/DateTest';
 import SearchPanel from '../components/SearchPanel';
 import MenuTab from '../components/MenuTab';
 import { Col, Row } from 'react-bootstrap';
 import SelectForm from '../components/SelectForm';
 import { Scrollbars } from 'react-custom-scrollbars';
-import TextBoxComponent from '../components/TextBoxComponent';
-import AddressForm from '../components/AddressForm';
+// import TextBoxComponent from '../components/TextBoxComponent';
+// import AddressForm from '../components/AddressForm';
 import TempAdd from '../components/TempAdd';
 import TempText from '../components/TempText';
 import TempSelect from '../components/TempSelect';
@@ -88,6 +90,7 @@ const SwsmGrid = () => {
     mainTabData,
     setMainTabData,
   } = SwsmModel();
+  //TempSwsmModel();
 
   return (
     <>
@@ -106,7 +109,7 @@ const SwsmGrid = () => {
         <Row>
           <Col md="3">
             {leftTableData ? (
-              <TableForm
+              <TempTable
                 showCheckbox={true}
                 showHeaderArrow={false}
                 tableData={leftTableData}
@@ -272,13 +275,13 @@ const SwsmGrid = () => {
               </Row>
             </Scrollbars>
             <MenuTab menuList={menuList2} />
-            <TableForm
+            <TempTable
               showCheckbox={true}
               showHeaderArrow={false}
               tableData={tableDummyData2}
             />
             {/* {otherTableData ? (
-              <TableForm
+              <TempTable
                 showCheckbox={true}
                 showHeaderArrow={false}
                 tableData={otherTableData}
