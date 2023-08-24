@@ -179,7 +179,6 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData, rowClickHandler})
                           onChange={(event) =>
                             handleInputChange(event, rowIndex, columnName)
                           }
-                          onClick={(event)}
                         />
                       ) : (
                         item[columnName]
