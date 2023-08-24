@@ -264,7 +264,10 @@ const SwsmGrid = () => {
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <DateTest label="작성일자" />
+                  <DateTest
+                    label="작성일자"
+                    value={mainTabData ? mainTabData.paymentDate : ''}
+                  />
                 </Col>
               </Row>
             </Scrollbars>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import SwsmModel from '../model/SwsmModel';
 import TableForm from '../components/TableForm';
 import DateTest from '../components/DateTest';
@@ -8,6 +9,10 @@ import { Col, Row } from 'react-bootstrap';
 import SelectForm from '../components/SelectForm';
 import { Scrollbars } from 'react-custom-scrollbars';
 import TextBoxComponent from '../components/TextBoxComponent';
+import AddressForm from '../components/AddressForm';
+import TempAdd from '../components/TempAdd';
+import TempText from '../components/TempText';
+import TempSelect from '../components/TempSelect';
 
 const searchChild = [
   { key: 'opt1', value: '1. 사원등록' },
@@ -72,20 +77,21 @@ const optionList6 = [
 //   { key: 'otherBenefits', value: '1.부' },
 // ];
 
-const SwsmGrid = () => {
+const SwsmSearchGrid = () => {
   const {
     leftTableData,
     setLeftTableData,
+    otherTableData,
+    setOtherTableData,
     cdEmp,
     setCdEmp,
     mainTabData,
     setMainTabData,
   } = SwsmModel();
 
-  console.log('test' + leftTableData);
   return (
     <>
-      <Row>
+      <Row className="py-1">
         <MenuTab menuList={menuList} />
         <SearchPanel>
           <Row>
@@ -107,37 +113,39 @@ const SwsmGrid = () => {
                 rowClickHandler={setCdEmp}
               />
             ) : (
-              <div>Loading...</div> // 로딩 중일 때 표시할 내용
+              <Spinner animation="border" variant="primary" />
             )}
           </Col>
           <Col md="9">
             <MenuTab menuList={menuList1} />
-            <Scrollbars style={{ height: 400, overflow: 'hidden' }}>
+            <Scrollbars style={{ height: 470, overflow: 'hidden' }}>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <DateTest label="근로계약기간" />
+                  <DateTest
+                    label="근로계약기간"
+                    isPeriod={true}
+                    type={'date'}
+                    value={
+                      mainTabData ? mainTabData.startEmpContractPeriod : ''
+                    }
+                    value2={mainTabData ? mainTabData.endEmpContractPeriod : ''}
+                  />
                 </Col>
               </Row>
               <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
+                <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempAdd
+                    label="근무장소"
+                    isZonecode={false}
+                    value={mainTabData ? mainTabData.address : ''}
+                    value2={mainTabData ? mainTabData.addDetail : ''}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempText
                     label={'업무의내용'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
-                    label={'소정근로시간'}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
-                    label={'휴게시간'}
                     value={mainTabData ? mainTabData.jobDescription : ''}
                     md={2}
                   />
@@ -145,46 +153,83 @@ const SwsmGrid = () => {
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
+                  <TempText
+                    isPeriod={true}
+                    label={'소정근로시간'}
+                    value={mainTabData ? mainTabData.startBreakTime : ''}
+                    PeriodEnd={mainTabData ? mainTabData.EndBreakTime : ''}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs md={{ span: 5, offset: 1 }}>
+                  <TempText
+                    label={'휴게시간'}
+                    isPeriod={true}
+                    value={mainTabData ? mainTabData.startBreakTime : ''}
+                    PeriodEnd={mainTabData ? mainTabData.EndBreakTime : ''}
+                  />
+                </Col>
+                {/* <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempText
+                    label={'휴게시간'}
+                    md={2}
+                    size={1}
+                    isPeriod={true}
+                    value={mainTabData ? mainTabData.startBreakTime : ''}
+                    PeriodEnd={mainTabData ? mainTabData.EndBreakTime : ''}
+                  />
+                </Col> */}
+              </Row>
+              <Row>
+                <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempText
                     label={'근무일'}
+                    label2={'매 주 '}
+                    label3={'일'}
                     value={mainTabData ? mainTabData.workingDay : ''}
+                    subLabel={true}
+                    md={4}
+                    size={1}
                   />
                 </Col>
               </Row>
               <Row>
-                <Col xs md={{ span: 5, offset: 1 }}>
-                  <TextBoxComponent
+                <Col xs md={{ span: 10, offset: 1 }}>
+                  <TempText
                     label={'주휴일'}
+                    label2={'매 주 '}
+                    label3={'요일'}
+                    type={'selectForm'}
                     value={mainTabData ? mainTabData.dayOff : ''}
+                    subLabel={true}
+                    md={4}
                   />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
+                  <TempSelect
                     label="임금유형"
-                    optionList={optionList}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    optionList={optionList3}
+                    subLabel={'원'}
+                    subValue={mainTabData ? mainTabData.salaryAmount : ''}
                   />
-                  {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
                 </Col>
-              </Row>{' '}
+              </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="기타급여"
-                    optionList={optionList2}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
+                  <SelectForm label="기타급여" optionList={optionList2} />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
+                  <TempSelect
                     label="상여금"
                     optionList={optionList3}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
+                    subLabel={'원'}
+                    subValue={mainTabData ? mainTabData.bonusAmount : ''}
                   />
                   {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
@@ -192,54 +237,37 @@ const SwsmGrid = () => {
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="임금지급일"
-                    optionList={optionList4}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
+                  <SelectForm label="임금지급일" optionList={optionList4} />
                   {/* 한 라인 안에 들어가게 변경 필요 */}
                   {/* <TextBoxComponent />원 */}
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="지급방법"
-                    optionList={optionList5}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
+                  <SelectForm label="지급방법" optionList={optionList5} />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="고용보험"
-                    optionList={optionList6}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
+                  <SelectForm label="고용보험" optionList={optionList6} />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="산재보험"
-                    optionList={optionList6}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
+                  <SelectForm label="산재보험" optionList={optionList6} />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <SelectForm
-                    label="건강보험"
-                    optionList={optionList6}
-                    value={mainTabData ? mainTabData.jobDescription : ''}
-                  />
+                  <SelectForm label="건강보험" optionList={optionList6} />
                 </Col>
               </Row>
               <Row>
                 <Col xs md={{ span: 5, offset: 1 }}>
-                  <DateTest label="작성일자" />
+                  <DateTest
+                    label="작성일자"
+                    value={mainTabData ? mainTabData.paymentDate : ''}
+                  />
                 </Col>
               </Row>
             </Scrollbars>
@@ -249,6 +277,15 @@ const SwsmGrid = () => {
               showHeaderArrow={false}
               tableData={tableDummyData2}
             />
+            {/* {otherTableData ? (
+              <TableForm
+                showCheckbox={true}
+                showHeaderArrow={false}
+                tableData={otherTableData}
+              />
+            ) : (
+              <div>Loading...</div> // 로딩 중일 때 표시할 내용
+            )} */}
           </Col>
         </Row>
       </Row>
@@ -256,4 +293,4 @@ const SwsmGrid = () => {
   );
 };
 
-export default SwsmGrid;
+export default SwsmSearchGrid;
