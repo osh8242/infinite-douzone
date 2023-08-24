@@ -36,6 +36,8 @@ const LRlevel2GridModel = () => {
         const data = response.data.map((item) => ({
           [labels.cdEmp]: item.cdEmp,
           [labels.nmKrname]: item.nmKrname,
+          checked: false,
+          selected: false,
         }));
         setLeftTableData(data);
       })
@@ -97,6 +99,8 @@ const LRlevel2GridModel = () => {
             [labels.cdJob]: item.cdJob,
             [labels.nmKrcom]: item.nmKrcom,
             [labels.cdOffpos]: item.cdOffpos,
+            checked: false,
+            selected: false,
           };
         });
         setSubTableData(data);
