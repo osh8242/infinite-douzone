@@ -147,15 +147,15 @@
 
 // export default DateForm;
 
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
 
-import { faCalendarDays } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ko } from 'date-fns/esm/locale';
-import { Col, Form, Row } from 'react-bootstrap';
-import 'react-datepicker/dist/react-datepicker.css';
-import './DateForm.scss';
+import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ko } from "date-fns/esm/locale";
+import { Col, Form, Row } from "react-bootstrap";
+import "react-datepicker/dist/react-datepicker.css";
+import "./CustomInput.scss";
 
 const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
   <div className="custom-date-input" onClick={onClick} ref={ref}>

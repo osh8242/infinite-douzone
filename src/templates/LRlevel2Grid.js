@@ -65,7 +65,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   };
 
   return (
-    <>
+    <>ㅇ
+      {/* 조회영역 */}
       <SearchPanel onSearch={onSearch}>
         <Row>
           <Col>
@@ -84,6 +85,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           </Col>
         </Row>
       </SearchPanel>
+
       <Row>
         <Col md="3">
           <TableForm
