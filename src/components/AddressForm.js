@@ -15,8 +15,9 @@ const AddressForm = (props) => {
   const { isZonecode, zipHomeData, addHome1Data, addHome2Data } = props;
 
   // 렌더링 최소화를 위해 state 대신 변수와 함수 구성으로 변경 예정
-  const [zonecode, setZonecode] = useState('');
-  const [address, setAddress] = useState('');
+  const [zonecode, setZonecode] = useState(zipHomeData ? zipHomeData : '');
+  const [address, setAddress] = useState(addHome1Data ? addHome1Data : '');
+  const [detailAddress, setDetailAddress] = useState();
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {
@@ -59,7 +60,7 @@ const AddressForm = (props) => {
               id="zoneCodeArea"
               type="text"
               name="zonecode"
-              value={zipHomeData ? zipHomeData : zonecode}
+              value={zonecode}
               // size={5}
               disabled
             />
@@ -70,7 +71,7 @@ const AddressForm = (props) => {
             id="addressArea"
             type="text"
             name="address"
-            value={addHome1Data ? addHome1Data : address}
+            value={address}
             disabled
           />
 
@@ -96,7 +97,7 @@ const AddressForm = (props) => {
           <Form.Control
             type="text"
             name="address-detail"
-            value={addHome2Data ? addHome2Data : ''}
+            value={detailAddress}
           />
         </Col>
       </Row>
