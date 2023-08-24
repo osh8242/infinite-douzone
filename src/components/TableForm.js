@@ -8,16 +8,19 @@
   tableData : table 로 만들 데이터
 */
 
+import React, { useCallback, useEffect, useState } from "react";
+import { Form, Table } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSortUp,
   faSortDown,
   faCheck,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCallback, useState } from 'react';
-import { Form, Table } from 'react-bootstrap';
-import Spinner from 'react-bootstrap/Spinner';
-import '../styles/tableForm.css';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback, useState } from "react";
+import { Form, Table } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import "../styles/tableForm.css";
 
 const TableForm = ({
   showCheckbox,
@@ -34,9 +37,8 @@ const TableForm = ({
   //     </div>
   //   );
   // }
-  console.log('tableForm.js >', 'tableData : ', tableData);
 
-  const columns = tableData ? Object.keys(tableData[0]) : [];
+  const columns = tableData?.[0] ? Object.keys(tableData[0]) : [];
 
   // 편집 가능 Row 관리
   const [editableRowIndex, setEditableRowIndex] = useState(null);
@@ -44,7 +46,7 @@ const TableForm = ({
 
   // Checkbox 상태 관리
   const [checkBoxStates, setCheckBoxStates] = useState(
-    columns.map(() => false),
+    columns.map(() => false)
   );
 
   // 테이블 헤더의 화살표 방향 상태 관리 (첫 행이 존재할 때만 초기화)
@@ -54,7 +56,7 @@ const TableForm = ({
           arrowStates[columnName] = true;
           return arrowStates;
         }, {})
-      : {},
+      : {}
   );
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
@@ -120,7 +122,7 @@ const TableForm = ({
 
   return columns.length > 0 ? (
     <>
-      <Table size={'sm'} bordered hover>
+      <Table size={"sm"} bordered hover>
         {/* header */}
         <thead>
           <tr>
@@ -180,7 +182,7 @@ const TableForm = ({
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
                       {editableRowIndex === rowIndex ? (
                         <Form.Control
-                          size="text"
+                          type="text"
                           value={
                             editedData[rowIndex]?.[columnName] ||
                             item[columnName]
@@ -206,7 +208,7 @@ const TableForm = ({
                 <tr key={index}>
                   <td
                     colSpan={showCheckbox ? columns.length + 1 : columns.length}
-                    style={{ color: 'transparent' }}
+                    style={{ color: "transparent" }}
                   >
                     .
                   </td>
