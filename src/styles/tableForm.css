@@ -29,4 +29,6 @@
 
 table {
   table-layout: fixed;
+}.selected-row {
+  background-color: yellow; 
 }

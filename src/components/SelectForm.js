@@ -1,28 +1,28 @@
 // 작성자 : 오승환
-// SelectForm 사용시 필수 parameter
-// label : 라벨이름
-// optionList : 선택옵션명 (리스트)
+// 1. 파라미터 설명
+// label : 선택폼의 라벨명
+// optionList : 선택폼의 옵션리스트 (ex. optionList = [{key:name, value:"이름"}, {key:birth-date, value:"생년월일"}])
 
-// 사용예시
-/* 
-  <SelectForm label="구분" optionList=[
-    {key : "empName",   value : "사원명"},
-    {key : "birthDate", value : "생년월일"},
-    {key : "age",       value : "나이"}
-  ]/> 
-*/
+// 2. 사용예시
+//    const optionList = [
+//      { key: "ename", value: "이름" },
+//      { key: "ecode", value: "사원번호" },
+//    ];
+//
+//    <SelectForm label="구분" optionList={optionList}/>
+//
 
-import { Col, Row } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
+import { Col, Row } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
-function SelectForm({ label, optionList }) {
+function SelectForm({ label, optionList, selectRef }) {
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
         <div>{label}</div>
       </Col>
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Select>
+        <Form.Select ref={selectRef}>
           {optionList.map((option, index) => (
             <option value={option.key} key={index}>
               {option.value}

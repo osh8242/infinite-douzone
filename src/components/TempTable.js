@@ -12,11 +12,11 @@ import {
   faArrowDown,
   faArrowUp,
   faCheck,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCallback, useState } from 'react';
-import { Form, Table } from 'react-bootstrap';
-import '../styles/tableForm.css';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback, useState, Card } from "react";
+import { Form, Table } from "react-bootstrap";
+import "../styles/tableForm.css";
 
 const TempTable = ({
   showCheckbox,
@@ -32,35 +32,31 @@ const TempTable = ({
   //     </div>
   //   );
   // }
-  console.log('tableForm.js >', 'tableData : ', tableData);
+  console.log("tableForm.js >", "tableData : ", tableData);
 
   const columns = Object.keys(tableData[0]);
 
   const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [editedData, setEditedData] = useState({});
+  const [isSelected, setIsSelected] = useState({});
 
   const [checkBoxStates, setCheckBoxStates] = useState(
-    tableData.map(() => false),
+    tableData.map(() => false)
   );
 
   const [arrowDirections, setArrowDirections] = useState(
     columns.reduce((arrowStates, columnName) => {
       arrowStates[columnName] = true;
       return arrowStates;
-    }, {}),
+    }, {})
   );
-
-  //lsy temp
-  const handleSelect = useCallback((isChecked, isSelected) => {
-    console.log('isChecked: ' + isChecked + ', isSelected: ' + isSelected);
-  });
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = useCallback((rowIndex) => {
     setEditableRowIndex(rowIndex);
   });
 
-  // //////////////////////////////////////////////////////////////// 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
+  // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
   const handleInputChange = useCallback((event, rowIndex, columnName) => {
     const updatedEditedData = { ...editedData };
     updatedEditedData[rowIndex] = {

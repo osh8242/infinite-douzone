@@ -6,16 +6,17 @@
 
 // Test Code
 // <DateTest label={"생년월일"} isPeriod={true} type={"month"} />
-import React, { useState, useEffect } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest(props) {
   const { label, isPeriod, type, value, value2 } = props;
   const [date, setDate] = useState(new Date());
+
   DateTest.defaultProps = {
-    label: '',
+    label: "",
     isPeriod: false,
-    type: 'date',
+    type: "date",
   };
 
   return (

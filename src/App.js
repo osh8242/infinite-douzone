@@ -1,12 +1,16 @@
-import { Container } from 'react-bootstrap';
-import './App.scss';
-import Header from './templates/Header';
-import LRlevel2Grid from './templates/LRlevel2Grid';
-import SalaryInfomationEntry from './templates/SalaryInformationEntry';
-import EmpRegisterationLayout from './templates/EmpRegisterationLayout';
-import SwsmSearchGrid from './templates/SwsmSearchGrid';
-import SwsmGrid from './templates/SwsmGrid';
+import { Container } from "react-bootstrap";
+import "./App.scss";
+import Header from "./templates/Header";
+import LRlevel2Grid from "./templates/LRlevel2Grid";
+import SalaryInfomationEntry from "./templates/SalaryInformationEntry";
+import EmpRegisterationLayout from "./templates/EmpRegisterationLayout";
+import SwsmSearchGrid from "./templates/SwsmSearchGrid";
+import SwsmGrid from "./templates/SwsmGrid";
+import SwsmList from "./vo/SwsmList";
+import EmpGrid from "./templates/EmpGrid";
+import EmpList from "./vo/EmpList";
 
+// const names = ["kendrick", "christopher", "theo", "dave"];
 function App() {
   return (
     <div>

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import ModalComponent from './ModalComponent';
-import Post from './Post';
-import '../styles/addressForm.css';
+import React, { useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import ModalComponent from "./ModalComponent";
+import Post from "./Post";
+import "../styles/addressForm.css";
 
 const AddressForm = ({ label, isZonecode }) => {
-  const [zonecode, setZonecode] = useState('');
-  const [address, setAddress] = useState('');
+  const [zonecode, setZonecode] = useState("");
+  const [address, setAddress] = useState("");
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {

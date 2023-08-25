@@ -5,7 +5,11 @@ import CommonConstant from './CommonConstant';
 const LRlevel2GridModel = () => {
   const url = 'http://localhost:8888';
   const { labels } = CommonConstant();
+  const [reloadTrigger, setReloadTrigger] = useState(false); //state 값들을 다시 로드하기 위한 parameter
   const [cdEmp, setCdEmp] = useState('hong'); // 초기값 : 로그인한 유저의 사원코드 cdEmp
+  const [jobOk, setJobOk] = useState('Y'); //재직여부
+  const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
+  const [orderRef, setOrderRef] = useState('cdEmp'); //사원코드
   const [leftTableData, setLeftTableData] = useState();
   const [mainTabData, setMainTabData] = useState();
   const [subTableData, setSubTableData] = useState();
@@ -13,10 +17,22 @@ const LRlevel2GridModel = () => {
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
     setLeftTableData();
+    const postData = {
+      jobOk: jobOk,
+      ...(refYear && { daRetire: refYear }),
+    };
     axios
-      .get(url + '/emp/getAll')
+      .post(
+        `${url}/emp/getEmpListByJobOk${
+          orderRef ? '?orderRef=' + orderRef : ''
+        }`,
+        postData,
+      )
       .then((response) => {
-        console.log('LRlevel2GridModel > /emp/getAll', response.data);
+        console.log(
+          'LRlevel2GridModel > /emp/getEmpListByJobOk',
+          response.data,
+        );
         const data = response.data.map((item) => ({
           [labels.cdEmp]: item.cdEmp,
           [labels.nmKrname]: item.nmKrname,
@@ -27,7 +43,8 @@ const LRlevel2GridModel = () => {
         console.error('에러발생: ', error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jobOk, refYear, orderRef, reloadTrigger]);
 
   //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -54,7 +71,7 @@ const LRlevel2GridModel = () => {
         console.error('에러발생: ', error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [cdEmp]);
+  }, [cdEmp, reloadTrigger]);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -88,7 +105,11 @@ const LRlevel2GridModel = () => {
         console.error('에러발생: ', error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [cdEmp]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cdEmp, reloadTrigger]);
+
+  //모든 state 데이터를 다시 로드함
+  const reloadStates = () => setReloadTrigger(!reloadTrigger);
 
   return {
     leftTableData: leftTableData,
@@ -99,6 +120,13 @@ const LRlevel2GridModel = () => {
     setMainTabData,
     subTableData: subTableData,
     setSubTableData,
+    jobOk: jobOk,
+    setJobOk,
+    refYear: refYear,
+    setRefYear,
+    orderRef: orderRef,
+    setOrderRef,
+    reloadStates,
   };
 };
 

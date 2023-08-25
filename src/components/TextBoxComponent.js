@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { faC } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { Col, Form, Row } from "react-bootstrap";
 import { NumericFormat, PatternFormat } from 'react-number-format';
 
 //css
@@ -19,8 +21,7 @@ const textBoxStyle = {
 
 function TextBoxComponent(props) {
   //props 속성들
-  const { type, label, rows, size, disabled, readOnly, plaintext, value } =
-    props;
+  const { id, name, type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;  
 
   //입력값
   const [inputValue, setInputValue] = useState(value);
@@ -29,26 +30,22 @@ function TextBoxComponent(props) {
     setInputValue(props.value);
   }, [value]);
 
-  //마스킹 함수
-  const handleInputValueChange = (event) => {
-    const input = event.target.value;
 
-    const maskedNumber = input.replace(
-      /^(\d{6})(\d+)/,
-      (match, group1, group2) => {
-        const maskedGroup2 = group2.replace(/./g, '*');
-        console.log('group1내용 : ' + group1);
-        return `${group1}-${maskedGroup2}`;
-      },
-    );
+  //커스텀 type 속성
+  const TYPE_TEXTAREA = 'textarea';               // textarea
+  const TYPE_NUMBER = 'number';                   // 숫자(세자리 콤마)
+  const TYPE_RATE = 'rate';                       // 비율(뒤에 %)
+  const TYPE_WON = 'won';                         // 원화(뒤에 원화표기)
+  const TYPE_REG_NUM = 'regNum';                  // 주민번호(뒷자리 마스킹)
+  const TYPE_CUSTOM_FORMAT = 'customformat';      // 커스텀 포멧(패턴지정)
+  const TYPE_CODE_HEPLER = 'codeHelper';          // 코드헬퍼
 
-    setInputValue(maskedNumber);
-  };
 
-  //custom type 정의(0)_TextArea
-  if (type === 'textarea') {
-    //Textarea
-    return (
+  switch (type) {
+
+    //custom type 정의(1)_TextArea
+    case TYPE_TEXTAREA:  
+      return (
       <Row className="py-1">
         <Col
           md="4"
@@ -56,23 +53,19 @@ function TextBoxComponent(props) {
         >
           <div>{label}</div>
         </Col>
-        <Col
-          md="8"
-          className="d-flex align-items-center justify-content-center"
-        >
-          <Form.Control
-            as="textarea"
-            rows={rows}
-            placeholder={props.placeholder}
-          />
+        <Col md="8" className="d-flex align-items-center justify-content-center">                                  
+          <Form.Control as="textarea" id={id} name={name} rows={rows} />
         </Col>
       </Row>
     );
 
-    //custom type 정의(1)_NumericFormat(comma처리 + 단위) ex) number,rate,won
-  } else if (type === 'number' || type === 'rate' || type === 'won') {
-    let suffix = ''; // 단위(뒤) 앞은 prefix
-    let placeholder = ''; // placeholder
+  //custom type 정의(2)_NumericFormat(comma처리 + 단위) ex) number,rate,won
+  case TYPE_NUMBER:
+    case TYPE_RATE:
+    case TYPE_WON:
+    
+    let suffix = '';              // 단위(뒤) 앞은 prefix
+    // let placeholder = '';         // placeholder
     let thousandSeparator = true; // 세자리 콤마
 
     if (type === 'rate') {
@@ -96,30 +89,29 @@ function TextBoxComponent(props) {
           <NumericFormat
             thousandSeparator={thousandSeparator}
             suffix={suffix}
-            placeholder={props.placeholder}
             value={inputValue}
-            onChange={handleInputValueChange}
             style={textBoxStyle}
+            inputProps={{
+              id: id, 
+              name:name, 
+            }}
           />
         </Col>
       </Row>
     );
-
-    //custom type 정의(2)_PatternFormat(패턴검사)
-  } else if (type === 'regNum' || type === 'customformat') {
-    //주민번호, 포멧지정
-
+  
+  //custom type 정의(3)_PatternFormat(패턴검사) 
+  case TYPE_REG_NUM:        
+  case TYPE_CUSTOM_FORMAT:  
+    
     let format = '';
-    let placeholder = '';
-
-    if (type === 'regNum') {
-      //주민번호 format
-      format = '######-#######';
-      placeholder = 'YYMMDD-XXXXXXX';
-    } else {
-      //포멧지정
-      format = props.format;
-      format = props.placeholder;
+    if(type === TYPE_REG_NUM){ 
+      format='######-#######';
+      // placeholder = 'YYMMDD-XXXXXXX';
+    }
+    if(type === TYPE_CUSTOM_FORMAT){  
+      format=props.format;
+      
     }
 
     return (
@@ -135,18 +127,43 @@ function TextBoxComponent(props) {
           className="d-flex align-items-center justify-content-center"
         >
           <PatternFormat
-            placeholder={placeholder}
+            
             format={format}
-            value={inputValue}
-            onChange={handleInputValueChange}
+            value={value}
+            onChange={onChange}
             style={textBoxStyle}
           />
         </Col>
       </Row>
     );
 
-    //bootstrap 제공 Textbox type들... ex) email,password,file,date,color...
-  } else {
+    //custom type 정의(4)_CodeHelper 코드도움 컴포넌트
+    case TYPE_CODE_HEPLER:  
+
+    const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+      <div className="react-datepicker__input-container" ref={ref}>
+        <Form.Control type="text" id={id} name={name} value={value} />
+        <FontAwesomeIcon icon={faC} onClick={onClick}/>
+      </div>
+    ));
+
+      return (
+        <Row className="py-1">
+        <Col md="4" className="d-flex align-items-center justify-content-center">
+          <div>{label}</div>
+        </Col>
+  
+        <Col md="8" className="d-flex align-items-center justify-content-center">
+          <div className="react-datepicker-wrapper">
+            <CustomInput onClick={onClick}/>
+          </div>
+        </Col>
+      </Row>
+    );
+
+    
+  //bootstrap 제공 Textbox type들... ex) email,password,file,date,color... 
+  default:
     return (
       <Row className="py-1">
         <Col
@@ -161,13 +178,15 @@ function TextBoxComponent(props) {
         >
           <Form.Control
             type={type}
-            placeholder={props.placeholder}
+            id={id} 
+            name={name}
+           
             size={size}
             disabled={disabled}
             readOnly={readOnly}
             plaintext={plaintext}
-            value={inputValue}
-            onChange={handleInputValueChange}
+            value={value}
+            onChange={onChange}
           />
         </Col>
       </Row>
