@@ -6,6 +6,7 @@ import SalaryInfomationEntry from "./templates/SalaryInformationEntry";
 import EmpRegisterationLayout from "./templates/EmpRegisterationLayout";
 import SwsmSearchGrid from "./templates/SwsmSearchGrid";
 import SwsmGrid from "./templates/SwsmGrid";
+import TestSwsnGrid from "./templates/TestSwsnGrid";
 import SwsmList from "./vo/SwsmList";
 import EmpGrid from "./templates/EmpGrid";
 import EmpList from "./vo/EmpList";

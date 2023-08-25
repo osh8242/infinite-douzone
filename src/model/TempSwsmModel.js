@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
-import axios from '../../node_modules/axios/index';
+import { useEffect, useState } from "react";
+import axios from "../../node_modules/axios/index";
 
-const SwsmModel = () => {
-  const url = 'http://localhost:8888';
+const TempSwsmModel = () => {
+  const url = "http://localhost:8888";
 
   const [leftTableData, setLeftTableData] = useState();
   const [otherTableData, setOtherTableData] = useState();
-  const [cdEmp, setCdEmp] = useState('hong'); // 사원 버노
+  const [cdEmp, setCdEmp] = useState("hong"); // 사원 버노
   const [mainTabData, setMainTabData] = useState();
+  const [nowActivatedTabValue, setNowActivatedTabValue] = useState();
+
+  const nowActivatedTabValueHandler = (inputValue) => {
+    setNowActivatedTabValue(inputValue);
+  };
 
   // useEffect(() => {
   //   fetch(url + '/emp/getAll')
@@ -26,9 +31,9 @@ const SwsmModel = () => {
 
   useEffect(() => {
     axios
-      .get(url + '/emp/getAll')
+      .get(url + "/emp/getAll")
       .then((response) => {
-        console.log('SwsmModel > /emp/getAll', response.data);
+        console.log("SwsmModel > /emp/getAll", response.data);
 
         const data = response.data.map((item) => ({
           Code: item.cdEmp,
@@ -40,17 +45,17 @@ const SwsmModel = () => {
         setLeftTableData(data);
       })
       .catch((error) => {
-        console.error('에러 : ', error);
+        console.error("에러 : ", error);
       });
   }, []);
 
   useEffect(() => {
     axios
-      .get(url + '/swsm/getSwsmOtherListByEmpCode')
+      .get(url + "/swsm/getSwsmOtherListByEmpCode")
       .then((response) => {
         console.log(
-          'SwsmModel > /swsm/getSwsmOtherListByEmpCode',
-          response.data,
+          "SwsmModel > /swsm/getSwsmOtherListByEmpCode",
+          response.data
         );
         const data = response.data.map((item) => ({
           항목: item.otherType,
@@ -59,25 +64,25 @@ const SwsmModel = () => {
         setOtherTableData(data);
       })
       .catch((error) => {
-        console.error('에러 : ', error);
+        console.error("에러 : ", error);
       });
   }, []);
 
   useEffect(() => {
-    console.log('SwsmModel > /swsm/getSwsmByEmpCode', 'cdEmp : ', cdEmp);
+    console.log("SwsmModel > /swsm/getSwsmByEmpCode", "cdEmp : ", cdEmp);
     axios
       .post(
-        url + '/swsm/getSwsmByEmpCode',
+        url + "/swsm/getSwsmByEmpCode",
         { empCode: cdEmp },
-        { 'Content-Type': 'application/json' },
+        { "Content-Type": "application/json" }
       )
       .then((response) => {
-        console.log('==============================================');
-        console.log('SwsmModel > /swsm/getSwsmByEmpCode', response.data);
+        console.log("==============================================");
+        console.log("SwsmModel > /swsm/getSwsmByEmpCode", response.data);
         setMainTabData(response.data);
       })
       .catch((error) => {
-        console.error('에러발생: ', error);
+        console.error("에러발생: ", error);
       });
   }, [cdEmp]);
 
@@ -93,4 +98,4 @@ const SwsmModel = () => {
   };
 };
 
-export default SwsmModel;
+export default TempSwsmModel;

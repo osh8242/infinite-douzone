@@ -9,21 +9,6 @@ const SwsmModel = () => {
   const [cdEmp, setCdEmp] = useState("hong"); // 사원 버노
   const [mainTabData, setMainTabData] = useState();
 
-  // useEffect(() => {
-  //   fetch(url + '/emp/getAll')
-  //     .then((response) => {
-  //       const data = response.data.map((item) => ({
-  //         Code: item.cdEmp,
-  //         성명: item.nmKrname,
-  //         주민등록번호: item.noSocial,
-  //         isSelect: false,
-  //         isCheck: false,
-  //       }));
-  //       setLeftTableData(data);
-  //     })
-  //     .then((data) => console.log(data));
-  // }, []);
-
   useEffect(() => {
     axios
       .get(url + "/emp/getAllEmp")
@@ -33,7 +18,6 @@ const SwsmModel = () => {
           Code: item.cdEmp,
           성명: item.nmKrname,
           주민등록번호: item.noSocial,
-          isSelected: false,
         }));
         setLeftTableData(data);
       })
