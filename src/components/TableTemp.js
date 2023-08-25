@@ -48,17 +48,20 @@ const TableTemp = ({
         );
 
       const updatedRow = { ...tableData[rowIndex], isEditable: false };
-
+      let editedRow = {};
       // 각 입력 필드의 값을 updatedRow에 저장
       currentRowInputs.forEach((input, index) => {
         const columnName = header[index].text;
         updatedRow.item[columnName] = input.value;
+        editedRow[input.getAttribute("data-column")] = input.value;
       });
 
       const newData = [...tableData];
       newData[rowIndex] = updatedRow;
+      console.log(newData[rowIndex].item);
 
       actions.setTableData(newData);
+      actions.setEditedRow(editedRow);
     }
   };
 
@@ -178,6 +181,7 @@ const TableTemp = ({
                       {row.isEditable ? (
                         <Form.Control
                           type="text"
+                          data-column={thead.field}
                           defaultValue={row.item[thead.text]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />

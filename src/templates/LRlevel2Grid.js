@@ -89,7 +89,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             tableData={leftTableData}
             actions={{
               setTableData: actions.setLeftTableData,
-              setCdEmp: actions.setCdEmp,
+              setPkColumn: actions.setCdEmp,
+              setEditedRow: actions.setEditedEmp,
             }}
           />
         </Col>

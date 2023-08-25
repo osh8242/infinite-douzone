@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import CommonConstant from "./CommonConstant";
@@ -103,11 +103,11 @@ const LRlevel2GridModel = () => {
   }, [cdEmp, reloadTrigger]);
 
   //수정된 사원 update 요청
-  const updateEmp = useCallback(() => {
+  useEffect(() => {
     axios
       .put(url + "/emp/updateEmp", editedEmp)
       .then((response) => {
-        console.log("업데이트 성공");
+        if (response.data === 1) console.log("Emp 업데이트 성공");
         setEditedEmp({});
       })
       .catch((error) => {
@@ -130,13 +130,13 @@ const LRlevel2GridModel = () => {
     actions: {
       setLeftTableData,
       setCdEmp,
+      setEditedEmp,
       setMainTabData,
       setSubTableData,
       setJobOk,
       setRefYear,
       setOrderRef,
       reloadStates,
-      updateEmp,
     },
   };
 };

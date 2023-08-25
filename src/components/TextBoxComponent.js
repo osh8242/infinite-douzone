@@ -126,8 +126,6 @@ function TextBoxComponent(props) {
         format = props.format;
       }
 
-      console.log("라벨", label);
-
       return (
         <Row className="py-1">
           {label && (
