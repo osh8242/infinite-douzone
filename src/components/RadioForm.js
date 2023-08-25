@@ -3,10 +3,10 @@
 // TestCode
 // <RadioForm label={"성별"} optionList={radioList} />
 
-import { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 
-function RadioForm({ label, optionList, checked }) {
+function RadioForm({ label, optionList, checked, disabled }) {
   const [selectedOption, setSelectedOption] = useState(checked);
 
   useEffect(() => {
@@ -37,6 +37,7 @@ function RadioForm({ label, optionList, checked }) {
               <input
                 className="form-check-input"
                 type="radio"
+                disabled={disabled}
                 value={option.key}
                 checked={selectedOption === option.key}
                 onChange={handleOptionChange}

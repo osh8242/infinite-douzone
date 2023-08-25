@@ -42,9 +42,23 @@ const CommonConstant = () => {
       { key: "0", value: "내국인" },
       { key: "1", value: "외국인" },
     ],
-    LRlevel2GridLeftTableHeader: [
-      { field: "cdEmp", text: "사원코드", orderBy: "asc" },
+    LRlevel2GridLeftTableHeaders: [
+      { field: "cdEmp", text: "사원코드", required: true, orderBy: "asc" },
       { field: "nmKrname", text: "성명", orderBy: "asc" },
+    ],
+    LRlevel2GridSubTableHeaders: [
+      { field: "cdFamrel", text: "관계", orderBy: "asc" },
+      { field: "nmKrname", text: "성명", orderBy: "asc" },
+      { field: "ynFor", text: "외국인", orderBy: "asc" },
+      { field: "noSocial", text: "주민등록번호", orderBy: "asc" },
+      { field: "fgSchool", text: "학력", orderBy: "asc" },
+      { field: "fgGraduation", text: "졸업구분", orderBy: "asc" },
+      { field: "ynTogether", text: "동거", orderBy: "asc" },
+      { field: "ynLunarbir", text: "양음", orderBy: "asc" },
+      { field: "daBirth", text: "생년월일", orderBy: "asc" },
+      { field: "cdJob", text: "직업", orderBy: "asc" },
+      { field: "nmKrcom", text: "직장명", orderBy: "asc" },
+      { field: "cdOffpos", text: "직급", orderBy: "asc" },
     ],
     labels: {
       cdEmp: "사원코드",
