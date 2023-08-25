@@ -168,9 +168,14 @@ const DateForm = ({ label }) => {
   const [startDate, setStartDate] = useState(new Date());
   return (
     <Row className="py-1">
-      <Col md="4" className="d-flex align-items-center justify-content-center">
-        <div>{label}</div>
-      </Col>
+      {label && (
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>{label}</div>
+        </Col>
+      )}
 
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <DatePicker

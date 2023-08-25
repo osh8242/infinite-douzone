@@ -1,16 +1,17 @@
 // 작성자 : 오승환
-import { useRef } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import Spinner from 'react-bootstrap/Spinner';
-import DateTest from '../components/DateTest';
-import MenuTab from '../components/MenuTab';
-import RadioForm from '../components/RadioForm';
-import SearchPanel from '../components/SearchPanel';
-import SelectForm from '../components/SelectForm';
-import TableForm from '../components/TableForm';
-import TextBoxComponent from '../components/TextBoxComponent';
-import CommonConstant from '../model/CommonConstant';
-import LRlevel2GridModel from '../model/LRlevel2GridModel';
+import { useRef } from "react";
+import { Col, Row } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import DateTest from "../components/DateTest";
+import MenuTab from "../components/MenuTab";
+import RadioForm from "../components/RadioForm";
+import SearchPanel from "../components/SearchPanel";
+import SelectForm from "../components/SelectForm";
+import TableTemp from "../components/TableTemp";
+import TextBoxComponent from "../components/TextBoxComponent";
+import CommonConstant from "../model/CommonConstant";
+import LRlevel2GridModel from "../model/LRlevel2GridModel";
+import TableForm from "../components/TableForm";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -45,6 +46,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
+    LRlevel2GridLeftTableHeader,
     labels, // 속성명
   } = CommonConstant();
 
@@ -55,9 +57,9 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
     setOrderRef(orderRefRef.current.value);
-    if (jobOkRef.current.value === 'yAndOnThisYear') {
+    if (jobOkRef.current.value === "yAndOnThisYear") {
       setRefYear(new Date().getFullYear());
-      setJobOk('Y');
+      setJobOk("Y");
     } else {
       setRefYear();
       setJobOk(jobOkRef.current.value);
@@ -65,33 +67,34 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   };
 
   return (
-    <>ㅇ
+    <>
       {/* 조회영역 */}
       <SearchPanel onSearch={onSearch}>
         <Row>
           <Col>
             <SelectForm
-              label={'구분'}
+              label={"구분"}
               optionList={searchOption}
               selectRef={jobOkRef}
             />
           </Col>
           <Col>
             <SelectForm
-              label={'정렬'}
+              label={"정렬"}
               optionList={orderList}
               selectRef={orderRefRef}
             />
           </Col>
         </Row>
       </SearchPanel>
-
       <Row>
         <Col md="3">
-          <TableForm
+          <TableTemp
             showCheckbox={true}
             showHeaderArrow={true}
+            header={LRlevel2GridLeftTableHeader}
             tableData={leftTableData}
+            setTableData={setLeftTableData}
             rowClickHandler={setCdEmp}
           />
         </Col>

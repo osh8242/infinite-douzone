@@ -1,27 +1,40 @@
-import { faC } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import { faC } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { NumericFormat, PatternFormat } from 'react-number-format';
+import { NumericFormat, PatternFormat } from "react-number-format";
 
 //css
 const textBoxStyle = {
-  width: '100%',
-  fontSize: '1rem',
-  fontWeight: '400',
-  lineHeight: '1.5',
-  appearance: 'none',
-  backgroundColor: 'var(--bs-body-bg)',
-  backgroundClip: 'padding-box',
-  border: 'var(--bs-border-width) solid var(--bs-border-color)',
-  borderRadius: 'var(--bs-border-radius)',
-  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-  padding: '0.375rem 0.75rem',
+  width: "100%",
+  fontSize: "1rem",
+  fontWeight: "400",
+  lineHeight: "1.5",
+  appearance: "none",
+  backgroundColor: "var(--bs-body-bg)",
+  backgroundClip: "padding-box",
+  border: "var(--bs-border-width) solid var(--bs-border-color)",
+  borderRadius: "var(--bs-border-radius)",
+  transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+  padding: "0.375rem 0.75rem",
 };
 
 function TextBoxComponent(props) {
   //props 속성들
-  const { id, name, type, label, rows, size, disabled, readOnly, plaintext, value, onChange , onClick} = props;  
+  const {
+    id,
+    name,
+    type,
+    label,
+    rows,
+    size,
+    disabled,
+    readOnly,
+    plaintext,
+    value,
+    onChange,
+    onClick,
+  } = props;
 
   //입력값
   const [inputValue, setInputValue] = useState(value);
@@ -30,21 +43,18 @@ function TextBoxComponent(props) {
     setInputValue(props.value);
   }, [value]);
 
-
   //커스텀 type 속성
-  const TYPE_TEXTAREA = 'textarea';               // textarea
-  const TYPE_NUMBER = 'number';                   // 숫자(세자리 콤마)
-  const TYPE_RATE = 'rate';                       // 비율(뒤에 %)
-  const TYPE_WON = 'won';                         // 원화(뒤에 원화표기)
-  const TYPE_REG_NUM = 'regNum';                  // 주민번호(뒷자리 마스킹)
-  const TYPE_CUSTOM_FORMAT = 'customformat';      // 커스텀 포멧(패턴지정)
-  const TYPE_CODE_HEPLER = 'codeHelper';          // 코드헬퍼
-
+  const TYPE_TEXTAREA = "textarea"; // textarea
+  const TYPE_NUMBER = "number"; // 숫자(세자리 콤마)
+  const TYPE_RATE = "rate"; // 비율(뒤에 %)
+  const TYPE_WON = "won"; // 원화(뒤에 원화표기)
+  const TYPE_REG_NUM = "regNum"; // 주민번호(뒷자리 마스킹)
+  const TYPE_CUSTOM_FORMAT = "customformat"; // 커스텀 포멧(패턴지정)
+  const TYPE_CODE_HEPLER = "codeHelper"; // 코드헬퍼
 
   switch (type) {
-
     //custom type 정의(1)_TextArea
-    case TYPE_TEXTAREA:  
+    case TYPE_TEXTAREA:
       return (
       <Row className="py-1">
         <Col
@@ -59,8 +69,8 @@ function TextBoxComponent(props) {
       </Row>
     );
 
-  //custom type 정의(2)_NumericFormat(comma처리 + 단위) ex) number,rate,won
-  case TYPE_NUMBER:
+    //custom type 정의(2)_NumericFormat(comma처리 + 단위) ex) number,rate,won
+    case TYPE_NUMBER:
     case TYPE_RATE:
     case TYPE_WON:
     
@@ -149,17 +159,31 @@ function TextBoxComponent(props) {
 
       return (
         <Row className="py-1">
-        <Col md="4" className="d-flex align-items-center justify-content-center">
-          <div>{label}</div>
-        </Col>
-  
-        <Col md="8" className="d-flex align-items-center justify-content-center">
-          <div className="react-datepicker-wrapper">
-            <CustomInput onClick={onClick}/>
-          </div>
-        </Col>
-      </Row>
-    );
+          {label && (
+            <Col
+              md="4"
+              className="d-flex align-items-center justify-content-center"
+            >
+              <div>{label}</div>
+            </Col>
+          )}
+          <Col
+            md="8"
+            className="d-flex align-items-center justify-content-center"
+          >
+            <NumericFormat
+              thousandSeparator={thousandSeparator}
+              suffix={suffix}
+              value={inputValue}
+              style={textBoxStyle}
+              inputProps={{
+                id: id,
+                name: name,
+              }}
+            />
+          </Col>
+        </Row>
+      );
 
     
   //bootstrap 제공 Textbox type들... ex) email,password,file,date,color... 
