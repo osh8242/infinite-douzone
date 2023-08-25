@@ -21,6 +21,7 @@ const TableTemp = ({
   header,
   tableData,
   actions,
+  rowAddable,
   minRow,
 }) => {
   const tbodyRef = useRef();
@@ -48,7 +49,8 @@ const TableTemp = ({
 
       const updatedRow = { ...tableData[rowIndex], isEditable: false };
       let editedRow = {};
-      // 각 입력 필드의 값을 updatedRow에 저장
+
+      // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
       currentRowInputs.forEach((input, index) => {
         const columnName = header[index].text;
         updatedRow.item[columnName] = input.value;
@@ -59,7 +61,10 @@ const TableTemp = ({
       newData[rowIndex] = updatedRow;
       console.log(newData[rowIndex].item);
 
+      //수정된 행을 반영하여 tableData를 수정함
       actions.setTableData(newData);
+
+      //수정된 행을 setState하여 update 요청을 보냄
       actions.setEditedRow(editedRow);
     }
   };
@@ -68,9 +73,10 @@ const TableTemp = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (e, rowIndex) => {
-    console.log("tableTemp > handleRowClick");
+    //수정중인 행의 index를 가져옴
     const editableRowIndex = getEditableRowIndex();
 
+    //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
     if (editableRowIndex !== rowIndex) {
       const newData = [...tableData];
       newData[editableRowIndex] = {
@@ -78,9 +84,13 @@ const TableTemp = ({
         isEditable: false,
       };
       actions.setTableData(newData);
-      let index = showCheckbox ? 1 : 0;
-      let id = e.currentTarget.children[index].children[0].textContent;
-      if (actions.setPkColumn) actions.setPkColumn(id);
+
+      //행 클릭시 해당 행의 Pk값으로 state값을 바꾸고 싶다면..
+      if (actions.setPkValue) {
+        let index = showCheckbox ? 1 : 0;
+        let id = e.currentTarget.children[index].children[0].textContent;
+        actions.setPkValue(id);
+      }
     }
   };
 
@@ -194,6 +204,7 @@ const TableTemp = ({
               </tr>
             );
           })}
+
           {/* 빈 행 */}
           {minRow &&
             Array(Math.max(minRow - tableData.length, 0))

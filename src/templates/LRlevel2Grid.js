@@ -87,9 +87,10 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             showHeaderArrow={true}
             header={LRlevel2GridLeftTableHeader}
             tableData={leftTableData}
+            rowAddable={true}
             actions={{
               setTableData: actions.setLeftTableData,
-              setPkColumn: actions.setCdEmp,
+              setPkValue: actions.setCdEmp,
               setEditedRow: actions.setEditedEmp,
             }}
           />
