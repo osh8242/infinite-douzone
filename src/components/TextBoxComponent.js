@@ -1,6 +1,6 @@
 import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 
@@ -8,7 +8,7 @@ function TextBoxComponent(props) {
   
   /* props 속성들*/
   const {
-    type,     //textbox, email, password, file, date, color... 
+    type,     //textbox, regNum, email, password, file, date, color... 
     id,
     name,
     label, 
@@ -26,6 +26,9 @@ function TextBoxComponent(props) {
     onClick,
     onClickCodeHelper,
 
+    //유효성 검사
+    validationFunction,
+
     //true false 옵션
     disabled,
     readOnly,
@@ -34,16 +37,16 @@ function TextBoxComponent(props) {
     thousandSeparator,  //세자리 콤마
   } = props;
 
-  //입력값
+  // 입력값
   const [inputValue, setInputValue] = useState(value);
   
   const handleInputChange = (event) => {
     const newValue = event.target.value;
-    
-      if (validation(newValue)) {
+      //if (validation(newValue)) {
         setInputValue(makeProcessedValue(newValue));
-      }
+      //}
   }
+
 
   // plain데이터 넘기기 +  보여줄 형태로 데이터 가공 
   const makeProcessedValue = (newValue) => {
@@ -81,19 +84,23 @@ function TextBoxComponent(props) {
 
   //유효성 검사
   const validation = (value) => {
-    
-    // 세자리콤마 
-    if(thousandSeparator){
-      const numCheck = /^[0-9,]/.test(value);   // 입력값이 숫자와 콤마(,)인지 확인 (불린값이 나옴)
-      if (!numCheck && value) return false;     // 숫자가 아닌 문자로 이루어져 있으면 pass! (입력이 x)
+     //props에서 받은 유효성검사 
+     validationFunction && validationFunction(value)
+
+    if(thousandSeparator || suffix){
+      const isNumber = /^\d+$/.test(value);
+      if (!isNumber){
+        alert("숫자를 입력해주세요."); 
+        //focus input
+      }
     }
 
-    if(suffix){
-
+    if(type === 'regNum'){
+      //주민등록번호 유효성
+      
     }
-
-    return true;
   }
+
 
 
   return (
@@ -113,7 +120,7 @@ function TextBoxComponent(props) {
             rows={rows} 
             onChange={handleInputChange}
             onClick={onClick}/>
-        ) : (
+       ) : (
           <>  
           <Form.Control
             type={type}
@@ -124,6 +131,7 @@ function TextBoxComponent(props) {
             readOnly={readOnly}
             plaintext={plaintext}
             value={inputValue}
+            // onChange = {type === 'regnum'? {handleRegNumChange} : {handleInputChange}}
             onChange={handleInputChange}
             onClick={onClick}
           />
