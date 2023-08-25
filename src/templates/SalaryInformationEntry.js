@@ -1,4 +1,4 @@
-// 작성자 : 오승환
+// 작성자 : 현소현
 import React, { useCallback, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import SearchPanel from "../components/SearchPanel";
@@ -92,12 +92,27 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     , setAllowMonth
     , paymentDate
     , setPaymentDate
-    , searchVo
-    , setSearchVo
+    
+    , searchVo 
+    , setSearchDeptCd
+    , setSearchRankNo
+    , setSearchCdOccup
+    , setSearchCdField
+    , setSearchCdProject
+    , setSearchYnUnit
+    , setSearchYnForlabor
+    , searchDeptCd
+    , searchRankNo
+    , searchCdOccup
+    , searchCdField
+    , searchCdProject
+    , searchYnUnit
+    , searchYnForlabor
+    
   } = SalaryInformationEntryModel();
   
   
-  // 코드도움 아이콘 클릭
+  // 코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback((tableData) => {
     setModalState({ show: true });
   }, []);
@@ -108,10 +123,15 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     // console.log('cdEmp >>' ); console.log(cdEmp);
     // console.log('paymentDate >>' ); console.log(paymentDate);
   };
+
+  // 셀 클릭 이벤트
+  const cellClickHandler = () => {
+    
+  }
   
   return (
     <>
-      {/* 코드도움 모달 영역 */}
+      {/* 코드 도움 모달 영역 */}
       <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
         <TableForm
           showCheckbox={false}
@@ -138,53 +158,29 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <div>
           <Row>
             <Col>
-              <TextBoxComponent
-                type="codeHelper"
-                name="searchEmpCd"
-                label={"사원코드"}
-              />
+              <TextBoxComponent type="codeHelper" name="searchEmpCd" label={"사원코드"} />
             </Col>
             <Col>
-              <TextBoxComponent
-                type="codeHelper"
-                name="searchDeptCd"
-                label={"부서코드"}
-                onClick={codeHelperShow}
+              <TextBoxComponent type="codeHelper" name="searchDeptCd" label={"부서코드"} onClick={codeHelperShow}
               />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent
-                type="codeHelper"
-                name="searchRankNo"
-                label={"직급코드"}
-              />
+              <TextBoxComponent type="codeHelper"  name="searchRankNo"  label={"직급코드"}  />
             </Col>
             <Col>
-              <TextBoxComponent
-                type="codeHelper"
-                name="searchCdOccup"
-                label={"직책코드"}
-              />
+              <TextBoxComponent type="codeHelper"  name="searchCdOccup" label={"직책코드"}  />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent
-                type="codeHelper"
-                name="searchCdField"
-                label={"현장코드"}
-              />
+              <TextBoxComponent  type="codeHelper" name="searchCdField" label={"현장코드"} />
             </Col>
             <Col>
-              <TextBoxComponent
-                type="codeHelper"
-                name="searchCdProject"
-                label={"프로젝트코드"}
-              />
+              <TextBoxComponent  type="codeHelper" name="searchCdProject" label={"프로젝트코드"} />
             </Col>
           </Row>
 
@@ -220,7 +216,6 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               showCheckbox={false}
               showHeaderArrow={false}
               tableData={salData}
-              rowClickHandler={setCdEmp}
             />
           ) : (
             <TableForm tableData={basicSalData} />

@@ -7,19 +7,16 @@ import { Col, Form, Row } from 'react-bootstrap';
 
 function DateTest({ label, type, defaultValue , onChange , value}) {
   const [choice, setChoice] = useState('month');
-  // console.log('before: ' + choice);
-  // console.log('label: ' + label);
-  // console.log('type: ' + type);
 
-  if (type === 'month') {
-    // console.log('month');
-  }
+  // if (type === 'month') {
+  //   console.log('month');
+  // }
 
   const onChangeHandeler = (e) =>{
-    onChange(e.value);
+    //console.log(e.target.value);
+    onChange(e.target.value);
   }
 
-  console.log(choice);
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">

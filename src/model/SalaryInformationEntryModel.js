@@ -25,14 +25,28 @@ const SalaryInformationEntryModel = () => {
   const [salDivision, setSalDivision] = useState();             //구분
   const [paymentDate, setPaymentDate] = useState(nowdate);      //지급일
 
+  const [searchDeptCd, setSearchDeptCd] = useState();
+  const [searchRankNo, setSearchRankNo] = useState();
+  const [searchCdOccup, setSearchCdOccup] = useState();
+  const [searchCdField, setSearchCdField] = useState();
+  const [searchCdProject, setSearchCdProject] = useState();
+  const [searchYnUnit, setSearchYnUnit] = useState();
+  const [searchYnForlabor, setSearchYnForlabor] = useState();
+  
   /* 상태 Data */
   const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
 
-  useEffect(() => {
+  /* 급여정보_사원 리스트 */
+  const empinfo = () => {
+    
+  }
 
-    /* 급여정보_사원 리스트 */
-    axios
-      .get(url + '/saEmpInfo/getAllSaEmpInfo')
+  useEffect(() => {
+    axios.post(
+      url + '/saEmpInfo/getAllSaEmpInfo',
+        { allowMonth: allowMonth, },
+        {'Content-Type': 'application/json',},
+      )
       .then((response) => {
         //console.log('급여정보_사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
@@ -56,11 +70,41 @@ const SalaryInformationEntryModel = () => {
 
   
   useEffect(() => {
+    axios.post(
+      url + '/saEmpInfo/getAllSaEmpInfo',
+        { allowMonth: allowMonth, },
+        {'Content-Type': 'application/json',},
+      )
+      .then((response) => {
+        //console.log('급여정보_사원리스트 >> ', response.data);
+        const data = response.data.map((item) => (
+          {
+          사원코드: item.cdEmp,
+          사원이름: item.nmEmp,
+          직급: item.rankNo,
+          감면율: item.MnReduction,
+          }
+        ));
+          
+        setSaInfoListData(data);
+      })
+
+      .catch((error) => {
+        console.error('에러발생: ', error);
+      });
+      
     const searchVo = {
       cdEmp: cdEmp,
       allowMonth: allowMonth,
       salDivision: salDivision,
       paymentDate: paymentDate,
+      searchDeptCd : searchDeptCd,
+      searchRankNo : searchRankNo,
+      searchCdOccup : searchCdOccup,
+      searchCdField : searchCdField,
+      searchCdProject : searchCdProject,
+      searchYnUnit : searchYnUnit,
+      searchYnForlabor : searchYnForlabor,
     };
      console.log(searchVo);
 
@@ -139,12 +183,30 @@ const SalaryInformationEntryModel = () => {
     , modalState : modalState
     
     , setModalState
+
     , setCdEmp
     , setSalDivision
     , setAllowMonth
     , setPaymentDate
+    , setSearchDeptCd
+    , setSearchRankNo
+    , setSearchCdOccup
+    , setSearchCdField
+    , setSearchCdProject
+    , setSearchYnUnit
+    , setSearchYnForlabor
+
+    , cdEmp
+    , salDivision
     , allowMonth
     , paymentDate
+    , searchDeptCd
+    , searchRankNo
+    , searchCdOccup
+    , searchCdField
+    , searchCdProject
+    , searchYnUnit
+    , searchYnForlabor
   };
 };
 
