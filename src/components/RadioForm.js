@@ -19,12 +19,14 @@ function RadioForm({ label, optionList, checked }) {
 
   return (
     <Row className="py-1">
-      <Col
-        md="4"
-        className="d-flex align-items-center justify-content-center mt-1"
-      >
-        {label}
-      </Col>
+      {label && (
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center mt-1"
+        >
+          {label}
+        </Col>
+      )}
       <Col
         md="8"
         className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"

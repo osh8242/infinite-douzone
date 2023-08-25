@@ -155,7 +155,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ko } from "date-fns/esm/locale";
 import { Col, Form, Row } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
-import "./DateForm.scss";
+import "./CustomInput.scss";
 
 const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
   <div className="custom-date-input" onClick={onClick} ref={ref}>
@@ -168,9 +168,14 @@ const DateForm = ({ label }) => {
   const [startDate, setStartDate] = useState(new Date());
   return (
     <Row className="py-1">
-      <Col md="4" className="d-flex align-items-center justify-content-center">
-        <div>{label}</div>
-      </Col>
+      {label && (
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>{label}</div>
+        </Col>
+      )}
 
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <DatePicker

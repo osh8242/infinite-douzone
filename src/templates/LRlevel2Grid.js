@@ -1,33 +1,23 @@
 // 작성자 : 오승환
-import { Col, Row } from 'react-bootstrap';
-import Spinner from 'react-bootstrap/Spinner';
-import DateTest from '../components/DateTest';
-import MenuTab from '../components/MenuTab';
-import RadioForm from '../components/RadioForm';
-import SearchPanel from '../components/SearchPanel';
-import SelectForm from '../components/SelectForm';
-import TableForm from '../components/TableForm';
-import TextBoxComponent from '../components/TextBoxComponent';
-import CommonConstant from '../model/CommonConstant';
-import LRlevel2GridModel from '../model/LRlevel2GridModel';
+import { useRef } from "react";
+import { Col, Row } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import DateTest from "../components/DateTest";
+import MenuTab from "../components/MenuTab";
+import RadioForm from "../components/RadioForm";
+import SearchPanel from "../components/SearchPanel";
+import SelectForm from "../components/SelectForm";
+import TableForm from "../components/TableForm";
+import TableTemp from "../components/TableTemp";
+import TextBoxComponent from "../components/TextBoxComponent";
+import CommonConstant from "../model/CommonConstant";
+import LRlevel2GridModel from "../model/LRlevel2GridModel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
-  //Model로 관리되는 state들
-  const {
-    leftTableData,
-    setLeftTableData,
-    cdEmp,
-    setCdEmp,
-    mainTabData,
-    setMainTabData,
-    subTableData,
-    setSubTableData,
-  } = LRlevel2GridModel();
-
   //실행중에는 값이 고정인 Constant들
   const {
     searchOption, // 검색옵션 리스트
@@ -37,40 +27,73 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
+    LRlevel2GridLeftTableHeader,
     labels, // 속성명
   } = CommonConstant();
 
+  //Model로 관리되는 state들
+  const {
+    leftTableData,
+    cdEmp,
+    mainTabData,
+    subTableData,
+    jobOk,
+    refYear,
+    orderRef,
+    actions,
+  } = LRlevel2GridModel();
+
+  //검색조건 : 재직구분, 정렬기준
+  const jobOkRef = useRef();
+  const orderRefRef = useRef();
+
+  //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    console.log('rjhat');
+    actions.setOrderRef(orderRefRef.current.value);
+    if (jobOkRef.current.value === "yAndOnThisYear") {
+      actions.setRefYear(new Date().getFullYear());
+      actions.setJobOk("Y");
+    } else {
+      actions.setRefYear();
+      actions.setJobOk(jobOkRef.current.value);
+    }
   };
 
   return (
     <>
+      {/* 조회영역 */}
       <SearchPanel onSearch={onSearch}>
         <Row>
           <Col>
-            <SelectForm label={'구분'} optionList={searchOption} />
+            <SelectForm
+              label={"구분"}
+              optionList={searchOption}
+              selectRef={jobOkRef}
+            />
           </Col>
           <Col>
-            <SelectForm label={'정렬'} optionList={orderList} />
+            <SelectForm
+              label={"정렬"}
+              optionList={orderList}
+              selectRef={orderRefRef}
+            />
           </Col>
         </Row>
       </SearchPanel>
       <Row>
         <Col md="3">
-          {
-            leftTableData ? ( // tableData가 준비되었을 때만 TableForm 컴포넌트 렌더링
-              <TableForm
-                showCheckbox={true}
-                showHeaderArrow={true}
-                tableData={leftTableData}
-                rowClickHandler={setCdEmp}
-              />
-            ) : (
-              <Spinner animation="border" variant="primary" />
-            )
-            // 로딩 중일 때 표시할 내용
-          }
+          <TableTemp
+            showCheckbox={true}
+            showHeaderArrow={true}
+            header={LRlevel2GridLeftTableHeader}
+            tableData={leftTableData}
+            rowAddable={true}
+            actions={{
+              setTableData: actions.setLeftTableData,
+              setPkValue: actions.setCdEmp,
+              setEditedRow: actions.setEditedEmp,
+            }}
+          />
         </Col>
         {mainTabData ? (
           <Col md="9">
