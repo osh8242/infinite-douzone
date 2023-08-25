@@ -1,19 +1,10 @@
-/*
-  작성자 : 김진
-  
-  parameter : showCheckbox, showHeaderArrow, tableData
-
-  showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
-  showHeaderArrow : true 일 경우 table header 에 arrow icon 생성, false arrow icon 제거
-  tableData : table 로 만들 데이터
-*/
-
 import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
+import Emp from "../vo/LRlevel2Grid/Emp";
 
 const TableTemp = ({
   showCheckbox,
@@ -28,6 +19,9 @@ const TableTemp = ({
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (index) => {
+    if (index === tableData.length) {
+      tableData.push(Emp({}));
+    }
     const newData = [...tableData];
     newData[index] = {
       ...newData[index],
@@ -94,7 +88,7 @@ const TableTemp = ({
     }
   };
 
-  // handle all check
+  // 전체체크 or 전체해제
   const handleAllCheckboxChange = () => {
     const isAllChecked = checkedBoxCounter() === tableData.length;
     const newData = tableData.map((row) => ({
@@ -104,7 +98,7 @@ const TableTemp = ({
     actions.setTableData(newData);
   };
 
-  // handle check
+  // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = (index) => {
     const newData = [...tableData];
     newData[index] = {
@@ -114,9 +108,10 @@ const TableTemp = ({
     actions.setTableData(newData);
   };
 
-  // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
+  // 정렬 화살표 기능.. 구현예정
   const handleArrowDirection = (columnName) => {};
 
+  // 체크된 항목 계산함수
   const checkedBoxCounter = () => {
     const checkedBoxCount = tableData.reduce(
       (sum, item) => (item.checked ? sum + 1 : sum),
@@ -125,6 +120,7 @@ const TableTemp = ({
     return checkedBoxCount;
   };
 
+  // 수정 중인 행의 index를 찾는 함수
   const getEditableRowIndex = () => {
     return tableData.findIndex((item) => item.isEditable);
   };
@@ -204,6 +200,27 @@ const TableTemp = ({
               </tr>
             );
           })}
+          {rowAddable && (
+            <tr
+              onDoubleClick={() => handleDoubleClick(tableData.length)}
+              onClick={(e) => handleRowClick(e, tableData.length)}
+            >
+              {/* 각 row 의 checkBox */}
+              {showCheckbox && (
+                <td>
+                  <div id="tableCheckBoxArea">
+                    <input type="checkbox" />
+                  </div>
+                </td>
+              )}
+              {/* 각 row 의 content */}
+              {header.map((thead, index) => (
+                <td key={index}>
+                  <div id="tableContents"></div>
+                </td>
+              ))}
+            </tr>
+          )}
 
           {/* 빈 행 */}
           {minRow &&

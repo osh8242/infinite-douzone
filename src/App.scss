@@ -11,5 +11,9 @@
   --bs-nav-link-color: var(--bs-secondary-color) !important;
 }
 
+body {
+  user-select: none;
+}
+
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap"; 

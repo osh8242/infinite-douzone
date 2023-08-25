@@ -37,10 +37,10 @@ function TextBoxComponent(props) {
   } = props;
 
   //입력값
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
-    setInputValue(props.value);
+    setInputValue(props.value || "");
   }, [value]);
 
   //커스텀 type 속성
