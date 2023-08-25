@@ -202,7 +202,7 @@ const TableTemp = ({
                   <td key={index}>
                     <div id="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
-                      {row.isEditable ? (
+                      {row.isEditable && column.isEditable ? (
                         <Form.Control
                           type="text"
                           required={column.required}
