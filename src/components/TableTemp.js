@@ -21,7 +21,6 @@ const TableTemp = ({
   header,
   tableData,
   actions,
-  rowClickHandler,
   minRow,
 }) => {
   const tbodyRef = useRef();
@@ -69,6 +68,7 @@ const TableTemp = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (e, rowIndex) => {
+    console.log("tableTemp > handleRowClick");
     const editableRowIndex = getEditableRowIndex();
 
     if (editableRowIndex !== rowIndex) {
@@ -80,7 +80,7 @@ const TableTemp = ({
       actions.setTableData(newData);
       let index = showCheckbox ? 1 : 0;
       let id = e.currentTarget.children[index].children[0].textContent;
-      if (rowClickHandler) rowClickHandler(id);
+      if (actions.setPkColumn) actions.setPkColumn(id);
     }
   };
 
