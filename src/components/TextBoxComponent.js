@@ -172,8 +172,8 @@ function TextBoxComponent(props) {
             className="d-flex align-items-center justify-content-center"
           >
             <NumericFormat
-              thousandSeparator={thousandSeparator}
-              suffix={suffix}
+              // thousandSeparator={thousandSeparator}
+              // suffix={suffix}
               value={inputValue}
               style={textBoxStyle}
               inputProps={{
