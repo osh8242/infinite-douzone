@@ -2,35 +2,21 @@ import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { NumericFormat, PatternFormat } from "react-number-format";
 
-//react-number-format inputbox bootstrap css
-const textBoxStyle = {
-  width: "100%",
-  fontSize: "1rem",
-  fontWeight: "400",
-  lineHeight: "1.5",
-  appearance: "none",
-  backgroundColor: "var(--bs-body-bg)",
-  backgroundClip: "padding-box",
-  border: "var(--bs-border-width) solid var(--bs-border-color)",
-  borderRadius: "var(--bs-border-radius)",
-  transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
-  padding: "0.375rem 0.75rem",
-};
 
 function TextBoxComponent(props) {
   
   /* props 속성들*/
   const {
+    type,     //textbox, email, password, file, date, color... 
     id,
     name,
-    type,     //textbox, email, password, file, date, color... 
     label, 
     size, 
     value,    
-    suffix,   //단위(문자)
-    mask,     //마스크(문자)
+
+    suffix,   // %, 원화표시
+    mask,     // '*'
 
     //textarea 전용 
     rows,     
@@ -53,15 +39,46 @@ function TextBoxComponent(props) {
   
   const handleInputChange = (event) => {
     const newValue = event.target.value;
-    setInputValue(newValue);
-    if (onChange) onChange(newValue);
+    
+      if (validation(newValue)) {
 
-    setInputValue(showInputValue(newValue));
-  };
+        // 세자리콤마 
+        if(thousandSeparator){ 
+          const numValue = newValue.replaceAll(',', '');
+          if (onChange) onChange(numValue); //콤마없는 clean value 넘기기
 
-  //보여지는 데이터 
+          let valuePlusSeparator = numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 받은 값에 3자리수마다 콤마를 추가
+          setInputValue(valuePlusSeparator);
+        }
+
+        
+      }
+  }
+
+  //유효성 검사
+  const validation = (value) => {
+    
+    // 세자리콤마 
+    if(thousandSeparator){  
+      const numCheck = /^[0-9,]/.test(value);   // 입력값이 숫자와 콤마(,)인지 확인 (불린값이 나옴)
+      if (!numCheck && value) return false;     // 숫자가 아닌 문자로 이루어져 있으면 pass! (입력이 x)
+    }
+
+    return true;
+  }
+
+  // 뒤에 단위 붙이기 처리 , 마스킹처리, 세자리 콤마 처리
   const showInputValue = (value) => {
-    // value = value + suffix;
+    
+    // suffix 처리
+    value = value + suffix;
+
+    // mask 마스킹 처리 
+   
+
+    // thousandSeparator 세자리 콤마
+    
+
     return value;
   }
 
@@ -83,6 +100,7 @@ function TextBoxComponent(props) {
             onChange={handleInputChange}
             onClick={onClick}/>
         ) : (
+          <>  
           <Form.Control
             type={type}
             id={id} 
@@ -95,6 +113,7 @@ function TextBoxComponent(props) {
             onChange={handleInputChange}
             onClick={onClick}
           />
+          </>
         )}
        {codeHelper && <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper}/>}
       </Col>
