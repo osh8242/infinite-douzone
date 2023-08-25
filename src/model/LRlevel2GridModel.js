@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
+import Emp from "../vo/LRlevel2Grid/Emp";
 import CommonConstant from "./CommonConstant";
 
 const LRlevel2GridModel = () => {
@@ -8,8 +9,9 @@ const LRlevel2GridModel = () => {
   const [reloadTrigger, setReloadTrigger] = useState(false); //state 값들을 다시 로드하기 위한 parameter
   const [cdEmp, setCdEmp] = useState("hong"); // 초기값 : 로그인한 유저의 사원코드 cdEmp
   const [jobOk, setJobOk] = useState("Y"); //재직여부
+  const [editedEmp, setEditedEmp] = useState({});
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
-  const [orderRef, setOrderRef] = useState("cdEmp"); //사원코드
+  const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
   const [leftTableData, setLeftTableData] = useState();
   const [mainTabData, setMainTabData] = useState();
   const [subTableData, setSubTableData] = useState();
@@ -29,19 +31,13 @@ const LRlevel2GridModel = () => {
         postData
       )
       .then((response) => {
-        console.log(
-          "LRlevel2GridModel > /emp/getEmpListByJobOk",
-          response.data
-        );
-        const data = response.data.map((item) => ({
-          item: {
+        const data = response.data.map((item) => {
+          const empData = {
             [labels.cdEmp]: item.cdEmp,
             [labels.nmKrname]: item.nmKrname,
-          },
-          checked: false,
-          selected: false,
-          isEditable: false,
-        }));
+          };
+          return Emp(empData);
+        });
         setLeftTableData(data);
       })
       .catch((error) => {
@@ -53,11 +49,6 @@ const LRlevel2GridModel = () => {
 
   //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    console.log(
-      "LRlevel2GridModel > /empAdd/getEmpAddByCdEmp",
-      "cdEmp : ",
-      cdEmp
-    );
     setMainTabData();
     axios
       .post(
@@ -66,10 +57,6 @@ const LRlevel2GridModel = () => {
         { "Content-Type": "application/json" }
       )
       .then((response) => {
-        console.log(
-          "LRlevel2GridModel > /empAdd/getEmpAddByCdEmp",
-          response.data
-        );
         setMainTabData(response.data);
       })
       .catch((error) => {
@@ -115,25 +102,42 @@ const LRlevel2GridModel = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cdEmp, reloadTrigger]);
 
+  //수정된 사원 update 요청
+  const updateEmp = useCallback(() => {
+    axios
+      .put(url + "/emp/updateEmp", editedEmp)
+      .then((response) => {
+        console.log("업데이트 성공");
+        setEditedEmp({});
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [editedEmp]);
+
   //모든 state 데이터를 다시 로드함
   const reloadStates = () => setReloadTrigger(!reloadTrigger);
 
   return {
     leftTableData: leftTableData,
-    setLeftTableData,
     cdEmp: cdEmp,
-    setCdEmp,
     mainTabData: mainTabData,
-    setMainTabData,
     subTableData: subTableData,
-    setSubTableData,
     jobOk: jobOk,
-    setJobOk,
     refYear: refYear,
-    setRefYear,
     orderRef: orderRef,
-    setOrderRef,
-    reloadStates,
+    actions: {
+      setLeftTableData,
+      setCdEmp,
+      setMainTabData,
+      setSubTableData,
+      setJobOk,
+      setRefYear,
+      setOrderRef,
+      reloadStates,
+      updateEmp,
+    },
   };
 };
 

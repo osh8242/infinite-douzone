@@ -8,10 +8,10 @@
   tableData : table 로 만들 데이터
 */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { Form, Table } from "react-bootstrap";
+import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
+import React, { useRef } from "react";
+import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
@@ -20,10 +20,12 @@ const TableTemp = ({
   showHeaderArrow,
   header,
   tableData,
-  setTableData,
+  actions,
   rowClickHandler,
   minRow,
 }) => {
+  const tbodyRef = useRef();
+
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (index) => {
     const newData = [...tableData];
@@ -31,11 +33,34 @@ const TableTemp = ({
       ...newData[index],
       isEditable: true,
     };
-    setTableData(newData);
+    actions.setTableData(newData);
   };
 
-  // //////////////////////////////////////////////////////////////// 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
-  const handleInputChange = (event, rowIndex, columnName) => {};
+  // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
+  const handleKeyDown = (event, rowIndex) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      // 현재 수정 중인 행의 모든 입력 필드를 가져옴
+      const currentRowInputs =
+        tbodyRef.current.children[rowIndex].querySelectorAll(
+          'input[type="text"]'
+        );
+
+      const updatedRow = { ...tableData[rowIndex], isEditable: false };
+
+      // 각 입력 필드의 값을 updatedRow에 저장
+      currentRowInputs.forEach((input, index) => {
+        const columnName = header[index].text;
+        updatedRow.item[columnName] = input.value;
+      });
+
+      const newData = [...tableData];
+      newData[rowIndex] = updatedRow;
+
+      actions.setTableData(newData);
+    }
+  };
 
   //수정 중인 행 index
 
@@ -49,7 +74,7 @@ const TableTemp = ({
         ...newData[editableRowIndex],
         isEditable: false,
       };
-      setTableData(newData);
+      actions.setTableData(newData);
       let index = showCheckbox ? 1 : 0;
       let id = e.currentTarget.children[index].children[0].textContent;
       if (rowClickHandler) rowClickHandler(id);
@@ -63,7 +88,7 @@ const TableTemp = ({
       ...row,
       checked: !isAllChecked,
     }));
-    setTableData(newData);
+    actions.setTableData(newData);
   };
 
   // handle check
@@ -73,7 +98,7 @@ const TableTemp = ({
       ...newData[index],
       checked: !newData[index].checked,
     };
-    setTableData(newData);
+    actions.setTableData(newData);
   };
 
   // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
@@ -125,9 +150,8 @@ const TableTemp = ({
           </tr>
         </thead>
         {/* content */}
-        <tbody>
+        <tbody ref={tbodyRef}>
           {tableData.map((row, rowIndex) => {
-            console.log("랜더!!");
             return (
               <tr
                 key={rowIndex}
@@ -154,7 +178,8 @@ const TableTemp = ({
                       {row.isEditable ? (
                         <Form.Control
                           type="text"
-                          value={row.item[thead.text]}
+                          defaultValue={row.item[thead.text]}
+                          onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
                       ) : (
                         row.item[thead.text]

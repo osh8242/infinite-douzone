@@ -7,36 +7,17 @@ import MenuTab from "../components/MenuTab";
 import RadioForm from "../components/RadioForm";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
+import TableForm from "../components/TableForm";
 import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
-import TableForm from "../components/TableForm";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
-  //Model로 관리되는 state들
-  const {
-    leftTableData,
-    setLeftTableData,
-    cdEmp,
-    setCdEmp,
-    mainTabData,
-    setMainTabData,
-    subTableData,
-    setSubTableData,
-    jobOk: jobOk,
-    setJobOk,
-    refYear: refYear,
-    setRefYear,
-    orderRef: orderRef,
-    setOrderRef,
-    reloadStates,
-  } = LRlevel2GridModel();
-
   //실행중에는 값이 고정인 Constant들
   const {
     searchOption, // 검색옵션 리스트
@@ -50,19 +31,31 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     labels, // 속성명
   } = CommonConstant();
 
+  //Model로 관리되는 state들
+  const {
+    leftTableData,
+    cdEmp,
+    mainTabData,
+    subTableData,
+    jobOk,
+    refYear,
+    orderRef,
+    actions,
+  } = LRlevel2GridModel();
+
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
   const orderRefRef = useRef();
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    setOrderRef(orderRefRef.current.value);
+    actions.setOrderRef(orderRefRef.current.value);
     if (jobOkRef.current.value === "yAndOnThisYear") {
-      setRefYear(new Date().getFullYear());
-      setJobOk("Y");
+      actions.setRefYear(new Date().getFullYear());
+      actions.setJobOk("Y");
     } else {
-      setRefYear();
-      setJobOk(jobOkRef.current.value);
+      actions.setRefYear();
+      actions.setJobOk(jobOkRef.current.value);
     }
   };
 
@@ -94,8 +87,10 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             showHeaderArrow={true}
             header={LRlevel2GridLeftTableHeader}
             tableData={leftTableData}
-            setTableData={setLeftTableData}
-            rowClickHandler={setCdEmp}
+            actions={{
+              setTableData: actions.setLeftTableData,
+              setCdEmp: actions.setCdEmp,
+            }}
           />
         </Col>
         {mainTabData ? (
