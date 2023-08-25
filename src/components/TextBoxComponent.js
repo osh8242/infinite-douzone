@@ -18,8 +18,8 @@ function TextBoxComponent(props) {
     suffix,   // %, 원화표시
     mask,     // '*'
 
-    //textarea 전용 
-    rows,     
+    rows,             //textarea 전용 (몇행짜리 textbox만들거니)
+    truncateLength,  //mask 전용 (처음 몇 글자만 보여줄 것인지 설정)
 
     //이벤트
     onChange,
@@ -41,46 +41,60 @@ function TextBoxComponent(props) {
     const newValue = event.target.value;
     
       if (validation(newValue)) {
-
-        // 세자리콤마 
-        if(thousandSeparator){ 
-          const numValue = newValue.replaceAll(',', '');
-          if (onChange) onChange(numValue); //콤마없는 clean value 넘기기
-
-          let valuePlusSeparator = numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 받은 값에 3자리수마다 콤마를 추가
-          setInputValue(valuePlusSeparator);
-        }
-
-        
+        setInputValue(makeProcessedValue(newValue));
       }
   }
+
+  // plain데이터 넘기기 +  보여줄 형태로 데이터 가공 
+  const makeProcessedValue = (newValue) => {
+    let processedValue = newValue;
+
+    // suffix 단위 붙이기
+    if(suffix){
+      const numValue = processedValue.replaceAll(suffix, '');
+      onChange && onChange(numValue); //no suffix value 넘기기
+      processedValue = numValue + suffix; // 받은 값에 suffix 추가
+    }
+
+    // thousandSeparator 세자리 콤마
+    if(thousandSeparator){ 
+      const numValue = processedValue.replaceAll(',', '');
+      onChange && onChange(numValue); //no comma value 넘기기
+      processedValue = numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 받은 값에 3자리수마다 콤마를 추가
+    }
+
+    // mask 마스킹 처리
+    if(mask){
+      onChange && onChange(newValue); //no masking value 넘기기
+      processedValue = maskString(newValue);
+    }
+
+    return processedValue;
+  }
+
+  //마스킹 String 만들기 함수 
+  const maskString = (input) => {
+    const visibleCharacters = truncateLength; // 처음 몇 글자를 보여줄 것인지 설정
+    const maskedPortion = input.slice(visibleCharacters).replace(/\S/g, mask);
+    return input.slice(0, visibleCharacters) + maskedPortion;
+  };
 
   //유효성 검사
   const validation = (value) => {
     
     // 세자리콤마 
-    if(thousandSeparator){  
+    if(thousandSeparator){
       const numCheck = /^[0-9,]/.test(value);   // 입력값이 숫자와 콤마(,)인지 확인 (불린값이 나옴)
       if (!numCheck && value) return false;     // 숫자가 아닌 문자로 이루어져 있으면 pass! (입력이 x)
+    }
+
+    if(suffix){
+
     }
 
     return true;
   }
 
-  // 뒤에 단위 붙이기 처리 , 마스킹처리, 세자리 콤마 처리
-  const showInputValue = (value) => {
-    
-    // suffix 처리
-    value = value + suffix;
-
-    // mask 마스킹 처리 
-   
-
-    // thousandSeparator 세자리 콤마
-    
-
-    return value;
-  }
 
   return (
     <Row className="py-1">
