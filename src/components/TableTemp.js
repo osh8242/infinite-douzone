@@ -6,8 +6,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";
 import { Form, Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
@@ -16,10 +14,12 @@ const TableTemp = ({
   showHeaderArrow,
   tableHeaders,
   tableData,
-  setTableData,
-  rowClickHandler,
+  actions,
+  rowAddable,
   minRow,
 }) => {
+  const tbodyRef = useRef();
+
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (index) => {
     if (index === tableData.length) {
@@ -36,7 +36,7 @@ const TableTemp = ({
       ...newData[index],
       isEditable: true,
     };
-    setTableData(newData);
+    actions.setTableData(newData);
   };
 
   // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
@@ -88,6 +88,7 @@ const TableTemp = ({
     //수정중인 행이 없다면 return
     if (editableRowIndex === -1) return;
 
+    //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
     if (editableRowIndex !== rowIndex) {
       const newData = [...tableData];
       // 수정중인 행이 추가하려던 행이라면 pop(), 존재하던 행이라면 수정상태 비활성화
@@ -105,7 +106,7 @@ const TableTemp = ({
       ...row,
       checked: !isAllChecked,
     }));
-    setTableData(newData);
+    actions.setTableData(newData);
   };
 
   // 각 행의 체크박스 체크 이벤트
@@ -115,7 +116,7 @@ const TableTemp = ({
       ...newData[index],
       checked: !newData[index].checked,
     };
-    setTableData(newData);
+    actions.setTableData(newData);
   };
 
   // 정렬 화살표 기능.. 구현예정
@@ -169,9 +170,8 @@ const TableTemp = ({
           </tr>
         </thead>
         {/* content */}
-        <tbody>
+        <tbody ref={tbodyRef}>
           {tableData.map((row, rowIndex) => {
-            console.log("랜더!!");
             return (
               <tr
                 key={rowIndex}
