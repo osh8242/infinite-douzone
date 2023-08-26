@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import CommonConstant from "./CommonConstant";
@@ -6,7 +6,7 @@ import CommonConstant from "./CommonConstant";
 const LRlevel2GridModel = () => {
   const url = "http://localhost:8888";
   const { labels } = CommonConstant();
-  const [cdEmp, setCdEmp] = useState("hong"); // 초기값 : 로그인한 유저의 사원코드 cdEmp
+  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [editedEmp, setEditedEmp] = useState({});
   const [editedEmpFam, setEditedEmpFam] = useState({});
@@ -33,8 +33,8 @@ const LRlevel2GridModel = () => {
       .then((response) => {
         const data = response.data.map((item) => {
           const empData = {
-            [labels.cdEmp]: item.cdEmp,
-            [labels.nmKrname]: item.nmKrname,
+            cdEmp: item.cdEmp,
+            nmKrname: item.nmKrname,
           };
           return Emp(empData);
         });
@@ -44,73 +44,71 @@ const LRlevel2GridModel = () => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jobOk, refYear, orderRef]);
+  }, [jobOk, refYear, orderRef, editedEmp]);
 
   //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    setMainTabData();
-    axios
-      .post(
-        url + "/empAdd/getEmpAddByCdEmp",
-        { cdEmp: cdEmp },
-        { "Content-Type": "application/json" }
-      )
-      .then((response) => {
-        let data = response.data;
-        if (response.data === "") data = {};
-        setMainTabData(data);
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, [cdEmp]);
+    setMainTabData({});
+    if (mainTablePkValue)
+      axios
+        .post(url + "/empAdd/getEmpAddByCdEmp", mainTablePkValue, {
+          "Content-Type": "application/json",
+        })
+        .then((response) => {
+          let data = response.data;
+          if (response.data === "") data = {};
+          setMainTabData(data);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+  }, [mainTablePkValue]);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
-    setSubTableData();
-    axios
-      .post(url + "/empFam/getEmpFamListByCdEmp", { cdEmp: cdEmp })
-      .then((response) => {
-        console.log(
-          "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
-          response.data
-        );
-        console.log(typeof response.data);
-        const data = response.data.map((item) => {
-          return {
-            item: {
-              [labels.cdFamrel]: item.cdFamrel,
-              [labels.nmKrname]: item.nmKrname,
-              [labels.ynFor]: item.ynFor,
-              [labels.noSocial]: item.noSocial,
-              [labels.fgSchool]: item.fgSchool,
-              [labels.fgGraduation]: item.fgGraduation,
-              [labels.ynTogether]: item.ynTogether,
-              [labels.ynLunarbir]: item.ynLunarbir,
-              [labels.daBirth]: item.daBirth,
-              [labels.cdJob]: item.cdJob,
-              [labels.nmKrcom]: item.nmKrcom,
-              [labels.cdOffpos]: item.cdOffpos,
-            },
-            checked: false,
-            selected: false,
-            isEditable: false,
-          };
+    setSubTableData([]);
+    if (mainTablePkValue)
+      axios
+        .post(url + "/empFam/getEmpFamListByCdEmp", mainTablePkValue)
+        .then((response) => {
+          console.log(
+            "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
+            response.data
+          );
+          console.log(typeof response.data);
+          const data = response.data.map((item) => {
+            return {
+              item: {
+                cdFamrel: item.cdFamrel,
+                nmKrname: item.nmKrname,
+                ynFor: item.ynFor,
+                noSocial: item.noSocial,
+                fgSchool: item.fgSchool,
+                fgGraduation: item.fgGraduation,
+                ynTogether: item.ynTogether,
+                ynLunarbir: item.ynLunarbir,
+                daBirth: item.daBirth,
+                cdJob: item.cdJob,
+                nmKrcom: item.nmKrcom,
+                cdOffpos: item.cdOffpos,
+              },
+              checked: false,
+              selected: false,
+              isEditable: false,
+            };
+          });
+          setSubTableData(data);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
         });
-        setSubTableData(data);
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cdEmp]);
+  }, [mainTablePkValue]);
 
   //수정된 사원 update 요청
   useEffect(() => {
-    if (!editedEmp.isNew)
+    if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
       axios
         .put(url + "/emp/updateEmp", editedEmp)
         .then((response) => {
@@ -125,7 +123,7 @@ const LRlevel2GridModel = () => {
 
   //추가된 사원 insert 요청
   useEffect(() => {
-    if (editedEmp.isNew)
+    if (editedEmp.isNew && Object.keys(editedEmp).length !== 0)
       axios
         .post(url + "/emp/insertEmp", editedEmp)
         .then((response) => {
@@ -136,25 +134,26 @@ const LRlevel2GridModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [editedEmp]);
+  }, [editedEmp, mainTabData]);
 
   //수정된 사원가족 update 요청
   useEffect(() => {
-    axios
-      .put(url + "/emp/updateEmpFam", editedEmpFam)
-      .then((response) => {
-        if (response.data === 1) console.log("Emp 업데이트 성공");
-        setEditedEmpFam({});
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
+    if (Object.keys(editedEmpFam).length !== 0)
+      axios
+        .put(url + "/emp/updateEmpFam", editedEmpFam)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmpFam({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
   }, [editedEmpFam]);
 
   return {
     leftTableData: leftTableData,
-    cdEmp: cdEmp,
+    mainTablePk: mainTablePkValue,
     mainTabData: mainTabData,
     subTableData: subTableData,
     jobOk: jobOk,
@@ -162,7 +161,7 @@ const LRlevel2GridModel = () => {
     orderRef: orderRef,
     actions: {
       setLeftTableData,
-      setCdEmp,
+      setMainTablePkValue,
       setEditedEmp,
       setEditedEmpFam,
       setMainTabData,

@@ -104,7 +104,7 @@ function TextBoxComponent(props) {
             <NumericFormat
               thousandSeparator={thousandSeparator}
               suffix={suffix}
-              value={inputValue}
+              defaultValue={inputValue}
               style={textBoxStyle}
               inputProps={{
                 id: id,
@@ -140,7 +140,7 @@ function TextBoxComponent(props) {
           <Col className="d-flex align-items-center justify-content-center">
             <PatternFormat
               format={format}
-              value={value}
+              defaultValue={value}
               onChange={onChange}
               style={textBoxStyle}
             />
@@ -198,7 +198,7 @@ function TextBoxComponent(props) {
               disabled={disabled}
               readOnly={readOnly}
               plaintext={plaintext}
-              value={value}
+              defaultValue={value}
               onChange={onChange}
             />
           </Col>
