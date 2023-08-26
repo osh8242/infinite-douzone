@@ -12,7 +12,7 @@ function App() {
     <div>
       <Header />
       <Container fluid>
-        <SwsmGrid />
+        <LRlevel2Grid />
       </Container>
     </div>
   );
