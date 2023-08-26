@@ -161,7 +161,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               <TextBoxComponent type="codeHelper" name="searchEmpCd" label={"사원코드"} />
             </Col>
             <Col>
-              <TextBoxComponent type="codeHelper" name="searchDeptCd" label={"부서코드"} onClick={codeHelperShow}
+              <TextBoxComponent codeHelper name="searchDeptCd" label={"부서코드"} onChange={setSearchDeptCd} onClickCodeHelper={codeHelperShow}
               />
             </Col>
           </Row>
