@@ -1,4 +1,8 @@
-import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";
 import { Form, Table } from "react-bootstrap";
@@ -79,28 +83,17 @@ const TableTemp = ({
 
     //수정중인 행의 index를 가져옴
     const editableRowIndex = getEditableRowIndex();
+    console.log("editableRowIndex", editableRowIndex);
 
     //수정중인 행이 없다면 return
-    //if (editableRowIndex !== -1) return;
-
-    //수정중이던 행이 새롭게 추가하려던 행이었다면 행을 폐기하고 setTableData
-    if (
-      editableRowIndex !== tableData.length - 1 &&
-      tableData[tableData.length - 1].isNew
-    ) {
-      const newData = [...tableData];
-      newData.pop();
-      actions.setTableData(newData);
-      return;
-    }
+    if (editableRowIndex === -1) return;
 
     //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
     if (editableRowIndex !== rowIndex) {
       const newData = [...tableData];
-      newData[editableRowIndex] = {
-        ...newData[editableRowIndex],
-        isEditable: false,
-      };
+      // 수정중인 행이 추가하려던 행이라면 pop(), 존재하던 행이라면 수정상태 비활성화
+      if (tableData[tableData.length - 1].isNew) newData.pop();
+      else newData[editableRowIndex].isEditable = false;
       actions.setTableData(newData);
       return;
     }
@@ -143,7 +136,7 @@ const TableTemp = ({
     return tableData.findIndex((item) => item.isEditable);
   };
 
-  return tableData?.length > 0 ? (
+  return tableData ? (
     <>
       <Table size="sm" bordered hover>
         {/* header */}
@@ -198,20 +191,20 @@ const TableTemp = ({
                   </td>
                 )}
                 {/* 각 row의 td */}
-                {tableHeaders.map((column, index) => (
+                {tableHeaders.map((thead, index) => (
                   <td key={index}>
                     <div id="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
-                      {row.isEditable && column.isEditable ? (
+                      {row.isEditable && thead.isEditable ? (
                         <Form.Control
                           type="text"
-                          required={column.required}
-                          data-column={column.field}
-                          defaultValue={row.item[column.text]}
+                          required={thead.required}
+                          data-column={thead.field}
+                          defaultValue={row.item[thead.text]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
                       ) : (
-                        row.item[column.text]
+                        row.item[thead.text]
                       )}
                     </div>
                   </td>
@@ -227,9 +220,7 @@ const TableTemp = ({
             >
               {showCheckbox && (
                 <td>
-                  <div id="tableCheckBoxArea">
-                    <input type="checkbox" />
-                  </div>
+                  <FontAwesomeIcon icon={faPlus} />
                 </td>
               )}
               {tableHeaders.map((thead, index) => (

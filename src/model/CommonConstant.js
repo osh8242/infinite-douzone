@@ -43,8 +43,13 @@ const CommonConstant = () => {
       { key: "1", value: "외국인" },
     ],
     LRlevel2GridLeftTableHeaders: [
-      { field: "cdEmp", text: "사원코드", isEditable: true, required: true },
-      { field: "nmKrname", text: "성명" },
+      {
+        field: "cdEmp",
+        text: "사원코드",
+        required: true,
+        isEditable: true,
+      },
+      { field: "nmKrname", text: "성명", isEditable: true },
     ],
     LRlevel2GridSubTableHeaders: [
       { field: "cdFamrel", text: "관계" },
