@@ -21,9 +21,14 @@ function DateTest(props) {
 
   return (
     <Row className="py-1">
-      <Col md="4" className="d-flex align-items-center justify-content-center">
-        <div>{label}</div>
-      </Col>
+      {label && (
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div>{label}</div>
+        </Col>
+      )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <Form.Control type={type} placeholder="YYYY.MM.DD" value={value} />
         {isPeriod && (

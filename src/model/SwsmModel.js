@@ -11,7 +11,7 @@ const SwsmModel = () => {
 
   useEffect(() => {
     axios
-      .get(url + "/emp/getAllEmp")
+      .get(url + "/emp/getAll")
       .then((response) => {
         console.log("SwsmModel > /emp/getAllEmp", response.data);
         const data = response.data.map((item) => ({

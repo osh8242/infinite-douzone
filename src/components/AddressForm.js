@@ -4,7 +4,17 @@ import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 import "../styles/addressForm.css";
 
-const AddressForm = ({ label, isZonecode }) => {
+const AddressForm = (props) => {
+  // props data
+  /*
+    isZonecode: 우편번호 여부(boolean)
+    zipHomeData: 우편번호
+    addHome1Data: 주소
+    addHome2Data: 상세주소
+  */
+  const { isZonecode, zipHomeData, addHome1Data, addHome2Data } = props;
+
+  // 렌더링 최소화를 위해 state 대신 변수와 함수 구성으로 변경 예정
   const [zonecode, setZonecode] = useState("");
   const [address, setAddress] = useState("");
 
@@ -19,6 +29,19 @@ const AddressForm = ({ label, isZonecode }) => {
     show: false,
     props: {},
   });
+
+  ////////////////////////////////////////////////////////
+  // 값을 수정하는 로직은 추후 구현 예정
+  const handleZipHomeData = (e) => {
+    zipHomeData = e.target.value;
+  };
+  const handleAddHome1Data = (e) => {
+    addHome1Data = e.target.value;
+  };
+  const handleAddHome2Data = (e) => {
+    addHome2Data = e.target.value;
+  };
+  ////////////////////////////////////////////////////////
 
   return (
     <>
@@ -36,7 +59,7 @@ const AddressForm = ({ label, isZonecode }) => {
               id="zoneCodeArea"
               type="text"
               name="zonecode"
-              value={zonecode}
+              value={zipHomeData ? zipHomeData : zonecode}
               // size={5}
               disabled
             />
@@ -47,7 +70,7 @@ const AddressForm = ({ label, isZonecode }) => {
             id="addressArea"
             type="text"
             name="address"
-            value={address}
+            value={addHome1Data ? addHome1Data : address}
             disabled
           />
 
@@ -70,7 +93,11 @@ const AddressForm = ({ label, isZonecode }) => {
           <div>상세주소</div>
         </Col>
         <Col md="8">
-          <Form.Control type="text" name="address-detail" />
+          <Form.Control
+            type="text"
+            name="address-detail"
+            value={addHome2Data ? addHome2Data : ""}
+          />
         </Col>
       </Row>
       <ModalComponent

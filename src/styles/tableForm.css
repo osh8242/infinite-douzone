@@ -1,19 +1,21 @@
 #tableCheckBoxHeader {
   width: 28px;
   cursor: pointer;
+  text-align: center;
+  background-color: rgba(233, 236, 239, 0.5);
 }
 
-.tableHeader {
-  display: flex;
+#tableHeader {
   position: relative;
-  justify-content: center;
+  text-align: center;
   cursor: pointer;
+  background-color: rgba(233, 236, 239, 0.5);
 }
 
 #tableHeader-arrow svg {
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 2px;
   transform: translateY(-50%);
   z-index: 2;
 }
@@ -25,10 +27,17 @@
 .tableCheckBoxArea {
   height: 100%;
   margin-top: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 table {
   table-layout: fixed;
 }.selected-row {
   background-color: yellow; 
+}
+
+.styleNone {
+  color: transparent;
 }
