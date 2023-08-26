@@ -1,14 +1,5 @@
-// import React, { useState } from "react";
-
-// const Swsm = () => {
-//   const [empCode, setEmpCode] = useState();
-//   const [, set] = useState();
-//   const [, set] = useState();
-//   const [, set] = useState();
-//   const [, set] = useState();
-//   const [, set] = useState();
-
-//   return <div></div>;
-// };
-
-// export default Swsm;
+console.log("Swsm 객체 생성");
+const Swsm = (swsmData) => {
+  return { item: swsmData, checked: false, selected: false, isEditable: false };
+};
+export default Swsm;

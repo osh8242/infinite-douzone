@@ -121,3 +121,4 @@ const SwsmConstant = () => {
     },
   };
 };
+export default SwsmConstant;

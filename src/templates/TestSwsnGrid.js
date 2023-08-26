@@ -1,39 +1,43 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-// import TempSwsmModel from "./model/TempSwsmModel";
-import Button from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import MenuTab from "../components/MenuTab";
+import SearchPanel from "../components/SearchPanel";
+import DateTest from "../components/DateTest";
+import SelectForm from "../components/SelectForm";
+import SwsmConstant from "../model/SwsmConstant";
+import TableTemp from "../components/TableTemp";
 
-function TestSwsnGrid() {
-  // const { nowActivatedTabValueHandler, nowActivatedTabValue } = TempSwsmModel();
-
-  // TempSwsmModel.defaultProps = {
-  //   nowActivatedTabValue: "",
-  //   nowActivatedTabValueHandler: "",
-  // };
+const TestSwsnGrid = () => {
+  const {
+    mainTabMenuList, // 전체 구분 목록
+    incomeClassficationList, // 상단 조회 - 소득구분 목록
+  } = SwsmConstant();
 
   return (
-    <div className="switchBtn flex_center">
-      {/* <Button
-        className={nowActivatedTabValue === "firstBtn" ? "btnL" : "btnR"}
-        value="firstBtn"
-        onClick={(e) => {
-          nowActivatedTabValueHandler(e.target.value);
-        }} //e.target.value를 사용하면 typeError발생
-      >
-        계약서 조회
-      </Button>
-
-      <Button
-        className={nowActivatedTabValue === "secondBtn" ? "btnL" : "btnR"}
-        value="secondBtn"
-        onClick={(e) => {
-          nowActivatedTabValueHandler(e.target.value);
-        }} //e.target.value를 사용하면 typeError발생
-      >
-        계약서 작성
-      </Button> */}
-    </div>
+    <>
+      <Row className="py-1">
+        <MenuTab menuList={mainTabMenuList} />
+        <SearchPanel>
+          <Row>
+            <Col md="4">
+              <DateTest label={"작성년월"} />
+            </Col>
+            <Col md="4">
+              <SelectForm
+                label={"소득구분"}
+                optionList={incomeClassficationList}
+              />
+            </Col>
+          </Row>
+        </SearchPanel>
+        <Row>
+          <Col md="3">
+            <TableTemp showCheckbox={true} showHeaderArrow={true} />
+          </Col>
+        </Row>
+      </Row>
+    </>
   );
-}
+};
 
 export default TestSwsnGrid;
