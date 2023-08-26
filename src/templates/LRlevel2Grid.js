@@ -84,11 +84,10 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       <Row>
         <Col md="3">
           <TableTemp
-            showCheckbox={true}
-            showHeaderArrow={true}
+            //showHeaderArrow={true}
+            rowAddable={true}
             tableHeaders={LRlevel2GridLeftTableHeaders}
             tableData={leftTableData}
-            rowAddable={true}
             actions={{
               setTableData: actions.setLeftTableData,
               setPkValue: actions.setMainTablePkValue,
@@ -188,11 +187,13 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             <TableTemp
               showCheckbox={true}
               showHeaderArrow={true}
+              rowAddable={true}
               tableHeaders={LRlevel2GridSubTableHeaders}
               tableData={subTableData}
               actions={{
                 setTableData: actions.setSubTableData,
                 setEditedRow: actions.setEditedEmpFam,
+                setSubTablePkValue: actions.setSubTablePkValue,
               }}
             />
           </Col>

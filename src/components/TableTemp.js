@@ -39,7 +39,7 @@ const TableTemp = ({
     actions.setTableData(newData);
   };
 
-  // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
+  // 더블 클릭 후 편집한 데이터
   const handleKeyDown = (event, rowIndex) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -227,8 +227,8 @@ const TableTemp = ({
                 </td>
               )}
               {tableHeaders.map((thead, index) => (
-                <td key={index}>
-                  <div id="tableContents"></div>
+                <td key={index} style={{ color: "transparent" }}>
+                  <div id="tableContents">.</div>
                 </td>
               ))}
             </tr>

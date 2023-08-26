@@ -2,16 +2,22 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import CommonConstant from "./CommonConstant";
+import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 const LRlevel2GridModel = () => {
-  const url = "http://localhost:8888";
-  const { labels } = CommonConstant();
-  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
   const [jobOk, setJobOk] = useState("Y"); //재직여부
-  const [editedEmp, setEditedEmp] = useState({});
-  const [editedEmpFam, setEditedEmpFam] = useState({});
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
   const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
+
+  const url = "http://localhost:8888";
+  const { labels } = CommonConstant();
+
+  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
+  const [editedEmp, setEditedEmp] = useState({});
+
+  const [subTablePkValue, setSubTablePkValue] = useState(); // noSocial
+  const [editedEmpFam, setEditedEmpFam] = useState({});
+
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
   const [subTableData, setSubTableData] = useState([]);
@@ -68,7 +74,7 @@ const LRlevel2GridModel = () => {
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
     setSubTableData([]);
-    if (mainTablePkValue)
+    if (mainTablePkValue) {
       axios
         .post(url + "/empFam/getEmpFamListByCdEmp", mainTablePkValue)
         .then((response) => {
@@ -76,27 +82,24 @@ const LRlevel2GridModel = () => {
             "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
             response.data
           );
-          console.log(typeof response.data);
           const data = response.data.map((item) => {
-            return {
-              item: {
-                cdFamrel: item.cdFamrel,
-                nmKrname: item.nmKrname,
-                ynFor: item.ynFor,
-                noSocial: item.noSocial,
-                fgSchool: item.fgSchool,
-                fgGraduation: item.fgGraduation,
-                ynTogether: item.ynTogether,
-                ynLunarbir: item.ynLunarbir,
-                daBirth: item.daBirth,
-                cdJob: item.cdJob,
-                nmKrcom: item.nmKrcom,
-                cdOffpos: item.cdOffpos,
-              },
-              checked: false,
-              selected: false,
-              isEditable: false,
+            const empFamData = {
+              seqVal: item.seqVal,
+              cdEmp: item.cdEmp,
+              cdFamrel: item.cdFamrel,
+              nmKrname: item.nmKrname,
+              ynFor: item.ynFor,
+              noSocial: item.noSocial,
+              fgSchool: item.fgSchool,
+              fgGraduation: item.fgGraduation,
+              ynTogether: item.ynTogether,
+              ynLunarbir: item.ynLunarbir,
+              daBirth: item.daBirth,
+              cdJob: item.cdJob,
+              nmKrcom: item.nmKrcom,
+              cdOffpos: item.cdOffpos,
             };
+            return EmpFam(empFamData);
           });
           setSubTableData(data);
         })
@@ -104,7 +107,8 @@ const LRlevel2GridModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [mainTablePkValue]);
+    }
+  }, [mainTablePkValue, editedEmpFam]);
 
   //수정된 사원 update 요청
   useEffect(() => {
@@ -134,13 +138,13 @@ const LRlevel2GridModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [editedEmp, mainTabData]);
+  }, [editedEmp]);
 
   //수정된 사원가족 update 요청
   useEffect(() => {
     if (Object.keys(editedEmpFam).length !== 0)
       axios
-        .put(url + "/emp/updateEmpFam", editedEmpFam)
+        .put(url + "/empFam/updateEmpFam", editedEmpFam)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmpFam({});
@@ -160,15 +164,19 @@ const LRlevel2GridModel = () => {
     refYear: refYear,
     orderRef: orderRef,
     actions: {
-      setLeftTableData,
-      setMainTablePkValue,
-      setEditedEmp,
-      setEditedEmpFam,
-      setMainTabData,
-      setSubTableData,
       setJobOk,
       setRefYear,
       setOrderRef,
+
+      setLeftTableData,
+      setMainTablePkValue,
+      setEditedEmp,
+
+      setMainTabData,
+
+      setSubTableData,
+      setSubTablePkValue,
+      setEditedEmpFam,
     },
   };
 };
