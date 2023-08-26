@@ -1,14 +1,8 @@
-/*
-  작성자 : 김진
-  
-  parameter : showCheckbox, showHeaderArrow, tableData
-
-  showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
-  showHeaderArrow : true 일 경우 table header 에 arrow icon 생성, false arrow icon 제거
-  tableData : table 로 만들 데이터
-*/
-
-import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";
 import { Form, Table } from "react-bootstrap";
@@ -18,7 +12,7 @@ import "../styles/tableForm.css";
 const TableTemp = ({
   showCheckbox,
   showHeaderArrow,
-  header,
+  tableHeaders,
   tableData,
   actions,
   rowAddable,
@@ -28,6 +22,15 @@ const TableTemp = ({
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (index) => {
+    if (index === tableData.length) {
+      let newRow = {};
+      tableHeaders.forEach((item) => {
+        newRow[item.text] = "";
+      });
+      newRow = actions.getRowObject(newRow);
+      newRow["isNew"] = true;
+      tableData.push(newRow);
+    }
     const newData = [...tableData];
     newData[index] = {
       ...newData[index],
@@ -48,11 +51,11 @@ const TableTemp = ({
         );
 
       const updatedRow = { ...tableData[rowIndex], isEditable: false };
-      let editedRow = {};
+      let editedRow = { isNew: tableData[rowIndex].isNew };
 
       // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
       currentRowInputs.forEach((input, index) => {
-        const columnName = header[index].text;
+        const columnName = tableHeaders[index].text;
         updatedRow.item[columnName] = input.value;
         editedRow[input.getAttribute("data-column")] = input.value;
       });
@@ -69,32 +72,34 @@ const TableTemp = ({
     }
   };
 
-  //수정 중인 행 index
-
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (e, rowIndex) => {
+    //행 클릭시 해당 행의 Pk값으로 state값을 바꾸고 싶다면.. setPkValue
+    if (actions.setPkValue) {
+      let index = showCheckbox ? 1 : 0;
+      let id = e.currentTarget.children[index].children[0].textContent;
+      actions.setPkValue(id);
+    }
+
     //수정중인 행의 index를 가져옴
     const editableRowIndex = getEditableRowIndex();
+    console.log("editableRowIndex", editableRowIndex);
+
+    //수정중인 행이 없다면 return
+    if (editableRowIndex === -1) return;
 
     //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
     if (editableRowIndex !== rowIndex) {
       const newData = [...tableData];
-      newData[editableRowIndex] = {
-        ...newData[editableRowIndex],
-        isEditable: false,
-      };
+      // 수정중인 행이 추가하려던 행이라면 pop(), 존재하던 행이라면 수정상태 비활성화
+      if (tableData[tableData.length - 1].isNew) newData.pop();
+      else newData[editableRowIndex].isEditable = false;
       actions.setTableData(newData);
-
-      //행 클릭시 해당 행의 Pk값으로 state값을 바꾸고 싶다면..
-      if (actions.setPkValue) {
-        let index = showCheckbox ? 1 : 0;
-        let id = e.currentTarget.children[index].children[0].textContent;
-        actions.setPkValue(id);
-      }
+      return;
     }
   };
 
-  // handle all check
+  // 전체체크 or 전체해제
   const handleAllCheckboxChange = () => {
     const isAllChecked = checkedBoxCounter() === tableData.length;
     const newData = tableData.map((row) => ({
@@ -104,7 +109,7 @@ const TableTemp = ({
     actions.setTableData(newData);
   };
 
-  // handle check
+  // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = (index) => {
     const newData = [...tableData];
     newData[index] = {
@@ -114,9 +119,10 @@ const TableTemp = ({
     actions.setTableData(newData);
   };
 
-  // handle table arrow -> DB 연결 이후 order by parameter 변경하여 주도록 수정 예정
+  // 정렬 화살표 기능.. 구현예정
   const handleArrowDirection = (columnName) => {};
 
+  // 체크된 항목 계산함수
   const checkedBoxCounter = () => {
     const checkedBoxCount = tableData.reduce(
       (sum, item) => (item.checked ? sum + 1 : sum),
@@ -125,11 +131,12 @@ const TableTemp = ({
     return checkedBoxCount;
   };
 
+  // 수정 중인 행의 index를 찾는 함수
   const getEditableRowIndex = () => {
     return tableData.findIndex((item) => item.isEditable);
   };
 
-  return tableData?.length > 0 ? (
+  return tableData ? (
     <>
       <Table size="sm" bordered hover>
         {/* header */}
@@ -146,7 +153,7 @@ const TableTemp = ({
               </th>
             )}
             {/* th columns */}
-            {header.map((thead, index) => (
+            {tableHeaders.map((thead, index) => (
               <th id="tableHeader" key={index}>
                 <div onClick={() => handleArrowDirection(thead)}>
                   <div>{thead.text}</div>
@@ -183,14 +190,15 @@ const TableTemp = ({
                     </div>
                   </td>
                 )}
-                {/* 각 row 의 content */}
-                {header.map((thead, index) => (
+                {/* 각 row의 td */}
+                {tableHeaders.map((thead, index) => (
                   <td key={index}>
                     <div id="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
-                      {row.isEditable ? (
+                      {row.isEditable && thead.isEditable ? (
                         <Form.Control
                           type="text"
+                          required={thead.required}
                           data-column={thead.field}
                           defaultValue={row.item[thead.text]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
@@ -204,6 +212,24 @@ const TableTemp = ({
               </tr>
             );
           })}
+          {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
+          {rowAddable && (
+            <tr
+              onDoubleClick={() => handleDoubleClick(tableData.length)}
+              onClick={(e) => handleRowClick(e, tableData.length)}
+            >
+              {showCheckbox && (
+                <td>
+                  <FontAwesomeIcon icon={faPlus} />
+                </td>
+              )}
+              {tableHeaders.map((thead, index) => (
+                <td key={index}>
+                  <div id="tableContents"></div>
+                </td>
+              ))}
+            </tr>
+          )}
 
           {/* 빈 행 */}
           {minRow &&
@@ -212,7 +238,11 @@ const TableTemp = ({
               .map((_, index) => (
                 <tr key={index}>
                   <td
-                    colSpan={showCheckbox ? header.length + 1 : header.length}
+                    colSpan={
+                      showCheckbox
+                        ? tableHeaders.length + 1
+                        : tableHeaders.length
+                    }
                     style={{ color: "transparent" }}
                   >
                     .
