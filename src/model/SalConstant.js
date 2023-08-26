@@ -2,17 +2,17 @@ const SalConstant = () => {
  return {
     tableHeader : {
         salEmp : [
-            { field: "cdEmp", text: "사원번호" },
+            { field: "cdEmp", text: "사원번호", isPk:true },
             { field: "nmEmp", text: "사원이름" },
             { field: "rankNo", text: "직급" },
             { field: "mnReduction", text: "감면율" },
         ],
-        saAllow : [
-            { field: "nmAllow", text: "급여항목" },
+        salAllow : [
+            { field: "nmAllow", text: "급여항목" , readonly : true},
             { field: "allowPay", text: "지급금액" },
         ],
-        saDeduct : [
-            { field: "nmDeduct", text: "공제항목" },
+        salDeduct : [
+            { field: "nmDeduct", text: "공제항목" , readonly : true},
             { field: "allowPay", text: "지급금액" },
         ],
     },

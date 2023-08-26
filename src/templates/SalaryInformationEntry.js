@@ -40,22 +40,15 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     setModalState({ show: true });
   }, []);
 
-  //검색조건 버튼
+  //조회 버튼
   const onSearch = () => {
-    // console.log('allowMonth >>' ); console.log(allowMonth);
-    // console.log('cdEmp >>' ); console.log(cdEmp);
-    // console.log('paymentDate >>' ); console.log(paymentDate);
   };
   
   return (
     <>
       {/* 코드 도움 모달 영역 */}
       <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
-        {/* <TableForm
-          showCheckbox={false}
-          showHeaderArrow={false}
-          tableData={saInfoListData}
-        ></TableForm> */}
+       
       </ModalComponent>
 
       {/* 기본 검색조건 */}
@@ -123,25 +116,30 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             tableData={saInfoListData}
             actions={{
               setTableData: actions.setSaInfoListData,
-              setPkValue: actions.setCdEmp,
+              setPkValue: actions.setSearchAllowVo,
             }}
           />
         </Col>
         <Col md="3">
           {/* 급여항목 table영역 */}
-            <TableForm
-              showCheckbox={false}
-              showHeaderArrow={false}
-              tableData={salData}
-            />     
+          <TableTemp
+            showCheckbox={false}
+            showHeaderArrow={false}
+            tableHeaders={tableHeader.salAllow}
+            tableData={salData}
+            actions={{
+              setTableData: actions.setSalData,
+              //setPkValue: actions.setCdEmp,
+            }}
+          />     
         </Col>
         <Col md="3">
           {/* 공제항목 table영역 */}
-            <TableForm
-              showCheckbox={false}
-              showHeaderArrow={false}
-              tableData={deductData}
-            />
+          <TableForm
+            showCheckbox={false}
+            showHeaderArrow={false}
+            tableData={deductData}
+          />
         </Col>
         <Col md="3">
           {/* 조회구분 영역*/}
