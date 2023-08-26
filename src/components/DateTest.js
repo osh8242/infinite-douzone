@@ -5,14 +5,12 @@
 import { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-function DateTest({ label, type, defaultValue }) {
+function DateTest({ label, type, defaultValue, value, onChange }) {
   const [choice, setChoice] = useState('month');
-  console.log('before: ' + choice);
-  console.log('label: ' + label);
-  console.log('type: ' + type);
 
-  if (type === 'month') {
-    console.log('month');
+  const onChangeHandeler = (e) =>{
+    const value = e.target.value;
+    onChange(value);
   }
 
   return (

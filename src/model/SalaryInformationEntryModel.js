@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from '../../node_modules/axios/index';
+import { currentDateStr, currentMonthStr } from '../utils/DateUtils';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
-
-  /* Date로 현재 달 구하기 */
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const monthIndex = currentDate.getMonth();
-  const month = (monthIndex + 1).toString().padStart(2, '0'); 
-  const currentMonth = `${year}-${month}`;
-  const day = currentDate.getDate().toString().padStart(2, '0');
-  const nowdate = `${year}-${month}-${day}`;
 
   /* 영역에 뿌릴 Data */
   const [saInfoListData, setSaInfoListData] = useState();     //사원 테이블 리스트
@@ -21,9 +13,9 @@ const SalaryInformationEntryModel = () => {
 
   /* 검색조건 Data */
   const [cdEmp, setCdEmp] = useState('Y701');                   //사원번호
-  const [allowMonth, setAllowMonth] = useState(currentMonth);   //귀속년월
+  const [allowMonth, setAllowMonth] = useState(currentMonthStr);   //귀속년월
   const [salDivision, setSalDivision] = useState();             //구분
-  const [paymentDate, setPaymentDate] = useState(nowdate);      //지급일
+  const [paymentDate, setPaymentDate] = useState(currentDateStr);      //지급일
 
   const [searchDeptCd, setSearchDeptCd] = useState();
   const [searchRankNo, setSearchRankNo] = useState();
@@ -40,6 +32,12 @@ const SalaryInformationEntryModel = () => {
   const empinfo = () => {
     
   }
+
+  /* test */
+  useEffect(() => {
+    console.log(searchDeptCd);
+  }, [searchDeptCd]);
+
 
   useEffect(() => {
     axios.post(
