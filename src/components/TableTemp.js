@@ -74,11 +74,14 @@ const TableTemp = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (e, rowIndex) => {
-    //행 클릭시 해당 행의 Pk값으로 state값을 바꾸고 싶다면.. setPkValue
-    if (actions.setPkValue) {
-      let index = showCheckbox ? 1 : 0;
-      let id = e.currentTarget.children[index].children[0].textContent;
-      actions.setPkValue(id);
+    //행 클릭시 해당 행의 첫번째 컬럼값으로 state값을 바꾸고 싶다면.. setPkValue
+    if (actions.setPkValue && rowIndex < tableData.length) {
+      let pkValue = {};
+      tableHeaders.forEach((header) => {
+        if (header.isPk)
+          pkValue[header.field] = tableData[rowIndex].item[header.field];
+      });
+      actions.setPkValue(pkValue);
     }
 
     //수정중인 행의 index를 가져옴
@@ -195,16 +198,16 @@ const TableTemp = ({
                   <td key={index}>
                     <div id="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
-                      {row.isEditable && thead.isEditable ? (
+                      {row.isEditable && !thead.readOnly ? (
                         <Form.Control
                           type="text"
                           required={thead.required}
                           data-column={thead.field}
-                          defaultValue={row.item[thead.text]}
+                          defaultValue={row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
                       ) : (
-                        row.item[thead.text]
+                        row.item[thead.field]
                       )}
                     </div>
                   </td>

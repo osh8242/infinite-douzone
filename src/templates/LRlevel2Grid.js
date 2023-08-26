@@ -11,34 +11,17 @@ import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
-import TableForm from "../components/TableForm";
+import TableForm from "../components/TableForm"; 
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
-  //Model로 관리되는 state들
+  //실행중에는 값이 고정인 값들
   const {
-    leftTableData,
-    setLeftTableData,
-    cdEmp,
-    setCdEmp,
-    mainTabData,
-    setMainTabData,
-    subTableData,
-    setSubTableData,
-    jobOk: jobOk,
-    setJobOk,
-    refYear: refYear,
-    setRefYear,
-    orderRef: orderRef,
-    setOrderRef,
-    reloadStates,
-  } = LRlevel2GridModel();
-
-  //실행중에는 값이 고정인 Constant들
-  const {
+    LRlevel2GridLeftTableHeaders,
+    LRlevel2GridSubTableHeaders,
     searchOption, // 검색옵션 리스트
     orderList, // 정렬기준 리스트
     mainTabMenuList, //메인탭 메뉴리스트
@@ -46,10 +29,20 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
-    LRlevel2GridLeftTableHeaders,
-    LRlevel2GridSubTableHeaders,
     labels, // 속성명
   } = CommonConstant();
+
+  //Model로 관리되는 값들
+  const {
+    leftTableData,
+    cdEmp,
+    mainTabData,
+    subTableData,
+    jobOk,
+    refYear,
+    orderRef,
+    actions,
+  } = LRlevel2GridModel();
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
@@ -98,7 +91,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             rowAddable={true}
             actions={{
               setTableData: actions.setLeftTableData,
-              setPkValue: actions.setCdEmp,
+              setPkValue: actions.setMainTablePkValue,
               setEditedRow: actions.setEditedEmp,
             }}
           />
