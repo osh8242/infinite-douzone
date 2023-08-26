@@ -46,7 +46,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
-    LRlevel2GridLeftTableHeader,
+    LRlevel2GridLeftTableHeaders,
+    LRlevel2GridSubTableHeaders,
     labels, // 속성명
   } = CommonConstant();
 
@@ -92,10 +93,14 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           <TableTemp
             showCheckbox={true}
             showHeaderArrow={true}
-            header={LRlevel2GridLeftTableHeader}
+            tableHeaders={LRlevel2GridLeftTableHeaders}
             tableData={leftTableData}
-            setTableData={setLeftTableData}
-            rowClickHandler={setCdEmp}
+            rowAddable={true}
+            actions={{
+              setTableData: actions.setLeftTableData,
+              setPkValue: actions.setCdEmp,
+              setEditedRow: actions.setEditedEmp,
+            }}
           />
         </Col>
         {mainTabData ? (
@@ -125,6 +130,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               <Col xs md="6">
                 <RadioForm
                   label={labels.fgSex}
+                  disabled={true}
                   optionList={genderRadioList}
                   checked={mainTabData.fgSex}
                 />
@@ -185,10 +191,15 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               </Col>
             </Row>
             <MenuTab menuList={subTabMenuList} />
-            <TableForm
+            <TableTemp
               showCheckbox={true}
               showHeaderArrow={true}
+              tableHeaders={LRlevel2GridSubTableHeaders}
               tableData={subTableData}
+              actions={{
+                setTableData: actions.setSubTableData,
+                setEditedRow: actions.setEditedEmpFam,
+              }}
             />
           </Col>
         ) : (
