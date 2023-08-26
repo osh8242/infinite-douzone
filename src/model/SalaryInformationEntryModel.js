@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from '../../node_modules/axios/index';
 import { currentDateStr, currentMonthStr } from '../utils/DateUtils';
+import CommonConstant from './CommonConstant';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
+  const { labels } = CommonConstant();
 
   /* 영역에 뿌릴 Data */
   const [saInfoListData, setSaInfoListData] = useState();     //사원 테이블 리스트
@@ -12,11 +14,12 @@ const SalaryInformationEntryModel = () => {
   const [saInfoDetailData, setSaInfoDetailData] = useState(); //사원상세조회
 
   /* 검색조건 Data */
-  const [cdEmp, setCdEmp] = useState('Y701');                   //사원번호
+  const [cdEmp, setCdEmp] = useState('Y701');                      //사원번호
   const [allowMonth, setAllowMonth] = useState(currentMonthStr);   //귀속년월
-  const [salDivision, setSalDivision] = useState();             //구분
-  const [paymentDate, setPaymentDate] = useState(currentDateStr);      //지급일
+  const [salDivision, setSalDivision] = useState();                //구분
+  const [paymentDate, setPaymentDate] = useState(currentDateStr);  //지급일
 
+  const [searchCdEmp, setSearchCdEmp] = useState();
   const [searchDeptCd, setSearchDeptCd] = useState();
   const [searchRankNo, setSearchRankNo] = useState();
   const [searchCdOccup, setSearchCdOccup] = useState();
@@ -28,17 +31,6 @@ const SalaryInformationEntryModel = () => {
   /* 상태 Data */
   const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
 
-  /* 급여정보_사원 리스트 */
-  const empinfo = () => {
-    
-  }
-
-  /* test */
-  useEffect(() => {
-    console.log(searchDeptCd);
-  }, [searchDeptCd]);
-
-
   useEffect(() => {
     axios.post(
       url + '/saEmpInfo/getAllSaEmpInfo',
@@ -49,15 +41,14 @@ const SalaryInformationEntryModel = () => {
         //console.log('급여정보_사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
           {
-          사원코드: item.cdEmp,
-          사원이름: item.nmEmp,
-          직급: item.rankNo,
-          감면율: item.MnReduction,
+          [labels.cdEmp]: item.cdEmp,
+          [labels.nmEmp]: item.nmEmp,
+          [labels.rankNo]: item.rankNo,
+          [labels.mnReduction]: item.mnReduction,
           }
         ));
 
-        setCdEmp(response.data[0].cdEmp); //리스트 첫번째 사원코드가 선택
-          
+        setSearchCdEmp(response.data[0].cdEmp); //리스트 첫번째 사원코드가 선택
         setSaInfoListData(data);
       })
 
@@ -77,7 +68,7 @@ const SalaryInformationEntryModel = () => {
         //console.log('급여정보_사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
           {
-          사원코드: item.cdEmp,
+            [labels.cdFamrel]: item.cdEmp,
           사원이름: item.nmEmp,
           직급: item.rankNo,
           감면율: item.MnReduction,
@@ -103,6 +94,7 @@ const SalaryInformationEntryModel = () => {
       searchCdProject : searchCdProject,
       searchYnUnit : searchYnUnit,
       searchYnForlabor : searchYnForlabor,
+      searchCdEmp :  searchCdEmp
     };
      console.log(searchVo);
 
@@ -117,8 +109,8 @@ const SalaryInformationEntryModel = () => {
         //console.log( '급여항목데이터 >> ',response.data);
         const data = response.data.map((item) => ({
           // 급여항목코드: item.cdAllow,
-          급여항목: item.nmAllow,
-          지급금액: item.allowPay
+          [labels.nmAllow]: item.nmAllow,
+          [labels.allowPay]: item.allowPay
         }));
 
         setSalData(data);
@@ -140,8 +132,8 @@ const SalaryInformationEntryModel = () => {
 
         const data = response.data.map((item) => ({
           // 공제항목코드: item.cdDeduct,
-          공제항목: item.nmDeduct,
-          금액: item.allowPay
+          [labels.nmDeduct]: item.nmDeduct,
+          [labels.allowPay]: item.allowPay
         }));
 
         setDeductData(data);

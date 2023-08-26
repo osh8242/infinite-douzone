@@ -82,6 +82,12 @@ const CommonConstant = () => {
       cdField: "현장",
       cdProject: "프로젝트",
       cdBank: "급여이체은행",
+
+      mnReduction : "감면율",
+      nmEmp:"사원이름",
+      nmDeduct : "공제항목",
+      nmAllow : "급여항목",
+      allowPay : "금액"
     },
   };
 };
