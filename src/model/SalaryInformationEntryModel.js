@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from '../../node_modules/axios/index';
 import { currentDateStr, currentMonthStr } from '../utils/DateUtils';
 import CommonConstant from './CommonConstant';
+import { isEditable } from '@testing-library/user-event/dist/utils';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
@@ -41,11 +42,16 @@ const SalaryInformationEntryModel = () => {
         //console.log('급여정보_사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
           {
-          [labels.cdEmp]: item.cdEmp,
-          [labels.nmEmp]: item.nmEmp,
-          [labels.rankNo]: item.rankNo,
-          [labels.mnReduction]: item.mnReduction,
-          }
+            item : {
+            cdEmp: item.cdEmp,
+            nmEmp: item.nmEmp,
+            rankNo: item.rankNo,
+            mnReduction: item.mnReduction,
+            },
+            isChecked : false,
+            isEditable : false,     
+            selected : false,
+        }
         ));
 
         setSearchCdEmp(response.data[0].cdEmp); //리스트 첫번째 사원코드가 선택
@@ -68,13 +74,19 @@ const SalaryInformationEntryModel = () => {
         //console.log('급여정보_사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
           {
-            [labels.cdFamrel]: item.cdEmp,
-          사원이름: item.nmEmp,
-          직급: item.rankNo,
-          감면율: item.MnReduction,
-          }
+            item : {
+            cdEmp: item.cdEmp,
+            nmEmp: item.nmEmp,
+            rankNo: item.rankNo,
+            mnReduction: item.mnReduction,
+            },
+            isChecked : false,
+            isEditable : false,     
+            selected : false,
+        }
         ));
-          
+
+        setSearchCdEmp(response.data[0].cdEmp); //리스트 첫번째 사원코드가 선택
         setSaInfoListData(data);
       })
 
@@ -109,8 +121,8 @@ const SalaryInformationEntryModel = () => {
         //console.log( '급여항목데이터 >> ',response.data);
         const data = response.data.map((item) => ({
           // 급여항목코드: item.cdAllow,
-          [labels.nmAllow]: item.nmAllow,
-          [labels.allowPay]: item.allowPay
+          nmAllow: item.nmAllow,
+          allowPay: item.allowPay
         }));
 
         setSalData(data);
@@ -171,32 +183,35 @@ const SalaryInformationEntryModel = () => {
     , setSaInfoDetailData
 
     , modalState : modalState
-    
     , setModalState
 
-    , setCdEmp
-    , setSalDivision
-    , setAllowMonth
-    , setPaymentDate
-    , setSearchDeptCd
-    , setSearchRankNo
-    , setSearchCdOccup
-    , setSearchCdField
-    , setSearchCdProject
-    , setSearchYnUnit
-    , setSearchYnForlabor
+    , actions:{
+        setCdEmp
+      , setSalDivision
+      , setAllowMonth
+      , setPaymentDate
+      , setSearchDeptCd
+      , setSearchRankNo
+      , setSearchCdOccup
+      , setSearchCdField
+      , setSearchCdProject
+      , setSearchYnUnit
+      , setSearchYnForlabor
+    }
+    , searchVO : {
+      cdEmp
+      , salDivision
+      , allowMonth
+      , paymentDate
+      , searchDeptCd
+      , searchRankNo
+      , searchCdOccup
+      , searchCdField
+      , searchCdProject
+      , searchYnUnit
+      , searchYnForlabor
+    }
 
-    , cdEmp
-    , salDivision
-    , allowMonth
-    , paymentDate
-    , searchDeptCd
-    , searchRankNo
-    , searchCdOccup
-    , searchCdField
-    , searchCdProject
-    , searchYnUnit
-    , searchYnForlabor
   };
 };
 

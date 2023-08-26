@@ -106,7 +106,9 @@ const CommonConstant = () => {
       nmEmp:"사원이름",
       nmDeduct : "공제항목",
       nmAllow : "급여항목",
-      allowPay : "금액"
+      allowPay : "금액",
+
+      inquiryYype: "조회구분",
     },
   };
 };
