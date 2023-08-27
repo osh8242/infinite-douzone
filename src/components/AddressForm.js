@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import ModalComponent from './ModalComponent';
-import Post from './Post';
-import '../styles/addressForm.css';
+import React, { useRef, useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import ModalComponent from "./ModalComponent";
+import Post from "./Post";
+import "../styles/addressForm.css";
 
 const AddressForm = (props) => {
   // props data
@@ -15,9 +15,13 @@ const AddressForm = (props) => {
   const { isZonecode, zipHomeData, addHome1Data, addHome2Data } = props;
 
   // 렌더링 최소화를 위해 state 대신 변수와 함수 구성으로 변경 예정
-  const [zonecode, setZonecode] = useState(zipHomeData ? zipHomeData : '');
-  const [address, setAddress] = useState(addHome1Data ? addHome1Data : '');
-  const [detailAddress, setDetailAddress] = useState();
+  const [zonecode, setZonecode] = useState(zipHomeData ? zipHomeData : "");
+  const [address, setAddress] = useState(addHome1Data ? addHome1Data : "");
+  const [detailAddress, setDetailAddress] = useState(
+    addHome2Data ? addHome2Data : ""
+  );
+  const inputDetailAddress = useRef();
+  // const [inputValue, setInputValue] = useState();
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {
@@ -33,14 +37,14 @@ const AddressForm = (props) => {
 
   ////////////////////////////////////////////////////////
   // 값을 수정하는 로직은 추후 구현 예정
-  const handleZipHomeData = (e) => {
-    zipHomeData = e.target.value;
-  };
-  const handleAddHome1Data = (e) => {
-    addHome1Data = e.target.value;
-  };
-  const handleAddHome2Data = (e) => {
-    addHome2Data = e.target.value;
+  // const handleZipHomeData = (e) => {
+  //   zipHomeData = e.target.value;
+  // };
+  // const handleAddHome1Data = (e) => {
+  //   addHome1Data = e.target.value;
+  // };
+  const handleAddHome2Data = () => {
+    setDetailAddress(inputDetailAddress.value);
   };
   ////////////////////////////////////////////////////////
 
@@ -95,9 +99,11 @@ const AddressForm = (props) => {
         </Col>
         <Col md="8">
           <Form.Control
+            ref={inputDetailAddress}
             type="text"
             name="address-detail"
             value={detailAddress}
+            onChange={handleAddHome2Data}
           />
         </Col>
       </Row>
