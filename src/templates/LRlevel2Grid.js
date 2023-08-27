@@ -12,6 +12,7 @@ import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
 import Emp from "../vo/LRlevel2Grid/Emp";
+import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -35,7 +36,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   //Model로 관리되는 값들
   const {
     leftTableData,
-    cdEmp,
+    leftTablePkValue,
     mainTabData,
     subTableData,
     jobOk,
@@ -90,7 +91,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             tableData={leftTableData}
             actions={{
               setTableData: actions.setLeftTableData,
-              setPkValue: actions.setMainTablePkValue,
+              setPkValue: actions.setLeftTablePkValue,
               setEditedRow: actions.setEditedEmp,
               getRowObject: Emp,
             }}
@@ -190,10 +191,12 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               rowAddable={true}
               tableHeaders={LRlevel2GridSubTableHeaders}
               tableData={subTableData}
+              pkValue={leftTablePkValue}
               actions={{
                 setTableData: actions.setSubTableData,
                 setEditedRow: actions.setEditedEmpFam,
                 setSubTablePkValue: actions.setSubTablePkValue,
+                getRowObject: EmpFam,
               }}
             />
           </Col>

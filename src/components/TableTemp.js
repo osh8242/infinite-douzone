@@ -14,7 +14,9 @@ const TableTemp = ({
   showHeaderArrow,
   tableHeaders,
   tableData,
-  actions,
+  pkValue,
+  readOnly, // 테이블을 읽기전용으로
+  actions, // state값을 바꾸기 위한 set함수들..
   rowAddable,
   minRow,
 }) => {
@@ -22,12 +24,13 @@ const TableTemp = ({
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (index) => {
+    if (readOnly) return;
     if (index === tableData.length) {
-      let newRow = {};
+      let newRow = pkValue || {};
       tableHeaders.forEach((item) => {
-        newRow[item.text] = "";
+        newRow[item.field] = "";
       });
-      newRow = actions.getRowObject(newRow);
+      newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
       newRow["isNew"] = true;
       tableData.push(newRow);
     }
@@ -41,6 +44,7 @@ const TableTemp = ({
 
   // 더블 클릭 후 편집한 데이터
   const handleKeyDown = (event, rowIndex) => {
+    if (readOnly) return;
     if (event.key === "Enter") {
       event.preventDefault();
 
@@ -50,25 +54,27 @@ const TableTemp = ({
           'input[type="text"]'
         );
 
-      const updatedRow = { ...tableData[rowIndex], isEditable: false };
-      let editedRow = { isNew: tableData[rowIndex].isNew };
+      let updatedRow = {
+        ...tableData[rowIndex],
+        isEditable: false,
+        isNew: tableData[rowIndex].isNew,
+      };
 
       // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
       currentRowInputs.forEach((input, index) => {
-        const columnName = tableHeaders[index].text;
-        updatedRow.item[columnName] = input.value;
-        editedRow[input.getAttribute("data-column")] = input.value;
+        const field = tableHeaders[index].field;
+        updatedRow.item[field] = input.value;
       });
 
       const newData = [...tableData];
       newData[rowIndex] = updatedRow;
-      console.log(newData[rowIndex].item);
+      console.log("updatedRow", updatedRow);
 
       //수정된 행을 반영하여 tableData를 수정함
       actions.setTableData(newData);
 
       //수정된 행을 setState하여 update 요청을 보냄
-      actions.setEditedRow(editedRow);
+      actions.setEditedRow(updatedRow.item);
     }
   };
 

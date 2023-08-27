@@ -12,7 +12,7 @@ const LRlevel2GridModel = () => {
   const url = "http://localhost:8888";
   const { labels } = CommonConstant();
 
-  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
+  const [leftTablePkValue, setLeftTablePkValue] = useState(); // cdEmp
   const [editedEmp, setEditedEmp] = useState({});
 
   const [subTablePkValue, setSubTablePkValue] = useState(); // noSocial
@@ -55,9 +55,9 @@ const LRlevel2GridModel = () => {
   //mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
     setMainTabData({});
-    if (mainTablePkValue)
+    if (leftTablePkValue)
       axios
-        .post(url + "/empAdd/getEmpAddByCdEmp", mainTablePkValue, {
+        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue, {
           "Content-Type": "application/json",
         })
         .then((response) => {
@@ -69,14 +69,14 @@ const LRlevel2GridModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [mainTablePkValue]);
+  }, [leftTablePkValue]);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
     setSubTableData([]);
-    if (mainTablePkValue) {
+    if (leftTablePkValue) {
       axios
-        .post(url + "/empFam/getEmpFamListByCdEmp", mainTablePkValue)
+        .post(url + "/empFam/getEmpFamListByCdEmp", leftTablePkValue)
         .then((response) => {
           console.log(
             "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
@@ -108,22 +108,7 @@ const LRlevel2GridModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     }
-  }, [mainTablePkValue, editedEmpFam]);
-
-  //수정된 사원 update 요청
-  useEffect(() => {
-    if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
-      axios
-        .put(url + "/emp/updateEmp", editedEmp)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-  }, [editedEmp]);
+  }, [leftTablePkValue, editedEmpFam]);
 
   //추가된 사원 insert 요청
   useEffect(() => {
@@ -140,11 +125,44 @@ const LRlevel2GridModel = () => {
         });
   }, [editedEmp]);
 
+  //수정된 사원 update 요청
+
+  useEffect(() => {
+    console.log("editedEmp", editedEmp);
+    if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
+      axios
+        .put(url + "/emp/updateEmp", editedEmp)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmp({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+  }, [editedEmp]);
+
+  //추가된 사원가족 insert 요청
+  useEffect(() => {
+    if (editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
+      axios
+        .post(url + "/empFam/insertEmpFam", editedEmpFam)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmpFam({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+  }, [editedEmpFam]);
+
   //수정된 사원가족 update 요청
   useEffect(() => {
-    if (Object.keys(editedEmpFam).length !== 0)
+    console.log("editedEmpFam", editedEmpFam);
+    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
       axios
-        .put(url + "/empFam/updateEmpFam", editedEmpFam)
+        .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmpFam({});
@@ -157,7 +175,7 @@ const LRlevel2GridModel = () => {
 
   return {
     leftTableData: leftTableData,
-    mainTablePk: mainTablePkValue,
+    leftTablePkValue: leftTablePkValue,
     mainTabData: mainTabData,
     subTableData: subTableData,
     jobOk: jobOk,
@@ -169,7 +187,7 @@ const LRlevel2GridModel = () => {
       setOrderRef,
 
       setLeftTableData,
-      setMainTablePkValue,
+      setLeftTablePkValue,
       setEditedEmp,
 
       setMainTabData,
