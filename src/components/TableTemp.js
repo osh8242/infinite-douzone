@@ -10,15 +10,15 @@ import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
 const TableTemp = ({
-  showCheckbox,
+  tableHeaders, // [필수]
+  tableData, // [필수]
+  pkValue, // [선택]
+  showCheckbox, // [선택] 체크박스 유무
   showHeaderArrow,
-  tableHeaders,
-  tableData,
-  pkValue,
-  readOnly, // 테이블을 읽기전용으로
-  actions, // state값을 바꾸기 위한 set함수들..
-  rowAddable,
-  minRow,
+  readOnly, // [선택] 테이블을 읽기전용으로
+  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  rowAddable, // 행 추가 가능여부
+  minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다.
 }) => {
   const tbodyRef = useRef();
 
@@ -207,8 +207,6 @@ const TableTemp = ({
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control
                           type="text"
-                          required={thead.required}
-                          data-column={thead.field}
                           defaultValue={row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
