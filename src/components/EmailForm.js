@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Row, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Col, Row, Form } from "react-bootstrap";
 
 function EmailForm(props) {
   //props 속성들
@@ -15,9 +15,9 @@ function EmailForm(props) {
   } = props;
 
   // domain과 아이디 값
-  const email = value.split('@');
-  const userEmailId = email[0];
-  const domain = email[1];
+  const email = value?.split("@");
+  const userEmailId = email?.[0];
+  const domain = email?.[1];
 
   //////////////////////////////////////////
   //수정하는 로직은 추후 수정예정
@@ -46,7 +46,7 @@ function EmailForm(props) {
           ></Form.Control>
         </Col>
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Select default={'domain'}>
+          <Form.Select default={"domain"}>
             {optionList.map((option, index) => (
               <option value={option.key} key={index}>
                 {option.value}
