@@ -58,6 +58,7 @@ function EmpRegisterationLayout() {
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setMainTablePkValue,
+                setEditedRow: actions.setEditedEmp,
                 getRowObject: Emp,
               }}
             />

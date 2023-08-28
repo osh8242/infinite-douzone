@@ -35,7 +35,7 @@ function EmpRegisterationModel() {
         console.log("에러발생: ", error);
         //에러 처리
       });
-  }, []);
+  }, [editedEmp]);
 
   //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
