@@ -110,20 +110,26 @@ function EmpRegisterationLayout() {
                 />
                 <CallNumberForm
                   label={labels.telHome}
-                  value1={mainTableData.telHome1}
-                  value2={mainTableData.telHome2}
-                  value3={mainTableData.telHome3}
+                  num1={mainTableData.telHome1}
+                  num2={mainTableData.telHome2}
+                  num3={mainTableData.telHome3}
+                  pkValue={mainTablePk}
                 />
                 <CallNumberForm
                   label={labels.calEmp}
-                  value1={mainTableData.celEmp1}
-                  value2={mainTableData.celEmp2}
-                  value3={mainTableData.celEmp3}
+                  num1={mainTableData.celEmp1}
+                  num2={mainTableData.celEmp2}
+                  num3={mainTableData.celEmp3}
+                  pkValue={mainTablePk}
                 />
                 <EmailForm
                   label={labels.emEmp}
-                  value={mainTableData.emEmp}
+                  emEmp={mainTableData.emEmp}
                   optionList={emailList}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setEmEmp: actions.setEditedEmp,
+                  }}
                 />
                 <TextBoxComponent
                   label={labels.idMsn}

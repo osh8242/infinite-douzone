@@ -6,35 +6,31 @@
   type, label, size, disabled, readOnly, plaintext, value1, value2, value3
 */
 
-import { Col, Form, Row } from 'react-bootstrap';
-import React from 'react';
+import { Col, Form, Row } from "react-bootstrap";
+import React, { useEffect, useRef } from "react";
 
 function CallNumberForm(props) {
   //props 속성들
-  const {
-    type,
-    label,
-    size,
-    disabled,
-    readOnly,
-    plaintext,
-    value1,
-    value2,
-    value3,
-  } = props;
+  const { label, num1, num2, num3, pkValue } = props;
 
-  //////////////////////////////////////////////////////////
-  // 값을 수정하는 로직은 추후 수정예정
-  const handleValue1 = (e) => {
-    value1 = e.target.value;
+  const callNumber1 = useRef();
+  const callNumber2 = useRef();
+  const callNumber3 = useRef();
+
+  useEffect(() => {
+    callNumber1.current.value = num1;
+    callNumber2.current.value = num2;
+    callNumber3.current.value = num3;
+  });
+
+  //num1 update
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      //update
+      const newCallNumber1 = {};
+    }
   };
-  const handleValue2 = (e) => {
-    value2 = e.target.value;
-  };
-  const handleValue3 = (e) => {
-    value3 = e.target.value;
-  };
-  //////////////////////////////////////////////////////////
 
   return (
     <>
@@ -48,40 +44,13 @@ function CallNumberForm(props) {
           </Col>
         )}
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            type={type}
-            placeholder={props.placeholder}
-            size={size}
-            disabled={disabled}
-            readOnly={readOnly}
-            plaintext={plaintext}
-            value={value1}
-            onChange={handleValue1}
-          ></Form.Control>
+          <Form.Control ref={callNumber1}></Form.Control>
         </Col>
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            type={type}
-            placeholder={props.placeholder}
-            size={size}
-            disabled={disabled}
-            readOnly={readOnly}
-            plaintext={plaintext}
-            value={value2}
-            onChange={handleValue2}
-          ></Form.Control>
+          <Form.Control ref={callNumber2}></Form.Control>
         </Col>
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            type={type}
-            placeholder={props.placeholder}
-            size={size}
-            disabled={disabled}
-            readOnly={readOnly}
-            plaintext={plaintext}
-            value={value3}
-            onChange={handleValue3}
-          ></Form.Control>
+          <Form.Control ref={callNumber3}></Form.Control>
         </Col>
       </Row>
     </>

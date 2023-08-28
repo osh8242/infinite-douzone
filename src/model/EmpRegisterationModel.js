@@ -39,20 +39,20 @@ function EmpRegisterationModel() {
 
   //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
-    console.log(
-      "EmpREgisterationModel > /emp/getEmpByCdEmp",
-      "cdEmp : ",
-      mainTablePkValue
-    );
+    // console.log(
+    //   "EmpREgisterationModel > /emp/getEmpByCdEmp",
+    //   "cdEmp : ",
+    //   mainTablePkValue
+    // );
     axios
       .post(url + "/emp/getEmpByCdEmp", mainTablePkValue, {
         ContentType: "application/json",
       })
       .then((response) => {
-        console.log(
-          "EmpRegisterationModel > /emp/getEmpByCdEmp",
-          response.data
-        );
+        // console.log(
+        //   "EmpRegisterationModel > /emp/getEmpByCdEmp",
+        //   response.data
+        // );
         setMainTableData(response.data);
       })
       .catch((error) => {
@@ -91,7 +91,7 @@ function EmpRegisterationModel() {
           console.log("에러발생 -> ", error);
         });
     }
-  }, [editedEmp]);
+  }, [editedEmp, mainTableData]);
 
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
