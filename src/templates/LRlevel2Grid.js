@@ -39,9 +39,6 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     leftTablePkValue,
     mainTabData,
     subTableData,
-    jobOk,
-    refYear,
-    orderRef,
     actions,
   } = LRlevel2GridModel();
 

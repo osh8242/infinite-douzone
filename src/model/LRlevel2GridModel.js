@@ -72,7 +72,7 @@ const LRlevel2GridModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     }
-  }, [leftTablePkValue]);
+  }, [leftTablePkValue, editedEmpAdd]);
 
   //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
   useEffect(() => {

@@ -8,6 +8,8 @@ import { Col, Row } from "react-bootstrap";
 
 function RadioForm({ id, label, optionList, checked, disabled, onChange }) {
   const [selectedOption, setSelectedOption] = useState(checked);
+  console.log("라벨", label);
+  console.log("checked", checked);
 
   useEffect(() => {
     setSelectedOption(checked);
@@ -15,8 +17,8 @@ function RadioForm({ id, label, optionList, checked, disabled, onChange }) {
 
   const handleOptionChange = (event) => {
     const value = event.target.value;
-    setSelectedOption(value);
     onChange(event, value);
+    setSelectedOption(value);
   };
 
   return (
