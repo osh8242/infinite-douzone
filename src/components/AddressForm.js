@@ -5,23 +5,16 @@ import Post from "./Post";
 import "../styles/addressForm.css";
 
 const AddressForm = (props) => {
-  // props data
   /*
+    props data
     isZonecode: 우편번호 여부(boolean)
-    zipHomeData: 우편번호
-    addHome1Data: 주소
-    addHome2Data: 상세주소
+    zipHome: 우편번호
+    addHome1: 주소
+    addHome2: 상세주소
     pkValue: pk값(사원코드, cdEmp)
   */
   const { isZonecode, zipHome, addHome1, addHome2, pkValue, actions } = props;
-  // console.log(pkValue);
 
-  // 렌더링 최소화를 위해 state 대신 변수와 함수 구성으로 변경 예정
-  // const [zonecode, setZonecode] = useState(zipHomeData ? zipHomeData : "");
-  // const [address, setAddress] = useState(addHome1Data ? addHome1Data : "");
-  // const [detailAddress, setDetailAddress] = useState(
-  //   addHome2Data ? addHome2Data : ""
-  // );
   const zipHomeRef = useRef();
   const addHome1Ref = useRef();
   const addHome2Ref = useRef();
@@ -58,8 +51,6 @@ const AddressForm = (props) => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      //입력 필드 update
-      addHome2Ref.current.value = event.target.value;
 
       //update POST 요청
       const newDetailAddress = {
@@ -88,9 +79,6 @@ const AddressForm = (props) => {
                 type="text"
                 name="zonecode"
                 ref={zipHomeRef}
-                // value={zipHome}
-                // onChange={""}
-                // size={5}
                 disabled
               />
             )}
@@ -101,8 +89,6 @@ const AddressForm = (props) => {
               type="text"
               name="address"
               ref={addHome1Ref}
-              // value={addHome1}
-              // onChange={""}
               disabled
             />
 
@@ -129,7 +115,6 @@ const AddressForm = (props) => {
               ref={addHome2Ref}
               type="text"
               name="address-detail"
-              // value={addHome2}
               onKeyDown={handleKeyDown}
             />
           </Col>
