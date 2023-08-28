@@ -61,6 +61,15 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     }
   };
 
+  const mainTabRef = useRef();
+
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
       {/* 조회영역 */}
@@ -100,7 +109,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         {mainTabData ? (
           <Col md="9">
             <MenuTab menuList={mainTabMenuList} />
-            <Row className="mb-5">
+            <Row className="mb-5" useRef={mainTabRef}>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.nmEnName}

@@ -80,7 +80,8 @@ const TableTemp = ({
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (e, rowIndex) => {
-    //행 클릭시 해당 행의 첫번째 컬럼값으로 state값을 바꾸고 싶다면.. setPkValue
+    // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
+    // state값을 바꾸고 싶다면.. setPkValue
     if (actions.setPkValue && rowIndex < tableData.length) {
       let pkValue = {};
       tableHeaders.forEach((header) => {
