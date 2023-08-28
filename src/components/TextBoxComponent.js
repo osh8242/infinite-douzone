@@ -2,7 +2,7 @@ import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { makeCommaNumber, makePlainNumber } from "../utils/NumberUtils";
+import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -43,9 +43,9 @@ function TextBoxComponent(props) {
   const handleInputChange = (event) => {
     event.preventDefault();
     const newValue = event.target.value;
-      if (validation(event.target, newValue)) {       //유효성
-        setInputValue(makeProcessedValue(newValue));  //show data
-      }
+    
+    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
+    setInputValue(makeProcessedValue(newValue));  //data 가공  
   }
 
   const makeProcessedValue = (newValue) => {
@@ -54,14 +54,14 @@ function TextBoxComponent(props) {
     if (suffix || thousandSeparator) {
       suffix && ( processedValue = processSuffix(processedValue, suffix))
       thousandSeparator && (processedValue = processThousandSeparator(processedValue))
-      onChange && onChange(makePlainNumber(processedValue));// onChange 이벤트 처리
-    }
-
-    if(type==='regNum'){
+      onChange && onChange(makePureNumber(processedValue));
+    }else if(type==='regNum'){
       processedValue =  (/^\d{0,6}$/.test(newValue))? (newValue.replace(/(\d{6})(\d{0,1})/, '$1-$2')):(newValue) //하이픈 넣기
+      //마스킹처리 진행중...
+      onChange && onChange(processedValue);
+    }else{
       onChange && onChange(processedValue);
     }
-  
     return processedValue;
   };
   
@@ -75,39 +75,30 @@ function TextBoxComponent(props) {
     return makeCommaNumber(numValue.toString());
   };
 
-  // 마스킹 String 만들기 함수 
-  const maskString = (truncateLength,input) => {
-    const visibleCharacters = truncateLength; // 처음 몇 글자를 보여줄 것인지 설정
-    const maskedPortion = input.slice(visibleCharacters).replace(/\S/g, mask);
-    return input.slice(0, visibleCharacters) + maskedPortion;
-  };
-
   
   //유효성 검사
-  const validation = (object ,value) => {
+  const validation = (object, value) => {
+    let returnValue = value;
     
     if(thousandSeparator || suffix){
       thousandSeparator && (value = value.replaceAll(/,/g, ''));
       suffix && (value = value.replaceAll(suffix, ''));
       
-      const isNumber = /^\d+$/.test(value);
-      if (!isNumber){ 
+      if (!isNumber(value)){ 
         alert("숫자만 입력해주세요.");  
-        //object.value='';
-        //object.focus(); 
-        return false;
+        returnValue = makePureNumber(value);
       }
     }
 
     if(type === 'regNum'){//주민등록번호 유효성
       if(value.length >= 14){ 
         alert("13자리만 입력해주세요."); 
-        object.value = value.slice(0, 14);
+        returnValue = value.slice(0, 14);
       }
     }
 
     //validationFunction && validationFunction(value);
-    return true;
+    return returnValue;
   }
 
   const handleInputFocus = (e) => {
