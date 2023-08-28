@@ -41,6 +41,29 @@ const TempSwsmModel = () => {
       });
   }, []);
 
+  useEffect(() => {
+    setMainTabData({});
+    if (mainTablePkValue)
+      axios
+        .post(url + "/swsm/getSwsmByCdEmp", mainTablePkValue, {
+          "Content-Type": "application/json",
+        })
+        .then((response) => {
+          // console.log("pk");
+          // console.log(mainTablePkValue);
+          // console.log("response : ");
+          // console.log(response);
+          let data = response.data;
+          if (response.data === "") data = {};
+          setMainTabData(data);
+          // console.log("mainTabData: ");
+          // console.log(mainTabData[0].item);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+        });
+  }, [mainTablePkValue]);
+
   // swsmOther List
   // useEffect(() => {
   //   setSubTableData([]);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { NumericFormat, PatternFormat } from "react-number-format";
 
@@ -34,6 +34,18 @@ function TempText(props) {
     label3,
     isPeriod,
   } = props;
+
+  // const tbodyRef = useRef();
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Enter") {
+  //     console.log("enter testing");
+
+  //     console.log(tbodyRef);
+  //     console.log(tbodyRef.current);
+  //     console.log(tbodyRef.current.children);
+  //     console.log(tbodyRef.current.children[0]);
+  //   }
+  // };
 
   TempText.defaultProps = {
     md: "4",
