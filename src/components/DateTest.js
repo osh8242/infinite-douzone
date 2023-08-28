@@ -5,8 +5,13 @@
 import { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-function DateTest({ label, type, defaultValue }) {
-  const [choice, setChoice] = useState("month");
+function DateTest({ label, type, defaultValue, value, onChange }) {
+  const [choice, setChoice] = useState('month');
+
+  const onChangeHandeler = (e) =>{
+    const value = e.target.value;
+    onChange(value);
+  }
 
   return (
     <Row className="py-1">
@@ -23,6 +28,8 @@ function DateTest({ label, type, defaultValue }) {
           type={type ? type : "date"}
           placeholder="YYYY.MM.DD"
           defaultValue={defaultValue}
+          onChange={onChangeHandeler}
+          value = {value}
         />
       </Col>
     </Row>
