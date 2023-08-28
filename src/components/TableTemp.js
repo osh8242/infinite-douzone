@@ -184,7 +184,7 @@ const TableTemp = ({
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
                   <td>
-                    <div id="tableCheckBoxArea">
+                    <div className="tableCheckBoxArea">
                       <input
                         type="checkbox"
                         checked={row.checked}
@@ -196,7 +196,7 @@ const TableTemp = ({
                 {/* 각 row의 td */}
                 {tableHeaders.map((thead, index) => (
                   <td key={index}>
-                    <div id="tableContents">
+                    <div className="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control

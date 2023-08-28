@@ -21,7 +21,7 @@
 }
 
 .tableContents {
-  margin: 2px 0px;
+  margin: 1px 0px;
 }
 
 .tableCheckBoxArea {
@@ -38,4 +38,8 @@ table {
 
 .styleNone {
   color: transparent;
+}
+
+input:checked {
+  color: aqua;
 }
