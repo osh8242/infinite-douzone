@@ -11,7 +11,6 @@ import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
-import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -51,13 +50,22 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    actions.setOrderRef(orderRefRef.current.value);
+    setOrderRef(orderRefRef.current.value);
     if (jobOkRef.current.value === "yAndOnThisYear") {
-      actions.setRefYear(new Date().getFullYear());
-      actions.setJobOk("Y");
+      setRefYear(new Date().getFullYear());
+      setJobOk("Y");
     } else {
-      actions.setRefYear();
-      actions.setJobOk(jobOkRef.current.value);
+      setRefYear();
+      setJobOk(jobOkRef.current.value);
+    }
+  };
+
+  const mainTabRef = useRef();
+
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
     }
   };
 
@@ -102,7 +110,6 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               setTableData: actions.setLeftTableData,
               setPkValue: actions.setLeftTablePkValue,
               setEditedRow: actions.setEditedEmp,
-              getRowObject: Emp,
             }}
           />
         </Col>

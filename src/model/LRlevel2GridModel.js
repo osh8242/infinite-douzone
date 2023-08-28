@@ -190,9 +190,13 @@ const LRlevel2GridModel = () => {
     leftTableData: leftTableData,
     leftTablePkValue: leftTablePkValue,
     mainTabData: mainTabData,
+    setMainTabData,
     subTableData: subTableData,
+    setSubTableData,
     jobOk: jobOk,
+    setJobOk,
     refYear: refYear,
+    setRefYear,
     orderRef: orderRef,
     actions: {
       setJobOk,
