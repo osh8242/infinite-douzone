@@ -4,7 +4,7 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -22,129 +22,141 @@ const TableTemp = ({
 }) => {
   const tbodyRef = useRef();
 
-  // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
-  const handleDoubleClick = (index) => {
-    if (readOnly) return;
-    if (index === tableData.length) {
-      let newRow = pkValue || {};
-      tableHeaders.forEach((item) => {
-        newRow[item.field] = "";
-      });
-      newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
-      newRow["isNew"] = true;
-      tableData.push(newRow);
-    }
-    const newData = [...tableData];
-    newData[index] = {
-      ...newData[index],
-      isEditable: true,
-    };
-    actions.setTableData(newData);
+  // 수정 중인 행의 index를 찾는 함수
+  const getEditableRowIndex = () => {
+    return tableData.findIndex((item) => item.isEditable);
   };
+
+  // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
+  const handleDoubleClick = useCallback(
+    (index) => {
+      if (readOnly) return;
+      if (index === tableData.length) {
+        let newRow = pkValue || {};
+        newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
+        newRow["isNew"] = true;
+        console.log("newRow", newRow);
+        tableData.push(newRow);
+      }
+
+      const newData = [...tableData];
+      newData[index] = {
+        ...newData[index],
+        isEditable: true,
+      };
+      console.log("newData", newData);
+      actions.setTableData(newData);
+    },
+    [tableData, pkValue]
+  );
 
   // 더블 클릭 후 편집한 데이터
-  const handleKeyDown = (event, rowIndex) => {
-    if (readOnly) return;
-    if (event.key === "Enter") {
-      event.preventDefault();
+  const handleKeyDown = useCallback(
+    (event, rowIndex) => {
+      if (readOnly) return;
+      if (event.key === "Enter") {
+        event.preventDefault();
 
-      // 현재 수정 중인 행의 모든 입력 필드를 가져옴
-      const currentRowInputs =
-        tbodyRef.current.children[rowIndex].querySelectorAll(
-          'input[type="text"]'
-        );
+        // 현재 수정 중인 행의 모든 입력 필드를 가져옴
+        const currentRowInputs =
+          tbodyRef.current.children[rowIndex].querySelectorAll(
+            'input[type="text"]'
+          );
 
-      let updatedRow = {
-        ...tableData[rowIndex],
-        isEditable: false,
-        isNew: tableData[rowIndex].isNew,
-      };
+        let editedRow = {
+          ...tableData[rowIndex],
+          isEditable: false,
+          isNew: tableData[rowIndex].isNew,
+        };
 
-      // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
-      currentRowInputs.forEach((input, index) => {
-        const field = tableHeaders[index].field;
-        updatedRow.item[field] = input.value;
-      });
+        // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
+        currentRowInputs.forEach((input, index) => {
+          const field = tableHeaders[index].field;
+          editedRow.item[field] = input.value;
+        });
 
-      const newData = [...tableData];
-      newData[rowIndex] = updatedRow;
-      console.log("updatedRow", updatedRow);
+        const newData = [...tableData];
+        newData[rowIndex] = editedRow;
+        console.log("editedRow", editedRow);
 
-      //수정된 행을 반영하여 tableData를 수정함
-      actions.setTableData(newData);
+        //수정된 행을 반영하여 tableData를 수정함
+        actions.setTableData(newData);
 
-      //수정된 행을 setState하여 update 요청을 보냄
-      actions.setEditedRow(updatedRow);
-    }
-  };
+        //수정된 행을 setState하여 update 요청을 보냄
+        actions.setEditedRow(editedRow);
+      }
+    },
+    [tableData]
+  );
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
-  const handleRowClick = (e, rowIndex) => {
-    // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
-    // state값을 바꾸고 싶다면.. setPkValue
-    if (actions.setPkValue && rowIndex < tableData.length) {
-      let pkValue = {};
-      tableHeaders.forEach((header) => {
-        if (header.isPk)
-          pkValue[header.field] = tableData[rowIndex].item[header.field];
-      });
-      actions.setPkValue(pkValue);
-    }
+  const handleRowClick = useCallback(
+    (e, rowIndex) => {
+      // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
+      // state값을 바꾸고 싶다면.. setPkValue
+      if (actions.setPkValue && rowIndex < tableData.length) {
+        let pkValue = {};
+        tableHeaders.forEach((header) => {
+          if (header.isPk)
+            pkValue[header.field] = tableData[rowIndex].item[header.field];
+        });
+        actions.setPkValue(pkValue);
+      }
 
-    //수정중인 행의 index를 가져옴
-    const editableRowIndex = getEditableRowIndex();
-    console.log("editableRowIndex", editableRowIndex);
+      //수정중인 행의 index를 가져옴
+      const editableRowIndex = getEditableRowIndex();
+      console.log("editableRowIndex", editableRowIndex);
 
-    //수정중인 행이 없다면 return
-    if (editableRowIndex === -1) return;
+      //수정중인 행이 없다면 return
+      if (editableRowIndex === -1) return;
 
-    //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
-    if (editableRowIndex !== rowIndex) {
-      const newData = [...tableData];
-      // 수정중인 행이 추가하려던 행이라면 pop(), 존재하던 행이라면 수정상태 비활성화
-      if (tableData[tableData.length - 1].isNew) newData.pop();
-      else newData[editableRowIndex].isEditable = false;
-      actions.setTableData(newData);
-      return;
-    }
-  };
+      //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
+      if (editableRowIndex !== rowIndex) {
+        const newData = [...tableData];
+        // 수정중인 행이 추가하려던 행이라면 pop(), 존재하던 행이라면 수정상태 비활성화
+        if (tableData[tableData.length - 1].isNew) newData.pop();
+        else newData[editableRowIndex].isEditable = false;
+        actions.setTableData(newData);
+        return;
+      }
+    },
+    [getEditableRowIndex, tableData]
+  );
 
   // 전체체크 or 전체해제
-  const handleAllCheckboxChange = () => {
+  const handleAllCheckboxChange = useCallback(() => {
     const isAllChecked = checkedBoxCounter() === tableData.length;
     const newData = tableData.map((row) => ({
       ...row,
       checked: !isAllChecked,
     }));
     actions.setTableData(newData);
-  };
+  }, [tableData]);
 
   // 각 행의 체크박스 체크 이벤트
-  const handleCheckbox = (index) => {
-    const newData = [...tableData];
-    newData[index] = {
-      ...newData[index],
-      checked: !newData[index].checked,
-    };
-    actions.setTableData(newData);
-  };
+  const handleCheckbox = useCallback(
+    (index) => {
+      const newData = [...tableData];
+      newData[index] = {
+        ...newData[index],
+        checked: !newData[index].checked,
+      };
+      actions.setTableData(newData);
+    },
+    [tableData]
+  );
 
   // 정렬 화살표 기능.. 구현예정
   const handleArrowDirection = (columnName) => {};
 
   // 체크된 항목 계산함수
-  const checkedBoxCounter = () => {
+  const checkedBoxCounter = useCallback(() => {
     const checkedBoxCount = tableData.reduce(
       (sum, item) => (item.checked ? sum + 1 : sum),
       0
     );
     return checkedBoxCount;
-  };
-
-  // 수정 중인 행의 index를 찾는 함수
-  const getEditableRowIndex = () => {
-    return tableData.findIndex((item) => item.isEditable);
-  };
+  }, [tableData]);
 
   return tableData ? (
     <>
@@ -208,7 +220,7 @@ const TableTemp = ({
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control
                           type="text"
-                          defaultValue={row.item[thead.field]}
+                          defaultValue={row.isNew ? "" : row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
                       ) : (

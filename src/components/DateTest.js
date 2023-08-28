@@ -2,16 +2,21 @@
 
 // Test Code
 // <DateTest label={"생년월일"} />
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-function DateTest({ label, type, defaultValue, value, onChange }) {
-  const [choice, setChoice] = useState('month');
+function DateTest({ id, label, type, value, onChange }) {
+  const [inputValue, setInputValue] = useState(value);
 
-  const onChangeHandeler = (e) =>{
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
+  const onChangeHandeler = (e) => {
     const value = e.target.value;
-    onChange(value);
-  }
+    onChange(e, value);
+    setInputValue(value);
+  };
 
   return (
     <Row className="py-1">
@@ -25,11 +30,11 @@ function DateTest({ label, type, defaultValue, value, onChange }) {
       )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <Form.Control
+          id={id}
           type={type ? type : "date"}
           placeholder="YYYY.MM.DD"
-          defaultValue={defaultValue}
+          value={inputValue}
           onChange={onChangeHandeler}
-          value = {value}
         />
       </Col>
     </Row>
