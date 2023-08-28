@@ -74,7 +74,7 @@ const TableTemp = ({
       actions.setTableData(newData);
 
       //수정된 행을 setState하여 update 요청을 보냄
-      actions.setEditedRow(updatedRow.item);
+      actions.setEditedRow(updatedRow);
     }
   };
 

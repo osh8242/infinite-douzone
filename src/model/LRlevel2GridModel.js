@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/LRlevel2Grid/Emp";
-import CommonConstant from "./CommonConstant";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import CommonConstant from "./CommonConstant";
 
 const LRlevel2GridModel = () => {
   const [jobOk, setJobOk] = useState("Y"); //재직여부
@@ -114,7 +114,7 @@ const LRlevel2GridModel = () => {
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0)
       axios
-        .post(url + "/emp/insertEmp", editedEmp)
+        .post(url + "/emp/insertEmp", editedEmp.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmp({});
@@ -128,7 +128,7 @@ const LRlevel2GridModel = () => {
   //수정된 사원 update 요청
 
   useEffect(() => {
-    console.log("editedEmp", editedEmp);
+    console.log("editedEmp", editedEmp.item);
     if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
       axios
         .put(url + "/emp/updateEmp", editedEmp)
@@ -146,7 +146,7 @@ const LRlevel2GridModel = () => {
   useEffect(() => {
     if (editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
       axios
-        .post(url + "/empFam/insertEmpFam", editedEmpFam)
+        .post(url + "/empFam/insertEmpFam", editedEmpFam.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmpFam({});
@@ -159,10 +159,10 @@ const LRlevel2GridModel = () => {
 
   //수정된 사원가족 update 요청
   useEffect(() => {
-    console.log("editedEmpFam", editedEmpFam);
+    console.log("editedEmpFam", editedEmpFam.item);
     if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
       axios
-        .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam)
+        .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmpFam({});
