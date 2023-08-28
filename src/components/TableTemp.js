@@ -27,18 +27,18 @@ const TableTemp = ({
     if (readOnly) return;
     if (index === tableData.length) {
       let newRow = pkValue || {};
-      tableHeaders.forEach((item) => {
-        newRow[item.field] = "";
-      });
       newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
       newRow["isNew"] = true;
+      console.log("newRow", newRow);
       tableData.push(newRow);
     }
+
     const newData = [...tableData];
     newData[index] = {
       ...newData[index],
       isEditable: true,
     };
+    console.log("newData", newData);
     actions.setTableData(newData);
   };
 
@@ -54,7 +54,7 @@ const TableTemp = ({
           'input[type="text"]'
         );
 
-      let updatedRow = {
+      let editedRow = {
         ...tableData[rowIndex],
         isEditable: false,
         isNew: tableData[rowIndex].isNew,
@@ -63,18 +63,18 @@ const TableTemp = ({
       // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
       currentRowInputs.forEach((input, index) => {
         const field = tableHeaders[index].field;
-        updatedRow.item[field] = input.value;
+        editedRow.item[field] = input.value;
       });
 
       const newData = [...tableData];
-      newData[rowIndex] = updatedRow;
-      console.log("updatedRow", updatedRow);
+      newData[rowIndex] = editedRow;
+      console.log("editedRow", editedRow);
 
       //수정된 행을 반영하여 tableData를 수정함
       actions.setTableData(newData);
 
       //수정된 행을 setState하여 update 요청을 보냄
-      actions.setEditedRow(updatedRow);
+      actions.setEditedRow(editedRow);
     }
   };
 
@@ -208,7 +208,7 @@ const TableTemp = ({
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control
                           type="text"
-                          defaultValue={row.item[thead.field]}
+                          defaultValue={row.isNew ? "" : row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
                       ) : (

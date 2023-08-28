@@ -11,6 +11,7 @@ import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
+import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -50,31 +51,42 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    setOrderRef(orderRefRef.current.value);
+    actions.setOrderRef(orderRefRef.current.value);
     if (jobOkRef.current.value === "yAndOnThisYear") {
-      setRefYear(new Date().getFullYear());
-      setJobOk("Y");
+      actions.setRefYear(new Date().getFullYear());
+      actions.setJobOk("Y");
     } else {
-      setRefYear();
-      setJobOk(jobOkRef.current.value);
+      actions.setRefYear();
+      actions.setJobOk(jobOkRef.current.value);
     }
   };
 
   const mainTabRef = useRef();
 
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
-  const handleKeyDown = (event) => {
+  const submitMainTabData = (event, value) => {
+    console.log("event", event);
     if (event.key === "Enter") {
       event.preventDefault();
+      event.target.blur();
+      if (mainTabRef.current) {
+        let newMainTabData = { ...mainTabData.item };
+        const inputElements = mainTabRef.current.querySelectorAll("input");
+        Array.from(inputElements).forEach((input) => {
+          newMainTabData[input.id] = input.value;
+        });
+        console.log("newMainTabData", newMainTabData);
+        actions.setEditedEmpAdd(newMainTabData);
+      }
     }
-  };
-
-  const mainTabRef = useRef();
-
-  //mainTab에서 Enter 입력시 EmpAdd 업데이트
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.type === "change") {
       event.preventDefault();
+      if (mainTabRef.current) {
+        let newMainTabData = { ...mainTabData.item };
+        newMainTabData[event.target.id] = value;
+        console.log("newMainTabData", newMainTabData);
+        actions.setEditedEmpAdd(newMainTabData);
+      }
     }
   };
 
@@ -110,35 +122,43 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               setTableData: actions.setLeftTableData,
               setPkValue: actions.setLeftTablePkValue,
               setEditedRow: actions.setEditedEmp,
+              getRowObject: Emp,
             }}
           />
         </Col>
         {mainTabData ? (
           <Col md="9">
             <MenuTab menuList={mainTabMenuList} />
-            <Row className="mb-5" useRef={mainTabRef}>
+            <Row className="mb-5" ref={mainTabRef}>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="nmEnName"
                   label={labels.nmEnName}
                   value={mainTabData.item?.nmEnName}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="nmChName"
                   label={labels.nmChName}
                   value={mainTabData.item?.nmChName}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="noSocial"
                   type="regNum"
                   label={labels.noSocial}
                   disabled={true}
                   value={mainTabData.item?.noSocial}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <RadioForm
+                  id="fgSex"
                   label={labels.fgSex}
                   disabled={true}
                   optionList={genderRadioList}
@@ -147,56 +167,72 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               </Col>
               <Col xs md="6">
                 <DateTest
+                  id="daBirth"
                   label={labels.daBirth}
-                  defaultValue={mainTabData.item?.daBirth}
+                  value={mainTabData.item?.daBirth}
+                  onChange={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <RadioForm
+                  id="fgWedding"
                   label={labels.fgWedding}
                   optionList={marryRadioList}
                   checked={mainTabData.item?.fgWedding}
+                  onChange={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="cdDept"
                   label={labels.cdDept}
                   disabled={true}
                   value={mainTabData.item?.cdDept}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="rankNo"
                   label={labels.rankNo}
                   disabled={true}
                   value={mainTabData.item?.ankNo}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="cdOffduty"
                   label={labels.cdOffduty}
                   value={mainTabData.item?.cdOffduty}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <RadioForm
+                  id="ynDrawContracts"
                   label={labels.ynDrawContracts}
                   optionList={contractRadioList}
                   checked={mainTabData.item?.ynDrawContracts}
+                  onChange={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="daEnter"
                   label={labels.daEnter}
                   disabled={true}
                   value={mainTabData.item?.daEnter}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
+                  id="daRetire"
                   label={labels.daRetire}
                   disabled={true}
                   value={mainTabData.item?.daRetire}
+                  onKeyDown={submitMainTabData}
                 />
               </Col>
             </Row>

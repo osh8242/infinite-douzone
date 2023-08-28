@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 
-function RadioForm({ label, optionList, checked, disabled }) {
+function RadioForm({ id, label, optionList, checked, disabled, onChange }) {
   const [selectedOption, setSelectedOption] = useState(checked);
 
   useEffect(() => {
@@ -14,7 +14,9 @@ function RadioForm({ label, optionList, checked, disabled }) {
   }, [checked]);
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+    const value = event.target.value;
+    setSelectedOption(value);
+    onChange(event, value);
   };
 
   return (
@@ -36,6 +38,7 @@ function RadioForm({ label, optionList, checked, disabled }) {
             <label className="form-check-label">
               <input
                 className="form-check-input"
+                id={id}
                 type="radio"
                 disabled={disabled}
                 value={option.key}
