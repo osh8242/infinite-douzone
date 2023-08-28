@@ -2,15 +2,20 @@
 
 // Test Code
 // <DateTest label={"생년월일"} />
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-function DateTest({ id, label, type, defaultValue, value, onChange }) {
-  const [choice, setChoice] = useState("month");
+function DateTest({ id, label, type, value, onChange }) {
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   const onChangeHandeler = (e) => {
     const value = e.target.value;
     onChange(e, value);
+    setInputValue(value);
   };
 
   return (
@@ -28,7 +33,7 @@ function DateTest({ id, label, type, defaultValue, value, onChange }) {
           id={id}
           type={type ? type : "date"}
           placeholder="YYYY.MM.DD"
-          defaultValue={defaultValue}
+          value={inputValue}
           onChange={onChangeHandeler}
         />
       </Col>

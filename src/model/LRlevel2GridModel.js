@@ -12,7 +12,7 @@ const LRlevel2GridModel = () => {
   const url = "http://localhost:8888";
 
   const [leftTableData, setLeftTableData] = useState([]);
-  const [leftTablePkValue, setLeftTablePkValue] = useState(); // cdEmp
+  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // cdEmp
   const [editedEmp, setEditedEmp] = useState({});
 
   const [mainTabData, setMainTabData] = useState({});
