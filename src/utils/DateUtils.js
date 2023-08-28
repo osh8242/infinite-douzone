@@ -9,6 +9,12 @@ export function lastMonthOfLastYearStr(date = nowDate()) {
   return currentMonthStr(lastMonthDate);
 }
 
+//현재 년도('YYYY')
+export function currentYearStr(date = nowDate()) {
+  const year = date.getFullYear();
+  return `${year}`;
+}
+
 //현재달('YYYY-MM')
 export function currentMonthStr(date = nowDate()) {
   const year = date.getFullYear();

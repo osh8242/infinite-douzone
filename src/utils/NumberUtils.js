@@ -6,3 +6,9 @@ export const makePureNumber = (numValue) => numValue.replace(/[^0-9]/g, '');
 
 // 3자리 콤마 만들기 함수 
 export const makeCommaNumber = (numValue) => numValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+// nvl함수 
+export const nvl = (value, defaultValue) => {
+   return value !== null && value !== undefined ? value : defaultValue;
+}
+  
