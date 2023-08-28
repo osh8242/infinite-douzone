@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Swsm from "../vo/SwsmGrid/Swsm";
+import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import SwsmConstant from "../model/SwsmConstant";
 
 const TempSwsmModel = () => {
   const url = "http://localhost:8888";
   const { labels } = SwsmConstant();
   const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
+  const [currMenuTab, setCurrMenuTab] = useState(); // 계약서 작성 / 조회 탭 상태 값
   const [cdEmp, setCdEmp] = useState("hong");
   const [editedEmp, setEditedEmp] = useState();
   const [leftTableData, setLeftTableData] = useState([]);
+  const [subTableData, setSubTableData] = useState([]);
   const [rightTabData, setRightTabData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
   const [subTabData, setSubTabData] = useState({});
-  const [subTableData, setSubTableData] = useState([]);
 
   // leftTableData load
   useEffect(() => {
@@ -39,6 +41,36 @@ const TempSwsmModel = () => {
       });
   }, []);
 
+  // swsmOther List
+  // useEffect(() => {
+  //   setSubTableData([]);
+  //   if (mainTablePkValue)
+  //     axios
+  //       .post(url + "/swsmOther/getSwsmOtherByCdEmp", mainTablePkValue, {
+  //         "Content-Type": "application/json",
+  //       })
+  //       .then((response) => {
+  //         console.log("swsmOther List");
+  //         console.log(mainTablePkValue);
+  //         console.log("response : ");
+  //         console.log(response);
+  //         // const data = response.data.map((item) => {
+  //         //   // console.log(item);
+  //         //   const swsmOtherData = {
+  //         //     otherType: item.otherType,
+  //         //     otherMoney: item.otherMoney,
+  //         //     cdEmp: item.cdEmp,
+  //         //   };
+  //         //   return SwsmOther(swsmOtherData);
+  //         // });
+
+  //         // setSubTableData(data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("에러발생: ", error);
+  //       });
+  // }, [mainTablePkValue]);
+
   // 메인 데이터 // PK; cdEmp 에 따라
   useEffect(() => {
     setMainTabData({});
@@ -48,15 +80,15 @@ const TempSwsmModel = () => {
           "Content-Type": "application/json",
         })
         .then((response) => {
-          console.log("pk");
-          console.log(mainTablePkValue);
-          console.log("response : ");
-          console.log(response);
+          // console.log("pk");
+          // console.log(mainTablePkValue);
+          // console.log("response : ");
+          // console.log(response);
           let data = response.data;
           if (response.data === "") data = {};
           setMainTabData(data);
-          console.log("mainTabData: ");
-          console.log(mainTabData[0].item);
+          // console.log("mainTabData: ");
+          // console.log(mainTabData[0].item);
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -64,35 +96,37 @@ const TempSwsmModel = () => {
   }, [mainTablePkValue]);
 
   // 처음 로드시 가져오고 이씀
-  useEffect(() => {
-    setMainTabData([]);
-    axios
-      .get(url + "/swsm/getAllSwsm")
-      .then((response) => {
-        console.log("SwsmModel > /swsm/getAllSwsm", response);
-        const data = response.data.map((item) => {
-          // console.log(item);
-          const swsmData = {
-            cdEmp: item.cdEmp,
-            nmKrname: item.nmKrname,
-            residentState: item.residentState,
-            noSocial: item.noSocial,
-            startEmpContractPeriod: item.startEmpContractPeriod,
-            endEmpContractPeriod: item.endEmpContractPeriod,
-            address: item.address,
-            addDetail: item.addDetail,
-          };
-          // console.log("swsmData" + swsmData.cdEmp);
-          return Swsm(swsmData);
-        });
-        setMainTabData(data);
-      })
-      .catch((error) => {
-        console.log("ERROR : " + error);
-      });
-  }, []);
+  // getSwsmALl
+  // useEffect(() => {
+  //   setMainTabData([]);
+  //   axios
+  //     .get(url + "/swsm/getAllSwsm")
+  //     .then((response) => {
+  //       console.log("SwsmModel > /swsm/getAllSwsm", response);
+  //       const data = response.data.map((item) => {
+  //         // console.log(item);
+  //         const swsmData = {
+  //           cdEmp: item.cdEmp,
+  //           nmKrname: item.nmKrname,
+  //           residentState: item.residentState,
+  //           noSocial: item.noSocial,
+  //           startEmpContractPeriod: item.startEmpContractPeriod,
+  //           endEmpContractPeriod: item.endEmpContractPeriod,
+  //           address: item.address,
+  //           addDetail: item.addDetail,
+  //         };
+  //         // console.log("swsmData" + swsmData.cdEmp);
+  //         return Swsm(swsmData);
+  //       });
+  //       setMainTabData(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("ERROR : " + error);
+  //     });
+  // }, []);
 
-  // left 클릭시마다 데이터 로드됨
+  // // left 클릭시마다 데이터 로드됨
+  // swsmOther
   useEffect(() => {
     setSubTableData([]);
     if (mainTablePkValue)
@@ -120,7 +154,7 @@ const TempSwsmModel = () => {
         .catch((error) => {
           console.error("에러발생: ", error);
         });
-  }, [mainTablePkValue]);
+  }, []);
 
   // subTableData
   // useEffect(() => {
@@ -214,6 +248,7 @@ const TempSwsmModel = () => {
 
   return {
     leftTableData: leftTableData,
+    subTableData: subTableData,
     mainTablePk: mainTablePkValue,
     cdEmp: cdEmp,
     mainTabData: mainTabData,
@@ -227,6 +262,7 @@ const TempSwsmModel = () => {
       setSubTabData,
       setCdEmp,
       setEditedEmp,
+      setCurrMenuTab,
     },
   };
 };

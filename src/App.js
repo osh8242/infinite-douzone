@@ -14,7 +14,7 @@ function App() {
     <div>
       <Header />
       <Container fluid>
-        <TestSwsnGrid />
+        <SwsmGrid />
       </Container>
     </div>
   );

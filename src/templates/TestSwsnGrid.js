@@ -8,6 +8,7 @@ import SwsmConstant from "../model/SwsmConstant";
 import TableTemp from "../components/TableTemp";
 import TempSwsmModel from "../model/TempSwsmModel";
 import Swsm from "../vo/SwsmGrid/Swsm";
+import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import { Scrollbars } from "react-custom-scrollbars";
 import TextBoxComponent from "../components/TextBoxComponent";
 import TempAdd from "../components/TempAdd";
@@ -36,6 +37,9 @@ const TestSwsnGrid = () => {
 
   const { leftTableData, mainTabData, subTableData, rightTabData, actions } =
     TempSwsmModel();
+
+  console.log("menuList:");
+  console.log(mainTabMenuList);
 
   return (
     <>
@@ -75,9 +79,10 @@ const TestSwsnGrid = () => {
 
           {mainTabData ? (
             <Col md="9">
+              {/* 근로정보 탭 */}
               <MenuTab menuList={[subTabMenuList.WorkInformation]} />
               <Scrollbars style={{ height: 470, overflow: "hidden" }}>
-                {" "}
+                {/* 근로계약기간  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <DateTest
@@ -92,7 +97,8 @@ const TestSwsnGrid = () => {
                       }
                     />
                   </Col>
-                </Row>{" "}
+                </Row>
+                {/* 근무장소  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
                     <TempAdd
@@ -103,6 +109,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 업무의 내용  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
                     <TempText
@@ -112,6 +119,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 소정근로시간  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <TempText
@@ -122,6 +130,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 휴게시간  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <TempText
@@ -132,6 +141,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 근무일  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
                     <TempText
@@ -145,6 +155,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 주휴일  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
                     <TempText
@@ -158,6 +169,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 임금유형  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <TempSelect
@@ -169,6 +181,7 @@ const TestSwsnGrid = () => {
                     {/* <TextBoxComponent />원 */}
                   </Col>
                 </Row>
+                {/* 기타급여  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <SelectForm
@@ -177,6 +190,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 상여금  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <TempSelect
@@ -189,6 +203,7 @@ const TestSwsnGrid = () => {
                     {/* <TextBoxComponent />원 */}
                   </Col>
                 </Row>
+                {/* 임금지급일  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <SelectForm
@@ -199,6 +214,7 @@ const TestSwsnGrid = () => {
                     {/* <TextBoxComponent />원 */}
                   </Col>
                 </Row>
+                {/* 지급방법  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <SelectForm
@@ -207,6 +223,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 고용보험  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <SelectForm
@@ -215,6 +232,7 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+                {/* 산재보험 */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <SelectForm
@@ -223,6 +241,8 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+
+                {/* 건강보험  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <SelectForm
@@ -231,6 +251,8 @@ const TestSwsnGrid = () => {
                     />
                   </Col>
                 </Row>
+
+                {/* 작성일자  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
                     <DateTest
@@ -240,8 +262,10 @@ const TestSwsnGrid = () => {
                   </Col>
                 </Row>
               </Scrollbars>
+
+              {/* 기타 급여 탭 */}
               <MenuTab menuList={[subTabMenuList.otherBenefit]} />
-              <TableTemp
+              {/* <TableTemp
                 showCheckbox={true}
                 showHeaderArrow={true}
                 tableHeaders={SwsmSubTabHeaders}
@@ -252,6 +276,18 @@ const TestSwsnGrid = () => {
                   setPkValue: actions.setMainTablePkValue,
                   // setEditedRow:actions.setEditedEmp
                   // getRowObject: Swsm,
+                }} */}
+              <TableTemp
+                showCheckbox={true}
+                showHeaderArrow={true}
+                tableHeaders={SwsmSubTabHeaders}
+                tableData={subTableData}
+                rowAddable={true}
+                actions={{
+                  setTableData: actions.subTableData,
+                  setPkValue: actions.setMainTablePkValue,
+                  // setEditedRow:actions.setEditedEmp
+                  getRowObject: SwsmOther,
                 }}
               />
             </Col>

@@ -1,79 +1,119 @@
 import { useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
+import Swsm from "../vo/SwsmGrid/Swsm";
+import SwsmOther from "../vo/SwsmGrid/SwsmOther";
+import SwsmConstant from "../model/SwsmConstant";
 
 const SwsmModel = () => {
   const url = "http://localhost:8888";
+  const { labels } = SwsmConstant();
+  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
+  const [currMenuTab, setCurrMenuTab] = useState(); // 계약서 작성 / 조회 탭 상태 값
+  const [cdEmp, setCdEmp] = useState("hong");
+  const [editedEmp, setEditedEmp] = useState();
+  const [leftTableData, setLeftTableData] = useState([]);
+  const [subTableData, setSubTableData] = useState([]);
+  const [rightTabData, setRightTabData] = useState([]);
+  const [mainTabData, setMainTabData] = useState({});
+  const [subTabData, setSubTabData] = useState({});
 
-  const [leftTableData, setLeftTableData] = useState();
-  const [otherTableData, setOtherTableData] = useState();
-  const [cdEmp, setCdEmp] = useState("hong"); // 사원 버노
-  const [mainTabData, setMainTabData] = useState();
-
+  // leftTableData load
   useEffect(() => {
+    setLeftTableData([]);
     axios
       .get(url + "/emp/getAll")
       .then((response) => {
-        console.log("SwsmModel > /emp/getAllEmp", response.data);
-        const data = response.data.map((item) => ({
-          Code: item.cdEmp,
-          성명: item.nmKrname,
-          주민등록번호: item.noSocial,
-        }));
+        console.log("SwsmModel > /emp/getAll", response);
+        const data = response.data.map((item) => {
+          // console.log(item);
+          const swsmData = {
+            cdEmp: item.cdEmp,
+            nmKrname: item.nmKrname,
+            noSocial: item.noSocial,
+          };
+          // console.log("swsmData" + swsmData.cdEmp);
+          return Swsm(swsmData);
+        });
         setLeftTableData(data);
       })
       .catch((error) => {
-        console.error("에러 : ", error);
+        console.log("ERROR : " + error);
       });
   }, []);
 
-  // 기타급여 데이터
-  // useEffect(() => {
-  //   axios
-  //     .get(url + "/swsm/getSwsmOtherListByEmpCode")
-  //     .then((response) => {
-  //       console.log(
-  //         "SwsmModel > /swsm/getSwsmOtherListByEmpCode",
-  //         response.data
-  //       );
-  //       const data = response.data.map((item) => ({
-  //         항목: item.otherType,
-  //         금액: item.otherMoney,
-  //       }));
-  //       setOtherTableData(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("에러 : ", error);
-  //     });
-  // }, []);
-
+  // 메인 데이터 // PK; cdEmp 에 따라
   useEffect(() => {
-    console.log("SwsmModel > /swsm/getSwsmByEmpCode", "cdEmp : ", cdEmp);
-    axios
-      .post(
-        url + "/swsm/getSwsmByEmpCode",
-        { empCode: cdEmp },
-        { "Content-Type": "application/json" }
-      )
-      .then((response) => {
-        console.log("==============================================");
-        console.log("SwsmModel > /swsm/getSwsmByEmpCode", response.data);
-        setMainTabData(response.data);
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-      });
-  }, [cdEmp]);
+    setMainTabData({});
+    if (mainTablePkValue)
+      axios
+        .post(url + "/swsm/getSwsmByCdEmp", mainTablePkValue, {
+          "Content-Type": "application/json",
+        })
+        .then((response) => {
+          // console.log("pk");
+          // console.log(mainTablePkValue);
+          // console.log("response : ");
+          // console.log(response);
+          let data = response.data;
+          if (response.data === "") data = {};
+          setMainTabData(data);
+          // console.log("mainTabData: ");
+          // console.log(mainTabData[0].item);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+        });
+  }, [mainTablePkValue]);
+
+  // // left 클릭시마다 데이터 로드됨
+  // swsmOther
+  useEffect(() => {
+    setSubTableData([]);
+    if (mainTablePkValue)
+      axios
+        .get(url + "/swsmOther/getAllSwsmOther ")
+        .then((response) => {
+          console.log("pk");
+          console.log(mainTablePkValue);
+          console.log("SwsmOther > /swsmOther/getAllSwsmOther", response.data);
+          console.log(typeof response.data);
+          const data = response.data.map((item) => {
+            return {
+              item: {
+                otherType: item.othertype,
+                otherMoney: item.otherMoney,
+                cd_emp: item.cdEmp,
+              },
+              checked: false,
+              selected: false,
+              isEditable: false,
+            };
+          });
+          setSubTableData(data);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+        });
+  }, []);
 
   return {
     leftTableData: leftTableData,
-    setLeftTableData,
-    otherTableData: otherTableData,
-    setOtherTableData,
+    subTableData: subTableData,
+    mainTablePk: mainTablePkValue,
     cdEmp: cdEmp,
-    setCdEmp,
     mainTabData: mainTabData,
-    setMainTabData,
+    rightTabData: rightTabData,
+    subTabData: subTabData,
+    actions: {
+      setMainTablePkValue,
+      setLeftTableData,
+      setRightTabData,
+      setMainTabData,
+      setSubTabData,
+      setCdEmp,
+      setEditedEmp,
+      setCurrMenuTab,
+    },
   };
 };
-
 export default SwsmModel;
