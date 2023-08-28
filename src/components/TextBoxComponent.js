@@ -25,6 +25,7 @@ function TextBoxComponent(props) {
     onClick,
     onClickCodeHelper,
     onFocus,
+    onEnter,
 
     //유효성 검사
     validationFunction,
@@ -46,7 +47,15 @@ function TextBoxComponent(props) {
     
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
     setInputValue(makeProcessedValue(newValue));  //data 가공  
+  
+    //enter쳤을때 값날리기
+    if (event.key === "Enter") {
+      if (onEnter) {
+        onEnter();
+      }
+    }
   }
+
 
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
@@ -148,6 +157,8 @@ function TextBoxComponent(props) {
     } else {
       return (
         <Form.Control
+          defaultValue={value}
+          value={inputValue}
           type={type}
           id={id} 
           name={name}
@@ -155,10 +166,10 @@ function TextBoxComponent(props) {
           disabled={disabled}
           readOnly={readOnly}
           plaintext={plaintext}
-          value={inputValue}
-          onChange={handleInputChange}
+          //onChange={handleInputChange}
           onFocus={handleInputFocus}
           onClick={onClick}
+          onKeyPress={handleInputChange}
         />
       );
     }
