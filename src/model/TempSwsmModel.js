@@ -39,6 +39,7 @@ const TempSwsmModel = () => {
       });
   }, []);
 
+  // 메인 데이터 // PK; cdEmp 에 따라
   useEffect(() => {
     setMainTabData({});
     if (mainTablePkValue)

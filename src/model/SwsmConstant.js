@@ -104,6 +104,8 @@ const SwsmConstant = () => {
       address: "주소",
       addDetail: "상세주소",
       jobDescription: "업무의 내용",
+      startWorktime: "시작근로시간",
+      endWorktiem: "종료근로시간",
       startBreakTime: "시작휴게시간",
       endBreakTime: "종료휴게시간",
       workingDay: "근무일",
@@ -139,10 +141,10 @@ const SwsmConstant = () => {
       paymentMethod: "지급방법",
       empInsurance: "고용보험",
       compensationInsurance: "산재보험",
-      nationalPension: "국민연금",
+      nationalPension: "국민연금", //
       healthInsurance: "건강보험",
       dateOfCreation: " 작성일자",
-      incomeClassfication: "소득구분",
+      incomeClassfication: "소득구분", ///
     },
   };
 };

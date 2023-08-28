@@ -117,8 +117,8 @@ const TestSwsnGrid = () => {
                     <TempText
                       isPeriod={true}
                       label={labels.workTime}
-                      value={mainTabData ? mainTabData.startBreakTime : ""}
-                      PeriodEnd={mainTabData ? mainTabData.EndBreakTime : ""}
+                      value={mainTabData ? mainTabData.startWorktime : ""}
+                      PeriodEnd={mainTabData ? mainTabData.endWorktime : ""}
                     />
                   </Col>
                 </Row>
@@ -128,7 +128,7 @@ const TestSwsnGrid = () => {
                       label={labels.breakTime}
                       isPeriod={true}
                       value={mainTabData ? mainTabData.startBreakTime : ""}
-                      PeriodEnd={mainTabData ? mainTabData.EndBreakTime : ""}
+                      PeriodEnd={mainTabData ? mainTabData.endBreakTime : ""}
                     />
                   </Col>
                 </Row>
