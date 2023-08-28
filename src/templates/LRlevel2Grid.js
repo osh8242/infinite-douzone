@@ -113,13 +113,13 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.nmEnName}
-                  value={mainTabData.nmEnName}
+                  value={mainTabData.item?.nmEnName}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.nmChName}
-                  value={mainTabData.nmChName}
+                  value={mainTabData.item?.nmChName}
                 />
               </Col>
               <Col xs md="6">
@@ -127,7 +127,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                   type="regNum"
                   label={labels.noSocial}
                   disabled={true}
-                  value={mainTabData.noSocial}
+                  value={mainTabData.item?.noSocial}
                 />
               </Col>
               <Col xs md="6">
@@ -135,61 +135,61 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                   label={labels.fgSex}
                   disabled={true}
                   optionList={genderRadioList}
-                  checked={mainTabData.fgSex}
+                  checked={mainTabData.item?.fgSex}
                 />
               </Col>
               <Col xs md="6">
                 <DateTest
                   label={labels.daBirth}
-                  defaultValue={mainTabData.daBirth}
+                  defaultValue={mainTabData.item?.daBirth}
                 />
               </Col>
               <Col xs md="6">
                 <RadioForm
                   label={labels.fgWedding}
                   optionList={marryRadioList}
-                  checked={mainTabData.fgWedding}
+                  checked={mainTabData.item?.fgWedding}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.cdDept}
                   disabled={true}
-                  value={mainTabData.cdDept}
+                  value={mainTabData.item?.cdDept}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.rankNo}
                   disabled={true}
-                  value={mainTabData.rankNo}
+                  value={mainTabData.item?.ankNo}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.cdOffduty}
-                  value={mainTabData.cdOffduty}
+                  value={mainTabData.item?.cdOffduty}
                 />
               </Col>
               <Col xs md="6">
                 <RadioForm
                   label={labels.ynDrawContracts}
                   optionList={contractRadioList}
-                  checked={mainTabData.ynDrawContracts}
+                  checked={mainTabData.item?.ynDrawContracts}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.daEnter}
                   disabled={true}
-                  value={mainTabData.daEnter}
+                  value={mainTabData.item?.daEnter}
                 />
               </Col>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.daRetire}
                   disabled={true}
-                  value={mainTabData.daRetire}
+                  value={mainTabData.item?.daRetire}
                 />
               </Col>
             </Row>

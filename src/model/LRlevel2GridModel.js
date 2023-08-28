@@ -16,7 +16,6 @@ const LRlevel2GridModel = () => {
   const [editedEmp, setEditedEmp] = useState({});
 
   const [mainTabData, setMainTabData] = useState({});
-  const [editedEmpAdd, setEditedEmpAdd] = useState({});
 
   const [subTableData, setSubTableData] = useState([]);
   const [subTablePkValue, setSubTablePkValue] = useState();
@@ -70,20 +69,6 @@ const LRlevel2GridModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
   }, [leftTablePkValue]);
-
-  //수정된 EmpAdd를 업데이트 요청하는 비동기 put 요청
-  useEffect(() => {
-    axios
-      .put(url + "/empAdd/getEmpAddByCdEmp", editedEmpAdd.item)
-      .then((response) => {
-        if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-        setEditedEmpAdd({});
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, [editedEmpAdd]);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -204,7 +189,6 @@ const LRlevel2GridModel = () => {
       setEditedEmp,
 
       setMainTabData,
-      setEditedEmpAdd,
 
       setSubTableData,
       setSubTablePkValue,
