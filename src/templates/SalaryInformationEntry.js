@@ -13,7 +13,7 @@ import CommonConstant from "../model/CommonConstant";
 import TableTemp from "../components/TableTemp";
 import CodeHelper from "../components/CodeHelper";
 import CodeHelpComponent from "../components/CodeHelper";
-import { makeCommaNumber } from "../utils/NumberUtils";
+
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   
@@ -26,18 +26,20 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     , salAllowData
     , setSalData
     , deductData
-    , setDeductData
+    , sumTableData
     , saInfoDetailData
     , setSaInfoDetailData
-    
+
     , modalState
     , setModalState    
+
     , actions
     , searchVO
     
   } = SalaryInformationEntryModel();
   
-  
+  console.log(sumTableData.salDeductPaySumData);
+
   // 코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback((tableData) => {
     setModalState({ show: true });
@@ -50,8 +52,6 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   return (
     <>
-    <TextBoxComponent value={searchVO.allowMonth?'a':'b'}/>
-
       {/* 코드 도움 모달 영역 */}
       <ModalComponent title= {'코드도움'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
        <CodeHelpComponent onRowClick={() => setModalState({ ...modalState, show: false })} tableData={codeHelperparams.cdEmp.tableData} setData={actions.setSearchDeptCd}/>
@@ -130,43 +130,50 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           <>
           {/* 급여항목 table영역 */}
           <TableTemp
-            showCheckbox={false}
-            showHeaderArrow={false}
             tableHeaders={tableHeader.salAllow}
             tableData={salAllowData.salData}
             actions={{
               setTableData: setSalData,
               //setPkValue: actions.setCdEmp,
+              setEditedRow: actions.setEditedAllow,
             }}
           />
-          <div>
-            과세 : {salAllowData.sumData.taxYSum}
-            비과세 :{salAllowData.sumData.taxNSum}
-            총합계 : {salAllowData.sumData.taxSum}
-          </div>
+          <div> 과세 : {salAllowData.sumData.taxYSum}</div>
+          <div> 비과세 :{salAllowData.sumData.taxNSum}</div>
+          <div> 총합계 : {salAllowData.sumData.sum} </div>
           </>
         </Col>
         <Col md="3">
           {/* 공제항목 table영역 */}
+          <>
           <TableTemp
             showCheckbox={false}
             showHeaderArrow={false}
             tableHeaders={tableHeader.salDeduct}
-            tableData={deductData}
-            actions={{
-              setTableData: actions.setDeductData,
-              //setPkValue: actions.setCdEmp,
-            }}
-          />
+            tableData={deductData.deductData}
+          /> 
+           <div>
+            공제액 계 : {deductData.sumData.sum}
+            차인지급액 : {salAllowData.sumData.sum-deductData.sumData.sum}
+          </div>
+          </>
         </Col>
         <Col md="3">
           {/* 조회구분 영역*/}
-          <SelectForm label={labels.inquiryYype} optionList={selectOption.salOptionByPeriodList} />
+          <SelectForm label={labels.inquiryYype} optionList={selectOption.salOptionByPeriodList} onChange={actions.setSelectedOption}/>
           <Row>
-            <TableForm tableData={selectOption.basicDeductData} />
+            <TableTemp 
+              showCheckbox={false}
+              showHeaderArrow={false}
+              tableHeaders={tableHeader.salAllowSum}
+              tableData={sumTableData.salAllowPaySumData} 
+            />
           </Row>
           <Row>
-            <TableForm tableData={selectOption.basicDeductData} />
+            <TableTemp 
+              tableHeaders={tableHeader.salDeductSum}
+              tableData={sumTableData.salDeductPaySumData} 
+            />
           </Row>
         </Col>
         <Col md="3">

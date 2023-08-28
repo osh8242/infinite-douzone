@@ -12,9 +12,18 @@ const SalConstant = () => {
             { field: "allowPay", text: "지급금액" },
         ],
         salDeduct : [
-            { field: "nmDeduct", text: "공제항목" , readonly : true},
+            { field: "nmDeduct", text: "공제항목" },
             { field: "allowPay", text: "지급금액" },
         ],
+        salAllowSum : [
+            { field: "nmAllow", text: "항목" },
+            { field: "ynTax", text: "TX" },
+            { field: "sumAllowPay", text: "금액" },
+        ],
+        salDeductSum : [
+            { field: "nmDeduct", text: "공제항목" },
+            { field: "sumDeductPay", text: "지급금액" },
+        ]
     },
     selectOption : {
         salOptionList : [       //구분 옵션
@@ -27,7 +36,7 @@ const SalConstant = () => {
         salOptionByPeriodList : [//조회구분 검색조건 옵션
             { key: "EmpAllThisMonth", value: "0.전체사원 당월" },
             { key: "EmpOneThisMonth", value: "1.현재사원 당월" },
-            { key: "EmpAlleCurrent",  value: "2.전체사원 현재" },
+            { key: "EmpAllCurrent",  value: "2.전체사원 현재" },
             { key: "EmpOneCurrent",   value: "3.현재사원 현재" },
             { key: "EmpAllThisMonth", value: "4.전체사원 연간" },
             { key: "EmpOneThisYear",  value: "5.현재사원 연간" },
