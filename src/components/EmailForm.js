@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Col, Row, Form } from "react-bootstrap";
 
 function EmailForm(props) {
   //props 속성들
-  const {
-    type,
-    label,
-    size,
-    disabled,
-    readOnly,
-    plaintext,
-    value,
-    optionList,
-  } = props;
+  const { label, emEmp, optionList, pkValue, actions } = props;
 
-  // domain과 아이디 값
-  const email = value?.split("@");
-  const userEmailId = email?.[0];
-  const domain = email?.[1];
+  // ID와 DOMAIN값
+  const emEmpId = useRef(null);
+  const emEmpDomain = useRef(null);
 
-  //////////////////////////////////////////
-  //수정하는 로직은 추후 수정예정
-  //////////////////////////////////////////
+  useEffect(() => {
+    emEmpId.current.value = emEmp?.split("@")[0];
+    emEmpDomain.current.value = emEmp?.split("@")[1];
+  });
+
+  //email값 수정
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      const newEmEmp = {
+        emEmp: emEmpId.current.value + "@" + emEmpDomain.current.value,
+        cdEmp: pkValue.cdEmp,
+      };
+      actions.setEmEmp(newEmEmp);
+    }
+  };
 
   return (
     <>
-      <Row className="py-1">
+      <Row className="py-1 align-items-center">
         {label && (
           <Col
             className="d-flex align-items-center justify-content-center"
@@ -35,18 +39,11 @@ function EmailForm(props) {
           </Col>
         )}
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            type={type}
-            placeholder={props.placeholder}
-            size={size}
-            disabled={disabled}
-            readOnly={readOnly}
-            plaintext={plaintext}
-            value={userEmailId}
-          ></Form.Control>
+          <Form.Control ref={emEmpId} onKeyDown={handleKeyDown} />
         </Col>
+        @
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Select default={"domain"}>
+          <Form.Select ref={emEmpDomain}>
             {optionList.map((option, index) => (
               <option value={option.key} key={index}>
                 {option.value}
