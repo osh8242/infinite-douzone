@@ -80,6 +80,7 @@ function EmpRegisterationModel() {
   //사원 정보 update POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (Object.keys(editedEmp).length !== 0) {
+      console.log("update요청: ", editedEmp);
       axios
         .post(url + "/emp/updateEmp", editedEmp)
         .then((response) => {
@@ -94,35 +95,35 @@ function EmpRegisterationModel() {
 
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
-  useEffect(() => {
-    console.log(
-      "EmpRegisterationModel > /empFam/getListByCdEmp",
-      "cdEmp : ",
-      mainTablePkValue
-    );
-    axios
-      .post(url + "/empFam/getListByCdEmp", mainTablePkValue, {
-        ContentType: "application/json",
-      })
-      .then((response) => {
-        console.log(
-          "EmpRegisterationModel > /empFam/getListByCdEmp => ",
-          response.data
-        );
-        const data = response.data.map((item) => ({
-          연말정산관계: item.cdCalrel,
-          성명: item.nmKrname,
-          내외국민: item.ynFor,
-          주민번호: item.noSocial,
-          위탁자관계: item.cdFamrel,
-        }));
-        setSubTableData(data);
-      })
-      .catch((error) => {
-        console.log("에러발생: ", error);
-        //에러처리
-      });
-  }, [mainTablePkValue]);
+  // useEffect(() => {
+  //   console.log(
+  //     "EmpRegisterationModel > /empFam/getListByCdEmp",
+  //     "cdEmp : ",
+  //     mainTablePkValue
+  //   );
+  //   axios
+  //     .post(url + "/empFam/getListByCdEmp", mainTablePkValue, {
+  //       ContentType: "application/json",
+  //     })
+  //     .then((response) => {
+  //       console.log(
+  //         "EmpRegisterationModel > /empFam/getListByCdEmp => ",
+  //         response.data
+  //       );
+  //       const data = response.data.map((item) => ({
+  //         연말정산관계: item.cdCalrel,
+  //         성명: item.nmKrname,
+  //         내외국민: item.ynFor,
+  //         주민번호: item.noSocial,
+  //         위탁자관계: item.cdFamrel,
+  //       }));
+  //       setSubTableData(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("에러발생: ", error);
+  //       //에러처리
+  //     });
+  // }, [mainTablePkValue]);
 
   return {
     leftTableData: leftTableData,

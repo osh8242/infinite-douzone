@@ -20,7 +20,7 @@ import Emp from "../vo/EmpRegister/Emp";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
-  const { leftTableData, mainTableData, subTableData, actions } =
+  const { mainTablePk, leftTableData, mainTableData, subTableData, actions } =
     EmpRegisterationModel();
 
   //고정된 값을 가지는 state들
@@ -96,15 +96,17 @@ function EmpRegisterationLayout() {
                 />
                 <AddressForm
                   isZonecode={true}
-                  zipHomeData={
-                    mainTableData.zipHome ? mainTableData.zipHome : null
-                  }
-                  addHome1Data={
+                  zipHome={mainTableData.zipHome ? mainTableData.zipHome : null}
+                  addHome1={
                     mainTableData.addHome1 ? mainTableData.addHome1 : null
                   }
-                  addHome2Data={
+                  addHome2={
                     mainTableData.addHome2 ? mainTableData.addHome2 : null
                   }
+                  pkValue={mainTablePk}
+                  actions={{
+                    setAddress: actions.setEditedEmp,
+                  }}
                 />
                 <CallNumberForm
                   label={labels.telHome}
