@@ -1,41 +1,36 @@
 // 작성자: 김진
 // 사원등록 페이지 전용 레이아웃
 
-import { Col, Row } from 'react-bootstrap';
-import React, { useState } from 'react';
-import TableForm from '../components/TableForm';
-import MenuTab from '../components/MenuTab';
-import TextBoxComponent from '../components/TextBoxComponent';
-import DateForm from '../components/DateForm';
-import AddressForm from '../components/AddressForm';
-import '../styles/empRegisterationLayout.css';
-import EmpRegisterationModel from '../model/EmpRegisterationModel';
-import CommonConstant from '../model/CommonConstant';
-import CallNumberForm from '../components/CallNumberForm';
-import NoSocialFormForEmpRegister from '../components/NoSocialFormForEmpRegister';
-import EmailForm from '../components/EmailForm';
-import DateTest from '../components/DateTest';
+import { Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import TableForm from "../components/TableForm";
+import MenuTab from "../components/MenuTab";
+import TextBoxComponent from "../components/TextBoxComponent";
+import DateForm from "../components/DateForm";
+import AddressForm from "../components/AddressForm";
+import "../styles/empRegisterationLayout.css";
+import EmpRegisterationModel from "../model/EmpRegisterationModel";
+import CommonConstant from "../model/CommonConstant";
+import CallNumberForm from "../components/CallNumberForm";
+import NoSocialFormForEmpRegister from "../components/NoSocialFormForEmpRegister";
+import EmailForm from "../components/EmailForm";
+import DateTest from "../components/DateTest";
+import TableTemp from "../components/TableTemp";
+import Emp from "../vo/EmpRegister/Emp";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
-  const {
-    cdEmp,
-    setCdEmp,
-    leftTableData,
-    setLeftTableData,
-    mainTableData,
-    setMainTableData,
-    subTableData,
-    setSubTableData,
-  } = EmpRegisterationModel();
+  const { leftTableData, mainTableData, subTableData, actions } =
+    EmpRegisterationModel();
 
   //고정된 값을 가지는 state들
   const {
-    labels,
-    mainTabMenuListForEmpRegister,
-    ynForList,
-    genderRadioList,
-    emailList,
+    EmpRegisterLeftHeaders,
+    mainTabMenuListForEmpRegister, //메뉴 탭 목록
+    ynForList, //내외국인 구분
+    genderRadioList, //성별구분
+    emailList, //이메일 도메인 리스트
+    labels, //속성명
   } = CommonConstant();
 
   // 메뉴 탭 전환 기능 추후 수정 예정
@@ -47,12 +42,24 @@ function EmpRegisterationLayout() {
         <Col md="4" id="empRegisterLayoutLeft">
           {/* 좌측 사원목록 테이블 */}
           {leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
-            <TableForm
+            // <TableForm
+            //   showCheckbox={true}
+            //   showHeaderArrow={true}
+            //   tableData={leftTableData}
+            //   rowClickHandler={setCdEmp}
+            //   minRow={20}
+            // />
+            <TableTemp
               showCheckbox={true}
               showHeaderArrow={true}
+              tableHeaders={EmpRegisterLeftHeaders}
               tableData={leftTableData}
-              rowClickHandler={setCdEmp}
-              minRow={20}
+              rowAddable={true}
+              actions={{
+                setTableData: actions.setLeftTableData,
+                setPkValue: actions.setMainTablePkValue,
+                getRowObject: Emp,
+              }}
             />
           ) : (
             <div>Loading...</div> //로딩중 화면 표시 내용
@@ -151,8 +158,8 @@ function EmpRegisterationLayout() {
                 ) : (
                   <TextBoxComponent
                     label={labels.daRetire}
-                    placeholder={'----년 --월 --일'}
-                    disabled={'disabled'}
+                    placeholder={"----년 --월 --일"}
+                    disabled={"disabled"}
                   />
                 )}
                 <CallNumberForm

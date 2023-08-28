@@ -1,31 +1,33 @@
 import { useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
+import Emp from "../vo/EmpRegister/Emp";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
-  const [cdEmp, setCdEmp] = useState("E001");
+  // const [cdEmp, setCdEmp] = useState("E001");
+  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
   const [leftTableData, setLeftTableData] = useState();
   const [mainTableData, setMainTableData] = useState();
   const [subTableData, setSubTableData] = useState();
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
+    setLeftTableData();
     axios
       .get(url + "/emp/getAllEmp")
       .then((response) => {
-        console.log(
-          "EmpRegisterationModel > /emp/getAllEmp => ",
-          response.data
-        );
-        const data = response.data.map((item) => ({
-          code: item.cdEmp,
-          사원명: item.nmKrname,
-          내외국인: item.ynFor,
-          주민번호: item.noSocial,
-          구분: item.jobOk === "1" ? "재직" : "퇴직",
-        }));
+        const data = response.data.map((item) => {
+          const empData = {
+            cdEmp: item.cdEmp,
+            nmKrname: item.nmKrname,
+            ynFor: item.ynFor,
+            noSocial: item.noSocial,
+            jobOk: item.jobOk,
+          };
+          return Emp(empData);
+        });
         setLeftTableData(data);
       })
       .catch((error) => {
@@ -39,14 +41,12 @@ function EmpRegisterationModel() {
     console.log(
       "EmpREgisterationModel > /emp/getEmpByCdEmp",
       "cdEmp : ",
-      cdEmp
+      mainTablePkValue
     );
     axios
-      .post(
-        url + "/emp/getEmpByCdEmp",
-        { cdEmp: cdEmp },
-        { ContentType: "application/json" }
-      )
+      .post(url + "/emp/getEmpByCdEmp", mainTablePkValue, {
+        ContentType: "application/json",
+      })
       .then((response) => {
         console.log(
           "EmpRegisterationModel > /emp/getEmpByCdEmp",
@@ -57,33 +57,28 @@ function EmpRegisterationModel() {
       .catch((error) => {
         console.error("에러발생: ", error);
       });
-  }, [cdEmp]);
+  }, [mainTablePkValue]);
 
   //사원 정보 insert POST 요청
-  // useEffect(() => {
-  //   console.log("EmpRegisterModel > /emp/insertEmp ", cdEmp);
-  //   axios
-  //     .post(
-  //       url + "/emp/insertEmp",
-  //       { cdEmp: cdEmp },
-  //       { ContentType: "qpplication/json" }
-  //     )
-  //     .then(re);
-  // });
+  useEffect(() => {
+    axios
+      .post(url + "/emp/insertEmp", mainTablePkValue, {
+        ContentType: "qpplication/json",
+      })
+      .then((response) => {});
+  });
 
-  //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항 정보)
+  //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항 )
   useEffect(() => {
     console.log(
       "EmpRegisterationModel > /empFam/getListByCdEmp",
       "cdEmp : ",
-      cdEmp
+      mainTablePkValue
     );
     axios
-      .post(
-        url + "/empFam/getListByCdEmp",
-        { cdEmp: cdEmp },
-        { ContentType: "application/json" }
-      )
+      .post(url + "/empFam/getListByCdEmp", mainTablePkValue, {
+        ContentType: "application/json",
+      })
       .then((response) => {
         console.log(
           "EmpRegisterationModel > /empFam/getListByCdEmp => ",
@@ -102,17 +97,19 @@ function EmpRegisterationModel() {
         console.log("에러발생: ", error);
         //에러처리
       });
-  }, [cdEmp]);
+  }, [mainTablePkValue]);
 
   return {
-    cdEmp: cdEmp,
-    setCdEmp,
     leftTableData: leftTableData,
-    setLeftTableData,
+    mainTablePk: mainTablePkValue,
     mainTableData: mainTableData,
-    setMainTableData,
     subTableData: subTableData,
-    setSubTableData,
+    actions: {
+      setLeftTableData,
+      setMainTableData,
+      setMainTablePkValue,
+      setSubTableData,
+    },
   };
 }
 
