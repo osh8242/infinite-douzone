@@ -72,6 +72,8 @@ const LRlevel2GridModel = () => {
       axios
         .post(url + "/empFam/getEmpFamListByCdEmp", mainTablePkValue)
         .then((response) => {
+          console.log("pk");
+          console.log(mainTablePkValue);
           console.log(
             "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
             response.data

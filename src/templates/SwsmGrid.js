@@ -16,6 +16,7 @@ import TempAdd from "../components/TempAdd";
 import TempText from "../components/TempText";
 import TempSelect from "../components/TempSelect";
 import Loading from "../components/Loading";
+import TableTemp from "../components/TableTemp";
 
 const searchChild = [
   { key: "opt1", value: "1. 사원등록" },
@@ -109,19 +110,25 @@ const SwsmGrid = () => {
         </SearchPanel>
         <Row>
           <Col md="3">
-            {leftTableData ? (
-              <TempTable
+            {/* {leftTableData ? (
+              <TableTemp
                 showCheckbox={true}
-                showHeaderArrow={false}
+                showHeaderArrow={true}
+                header={LRlevel2GridLeftTableHeader}
                 tableData={leftTableData}
-                rowClickHandler={setCdEmp}
+                rowAddable={true}
+                actions={{
+                  setTableData: actions.setLeftTableData,
+                  setPkValue: actions.setCdEmp,
+                  setEditedRow: actions.setEditedEmp,
+                }}
               />
             ) : (
               // <Spinner animation="border" variant="primary" />
               <Loading />
-            )}
+            )} */}
 
-            {/* {leftTableData ? (
+            {leftTableData ? (
               <TempTable
                 showCheckbox={true}
                 showHeaderArrow={false}
@@ -139,7 +146,7 @@ const SwsmGrid = () => {
               />
             ) : (
               <Spinner animation="border" variant="primary" />
-            )} */}
+            )}
           </Col>
           <Col md="9">
             <MenuTab menuList={menuList1} />

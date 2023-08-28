@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
-import { NumericFormat, PatternFormat } from 'react-number-format';
+import { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+import { NumericFormat, PatternFormat } from "react-number-format";
 
 //css
 const textBoxStyle = {
-  width: '100%',
-  fontSize: '1rem',
-  fontWeight: '400',
-  lineHeight: '1.5',
-  appearance: 'none',
-  backgroundColor: 'var(--bs-body-bg)',
-  backgroundClip: 'padding-box',
-  border: 'var(--bs-border-width) solid var(--bs-border-color)',
-  borderRadius: 'var(--bs-border-radius)',
-  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-  padding: '0.375rem 0.75rem',
+  width: "100%",
+  fontSize: "1rem",
+  fontWeight: "400",
+  lineHeight: "1.5",
+  appearance: "none",
+  backgroundColor: "var(--bs-body-bg)",
+  backgroundClip: "padding-box",
+  border: "var(--bs-border-width) solid var(--bs-border-color)",
+  borderRadius: "var(--bs-border-radius)",
+  transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+  padding: "0.375rem 0.75rem",
 };
 
 function TempText(props) {
@@ -36,10 +36,10 @@ function TempText(props) {
   } = props;
 
   TempText.defaultProps = {
-    md: '4',
+    md: "4",
   };
 
-  console.log('md:' + md);
+  // console.log('md:' + md);
   //입력값
   const [inputValue, setInputValue] = useState(value);
 
@@ -54,17 +54,17 @@ function TempText(props) {
     const maskedNumber = input.replace(
       /^(\d{6})(\d+)/,
       (match, group1, group2) => {
-        const maskedGroup2 = group2.replace(/./g, '*');
-        console.log('group1내용 : ' + group1);
+        const maskedGroup2 = group2.replace(/./g, "*");
+        console.log("group1내용 : " + group1);
         return `${group1}-${maskedGroup2}`;
-      },
+      }
     );
 
     setInputValue(maskedNumber);
   };
 
   //custom type 정의(0)_TextArea
-  if (type === 'textarea') {
+  if (type === "textarea") {
     //Textarea
     return (
       <Row className="py-1">
@@ -88,15 +88,15 @@ function TempText(props) {
     );
 
     //custom type 정의(1)_NumericFormat(comma처리 + 단위) ex) number,rate,won
-  } else if (type === 'number' || type === 'rate' || type === 'won') {
-    let suffix = ''; // 단위(뒤) 앞은 prefix
-    let placeholder = ''; // placeholder
+  } else if (type === "number" || type === "rate" || type === "won") {
+    let suffix = ""; // 단위(뒤) 앞은 prefix
+    let placeholder = ""; // placeholder
     let thousandSeparator = true; // 세자리 콤마
 
-    if (type === 'rate') {
-      suffix = '%';
-    } else if (type === 'won') {
-      suffix = '원';
+    if (type === "rate") {
+      suffix = "%";
+    } else if (type === "won") {
+      suffix = "원";
     }
 
     return (
@@ -124,16 +124,16 @@ function TempText(props) {
     );
 
     //custom type 정의(2)_PatternFormat(패턴검사)
-  } else if (type === 'regNum' || type === 'customformat') {
+  } else if (type === "regNum" || type === "customformat") {
     //주민번호, 포멧지정
 
-    let format = '';
-    let placeholder = '';
+    let format = "";
+    let placeholder = "";
 
-    if (type === 'regNum') {
+    if (type === "regNum") {
       //주민번호 format
-      format = '######-#######';
-      placeholder = 'YYMMDD-XXXXXXX';
+      format = "######-#######";
+      placeholder = "YYMMDD-XXXXXXX";
     } else {
       //포멧지정
       format = props.format;
@@ -176,7 +176,7 @@ function TempText(props) {
         </Col>
 
         <Col
-          md={!subLabel && '7'}
+          md={!subLabel && "7"}
           className="d-flex align-items-center justify-content-center"
         >
           {/* subLabel 사용 시 */}
@@ -233,7 +233,7 @@ function TempText(props) {
         </Col>
 
         <Col
-          md={'2'}
+          md={"2"}
           className="d-flex align-items-center justify-content-center"
         >
           {/* subLabel 사용 시 */}
@@ -242,7 +242,7 @@ function TempText(props) {
               <div>{label2}</div>
             </Col>
           )}
-          {/* 기본 text */}{' '}
+          {/* 기본 text */}{" "}
           <Col md="4">
             <Form.Control
               type={type}
@@ -292,7 +292,7 @@ function TempText(props) {
           </Col>
 
           <Col
-            md={!subLabel && '7'}
+            md={!subLabel && "7"}
             className="d-flex align-items-center justify-content-center"
           >
             {/* subLabel 사용 시 */}

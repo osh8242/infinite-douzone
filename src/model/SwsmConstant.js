@@ -5,14 +5,18 @@ const SwsmConstant = () => {
 
     // 상단 조회 - 소득구분 목록
     incomeClassficationList: [
+      { key: "empAll", value: "0. 전체" },
       { key: "empRegistration", value: "1. 사원등록" },
       { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
     ],
 
+    // 추가 구분 목록
+    subTabMenuList: { WorkInformation: "근로정보", otherBenefit: "기타급여" },
     // 좌측테이블 - 사원 목록
     SwsmLeftTableHeaders: [
-      { field: "empCode", text: "사원코드", orderBy: "asc" },
-      { field: "name", text: "성명", orderBy: "asc" },
+      { field: "cdEmp", text: "사원코드", orderBy: "asc", isPk: true },
+      { field: "nmKrname", text: "성명", orderBy: "asc" },
+      { field: "noSocial", text: "주민번호" },
     ],
 
     // 우측하단테이블 - 기타급여 목록
@@ -90,10 +94,10 @@ const SwsmConstant = () => {
       withholdingYear: "원천년도",
       dateOfCreation: "작성년월", // 또는 작성일자
       incomeClassfication: "소득구분",
-      empCode: "사원코드",
-      name: "성명",
+      cdEmp: "사원코드",
+      nmKrname: "성명",
       residentState: "거주구분",
-      rrn: "주민번호",
+      noSocial: "주민번호",
       startEmpContractPeriod: "시작근로계약기간",
       endEmpContractPeriod: "종료근로계약기간",
       postCode: "우편번호",
@@ -118,6 +122,27 @@ const SwsmConstant = () => {
       compensationInsurance: "산재보험",
       nationalPension: "국민연금",
       healthInsurance: "건강보험",
+    },
+
+    labels: {
+      empContractPeriod: "근로계약기간",
+      workAddress: "근무장소",
+      jobDescription: "업무의 내용",
+      workTime: "소정근로시간",
+      breakTime: "휴게시간",
+      workingDay: "근무일",
+      dayOff: "주휴일",
+      salaryType: "임금유형",
+      otherBenefits: "기타급여",
+      bonusPaymentStatus: "상여금",
+      salaryPaymentDateType: "임금지급일",
+      paymentMethod: "지급방법",
+      empInsurance: "고용보험",
+      compensationInsurance: "산재보험",
+      nationalPension: "국민연금",
+      healthInsurance: "건강보험",
+      dateOfCreation: " 작성일자",
+      incomeClassfication: "소득구분",
     },
   };
 };
