@@ -11,6 +11,7 @@ const SalaryInformationEntryModel = () => {
   /* 영역에 뿌릴 Data */
   const [saInfoListData, setSaInfoListData] = useState();     //사원 테이블 리스트
   const [salData, setSalData] = useState();                   //급여항목 테이블
+  const [calSalData, setCalSalData] = useState({ taxYSum : 0, taxNSum : 0, taxSum : 0 })  //급여항목 합계 데이터
   const [deductData, setDeductData] = useState();             //공제항목 테이블
   const [saInfoDetailData, setSaInfoDetailData] = useState(); //사원상세조회
 
@@ -64,7 +65,7 @@ const SalaryInformationEntryModel = () => {
   
   useEffect(() => {
     salAllowTableData();      // 선택한 사원의 급여항목 Table Data
-    //salDeductTableData();   // 선택한 사원의 공제항목 Table Data
+    salDeductTableData();     // 선택한 사원의 공제항목 Table Data
     salEmpDetailTableData();  // 선택한 사원의 상세정보
   }, [searchAllowVo]);
 
@@ -105,13 +106,17 @@ const SalaryInformationEntryModel = () => {
 
   /* 상세사원정보 */
   const salEmpDetailTableData = () => {
+    console.log("**************");
+    console.log(cdEmp);
+    console.log("**************");
+
     axios.post(
       url + '/saEmpInfo/getSaEmpInfoByCdEmp',
       {cdEmp: cdEmp},
       {'Content-Type': 'application/json',},
     )
     .then((response) => {
-      //console.log( '상세사원정보 >> ',response.data);
+      console.log( '상세사원정보 >> ', response.data);
       const data = response.data;
       setSaInfoDetailData(data);
     })
@@ -130,7 +135,6 @@ const SalaryInformationEntryModel = () => {
       .then((response) => {
         //console.log( '급여항목데이터 >> ',response.data);
         const data = response.data.map((item) => ({
-          // 급여항목코드: item.cdAllow,
           item : {
             nmAllow: item.nmAllow,
             allowPay: item.allowPay
@@ -142,6 +146,18 @@ const SalaryInformationEntryModel = () => {
         }));
 
         setSalData(data);
+
+         // 합계 데이터
+        let taxYSum = 0;  //과세
+        let taxNSum = 0;  //비과세
+        let taxSum = 0;   //총 지급액 합계
+       
+        response.data.forEach((item) => {
+          item.taxYn === 'N'? taxNSum += parseInt(item.allowPay) : taxYSum += parseInt(item.allowPay)
+        }); 
+        taxSum = taxYSum + taxNSum; //전체합계
+
+        setCalSalData({taxYSum : taxYSum, taxNSum : taxNSum, taxSum : taxSum});
       })
       .catch((error) => {
         console.error('에러발생: ', error);
@@ -149,36 +165,37 @@ const SalaryInformationEntryModel = () => {
   }
 
   /* 급여정보_공제 항목 리스트 */
-  // const salDeductTableData=()=>{
+  const salDeductTableData=()=>{
           
-  //   axios.post(
-  //     url + '/sadeductpay/getSaDeductPayByCdEmp',
-  //     {cdEmp: cdEmp,
-  //       allowMonth: allowMonth, },
-  //     {'Content-Type': 'application/json',},
-  //     )
-  //     .then((response) => {
-  //       //console.log( '공제항목데이터 >> ',response.data);
+    axios.post(
+      url + '/sadeductpay/getSaDeductPayByCdEmp',
+      {...searchAllowVo, allowMonth: allowMonth},
+      {'Content-Type': 'application/json',},
+      )
+      .then((response) => {
+        //console.log( '공제항목데이터 >> ',response.data);
+        const data = response.data.map((item) => ({
+          item : {
+            nmDeduct: item.nmDeduct,
+            allowPay: item.allowPay
+          },
+          isChecked : false,
+          isEditable : false,     
+          selected : false,
+        }));
 
-  //       const data = response.data.map((item) => ({
-  //         // 공제항목코드: item.cdDeduct,
-  //         [labels.nmDeduct]: item.nmDeduct,
-  //         [labels.allowPay]: item.allowPay
-  //       }));
-
-  //       setDeductData(data);
-
-  //     })
-  //     .catch((error) => {
-  //       console.error('에러발생: ', error);
-  //     })
-  // }
+        setDeductData(data);
+      })
+      .catch((error) => {
+        console.error('에러발생: ', error);
+      })
+  }
 
   return {
     saInfoListData: saInfoListData
     , setSaInfoListData 
-    , salData:salData
-    , setSalData
+    , salAllowData:{ salData : salData, sumData : calSalData }
+    , setSalData 
     , deductData : deductData
     , setDeductData
     , saInfoDetailData
@@ -201,6 +218,7 @@ const SalaryInformationEntryModel = () => {
       , setSearchCdProject
       , setSearchYnUnit
       , setSearchYnForlabor
+      , setCalSalData
     }
     , searchVO : {
       cdEmp

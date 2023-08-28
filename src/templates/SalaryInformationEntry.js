@@ -1,6 +1,6 @@
 // 작성자 : 현소현
 import React, { useCallback, useEffect, useState } from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Modal, Row } from "react-bootstrap";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
@@ -11,16 +11,19 @@ import DateTest from "../components/DateTest";
 import SalConstant from "../model/SalConstant";
 import CommonConstant from "../model/CommonConstant";
 import TableTemp from "../components/TableTemp";
+import CodeHelper from "../components/CodeHelper";
+import CodeHelpComponent from "../components/CodeHelper";
+import { makeCommaNumber } from "../utils/NumberUtils";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   
   const { labels } = CommonConstant();
-  const { selectOption, tableHeader } = SalConstant();
+  const { selectOption, tableHeader, codeHelperparams } = SalConstant();
 
   const {
     saInfoListData
     , setSaInfoListData 
-    , salData
+    , salAllowData
     , setSalData
     , deductData
     , setDeductData
@@ -40,16 +43,19 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     setModalState({ show: true });
   }, []);
 
-  //조회 버튼
-  const onSearch = () => {
-  };
-  
+  //조회버튼
+  const onSearch =()=> {
+    alert("검색버튼 눌렀더");
+  }
+
   return (
     <>
+    <TextBoxComponent value={searchVO.allowMonth?'a':'b'}/>
+
       {/* 코드 도움 모달 영역 */}
-      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
-       
-      </ModalComponent>
+      <ModalComponent title= {'코드도움'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
+       <CodeHelpComponent onRowClick={() => setModalState({ ...modalState, show: false })} tableData={codeHelperparams.cdEmp.tableData} setData={actions.setSearchDeptCd}/>
+      </ModalComponent> 
 
       {/* 기본 검색조건 */}
       <SearchPanel onSearch={onSearch} showAccordion>
@@ -72,7 +78,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               <TextBoxComponent type="codeHelper" name="searchEmpCd" label={"사원코드"} />
             </Col>
             <Col>
-              <TextBoxComponent codeHelper name="searchDeptCd" label={"부서코드"} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
+              <TextBoxComponent codeHelper name="searchDeptCd" label={"부서코드"} value={searchVO.searchDeptCd} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
               />
             </Col>
           </Row>
@@ -115,30 +121,42 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             tableHeaders={tableHeader.salEmp}
             tableData={saInfoListData}
             actions={{
-              setTableData: actions.setSaInfoListData,
+              setTableData: setSaInfoListData,
               setPkValue: actions.setSearchAllowVo,
             }}
           />
         </Col>
         <Col md="3">
+          <>
           {/* 급여항목 table영역 */}
           <TableTemp
             showCheckbox={false}
             showHeaderArrow={false}
             tableHeaders={tableHeader.salAllow}
-            tableData={salData}
+            tableData={salAllowData.salData}
             actions={{
-              setTableData: actions.setSalData,
+              setTableData: setSalData,
               //setPkValue: actions.setCdEmp,
             }}
-          />     
+          />
+          <div>
+            과세 : {salAllowData.sumData.taxYSum}
+            비과세 :{salAllowData.sumData.taxNSum}
+            총합계 : {salAllowData.sumData.taxSum}
+          </div>
+          </>
         </Col>
         <Col md="3">
           {/* 공제항목 table영역 */}
-          <TableForm
+          <TableTemp
             showCheckbox={false}
             showHeaderArrow={false}
+            tableHeaders={tableHeader.salDeduct}
             tableData={deductData}
+            actions={{
+              setTableData: actions.setDeductData,
+              //setPkValue: actions.setCdEmp,
+            }}
           />
         </Col>
         <Col md="3">
