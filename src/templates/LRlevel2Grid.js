@@ -11,7 +11,7 @@ import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
-import TableForm from "../components/TableForm"; 
+import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -35,7 +35,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   //Model로 관리되는 값들
   const {
     leftTableData,
-    cdEmp,
+    leftTablePkValue,
     mainTabData,
     subTableData,
     jobOk,
@@ -57,6 +57,24 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
     } else {
       setRefYear();
       setJobOk(jobOkRef.current.value);
+    }
+  };
+
+  const mainTabRef = useRef();
+
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
+  const mainTabRef = useRef();
+
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
     }
   };
 
@@ -84,14 +102,13 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       <Row>
         <Col md="3">
           <TableTemp
-            showCheckbox={true}
-            showHeaderArrow={true}
+            //showHeaderArrow={true}
+            rowAddable={true}
             tableHeaders={LRlevel2GridLeftTableHeaders}
             tableData={leftTableData}
-            rowAddable={true}
             actions={{
               setTableData: actions.setLeftTableData,
-              setPkValue: actions.setMainTablePkValue,
+              setPkValue: actions.setLeftTablePkValue,
               setEditedRow: actions.setEditedEmp,
             }}
           />
@@ -99,7 +116,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         {mainTabData ? (
           <Col md="9">
             <MenuTab menuList={mainTabMenuList} />
-            <Row className="mb-5">
+            <Row className="mb-5" useRef={mainTabRef}>
               <Col xs md="6">
                 <TextBoxComponent
                   label={labels.nmEnName}
@@ -187,11 +204,15 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             <TableTemp
               showCheckbox={true}
               showHeaderArrow={true}
+              rowAddable={true}
               tableHeaders={LRlevel2GridSubTableHeaders}
               tableData={subTableData}
+              pkValue={leftTablePkValue}
               actions={{
                 setTableData: actions.setSubTableData,
                 setEditedRow: actions.setEditedEmpFam,
+                setSubTablePkValue: actions.setSubTablePkValue,
+                getRowObject: EmpFam,
               }}
             />
           </Col>
