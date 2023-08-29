@@ -11,13 +11,41 @@
     {key : "age",       value : "나이"}
   ]/> 
 */
+import { useEffect, useState, useRef } from "react";
+import { Col, Row } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import TextBoxComponent from "./TextBoxComponent";
+import TempText from "./TempText";
 
-import { Col, Row } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import TextBoxComponent from './TextBoxComponent';
-import TempText from './TempText';
+function TempSelect({
+  label,
+  labelKey,
+  optionList,
+  subLabel,
+  subValue,
+  actions,
+}) {
+  const [inputValue, setInputValue] = useState(subValue);
 
-function TempSelect({ label, optionList, subLabel, subValue }) {
+  useEffect(() => {
+    setInputValue(subValue);
+  }, [subValue]);
+
+  const handleInputValueChange = (e) => {
+    console.log("handleInputValueChange: ");
+    console.log(e.target.value);
+    setInputValue(e.target.value);
+  };
+
+  const handleFocusOutChange = (e) => {
+    console.log("out");
+    const newData = {
+      [labelKey]: inputValue,
+    };
+
+    actions.setEdited(newData);
+  };
+
   return (
     <Row className="py-1">
       <Col md="4" className="d-flex align-items-center justify-content-center">
@@ -36,7 +64,13 @@ function TempSelect({ label, optionList, subLabel, subValue }) {
             ))}
           </Form.Select>
         </Col>
-        <Form.Control id="TextArea" type="text" value={subValue} />
+        <Form.Control
+          id="TextArea"
+          type="text"
+          value={inputValue}
+          onChange={handleInputValueChange}
+          onBlur={handleFocusOutChange}
+        />
         <Col
           md="1"
           className="d-flex align-items-center justify-content-center"

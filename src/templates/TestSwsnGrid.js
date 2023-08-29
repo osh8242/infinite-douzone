@@ -137,6 +137,7 @@ const TestSwsnGrid = () => {
                       label={labels.jobDescription}
                       value={mainTabData ? mainTabData.jobDescription : ""}
                       md={2}
+                      labelKey={"jobDescription"}
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
@@ -176,6 +177,10 @@ const TestSwsnGrid = () => {
                       subLabel={true}
                       md={4}
                       size={1}
+                      labelKey={"workingDay"}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>
@@ -190,6 +195,10 @@ const TestSwsnGrid = () => {
                       value={mainTabData ? mainTabData.dayOff : ""}
                       subLabel={true}
                       md={4}
+                      labelKey={"dayOff"}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>
@@ -201,6 +210,10 @@ const TestSwsnGrid = () => {
                       optionList={salaryTypeList}
                       subLabel={"원"}
                       subValue={mainTabData ? mainTabData.salaryAmount : ""}
+                      labelKey={"salaryAmount"}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                     {/* <TextBoxComponent />원 */}
                   </Col>

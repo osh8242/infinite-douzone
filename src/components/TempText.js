@@ -22,6 +22,7 @@ function TempText(props) {
   const {
     type,
     label,
+    labelKey,
     rows,
     size,
     disabled,
@@ -70,15 +71,18 @@ function TempText(props) {
     // setInputValue(data);
 
     setInputValue(event.target.value);
-    if (event.key === "Enter") console.log("enter");
+    // if (event.key === "Enter") console.log("enter");
   };
 
   const handleFocusOut = (event) => {
     console.log("blur");
     console.log(inputValue);
+    console.log("label");
+    console.log(label);
+    console.log(labelKey);
 
     const newData = {
-      jobDescription: inputValue,
+      [labelKey]: inputValue,
     };
 
     actions.setEdited(newData);
