@@ -6,18 +6,24 @@
   tableData : table 로 만들 데이터
 */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { Form, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSortUp,
   faSortDown,
   faCheck,
-} from '@fortawesome/free-solid-svg-icons';
-import Spinner from 'react-bootstrap/Spinner';
-import '../styles/tableForm.css';
+} from "@fortawesome/free-solid-svg-icons";
+import Spinner from "react-bootstrap/Spinner";
+import "../styles/tableForm.css";
 
-const TableForm = ({ showCheckbox, showHeaderArrow, tableData, rowClickHandler, cellClickHandler}) => {
+const TableForm = ({
+  showCheckbox,
+  showHeaderArrow,
+  tableData,
+  rowClickHandler,
+  cellClickHandler,
+}) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
   //   return (
@@ -49,7 +55,7 @@ const TableForm = ({ showCheckbox, showHeaderArrow, tableData, rowClickHandler, 
   };
 
   // //////////////////////////////////////////////////////////////// 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
-  const handleInputChange = useCallback((event, rowIndex, columnName) => {  
+  const handleInputChange = useCallback((event, rowIndex, columnName) => {
     const updatedEditedData = { ...editedData };
     updatedEditedData[rowIndex] = {
       ...updatedEditedData[rowIndex],
