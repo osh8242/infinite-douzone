@@ -9,7 +9,7 @@ function DateTest({ id, label, type, value, onChange }) {
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
-    setInputValue(value);
+    setInputValue(value || "");
   }, [value]);
 
   const onChangeHandeler = (e) => {

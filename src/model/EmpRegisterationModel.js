@@ -64,7 +64,7 @@ function EmpRegisterationModel() {
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
       axios
-        .post(url + "/emp/insertEmp", editedEmp, {
+        .post(url + "/emp/insertEmp", editedEmp.item, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {
