@@ -4,7 +4,13 @@ const Emp = (empData) => {
   //   [labels.nmKrname]: item.nmKrname,
   // }
   console.log("Emp생성됨");
-  return { item: empData, checked: false, selected: false, isEditable: false };
+  return {
+    item: empData,
+    checked: false,
+    selected: false,
+    isEditable: false,
+    table: "emp",
+  };
 };
 
 export default Emp;

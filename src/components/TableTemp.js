@@ -4,9 +4,16 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
+import ContextModel from "../model/ContextModel";
 import "../styles/tableForm.css";
 
 const TableTemp = ({
@@ -29,9 +36,17 @@ const TableTemp = ({
   rowAddable, // [선택] 행 추가 가능여부
   minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다. (구현부족)
 }) => {
+  const { contextState, contextActions } = useContext(ContextModel);
+  const selectedRows = contextState.selectedRows;
+
   const tbodyRef = useRef();
 
-  const [recentlyClickedRow, setRecentlyClickedRow] = useState(-1);
+  const [recentlyClickedRow, setRecentlyClickedRow] = useState();
+
+  // 테이블 내용이 바뀌면 최근클릭한 행의 인덱스 값 초기화
+  useEffect(() => {
+    setRecentlyClickedRow();
+  }, [tableData]);
 
   // 수정 중인 행의 index를 찾는 함수
   const getEditableRowIndex = () => {
@@ -103,7 +118,8 @@ const TableTemp = ({
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex) => {
-      setRecentlyClickedRow(rowIndex);
+      if (rowIndex !== recentlyClickedRow) setRecentlyClickedRow(rowIndex);
+      else setRecentlyClickedRow();
       console.log("recentlyClickedRow", recentlyClickedRow);
       // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
       // state값을 바꾸고 싶다면.. setPkValue
@@ -149,14 +165,15 @@ const TableTemp = ({
   // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = useCallback(
     (index) => {
-      const newData = [...tableData];
-      newData[index] = {
-        ...newData[index],
-        checked: !newData[index].checked,
-      };
-      actions.setTableData(newData);
+      if (!tableData[index].checked) {
+        selectedRows.push(tableData[index]);
+        contextActions.setSelectedRows([...selectedRows]);
+        tableData[index].checked = !tableData[index].checked;
+      }
+      console.log("selectedRows", selectedRows);
+      actions.setTableData([...tableData]);
     },
-    [tableData]
+    [tableData, selectedRows]
   );
 
   // 정렬 화살표 기능.. 구현예정
