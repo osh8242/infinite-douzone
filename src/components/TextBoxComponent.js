@@ -51,7 +51,7 @@ function TextBoxComponent(props) {
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
-    setInputValue(value); // value prop이 변경될 때마다 inputValue를 업데이트
+    setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
   }, [value]);
 
   const handleInputChange = (event) => {

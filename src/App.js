@@ -1,5 +1,6 @@
 import { Container } from "react-bootstrap";
 import "./App.scss";
+import { ContextProvider } from "./model/ContextModel";
 import Header from "./templates/Header";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 
