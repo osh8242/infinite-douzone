@@ -12,6 +12,7 @@ const SwsmConstant = () => {
 
     // 추가 구분 목록
     subTabMenuList: { WorkInformation: "근로정보", otherBenefit: "기타급여" },
+
     // 좌측테이블 - 사원 목록
     SwsmLeftTableHeaders: [
       { field: "cdEmp", text: "사원코드", orderBy: "asc", isPk: true },
@@ -22,8 +23,8 @@ const SwsmConstant = () => {
     // 우측하단테이블 - 기타급여 목록
     SwsmSubTabHeaders: [
       { field: "cdEmp", text: "사원코드", isPK: true },
-      { field: "otherBenefitsItem", text: "항목" },
-      { field: "otherBenefitsAmount", text: "금액" },
+      { field: "otherType", text: "항목" },
+      { field: "otherMoney", text: "금액" },
     ],
 
     // 거주구분 목록
@@ -151,12 +152,12 @@ const SwsmConstant = () => {
 };
 export default SwsmConstant;
 
-export const SET_PK = "SET_PK";
+// export const SET_PK = "SET_PK";
 
-export const setPk = (pk) => ({
-  type: SET_PK,
-  payload: pk,
-});
+// export const setPk = (pk) => ({
+//   type: SET_PK,
+//   payload: pk,
+// });
 
 // export const SET_PK = 'SET_PK';
 // import { SET_PK } from './SwsmConstant';

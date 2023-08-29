@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import SwsmConstant from "../model/SwsmConstant";
+import ContextModel from "./ContextModel";
 
 const TempSwsmModel = () => {
   const url = "http://localhost:8888";
@@ -12,11 +13,17 @@ const TempSwsmModel = () => {
   const [cdEmp, setCdEmp] = useState("hong");
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});
+  const [editedSwsmOther, setEditedSwsmOther] = useState({});
   const [leftTableData, setLeftTableData] = useState([]);
+  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" });
   const [subTableData, setSubTableData] = useState([]);
   const [rightTabData, setRightTabData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
-  const [subTabData, setSubTabData] = useState({});
+
+  const { contextState } = useContext(ContextModel);
+  const reloadSubTableData = contextState.reloadSubTableData;
+
+  // const [subTabData, setSubTabData] = useState({});
 
   // leftTableData load
   useEffect(() => {
@@ -33,6 +40,7 @@ const TempSwsmModel = () => {
           };
           return Swsm(swsmData);
         });
+        console.log(data);
         setLeftTableData(data);
       })
       .catch((error) => {
@@ -129,50 +137,101 @@ const TempSwsmModel = () => {
   }, [mainTablePkValue]);
 
   // // left 클릭시마다 데이터 로드됨
-  // swsmOther
+  // swsmOther All
+  // useEffect(() => {
+  //   setSubTableData([]);
+  //   // if (mainTablePkValue)
+  //   axios
+  //     .get(url + "/swsmOther/getAllSwsmOther")
+  //     .then((response) => {
+  //       console.log("swsmOther Data All ing");
+  //       const data = response.data.map((item) => {
+  //         const swsmOtherData = {
+  //           otherType: item.otherType,
+  //           otherMoney: item.otherMoney,
+  //           cdEmp: item.cdEmp,
+  //         };
+  //         return SwsmOther(swsmOtherData);
+  //       });
+  //       console.log(data);
+  //       setSubTableData(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("ERROR : ", error);
+  //     });
+  // }, []);
+
+  // swsmOther by CdEmp
   useEffect(() => {
     setSubTableData([]);
-    if (mainTablePkValue)
+    if (leftTablePkValue)
       axios
-        .get(url + "/swsmOther/getAllSwsmOther ")
+        .post(url + "/swsmOther/getSwsmOtherByCdEmp", leftTablePkValue, {
+          "Content-Type": "application/json",
+        })
         .then((response) => {
-          console.log(response);
           const data = response.data.map((item) => {
-            return {
-              item: {
-                otherType: item.othertype,
-                otherMoney: item.otherMoney,
-                cd_emp: item.cdEmp,
-              },
-              checked: false,
-              selected: false,
-              isEditable: false,
+            const swsmOtherData = {
+              otherType: item.otherType,
+              otherMoney: item.otherMoney,
+              cdEmp: item.cdEmp,
             };
+            return SwsmOther(swsmOtherData);
           });
           setSubTableData(data);
         })
         .catch((error) => {
-          console.error("에러발생: ", error);
+          console.error("ERROR : ", error);
         });
-  }, []);
+  }, [leftTablePkValue, editedSwsmOther, reloadSubTableData]);
+
+  // useEffect(() => {
+  //   setSubTableData([]);
+  //   if (mainTablePkValue)
+  //     axios
+  //       .get(url + "/swsmOther/getAllSwsmOther ")
+  //       .then((response) => {
+  //         console.log("swsmOther Data All ing");
+  //         console.log(response);
+  //         const data = response.data.map((item) => {
+  //           return {
+  //             item: {
+  //               otherType: item.othertype,
+  //               otherMoney: item.otherMoney,
+  //               cd_emp: item.cdEmp,
+  //             },
+  //             checked: false,
+  //             selected: false,
+  //             isEditable: false,
+  //           };
+  //         });
+  //         setSubTableData(data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("에러발생: ", error);
+  //       });
+  // }, []);
 
   return {
     leftTableData: leftTableData,
-    subTableData: subTableData,
+    // subTableData: subTableData,
     mainTablePk: mainTablePkValue,
     cdEmp: cdEmp,
     mainTabData: mainTabData,
     rightTabData: rightTabData,
-    subTabData: subTabData,
+    // subTabData: subTabData,
+    state: { leftTablePkValue, subTableData },
     actions: {
       setMainTablePkValue,
       setLeftTableData,
+      setLeftTablePkValue,
       setRightTabData,
       setMainTabData,
-      setSubTabData,
+      setSubTableData,
       setCdEmp,
       setEditedEmp,
       setEditedSwsm,
+      setEditedSwsmOther,
       setCurrMenuTab,
     },
   };
