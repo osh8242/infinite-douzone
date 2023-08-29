@@ -44,15 +44,6 @@ const TestSwsnGrid = () => {
     mainTablePk,
   } = TempSwsmModel();
 
-  // const saveInput = (e) => {
-  //   console.log("saveInput method");
-  //   console.log(e);
-  // };
-
-  // const onChange = useCallback((event) => {
-  //   console.log("testing");
-  // });
-
   return (
     <>
       <Row className="py-1">

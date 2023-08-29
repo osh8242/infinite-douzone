@@ -10,7 +10,6 @@ const TempSwsmModel = () => {
   const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
   const [currMenuTab, setCurrMenuTab] = useState(); // 계약서 작성 / 조회 탭 상태 값
   const [cdEmp, setCdEmp] = useState("hong");
-  // const [dateData, setDateData] = useState();
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});
   const [leftTableData, setLeftTableData] = useState([]);
@@ -18,10 +17,6 @@ const TempSwsmModel = () => {
   const [rightTabData, setRightTabData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
   const [subTabData, setSubTabData] = useState({});
-
-  // useEffect(() => {
-  //   console.log("testing");
-  // }, [excolum]);
 
   // leftTableData load
   useEffect(() => {
@@ -31,13 +26,11 @@ const TempSwsmModel = () => {
       .then((response) => {
         console.log("SwsmModel > /emp/getAll", response);
         const data = response.data.map((item) => {
-          // console.log(item);
           const swsmData = {
             cdEmp: item.cdEmp,
             nmKrname: item.nmKrname,
             noSocial: item.noSocial,
           };
-          // console.log("swsmData" + swsmData.cdEmp);
           return Swsm(swsmData);
         });
         setLeftTableData(data);
@@ -49,8 +42,6 @@ const TempSwsmModel = () => {
 
   useEffect(() => {
     setMainTabData({});
-    // console.log("=================================");
-    // console.log(mainTablePkValue);
 
     if (mainTablePkValue)
       axios
@@ -58,18 +49,11 @@ const TempSwsmModel = () => {
           "Content-Type": "application/json",
         })
         .then((response) => {
-          // console.log("pk");
-          // console.log(mainTablePkValue);
-          console.log("response : ");
-          console.log(response.data);
           let data = response.data;
-          if (response.data === "") data = {};
-          setMainTabData(data);
-
-          // console.log(data);
-          // setEditedSwsm.cdEmp(mainTablePkValue);
-          // console.log("mainTabData: ");
-          // console.log(mainTabData[0].item);
+          if (response.data === "") {
+            // setMainTabData({});
+            data = {};
+          } else setMainTabData(data);
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -78,8 +62,6 @@ const TempSwsmModel = () => {
 
   //수정된 사원 update 요청
   useEffect(() => {
-    // console.log("editedEmp", editedEmp);
-
     if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
       axios
         .put(url + "/emp/updateEmp", editedEmp.item)
@@ -110,51 +92,15 @@ const TempSwsmModel = () => {
 
   //swsm-date update 요청
   useEffect(() => {
-    console.log("==============================");
-    console.log("editedSwsm :");
-    console.log(editedSwsm);
-    console.log("mainTablePkValue: ");
-    console.log(mainTablePkValue);
-    // console.log(Object.keys(mainTablePkValue)[0]);
-    console.log("pk 추출중...");
     const pkValue = mainTabData.cdEmp;
-    console.log(pkValue);
-    // setEditedSwsm({ cdEmp: pkValue });
-
-    console.log("editSwsm: ");
-    console.log(editedSwsm);
-
     let updateSwsm = {
       ...editedSwsm,
       cdEmp: pkValue,
     };
-
-    console.log("updateSws: ");
-    console.log(updateSwsm);
-
-    // var first_value = obj[Object.keys(obj)[0]];
-
-    // console.log(mainTablePkValue["cdEmp"]);
-
-    // const newDate = {
-    //   cdEmp: "value",
-    //   startEmpContractPeriod: editedSwsm["startEmpContractPeriod"],
-    // };
-
-    // console.log(editedSwsm.cdEmp);
-    // setEditedSwsm({
-    //   cdEmp: mainTablePkValue,
-    // });
-    // console.log("editedSwsm :");
-    // console.log(editedSwsm);
-
-    // setEditedSwsm(updateSwsm);
-
     // if (!editedSwsm.isNew && Object.keys(editedSwsm).length !== 0)
     axios
       .put(url + "/swsm/updateSwsm", updateSwsm)
       .then((response) => {
-        console.log("update Start");
         if (response.data === 1) console.log("Swsm 업데이트 성공");
         // setEditedSwsm({});
       })
@@ -173,15 +119,9 @@ const TempSwsmModel = () => {
           "Content-Type": "application/json",
         })
         .then((response) => {
-          // console.log("pk");
-          // console.log(mainTablePkValue);
-          // console.log("response : ");
-          // console.log(response);
           let data = response.data;
           if (response.data === "") data = {};
           setMainTabData(data);
-          // console.log("mainTabData: ");
-          // console.log(mainTabData[0].item);
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -196,10 +136,6 @@ const TempSwsmModel = () => {
       axios
         .get(url + "/swsmOther/getAllSwsmOther ")
         .then((response) => {
-          console.log("pk");
-          console.log(mainTablePkValue);
-          console.log("SwsmOther > /swsmOther/getAllSwsmOther", response.data);
-          console.log(typeof response.data);
           const data = response.data.map((item) => {
             return {
               item: {
@@ -237,8 +173,6 @@ const TempSwsmModel = () => {
       setEditedEmp,
       setEditedSwsm,
       setCurrMenuTab,
-      // setExcolum,
-      // setDateData,
     },
   };
 };
