@@ -41,6 +41,7 @@ function TextBoxComponent(props) {
     thousandSeparator, //세자리 콤마
   } = props;
 
+  console.log("test :" + value);
   // 입력값
   const [inputValue, setInputValue] = useState(value);
 
@@ -143,7 +144,6 @@ function TextBoxComponent(props) {
       )}
     </Row>
   );
-
   function renderFormControl() {
     if (type === "textarea") {
       return (

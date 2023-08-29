@@ -33,6 +33,7 @@ function TempText(props) {
     label2,
     label3,
     isPeriod,
+    actions,
   } = props;
 
   // const tbodyRef = useRef();
@@ -46,6 +47,8 @@ function TempText(props) {
   //     console.log(tbodyRef.current.children[0]);
   //   }
   // };
+
+  // console.log("처음 들어온 데이터: " + value);
 
   TempText.defaultProps = {
     md: "4",
@@ -61,25 +64,24 @@ function TempText(props) {
 
   //마스킹 함수
   const handleInputValueChange = (event) => {
-    const input = event.target.value;
+    console.log("onChange :" + event.target.value);
 
-    const maskedNumber = input.replace(
-      /^(\d{6})(\d+)/,
-      (match, group1, group2) => {
-        const maskedGroup2 = group2.replace(/./g, "*");
-        console.log("group1내용 : " + group1);
-        return `${group1}-${maskedGroup2}`;
-      }
-    );
+    // let data = event.target.value;
+    // setInputValue(data);
 
-    // Enter 키 눌렸을 때의 처리
-    if (event.key === "Enter") {
-      // 입력된 내용을 저장하거나 다른 동작 수행
-      console.log("Enter 키 눌림: " + input);
-      // 예: 입력된 내용 저장, 다른 함수 호출 등
-      return;
-    }
-    setInputValue(maskedNumber);
+    setInputValue(event.target.value);
+    if (event.key === "Enter") console.log("enter");
+  };
+
+  const handleFocusOut = (event) => {
+    console.log("blur");
+    console.log(inputValue);
+
+    const newData = {
+      jobDescription: inputValue,
+    };
+
+    actions.setEdited(newData);
   };
 
   //custom type 정의(0)_TextArea
@@ -177,6 +179,7 @@ function TempText(props) {
             value={inputValue}
             onChange={handleInputValueChange}
             style={textBoxStyle}
+            onBlur={handleFocusOut}
           />
         </Col>
       </Row>
@@ -214,6 +217,7 @@ function TempText(props) {
             plaintext={plaintext}
             value={inputValue}
             onChange={handleInputValueChange}
+            onBlur={handleFocusOut}
           />
           {isPeriod && (
             <>
@@ -272,6 +276,7 @@ function TempText(props) {
               plaintext={plaintext}
               value={inputValue}
               onChange={handleInputValueChange}
+              onBlur={handleFocusOut}
             />
           </Col>
           {isPeriod && (
@@ -330,6 +335,7 @@ function TempText(props) {
               plaintext={plaintext}
               value={inputValue}
               onChange={handleInputValueChange}
+              onBlur={handleFocusOut}
             />
             {isPeriod && (
               <>
@@ -343,6 +349,7 @@ function TempText(props) {
                   plaintext={plaintext}
                   value={inputValue}
                   onChange={handleInputValueChange}
+                  onBlur={handleFocusOut}
                 />
               </>
             )}

@@ -31,34 +31,28 @@ function DateTest(props) {
   //   }
   // }, [value, value2]);
 
-  /// pk 값 제대로 받아와서 설정 필요
-  ////////////////////////////////////////
   const handleStartDateChange = (event) => {
-    console.log("state handeler");
     setStartDate(event.target.value);
     if (props.onChangeStartDate) {
       props.onChangeStartDate(event.target.value);
     }
-    console.log(event.target.value);
-
     const newDate = {
       startEmpContractPeriod: event.target.value,
       cdEmp: "",
     };
-
-    console.log("dateTest: pk");
-    console.log(pkValue);
-
     actions.setEdited(newDate);
   };
 
   const handleEndDateChange = (event) => {
-    console.log("end hangledfe");
-    setEndDate(event.target.value);
-    if (props.onChangeEndDate) {
+    // setEndDate(event.target.value);
+    if (props.onChangeStartDate) {
       props.onChangeEndDate(event.target.value);
     }
-    console.log(event.target.value);
+    const newDate = {
+      endEmpContractPeriod: event.target.value,
+      cdEmp: "",
+    };
+    actions.setEdited(newDate);
   };
 
   return (

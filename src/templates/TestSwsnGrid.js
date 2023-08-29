@@ -129,19 +129,17 @@ const TestSwsnGrid = () => {
                 {/* 업무의 내용  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
+                    {/* <TextBoxComponent
+                      label={"test"}
+                      value={mainTabData ? mainTabData.jobDescription : ""}
+                    /> */}
                     <TempText
                       label={labels.jobDescription}
                       value={mainTabData ? mainTabData.jobDescription : ""}
                       md={2}
-                      onChange={actions.setExcolum}
-                      onClick={actions.setExcolum}
-                      // onKeyDown={(e) => handleKeyDown(e)}
-                      // onKeyDown={handleTempTextKeyDown}
-                      // onKeyDown={(e) => {
-                      //   if (e.key === "Enter") {
-                      //     console.log("Enter 키 눌림");
-                      //   }
-                      // }}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>

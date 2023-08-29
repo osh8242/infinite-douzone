@@ -118,8 +118,9 @@ const TempSwsmModel = () => {
     // console.log(Object.keys(mainTablePkValue)[0]);
     console.log("pk 추출중...");
     const pkValue = mainTabData.cdEmp;
-
+    console.log(pkValue);
     // setEditedSwsm({ cdEmp: pkValue });
+
     console.log("editSwsm: ");
     console.log(editedSwsm);
 
@@ -127,6 +128,7 @@ const TempSwsmModel = () => {
       ...editedSwsm,
       cdEmp: pkValue,
     };
+
     console.log("updateSws: ");
     console.log(updateSwsm);
 
