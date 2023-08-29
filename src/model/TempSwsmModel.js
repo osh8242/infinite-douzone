@@ -8,14 +8,15 @@ import ContextModel from "./ContextModel";
 const TempSwsmModel = () => {
   const url = "http://localhost:8888";
   const { labels } = SwsmConstant();
-  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
+  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "A101" }); // cdEmp
+  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" });
   const [currMenuTab, setCurrMenuTab] = useState(); // 계약서 작성 / 조회 탭 상태 값
   const [cdEmp, setCdEmp] = useState("hong");
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});
   const [editedSwsmOther, setEditedSwsmOther] = useState({});
   const [leftTableData, setLeftTableData] = useState([]);
-  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" });
+
   const [subTableData, setSubTableData] = useState([]);
   const [rightTabData, setRightTabData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
@@ -164,9 +165,9 @@ const TempSwsmModel = () => {
   // swsmOther by CdEmp
   useEffect(() => {
     setSubTableData([]);
-    if (leftTablePkValue)
+    if (mainTablePkValue)
       axios
-        .post(url + "/swsmOther/getSwsmOtherByCdEmp", leftTablePkValue, {
+        .post(url + "/swsmOther/getSwsmOtherByCdEmp", mainTablePkValue, {
           "Content-Type": "application/json",
         })
         .then((response) => {
@@ -183,7 +184,7 @@ const TempSwsmModel = () => {
         .catch((error) => {
           console.error("ERROR : ", error);
         });
-  }, [leftTablePkValue, editedSwsmOther, reloadSubTableData]);
+  }, [mainTablePkValue, editedSwsmOther, reloadSubTableData]);
 
   // useEffect(() => {
   //   setSubTableData([]);
@@ -213,22 +214,23 @@ const TempSwsmModel = () => {
   // }, []);
 
   return {
-    leftTableData: leftTableData,
+    // leftTableData: leftTableData,
     // subTableData: subTableData,
-    mainTablePk: mainTablePkValue,
-    cdEmp: cdEmp,
-    mainTabData: mainTabData,
-    rightTabData: rightTabData,
+    // mainTablePk: mainTablePkValue,
+    // cdEmp: cdEmp,
+    // mainTabData: mainTabData,
+    // rightTabData: rightTabData,
     // subTabData: subTabData,
-    state: { leftTablePkValue, subTableData },
+    state: { leftTableData, mainTabData, leftTablePkValue, subTableData },
     actions: {
-      setMainTablePkValue,
       setLeftTableData,
       setLeftTablePkValue,
+      setMainTablePkValue,
       setRightTabData,
       setMainTabData,
       setSubTableData,
       setCdEmp,
+
       setEditedEmp,
       setEditedSwsm,
       setEditedSwsmOther,

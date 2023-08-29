@@ -35,9 +35,8 @@ const TestSwsnGrid = () => {
     healthInsuranceList,
   } = SwsmConstant();
 
-  const { state, leftTableData, mainTabData, actions } = TempSwsmModel();
-
-  const { leftTablePkValue, subTableData } = state;
+  const { state, actions } = TempSwsmModel();
+  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
 
   return (
     <>
@@ -305,7 +304,7 @@ const TestSwsnGrid = () => {
               pkValue={leftTablePkValue}
               actions={{
                 setTableData: actions.setSubTableData,
-                // setPkValue: actions.setMainTablePkValue,
+                // setPkValue: actions.setLeftTablePkValue,
                 setEditedRow: actions.setEditedSwsmOther,
                 getRowObject: SwsmOther,
               }}
