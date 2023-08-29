@@ -22,7 +22,6 @@ const SwsmConstant = () => {
 
     // 우측하단테이블 - 기타급여 목록
     SwsmSubTabHeaders: [
-      { field: "cdEmp", text: "사원코드", isPK: true },
       { field: "otherType", text: "항목" },
       { field: "otherMoney", text: "금액" },
     ],

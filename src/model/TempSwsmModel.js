@@ -99,6 +99,32 @@ const TempSwsmModel = () => {
         });
   }, [editedEmp]);
 
+  //추가된 SwsmOther insert 요청
+  useEffect(() => {
+    console.log("pk");
+    console.log(mainTablePkValue);
+    // console.log(mainTablePkValue.data);
+    const pkValue = mainTabData.cdEmp;
+    console.log(pkValue);
+
+    let updateSwsmOther = {
+      ...editedSwsmOther,
+      cdEmp: pkValue,
+    };
+    console.log(editedSwsmOther);
+    console.log(updateSwsmOther);
+    if (editedSwsmOther.isNew && Object.keys(editedSwsmOther).length !== 0)
+      axios
+        .post(url + "/swsmOther/insertSwsmOther", updateSwsmOther.item)
+        .then((response) => {
+          if (response.data === 1) console.log("SWSMOTHER 업데이트 성공");
+          setEditedSwsmOther({});
+        })
+        .catch((error) => {
+          console.error("ERROR: ", error);
+        });
+  }, [editedSwsmOther]);
+
   //swsm-date update 요청
   useEffect(() => {
     const pkValue = mainTabData.cdEmp;
@@ -136,31 +162,6 @@ const TempSwsmModel = () => {
           console.error("에러발생: ", error);
         });
   }, [mainTablePkValue]);
-
-  // // left 클릭시마다 데이터 로드됨
-  // swsmOther All
-  // useEffect(() => {
-  //   setSubTableData([]);
-  //   // if (mainTablePkValue)
-  //   axios
-  //     .get(url + "/swsmOther/getAllSwsmOther")
-  //     .then((response) => {
-  //       console.log("swsmOther Data All ing");
-  //       const data = response.data.map((item) => {
-  //         const swsmOtherData = {
-  //           otherType: item.otherType,
-  //           otherMoney: item.otherMoney,
-  //           cdEmp: item.cdEmp,
-  //         };
-  //         return SwsmOther(swsmOtherData);
-  //       });
-  //       console.log(data);
-  //       setSubTableData(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("ERROR : ", error);
-  //     });
-  // }, []);
 
   // swsmOther by CdEmp
   useEffect(() => {
@@ -270,3 +271,28 @@ export default TempSwsmModel;
 //         // 필요에 따라 다른 오류 처리 로직 추가
 //       });
 // }, [editedSwsm]);
+
+// // left 클릭시마다 데이터 로드됨
+// swsmOther All
+// useEffect(() => {
+//   setSubTableData([]);
+//   // if (mainTablePkValue)
+//   axios
+//     .get(url + "/swsmOther/getAllSwsmOther")
+//     .then((response) => {
+//       console.log("swsmOther Data All ing");
+//       const data = response.data.map((item) => {
+//         const swsmOtherData = {
+//           otherType: item.otherType,
+//           otherMoney: item.otherMoney,
+//           cdEmp: item.cdEmp,
+//         };
+//         return SwsmOther(swsmOtherData);
+//       });
+//       console.log(data);
+//       setSubTableData(data);
+//     })
+//     .catch((error) => {
+//       console.error("ERROR : ", error);
+//     });
+// }, []);
