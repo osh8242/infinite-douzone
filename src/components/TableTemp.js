@@ -10,24 +10,27 @@ import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
 const TableTemp = ({
-  showCheckbox,
+  tableHeaders, // [필수]
+  tableData, // [필수]
+  pkValue, // [선택]
+  showCheckbox, // [선택] 체크박스 유무
   showHeaderArrow,
-  tableHeaders,
-  tableData,
-  actions,
-  rowAddable,
-  minRow,
+  readOnly, // [선택] 테이블을 읽기전용으로
+  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  rowAddable, // 행 추가 가능여부
+  minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다.
 }) => {
   const tbodyRef = useRef();
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = (index) => {
+    if (readOnly) return;
     if (index === tableData.length) {
-      let newRow = {};
+      let newRow = pkValue || {};
       tableHeaders.forEach((item) => {
-        newRow[item.text] = "";
+        newRow[item.field] = "";
       });
-      newRow = actions.getRowObject(newRow);
+      newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
       newRow["isNew"] = true;
       tableData.push(newRow);
     }
@@ -39,8 +42,11 @@ const TableTemp = ({
     actions.setTableData(newData);
   };
 
-  // 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
+  // 더블 클릭 후 편집한 데이터
   const handleKeyDown = (event, rowIndex) => {
+    console.log("handleKeyDowm");
+    console.log(event);
+    if (readOnly) return;
     if (event.key === "Enter") {
       event.preventDefault();
 
@@ -50,31 +56,34 @@ const TableTemp = ({
           'input[type="text"]'
         );
 
-      const updatedRow = { ...tableData[rowIndex], isEditable: false };
-      let editedRow = { isNew: tableData[rowIndex].isNew };
+      let updatedRow = {
+        ...tableData[rowIndex],
+        isEditable: false,
+        isNew: tableData[rowIndex].isNew,
+      };
 
       // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
       currentRowInputs.forEach((input, index) => {
-        const columnName = tableHeaders[index].text;
-        updatedRow.item[columnName] = input.value;
-        editedRow[input.getAttribute("data-column")] = input.value;
+        const field = tableHeaders[index].field;
+        updatedRow.item[field] = input.value;
       });
 
       const newData = [...tableData];
       newData[rowIndex] = updatedRow;
-      console.log(newData[rowIndex].item);
+      console.log("updatedRow", updatedRow);
 
       //수정된 행을 반영하여 tableData를 수정함
       actions.setTableData(newData);
 
       //수정된 행을 setState하여 update 요청을 보냄
-      actions.setEditedRow(editedRow);
+      actions.setEditedRow(updatedRow);
     }
   };
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = (e, rowIndex) => {
-    //행 클릭시 해당 행의 첫번째 컬럼값으로 state값을 바꾸고 싶다면.. setPkValue
+    // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
+    // state값을 바꾸고 싶다면.. setPkValue
     if (actions.setPkValue && rowIndex < tableData.length) {
       let pkValue = {};
       tableHeaders.forEach((header) => {
@@ -109,6 +118,7 @@ const TableTemp = ({
       ...row,
       checked: !isAllChecked,
     }));
+
     actions.setTableData(newData);
   };
 
@@ -175,6 +185,10 @@ const TableTemp = ({
         {/* content */}
         <tbody ref={tbodyRef}>
           {tableData.map((row, rowIndex) => {
+            console.log("data");
+            console.log(row.item.cdEmp);
+            console.log(tableData);
+            console.log(", rowIndex: " + rowIndex);
             return (
               <tr
                 key={rowIndex}
@@ -201,8 +215,6 @@ const TableTemp = ({
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control
                           type="text"
-                          required={thead.required}
-                          data-column={thead.field}
                           defaultValue={row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />
@@ -227,8 +239,8 @@ const TableTemp = ({
                 </td>
               )}
               {tableHeaders.map((thead, index) => (
-                <td key={index}>
-                  <div id="tableContents"></div>
+                <td key={index} style={{ color: "transparent" }}>
+                  <div id="tableContents">.</div>
                 </td>
               ))}
             </tr>

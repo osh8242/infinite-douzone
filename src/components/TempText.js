@@ -72,6 +72,13 @@ function TempText(props) {
       }
     );
 
+    // Enter 키 눌렸을 때의 처리
+    if (event.key === "Enter") {
+      // 입력된 내용을 저장하거나 다른 동작 수행
+      console.log("Enter 키 눌림: " + input);
+      // 예: 입력된 내용 저장, 다른 함수 호출 등
+      return;
+    }
     setInputValue(maskedNumber);
   };
 

@@ -150,3 +150,18 @@ const SwsmConstant = () => {
   };
 };
 export default SwsmConstant;
+
+export const SET_PK = "SET_PK";
+
+export const setPk = (pk) => ({
+  type: SET_PK,
+  payload: pk,
+});
+
+// export const SET_PK = 'SET_PK';
+// import { SET_PK } from './SwsmConstant';
+
+// export const setPk = (pk) => ({
+//   type: SET_PK,
+//   payload: pk
+// });

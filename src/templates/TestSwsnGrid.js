@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Col, Row } from "react-bootstrap";
 import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
@@ -35,20 +35,23 @@ const TestSwsnGrid = () => {
     healthInsuranceList,
   } = SwsmConstant();
 
-  const { leftTableData, mainTabData, subTableData, rightTabData, actions } =
-    TempSwsmModel();
+  const {
+    leftTableData,
+    mainTabData,
+    subTableData,
+    rightTabData,
+    actions,
+    mainTablePk,
+  } = TempSwsmModel();
 
-  // const tbodyRef = useRef();
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Enter") {
-  //     console.log("enter testing");
-
-  //     console.log(tbodyRef);
-  //     console.log(tbodyRef.current);
-  //     console.log(tbodyRef.current.children);
-  //     console.log(tbodyRef.current.children[0]);
-  //   }
+  // const saveInput = (e) => {
+  //   console.log("saveInput method");
+  //   console.log(e);
   // };
+
+  // const onChange = useCallback((event) => {
+  //   console.log("testing");
+  // });
 
   return (
     <>
@@ -80,7 +83,7 @@ const TestSwsnGrid = () => {
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setMainTablePkValue,
-                // setEditedRow:actions.setEditedEmp
+                setEditedRow: actions.setEditedEmp,
                 getRowObject: Swsm,
               }}
             />
@@ -98,6 +101,11 @@ const TestSwsnGrid = () => {
                       label={labels.empContractPeriod}
                       isPeriod={true}
                       type={"date"}
+                      // pkValue={}/
+                      actions={{
+                        setPkValue: actions.setMainTablePkValue,
+                        setEdited: actions.setEditedSwsm,
+                      }}
                       value={
                         mainTabData ? mainTabData.startEmpContractPeriod : ""
                       }
@@ -125,13 +133,15 @@ const TestSwsnGrid = () => {
                       label={labels.jobDescription}
                       value={mainTabData ? mainTabData.jobDescription : ""}
                       md={2}
+                      onChange={actions.setExcolum}
+                      onClick={actions.setExcolum}
                       // onKeyDown={(e) => handleKeyDown(e)}
-
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          console.log("Enter 키 눌림");
-                        }
-                      }}
+                      // onKeyDown={handleTempTextKeyDown}
+                      // onKeyDown={(e) => {
+                      //   if (e.key === "Enter") {
+                      //     console.log("Enter 키 눌림");
+                      //   }
+                      // }}
                     />
                   </Col>
                 </Row>

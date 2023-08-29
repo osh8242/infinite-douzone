@@ -1,20 +1,25 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/LRlevel2Grid/Emp";
-import CommonConstant from "./CommonConstant";
+import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
+import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 const LRlevel2GridModel = () => {
-  const url = "http://localhost:8888";
-  const { labels } = CommonConstant();
-  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
   const [jobOk, setJobOk] = useState("Y"); //재직여부
-  const [editedEmp, setEditedEmp] = useState({});
-  const [editedEmpFam, setEditedEmpFam] = useState({});
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
   const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
+
+  const url = "http://localhost:8888";
+
   const [leftTableData, setLeftTableData] = useState([]);
+  const [leftTablePkValue, setLeftTablePkValue] = useState(); // cdEmp
+  const [editedEmp, setEditedEmp] = useState({});
+
   const [mainTabData, setMainTabData] = useState({});
+
   const [subTableData, setSubTableData] = useState([]);
+  const [subTablePkValue, setSubTablePkValue] = useState();
+  const [editedEmpFam, setEditedEmpFam] = useState({});
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
@@ -46,59 +51,54 @@ const LRlevel2GridModel = () => {
       });
   }, [jobOk, refYear, orderRef, editedEmp]);
 
-  //mainTabData 가져오는 비동기 post 요청
+  //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
     setMainTabData({});
-    if (mainTablePkValue)
+    if (leftTablePkValue)
       axios
-        .post(url + "/empAdd/getEmpAddByCdEmp", mainTablePkValue, {
+        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue, {
           "Content-Type": "application/json",
         })
         .then((response) => {
           let data = response.data;
           if (response.data === "") data = {};
-          setMainTabData(data);
+          setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [mainTablePkValue]);
+  }, [leftTablePkValue]);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
     setSubTableData([]);
-    if (mainTablePkValue)
+    if (leftTablePkValue) {
       axios
-        .post(url + "/empFam/getEmpFamListByCdEmp", mainTablePkValue)
+        .post(url + "/empFam/getEmpFamListByCdEmp", leftTablePkValue)
         .then((response) => {
-          console.log("pk");
-          console.log(mainTablePkValue);
           console.log(
             "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
             response.data
           );
-          console.log(typeof response.data);
           const data = response.data.map((item) => {
-            return {
-              item: {
-                cdFamrel: item.cdFamrel,
-                nmKrname: item.nmKrname,
-                ynFor: item.ynFor,
-                noSocial: item.noSocial,
-                fgSchool: item.fgSchool,
-                fgGraduation: item.fgGraduation,
-                ynTogether: item.ynTogether,
-                ynLunarbir: item.ynLunarbir,
-                daBirth: item.daBirth,
-                cdJob: item.cdJob,
-                nmKrcom: item.nmKrcom,
-                cdOffpos: item.cdOffpos,
-              },
-              checked: false,
-              selected: false,
-              isEditable: false,
+            const empFamData = {
+              seqVal: item.seqVal,
+              cdEmp: item.cdEmp,
+              cdFamrel: item.cdFamrel,
+              nmKrname: item.nmKrname,
+              ynFor: item.ynFor,
+              noSocial: item.noSocial,
+              fgSchool: item.fgSchool,
+              fgGraduation: item.fgGraduation,
+              ynTogether: item.ynTogether,
+              ynLunarbir: item.ynLunarbir,
+              daBirth: item.daBirth,
+              cdJob: item.cdJob,
+              nmKrcom: item.nmKrcom,
+              cdOffpos: item.cdOffpos,
             };
+            return EmpFam(empFamData);
           });
           setSubTableData(data);
         })
@@ -106,10 +106,27 @@ const LRlevel2GridModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [mainTablePkValue]);
+    }
+  }, [leftTablePkValue, editedEmpFam]);
+
+  //추가된 사원 insert 요청
+  useEffect(() => {
+    if (editedEmp.isNew && Object.keys(editedEmp).length !== 0)
+      axios
+        .post(url + "/emp/insertEmp", editedEmp.item)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmp({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+  }, [editedEmp]);
 
   //수정된 사원 update 요청
   useEffect(() => {
+    console.log("editedEmp", editedEmp.item);
     if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
       axios
         .put(url + "/emp/updateEmp", editedEmp)
@@ -123,26 +140,27 @@ const LRlevel2GridModel = () => {
         });
   }, [editedEmp]);
 
-  //추가된 사원 insert 요청
+  //추가된 사원가족 insert 요청
   useEffect(() => {
-    if (editedEmp.isNew && Object.keys(editedEmp).length !== 0)
+    if (editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
       axios
-        .post(url + "/emp/insertEmp", editedEmp)
+        .post(url + "/empFam/insertEmpFam", editedEmpFam.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp({});
+          setEditedEmpFam({});
         })
         .catch((error) => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
-  }, [editedEmp, mainTabData]);
+  }, [editedEmpFam]);
 
   //수정된 사원가족 update 요청
   useEffect(() => {
-    if (Object.keys(editedEmpFam).length !== 0)
+    console.log("editedEmpFam", editedEmpFam.item);
+    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
       axios
-        .put(url + "/emp/updateEmpFam", editedEmpFam)
+        .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmpFam({});
@@ -155,22 +173,30 @@ const LRlevel2GridModel = () => {
 
   return {
     leftTableData: leftTableData,
-    mainTablePk: mainTablePkValue,
+    leftTablePkValue: leftTablePkValue,
     mainTabData: mainTabData,
+    setMainTabData,
     subTableData: subTableData,
+    setSubTableData,
     jobOk: jobOk,
+    setJobOk,
     refYear: refYear,
+    setRefYear,
     orderRef: orderRef,
     actions: {
-      setLeftTableData,
-      setMainTablePkValue,
-      setEditedEmp,
-      setEditedEmpFam,
-      setMainTabData,
-      setSubTableData,
       setJobOk,
       setRefYear,
       setOrderRef,
+
+      setLeftTableData,
+      setLeftTablePkValue,
+      setEditedEmp,
+
+      setMainTabData,
+
+      setSubTableData,
+      setSubTablePkValue,
+      setEditedEmpFam,
     },
   };
 };

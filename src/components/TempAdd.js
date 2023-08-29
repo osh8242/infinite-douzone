@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import ModalComponent from './ModalComponent';
-import Post from './Post';
-import '../styles/addressForm.css';
+import React, { useState, useEffect } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import ModalComponent from "./ModalComponent";
+import Post from "./Post";
+import "../styles/addressForm.css";
 
 const TempAdd = (props) => {
   const { label, isZonecode, value, value2 } = props;
-  const [zonecode, setZonecode] = useState('');
-  const [address, setAddress] = useState('');
+  const [zonecode, setZonecode] = useState("");
+  const [address, setAddress] = useState("");
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {

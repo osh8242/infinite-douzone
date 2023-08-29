@@ -10,13 +10,55 @@ import React, { useState, useEffect } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest(props) {
-  const { label, isPeriod, type, value, value2 } = props;
+  const { label, isPeriod, type, value, value2, actions, pkValue } = props;
   const [date, setDate] = useState(new Date());
+  const [inputValue, setInputValue] = useState(value);
+  const [startDate, setStartDate] = useState(value);
+  const [endDate, setEndDate] = useState(value2);
 
   DateTest.defaultProps = {
     label: "",
     isPeriod: false,
     type: "date",
+  };
+
+  // useEffect(() => {
+  //   if (value !== startDate) {
+  //     setStartDate(value);
+  //   }
+  //   if (value2 !== endDate) {
+  //     setEndDate(value2);
+  //   }
+  // }, [value, value2]);
+
+  /// pk 값 제대로 받아와서 설정 필요
+  ////////////////////////////////////////
+  const handleStartDateChange = (event) => {
+    console.log("state handeler");
+    setStartDate(event.target.value);
+    if (props.onChangeStartDate) {
+      props.onChangeStartDate(event.target.value);
+    }
+    console.log(event.target.value);
+
+    const newDate = {
+      startEmpContractPeriod: event.target.value,
+      cdEmp: "",
+    };
+
+    console.log("dateTest: pk");
+    console.log(pkValue);
+
+    actions.setEdited(newDate);
+  };
+
+  const handleEndDateChange = (event) => {
+    console.log("end hangledfe");
+    setEndDate(event.target.value);
+    if (props.onChangeEndDate) {
+      props.onChangeEndDate(event.target.value);
+    }
+    console.log(event.target.value);
   };
 
   return (
@@ -30,11 +72,21 @@ function DateTest(props) {
         </Col>
       )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
-        <Form.Control type={type} placeholder="YYYY.MM.DD" value={value} />
+        <Form.Control
+          type={type}
+          placeholder="YYYY.MM.DD"
+          value={value}
+          onChange={handleStartDateChange}
+        />
         {isPeriod && (
           <>
             ~
-            <Form.Control type={type} placeholder="YYYY.MM.DD" value={value2} />
+            <Form.Control
+              type={type}
+              placeholder="YYYY.MM.DD"
+              value={value2}
+              onChange={handleEndDateChange}
+            />
           </>
         )}
       </Col>
@@ -44,87 +96,75 @@ function DateTest(props) {
 
 export default DateTest;
 
-// export default class DateTest extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.handleDayChange = this.handleDayChange.bind(this);
-//     this.state = {
-//       selectedDay: undefined,
-//     };
-//   }
+// const { label, isPeriod, type, value, value2, pkValue, actions } = props;
+// const [dateData, setDateData] = useState();
+// const [inputValue, setInputValue] = useState(value);
+// const [startDate, setStartDate] = useState(value);
+// const [endDate, setEndDate] = useState(value2);
+// const dateStartRef = useRef();
+// const dateEndRef = useRef();
 
-//   handleDayChange(day) {
-//     this.setState({ selectedDay: day });
-//   }
+// useEffect(() => {
+//   dateStartRef.current.value = value;
+//   dateEndRef.current.value = value2;
+// });
 
-//   render() {
-//     const { selectedDay } = this.state;
-//     return (
-//       <div>
-//         {selectedDay && <p>Day: {selectedDay.toLocaleDateString()}</p>}
-//         {!selectedDay && <p>Choose a day</p>}
-//         <DayPickerInput onDayChange={this.handleDayChange} />
-//       </div>
-//     );
-//   }
-// }
+// const handleStartDateChange = (event) => {
+//   console.log("state handeler");
+//   dateStartRef.current.value = event.target.value;
 
-// import React, { useState } from "react";
-// import Datetime from "react-datetime";
-// import "react-datetime/css/react-datetime.css";
-// import "./DateTest.css";
-// import { Col, Form, Row } from "react-bootstrap";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
-// const IconInInput = React.forwardRef(({ value, onClick }, ref) => (
-//   <div className="custom-date-input" onClick={onClick} ref={ref}>
-//     <Form.Control type="text" value={value} />
-//     <FontAwesomeIcon icon={faCalendarDays} />
-//   </div>
-// ));
-// function DateTest({ label }) {
-//   const [selectedDate, setSelectedDate] = useState(new Date());
+//   const newStartDate = {
+//     startEmpContractPeriod: dateStartRef.current.value,
+//     cdEmp: pkValue.cdEmp,
+//   };
+//   actions.setDateData(newStartDate);
+// };
 
-//   const handleDateChange = (date) => {
-//     setSelectedDate(date);
-//     console.log(date);
+// const handleEndDateChange = (event) => {
+//   console.log("end handeler");
+//   dateEndRef.current.value = event.target.value;
+
+//   const newEndDate = {
+//     endEmpContractPeriod: dateEndRef.current.value,
+//     cdEmp: pkValue.cdEmp,
+//   };
+//   actions.setDateData(newEndDate);
+// };
+
+// const handleDate = ({}) => {
+//   dateStartRef.current.value = value;
+//   dateEndRef.current.value = value2;
+
+//   const newDate = {
+//     startDate: dateStartRef.current.value,
+//     endDate: dateEndRef.current.value,
+//     cdEmp: pkValue.cdEmp,
 //   };
 
-//   return (
-//     <Row className="py-1">
-//       <Col md="4" className="d-flex align-items-center justify-content-center">
-//         <div>{label}</div>
-//       </Col>
-//       <Col md="8" className="d-flex align-items-center justify-content-center">
-//         <Datetime
-//           customInput={<IconInInput />}
-//           value={selectedDate}
-//           onChange={handleDateChange}
-//           timeFormat={false} // 시간 정보 비활성화
-//           dateFormat="YYYY년 MM월 DD일"
-//         />
-//       </Col>
-//     </Row>
-//   );
+//   actions.setDate(newDate);
+
+// };
+
+// useEffect(() => {
+//   if (value !== startDate) {
+//     setStartDate(value);
+//   }
+//   if (value2 !== endDate) {
+//     setEndDate(value2);
+//   }
+// }, [value, value2]);
+// const handleStartDateChange = (event) => {
+// setStartDate(event.target.value);
+// if (props.onChangeStartDate) {
+//   props.onChangeStartDate(event.target.value);
 // }
+// console.log(event.target.value);
 
-// export default DateTest;
-
-// import React, { useState } from "react";
-
-// function DateForm() {
-//   const [selectedDate, setSelectedDate] = useState("");
-
-//   const handleDateChange = (event) => {
-//     setSelectedDate(event.target.value);
-//     console.log(event.target.value);
-//   };
-
-//   return (
-//     <div>
-//       <input type="date" value={selectedDate} onChange={handleDateChange} />
-//     </div>
-//   );
-// }
-
-// export default DateForm;
+// const handleEndDateChange = (event) => {
+//   console.log("end hangledfe");
+//   // setEndDate(event.target.value);
+//   if (props.onChangeEndDate) {
+//     props.onChangeEndDate(event.target.value);
+//   }
+//   console.log(event.target.value);
+// };
