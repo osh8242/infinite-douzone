@@ -82,7 +82,7 @@ const TableTemp = ({
 
         // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
         currentRowInputs.forEach((input, index) => {
-          const field = tableHeaders[index].field;
+          const field = input.getAttribute("data-field");
           editedRow.item[field] = input.value;
         });
 
@@ -236,6 +236,7 @@ const TableTemp = ({
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control
                           type="text"
+                          data-field={thead.field}
                           defaultValue={row.isNew ? "" : row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
                         />

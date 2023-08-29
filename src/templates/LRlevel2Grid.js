@@ -70,7 +70,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         let newMainTabData = { ...mainTabData.item };
         const inputElements = mainTabRef.current.querySelectorAll("input");
         Array.from(inputElements).forEach((input) => {
-          newMainTabData[input.id] = input.value;
+          newMainTabData[input.id] =
+            input.type === "radio" ? input.checked : input.value;
         });
         console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);

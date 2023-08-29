@@ -41,10 +41,10 @@ table {
 }
 
 .highlight-row {
-  background-color: rgb(96, 200, 255) !important; 
+  background-color: rgb(150, 230, 255) !important; 
 }
 
 .highlight-row td, .highlight-row div {  
   background-color: transparent !important;
-  border-color: rgb(96, 200, 255)
+  border-color: rgb(150, 230, 255)
 }
