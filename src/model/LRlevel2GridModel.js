@@ -5,11 +5,11 @@ import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 
 const LRlevel2GridModel = () => {
+  const url = "http://localhost:8888"; // REST API 서버 주소
+
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
   const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
-
-  const url = "http://localhost:8888";
 
   const [leftTableData, setLeftTableData] = useState([]);
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // cdEmp

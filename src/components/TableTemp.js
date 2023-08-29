@@ -4,7 +4,7 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -30,6 +30,8 @@ const TableTemp = ({
   minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다. (구현부족)
 }) => {
   const tbodyRef = useRef();
+
+  const [recentlyClickedRow, setRecentlyClickedRow] = useState(-1);
 
   // 수정 중인 행의 index를 찾는 함수
   const getEditableRowIndex = () => {
@@ -101,6 +103,8 @@ const TableTemp = ({
   // editable row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex) => {
+      setRecentlyClickedRow(rowIndex);
+      console.log("recentlyClickedRow", recentlyClickedRow);
       // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
       // state값을 바꾸고 싶다면.. setPkValue
       if (actions.setPkValue && rowIndex < tableData.length) {
@@ -208,6 +212,9 @@ const TableTemp = ({
                 key={rowIndex}
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
                 onClick={(e) => handleRowClick(e, rowIndex)}
+                className={
+                  recentlyClickedRow === rowIndex ? "highlight-row" : ""
+                }
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
