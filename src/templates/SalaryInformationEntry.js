@@ -47,7 +47,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   //조회버튼
   const onSearch =()=> {
-    alert("검색버튼 눌렀더");
+    alert("검색버튼");
   }
  
   return (
@@ -149,10 +149,9 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           {/* 공제항목 table영역 */}
           <>
           <TableTemp
-            showCheckbox={false}
-            showHeaderArrow={false}
             tableHeaders={tableHeader.salDeduct}
             tableData={deductData.deductData}
+            actions={{}}
           /> 
            <div>
             공제액 계 : {deductData.sumData.sum}
@@ -168,13 +167,17 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               showCheckbox={false}
               showHeaderArrow={false}
               tableHeaders={tableHeader.salAllowSum}
-              tableData={sumTableData.salAllowPaySumData} 
+              tableData={sumTableData.salAllowPaySumData}
+              actions={{}}
+              readOnly
             />
           </Row>
           <Row>
             <TableTemp 
               tableHeaders={tableHeader.salDeductSum}
               tableData={sumTableData.salDeductPaySumData} 
+              actions={{}}
+              readOnly
             />
           </Row>
         </Col>
