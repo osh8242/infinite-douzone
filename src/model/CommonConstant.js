@@ -126,7 +126,7 @@ const CommonConstant = () => {
       nmKrcom: "직장명",
       cdOffpos: "직급",
       daEnterForEmpRegister: "입사일자",
-      addNation: "거주지국",
+      abbNation: "거주지국",
       cdNation: "국적",
       telHome: "전화번호",
       calEmp: "모바일번호",

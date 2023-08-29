@@ -7,11 +7,11 @@ function EmpRegisterationModel() {
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
   // const [cdEmp, setCdEmp] = useState("E001");
-  const [mainTablePkValue, setMainTablePkValue] = useState("E001"); // cdEmp
+  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "E001" }); // cdEmp
   const [editedEmp, setEditedEmp] = useState({});
   const [leftTableData, setLeftTableData] = useState([]);
-  const [mainTableData, setMainTableData] = useState([]);
-  const [subTableData, setSubTableData] = useState([]);
+  const [mainTabData, setMainTabData] = useState([]);
+  const [subTabData, setSubTabData] = useState([]);
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -49,11 +49,11 @@ function EmpRegisterationModel() {
         ContentType: "application/json",
       })
       .then((response) => {
-        // console.log(
-        //   "EmpRegisterationModel > /emp/getEmpByCdEmp",
-        //   response.data
-        // );
-        setMainTableData(response.data);
+        console.log(
+          "EmpRegisterationModel > /emp/getEmpByCdEmp",
+          response.data
+        );
+        setMainTabData(response.data);
       })
       .catch((error) => {
         console.error("에러발생: ", error);
@@ -64,8 +64,8 @@ function EmpRegisterationModel() {
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
       axios
-        .post(url + "/emp/insertEmp", editedEmp.item, {
-          ContentType: "qpplication/json",
+        .post(url + "/emp/insertEmp", editedEmp, {
+          "Content-Type": "qpplication/json",
         })
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
@@ -82,7 +82,9 @@ function EmpRegisterationModel() {
     if (Object.keys(editedEmp).length !== 0) {
       console.log("update요청: ", editedEmp);
       axios
-        .post(url + "/emp/updateEmp", editedEmp.item)
+        .post(url + "/emp/updateEmp", editedEmp, {
+          "Content-Type": "qpplication/json",
+        })
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmp({});
@@ -117,25 +119,25 @@ function EmpRegisterationModel() {
   //         주민번호: item.noSocial,
   //         위탁자관계: item.cdFamrel,
   //       }));
-  //       setSubTableData(data);
+  //       setSubTabData(data);
   //     })
   //     .catch((error) => {
   //       console.log("에러발생: ", error);
   //       //에러처리
   //     });
-  // }, [mainTablePkValue]);
+  // }, [mainTablePkValue, subTabData]);
 
   return {
     leftTableData: leftTableData,
     mainTablePk: mainTablePkValue,
-    mainTableData: mainTableData,
-    subTableData: subTableData,
+    mainTabData: mainTabData,
+    subTabData: subTabData,
     actions: {
       setLeftTableData,
       setEditedEmp,
-      setMainTableData,
+      setMainTabData,
       setMainTablePkValue,
-      setSubTableData,
+      setSubTabData,
     },
   };
 }
