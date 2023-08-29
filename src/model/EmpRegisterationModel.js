@@ -64,7 +64,7 @@ function EmpRegisterationModel() {
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
       axios
-        .post(url + "/emp/insertEmp", editedEmp, {
+        .post(url + "/emp/insertEmp", editedEmp.item, {
           ContentType: "qpplication/json",
         })
         .then((response) => {
@@ -82,7 +82,7 @@ function EmpRegisterationModel() {
     if (Object.keys(editedEmp).length !== 0) {
       console.log("update요청: ", editedEmp);
       axios
-        .post(url + "/emp/updateEmp", editedEmp)
+        .post(url + "/emp/updateEmp", editedEmp.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmp({});
