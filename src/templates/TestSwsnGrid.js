@@ -326,7 +326,7 @@ const TestSwsnGrid = () => {
                 actions={{
                   setTableData: actions.subTableData,
                   setPkValue: actions.setMainTablePkValue,
-                  // setEditedRow:actions.setEditedEmp
+                  setEditedRow: actions.setEditedSwsmOther,
                   getRowObject: SwsmOther,
                 }}
               />

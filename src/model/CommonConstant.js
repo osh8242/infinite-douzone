@@ -102,11 +102,11 @@ const CommonConstant = () => {
       cdProject: "프로젝트",
       cdBank: "급여이체은행",
 
-      mnReduction : "감면율",
-      nmEmp:"사원이름",
-      nmDeduct : "공제항목",
-      nmAllow : "급여항목",
-      allowPay : "금액",
+      mnReduction: "감면율",
+      nmEmp: "사원이름",
+      nmDeduct: "공제항목",
+      nmAllow: "급여항목",
+      allowPay: "금액",
 
       inquiryYype: "조회구분",
     },

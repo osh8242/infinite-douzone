@@ -1,6 +1,6 @@
 import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import {
   isNumber,
@@ -29,6 +29,7 @@ function TextBoxComponent(props) {
     onClick,
     onClickCodeHelper,
     onFocus,
+    onKeyDown,
 
     //유효성 검사
     validationFunction,
@@ -44,6 +45,10 @@ function TextBoxComponent(props) {
   console.log("test :" + value);
   // 입력값
   const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
+  }, [value]);
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -170,6 +175,7 @@ function TextBoxComponent(props) {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onClick={onClick}
+          onKeyDown={onKeyDown}
         />
       );
     }

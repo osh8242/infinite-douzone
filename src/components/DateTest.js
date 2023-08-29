@@ -20,17 +20,22 @@ function DateTest(props) {
     pkValue,
     labelKey,
     labelKey2,
+    onChange,
   } = props;
   // const [date, setDate] = useState(new Date());
   // const [inputValue, setInputValue] = useState(value);
   const [startDate, setStartDate] = useState(value);
   const [endDate, setEndDate] = useState(value2);
+  const [inputValue, setInputValue] = useState(value);
 
   DateTest.defaultProps = {
     label: "",
     isPeriod: false,
     type: "date",
   };
+  useEffect(() => {
+    setInputValue(value || "");
+  }, [value]);
 
   useEffect(() => {
     setStartDate(props.value);
@@ -39,14 +44,12 @@ function DateTest(props) {
   useEffect(() => {
     setEndDate(props.value2);
   }, [value2]);
-  // useEffect(() => {
-  //   if (value !== startDate) {
-  //     setStartDate(value);
-  //   }
-  //   if (value2 !== endDate) {
-  //     setEndDate(value2);
-  //   }
-  // }, [value, value2]);
+
+  const onChangeHandeler = (e) => {
+    const value = e.target.value;
+    onChange(e, value);
+    setInputValue(value);
+  };
 
   const handleStartDateChange = (event) => {
     setStartDate(event.target.value);
@@ -84,7 +87,7 @@ function DateTest(props) {
       )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <Form.Control
-          type={type}
+          type={type ? type : "date"}
           placeholder="YYYY.MM.DD"
           value={startDate}
           onChange={handleStartDateChange}
