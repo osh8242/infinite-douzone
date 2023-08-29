@@ -8,7 +8,7 @@ const SalConstant = () => {
             { field: "mnReduction", text: "감면율" },
         ],
         salAllow : [
-            { field: "nmAllow", text: "급여항목" , readonly : true},
+            { field: "nmAllow", text: "급여항목" , readOnly : true},
             { field: "allowPay", text: "지급금액" },
         ],
         salDeduct : [
