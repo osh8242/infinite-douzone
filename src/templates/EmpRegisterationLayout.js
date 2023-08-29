@@ -116,17 +116,23 @@ function EmpRegisterationLayout() {
                 />
                 <CallNumberForm
                   label={labels.telHome}
-                  num1={mainTableData.telHome1}
-                  num2={mainTableData.telHome2}
-                  num3={mainTableData.telHome3}
+                  val1={mainTableData.telHome1}
+                  val2={mainTableData.telHome2}
+                  val3={mainTableData.telHome3}
                   pkValue={mainTablePk}
+                  actions={{
+                    setNewEmp: actions.setEditedEmp,
+                  }}
                 />
                 <CallNumberForm
                   label={labels.calEmp}
-                  num1={mainTableData.celEmp1}
-                  num2={mainTableData.celEmp2}
-                  num3={mainTableData.celEmp3}
+                  val1={mainTableData.celEmp1}
+                  val2={mainTableData.celEmp2}
+                  val3={mainTableData.celEmp3}
                   pkValue={mainTablePk}
+                  actions={{
+                    setNewEmp: actions.setEditedEmp,
+                  }}
                 />
                 <EmailForm
                   label={labels.emEmp}
@@ -179,9 +185,13 @@ function EmpRegisterationLayout() {
                 )}
                 <CallNumberForm
                   label={labels.cdBank}
-                  value1={mainTableData.cdBank}
-                  value2={mainTableData.noBnkacct}
-                  value3={mainTableData.nmKrname}
+                  val1={mainTableData.cdBank}
+                  val2={mainTableData.noBnkacct}
+                  val3={mainTableData.nmBnkowner}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setNewEmp: actions.setEditedEmp,
+                  }}
                 />
               </div>
             ) : (

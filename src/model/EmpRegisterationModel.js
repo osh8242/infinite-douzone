@@ -7,7 +7,7 @@ function EmpRegisterationModel() {
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
   // const [cdEmp, setCdEmp] = useState("E001");
-  const [mainTablePkValue, setMainTablePkValue] = useState(); // cdEmp
+  const [mainTablePkValue, setMainTablePkValue] = useState("E001"); // cdEmp
   const [editedEmp, setEditedEmp] = useState({});
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTableData, setMainTableData] = useState([]);
