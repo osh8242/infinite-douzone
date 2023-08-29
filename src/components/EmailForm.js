@@ -19,12 +19,20 @@ function EmailForm(props) {
     if (event.key === "Enter") {
       event.preventDefault();
 
-      const newEmEmp = {
+      const newEmEmpById = {
         emEmp: emEmpId.current.value + "@" + emEmpDomain.current.value,
         cdEmp: pkValue.cdEmp,
       };
-      actions.setEmEmp(newEmEmp);
+      actions.setEmEmp(newEmEmpById);
     }
+  };
+
+  const handleEmpDomain = () => {
+    const newEmEmpByDomain = {
+      emEmp: emEmpId.current.value + "@" + emEmpDomain.current.value,
+      cdEmp: pkValue.cdEmp,
+    };
+    actions.setEmEmp(newEmEmpByDomain);
   };
 
   return (
@@ -43,7 +51,7 @@ function EmailForm(props) {
         </Col>
         @
         <Col className="d-flex align-items-center justify-content-center">
-          <Form.Select ref={emEmpDomain}>
+          <Form.Select ref={emEmpDomain} onChange={handleEmpDomain}>
             {optionList.map((option, index) => (
               <option value={option.key} key={index}>
                 {option.value}
