@@ -82,9 +82,15 @@ function EmpRegisterationLayout() {
                 />
                 <NoSocialFormForEmpRegister
                   label={labels.noSocial}
-                  optionList1={ynForList}
-                  optionList2={genderRadioList}
-                  value={mainTableData.noSocial}
+                  ynForList={ynForList}
+                  ynFor={mainTableData.ynFor}
+                  genderList={genderRadioList}
+                  fgSex={mainTableData.fgSex}
+                  noSocial={mainTableData.noSocial}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setNoSocialForm: actions.setEditedEmp,
+                  }}
                 />
                 <TextBoxComponent
                   label={labels.addNation}
