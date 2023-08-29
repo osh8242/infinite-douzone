@@ -58,7 +58,7 @@ function EmpRegisterationModel() {
       .catch((error) => {
         console.error("에러발생: ", error);
       });
-  }, [mainTablePkValue]);
+  }, [mainTablePkValue, editedEmp]);
 
   //사원 정보 insert POST 요청 (사원의 기초자료)
   useEffect(() => {
@@ -91,7 +91,7 @@ function EmpRegisterationModel() {
           console.log("에러발생 -> ", error);
         });
     }
-  }, [editedEmp, mainTableData]);
+  }, [editedEmp]);
 
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
