@@ -74,24 +74,18 @@ const SalConstant = () => {
         },
 
     },
-    nodata : {
-        // basicDeductData : [// nodata 사원별 공제항목
-        //     {공제항목: "국민연금",  금액: ""},
-        //     {공제항목: "건강보험",  금액: ""},
-        //     {공제항목: "고용보험",  금액: ""},
-        //     {공제항목: "장기요양보험료",  금액: ""},
-        //     {공제항목: "대출",  금액: ""}
-        // ],
-        // basicSaEmpData : [// nodata 급여_사원리스트
-        //     { 사원코드 : "", 사원이름 : "", 직급 : "", 감면율 : ""},
-        // ],
-        // basicSalData : [// nodata 급여항목
-        //     { 공제항목 : "기본급", 지급금액 : ""},
-        //     { 공제항목 : "연장근로", 지급금액 : ""},s
-        //     { 공제항목 : "식대", 지급금액 : ""},
-        //     { 공제항목 : "연구개발비", 지급금액 : ""}
-        // ],
-        
+    cdDeduct : {
+        NATIONAL_PENSION: 'DEDUCT_NATION',//국민연금
+        HEALTH_INSURANCE: '502',//건강보험
+        EMPLOYMENT_INSURANCE: '503'// 고용보험
+    },
+    cdAllow : {
+        BASIC_SALARY : '503', //기본급
+        OVERTIME_PAY : '599', //연장수당
+        RND_EXPENSES : '523',//연구개발비
+        EMPLOYEE_BENEFITS : '511',//복리후생비 
+        MEALS : '597', //식대
+        BONUS : '505' //상여금
     },
 }
     
@@ -100,15 +94,15 @@ export default SalConstant;
 
 //국민연금 계산식
 export const calculationNationalPension = (value) => {
-    return value + 1;
+    return Number(value) + 1;
  }
 
  //건강보험 계산식
  export const calculationHealthinsurance = (value) => {
-    return value + 100;
+    return Number(value) + 100;
  }
 
 //고용보험 계산식
 export const calculationEmploymentInsurance = (value) => {
-    return value + 1000;
+    return Number(value) + 1000;
  }
