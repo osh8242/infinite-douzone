@@ -113,9 +113,9 @@ const SalaryInformationEntryModel = () => {
               mnReduction: item.mnReduction,
             },
 
-            isChecked : false,
-            isEditable : false,     
-            selected : false,
+            // checked : false,
+            // selected : false,
+            // isEditable : false,
           }
         ));
 
@@ -133,7 +133,7 @@ const SalaryInformationEntryModel = () => {
   
     axios.post(
       url + '/saEmpInfo/getSaEmpInfoByCdEmp',
-      {cdEmp: cdEmp},
+      searchAllowVo,
       {'Content-Type': 'application/json',},
     )
     .then((response) => {
@@ -157,13 +157,14 @@ const SalaryInformationEntryModel = () => {
         //console.log( '급여항목데이터 >> ',response.data);
         const data = response.data.map((item) => ({
           item : {
+            cdAllow :item.cdAllow,
             nmAllow: item.nmAllow,
             allowPay: item.allowPay
           },
 
-          isChecked : false,
-          isEditable : false,     
+          checked : false,
           selected : false,
+          isEditable : false,     
         }));
 
         setSalData(data);
@@ -194,15 +195,15 @@ const SalaryInformationEntryModel = () => {
       {'Content-Type': 'application/json',},
       )
       .then((response) => {
-        console.log( '공제항목데이터 >> ',response.data);
+        //console.log( '공제항목데이터 >> ',response.data);
         const data = response.data.map((item) => ({
           item : {
             nmDeduct: item.nmDeduct,
             allowPay: item.allowPay
           },
-          isChecked : false,
-          isEditable : false,     
+          checked : false,
           selected : false,
+          isEditable : false,
         }));
 
         setDeductData(data);
@@ -228,16 +229,16 @@ const SalaryInformationEntryModel = () => {
       {'Content-Type': 'application/json',},
       )
       .then((response) => {
-        console.log( '급여항목 합계데이터 >> ',response.data);
+        //console.log( '급여항목 합계데이터 >> ',response.data);
         const data = response.data.map((item) => ({
           item : {
             nmAllow: item.nmAllow,
             ynTax: item.ynTax='N'?'비과':'과세',
             sumAllowPay: item.sumAllowPay
           },
-          isChecked : false,
-          isEditable : false,     
+          checked : false,
           selected : false,
+          isEditable : false,
         }));
 
         setSalAllowPaySumData(data);
@@ -261,13 +262,12 @@ const SalaryInformationEntryModel = () => {
             nmDeduct: item.nmDeduct,
             sumDeductPay: item.sumDeductPay
           },
-          isChecked : false,
-          isEditable : false,     
+          checked : false,
           selected : false,
+          isEditable : false,
         }));
 
         setSalDeductPaySumData(data);
-        console.log( 'setSalDeductPaySumData >> ',salDeductPaySumData);
       })
       .catch((error) => {
         console.error('에러발생: ', error);
