@@ -3,7 +3,7 @@ const EmpAdd = (empAddData) => {
   //   [labels.cdEmp]: item.cdEmp,
   //   [labels.nmKrname]: item.nmKrname,
   // }
-  return { empAddData };
+  return { item: empAddData };
 };
 
 export default EmpAdd;

@@ -55,7 +55,7 @@ const CommonConstant = () => {
       { field: "cdFamrel", text: "관계" },
       { field: "nmKrname", text: "성명" },
       { field: "ynFor", text: "외국인" },
-      { field: "noSocial", text: "주민등록번호" },
+      { field: "noSocial", text: "주민등록번호", isPk: true },
       { field: "fgSchool", text: "학력" },
       { field: "fgGraduation", text: "졸업구분" },
       { field: "ynTogether", text: "동거" },
@@ -137,6 +137,14 @@ const CommonConstant = () => {
       cdField: "현장",
       cdProject: "프로젝트",
       cdBank: "급여이체은행",
+
+      mnReduction: "감면율",
+      nmEmp: "사원이름",
+      nmDeduct: "공제항목",
+      nmAllow: "급여항목",
+      allowPay: "금액",
+
+      inquiryYype: "조회구분",
     },
   };
 };
