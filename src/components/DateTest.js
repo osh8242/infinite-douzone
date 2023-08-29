@@ -10,9 +10,19 @@ import React, { useState, useEffect } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest(props) {
-  const { label, isPeriod, type, value, value2, actions, pkValue } = props;
-  const [date, setDate] = useState(new Date());
-  const [inputValue, setInputValue] = useState(value);
+  const {
+    label,
+    isPeriod,
+    type,
+    value,
+    value2,
+    actions,
+    pkValue,
+    labelKey,
+    labelKey2,
+  } = props;
+  // const [date, setDate] = useState(new Date());
+  // const [inputValue, setInputValue] = useState(value);
   const [startDate, setStartDate] = useState(value);
   const [endDate, setEndDate] = useState(value2);
 
@@ -22,6 +32,13 @@ function DateTest(props) {
     type: "date",
   };
 
+  useEffect(() => {
+    setStartDate(props.value);
+  }, [value]);
+
+  useEffect(() => {
+    setEndDate(props.value2);
+  }, [value2]);
   // useEffect(() => {
   //   if (value !== startDate) {
   //     setStartDate(value);
@@ -37,20 +54,20 @@ function DateTest(props) {
       props.onChangeStartDate(event.target.value);
     }
     const newDate = {
-      startEmpContractPeriod: event.target.value,
-      cdEmp: "",
+      [labelKey]: event.target.value,
     };
     actions.setEdited(newDate);
   };
 
   const handleEndDateChange = (event) => {
-    // setEndDate(event.target.value);
-    if (props.onChangeStartDate) {
+    console.log("endData update : ");
+    console.log("labelKey2: " + labelKey2);
+    setEndDate(event.target.value);
+    if (props.onChangeEndDate) {
       props.onChangeEndDate(event.target.value);
     }
     const newDate = {
-      endEmpContractPeriod: event.target.value,
-      cdEmp: "",
+      [labelKey2]: event.target.value,
     };
     actions.setEdited(newDate);
   };
@@ -69,7 +86,7 @@ function DateTest(props) {
         <Form.Control
           type={type}
           placeholder="YYYY.MM.DD"
-          value={value}
+          value={startDate}
           onChange={handleStartDateChange}
         />
         {isPeriod && (
@@ -78,7 +95,7 @@ function DateTest(props) {
             <Form.Control
               type={type}
               placeholder="YYYY.MM.DD"
-              value={value2}
+              value={endDate}
               onChange={handleEndDateChange}
             />
           </>

@@ -102,8 +102,10 @@ const TestSwsnGrid = () => {
                       isPeriod={true}
                       type={"date"}
                       // pkValue={}/
+                      labelKey={"startEmpContractPeriod"}
+                      labelKey2={"endEmpContractPeriod"}
                       actions={{
-                        setPkValue: actions.setMainTablePkValue,
+                        // setPkValue: actions.setMainTablePkValue,
                         setEdited: actions.setEditedSwsm,
                       }}
                       value={
@@ -235,6 +237,10 @@ const TestSwsnGrid = () => {
                       optionList={bonusPaymentStatusList}
                       subLabel={"원"}
                       subValue={mainTabData ? mainTabData.bonusAmount : ""}
+                      labelKey={"bonusAmount"}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                     {/* 한 라인 안에 들어가게 변경 필요 */}
                     {/* <TextBoxComponent />원 */}
@@ -295,6 +301,12 @@ const TestSwsnGrid = () => {
                     <DateTest
                       label={labels.dateOfCreation}
                       value={mainTabData ? mainTabData.paymentDate : ""}
+                      type={"date"}
+                      isPeriod={false}
+                      labelKey={"paymentDate"}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>
