@@ -10,7 +10,7 @@ import SelectForm from "../components/SelectForm";
 import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
-import LRlevel2GridModel from "../model/HrManagement";
+import HrManagementModel from "../model/HrManagementModel";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
@@ -35,7 +35,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
   } = CommonConstant();
 
   //Model로 관리되는 값들
-  const { state, actions } = LRlevel2GridModel();
+  const { state, actions } = HrManagementModel();
   const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
 
   //검색조건 : 재직구분, 정렬기준
@@ -86,7 +86,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
 
   return (
     <>
-      <HrManagementHeader />
+      <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
         {/* 조회영역 */}
         <SearchPanel onSearch={onSearch}>
@@ -113,6 +113,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           <Col md="3">
             {/* 좌측 그리드 */}
             <TableTemp
+              showCheckbox
               showHeaderArrow
               rowAddable
               tableHeaders={LRlevel2GridLeftTableHeaders}
@@ -251,6 +252,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                 actions={{
                   setTableData: actions.setSubTableData,
                   setEditedRow: actions.setEditedEmpFam,
+                  setSelectedRows: actions.setSelectedRows,
                   getRowObject: EmpFam,
                 }}
               />

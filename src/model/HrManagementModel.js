@@ -5,7 +5,7 @@ import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
 import ContextModel from "./ContextModel";
 
-const LRlevel2GridModel = () => {
+const HrManagementModel = () => {
   const url = "http://localhost:8888"; // REST API 서버 주소
 
   const [jobOk, setJobOk] = useState("Y"); //재직여부
@@ -197,6 +197,7 @@ const LRlevel2GridModel = () => {
         });
   }, [editedEmpFam]);
 
+  //선택된 행 delete 요청
   const deleteSelectedRows = useCallback(() => {
     // 각 row에 대한 delete 요청을 생성
     const deletePromises = selectedRows.map((row) => {
@@ -213,6 +214,7 @@ const LRlevel2GridModel = () => {
       .then((responses) => {
         console.log("선택된 모든 행의 삭제 완료");
         setSelectedRows([]); // 선택행 배열 비우기
+        setEditedEmpFam([]); // 사원가족 리로드
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
@@ -252,4 +254,4 @@ const LRlevel2GridModel = () => {
   };
 };
 
-export default LRlevel2GridModel;
+export default HrManagementModel;

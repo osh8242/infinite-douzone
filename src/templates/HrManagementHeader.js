@@ -6,16 +6,13 @@ import {
   faPrint,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState } from "react";
+import { React, useState } from "react";
 import { Button } from "react-bootstrap";
 import "../styles/header.css";
 import empAdd from "../styles/img/empAddLogo.png";
-import ContextModel from "../model/ContextModel";
 
-const HrManagementHeader = () => {
+const HrManagementHeader = ({ deleteButtonHandler }) => {
   const [showSidebar, setShowSidebar] = useState(false);
-
-  const { contextActions } = useContext(ContextModel);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -46,7 +43,7 @@ const HrManagementHeader = () => {
         </button>
         <button
           className="backgroundBorderNone"
-          onClick={(e) => contextActions.deleteSelectedRows()}
+          onClick={() => deleteButtonHandler()}
         >
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>

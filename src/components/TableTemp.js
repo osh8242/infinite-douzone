@@ -15,6 +15,7 @@ import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import ContextModel from "../model/ContextModel";
 import "../styles/tableForm.css";
+import { useMemo } from "react";
 
 const TableTemp = ({
   tableHeaders, // [필수]
@@ -36,9 +37,6 @@ const TableTemp = ({
   rowAddable, // [선택] 행 추가 가능여부
   minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다. (구현부족)
 }) => {
-  const { contextState, contextActions } = useContext(ContextModel);
-  const selectedRows = contextState.selectedRows;
-
   const tbodyRef = useRef();
 
   const [recentlyClickedRow, setRecentlyClickedRow] = useState();
@@ -166,14 +164,16 @@ const TableTemp = ({
   const handleCheckbox = useCallback(
     (index) => {
       if (!tableData[index].checked) {
-        selectedRows.push(tableData[index]);
-        contextActions.setSelectedRows([...selectedRows]);
         tableData[index].checked = !tableData[index].checked;
       }
-      console.log("selectedRows", selectedRows);
-      actions.setTableData([...tableData]);
+      if (actions.setSelectedRows) {
+        const selectedRows = tableData.filter((row) => row.checked);
+        actions.setSelectedRows(selectedRows);
+        console.log("selectedRows", selectedRows);
+        actions.setTableData([...tableData]);
+      }
     },
-    [tableData, selectedRows]
+    [tableData]
   );
 
   // 정렬 화살표 기능.. 구현예정
