@@ -13,6 +13,7 @@ import CommonConstant from "../model/CommonConstant";
 import LRlevel2GridModel from "../model/LRlevel2GridModel";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import "../styles/lrLevel2Grid.css";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -109,7 +110,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         {/* 좌측 영역 */}
         <Col md="3">
           {/* 좌측 그리드 */}
-          <TableTemp
+          {/* <TableTemp
             showHeaderArrow
             rowAddable
             tableHeaders={LRlevel2GridLeftTableHeaders}
@@ -120,7 +121,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
               setEditedRow: actions.setEditedEmp,
               getRowObject: Emp,
             }}
-          />
+          /> */}
         </Col>
         {/* 우측 영역 */}
         {mainTabData ? (
@@ -128,7 +129,9 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             {/* 우측 메인탭 */}
             <MenuTab menuList={mainTabMenuList} />
             {/* 우측 메인폼 */}
-            <Row className="mb-5" ref={mainTabRef}>
+            <Row id="mainTabContentArea" className="mb-5" ref={mainTabRef}>
+              <div id="mainTabContentLeft"></div>
+              <div id="mainTabContentRight"></div>
               <Col xs md="6">
                 <TextBoxComponent
                   id="nmEnName"
