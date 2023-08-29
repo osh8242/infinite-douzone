@@ -40,6 +40,12 @@ table {
   color: transparent;
 }
 
-input:checked {
-  color: aqua;
+.highlight-row {
+  background-color: rgb(150, 230, 255) !important;
+}
+
+.highlight-row td,
+.highlight-row div {
+  background-color: transparent !important;
+  border-color: rgb(150, 230, 255);
 }

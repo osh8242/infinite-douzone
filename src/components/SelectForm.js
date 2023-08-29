@@ -12,8 +12,8 @@
 //    <SelectForm label="구분" optionList={optionList}/>
 //
 
-import { Col, Row } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Col, Row } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
 function SelectForm({ label, optionList, selectRef }) {
   return (

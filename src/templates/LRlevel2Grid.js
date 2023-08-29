@@ -34,13 +34,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   } = CommonConstant();
 
   //Model로 관리되는 값들
-  const {
-    leftTableData,
-    leftTablePkValue,
-    mainTabData,
-    subTableData,
-    actions,
-  } = LRlevel2GridModel();
+  const { state, actions } = LRlevel2GridModel();
+  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
@@ -70,7 +65,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
         let newMainTabData = { ...mainTabData.item };
         const inputElements = mainTabRef.current.querySelectorAll("input");
         Array.from(inputElements).forEach((input) => {
-          newMainTabData[input.id] = input.value;
+          newMainTabData[input.id] =
+            input.type === "radio" ? input.checked : input.value;
         });
         console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
@@ -108,11 +104,14 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
           </Col>
         </Row>
       </SearchPanel>
+      {/* 메인영역 */}
       <Row>
+        {/* 좌측 영역 */}
         <Col md="3">
+          {/* 좌측 그리드 */}
           <TableTemp
-            //showHeaderArrow={true}
-            rowAddable={true}
+            showHeaderArrow
+            rowAddable
             tableHeaders={LRlevel2GridLeftTableHeaders}
             tableData={leftTableData}
             actions={{
@@ -123,9 +122,12 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
             }}
           />
         </Col>
+        {/* 우측 영역 */}
         {mainTabData ? (
           <Col md="9">
+            {/* 우측 메인탭 */}
             <MenuTab menuList={mainTabMenuList} />
+            {/* 우측 메인폼 */}
             <Row className="mb-5" ref={mainTabRef}>
               <Col xs md="6">
                 <TextBoxComponent
@@ -148,7 +150,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                   id="noSocial"
                   type="regNum"
                   label={labels.noSocial}
-                  disabled={true}
+                  disabled
                   value={mainTabData.item?.noSocial}
                   onKeyDown={submitMainTabData}
                 />
@@ -157,7 +159,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                 <RadioForm
                   id="fgSex"
                   label={labels.fgSex}
-                  disabled={true}
+                  disabled
                   optionList={genderRadioList}
                   checked={mainTabData.item?.fgSex}
                 />
@@ -183,7 +185,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                 <TextBoxComponent
                   id="cdDept"
                   label={labels.cdDept}
-                  disabled={true}
+                  disabled
                   value={mainTabData.item?.cdDept}
                   onKeyDown={submitMainTabData}
                 />
@@ -192,7 +194,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                 <TextBoxComponent
                   id="rankNo"
                   label={labels.rankNo}
-                  disabled={true}
+                  disabled
                   value={mainTabData.item?.ankNo}
                   onKeyDown={submitMainTabData}
                 />
@@ -218,7 +220,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                 <TextBoxComponent
                   id="daEnter"
                   label={labels.daEnter}
-                  disabled={true}
+                  disabled
                   value={mainTabData.item?.daEnter}
                   onKeyDown={submitMainTabData}
                 />
@@ -227,17 +229,19 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
                 <TextBoxComponent
                   id="daRetire"
                   label={labels.daRetire}
-                  disabled={true}
+                  disabled
                   value={mainTabData.item?.daRetire}
                   onKeyDown={submitMainTabData}
                 />
               </Col>
             </Row>
+            {/* 우측 서브탭 */}
             <MenuTab menuList={subTabMenuList} />
+            {/* 우측 서브 그리드 */}
             <TableTemp
-              showCheckbox={true}
-              showHeaderArrow={true}
-              rowAddable={true}
+              showCheckbox
+              showHeaderArrow
+              rowAddable
               tableHeaders={LRlevel2GridSubTableHeaders}
               tableData={subTableData}
               pkValue={leftTablePkValue}
