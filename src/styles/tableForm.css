@@ -36,6 +36,10 @@ table {
   table-layout: fixed;
 }
 
+td div {
+  text-align: center;
+}
+
 .styleNone {
   color: transparent;
 }

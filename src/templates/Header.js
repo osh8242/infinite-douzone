@@ -75,7 +75,7 @@ const Header = (props) => {
           </select>
         </div>
       </div>
-      <div id="secondTopHeader">
+      {/* <div id="secondTopHeader">
         <div id="secondTopHeaderContents">
           <Button
             id="toggleSidebarBtn"
@@ -84,7 +84,7 @@ const Header = (props) => {
           >
             <i className={`fa fa-bars colorWhite`} />
           </Button>
-          {/* 로고 */}
+          //로고
           <img id="logo" src={empAdd} alt="" />
           <button className="backgroundBorderNone">
             <FontAwesomeIcon
@@ -110,7 +110,7 @@ const Header = (props) => {
             <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
           </button>
         </div>
-      </div>
+      </div>       */}
     </div>
   );
 };

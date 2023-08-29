@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import axios from "../../node_modules/axios/index";
+import { useCallback, useContext, useEffect, useState } from "react";
+import axios from "axios";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
@@ -12,15 +12,17 @@ const LRlevel2GridModel = () => {
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
   const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
 
-  const [leftTableData, setLeftTableData] = useState([]);
-  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // cdEmp
-  const [editedEmp, setEditedEmp] = useState({});
+  const [leftTableData, setLeftTableData] = useState([]); // 좌측 그리드 데이터
+  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // 좌측 그리드 PK
+  const [editedEmp, setEditedEmp] = useState({}); // 좌측 그리드 수정 ROW
 
-  const [mainTabData, setMainTabData] = useState({});
-  const [editedEmpAdd, setEditedEmpAdd] = useState();
+  const [mainTabData, setMainTabData] = useState({}); // 메인탭 데이터
+  const [editedEmpAdd, setEditedEmpAdd] = useState({}); // 메인탭 수정 ROW
 
-  const [subTableData, setSubTableData] = useState([]);
-  const [editedEmpFam, setEditedEmpFam] = useState({});
+  const [subTableData, setSubTableData] = useState([]); // 서브 그리드 데이터
+  const [editedEmpFam, setEditedEmpFam] = useState({}); // 서브 그리드 수정 ROW
+
+  const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
   const { contextState } = useContext(ContextModel);
   const reloadSubTableData = contextState.reloadSubTableData;
@@ -195,12 +197,36 @@ const LRlevel2GridModel = () => {
         });
   }, [editedEmpFam]);
 
+  const deleteSelectedRows = useCallback(() => {
+    // 각 row에 대한 delete 요청을 생성
+    const deletePromises = selectedRows.map((row) => {
+      switch (row.table) {
+        case "empFam":
+          console.log("url + '/empFam/deleteEmpFam', row.item", row.item);
+          return axios.delete(url + "/empFam/deleteEmpFam", { data: row.item });
+        default:
+          return Promise.resolve();
+      }
+    });
+
+    Promise.all(deletePromises)
+      .then((responses) => {
+        console.log("선택된 모든 행의 삭제 완료");
+        setSelectedRows([]); // 선택행 배열 비우기
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [selectedRows]);
+
   return {
     state: {
       leftTableData,
       leftTablePkValue,
       mainTabData,
       subTableData,
+      selectedRows,
       jobOk,
       refYear,
       orderRef,
@@ -219,6 +245,9 @@ const LRlevel2GridModel = () => {
 
       setSubTableData,
       setEditedEmpFam,
+
+      setSelectedRows,
+      deleteSelectedRows,
     },
   };
 };
