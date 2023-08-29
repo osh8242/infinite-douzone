@@ -185,10 +185,6 @@ const TableTemp = ({
         {/* content */}
         <tbody ref={tbodyRef}>
           {tableData.map((row, rowIndex) => {
-            console.log("data");
-            console.log(row.item.cdEmp);
-            console.log(tableData);
-            console.log(", rowIndex: " + rowIndex);
             return (
               <tr
                 key={rowIndex}

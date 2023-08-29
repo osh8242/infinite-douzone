@@ -136,6 +136,7 @@ const TempSwsmModel = () => {
       axios
         .get(url + "/swsmOther/getAllSwsmOther ")
         .then((response) => {
+          console.log(response);
           const data = response.data.map((item) => {
             return {
               item: {
