@@ -24,15 +24,15 @@ function NoSocialFormForEmpRegister(props) {
     actions,
   } = props;
 
-  const noSocialRef = useRef(null);
-  const ynForListRef = useRef(null);
-  const genderListRef = useRef(null);
+  const noSocialRef = useRef();
+  const ynForListRef = useRef();
+  const genderListRef = useRef();
 
   useEffect(() => {
-    noSocialRef.current.value = noSocial;
-    ynForListRef.current.value = ynFor;
-    genderListRef.current.value = fgSex;
-  });
+    noSocialRef.current.value = noSocial || "";
+    ynForListRef.current.value = ynFor || "";
+    genderListRef.current.value = fgSex || "";
+  }, [noSocial, ynFor, fgSex]);
 
   //주민등록번호 마스킹 함수
   // const handleInputValueChange = () => {

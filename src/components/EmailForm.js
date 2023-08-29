@@ -10,8 +10,8 @@ function EmailForm(props) {
   const emEmpDomain = useRef(null);
 
   useEffect(() => {
-    emEmpId.current.value = emEmp?.split("@")[0];
-    emEmpDomain.current.value = emEmp?.split("@")[1];
+    emEmpId.current.value = emEmp?.split("@")[0] || "";
+    emEmpDomain.current.value = emEmp?.split("@")[1] || "";
   });
 
   //email값 수정

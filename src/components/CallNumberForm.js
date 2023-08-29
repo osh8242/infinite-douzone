@@ -1,9 +1,13 @@
 // 작성자: 김진
 // 용도: 전화번호 형식을 위한 TextBoxComponent
 /*
-  parameter: value1(cell1), value2(cell2), value3(cell3)
-  props:
-  type, label, size, disabled, readOnly, plaintext, value1, value2, value3
+  parameter: 
+      label(라벨명)
+      val1(첫 번째 열의 값)
+      val2(두 번째 열의 값)
+      val3(세 번째 열의 값)
+      pkValue(기본키 값)
+      actions(update 등의 로직을 위한 set함수)
 */
 
 import { Col, Form, Row } from "react-bootstrap";
@@ -18,9 +22,9 @@ function CallNumberForm(props) {
   const callNumber3 = useRef();
 
   useEffect(() => {
-    callNumber1.current.value = val1;
-    callNumber2.current.value = val2;
-    callNumber3.current.value = val3;
+    callNumber1.current.value = val1 || "";
+    callNumber2.current.value = val2 || "";
+    callNumber3.current.value = val3 || "";
   });
 
   //update
@@ -40,6 +44,7 @@ function CallNumberForm(props) {
             cdEmp: pkValue.cdEmp,
           };
           break;
+
         //모바일번호
         case "모바일번호":
           newEmpData = {
@@ -49,6 +54,7 @@ function CallNumberForm(props) {
             cdEmp: pkValue.cdEmp,
           };
           break;
+
         //급여이체은행
         case "급여이체은행":
           newEmpData = {
@@ -58,6 +64,7 @@ function CallNumberForm(props) {
             cdEmp: pkValue.cdEmp,
           };
           break;
+
         default:
           newEmpData = {
             cdEmp: pkValue.cdEmp,
