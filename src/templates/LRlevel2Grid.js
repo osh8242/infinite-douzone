@@ -64,7 +64,7 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   const submitMainTabData = (event, value) => {
     console.log("event", event);
     if (event.key === "Enter") {
-      event.preventDefault();
+      console.log("이벤트타겟", event.target);
       event.target.blur();
       if (mainTabRef.current) {
         let newMainTabData = { ...mainTabData.item };
@@ -77,8 +77,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
       }
     }
     if (event.type === "change") {
-      event.preventDefault();
       if (mainTabRef.current) {
+        event.target.blur();
         let newMainTabData = { ...mainTabData.item };
         newMainTabData[event.target.id] = value;
         console.log("newMainTabData", newMainTabData);

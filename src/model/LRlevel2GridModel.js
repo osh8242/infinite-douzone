@@ -19,7 +19,6 @@ const LRlevel2GridModel = () => {
   const [editedEmpAdd, setEditedEmpAdd] = useState();
 
   const [subTableData, setSubTableData] = useState([]);
-  const [subTablePkValue, setSubTablePkValue] = useState();
   const [editedEmpFam, setEditedEmpFam] = useState({});
 
   //leftTableData 가져오는 비동기 GET 요청
@@ -54,17 +53,17 @@ const LRlevel2GridModel = () => {
 
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    console.log("leftTablePkValue", leftTablePkValue);
     if (leftTablePkValue && Object.keys(leftTablePkValue).length !== 0) {
       console.log("mainTabData 불러오기");
+      console.log("leftTablePkValue", leftTablePkValue);
       axios
         .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue, {
           "Content-Type": "application/json",
         })
         .then((response) => {
           let data = response.data;
-          if (response.data === "") data = {};
           console.log("불러온 mainTabData", data);
+          setMainTabData(EmpAdd({}));
           setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
@@ -76,8 +75,8 @@ const LRlevel2GridModel = () => {
 
   //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
   useEffect(() => {
-    console.log("editedEmpAdd", editedEmpAdd);
-    if (editedEmpAdd && Object.keys(editedEmpAdd).length !== 0)
+    if (editedEmpAdd && Object.keys(editedEmpAdd).length !== 0) {
+      console.log("editedEmpAdd 업데이트 요청", editedEmpAdd);
       axios
         .put(url + "/empAdd/updateEmpAdd", editedEmpAdd)
         .then((response) => {
@@ -88,6 +87,7 @@ const LRlevel2GridModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
+    }
   }, [editedEmpAdd]);
 
   //subTableData 가져오는 비동기 post 요청
@@ -216,7 +216,6 @@ const LRlevel2GridModel = () => {
       setEditedEmpAdd,
 
       setSubTableData,
-      setSubTablePkValue,
       setEditedEmpFam,
     },
   };

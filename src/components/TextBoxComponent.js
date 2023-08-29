@@ -46,13 +46,12 @@ function TextBoxComponent(props) {
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
-    setInputValue(value); // value prop이 변경될 때마다 inputValue를 업데이트
+    setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
   }, [value]);
 
   const handleInputChange = (event) => {
     event.preventDefault();
     const newValue = event.target.value;
-    onKeyDown(event, newValue);
 
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
     setInputValue(makeProcessedValue(newValue)); //data 가공
@@ -176,6 +175,7 @@ function TextBoxComponent(props) {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onClick={onClick}
+          onKeyDown={onKeyDown}
         />
       );
     }
