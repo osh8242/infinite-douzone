@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import ContextModel from "./ContextModel";
 
 const LRlevel2GridModel = () => {
   const url = "http://localhost:8888"; // REST API 서버 주소
@@ -20,6 +21,9 @@ const LRlevel2GridModel = () => {
 
   const [subTableData, setSubTableData] = useState([]);
   const [editedEmpFam, setEditedEmpFam] = useState({});
+
+  const { contextState } = useContext(ContextModel);
+  const reloadSubTableData = contextState.reloadSubTableData;
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
@@ -127,7 +131,7 @@ const LRlevel2GridModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     }
-  }, [leftTablePkValue, editedEmpFam]);
+  }, [leftTablePkValue, editedEmpFam, reloadSubTableData]);
 
   //추가된 사원 insert 요청
   useEffect(() => {
@@ -192,17 +196,15 @@ const LRlevel2GridModel = () => {
   }, [editedEmpFam]);
 
   return {
-    leftTableData: leftTableData,
-    leftTablePkValue: leftTablePkValue,
-    mainTabData: mainTabData,
-    setMainTabData,
-    subTableData: subTableData,
-    setSubTableData,
-    jobOk: jobOk,
-    setJobOk,
-    refYear: refYear,
-    setRefYear,
-    orderRef: orderRef,
+    state: {
+      leftTableData,
+      leftTablePkValue,
+      mainTabData,
+      subTableData,
+      jobOk,
+      refYear,
+      orderRef,
+    },
     actions: {
       setJobOk,
       setRefYear,

@@ -13,6 +13,7 @@ const ContextProvider = ({ children }) => {
   const url = "http://localhost:8888"; // REST API 서버 주소
 
   const [selectedRows, setSelectedRows] = useState([]);
+  const [reloadSubTableData, setReloadSubTableData] = useState(false);
 
   const deleteSelectedRows = useCallback(() => {
     // 각 row에 대한 delete 요청을 생성
@@ -29,7 +30,8 @@ const ContextProvider = ({ children }) => {
     Promise.all(deletePromises)
       .then((responses) => {
         console.log("선택된 모든 행의 삭제 완료");
-        setSelectedRows([]); // 상태 업데이트
+        setSelectedRows([]); // 선택행 배열 비우기
+        setReloadSubTableData(!reloadSubTableData);
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
@@ -38,7 +40,7 @@ const ContextProvider = ({ children }) => {
   }, [selectedRows]);
 
   const value = {
-    contextState: { selectedRows },
+    contextState: { selectedRows, reloadSubTableData },
     contextActions: {
       setSelectedRows,
       deleteSelectedRows,

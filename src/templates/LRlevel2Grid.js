@@ -34,13 +34,8 @@ const LRlevel2Grid = ({ grid, mainTab, subTab }) => {
   } = CommonConstant();
 
   //Model로 관리되는 값들
-  const {
-    leftTableData,
-    leftTablePkValue,
-    mainTabData,
-    subTableData,
-    actions,
-  } = LRlevel2GridModel();
+  const { state, actions } = LRlevel2GridModel();
+  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
