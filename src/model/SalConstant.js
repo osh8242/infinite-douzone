@@ -97,3 +97,18 @@ const SalConstant = () => {
     
 };
 export default SalConstant;
+
+//국민연금 계산식
+export const calculationNationalPension = (value) => {
+    return value + 1;
+ }
+
+ //건강보험 계산식
+ export const calculationHealthinsurance = (value) => {
+    return value + 100;
+ }
+
+//고용보험 계산식
+export const calculationEmploymentInsurance = (value) => {
+    return value + 1000;
+ }

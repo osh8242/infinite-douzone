@@ -4,6 +4,8 @@ import { currentDateStr, currentMonthStr, currentYearStr } from '../utils/DateUt
 import CommonConstant from './CommonConstant';
 import { isEditable } from '@testing-library/user-event/dist/utils';
 import { nvl } from '../utils/NumberUtils';
+import { isEmpty } from '../utils/StringUtils';
+import { cal_h, cal_l, cal_n, calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension } from './SalConstant';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
@@ -23,7 +25,8 @@ const SalaryInformationEntryModel = () => {
 
   /* 상태 Data */
   const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
-  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');//선택된 값
+  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');  //선택된 값
+  const [editedAllow, setEditedAllow ]= useState(); //급여항목 테이블_ table row 수정된 객체
 
   /* 검색조건 Data */
   const [cdEmp, setCdEmp] = useState('Y701');                      //사원번호
@@ -49,7 +52,7 @@ const SalaryInformationEntryModel = () => {
     searchDeptCd : searchDeptCd,
     searchRankNo : searchRankNo,
     searchCdOccup : searchCdOccup,
-    searchCdField : searchCdField,
+    searchCdField : searchCdField, 
     searchCdProject : searchCdProject,
     searchYnUnit : searchYnUnit,
     searchYnForlabor : searchYnForlabor,
@@ -68,13 +71,6 @@ const SalaryInformationEntryModel = () => {
     salEmpdataTable();        // 검색조건에 맞는 사원리스트
   }, [cdEmp,allowMonth,paymentDate,searchCdEmp,salDivision,searchDeptCd,searchRankNo,searchCdOccup,searchCdField]);
 
-  
-  useEffect(() => {
-    salAllowTableData();      // 선택한 사원의 급여항목 Table Data
-    salDeductTableData();     // 선택한 사원의 공제항목 Table Data
-    salEmpDetailTableData();  // 선택한 사원의 상세정보
-  }, [searchAllowVo]);
-
   useEffect(() => { // 선택한 select option 합계데이터
 
     let searchParams = {};  
@@ -92,6 +88,23 @@ const SalaryInformationEntryModel = () => {
     getSalDeductPaySum(searchParams);
 
   }, [selectedOption]);
+
+  useEffect(() => {
+    salAllowTableData();      // 선택한 사원의 급여항목 Table Data
+    salDeductTableData();     // 선택한 사원의 공제항목 Table Data
+    salEmpDetailTableData();  // 선택한 사원의 상세정보
+  }, [searchAllowVo]);
+
+
+  useEffect(() => {
+    console.log('+++++++++++++++');
+    console.log(editedAllow?.item);
+    console.log('+++++++++++++++');
+
+    //const editAllowData = editedAllow?.item
+    if(!isEmpty(editedAllow)) salAllowEdit(editedAllow.item); //급여항목테이블 지급금액 수정
+    
+  }, [editedAllow]);  //tabledata 변경
 
 
   /* 급여정보_사원리스트 */
@@ -157,6 +170,7 @@ const SalaryInformationEntryModel = () => {
         //console.log( '급여항목데이터 >> ',response.data);
         const data = response.data.map((item) => ({
           item : {
+            cdEmp : item.cdEmp,
             cdAllow :item.cdAllow,
             nmAllow: item.nmAllow,
             allowPay: item.allowPay
@@ -169,15 +183,15 @@ const SalaryInformationEntryModel = () => {
 
         setSalData(data);
 
-         // 합계 데이터
+        // 합계 데이터
         let taxYSum = 0;  //과세
         let taxNSum = 0;  //비과세
-        let sum = 0;   //총 지급액 합계
+        let sum = 0;      //총 지급액 합계
        
         response.data.forEach((item) => {
           item.taxYn === 'N'? taxNSum += parseInt(nvl(item.allowPay,0)) : taxYSum += parseInt(nvl(item.allowPay,0))
         }); 
-        sum = taxYSum + taxNSum; //전체합계
+        sum = taxYSum + taxNSum;
 
         setCalSalData({taxYSum : taxYSum, taxNSum : taxNSum, sum : sum});
       })
@@ -273,7 +287,69 @@ const SalaryInformationEntryModel = () => {
         console.error('에러발생: ', error);
       })
   }
+ 
+  /* 급여항목테이블 update */
+  const salAllowEdit = (editRowData) =>{
+    
+    
+    //급여테이블 수정
+    axios
+      .put(url + "/saallowpay/updateSaAllowPay"
+      , {...editRowData, allowMonth: allowMonth},
+      )
+      .then((response) => {
+        if (response.data === 1) console.log("급여테이블 수정 완료");
+        salAllowTableData(); //급여테이블 리로드 시키기
+        salDeductEdit(editRowData);//공제항목테이블 update
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+  }
 
+  /* 공제항목테이블 update */
+  const salDeductEdit = (editRowData) => {
+    const cdAllow = editRowData.cdAllow;
+    const allowPay = editRowData.allowPay;
+
+    //공제 항목테이블 데이터
+    // deductData.forEach((item) => {
+    //   item.cdDeduct
+    // }); 
+
+
+    //공제항목
+    let n_cdDeduct = 'DEDUCT_NATION'; //국민연금
+    let h_cdDeduct = '502'; //건강보험
+    let l_cdDeduct = '503'; //고용보험
+    
+    let jsonparam = {};
+     
+    //계산된 공제항목들
+    jsonparam = {
+      allowMonth:allowMonth,
+      cdEmp: cdEmp,
+      calData : [
+        {cdDeduct : n_cdDeduct , allowPay : calculationNationalPension(allowPay)},
+        {cdDeduct : h_cdDeduct , allowPay : calculationHealthinsurance(allowPay)},
+        {cdDeduct : l_cdDeduct , allowPay : calculationEmploymentInsurance(allowPay)},
+      ]
+    };
+
+    axios.put(
+      url + '/sadeductpay/updateSaDeductPay',
+      jsonparam
+      )
+      .then((response) => {
+        if (response.data === 1) console.log("공제테이블 수정 완료");
+        salDeductTableData(); //공제 테이블 리로드 시키기
+        
+      })
+      .catch((error) => {
+        console.error('에러발생: ', error);
+      })
+
+  }
 
   return {
     //왼쪽 사원테이블
@@ -293,6 +369,20 @@ const SalaryInformationEntryModel = () => {
     , modalState : modalState
     , setModalState
 
+    , searchVO : {
+      cdEmp
+      , salDivision
+      , allowMonth
+      , paymentDate
+      , searchDeptCd
+      , searchRankNo
+      , searchCdOccup
+      , searchCdField
+      , searchCdProject
+      , searchYnUnit
+      , searchYnForlabor
+      , searchCdEmp
+    }
     , actions:{
       setSearchVo
       , setSearchAllowVo
@@ -309,21 +399,9 @@ const SalaryInformationEntryModel = () => {
       , setSearchYnForlabor
       , setCalSalData
       , setSelectedOption
+      , setEditedAllow
     }
-    , searchVO : {
-      cdEmp
-      , salDivision
-      , allowMonth
-      , paymentDate
-      , searchDeptCd
-      , searchRankNo
-      , searchCdOccup
-      , searchCdField
-      , searchCdProject
-      , searchYnUnit
-      , searchYnForlabor
-      , searchCdEmp
-    }
+
   };
 };
 

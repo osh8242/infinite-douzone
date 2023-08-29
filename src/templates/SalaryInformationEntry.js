@@ -19,7 +19,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   
   const { labels } = CommonConstant();
   const { selectOption, tableHeader, codeHelperparams } = SalConstant();
-
+  
   const {
     saInfoListData
     , setSaInfoListData 
@@ -49,7 +49,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   const onSearch =()=> {
     alert("검색버튼 눌렀더");
   }
-
+ 
   return (
     <>
       {/* 코드 도움 모달 영역 */}
@@ -61,13 +61,13 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
       <SearchPanel onSearch={onSearch} showAccordion>
         <Row>
           <Col>
-            <DateTest type="month" label={"귀속연월"} value={searchVO.allowMonth} onChange={actions.setAllowMonth}/>
+            <DateTest type="month" label={"귀속연월"} value={searchVO.allowMonth} onChange={(e,value)=>actions.setAllowMonth(value)}/>
           </Col>
           <Col>
             <SelectForm label={"구분"} optionList={selectOption.salOptionList} onChange={actions.setSalDivision}/>
           </Col>
           <Col>
-            <DateTest label={"지급일"} value={searchVO.paymentDate} onChange={actions.setPaymentDate}/>
+            <DateTest label={"지급일"} value={searchVO.paymentDate} onChange={(e,value)=>actions.setPaymentDate(value)}/>
           </Col>
         </Row>
 
@@ -78,7 +78,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               <TextBoxComponent type="codeHelper" name="searchEmpCd" label={"사원코드"} />
             </Col>
             <Col>
-              <TextBoxComponent codeHelper name="searchDeptCd" label={"부서코드"} value={searchVO.searchDeptCd} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
+              <TextBoxComponent name="searchDeptCd" thousandSeparator label={"부서코드"} value={searchVO.searchDeptCd} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
               />
             </Col>
           </Row>
@@ -116,6 +116,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <Col md="3">
           {/* 사원정보 table영역 */}
           <TableTemp
+            readOnly
             showCheckbox={true}
             showHeaderArrow={true}
             tableHeaders={tableHeader.salEmp}
@@ -136,6 +137,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               setTableData: setSalData,
               //setPkValue: actions.setCdEmp,
               setEditedRow: actions.setEditedAllow,
+              //{ cdAllow :'', nmAllow:'급여항목', allowPay : 500000 }
             }}
           />
           <div> 과세 : {salAllowData.sumData.taxYSum}</div>
