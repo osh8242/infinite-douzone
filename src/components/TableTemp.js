@@ -45,9 +45,9 @@ const TableTemp = ({
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = useCallback(
-    (index) => {
+    (rowIndex, field) => {
       if (readOnly) return;
-      if (index === tableData.length) {
+      if (rowIndex === tableData.length) {
         let newRow = pkValue || {};
         newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
         newRow["isNew"] = true;
@@ -56,10 +56,11 @@ const TableTemp = ({
       }
 
       const newData = [...tableData];
-      newData[index] = {
-        ...newData[index],
+      newData[rowIndex] = {
+        ...newData[rowIndex],
         isEditable: true,
       };
+      newData[rowIndex]["focusOn"] = field;
       console.log("newData", newData);
       actions.setTableData(newData);
     },
@@ -86,7 +87,7 @@ const TableTemp = ({
         };
 
         // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
-        currentRowInputs.forEach((input, index) => {
+        currentRowInputs.forEach((input, rowIndex) => {
           const field = input.getAttribute("data-field");
           editedRow.item[field] = input.value;
         });
@@ -154,9 +155,9 @@ const TableTemp = ({
 
   // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = useCallback(
-    (index) => {
-      if (tableData[index].checked) setRecentlyClickedRow();
-      tableData[index].checked = !tableData[index].checked;
+    (rowIndex) => {
+      if (tableData[rowIndex].checked) setRecentlyClickedRow();
+      tableData[rowIndex].checked = !tableData[rowIndex].checked;
       if (actions.setSelectedRows) {
         const selectedRows = tableData.filter((row) => row.checked);
         actions.setSelectedRows(selectedRows);
@@ -196,8 +197,8 @@ const TableTemp = ({
               </th>
             )}
             {/* th columns */}
-            {tableHeaders.map((thead, index) => (
-              <th id="tableHeader" key={index}>
+            {tableHeaders.map((thead, rowIndex) => (
+              <th id="tableHeader" key={rowIndex}>
                 <div onClick={() => handleArrowDirection(thead)}>
                   <div>{thead.text}</div>
                   <div id="tableHeader-arrow">
@@ -218,7 +219,6 @@ const TableTemp = ({
             return (
               <tr
                 key={rowIndex}
-                onDoubleClick={() => handleDoubleClick(rowIndex)}
                 onClick={(e) => handleRowClick(e, rowIndex)}
                 className={
                   recentlyClickedRow === rowIndex || row.checked
@@ -239,8 +239,13 @@ const TableTemp = ({
                   </td>
                 )}
                 {/* 각 row의 td */}
-                {tableHeaders.map((thead, index) => (
-                  <td key={index}>
+                {tableHeaders.map((thead, columnIndex) => (
+                  <td
+                    key={columnIndex}
+                    onDoubleClick={() =>
+                      handleDoubleClick(rowIndex, thead.field)
+                    }
+                  >
                     <div className="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
                       {row.isEditable && !thead.readOnly ? (
@@ -249,6 +254,11 @@ const TableTemp = ({
                           data-field={thead.field}
                           defaultValue={row.isNew ? "" : row.item[thead.field]}
                           onKeyDown={(e) => handleKeyDown(e, rowIndex)}
+                          ref={(input) =>
+                            input &&
+                            row.focusOn === thead.field &&
+                            input.focus()
+                          }
                         />
                       ) : (
                         row.item[thead.field]
@@ -270,8 +280,8 @@ const TableTemp = ({
                   <FontAwesomeIcon icon={faPlus} />
                 </td>
               )}
-              {tableHeaders.map((thead, index) => (
-                <td key={index} style={{ color: "transparent" }}>
+              {tableHeaders.map((thead, rowIndex) => (
+                <td key={rowIndex} style={{ color: "transparent" }}>
                   <div id="tableContents">.</div>
                 </td>
               ))}
@@ -282,8 +292,8 @@ const TableTemp = ({
           {minRow &&
             Array(Math.max(minRow - tableData.length, 0))
               .fill(null)
-              .map((_, index) => (
-                <tr key={index}>
+              .map((_, rowIndex) => (
+                <tr key={rowIndex}>
                   <td
                     colSpan={
                       showCheckbox

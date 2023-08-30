@@ -40,11 +40,11 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
-  const orderRefRef = useRef();
+  const orderRef = useRef();
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    actions.setOrderRef(orderRefRef.current.value);
+    actions.setOrderRef(orderRef.current.value);
     if (jobOkRef.current.value === "yAndOnThisYear") {
       actions.setRefYear(new Date().getFullYear());
       actions.setJobOk("Y");
@@ -102,7 +102,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               <SelectForm
                 label={"정렬"}
                 optionList={orderList}
-                selectRef={orderRefRef}
+                selectRef={orderRef}
               />
             </Col>
           </Row>
