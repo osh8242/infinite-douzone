@@ -11,8 +11,8 @@ import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import HrManagementModel from "../model/HrManagementModel";
-import Emp from "../vo/LRlevel2Grid/Emp";
-import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import Emp from "../vo/HrManagement/Emp";
+import EmpFam from "../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data

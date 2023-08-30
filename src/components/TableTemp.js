@@ -206,7 +206,11 @@ const TableTemp = ({
             )}
             {/* th columns */}
             {tableHeaders.map((thead, rowIndex) => (
-              <th id="tableHeader" key={rowIndex}>
+              <th
+                id="tableHeader"
+                key={rowIndex}
+                style={{ width: thead.text.length * 10 + "px" }}
+              >
                 <div onClick={() => handleArrowDirection(thead)}>
                   <div>{thead.text}</div>
                   <div id="tableHeader-arrow">

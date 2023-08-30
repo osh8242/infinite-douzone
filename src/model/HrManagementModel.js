@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import Emp from "../vo/LRlevel2Grid/Emp";
-import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
-import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import Emp from "../vo/HrManagement/Emp";
+import EmpAdd from "../vo/HrManagement/EmpAdd";
+import EmpFam from "../vo/HrManagement/EmpFam";
 
 const HrManagementModel = () => {
   const url = "http://localhost:8888"; // REST API 서버 주소
@@ -39,10 +39,6 @@ const HrManagementModel = () => {
       )
       .then((response) => {
         const data = response.data.map((item) => {
-          // const empData = {
-          //   cdEmp: item.cdEmp,
-          //   nmKrname: item.nmKrname,
-          // };
           return Emp(item);
         });
         setLeftTableData(data);
@@ -107,22 +103,6 @@ const HrManagementModel = () => {
             response.data
           );
           const data = response.data.map((item) => {
-            // const empFamData = {
-            //   seqVal: item.seqVal,
-            //   cdEmp: item.cdEmp,
-            //   cdFamrel: item.cdFamrel,
-            //   nmKrname: item.nmKrname,
-            //   ynFor: item.ynFor,
-            //   noSocial: item.noSocial,
-            //   fgSchool: item.fgSchool,
-            //   fgGraduation: item.fgGraduation,
-            //   ynTogether: item.ynTogether,
-            //   ynLunarbir: item.ynLunarbir,
-            //   daBirth: item.daBirth,
-            //   cdJob: item.cdJob,
-            //   nmKrcom: item.nmKrcom,
-            //   cdOffpos: item.cdOffpos,
-            // };
             return EmpFam(item);
           });
           setSubTableData(data);
