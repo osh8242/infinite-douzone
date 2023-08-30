@@ -22,8 +22,8 @@ import HrManagementHeader from "./HrManagementHeader";
 const HrManagement = ({ grid, mainTab, subTab }) => {
   //실행중에는 값이 고정인 값들
   const {
-    LRlevel2GridLeftTableHeaders,
-    LRlevel2GridSubTableHeaders,
+    HrManagementLeftTableHeaders,
+    HrManagementSubTableHeaders,
     searchOption, // 검색옵션 리스트
     orderList, // 정렬기준 리스트
     mainTabMenuList, //메인탭 메뉴리스트
@@ -36,7 +36,13 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
 
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
-  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
+  const {
+    leftTableData,
+    leftTablePkValue,
+    mainTabData,
+    subTableData,
+    selectedRows,
+  } = state;
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
@@ -67,7 +73,11 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
         const inputElements = mainTabRef.current.querySelectorAll("input");
         Array.from(inputElements).forEach((input) => {
           newMainTabData[input.id] =
-            input.type === "radio" ? input.checked : input.value;
+            input.type !== "radio"
+              ? input.value
+              : input.checked
+              ? input.value
+              : null;
         });
         console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
@@ -116,12 +126,14 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               showCheckbox
               showHeaderArrow
               rowAddable
-              tableHeaders={LRlevel2GridLeftTableHeaders}
+              tableHeaders={HrManagementLeftTableHeaders}
               tableData={leftTableData}
+              selectedRows={selectedRows}
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setLeftTablePkValue,
                 setEditedRow: actions.setEditedEmp,
+                setSelectedRows: actions.setSelectedRows,
                 getRowObject: Emp,
               }}
             />
@@ -246,9 +258,10 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                 showCheckbox
                 showHeaderArrow
                 rowAddable
-                tableHeaders={LRlevel2GridSubTableHeaders}
+                tableHeaders={HrManagementSubTableHeaders}
                 tableData={subTableData}
                 pkValue={leftTablePkValue}
+                selectedRows={selectedRows}
                 actions={{
                   setTableData: actions.setSubTableData,
                   setEditedRow: actions.setEditedEmpFam,

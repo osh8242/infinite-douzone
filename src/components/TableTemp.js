@@ -24,6 +24,7 @@ const TableTemp = ({
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
+  selectedRows, // [선택] 체크된 행들을 관리하고 싶다면..(가령 삭제)
   showHeaderArrow, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
@@ -110,26 +111,25 @@ const TableTemp = ({
   const handleRowClick = useCallback(
     (e, rowIndex) => {
       //최근 클릭행을 기록하는 함수
-      if (rowIndex !== recentlyClickedRow) setRecentlyClickedRow(rowIndex);
-      else setRecentlyClickedRow();
-      console.log("recentlyClickedRow", recentlyClickedRow);
-
-      // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
-      // state값을 바꾸고 싶다면.. setPkValue
-      if (actions.setPkValue) {
-        if (rowIndex === tableData.length) {
-          console.log("setpkValue > rowIndex === tableData.length ");
-          actions.setPkValue(pkValue);
-        } else if (rowIndex < tableData.length) {
-          let pkValue = {};
-          tableHeaders.forEach((header) => {
-            if (header.isPk)
-              pkValue[header.field] = tableData[rowIndex].item[header.field];
-          });
-          console.log("setpkValue", pkValue);
-          actions.setPkValue(pkValue);
+      if (rowIndex !== recentlyClickedRow) {
+        setRecentlyClickedRow(rowIndex);
+        // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
+        // state값을 바꾸고 싶다면.. setPkValue
+        if (actions.setPkValue) {
+          if (rowIndex === tableData.length) {
+            actions.setPkValue(pkValue);
+          } else if (rowIndex < tableData.length) {
+            let pkValue = {};
+            tableHeaders.forEach((header) => {
+              if (header.isPk)
+                pkValue[header.field] = tableData[rowIndex].item[header.field];
+            });
+            console.log("setpkValue", pkValue);
+            actions.setPkValue(pkValue);
+          }
         }
-      }
+      } else setRecentlyClickedRow();
+      console.log("recentlyClickedRow", recentlyClickedRow);
 
       //수정중인 행의 index를 가져옴
       const editableRowIndex = getEditableRowIndex();
@@ -167,13 +167,13 @@ const TableTemp = ({
       if (tableData[rowIndex].checked) setRecentlyClickedRow();
       tableData[rowIndex].checked = !tableData[rowIndex].checked;
       if (actions.setSelectedRows) {
-        const selectedRows = tableData.filter((row) => row.checked);
-        actions.setSelectedRows(selectedRows);
+        selectedRows.push(tableData[rowIndex]);
+        actions.setSelectedRows([...selectedRows]);
         console.log("selectedRows", selectedRows);
         actions.setTableData([...tableData]);
       }
     },
-    [tableData]
+    [tableData, actions]
   );
 
   // 정렬 화살표 기능.. 구현예정
@@ -209,7 +209,7 @@ const TableTemp = ({
               <th
                 id="tableHeader"
                 key={rowIndex}
-                style={{ width: thead.text.length * 10 + "px" }}
+                style={thead.width && { width: thead.width }}
               >
                 <div onClick={() => handleArrowDirection(thead)}>
                   <div>{thead.text}</div>

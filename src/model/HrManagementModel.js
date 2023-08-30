@@ -26,16 +26,13 @@ const HrManagementModel = () => {
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
     setLeftTableData();
-    const postData = {
-      jobOk: jobOk,
-      ...(refYear && { daRetire: refYear }),
-    };
+    console.log("jobOk", jobOk);
     axios
-      .post(
-        `${url}/emp/getEmpListByJobOk${
-          orderRef ? "?orderRef=" + orderRef : ""
-        }`,
-        postData
+      .get(
+        `${url}/emp/getEmpListByJobOk?jobOk=${jobOk}+
+        ${orderRef ? "&orderRef=" + orderRef : ""}
+        +
+        ${refYear ? "&refYear=" + refYear : ""}`
       )
       .then((response) => {
         const data = response.data.map((item) => {
@@ -178,22 +175,42 @@ const HrManagementModel = () => {
 
   //선택된 행 delete 요청
   const deleteSelectedRows = useCallback(() => {
+    const editedTableNames = {};
+
     // 각 row에 대한 delete 요청을 생성
     const deletePromises = selectedRows.map((row) => {
+      let pattern;
       switch (row.table) {
         case "empFam":
-          console.log("url + '/empFam/deleteEmpFam', row.item", row.item);
-          return axios.delete(url + "/empFam/deleteEmpFam", { data: row.item });
+          pattern = "/empFam/deleteEmpFam";
+          break;
+        case "emp":
+          pattern = "/emp/deleteEmp";
+          break;
         default:
           return Promise.resolve();
       }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+      return axios.delete(url + pattern, { data: row.item });
     });
 
     Promise.all(deletePromises)
       .then((responses) => {
         console.log("선택된 모든 행의 삭제 완료");
+        console.log("selectedRows", selectedRows);
         setSelectedRows([]); // 선택행 배열 비우기
-        setEditedEmpFam([]); // 사원가족 리로드
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "empFam":
+              setEditedEmpFam({}); // 사원가족 리로드
+              break;
+            case "emp":
+              setEditedEmp({}); // 사원가족 리로드
+              break;
+            default:
+              break;
+          }
+        });
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);

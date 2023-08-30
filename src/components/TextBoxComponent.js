@@ -185,6 +185,7 @@ function TextBoxComponent(props) {
           onFocus={handleInputFocus}
           onClick={onClick}
           onKeyPress={handleInputChange}
+          onKeyDown={onKeyDown}
         />
       );
     }

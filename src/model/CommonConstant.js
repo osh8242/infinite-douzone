@@ -43,19 +43,19 @@ const CommonConstant = () => {
       { key: "1", value: "외국인" },
     ],
     //테이블 헤더
-    LRlevel2GridLeftTableHeaders: [
+    HrManagementLeftTableHeaders: [
       {
         field: "cdEmp",
         text: "사원코드",
         isPk: true,
       },
-      { field: "nmKrname", text: "성명", isPk: true },
+      { field: "nmKrname", text: "성명" },
     ],
-    LRlevel2GridSubTableHeaders: [
+    HrManagementSubTableHeaders: [
       { field: "cdFamrel", text: "관계" },
       { field: "nmKrname", text: "성명" },
       { field: "ynFor", text: "외국인" },
-      { field: "noSocial", text: "주민등록번호", isPk: true },
+      { field: "noSocial", text: "주민등록번호", isPk: true, width: "100px" },
       { field: "fgSchool", text: "학력" },
       { field: "fgGraduation", text: "졸업구분" },
       { field: "ynTogether", text: "동거" },
