@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
-import ModalComponent from "../components/ModalComponent";
+import ConfirmComponent from "../components/ConfirmComponent";
 import "../styles/header.css";
 import empAdd from "../styles/img/empAddLogo.png";
 
@@ -60,16 +60,15 @@ const HrManagementHeader = ({ deleteButtonHandler }) => {
           <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
-      <ModalComponent
-        props={{
-          show: showModal,
-          onConfirm: deleteButtonHandler,
-          title: "삭제확인",
-        }}
+      <ConfirmComponent
+        show={showModal}
+        message={"선택된 행들을 삭제하시겠습니까?"}
         onHide={() => setShowModal(false)}
-      >
-        <div>삭제하시겠습니까?</div>
-      </ModalComponent>
+        onConfirm={() => {
+          deleteButtonHandler();
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };
