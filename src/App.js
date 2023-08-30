@@ -1,20 +1,13 @@
-import { Container } from "react-bootstrap";
 import "./App.scss";
-import { ContextProvider } from "./model/ContextModel";
 import Header from "./templates/Header";
-import LRlevel2Grid from "./templates/LRlevel2Grid";
-import TestSwsnGrid from "./templates/TestSwsnGrid";
+import LaborContract from "./templates/LaborContract";
+import HrManagement from "./templates/HrManagement";
 
-// const names = ["kendrick", "christopher", "theo", "dave"];
 function App() {
   return (
     <div>
-      <ContextProvider>
-        <Header />
-        <Container>
-          <TestSwsnGrid />
-        </Container>
-      </ContextProvider>
+      <Header />
+      <LaborContract />
     </div>
   );
 }

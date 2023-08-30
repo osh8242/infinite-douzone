@@ -7,6 +7,7 @@ import {
   makeCommaNumber,
   makePureNumber,
 } from "../utils/NumberUtils";
+import "./CustomInput.scss";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -42,7 +43,10 @@ function TextBoxComponent(props) {
     thousandSeparator, //세자리 콤마
   } = props;
 
-  console.log("test :" + value);
+  // console.log("label",label);
+  // console.log("value",value);
+
+
   // 입력값
   const [inputValue, setInputValue] = useState(value);
 
@@ -53,10 +57,14 @@ function TextBoxComponent(props) {
   const handleInputChange = (event) => {
     event.preventDefault();
     const newValue = event.target.value;
+    
+    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
+    setInputValue(makeProcessedValue(newValue));  //data 가공  
+  
+    //enter쳤을때 값날리기
+   
+  }
 
-    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
-    setInputValue(makeProcessedValue(newValue)); //data 가공
-  };
 
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
@@ -135,9 +143,11 @@ function TextBoxComponent(props) {
             className="d-flex align-items-center justify-content-center"
           >
             {codeHelper ? (
-              <div className="react-datepicker__input-container">
-                {renderFormControl()}{" "}
-                <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+              <div className="svg-wrapper">
+                <div className="svg-container">
+                  {renderFormControl()}
+                  <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                </div>
               </div>
             ) : (
               <>{renderFormControl()}</>
@@ -164,6 +174,8 @@ function TextBoxComponent(props) {
     } else {
       return (
         <Form.Control
+          defaultValue={value}
+          value={inputValue}
           type={type}
           id={id}
           name={name}
@@ -171,11 +183,10 @@ function TextBoxComponent(props) {
           disabled={disabled}
           readOnly={readOnly}
           plaintext={plaintext}
-          value={inputValue}
-          onChange={handleInputChange}
+          //onChange={handleInputChange}
           onFocus={handleInputFocus}
           onClick={onClick}
-          onKeyDown={onKeyDown}
+          onKeyPress={handleInputChange}
         />
       );
     }

@@ -6,7 +6,8 @@
   수정내용 : 파일명 변경_코드도움 컴포넌트도 이 css 사용함. 
             주석추가
 */
-.react-datepicker-wrapper {
+.svg-wrapper {
+  position: relative;
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
@@ -20,7 +21,7 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.react-datepicker__input-container input {
+.svg-container input {
   display: inline-block;
   padding: 0.375rem 0.75rem;
   width: 100%;
@@ -29,7 +30,7 @@
   color: var(--bs-body-color);
 }
 
-.react-datepicker__input-container svg {
+.svg-container svg {
   position: absolute;
   top: 50%;
   right: 10px;

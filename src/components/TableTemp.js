@@ -4,16 +4,9 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import ContextModel from "../model/ContextModel";
 import "../styles/tableForm.css";
 
 const TableTemp = ({
@@ -36,9 +29,6 @@ const TableTemp = ({
   rowAddable, // [선택] 행 추가 가능여부
   minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다. (구현부족)
 }) => {
-  const { contextState, contextActions } = useContext(ContextModel);
-  const selectedRows = contextState.selectedRows;
-
   const tbodyRef = useRef();
 
   const [recentlyClickedRow, setRecentlyClickedRow] = useState();
@@ -166,15 +156,16 @@ const TableTemp = ({
   // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = useCallback(
     (index) => {
-      if (!tableData[index].checked) {
-        selectedRows.push(tableData[index]);
-        contextActions.setSelectedRows([...selectedRows]);
-        tableData[index].checked = !tableData[index].checked;
+      if (tableData[index].checked) setRecentlyClickedRow();
+      tableData[index].checked = !tableData[index].checked;
+      if (actions.setSelectedRows) {
+        const selectedRows = tableData.filter((row) => row.checked);
+        actions.setSelectedRows(selectedRows);
+        console.log("selectedRows", selectedRows);
+        actions.setTableData([...tableData]);
       }
-      console.log("selectedRows", selectedRows);
-      actions.setTableData([...tableData]);
     },
-    [tableData, selectedRows]
+    [tableData]
   );
 
   // 정렬 화살표 기능.. 구현예정
@@ -231,13 +222,15 @@ const TableTemp = ({
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
                 onClick={(e) => handleRowClick(e, rowIndex)}
                 className={
-                  recentlyClickedRow === rowIndex ? "highlight-row" : ""
+                  recentlyClickedRow === rowIndex || row.checked
+                    ? "highlight-row"
+                    : ""
                 }
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
                   <td>
-                    <div id="tableCheckBoxArea">
+                    <div className="tableCheckBoxArea">
                       <input
                         type="checkbox"
                         checked={row.checked}
@@ -249,7 +242,7 @@ const TableTemp = ({
                 {/* 각 row의 td */}
                 {tableHeaders.map((thead, index) => (
                   <td key={index}>
-                    <div id="tableContents">
+                    <div className="tableContents">
                       {/* editable 상태인 경우 input 요소로 렌더링 */}
                       {row.isEditable && !thead.readOnly ? (
                         <Form.Control

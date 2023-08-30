@@ -21,7 +21,7 @@
 }
 
 .tableContents {
-  margin: 2px 0px;
+  margin: 1px 0px;
 }
 
 .tableCheckBoxArea {
@@ -38,15 +38,23 @@ table {
   background-color: yellow; 
 }
 
+td div {
+  text-align: center;
+}
+td input {
+  text-align: center;
+}
+
 .styleNone {
   color: transparent;
 }
 
 .highlight-row {
-  background-color: rgb(150, 230, 255) !important; 
+  background-color: rgb(200, 223, 255) !important; 
 }
 
-.highlight-row td, .highlight-row div {  
+.highlight-row td,
+.highlight-row div {
   background-color: transparent !important;
-  border-color: rgb(150, 230, 255)
+  border-color: rgb(200, 223, 255)
 }
