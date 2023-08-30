@@ -1,9 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import Emp from "../vo/LRlevel2Grid/Emp";
 import EmpAdd from "../vo/LRlevel2Grid/EmpAdd";
 import EmpFam from "../vo/LRlevel2Grid/EmpFam";
-import ContextModel from "./ContextModel";
 
 const HrManagementModel = () => {
   const url = "http://localhost:8888"; // REST API 서버 주소
@@ -23,9 +22,6 @@ const HrManagementModel = () => {
   const [editedEmpFam, setEditedEmpFam] = useState({}); // 서브 그리드 수정 ROW
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
-
-  const { contextState } = useContext(ContextModel);
-  const reloadSubTableData = contextState.reloadSubTableData;
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
@@ -133,7 +129,7 @@ const HrManagementModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     }
-  }, [leftTablePkValue, editedEmpFam, reloadSubTableData]);
+  }, [leftTablePkValue, editedEmpFam]);
 
   //추가된 사원 insert 요청
   useEffect(() => {

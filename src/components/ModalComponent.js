@@ -12,10 +12,20 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ModalComponent(props) {
-  const { children, title, onHide, onConfirm, size, backdrop, animation,} = props;
+  const {
+    children,
+    show,
+    title,
+    onHide,
+    onConfirm,
+    size,
+    backdrop,
+    animation,
+  } = props;
+
   return (
     <Modal
-      {...props}
+      show={show}
       size={size}
       backdrop={backdrop}
       animation={animation}
