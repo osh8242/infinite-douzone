@@ -1,58 +1,111 @@
 // 작성자: 김진
 // 사원등록 페이지 전용 레이아웃
 
-import { Col, Row } from 'react-bootstrap';
-import React, { useState } from 'react';
-import TableForm from '../components/TableForm';
-import MenuTab from '../components/MenuTab';
-import TextBoxComponent from '../components/TextBoxComponent';
-import DateForm from '../components/DateForm';
-import AddressForm from '../components/AddressForm';
-import '../styles/empRegisterationLayout.css';
-import EmpRegisterationModel from '../model/EmpRegisterationModel';
-import CommonConstant from '../model/CommonConstant';
-import CallNumberForm from '../components/CallNumberForm';
-import NoSocialFormForEmpRegister from '../components/NoSocialFormForEmpRegister';
-import EmailForm from '../components/EmailForm';
-import DateTest from '../components/DateTest';
+import { Col, Row } from "react-bootstrap";
+import React, { useRef, useState } from "react";
+import MenuTab from "../components/MenuTab";
+import TextBoxComponent from "../components/TextBoxComponent";
+import AddressForm from "../components/AddressForm";
+import "../styles/empRegisterationLayout.css";
+import EmpRegisterationModel from "../model/EmpRegisterationModel";
+import CommonConstant from "../model/CommonConstant";
+import CallNumberForm from "../components/CallNumberForm";
+import NoSocialFormForEmpRegister from "../components/NoSocialFormForEmpRegister";
+import EmailForm from "../components/EmailForm";
+import DateTest from "../components/DateTest";
+import TableTemp from "../components/TableTemp";
+import Emp from "../vo/EmpRegister/Emp";
+import EmpRegisterHeader from "./EmpRegisterHeader";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
   const {
-    cdEmp,
-    setCdEmp,
+    mainTablePk,
     leftTableData,
-    setLeftTableData,
-    mainTableData,
-    setMainTableData,
-    subTableData,
-    setSubTableData,
+    mainTabData,
+    subTabData,
+    selectedRows,
+    actions,
   } = EmpRegisterationModel();
 
   //고정된 값을 가지는 state들
   const {
-    labels,
-    mainTabMenuListForEmpRegister,
-    ynForList,
-    genderRadioList,
-    emailList,
+    EmpRegisterLeftHeaders,
+    mainTabMenuListForEmpRegister, //메뉴 탭 목록
+    ynForList, //내외국인 구분
+    genderRadioList, //성별구분
+    emailList, //이메일 도메인 리스트
+    labels, //속성명
   } = CommonConstant();
 
   // 메뉴 탭 전환 기능 추후 수정 예정
   // const [selectedMenu, setSelectedMenu] = useState(0);
 
+  const mainTabRef = useRef();
+
+  //mainTab Enter key 이벤트 Emp 업데이트
+  const submitMainTabData = (event, value) => {
+    if (event.key === "Enter") {
+      // console.log("이벤트 타겟", event.target);
+      event.target.blur();
+      if (mainTabRef.current) {
+        let newMainTabData = { ...mainTabData.item };
+        const inputItems = mainTabRef.current.querySelectorAll("input");
+        Array.from(inputItems).forEach((input) => {
+          if (input.id) {
+            newMainTabData[input.id] = input.value;
+          }
+          // console.log("input.id :", input.id, "input.value", input.value);
+        });
+        newMainTabData.cdEmp = mainTablePk.cdEmp;
+        // newMainTabData = newMainTabData.filter((item) => item.key !== "");
+        console.log("newMainTabData", newMainTabData);
+        actions.setEditedEmp(newMainTabData);
+      }
+    }
+    if (event.type === "change") {
+      if (mainTabRef.current) {
+        event.target.blur();
+        let newMainTabData = { ...mainTabData };
+        newMainTabData[event.target.id] = value;
+        newMainTabData.cdEmp = mainTablePk.cdEmp;
+        actions.setEditedEmp(newMainTabData);
+      }
+    }
+  };
+
   return (
-    <>
+    <div id="empRegisterArea">
+      <div id="empRegisterHeader">
+        <EmpRegisterHeader
+          selectedRows={selectedRows}
+          actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
+        />
+      </div>
       <Row id="empRegisterLayout">
         <Col md="4" id="empRegisterLayoutLeft">
           {/* 좌측 사원목록 테이블 */}
           {leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
-            <TableForm
+            // <TableForm
+            //   showCheckbox={true}
+            //   showHeaderArrow={true}
+            //   tableData={leftTableData}
+            //   rowClickHandler={setCdEmp}
+            //   minRow={20}
+            // />
+            <TableTemp
               showCheckbox={true}
               showHeaderArrow={true}
+              tableHeaders={EmpRegisterLeftHeaders}
               tableData={leftTableData}
-              rowClickHandler={setCdEmp}
-              minRow={20}
+              rowAddable={true}
+              actions={{
+                setTableData: actions.setLeftTableData,
+                setPkValue: actions.setMainTablePkValue,
+                setEditedRow: actions.setEditedEmp,
+                getRowObject: Emp,
+                setSelectedRows: actions.setSelectedRows,
+              }}
             />
           ) : (
             <div>Loading...</div> //로딩중 화면 표시 내용
@@ -64,102 +117,142 @@ function EmpRegisterationLayout() {
             <div id="empDataSortedLine"></div>
           </Row>
           {/* 사원정보 편집 */}
-          <Row id="baseData">
-            {mainTableData ? (
+          <Row id="baseData" ref={mainTabRef}>
+            {mainTabData ? (
               <div id="baseDataContents">
                 <div id="baseDataContentsBackground"></div>
                 <DateTest
-                  label={labels.daEnterForEmpRegister}
-                  defaultValue={mainTableData.daEnter}
+                  id="daEnter"
+                  label={labels.daEnter}
+                  value={mainTabData.daEnter}
+                  onChange={submitMainTabData}
                 />
                 <NoSocialFormForEmpRegister
                   label={labels.noSocial}
-                  optionList1={ynForList}
-                  optionList2={genderRadioList}
-                  value={mainTableData.noSocial}
+                  ynForList={ynForList}
+                  ynFor={mainTabData.ynFor}
+                  genderList={genderRadioList}
+                  fgSex={mainTabData.fgSex}
+                  noSocial={mainTabData.noSocial}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setNoSocialForm: actions.setEditedEmp,
+                  }}
                 />
                 <TextBoxComponent
-                  label={labels.addNation}
-                  value={mainTableData.abbNation}
+                  id="abbNation"
+                  label={labels.abbNation}
+                  value={mainTabData.abbNation}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
+                  id="cdNation"
                   label={labels.cdNation}
-                  value={mainTableData.cdNation}
+                  value={mainTabData.cdNation}
+                  onKeyDown={submitMainTabData}
                 />
                 <AddressForm
                   isZonecode={true}
-                  zipHomeData={
-                    mainTableData.zipHome ? mainTableData.zipHome : null
-                  }
-                  addHome1Data={
-                    mainTableData.addHome1 ? mainTableData.addHome1 : null
-                  }
-                  addHome2Data={
-                    mainTableData.addHome2 ? mainTableData.addHome2 : null
-                  }
+                  zipHome={mainTabData.zipHome ? mainTabData.zipHome : null}
+                  addHome1={mainTabData.addHome1 ? mainTabData.addHome1 : null}
+                  addHome2={mainTabData.addHome2 ? mainTabData.addHome2 : null}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setAddress: actions.setEditedEmp,
+                  }}
                 />
                 <CallNumberForm
                   label={labels.telHome}
-                  value1={mainTableData.telHome1}
-                  value2={mainTableData.telHome2}
-                  value3={mainTableData.telHome3}
+                  val1={mainTabData.telHome1}
+                  val2={mainTabData.telHome2}
+                  val3={mainTabData.telHome3}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setNewEmp: actions.setEditedEmp,
+                  }}
                 />
                 <CallNumberForm
                   label={labels.calEmp}
-                  value1={mainTableData.celEmp1}
-                  value2={mainTableData.celEmp2}
-                  value3={mainTableData.celEmp3}
+                  val1={mainTabData.celEmp1}
+                  val2={mainTabData.celEmp2}
+                  val3={mainTabData.celEmp3}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setNewEmp: actions.setEditedEmp,
+                  }}
                 />
                 <EmailForm
                   label={labels.emEmp}
-                  value={mainTableData.emEmp}
+                  emEmp={mainTabData.emEmp}
                   optionList={emailList}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setEmEmp: actions.setEditedEmp,
+                  }}
                 />
                 <TextBoxComponent
+                  id="idMsn"
                   label={labels.idMsn}
-                  value={mainTableData.idMsn}
+                  value={mainTabData.idMsn}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
+                  id="cdDept"
                   label={labels.cdDept}
-                  value={mainTableData.cdDept}
+                  value={mainTabData.cdDept}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
+                  id="cdOccup"
                   label={labels.cdOccup}
-                  value={mainTableData.cdOccup}
+                  value={mainTabData.cdOccup}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
-                  label={labels.cdOffpos}
-                  value={mainTableData.rankNo}
+                  id="rankNo"
+                  label={labels.rankNo}
+                  value={mainTabData.rankNo}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
+                  id="cdSalcls"
                   label={labels.cdSalcls}
-                  value={mainTableData.cdSalcls}
+                  value={mainTabData.cdSalcls}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
+                  id="cdField"
                   label={labels.cdField}
-                  value={mainTableData.cdField}
+                  value={mainTabData.cdField}
+                  onKeyDown={submitMainTabData}
                 />
                 <TextBoxComponent
+                  id="cdProject"
                   label={labels.cdProject}
-                  value={mainTableData.cdProject}
+                  value={mainTabData.cdProject}
+                  onKeyDown={submitMainTabData}
                 />
-                {mainTableData.daRetire ? (
+                {mainTabData.daRetire ? (
                   <DateTest
                     label={labels.daRetire}
-                    defaultValue={mainTableData.daRetire}
+                    defaultValue={mainTabData.daRetire}
                   />
                 ) : (
                   <TextBoxComponent
                     label={labels.daRetire}
-                    placeholder={'----년 --월 --일'}
-                    disabled={'disabled'}
+                    placeholder={"----년 --월 --일"}
+                    disabled={"disabled"}
                   />
                 )}
                 <CallNumberForm
                   label={labels.cdBank}
-                  value1={mainTableData.cdBank}
-                  value2={mainTableData.noBnkacct}
-                  value3={mainTableData.nmKrname}
+                  val1={mainTabData.cdBank}
+                  val2={mainTabData.noBnkacct}
+                  val3={mainTabData.nmBnkowner}
+                  pkValue={mainTablePk}
+                  actions={{
+                    setNewEmp: actions.setEditedEmp,
+                  }}
                 />
               </div>
             ) : (
@@ -168,16 +261,16 @@ function EmpRegisterationLayout() {
           </Row>
           {/* <div style={{ display: 'none' }}>
             <Row id="familyData">
-              {subTableData ? (
-                <TableForm showCheckbox={true} tableData={subTableData} />
+            {subTableData ? (
+              <TableForm showCheckbox={true} tableData={subTableData} />
               ) : (
                 <div>Loading...</div>
-              )}
-            </Row>
-          </div> */}
+                )}
+                </Row>
+              </div> */}
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 

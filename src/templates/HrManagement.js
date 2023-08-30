@@ -11,8 +11,8 @@ import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import HrManagementModel from "../model/HrManagementModel";
-import Emp from "../vo/LRlevel2Grid/Emp";
-import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import Emp from "../vo/HrManagement/Emp";
+import EmpFam from "../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -22,8 +22,8 @@ import HrManagementHeader from "./HrManagementHeader";
 const HrManagement = ({ grid, mainTab, subTab }) => {
   //실행중에는 값이 고정인 값들
   const {
-    LRlevel2GridLeftTableHeaders,
-    LRlevel2GridSubTableHeaders,
+    HrManagementLeftTableHeaders,
+    HrManagementSubTableHeaders,
     searchOption, // 검색옵션 리스트
     orderList, // 정렬기준 리스트
     mainTabMenuList, //메인탭 메뉴리스트
@@ -36,15 +36,21 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
 
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
-  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
+  const {
+    leftTableData,
+    leftTablePkValue,
+    mainTabData,
+    subTableData,
+    selectedRows,
+  } = state;
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
-  const orderRefRef = useRef();
+  const orderRef = useRef();
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    actions.setOrderRef(orderRefRef.current.value);
+    actions.setOrderRef(orderRef.current.value);
     if (jobOkRef.current.value === "yAndOnThisYear") {
       actions.setRefYear(new Date().getFullYear());
       actions.setJobOk("Y");
@@ -67,7 +73,11 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
         const inputElements = mainTabRef.current.querySelectorAll("input");
         Array.from(inputElements).forEach((input) => {
           newMainTabData[input.id] =
-            input.type === "radio" ? input.checked : input.value;
+            input.type !== "radio"
+              ? input.value
+              : input.checked
+              ? input.value
+              : null;
         });
         console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
@@ -102,7 +112,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               <SelectForm
                 label={"정렬"}
                 optionList={orderList}
-                selectRef={orderRefRef}
+                selectRef={orderRef}
               />
             </Col>
           </Row>
@@ -116,12 +126,14 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               showCheckbox
               showHeaderArrow
               rowAddable
-              tableHeaders={LRlevel2GridLeftTableHeaders}
+              tableHeaders={HrManagementLeftTableHeaders}
               tableData={leftTableData}
+              selectedRows={selectedRows}
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setLeftTablePkValue,
                 setEditedRow: actions.setEditedEmp,
+                setSelectedRows: actions.setSelectedRows,
                 getRowObject: Emp,
               }}
             />
@@ -246,9 +258,10 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                 showCheckbox
                 showHeaderArrow
                 rowAddable
-                tableHeaders={LRlevel2GridSubTableHeaders}
+                tableHeaders={HrManagementSubTableHeaders}
                 tableData={subTableData}
                 pkValue={leftTablePkValue}
+                selectedRows={selectedRows}
                 actions={{
                   setTableData: actions.setSubTableData,
                   setEditedRow: actions.setEditedEmpFam,
