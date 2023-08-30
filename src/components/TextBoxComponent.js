@@ -46,7 +46,6 @@ function TextBoxComponent(props) {
   // console.log("label",label);
   // console.log("value",value);
 
-
   // 입력값
   const [inputValue, setInputValue] = useState(value);
 
@@ -55,16 +54,14 @@ function TextBoxComponent(props) {
   }, [value]);
 
   const handleInputChange = (event) => {
-    event.preventDefault();
+    //event.preventDefault();
     const newValue = event.target.value;
-    
-    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
-    setInputValue(makeProcessedValue(newValue));  //data 가공  
-  
-    //enter쳤을때 값날리기
-   
-  }
 
+    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
+    setInputValue(makeProcessedValue(newValue)); //data 가공
+
+    //enter쳤을때 값날리기
+  };
 
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
@@ -184,7 +181,7 @@ function TextBoxComponent(props) {
           disabled={disabled}
           readOnly={readOnly}
           plaintext={plaintext}
-          //onChange={handleInputChange}
+          onChange={handleInputChange}
           onFocus={handleInputFocus}
           onClick={onClick}
           onKeyPress={handleInputChange}

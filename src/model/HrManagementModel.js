@@ -39,11 +39,11 @@ const HrManagementModel = () => {
       )
       .then((response) => {
         const data = response.data.map((item) => {
-          const empData = {
-            cdEmp: item.cdEmp,
-            nmKrname: item.nmKrname,
-          };
-          return Emp(empData);
+          // const empData = {
+          //   cdEmp: item.cdEmp,
+          //   nmKrname: item.nmKrname,
+          // };
+          return Emp(item);
         });
         setLeftTableData(data);
       })
@@ -55,9 +55,9 @@ const HrManagementModel = () => {
 
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    if (leftTablePkValue && Object.keys(leftTablePkValue).length !== 0) {
+    console.log("leftTablePkValue", leftTablePkValue);
+    if (leftTablePkValue?.cdEmp) {
       console.log("mainTabData 불러오기");
-      console.log("leftTablePkValue", leftTablePkValue);
       axios
         .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue, {
           "Content-Type": "application/json",
@@ -65,13 +65,16 @@ const HrManagementModel = () => {
         .then((response) => {
           let data = response.data;
           console.log("불러온 mainTabData", data);
-          setMainTabData(EmpAdd({}));
+          // setMainTabData(EmpAdd({}));
           setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
+    } else {
+      console.log("mainTabData가 비워집니다.");
+      setMainTabData({});
     }
   }, [leftTablePkValue, editedEmpAdd]);
 
@@ -95,7 +98,7 @@ const HrManagementModel = () => {
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
     setSubTableData([]);
-    if (leftTablePkValue) {
+    if (leftTablePkValue?.cdEmp) {
       axios
         .post(url + "/empFam/getEmpFamListByCdEmp", leftTablePkValue)
         .then((response) => {
@@ -104,23 +107,23 @@ const HrManagementModel = () => {
             response.data
           );
           const data = response.data.map((item) => {
-            const empFamData = {
-              seqVal: item.seqVal,
-              cdEmp: item.cdEmp,
-              cdFamrel: item.cdFamrel,
-              nmKrname: item.nmKrname,
-              ynFor: item.ynFor,
-              noSocial: item.noSocial,
-              fgSchool: item.fgSchool,
-              fgGraduation: item.fgGraduation,
-              ynTogether: item.ynTogether,
-              ynLunarbir: item.ynLunarbir,
-              daBirth: item.daBirth,
-              cdJob: item.cdJob,
-              nmKrcom: item.nmKrcom,
-              cdOffpos: item.cdOffpos,
-            };
-            return EmpFam(empFamData);
+            // const empFamData = {
+            //   seqVal: item.seqVal,
+            //   cdEmp: item.cdEmp,
+            //   cdFamrel: item.cdFamrel,
+            //   nmKrname: item.nmKrname,
+            //   ynFor: item.ynFor,
+            //   noSocial: item.noSocial,
+            //   fgSchool: item.fgSchool,
+            //   fgGraduation: item.fgGraduation,
+            //   ynTogether: item.ynTogether,
+            //   ynLunarbir: item.ynLunarbir,
+            //   daBirth: item.daBirth,
+            //   cdJob: item.cdJob,
+            //   nmKrcom: item.nmKrcom,
+            //   cdOffpos: item.cdOffpos,
+            // };
+            return EmpFam(item);
           });
           setSubTableData(data);
         })

@@ -106,21 +106,29 @@ const TableTemp = ({
     [tableData]
   );
 
-  // editable row 이외 row 클릭 시 해당 row 비활성화
+  // row 클릭이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex) => {
+      //최근 클릭행을 기록하는 함수
       if (rowIndex !== recentlyClickedRow) setRecentlyClickedRow(rowIndex);
       else setRecentlyClickedRow();
       console.log("recentlyClickedRow", recentlyClickedRow);
+
       // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
       // state값을 바꾸고 싶다면.. setPkValue
-      if (actions.setPkValue && rowIndex < tableData.length) {
-        let pkValue = {};
-        tableHeaders.forEach((header) => {
-          if (header.isPk)
-            pkValue[header.field] = tableData[rowIndex].item[header.field];
-        });
-        actions.setPkValue(pkValue);
+      if (actions.setPkValue) {
+        if (rowIndex === tableData.length) {
+          console.log("setpkValue > rowIndex === tableData.length ");
+          actions.setPkValue(pkValue);
+        } else if (rowIndex < tableData.length) {
+          let pkValue = {};
+          tableHeaders.forEach((header) => {
+            if (header.isPk)
+              pkValue[header.field] = tableData[rowIndex].item[header.field];
+          });
+          console.log("setpkValue", pkValue);
+          actions.setPkValue(pkValue);
+        }
       }
 
       //수정중인 행의 index를 가져옴
@@ -219,7 +227,9 @@ const TableTemp = ({
             return (
               <tr
                 key={rowIndex}
-                onClick={(e) => handleRowClick(e, rowIndex)}
+                onClick={(e) => {
+                  handleRowClick(e, rowIndex);
+                }}
                 className={
                   recentlyClickedRow === rowIndex || row.checked
                     ? "highlight-row"
