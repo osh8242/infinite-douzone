@@ -67,8 +67,14 @@ function EmpRegisterationModel() {
   //사원 정보 insert POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
+      const newEditedEmp = { ...editedEmp };
+      newEditedEmp.item = {
+        ...newEditedEmp.item,
+        //현재의 날짜를 입사일자의 기본값으로 추가
+        daEnter: currentDateStr(),
+      };
       axios
-        .post(url + "/emp/insertEmp", editedEmp.item, {
+        .post(url + "/emp/insertEmp", newEditedEmp.item, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {

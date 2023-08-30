@@ -3,38 +3,39 @@
   overflow-x: hidden;
 }
 
-#empRegisterArea {
+/* #empRegisterArea {
   width: 100vw;
   height: 100vh;
-  /* background-color: aqua; */
-}
+  background-color: aqua;
+} */
 
-#empRegisterHeader {
+/* #empRegisterHeader {
   position: absolute;
   width: 100%;
   top: 52px;
   left: 0;
-}
+} */
 
 #empRegisterLayout {
-  position: absolute;
-  top: 92px;
-  right: 0;
-  width: 100%;
-  margin-top: 22px;
+  /* position: absolute; */
+  /* top: 92px; */
+  /* right: 0; */
+  /* width: 100%; */
+  margin-top: 40px;
   margin-left: 4px;
   /* overflow-x: hidden; */
 }
 
 #empRegisterLayoutRight {
   margin-left: 12px;
+  margin-bottom: 120px;
 }
 
-#empDataSortedLine {
+/* #empDataSortedLine {
   position: absolute;
   bottom: 13px;
   border-top: solid 2px rgb(230, 230, 230);
-}
+} */
 
 #empDataSortedMenuArea {
   position: relative;
