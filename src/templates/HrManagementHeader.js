@@ -8,14 +8,20 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
+import ModalComponent from "../components/ModalComponent";
 import "../styles/header.css";
 import empAdd from "../styles/img/empAddLogo.png";
 
 const HrManagementHeader = ({ deleteButtonHandler }) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
+  };
+
+  const faTrashCanClickHandler = (event) => {
+    setShowModal(true);
   };
 
   return (
@@ -43,7 +49,7 @@ const HrManagementHeader = ({ deleteButtonHandler }) => {
         </button>
         <button
           className="backgroundBorderNone"
-          onClick={() => deleteButtonHandler()}
+          onClick={(e) => faTrashCanClickHandler(e)}
         >
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
@@ -54,6 +60,9 @@ const HrManagementHeader = ({ deleteButtonHandler }) => {
           <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
+      <ModalComponent
+        props={{ show: showModal, onConfirm: deleteButtonHandler }}
+      />
     </div>
   );
 };

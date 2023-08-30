@@ -4,18 +4,10 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import ContextModel from "../model/ContextModel";
 import "../styles/tableForm.css";
-import { useMemo } from "react";
 
 const TableTemp = ({
   tableHeaders, // [필수]
@@ -163,9 +155,8 @@ const TableTemp = ({
   // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = useCallback(
     (index) => {
-      if (!tableData[index].checked) {
-        tableData[index].checked = !tableData[index].checked;
-      }
+      if (tableData[index].checked) setRecentlyClickedRow();
+      tableData[index].checked = !tableData[index].checked;
       if (actions.setSelectedRows) {
         const selectedRows = tableData.filter((row) => row.checked);
         actions.setSelectedRows(selectedRows);
@@ -230,7 +221,9 @@ const TableTemp = ({
                 onDoubleClick={() => handleDoubleClick(rowIndex)}
                 onClick={(e) => handleRowClick(e, rowIndex)}
                 className={
-                  recentlyClickedRow === rowIndex ? "highlight-row" : ""
+                  recentlyClickedRow === rowIndex || row.checked
+                    ? "highlight-row"
+                    : ""
                 }
               >
                 {/* 각 row 의 checkBox */}
