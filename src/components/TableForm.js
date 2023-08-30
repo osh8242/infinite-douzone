@@ -24,6 +24,13 @@ const TableForm = ({
   rowClickHandler,
   cellClickHandler,
 }) => {
+const TableForm = ({
+  showCheckbox,
+  showHeaderArrow,
+  tableData,
+  rowClickHandler,
+  cellClickHandler,
+}) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
   //   return (
@@ -55,6 +62,7 @@ const TableForm = ({
   };
 
   // //////////////////////////////////////////////////////////////// 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
+  const handleInputChange = useCallback((event, rowIndex, columnName) => {
   const handleInputChange = useCallback((event, rowIndex, columnName) => {
     const updatedEditedData = { ...editedData };
     updatedEditedData[rowIndex] = {
