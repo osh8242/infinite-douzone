@@ -24,8 +24,8 @@ function DateTest(props) {
   } = props;
   // const [date, setDate] = useState(new Date());
   // const [inputValue, setInputValue] = useState(value);
-  const [startDate, setStartDate] = useState(value);
-  const [endDate, setEndDate] = useState(value2);
+  const [startDate, setStartDate] = useState(value || "");
+  const [endDate, setEndDate] = useState(value2 || "");
   const [inputValue, setInputValue] = useState(value);
 
   DateTest.defaultProps = {

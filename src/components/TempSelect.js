@@ -53,10 +53,10 @@ function TempSelect({
       </Col>
       <Col md="8" id="fullAddressArea">
         <Col
-          md="4"
+          md="15"
           className="d-flex align-items-center justify-content-center"
         >
-          <Form.Select>
+          {/* <Form.Select>
             {optionList.map((option, index) => (
               <option value={option.key} key={index}>
                 {option.value}
@@ -64,18 +64,39 @@ function TempSelect({
             ))}
           </Form.Select>
         </Col>
-        <Form.Control
-          id="TextArea"
-          type="text"
-          value={inputValue}
-          onChange={handleInputValueChange}
-          onBlur={handleFocusOutChange}
-        />
         <Col
-          md="1"
+          md="6"
           className="d-flex align-items-center justify-content-center"
-        >
-          {subLabel}
+        > */}
+          <Form.Select>
+            {optionList.map((option, index) => (
+              <option value={option.key} key={index}>
+                {option.value}
+              </option>
+            ))}
+          </Form.Select>
+          <Col md="6">
+            <Form.Control
+              id="TextArea"
+              type="text"
+              value={inputValue}
+              onChange={handleInputValueChange}
+              onBlur={handleFocusOutChange}
+            />
+          </Col>
+          {/* <Form.Control
+            id="TextArea"
+            type="text"
+            value={inputValue}
+            onChange={handleInputValueChange}
+            onBlur={handleFocusOutChange}
+          /> */}
+          <Col
+            md="1"
+            className="d-flex align-items-center justify-content-center"
+          >
+            {subLabel}
+          </Col>
         </Col>
       </Col>
     </Row>

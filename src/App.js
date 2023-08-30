@@ -1,7 +1,7 @@
 import "./App.scss";
 import Header from "./templates/Header";
-import LaborContract from "./templates/LaborContract";
 import HrManagement from "./templates/HrManagement";
+import LaborContract from "./templates/LaborContract";
 
 function App() {
   return (

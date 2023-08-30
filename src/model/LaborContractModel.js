@@ -153,16 +153,16 @@ const LaborContractModel = () => {
       ...editedSwsm,
       cdEmp: pkValue,
     };
-    // if (!editedSwsm.isNew && Object.keys(editedSwsm).length !== 0)
-    axios
-      .put(url + "/swsm/updateSwsm", updateSwsm)
-      .then((response) => {
-        if (response.data === 1) console.log("Swsm 업데이트 성공");
-        // setEditedSwsm({});
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-      });
+    if (!editedSwsm.isNew && Object.keys(editedSwsm).length !== 0)
+      axios
+        .put(url + "/swsm/updateSwsm", updateSwsm)
+        .then((response) => {
+          if (response.data === 1) console.log("Swsm 업데이트 성공");
+          // setEditedSwsm({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+        });
   }, [editedSwsm]);
 
   // 메인 데이터
