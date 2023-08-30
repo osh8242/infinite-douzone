@@ -13,7 +13,7 @@ import CommonConstant from "../model/CommonConstant";
 import TableTemp from "../components/TableTemp";
 import CodeHelper from "../components/CodeHelper";
 import CodeHelpComponent from "../components/CodeHelper";
-
+import HrManagementHeader from "./HrManagementHeader";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   
@@ -52,6 +52,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
  
   return (
     <>
+    <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       {/* 코드 도움 모달 영역 */}
       <ModalComponent title= {'코드도움'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
        <CodeHelpComponent onRowClick={() => setModalState({ ...modalState, show: false })} tableData={codeHelperparams.cdEmp.tableData} setData={actions.setSearchDeptCd}/>
@@ -133,11 +134,12 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           <TableTemp
             tableHeaders={tableHeader.salAllow}
             tableData={salAllowData.salData}
+            rowAddable
             actions={{
               setTableData: setSalData,
-              //setPkValue: actions.setCdEmp,
               setEditedRow: actions.setEditedAllow,
               //{ cdAllow :'', nmAllow:'급여항목', allowPay : 500000 }
+              
             }}
           />
           <div> 과세 : {salAllowData.sumData.taxYSum}</div>

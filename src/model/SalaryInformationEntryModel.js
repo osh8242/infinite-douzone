@@ -3,6 +3,7 @@ import axios from '../../node_modules/axios/index';
 import { currentDateStr, currentMonthStr, currentYearStr } from '../utils/DateUtils';
 import { nvl } from '../utils/NumberUtils';
 import SalConstant, { calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension } from './SalConstant';
+import { isEmpty } from '../utils/StringUtils';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
@@ -30,9 +31,9 @@ const SalaryInformationEntryModel = () => {
   const [editedAllow, setEditedAllow]= useState();//급여항목 테이블_ table row 수정된 객체
 
   /* 검색조건 Data */
-  const [cdEmp, setCdEmp] = useState();                      //사원번호
+  const [cdEmp, setCdEmp] = useState('A101');                      //사원번호
   const [allowMonth, setAllowMonth] = useState(currentMonthStr);   //귀속년월
-  const [salDivision, setSalDivision] = useState();                //구분
+  const [salDivision, setSalDivision] = useState('SAL');                //구분
   const [paymentDate, setPaymentDate] = useState(currentDateStr);  //지급일
   const [allowYear, setAllowYear] = useState(currentYearStr);      //귀속 년도
 
@@ -139,8 +140,9 @@ const SalaryInformationEntryModel = () => {
         setSaInfoListData(data);
 
         const fisrtCdEmp = response.data[0].cdEmp;
-        setCdEmp(fisrtCdEmp);
+        //alert(fisrtCdEmp);
         //return fisrtCdEmp;
+        //if(isEmpty(response.data[0])){alert(fisrtCdEmp);}
       })
 
       .catch((error) => {
@@ -295,7 +297,7 @@ const SalaryInformationEntryModel = () => {
     
     //급여테이블 수정
     axios
-      .put(url + "/saallowpay/updateSaAllowPay"
+      .put(url + "/saallowpay/updateSalAllowPay"
       , {...editRowData, allowMonth: allowMonth},
       )
       .then((response) => {

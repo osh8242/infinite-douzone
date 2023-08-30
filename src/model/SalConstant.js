@@ -26,12 +26,12 @@ const SalConstant = () => {
         ]
     },
     selectOption : {
-        salOptionList : [       //구분 옵션
-            { key: "sal"      , value: "1.급여" },
-            { key: "sal+bonus", value: "2.급여+상여" },
-            { key: "bonus"    , value: "3.상여" },
-            { key: "plusSal"  , value: "5.추급" },
-            { key: "plusBonus", value: "6.추상" },
+        salOptionList : [ //구분 옵션
+            { key: "SAL"        , value: "1.급여" },
+            { key: ""           , value: "2.급여+상여" },
+            { key: "BONUS"      , value: "3.상여" },
+            { key: "EXTRASAL"   , value: "5.추급" },
+            { key: "EXTRABONUS" , value: "6.추상" },
         ],
         salOptionByPeriodList : [//조회구분 검색조건 옵션
             { key: "EmpAllThisMonth", value: "0.전체사원 당월" },
