@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React from "react";
 import { Col, Row, Container } from "react-bootstrap";
 import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
@@ -10,12 +10,10 @@ import LaborContractModel from "../model/LaborContractModel";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import { Scrollbars } from "react-custom-scrollbars";
-import TextBoxComponent from "../components/TextBoxComponent";
 import TempAdd from "../components/TempAdd";
 import TempText from "../components/TempText";
 import Spinner from "react-bootstrap/Spinner";
 import TempSelect from "../components/TempSelect";
-import { LabelSharp } from "@material-ui/icons";
 import LaborContractHeader from "./LaborContractHeader";
 
 const LaborContract = () => {
@@ -88,11 +86,9 @@ const LaborContract = () => {
                       label={labels.empContractPeriod}
                       isPeriod={true}
                       type={"date"}
-                      // pkValue={}/
                       labelKey={"startEmpContractPeriod"}
                       labelKey2={"endEmpContractPeriod"}
                       actions={{
-                        // setPkValue: actions.setMainTablePkValue,
                         setEdited: actions.setEditedSwsm,
                       }}
                       value={
@@ -118,10 +114,6 @@ const LaborContract = () => {
                 {/* 업무의 내용  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
-                    {/* <TextBoxComponent
-                      label={"test"}
-                      value={mainTabData ? mainTabData.jobDescription : ""}
-                    /> */}
                     <TempText
                       label={labels.jobDescription}
                       value={mainTabData ? mainTabData.jobDescription : ""}
@@ -229,7 +221,6 @@ const LaborContract = () => {
                         setEdited: actions.setEditedSwsm,
                       }}
                     />
-                    {/* 한 라인 안에 들어가게 변경 필요 */}
                     {/* <TextBoxComponent />원 */}
                   </Col>
                 </Row>
@@ -240,8 +231,6 @@ const LaborContract = () => {
                       label={labels.salaryPaymentDateType}
                       optionList={salaryPaymentDateTypeList}
                     />
-                    {/* 한 라인 안에 들어가게 변경 필요 */}
-                    {/* <TextBoxComponent />원 */}
                   </Col>
                 </Row>
                 {/* 지급방법  */}
@@ -281,7 +270,6 @@ const LaborContract = () => {
                     />
                   </Col>
                 </Row>
-
                 {/* 작성일자  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
@@ -309,7 +297,6 @@ const LaborContract = () => {
                 pkValue={mainTablePkValue}
                 actions={{
                   setTableData: actions.setSubTableData,
-                  // setPkValue: actions.setLeftTablePkValue,
                   setEditedRow: actions.setEditedSwsmOther,
                   setSelectedRows: actions.setSelectedRows,
                   getRowObject: SwsmOther,
@@ -326,33 +313,3 @@ const LaborContract = () => {
 };
 
 export default LaborContract;
-
-{
-  /* <TableTemp
-                showCheckbox={true}
-                showHeaderArrow={true}
-                tableHeaders={SwsmSubTabHeaders}
-                tableData={subTableData}
-                rowAddable={true}
-                actions={{
-                  setTableData: actions.setSubTableData,
-                  setPkValue: actions.setMainTablePkValue,
-                  // setEditedRow:actions.setEditedEmp
-                  // getRowObject: Swsm,
-                }} */
-}
-{
-  /* <TableTemp
-                showCheckbox={true}
-                showHeaderArrow={true}
-                tableHeaders={SwsmSubTabHeaders}
-                tableData={subTableData}
-                rowAddable={true}
-                actions={{
-                  setTableData: actions.setSubTableData,
-                  setPkValue: actions.setMainTablePkValue,
-                  setEditedRow: actions.setEditedSwsmOther,
-                  getRowObject: SwsmOther,
-                }}
-              /> */
-}
