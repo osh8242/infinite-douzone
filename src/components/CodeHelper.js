@@ -1,3 +1,32 @@
+/*
+현소현
+
+** 
+const [modalState, setModalState] = useState({ show: false });     
+
+<ModalComponent title= {state.codeHelperTableData.title} show={modalState.show} onHide={() => actions.setModalState({modalState, show: false })} size="lg" centered>
+  <CodeHelpComponent onRowClick={() => actions.setModalState({modalState, show: false })} table={state.codeHelperTableData} setData={actions.setSearchCdDept} />
+</ModalComponent> 
+
+** props 
+onRowClick : 보통 modal 닫는함수
+table :
+ex) 
+state.codeHelperTableData = {
+  title : '사원번호 조회',
+  tableHeaders: [
+      { field: "cdEmp", text: "사원번호"},
+      { field: "nmEmp", text: "사원이름"}],
+  tableData : [
+      { pk:'Y701', name : '현소현'}, 
+      { pk:'Y702', name : '오승환'}, 
+      { pk:'Y703', name : '김진'}]
+  },
+setData: set함수
+
+
+*/
+
 import React, { useState } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import SearchPanel from './SearchPanel';
@@ -22,7 +51,7 @@ const CodeHelpComponent = ({ onRowClick, table, setData }) => {
       <Form.Group>
         <SearchPanel>
           <TextBoxComponent 
-            label={"검색"} 
+            label={"코드검색"} 
             value={searchTerm} 
             onChange={setSearchTerm}
           />
