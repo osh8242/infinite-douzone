@@ -61,8 +61,15 @@ const HrManagementHeader = ({ deleteButtonHandler }) => {
         </button>
       </div>
       <ModalComponent
-        props={{ show: showModal, onConfirm: deleteButtonHandler }}
-      />
+        props={{
+          show: showModal,
+          onConfirm: deleteButtonHandler,
+          title: "삭제확인",
+        }}
+        onHide={() => setShowModal(false)}
+      >
+        <div>삭제하시겠습니까?</div>
+      </ModalComponent>
     </div>
   );
 };
