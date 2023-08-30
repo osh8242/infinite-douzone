@@ -1,14 +1,12 @@
 /*
   현소현
   const [confirmState, setConfirmState] = useState({
-    show: false,
-    props: {},
+    show: false
   });
 
   const ConfirmClickHandler =()=>{
     setConfirmState({
-      show: true,
-      props: confirmAddProps,
+      show: true
     });
   }
 
