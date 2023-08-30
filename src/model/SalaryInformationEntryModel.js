@@ -27,6 +27,7 @@ const SalaryInformationEntryModel = () => {
 
   /* 상태 Data */
   const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
+  const [codeHelperTableData, setCodeHelperTableData] = useState('');  //코드도움
   const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');  //선택된 값
   const [editedAllow, setEditedAllow]= useState();//급여항목 테이블_ table row 수정된 객체
 
@@ -38,7 +39,7 @@ const SalaryInformationEntryModel = () => {
   const [allowYear, setAllowYear] = useState(currentYearStr);      //귀속 년도
 
   const [searchCdEmp, setSearchCdEmp] = useState(''); //사원코드
-  const [searchDeptCd, setSearchDeptCd] = useState(''); //부서코드
+  const [searchCdDept, setSearchCdDept] = useState(''); //부서코드
   const [searchRankNo, setSearchRankNo] = useState(''); //직급코드
   const [searchCdOccup, setSearchCdOccup] = useState(''); //직책코드
   const [searchCdField, setSearchCdField] = useState(''); //현장코드
@@ -51,7 +52,7 @@ const SalaryInformationEntryModel = () => {
   //   salDivision: salDivision,
   //   paymentDate: paymentDate,
   //   searchCdEmp :searchCdEmp,
-  //   searchDeptCd : searchDeptCd,
+  //   searchCdDept : searchCdDept,
   //   searchRankNo : searchRankNo,
   //   searchCdOccup : searchCdOccup,
   //   searchCdField : searchCdField, 
@@ -68,7 +69,7 @@ const SalaryInformationEntryModel = () => {
   useEffect(() => {
     salEmpdataTable();        // 검색조건에 맞는 사원리스트
   //},[searchVo]);
-  }, [allowMonth, salDivision, paymentDate, searchCdEmp, salDivision, searchDeptCd, searchRankNo, searchCdOccup, searchCdField]);
+  }, [allowMonth, salDivision, paymentDate, searchCdEmp, salDivision, searchCdDept, searchRankNo, searchCdOccup, searchCdField]);
 
   useEffect(() => {
     console.log('searchAllowVo>>>');
@@ -110,8 +111,8 @@ const SalaryInformationEntryModel = () => {
           allowMonth: allowMonth,
           salDivision: salDivision,
           paymentDate: paymentDate,
-          searchCdEmp :searchCdEmp,
-          searchDeptCd : searchDeptCd,
+          searchCdEmp : searchCdEmp,
+          searchCdDept : searchCdDept,
           searchRankNo : searchRankNo,
           searchCdOccup : searchCdOccup,
           searchCdField : searchCdField, 
@@ -372,13 +373,14 @@ const SalaryInformationEntryModel = () => {
 
     , modalState : modalState
     , setModalState
+    , codeHelperTableData
 
     , searchVO : {
       cdEmp
       , salDivision
       , allowMonth
       , paymentDate
-      , searchDeptCd
+      , searchCdDept
       , searchRankNo
       , searchCdOccup
       , searchCdField
@@ -394,16 +396,20 @@ const SalaryInformationEntryModel = () => {
       , setSalDivision
       , setAllowMonth
       , setPaymentDate
-      , setSearchDeptCd
+      
+      , setCodeHelperTableData
+      , setEditedAllow
+      , setSelectedOption
+      , setCalSalData
+
+      , setSearchCdDept
+      , setSearchCdEmp
       , setSearchRankNo
       , setSearchCdOccup
       , setSearchCdField
       , setSearchCdProject
       , setSearchYnUnit
       , setSearchYnForlabor
-      , setCalSalData
-      , setSelectedOption
-      , setEditedAllow
     }
 
   };

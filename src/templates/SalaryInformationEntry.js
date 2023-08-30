@@ -32,6 +32,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
     , modalState
     , setModalState    
+    , codeHelperTableData
 
     , actions
     , searchVO
@@ -41,21 +42,24 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   console.log(sumTableData.salDeductPaySumData);
 
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback((tableData) => {
+  const codeHelperShow = useCallback((codeHelperTableData, setData) => {
     setModalState({ show: true });
+    actions.setCodeHelperTableData(codeHelperTableData);
+    //{setData: setData}
   }, []);
 
   //조회버튼
   const onSearch =()=> {
     alert("검색버튼");
   }
- 
+
   return (
     <>
     <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       {/* 코드 도움 모달 영역 */}
-      <ModalComponent title= {'코드도움'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
-       <CodeHelpComponent onRowClick={() => setModalState({ ...modalState, show: false })} tableData={codeHelperparams.cdEmp.tableData} setData={actions.setSearchDeptCd}/>
+      <ModalComponent title= {codeHelperTableData.title} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
+       <CodeHelpComponent onRowClick={() => setModalState({ ...modalState, show: false })} table={codeHelperTableData} setData={codeHelperTableData} />
+       {/* setData={actions.setSearchCdDept}/> */}
       </ModalComponent> 
 
       {/* 기본 검색조건 */}
@@ -68,7 +72,13 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             <SelectForm label={"구분"} optionList={selectOption.salOptionList} onChange={actions.setSalDivision}/>
           </Col>
           <Col>
-            <DateTest label={"지급일"} value={searchVO.paymentDate} onChange={(e,value)=>actions.setPaymentDate(value)}/>
+            <DateTest 
+              label={"지급일"} 
+              type={'date'} 
+              value={searchVO.paymentDate} 
+              onChange={(e,value)=>actions.setPaymentDate(value)}
+              //codeHelper
+            />
           </Col>
         </Row>
 
@@ -76,29 +86,61 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <div>
           <Row>
             <Col>
-              <TextBoxComponent type="codeHelper" name="searchEmpCd" label={"사원코드"} />
+              <TextBoxComponent 
+                name="searchEmpCd" 
+                label={"사원코드"} 
+                value={searchVO.searchCdEmp}
+                onChange={actions.setSearchCdEmp} 
+                codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdEmp, actions.setSearchCdEmp)}  
+                //onChange={(e,value)=>actions.setSearchCdEmp(value)}
+              />
             </Col>
             <Col>
-              <TextBoxComponent name="searchDeptCd" thousandSeparator label={"부서코드"} value={searchVO.searchDeptCd} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
+              <TextBoxComponent 
+                name="searchCdDept" 
+                label={"부서코드"} 
+                value={searchVO.searchCdDept}
+                onChange={actions.setSearchCdDept}
+                codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept, actions.setSearchCdDept)}  
               />
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent type="codeHelper"  name="searchRankNo"  label={"직급코드"}  />
+              <TextBoxComponent 
+                name="searchRankNo"  
+                label={"직급코드"}  
+                value={searchVO.searchRankNo}
+                onChange={actions.setSearchRankNo}
+                codeHelper/>
             </Col>
             <Col>
-              <TextBoxComponent type="codeHelper"  name="searchCdOccup" label={"직책코드"}  />
+              <TextBoxComponent 
+                name="searchCdOccup"  
+                label={"직책코드"}  
+                value={searchVO.searchCdOccup}
+                onChange={actions.setSearchCdOccup}
+                codeHelper/>
             </Col>
           </Row>
 
           <Row>
             <Col>
-              <TextBoxComponent  type="codeHelper" name="searchCdField" label={"현장코드"} />
+              <TextBoxComponent 
+                name="searchCdField"  
+                label={"현장코드"}  
+                value={searchVO.searchCdField}
+                onChange={actions.setSearchCdField}
+                codeHelper/>
             </Col>
             <Col>
-              <TextBoxComponent  type="codeHelper" name="searchCdProject" label={"프로젝트코드"} />
+              <TextBoxComponent 
+                name="searchCdProject"  
+                label={"프로젝트코드"}  
+                value={searchVO.searchCdField}
+                onChange={actions.setSearchCdProject}
+                codeHelper/>
             </Col>
           </Row>
 
@@ -155,10 +197,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             tableData={deductData.deductData}
             actions={{}}
           /> 
-           <div>
-            공제액 계 : {deductData.sumData.sum}
-            차인지급액 : {salAllowData.sumData.sum-deductData.sumData.sum}
-          </div>
+          <div>공제액 계 : {deductData.sumData.sum}</div>
+          <div>차인지급액 : {salAllowData.sumData.sum-deductData.sumData.sum}</div>
           </>
         </Col>
         <Col md="3">
