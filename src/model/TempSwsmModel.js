@@ -23,7 +23,6 @@ const TempSwsmModel = () => {
 
   const { contextState } = useContext(ContextModel);
   const reloadSubTableData = contextState.reloadSubTableData;
-
   // const [subTabData, setSubTabData] = useState({});
 
   // leftTableData load
@@ -100,7 +99,7 @@ const TempSwsmModel = () => {
   // swsmOther
   //추가된 SwsmOther insert 요청
   useEffect(() => {
-    console.log("SwsmOther insert start-");
+    console.log("SwsmOther insert start------@@");
     const pkValue = mainTabData.cdEmp;
 
     let updateSwsmOther = {
@@ -195,7 +194,7 @@ const TempSwsmModel = () => {
     if (mainTablePkValue)
       axios
         .post(url + "/swsmOther/getSwsmOtherByCdEmp", mainTablePkValue, {
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
         })
         .then((response) => {
           const data = response.data.map((item) => {
@@ -244,12 +243,12 @@ const TempSwsmModel = () => {
   return {
     // leftTableData: leftTableData,
     // subTableData: subTableData,
-    // mainTablePk: mainTablePkValue,
+    // mainTablePkValue: mainTablePkValue,
     // cdEmp: cdEmp,
     // mainTabData: mainTabData,
     // rightTabData: rightTabData,
     // subTabData: subTabData,
-    state: { leftTableData, mainTabData, leftTablePkValue, subTableData },
+    state: { leftTableData, mainTabData, leftTablePkValue,mainTablePkValue, subTableData },
     actions: {
       setLeftTableData,
       setLeftTablePkValue,

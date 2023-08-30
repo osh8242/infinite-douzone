@@ -22,6 +22,9 @@ const ContextProvider = ({ children }) => {
         case "empFam":
           console.log("url + '/empFam/deleteEmpFam', row.item", row.item);
           return axios.delete(url + "/empFam/deleteEmpFam", { data: row.item });
+          case "swsmOther":
+            console.log("url + '/swsmOther/deleteSwsmOther', row.item", row.item);
+            return axios.delete(url + "/swsmOther/deleteSwsmOther", { data: row.item });
         default:
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }

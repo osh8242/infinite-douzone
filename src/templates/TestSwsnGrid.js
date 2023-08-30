@@ -35,7 +35,7 @@ const TestSwsnGrid = () => {
     healthInsuranceList,
   } = SwsmConstant();
 
-  const { state, actions } = TempSwsmModel();
+  const { state, actions ,mainTablePkValue} = TempSwsmModel();
   const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
 
   return (
@@ -301,7 +301,7 @@ const TestSwsnGrid = () => {
               rowAddable
               tableHeaders={SwsmSubTabHeaders}
               tableData={subTableData}
-              pkValue={leftTablePkValue}
+              pkValue={mainTablePkValue}
               actions={{
                 setTableData: actions.setSubTableData,
                 // setPkValue: actions.setLeftTablePkValue,
