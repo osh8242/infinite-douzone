@@ -46,25 +46,24 @@ function TextBoxComponent(props) {
   // console.log("label",label);
   // console.log("value",value);
 
-
   // 입력값
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value);  //보여줄값
+  const [sendValue, setSendValue] = useState(value);  //보낼값
 
   useEffect(() => {
     setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
   }, [value]);
 
-  const handleInputChange = (event) => {
-    event.preventDefault();
-    const newValue = event.target.value;
-    
-    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
-    setInputValue(makeProcessedValue(newValue));  //data 가공  
-  
-    //enter쳤을때 값날리기
-   
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      onChange && onChange(sendValue);
+    }
   }
-
+  const handleInputChange = (event) => {
+      const newValue = event.target.value;
+      //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
+      setInputValue(makeProcessedValue(newValue));  //data 가공
+  }
 
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
@@ -73,16 +72,17 @@ function TextBoxComponent(props) {
       suffix && (processedValue = processSuffix(processedValue, suffix));
       thousandSeparator &&
         (processedValue = processThousandSeparator(processedValue));
-      onChange && onChange(makePureNumber(processedValue));
+        setSendValue(makePureNumber(processedValue));
     } else if (type === "regNum") {
       processedValue = /^\d{0,6}$/.test(newValue)
         ? newValue.replace(/(\d{6})(\d{0,1})/, "$1-$2")
         : newValue; //하이픈 넣기
       //마스킹처리 진행중...
-      onChange && onChange(processedValue);
-    } else {
-      onChange && onChange(processedValue);
+       setSendValue(processedValue);
+    }else{
+      setSendValue(processedValue)
     }
+
     return processedValue;
   };
 
@@ -184,10 +184,10 @@ function TextBoxComponent(props) {
           disabled={disabled}
           readOnly={readOnly}
           plaintext={plaintext}
-          //onChange={handleInputChange}
+          onChange={handleInputChange}
           onFocus={handleInputFocus}
           onClick={onClick}
-          onKeyPress={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
       );
     }
