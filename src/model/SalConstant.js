@@ -65,12 +65,11 @@ const SalConstant = () => {
             title : '부서코드 조회',
             tableHeaders: [
                 { field: "cdDept", text: "부서코드"},
-                { field: "nmDept", text: "부서이름"},
-                { field: "fDept", text: "부서이름2"}],
-            tableData : [
-                { pk:'D001', nmDept : '인사팀' , fDept : 'd'}, 
-                { pk:'D002', nmDept : '경영지원팀' , fDept : 'd'}, 
-                { pk:'D003', nmDept : '개발팀', fDept : 'd'}],
+                { field: "nmDept", text: "부서이름"},]
+            , tableData : [
+                { pk:'D001', nmDept : '인사팀'}, 
+                { pk:'D002', nmDept : '경영지원팀'}, 
+                { pk:'D003', nmDept : '개발팀'}],
         },
         rankNo : {
 

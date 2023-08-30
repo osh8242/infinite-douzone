@@ -8,103 +8,80 @@ import { isEmpty } from '../utils/StringUtils';
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
 
-  /* 급여자료 입력 전용 상수 */
+  /* 급여자료 계산 전용 상수 */
   const { cdDeduct, cdAllow } = SalConstant();
 
   /* 영역 테이블 Data */
-  const [saInfoListData, setSaInfoListData] = useState();       //사원 테이블 리스트
-
-  const [salData, setSalData] = useState();                     //급여항목 테이블
-  const [calSalData, setCalSalData] = useState({ taxYSum : 0, taxNSum : 0, taxSum : 0 });  //급여항목 합계
-  
-  const [deductData, setDeductData] = useState();             //공제항목 테이블
-  const [calDeductSum, setCalDeductSum] = useState({sum : 0});  //공제항목 합계
-  
-  const [saInfoDetailData, setSaInfoDetailData] = useState(); //사원상세조회
-
-  const [salAllowPaySumData, setSalAllowPaySumData] = useState(); //급여항목 합계테이블 데이터(selectbox 조회)
-  const [salDeductPaySumData, setSalDeductPaySumData] = useState(); //공제항목 합계테이블 데이터(selectbox 조회)
+  const [saInfoListData, setSaInfoListData] = useState();                 // 사원 테이블 리스트
+  const [salData, setSalData] = useState();                               // 급여항목 테이블
+  const [calSalData, setCalSalData] = useState({ taxYSum : 0, taxNSum : 0, taxSum : 0 });  // 급여항목 합계
+  const [deductData, setDeductData] = useState();                         // 공제항목 테이블
+  const [calDeductSum, setCalDeductSum] = useState({sum : 0});            // 공제항목 합계  
+  const [saInfoDetailData, setSaInfoDetailData] = useState();             // 사원상세조회
+  const [salAllowPaySumData, setSalAllowPaySumData] = useState();         // 급여항목 합계테이블 데이터(selectbox 조회)
+  const [salDeductPaySumData, setSalDeductPaySumData] = useState();       // 공제항목 합계테이블 데이터(selectbox 조회)
 
   /* 상태 Data */
-  const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
-  const [codeHelperTableData, setCodeHelperTableData] = useState('');  //코드도움
-  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');  //선택된 값
-  const [editedAllow, setEditedAllow]= useState();//급여항목 테이블_ table row 수정된 객체
+  const [modalState, setModalState] = useState({ show: false });            // 모달창 show 여부
+  const [codeHelperTableData, setCodeHelperTableData] = useState('');       // 코드도움 테이블 data
+  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');  // 조회구분 selectbox 선택된 value
+  const [editedAllow, setEditedAllow]= useState();                          // 급여항목 테이블_ table row 수정된 객체
 
   /* 검색조건 Data */
-  const [cdEmp, setCdEmp] = useState('A101');                      //사원번호
-  const [allowMonth, setAllowMonth] = useState(currentMonthStr);   //귀속년월
-  const [salDivision, setSalDivision] = useState('SAL');                //구분
-  const [paymentDate, setPaymentDate] = useState(currentDateStr);  //지급일
-  const [allowYear, setAllowYear] = useState(currentYearStr);      //귀속 년도
+  const [cdEmp, setCdEmp] = useState('A101');                       // 사원번호
+  const [allowMonth, setAllowMonth] = useState(currentMonthStr);    // 귀속년월
+  const [salDivision, setSalDivision] = useState('SAL');            // 구분
+  const [paymentDate, setPaymentDate] = useState(currentDateStr);   // 지급일
+  const [allowYear, setAllowYear] = useState(currentYearStr);       // 귀속 년도
 
-  const [searchCdEmp, setSearchCdEmp] = useState(''); //사원코드
-  const [searchCdDept, setSearchCdDept] = useState(''); //부서코드
-  const [searchRankNo, setSearchRankNo] = useState(''); //직급코드
-  const [searchCdOccup, setSearchCdOccup] = useState(''); //직책코드
-  const [searchCdField, setSearchCdField] = useState(''); //현장코드
-  const [searchCdProject, setSearchCdProject] = useState(''); //프로젝트코드
-  const [searchYnUnit, setSearchYnUnit] = useState(''); //생산직여부
-  const [searchYnForlabor, setSearchYnForlabor] = useState(''); //국외근로여부
+  const [searchCdEmp, setSearchCdEmp] = useState('');               // 사원코드 검색
+  const [searchCdDept, setSearchCdDept] = useState('');             // 부서코드 검색
+  const [searchRankNo, setSearchRankNo] = useState('');             // 직급코드 검색
+  const [searchCdOccup, setSearchCdOccup] = useState('');           // 직책코드 검색
+  const [searchCdField, setSearchCdField] = useState('');           // 현장코드 검색
+  const [searchCdProject, setSearchCdProject] = useState('');       // 프로젝트코드 검색
+  const [searchYnUnit, setSearchYnUnit] = useState('');             // 생산직여부 검색
+  const [searchYnForlabor, setSearchYnForlabor] = useState('');     // 국외근로여부 검색
 
-  // const [searchVo, setSearchVo] = useState({
-  //   allowMonth: allowMonth,
-  //   salDivision: salDivision,
-  //   paymentDate: paymentDate,
-  //   searchCdEmp :searchCdEmp,
-  //   searchCdDept : searchCdDept,
-  //   searchRankNo : searchRankNo,
-  //   searchCdOccup : searchCdOccup,
-  //   searchCdField : searchCdField, 
-  //   searchCdProject : searchCdProject,
-  //   searchYnUnit : searchYnUnit,
-  //   searchYnForlabor : searchYnForlabor,
-  // })
-
-  const [searchAllowVo, setSearchAllowVo] = useState({
-    allowMonth: allowMonth,
-    cdEmp: cdEmp
-  });
+  /* 사원정보 선택후 급여항목, 공제항목 검색조건 */
+  const [searchAllowVo, setSearchAllowVo] = useState({ allowMonth: allowMonth, cdEmp: cdEmp });
   
   useEffect(() => {
     salEmpdataTable();        // 검색조건에 맞는 사원리스트
-  //},[searchVo]);
-  }, [allowMonth, salDivision, paymentDate, searchCdEmp, salDivision, searchCdDept, searchRankNo, searchCdOccup, searchCdField]);
+  }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
 
   useEffect(() => {
-    console.log('searchAllowVo>>>');
-    console.log(searchAllowVo);
-    
+    // console.log('searchAllowVo>>>');
+    // console.log(searchAllowVo);
     salAllowTableData();      // 선택한 사원의 급여항목 Table Data
     salDeductTableData();     // 선택한 사원의 공제항목 Table Data
     salEmpDetailTableData();  // 선택한 사원의 상세정보
   }, [searchAllowVo]);
 
   useEffect(() => {
-    if (editedAllow && editedAllow.item) salAllowEdit(editedAllow.item);  //급여항목테이블 지급금액 수정
+    if (editedAllow && editedAllow.item) salAllowEdit(editedAllow.item);  // 급여항목테이블 지급금액 수정
   }, [editedAllow]);  //tabledata 변경
 
   useEffect(() => { 
-    let searchParams = {};  
+    let searchParams = {};
     
     switch (selectedOption) {
       case 'EmpAllThisMonth' : searchParams = {allowMonth:allowMonth}; break;
-      case 'EmpOneThisMonth' : searchParams = {allowYear:allowYear,cdEmp:cdEmp}; break;
-      // case 'EmpAllCurrent' : searchParams = {allowYear:allowYear,cdEmp:cdEmp}; break;
+      case 'EmpOneThisMonth' : searchParams = {allowYear:allowYear, cdEmp:cdEmp}; break;
+      // case 'EmpAllCurrent' : searchParams = {allowYear:allowYear,cdEmp:cdEmp}; break; 오늘날짜기준? 지급일기준?
       // case 'EmpOneCurrent' : searchParams = {allowYear:allowYear,cdEmp:cdEmp}; break;
       case 'EmpAllThisYear' : searchParams = {allowYear:allowYear}; break;
-      case 'EmpOneThisYear' : searchParams = {allowYear:allowYear,cdEmp:cdEmp};break;
+      case 'EmpOneThisYear' : searchParams = {allowYear:allowYear, cdEmp:cdEmp};break;
       default: break;
     }
 
-    getSalAllowPaySum(searchParams);  // 선택한 select option해당하는 급여항목 합계데이터
-    getSalDeductPaySum(searchParams); // 선택한 select option 공제항목 합계데이터
+    getSalAllowPaySum(searchParams);  // 선택한 select option 해당 급여항목 합계데이터
+    getSalDeductPaySum(searchParams); // 선택한 select option 해당 공제항목 합계데이터
   }, [selectedOption]);
   
 
   /* 사원리스트 */
   const salEmpdataTable = () => {
-
     axios.post(
       url + '/saEmpInfo/getAllSaEmpInfo',
         {
@@ -139,11 +116,6 @@ const SalaryInformationEntryModel = () => {
         ));
 
         setSaInfoListData(data);
-
-        const fisrtCdEmp = response.data[0].cdEmp;
-        //alert(fisrtCdEmp);
-        //return fisrtCdEmp;
-        //if(isEmpty(response.data[0])){alert(fisrtCdEmp);}
       })
 
       .catch((error) => {
@@ -191,9 +163,9 @@ const SalaryInformationEntryModel = () => {
         setSalData(data);
 
         /* 합계 */
-        let taxYSum = 0;  //과세
-        let taxNSum = 0;  //비과세
-        let sum = 0;      //총 지급액 합계
+        let taxYSum = 0;  // 과세
+        let taxNSum = 0;  // 비과세
+        let sum = 0;      // 총 지급액 합계
        
         response.data.forEach((item) => {
           item.taxYn === 'N'? taxNSum += parseInt(nvl(item.allowPay,0)) : taxYSum += parseInt(nvl(item.allowPay,0))
@@ -318,12 +290,9 @@ const SalaryInformationEntryModel = () => {
       allowMonth:allowMonth,
       cdEmp: editRowData.cdEmp,
       calData : [
-        // {cdDeduct : n_cdDeduct , allowPay : calculationNationalPension(allowPay)},
-        // {cdDeduct : h_cdDeduct , allowPay : calculationHealthinsurance(allowPay)},
-        // {cdDeduct : l_cdDeduct , allowPay : calculationEmploymentInsurance(allowPay)},  
+        // {cdDeduct : 'NATIONAL_PENSION', allowPay : calculationNationalPension(allowPay)},
       ]
     };
-
     jsonparam = makeCalDeductData(jsonparam,editRowData);
     
     axios.put(
@@ -339,7 +308,7 @@ const SalaryInformationEntryModel = () => {
       })
 
   }
-
+  /* 공제항목 계산 + update data 생성 */
   const makeCalDeductData =(jsonparam, editRowData) =>{
     deductData.forEach((item) => {
       let allowPay = 0;
@@ -357,41 +326,39 @@ const SalaryInformationEntryModel = () => {
   }
 
   return {
-    //왼쪽 사원테이블
-    saInfoListData: saInfoListData
-    , setSaInfoListData 
-    //중간 급여항목 
-    , salAllowData:{ salData : salData, sumData : calSalData }
-    , setSalData 
-    //중간 공제항목
-    , deductData : { deductData : deductData, sumData : calDeductSum}
-    //오른쬭 조회구분테이블
-    , sumTableData:{ salAllowPaySumData : salAllowPaySumData, salDeductPaySumData : salDeductPaySumData}  
-    //사원상세
-    , saInfoDetailData
-    , setSaInfoDetailData
-
-    , modalState : modalState
-    , setModalState
-    , codeHelperTableData
-
-    , searchVO : {
-      cdEmp
-      , salDivision
-      , allowMonth
-      , paymentDate
-      , searchCdDept
-      , searchRankNo
-      , searchCdOccup
-      , searchCdField
-      , searchCdProject
-      , searchYnUnit
-      , searchYnForlabor
-      , searchCdEmp
+    state : {
+      saInfoListData: saInfoListData  // 왼쪽 사원테이블
+      , salAllowData: { salData : salData, sumData : calSalData }  // 중간 급여항목 
+      , deductData : { deductData : deductData, sumData : calDeductSum} // 중간 공제항목
+      , sumTableData:{ salAllowPaySumData : salAllowPaySumData, salDeductPaySumData : salDeductPaySumData}  // 오른쬭 조회구분테이블
+      , saInfoDetailData    
+  
+      , modalState : modalState
+      , codeHelperTableData
+      
+      , searchVO : {
+        cdEmp
+        , salDivision
+        , allowMonth
+        , paymentDate
+        , searchCdDept
+        , searchRankNo
+        , searchCdOccup
+        , searchCdField
+        , searchCdProject
+        , searchYnUnit
+        , searchYnForlabor
+        , searchCdEmp
+      }
     }
     , actions:{
-      //setSearchVo
-       setSearchAllowVo
+      setSaInfoListData 
+      , setSalData
+      , setSaInfoDetailData
+
+      , setSearchAllowVo
+      , setModalState
+
       , setCdEmp
       , setSalDivision
       , setAllowMonth
