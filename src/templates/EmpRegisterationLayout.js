@@ -3,10 +3,8 @@
 
 import { Col, Row } from "react-bootstrap";
 import React, { useRef, useState } from "react";
-import TableForm from "../components/TableForm";
 import MenuTab from "../components/MenuTab";
 import TextBoxComponent from "../components/TextBoxComponent";
-import DateForm from "../components/DateForm";
 import AddressForm from "../components/AddressForm";
 import "../styles/empRegisterationLayout.css";
 import EmpRegisterationModel from "../model/EmpRegisterationModel";
@@ -17,11 +15,18 @@ import EmailForm from "../components/EmailForm";
 import DateTest from "../components/DateTest";
 import TableTemp from "../components/TableTemp";
 import Emp from "../vo/EmpRegister/Emp";
+import EmpRegisterHeader from "./EmpRegisterHeader";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
-  const { mainTablePk, leftTableData, mainTabData, subTabData, actions } =
-    EmpRegisterationModel();
+  const {
+    mainTablePk,
+    leftTableData,
+    mainTabData,
+    subTabData,
+    selectedRows,
+    actions,
+  } = EmpRegisterationModel();
 
   //고정된 값을 가지는 state들
   const {
@@ -70,7 +75,13 @@ function EmpRegisterationLayout() {
   };
 
   return (
-    <>
+    <div id="empRegisterArea">
+      <div id="empRegisterHeader">
+        <EmpRegisterHeader
+          selectedRows={selectedRows}
+          actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
+        />
+      </div>
       <Row id="empRegisterLayout">
         <Col md="4" id="empRegisterLayoutLeft">
           {/* 좌측 사원목록 테이블 */}
@@ -93,6 +104,7 @@ function EmpRegisterationLayout() {
                 setPkValue: actions.setMainTablePkValue,
                 setEditedRow: actions.setEditedEmp,
                 getRowObject: Emp,
+                setSelectedRows: actions.setSelectedRows,
               }}
             />
           ) : (
@@ -249,16 +261,16 @@ function EmpRegisterationLayout() {
           </Row>
           {/* <div style={{ display: 'none' }}>
             <Row id="familyData">
-              {subTableData ? (
-                <TableForm showCheckbox={true} tableData={subTableData} />
+            {subTableData ? (
+              <TableForm showCheckbox={true} tableData={subTableData} />
               ) : (
                 <div>Loading...</div>
-              )}
-            </Row>
-          </div> */}
+                )}
+                </Row>
+              </div> */}
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 

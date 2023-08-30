@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/EmpRegister/Emp";
 
@@ -12,6 +12,9 @@ function EmpRegisterationModel() {
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState([]);
   const [subTabData, setSubTabData] = useState([]);
+
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [reloadSubTableData, setReloadSubTableData] = useState(false);
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -35,7 +38,7 @@ function EmpRegisterationModel() {
         console.log("에러발생: ", error);
         //에러 처리
       });
-  }, [editedEmp]);
+  }, [editedEmp, reloadSubTableData]);
 
   //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
@@ -95,6 +98,35 @@ function EmpRegisterationModel() {
     }
   }, [editedEmp]);
 
+  //사원 정보 delete 요청
+  const deleteSelectedRows = useCallback(() => {
+    // 각 row에 대한 delete 요청을 생성
+    const deletePromises = selectedRows.map((row) => {
+      switch (row.table) {
+        case "emp":
+          // console.log("url + '/emp/deleteEmp', row.item", row.item);
+          const deleteData = { cdEmp: row.item.cdEmp };
+          return axios.delete(url + "/emp/deleteEmp", {
+            data: deleteData,
+            "Content-Type": "qpplication/json",
+          });
+        default:
+          return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
+      }
+    });
+
+    Promise.all(deletePromises)
+      .then((responses) => {
+        if (responses) console.log("선택된 모든 행의 삭제 완료");
+        setSelectedRows([]); // 선택행 배열 비우기
+        setReloadSubTableData(!reloadSubTableData);
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [selectedRows]);
+
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
   // useEffect(() => {
@@ -132,12 +164,17 @@ function EmpRegisterationModel() {
     mainTablePk: mainTablePkValue,
     mainTabData: mainTabData,
     subTabData: subTabData,
+    selectedRows: selectedRows,
+    reloadSubTableData: reloadSubTableData,
     actions: {
       setLeftTableData,
       setEditedEmp,
       setMainTabData,
       setMainTablePkValue,
       setSubTabData,
+      setSelectedRows,
+      setReloadSubTableData,
+      deleteSelectedRows,
     },
   };
 }

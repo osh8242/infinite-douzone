@@ -172,6 +172,7 @@ const TableTemp = ({
       }
       console.log("selectedRows", selectedRows);
       actions.setTableData([...tableData]);
+      actions.setSelectedRows(selectedRows);
     },
     [tableData, selectedRows]
   );
