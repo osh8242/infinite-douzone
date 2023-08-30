@@ -1,3 +1,4 @@
+// 작성자 : 현소현
 import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
@@ -12,43 +13,43 @@ import "./CustomInput.scss";
 function TextBoxComponent(props) {
   /* props 속성들*/
   const {
-    type, //textbox, regNum, email, password, file, date, color...
-
+    type,     // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
     id,
     name,
     label,
-    size,
     value,
-    suffix, // %, 원화표시
-    mask, // '*'
 
-    rows, //textarea 전용 (몇행짜리 textbox)
-    // truncateLength,  //mask 전용 (처음 몇 글자만 보여줄 것인지 설정)
+    rows,               // textarea 전용 옵션 [선택] (몇행짜리 textbox)
+    codeHelper,         // 코드헬퍼 아이콘 생성
+    onClickCodeHelper,  // 코드헬퍼 전용 옵션 선택시 [필수]
+    
+    size,
+    thousandSeparator, //세자리 콤마
+    suffix,   // %, 원화표시
+    mask,     // '*'
 
-    //이벤트
-    onChange,
+    //이벤트 함수[선택]
+    onChange, 
     onClick,
-    onClickCodeHelper,
     onFocus,
     onKeyDown,
 
-    //유효성 검사
-    validationFunction,
-
-    //true false 옵션
+    // [선택] true false 옵션
     disabled,
     readOnly,
-    plaintext,
-    codeHelper,
-    thousandSeparator, //세자리 콤마
+    plaintext,  //inputbox 말고 평문으로 바꿔주는 옵션
+
+    //유효성 검사
+    validationFunction,
+    
   } = props;
 
   // console.log("label",label);
   // console.log("value",value);
 
   // 입력값
-  const [inputValue, setInputValue] = useState(value);  //보여줄값
-  const [sendValue, setSendValue] = useState(value);  //보낼값
+  const [inputValue, setInputValue] = useState(value);  // 보여줄 값
+  const [sendValue, setSendValue] = useState(value);    // 보낼 값
 
   useEffect(() => {
     setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
@@ -59,10 +60,11 @@ function TextBoxComponent(props) {
       onChange && onChange(sendValue);
     }
   }
+
   const handleInputChange = (event) => {
       const newValue = event.target.value;
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
-      setInputValue(makeProcessedValue(newValue));  //data 가공
+      setInputValue(makeProcessedValue(newValue));  // data 가공
   }
 
   const makeProcessedValue = (newValue) => {
@@ -77,12 +79,13 @@ function TextBoxComponent(props) {
       processedValue = /^\d{0,6}$/.test(newValue)
         ? newValue.replace(/(\d{6})(\d{0,1})/, "$1-$2")
         : newValue; //하이픈 넣기
+
       //마스킹처리 진행중...
-       setSendValue(processedValue);
-    }else{
+
+      setSendValue(processedValue);
+    } else {
       setSendValue(processedValue)
     }
-
     return processedValue;
   };
 
@@ -111,9 +114,9 @@ function TextBoxComponent(props) {
     }
 
     if (type === "regNum") {
-      //주민등록번호 유효성
+      // 주민등록번호 유효성
       if (value.length >= 14) {
-        alert("13자리만 입력해주세요.");
+        alert("13자리 입력해주세요.");
         returnValue = value.slice(0, 14);
       }
     }
@@ -124,7 +127,6 @@ function TextBoxComponent(props) {
 
   const handleInputFocus = (e) => {
     const obj = e.target;
-
     onFocus && onFocus(obj); // onFocus 이벤트 처리
   };
 
@@ -132,16 +134,10 @@ function TextBoxComponent(props) {
     <Row className="py-1">
       {label ? (
         <>
-          <Col
-            md="4"
-            className="d-flex align-items-center justify-content-center"
-          >
+          <Col md="4" className="d-flex align-items-center justify-content-center">
             <div>{label}</div>
           </Col>
-          <Col
-            md="8"
-            className="d-flex align-items-center justify-content-center"
-          >
+          <Col md="8" className="d-flex align-items-center justify-content-center">
             {codeHelper ? (
               <div className="svg-wrapper">
                 <div className="svg-container">
@@ -175,7 +171,7 @@ function TextBoxComponent(props) {
     } else {
       return (
         <Form.Control
-          defaultValue={value}
+          //defaultValue={value}
           value={inputValue}
           type={type}
           id={id}
