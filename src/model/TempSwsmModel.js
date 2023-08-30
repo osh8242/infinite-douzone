@@ -48,10 +48,38 @@ const TempSwsmModel = () => {
         console.log("ERROR : " + error);
       });
   }, []);
+  //수정된 사원 update 요청
+  useEffect(() => {
+    if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
+      axios
+        .put(url + "/emp/updateEmp", editedEmp.item)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmp({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+  }, [editedEmp]);
+  //추가된 사원 insert 요청
+  useEffect(() => {
+    if (editedEmp.isNew && Object.keys(editedEmp).length !== 0)
+      axios
+        .post(url + "/emp/insertEmp", editedEmp.item)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmp({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+  }, [editedEmp]);
 
+  // main tab data
   useEffect(() => {
     setMainTabData({});
-
     if (mainTablePkValue)
       axios
         .post(url + "/swsm/getSwsmByCdEmp", mainTablePkValue, {
@@ -69,59 +97,57 @@ const TempSwsmModel = () => {
         });
   }, [mainTablePkValue]);
 
-  //수정된 사원 update 요청
-  useEffect(() => {
-    if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
-      axios
-        .put(url + "/emp/updateEmp", editedEmp.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-  }, [editedEmp]);
-
-  //추가된 사원 insert 요청
-  useEffect(() => {
-    if (editedEmp.isNew && Object.keys(editedEmp).length !== 0)
-      axios
-        .post(url + "/emp/insertEmp", editedEmp.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-  }, [editedEmp]);
-
+  // swsmOther
   //추가된 SwsmOther insert 요청
   useEffect(() => {
-    console.log("pk");
-    console.log(mainTablePkValue);
-    // console.log(mainTablePkValue.data);
+    console.log("SwsmOther insert start-");
     const pkValue = mainTabData.cdEmp;
-    console.log(pkValue);
 
     let updateSwsmOther = {
-      ...editedSwsmOther,
+      ...editedSwsmOther.item,
       cdEmp: pkValue,
     };
-    console.log(editedSwsmOther);
+
+    console.log("insert swsmOther data: ");
     console.log(updateSwsmOther);
+
     if (editedSwsmOther.isNew && Object.keys(editedSwsmOther).length !== 0)
       axios
-        .post(url + "/swsmOther/insertSwsmOther", updateSwsmOther.item)
+        .post(url + "/swsmOther/insertSwsmOther", updateSwsmOther)
         .then((response) => {
           if (response.data === 1) console.log("SWSMOTHER 업데이트 성공");
           setEditedSwsmOther({});
         })
         .catch((error) => {
           console.error("ERROR: ", error);
+        });
+  }, [editedSwsmOther]);
+
+  useEffect(() => {
+    console.log("swsmOther update start -");
+    console.log("update data: ");
+    console.log(editedSwsmOther.item);
+
+    const pkValue = mainTabData.cdEmp;
+    console.log("pk: " + pkValue);
+
+    let updateSwsmOther = {
+      ...editedSwsmOther.item,
+      cdEmp: pkValue,
+    };
+
+    console.log(updateSwsmOther);
+
+    if (!editedSwsmOther.isNew && Object.keys(editedSwsmOther).length !== 0)
+      axios
+        .put(url + "/swsmOther/updateSwsmOtherByCdEmp", updateSwsmOther)
+        .then((response) => {
+          if (response.data === 1) console.log("SwsmOhter 업데이트 성공");
+          setEditedSwsmOther({});
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
         });
   }, [editedSwsmOther]);
 
@@ -176,6 +202,7 @@ const TempSwsmModel = () => {
             const swsmOtherData = {
               otherType: item.otherType,
               otherMoney: item.otherMoney,
+              seqVal: item.seqVal,
               cdEmp: item.cdEmp,
             };
             return SwsmOther(swsmOtherData);

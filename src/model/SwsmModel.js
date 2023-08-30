@@ -82,6 +82,7 @@ const SwsmModel = () => {
               item: {
                 otherType: item.othertype,
                 otherMoney: item.otherMoney,
+                seqVal: item.seqVal,
                 cd_emp: item.cdEmp,
               },
               checked: false,
