@@ -1,6 +1,6 @@
 // 작성자 : 현소현
 import React, { useCallback, useEffect, useState } from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Modal, Row } from "react-bootstrap";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TableForm from "../components/TableForm";
@@ -11,57 +11,64 @@ import DateTest from "../components/DateTest";
 import SalConstant from "../model/SalConstant";
 import CommonConstant from "../model/CommonConstant";
 import TableTemp from "../components/TableTemp";
+import CodeHelper from "../components/CodeHelper";
+import CodeHelpComponent from "../components/CodeHelper";
+import HrManagementHeader from "./HrManagementHeader";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   
   const { labels } = CommonConstant();
-  const { selectOption, tableHeader } = SalConstant();
-
+  const { selectOption, tableHeader, codeHelperparams } = SalConstant();
+  
   const {
     saInfoListData
     , setSaInfoListData 
-    , salData
+    , salAllowData
     , setSalData
     , deductData
-    , setDeductData
+    , sumTableData
     , saInfoDetailData
     , setSaInfoDetailData
-    
+
     , modalState
     , setModalState    
+
     , actions
     , searchVO
     
   } = SalaryInformationEntryModel();
   
-  
+  console.log(sumTableData.salDeductPaySumData);
+
   // 코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback((tableData) => {
     setModalState({ show: true });
   }, []);
 
-  //조회 버튼
-  const onSearch = () => {
-  };
-  
+  //조회버튼
+  const onSearch =()=> {
+    alert("검색버튼");
+  }
+ 
   return (
     <>
+    <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       {/* 코드 도움 모달 영역 */}
-      <ModalComponent show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
-       
-      </ModalComponent>
+      <ModalComponent title= {'코드도움'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
+       <CodeHelpComponent onRowClick={() => setModalState({ ...modalState, show: false })} tableData={codeHelperparams.cdEmp.tableData} setData={actions.setSearchDeptCd}/>
+      </ModalComponent> 
 
       {/* 기본 검색조건 */}
       <SearchPanel onSearch={onSearch} showAccordion>
         <Row>
           <Col>
-            <DateTest type="month" label={"귀속연월"} value={searchVO.allowMonth} onChange={actions.setAllowMonth}/>
+            <DateTest type="month" label={"귀속연월"} value={searchVO.allowMonth} onChange={(e,value)=>actions.setAllowMonth(value)}/>
           </Col>
           <Col>
             <SelectForm label={"구분"} optionList={selectOption.salOptionList} onChange={actions.setSalDivision}/>
           </Col>
           <Col>
-            <DateTest label={"지급일"} value={searchVO.paymentDate} onChange={actions.setPaymentDate}/>
+            <DateTest label={"지급일"} value={searchVO.paymentDate} onChange={(e,value)=>actions.setPaymentDate(value)}/>
           </Col>
         </Row>
 
@@ -72,7 +79,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               <TextBoxComponent type="codeHelper" name="searchEmpCd" label={"사원코드"} />
             </Col>
             <Col>
-              <TextBoxComponent codeHelper name="searchDeptCd" label={"부서코드"} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
+              <TextBoxComponent name="searchDeptCd" thousandSeparator label={"부서코드"} value={searchVO.searchDeptCd} onChange={actions.setSearchDeptCd} onClickCodeHelper={codeHelperShow}
               />
             </Col>
           </Row>
@@ -110,45 +117,70 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <Col md="3">
           {/* 사원정보 table영역 */}
           <TableTemp
+            readOnly
             showCheckbox={true}
             showHeaderArrow={true}
             tableHeaders={tableHeader.salEmp}
             tableData={saInfoListData}
             actions={{
-              setTableData: actions.setSaInfoListData,
+              setTableData: setSaInfoListData,
               setPkValue: actions.setSearchAllowVo,
             }}
           />
         </Col>
         <Col md="3">
+          <>
           {/* 급여항목 table영역 */}
           <TableTemp
-            showCheckbox={false}
-            showHeaderArrow={false}
             tableHeaders={tableHeader.salAllow}
-            tableData={salData}
+            tableData={salAllowData.salData}
+            rowAddable
             actions={{
-              setTableData: actions.setSalData,
-              //setPkValue: actions.setCdEmp,
+              setTableData: setSalData,
+              setEditedRow: actions.setEditedAllow,
+              //{ cdAllow :'', nmAllow:'급여항목', allowPay : 500000 }
+              
             }}
-          />     
+          />
+          <div> 과세 : {salAllowData.sumData.taxYSum}</div>
+          <div> 비과세 :{salAllowData.sumData.taxNSum}</div>
+          <div> 총합계 : {salAllowData.sumData.sum} </div>
+          </>
         </Col>
         <Col md="3">
           {/* 공제항목 table영역 */}
-          <TableForm
-            showCheckbox={false}
-            showHeaderArrow={false}
-            tableData={deductData}
-          />
+          <>
+          <TableTemp
+            tableHeaders={tableHeader.salDeduct}
+            tableData={deductData.deductData}
+            actions={{}}
+          /> 
+           <div>
+            공제액 계 : {deductData.sumData.sum}
+            차인지급액 : {salAllowData.sumData.sum-deductData.sumData.sum}
+          </div>
+          </>
         </Col>
         <Col md="3">
           {/* 조회구분 영역*/}
-          <SelectForm label={labels.inquiryYype} optionList={selectOption.salOptionByPeriodList} />
+          <SelectForm label={labels.inquiryYype} optionList={selectOption.salOptionByPeriodList} onChange={actions.setSelectedOption}/>
           <Row>
-            <TableForm tableData={selectOption.basicDeductData} />
+            <TableTemp 
+              showCheckbox={false}
+              showHeaderArrow={false}
+              tableHeaders={tableHeader.salAllowSum}
+              tableData={sumTableData.salAllowPaySumData}
+              actions={{}}
+              readOnly
+            />
           </Row>
           <Row>
-            <TableForm tableData={selectOption.basicDeductData} />
+            <TableTemp 
+              tableHeaders={tableHeader.salDeductSum}
+              tableData={sumTableData.salDeductPaySumData} 
+              actions={{}}
+              readOnly
+            />
           </Row>
         </Col>
         <Col md="3">
