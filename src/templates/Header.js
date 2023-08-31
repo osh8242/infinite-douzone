@@ -1,23 +1,11 @@
 // 작성자 : 오승환
 
-import {
-  faQuestionCircle,
-  faTrashCan,
-} from "@fortawesome/free-regular-svg-icons";
-import {
-  faArrowUpRightFromSquare,
-  faBell,
-  faBorderAll,
-  faCalculator,
-  faPlus,
-  faPrint,
-} from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import { faBell, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
-import { Button } from "react-bootstrap";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
-import empAdd from "../styles/img/empAddLogo.png";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 const logoUrl = {
@@ -76,6 +64,7 @@ const Header = (props) => {
         </div>
       </div>
       {/* <div id="secondTopHeader">
+      {/* <div id="secondTopHeader">
         <div id="secondTopHeaderContents">
           <Button
             id="toggleSidebarBtn"
@@ -84,8 +73,8 @@ const Header = (props) => {
           >
             <i className={`fa fa-bars colorWhite`} />
           </Button>
-          {/* 로고 */}
-      {/* <img id="logo" src={empAdd} alt="" />
+          //로고
+          <img id="logo" src={empAdd} alt="" />
           <button className="backgroundBorderNone">
             <FontAwesomeIcon
               icon={faArrowUpRightFromSquare}
@@ -109,8 +98,8 @@ const Header = (props) => {
           <button className="backgroundBorderNone">
             <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
           </button>
-        </div> 
-      </div> */}
+        </div>
+      </div>       */}
     </div>
   );
 };

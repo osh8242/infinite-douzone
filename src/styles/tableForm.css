@@ -36,16 +36,23 @@ table {
   table-layout: fixed;
 }
 
+td div {
+  text-align: center;
+}
+td input {
+  text-align: center;
+}
+
 .styleNone {
   color: transparent;
 }
 
 .highlight-row {
-  background-color: rgb(150, 230, 255) !important;
+  background-color: rgb(200, 223, 255) !important; 
 }
 
 .highlight-row td,
 .highlight-row div {
   background-color: transparent !important;
-  border-color: rgb(150, 230, 255);
+  border-color: rgb(200, 223, 255)
 }

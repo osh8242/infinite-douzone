@@ -6,14 +6,14 @@
   tableData : table 로 만들 데이터
 */
 
-import React, { useEffect, useCallback, useState } from "react";
-import { Form, Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSortUp,
-  faSortDown,
   faCheck,
+  faSortDown,
+  faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useState } from "react";
+import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 

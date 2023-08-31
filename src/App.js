@@ -1,18 +1,12 @@
-import { Container } from "react-bootstrap";
 import "./App.scss";
-import { ContextProvider } from "./model/ContextModel";
 import Header from "./templates/Header";
-import LRlevel2Grid from "./templates/LRlevel2Grid";
+import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 
 function App() {
   return (
     <div>
-      <ContextProvider>
-        <Header />
-        <Container>
-          <LRlevel2Grid />
-        </Container>
-      </ContextProvider>
+      <Header />
+        <SalaryInformationEntry />
     </div>
   );
 }
