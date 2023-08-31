@@ -79,7 +79,6 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               ? input.value
               : null;
         });
-        console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
       }
     }
@@ -88,7 +87,6 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
         event.target.blur();
         let newMainTabData = { ...mainTabData.item };
         newMainTabData[event.target.id] = value;
-        console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
       }
     }
@@ -123,6 +121,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           <Col md="3">
             {/* 좌측 그리드 */}
             <TableTemp
+              tableName="EMP"
               showCheckbox
               showHeaderArrow
               rowAddable
@@ -255,6 +254,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               <MenuTab menuList={subTabMenuList} />
               {/* 우측 서브 그리드 */}
               <TableTemp
+                tableName="EMPFAM"
                 showCheckbox
                 showHeaderArrow
                 rowAddable

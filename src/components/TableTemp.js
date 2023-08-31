@@ -4,7 +4,13 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -20,6 +26,7 @@ const TableTemp = ({
   //   setEditedRow: actions.setEditedEmpFam,
   //   getRowObject: EmpFam,
   // }}
+  tableName,
 
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
@@ -29,6 +36,16 @@ const TableTemp = ({
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
+  console.log(tableName, tableData);
+
+  const selectedRowIndex = useMemo(() => {
+    return tableData?.findIndex((row) => row.selected);
+  }, [tableData]);
+
+  const editableRowIndex = useMemo(() => {
+    return tableData?.findIndex((row) => row.editableRow);
+  }, [tableData]);
+
   //현재 테이블의 선택된 행 index을 가져오는 함수
   const getSelectedRowIndex = useCallback(() => {
     return tableData.findIndex((row) => row.selected);
@@ -47,7 +64,6 @@ const TableTemp = ({
 
   //수정중인 행을 수정해제하는 함수
   const releaseEditable = useCallback(() => {
-    const editableRowIndex = tableData.findIndex((row) => row.isEditable);
     if (editableRowIndex !== -1) tableData[editableRowIndex].isEditable = false;
   }, [tableData]);
 
@@ -73,7 +89,7 @@ const TableTemp = ({
       tableData[rowIndex].isEditable = true;
       tableData[rowIndex]["focusOn"] = field;
       console.log("newData", tableData);
-      actions.setTableData(tableData);
+      actions.setTableData([...tableData]);
     },
     [tableData, pkValue]
   );
@@ -123,10 +139,9 @@ const TableTemp = ({
         if (actions.setPkValue) actions.setPkValue(getPkValue(rowIndex));
       }
 
-      const editableRowIndex = getEditableRowIndex();
       if (rowIndex !== editableRowIndex) {
         releaseEditable();
-        if (tableData[tableData.length - 1].isNew) tableData.pop();
+        if (tableData[tableData.length - 1].isNew) tableData?.pop();
       }
       actions.setTableData([...tableData]);
     },
@@ -210,26 +225,23 @@ const TableTemp = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        event.preventDefault();
+        // event.preventDefault();
         console.log("event.key", event.key);
-        const selectedRow = tableData.findIndex((row) => row.selected);
         switch (event.key) {
           case "ArrowDown":
-            if (selectedRow < tableData.length) {
-              tableData[selectedRow].selected = false;
-              tableData[selectedRow + 1].selected = true;
+            if (selectedRowIndex < tableData.length - 1) {
+              tableData[selectedRowIndex].selected = false;
+              tableData[selectedRowIndex + 1].selected = true;
             }
             break;
           case "ArrowUp":
-            if (selectedRow > 0) {
-              tableData[selectedRow].selected = false;
-              tableData[selectedRow - 1].selected = true;
+            if (selectedRowIndex > 0) {
+              tableData[selectedRowIndex].selected = false;
+              tableData[selectedRowIndex - 1].selected = true;
             }
             break;
           case "Enter":
-            const editableRowIndex = getEditableRowIndex();
-            if (editableRowIndex === -1) {
-              const selectedRowIndex = getSelectedRowIndex();
+            if (editableRowIndex === -1 && selectedRowIndex !== -1) {
               tableData[selectedRowIndex].isEditable = true;
             }
             console.log("tableData", tableData);
