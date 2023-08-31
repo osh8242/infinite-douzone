@@ -28,21 +28,35 @@ const TableTemp = ({
   showHeaderArrow, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
-  minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다. (구현부족)
 }) => {
-  const tbodyRef = useRef();
-
-  const [recentlyClickedRow, setRecentlyClickedRow] = useState();
-
-  // 테이블 내용이 바뀌면 최근클릭한 행의 인덱스 값 초기화
-  useEffect(() => {
-    setRecentlyClickedRow();
+  //현재 테이블의 선택된 행 index을 가져오는 함수
+  const getSelectedRowIndex = useCallback(() => {
+    return tableData.findIndex((row) => row.selected);
   }, [tableData]);
 
   // 수정 중인 행의 index를 찾는 함수
-  const getEditableRowIndex = () => {
+  const getEditableRowIndex = useCallback(() => {
     return tableData.findIndex((item) => item.isEditable);
-  };
+  }, [tableData]);
+
+  //선택된 행을 선택해제하는 함수(체크해제 아님)
+  const releaseSelection = useCallback(() => {
+    const selectedRowIndex = tableData.findIndex((row) => row.selected);
+    if (selectedRowIndex !== -1) tableData[selectedRowIndex].selected = false;
+  }, [tableData]);
+
+  //수정중인 행을 수정해제하는 함수
+  const releaseEditable = useCallback(() => {
+    const editableRowIndex = tableData.findIndex((row) => row.isEditable);
+    if (editableRowIndex !== -1) tableData[editableRowIndex].isEditable = false;
+  }, [tableData]);
+
+  //테이블 자신을 가르키는 dom ref
+  const myRef = useRef(null);
+  //테이블에 포커스 되어있는지 판단하는 boolean ref
+  const tableFocus = useRef(false);
+  //테이블 바디 dom ref
+  const tbodyRef = useRef();
 
   // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = useCallback(
@@ -56,14 +70,10 @@ const TableTemp = ({
         tableData.push(newRow);
       }
 
-      const newData = [...tableData];
-      newData[rowIndex] = {
-        ...newData[rowIndex],
-        isEditable: true,
-      };
-      newData[rowIndex]["focusOn"] = field;
-      console.log("newData", newData);
-      actions.setTableData(newData);
+      tableData[rowIndex].isEditable = true;
+      tableData[rowIndex]["focusOn"] = field;
+      console.log("newData", tableData);
+      actions.setTableData(tableData);
     },
     [tableData, pkValue]
   );
@@ -92,13 +102,10 @@ const TableTemp = ({
           const field = input.getAttribute("data-field");
           editedRow.item[field] = input.value;
         });
-
-        const newData = [...tableData];
-        newData[rowIndex] = editedRow;
-        console.log("editedRow", editedRow);
+        tableData[rowIndex] = editedRow;
 
         //수정된 행을 반영하여 tableData를 수정함
-        actions.setTableData(newData);
+        actions.setTableData([...tableData]);
 
         //수정된 행을 setState하여 update 요청을 보냄
         actions.setEditedRow(editedRow);
@@ -110,43 +117,18 @@ const TableTemp = ({
   // row 클릭이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex) => {
-      //최근 클릭행을 기록하는 함수
-      if (rowIndex !== recentlyClickedRow) {
-        setRecentlyClickedRow(rowIndex);
-        // 행 클릭시 해당 행의 pkValue(예. {seqVal : "12", cdEmp : "A304"}로
-        // state값을 바꾸고 싶다면.. setPkValue
-        if (actions.setPkValue) {
-          if (rowIndex === tableData.length) {
-            actions.setPkValue(pkValue);
-          } else if (rowIndex < tableData.length) {
-            let pkValue = {};
-            tableHeaders.forEach((header) => {
-              if (header.isPk)
-                pkValue[header.field] = tableData[rowIndex].item[header.field];
-            });
-            console.log("setpkValue", pkValue);
-            actions.setPkValue(pkValue);
-          }
-        }
-      } else setRecentlyClickedRow();
-      console.log("recentlyClickedRow", recentlyClickedRow);
-
-      //수정중인 행의 index를 가져옴
-      const editableRowIndex = getEditableRowIndex();
-      console.log("editableRowIndex", editableRowIndex);
-
-      //수정중인 행이 없다면 return
-      if (editableRowIndex === -1) return;
-
-      //수정중인 행과 클릭한 행이 다르다면 수정작업 해제
-      if (editableRowIndex !== rowIndex) {
-        const newData = [...tableData];
-        // 수정중인 행이 추가하려던 행이라면 pop(), 존재하던 행이라면 수정상태 비활성화
-        if (tableData[tableData.length - 1].isNew) newData.pop();
-        else newData[editableRowIndex].isEditable = false;
-        actions.setTableData(newData);
-        return;
+      releaseSelection();
+      if (rowIndex > -1 && rowIndex < tableData.length) {
+        tableData[rowIndex].selected = true;
+        if (actions.setPkValue) actions.setPkValue(getPkValue(rowIndex));
       }
+
+      const editableRowIndex = getEditableRowIndex();
+      if (rowIndex !== editableRowIndex) {
+        releaseEditable();
+        if (tableData[tableData.length - 1].isNew) tableData.pop();
+      }
+      actions.setTableData([...tableData]);
     },
     [getEditableRowIndex, tableData]
   );
@@ -154,24 +136,30 @@ const TableTemp = ({
   // 전체체크 or 전체해제
   const handleAllCheckboxChange = useCallback(() => {
     const isAllChecked = checkedBoxCounter() === tableData.length;
-    const newData = tableData.map((row) => ({
-      ...row,
-      checked: !isAllChecked,
-    }));
-    actions.setTableData(newData);
+    tableData.forEach((row, index) => {
+      tableData[index].checked = !isAllChecked;
+    });
+    actions.setTableData([...tableData]);
+    if (isAllChecked) actions.setSelectedRows(tableData);
+    else actions.setSelectedRows([]);
   }, [tableData]);
 
   // 각 행의 체크박스 체크 이벤트
   const handleCheckbox = useCallback(
     (rowIndex) => {
-      if (tableData[rowIndex].checked) setRecentlyClickedRow();
       tableData[rowIndex].checked = !tableData[rowIndex].checked;
-      if (actions.setSelectedRows) {
-        selectedRows.push(tableData[rowIndex]);
-        actions.setSelectedRows([...selectedRows]);
-        console.log("selectedRows", selectedRows);
-        actions.setTableData([...tableData]);
+      if (tableData[rowIndex].checked) {
+        if (actions.setSelectedRows) {
+          selectedRows.push(tableData[rowIndex]);
+        }
       }
+      if (!tableData[rowIndex].checked) {
+        tableData[rowIndex].selected = false;
+        selectedRows = tableData.filter((row) => row.checked);
+      }
+      actions.setSelectedRows([...selectedRows]);
+      actions.setTableData([...tableData]);
+      console.log("selectedRows", selectedRows);
     },
     [tableData, actions]
   );
@@ -188,9 +176,90 @@ const TableTemp = ({
     return checkedBoxCount;
   }, [tableData]);
 
+  //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
+  const getPkValue = useCallback(
+    (rowIndex) => {
+      let pkValue = {};
+      tableHeaders.forEach((header) => {
+        if (header.isPk)
+          pkValue[header.field] = tableData[rowIndex].item[header.field];
+      });
+      return pkValue;
+    },
+    [tableData, tableHeaders]
+  );
+
+  //테이블 바깥 영역 클릭 핸들러 함수
+  const tableMouseDownHandler = useCallback(
+    (event) => {
+      if (myRef.current && !myRef.current.contains(event.target)) {
+        if (tableFocus.current) {
+          releaseSelection();
+          releaseEditable();
+          actions.setTableData([...tableData]);
+          tableFocus.current = false;
+        }
+      }
+      if (myRef.current && myRef.current.contains(event.target)) {
+        tableFocus.current = true;
+      }
+    },
+    [tableData]
+  );
+
+  const tableKeyDownHandler = useCallback(
+    (event) => {
+      if (tableFocus.current) {
+        event.preventDefault();
+        console.log("event.key", event.key);
+        const selectedRow = tableData.findIndex((row) => row.selected);
+        switch (event.key) {
+          case "ArrowDown":
+            if (selectedRow < tableData.length) {
+              tableData[selectedRow].selected = false;
+              tableData[selectedRow + 1].selected = true;
+            }
+            break;
+          case "ArrowUp":
+            if (selectedRow > 0) {
+              tableData[selectedRow].selected = false;
+              tableData[selectedRow - 1].selected = true;
+            }
+            break;
+          case "Enter":
+            const editableRowIndex = getEditableRowIndex();
+            if (editableRowIndex === -1) {
+              const selectedRowIndex = getSelectedRowIndex();
+              tableData[selectedRowIndex].isEditable = true;
+            }
+            console.log("tableData", tableData);
+            break;
+          case "Escape":
+            releaseEditable();
+            break;
+          default:
+            break;
+        }
+        actions.setTableData([...tableData]);
+      }
+    },
+    [tableData]
+  );
+
+  //componentDidMount
+  useEffect(() => {
+    document.addEventListener("mousedown", tableMouseDownHandler);
+    document.addEventListener("keydown", tableKeyDownHandler);
+
+    return () => {
+      document.removeEventListener("mousedown", tableMouseDownHandler);
+      document.removeEventListener("keydown", tableKeyDownHandler);
+    };
+  }, [tableMouseDownHandler, tableKeyDownHandler]);
+
   return tableData ? (
     <>
-      <Table size="sm" bordered hover>
+      <Table size="sm" bordered hover ref={myRef}>
         {/* header */}
         <thead>
           <tr>
@@ -234,11 +303,7 @@ const TableTemp = ({
                 onClick={(e) => {
                   handleRowClick(e, rowIndex);
                 }}
-                className={
-                  recentlyClickedRow === rowIndex || row.checked
-                    ? "highlight-row"
-                    : ""
-                }
+                className={row.selected || row.checked ? "highlight-row" : ""}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
@@ -301,25 +366,6 @@ const TableTemp = ({
               ))}
             </tr>
           )}
-
-          {/* 빈 행 */}
-          {minRow &&
-            Array(Math.max(minRow - tableData.length, 0))
-              .fill(null)
-              .map((_, rowIndex) => (
-                <tr key={rowIndex}>
-                  <td
-                    colSpan={
-                      showCheckbox
-                        ? tableHeaders.length + 1
-                        : tableHeaders.length
-                    }
-                    style={{ color: "transparent" }}
-                  >
-                    .
-                  </td>
-                </tr>
-              ))}
         </tbody>
       </Table>
     </>

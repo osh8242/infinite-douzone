@@ -140,7 +140,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
-            <Col md="9">
+            <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
               <MenuTab menuList={mainTabMenuList} />
               {/* 우측 메인폼 */}

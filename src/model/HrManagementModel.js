@@ -49,12 +49,10 @@ const HrManagementModel = () => {
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
     console.log("leftTablePkValue", leftTablePkValue);
-    if (leftTablePkValue?.cdEmp) {
+    if (leftTablePkValue?.cdEmp && Object.keys(leftTablePkValue).length !== 0) {
       console.log("mainTabData 불러오기");
       axios
-        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue, {
-          "Content-Type": "application/json",
-        })
+        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue)
         .then((response) => {
           let data = response.data;
           console.log("불러온 mainTabData", data);
