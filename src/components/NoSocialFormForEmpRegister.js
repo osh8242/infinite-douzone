@@ -34,33 +34,49 @@ function NoSocialFormForEmpRegister(props) {
     genderListRef.current.value = fgSex || "";
   }, [noSocial, ynFor, fgSex]);
 
-  //유효값 관리를 위한 주민번호 상태 변수
-  const [noSocialValue, setNoSocialValue] = useState(noSocial || "");
-
   // 주민번호 유효성검사 함수
-  const makeProcessedNoSocial = (value) => {
-    let processedNoSocial = value;
-    // 숫자 6자리 입력 이후 '-' 추가
-    if (/^\d{0,6}$/.test(value)) {
-      processedNoSocial = value.replace(/(\d{6})(\d{0,1})/, "$1-$2");
-      //뒤의 7자리 중 첫 숫자가 짝수면 여자, 홀수면 남자
-      const eighthDigit = value[7] ? value[7] : "";
-      if (eighthDigit) {
-        genderListRef.current.value = eighthDigit % 2 === 0 ? "여자" : "남자";
-        console.log("성별! ====> ", genderListRef.current.value);
+  const makeProcessedNoSocial = (inputValue) => {
+    let processedNoSocial = inputValue;
 
-        const newFgSex = {
+    // 숫자 6자리 입력 이후 '-' 추가
+    if (/^\d{6}$/.test(inputValue)) {
+      processedNoSocial = inputValue.replace(/(\d{6})(\d{0,1})/, "$1-$2");
+      console.log("processedNoSocial => ", processedNoSocial);
+      //input view update
+      noSocialRef.current.value = processedNoSocial;
+    }
+
+    //주민등록번호 뒤의 7자리 중 첫 숫자가 짝수면 여자, 홀수면 남자
+    else if (/^\d{6}-\d{1,7}$/.test(inputValue)) {
+      const firstBackDigit = processedNoSocial[7] ? processedNoSocial[7] : "";
+
+      if (firstBackDigit) {
+        genderListRef.current.value =
+          firstBackDigit % 2 === 0 ? "여자" : "남자";
+        console.log("성별! ====> ", genderListRef.current.value);
+      }
+
+      //올바른 형식의 주민등록번호인 경우 성별 값과 주민등록번호 값 자동 update
+      if (/^\d{6}-\d{7}$/.test(inputValue)) {
+        const newEmpData = {
+          noSocial: noSocialRef.current.value,
           fgSex: genderListRef.current.value,
           cdEmp: pkValue.cdEmp,
         };
-        actions.setNoSocialForm(newFgSex);
+        actions.setNoSocialForm(newEmpData);
       }
     }
+
+    // 모든 조건에 부합하지 않는 경우
+    else {
+      console.log("주민등록번호가 조건에 부합하지 않습니다");
+    }
+
     return processedNoSocial;
   };
 
   const handleNoSocialChange = (event) => {
-    setNoSocialValue(makeProcessedNoSocial(event.target.value)); //가공된 값으로 수정
+    makeProcessedNoSocial(event.target.value); //가공된 값으로 수정
   };
 
   //주민등록번호 마스킹 함수
