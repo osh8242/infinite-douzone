@@ -65,8 +65,8 @@ const TableTemp = ({
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
-    (e, rowIndex, headerField) => {
-      columnRef.current = headerField;
+    (e, rowIndex, columnIndex) => {
+      columnRef.current = columnIndex;
       if (rowIndex !== getEditableRowIndex()) {
         releaseEditable();
         if (tableData[tableData.length - 1].isNew) tableData?.pop();
@@ -222,17 +222,35 @@ const TableTemp = ({
         const editableRowIndex = getEditableRowIndex();
         switch (event.key) {
           case "ArrowDown":
+            if (selectedRowIndex === -1) break;
             if (selectedRowIndex < tableData.length - 1) {
               tableData[selectedRowIndex].selected = false;
               tableData[selectedRowIndex + 1].selected = true;
             }
             break;
           case "ArrowUp":
+            if (selectedRowIndex === -1) break;
             if (selectedRowIndex > 0) {
               tableData[selectedRowIndex].selected = false;
               tableData[selectedRowIndex - 1].selected = true;
             }
             break;
+          case "ArrowLeft":
+            if (selectedRowIndex === -1) break;
+            console.log("애로우 레프트", columnRef);
+            if (columnRef.current > 0) {
+              columnRef.current--;
+              console.log("columnRef 좌", columnRef);
+            }
+            break;
+          case "ArrowRight":
+            if (selectedRowIndex === -1) break;
+            if (columnRef.current < tableHeaders.length - 1) {
+              columnRef.current++;
+              console.log("columnRef 우", columnRef);
+            }
+            break;
+
           case "Enter":
             if (editableRowIndex === -1 && selectedRowIndex !== -1) {
               tableData[selectedRowIndex].isEditable = true;
@@ -245,10 +263,11 @@ const TableTemp = ({
           default:
             break;
         }
+        console.log("columnRef", columnRef);
         actions.setTableData([...tableData]);
       }
     },
-    [tableData]
+    [tableData, columnRef]
   );
 
   //componentDidMount
@@ -305,7 +324,7 @@ const TableTemp = ({
             return (
               <tr
                 key={rowIndex}
-                className={row.selected || row.checked ? "highlight-row" : ""}
+                className={row.selected || row.checked ? "selectedTr" : ""}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
@@ -324,33 +343,33 @@ const TableTemp = ({
                   <td
                     key={columnIndex}
                     id={
-                      thead.field === columnRef.current && row.selected
+                      columnIndex === columnRef.current && row.selected
                         ? "selectedTd"
                         : ""
                     }
-                    onClick={(e) => handleRowClick(e, rowIndex, thead.field)}
+                    onClick={(e) => handleRowClick(e, rowIndex, columnIndex)}
                     onDoubleClick={() =>
                       handleDoubleClick(rowIndex, thead.field)
                     }
                   >
-                    <div className="tableContents">
-                      {/* editable 상태인 경우 input 요소로 렌더링 */}
-                      {row.isEditable && !thead.readOnly ? (
-                        <Form.Control
-                          type="text"
-                          data-field={thead.field}
-                          defaultValue={row.isNew ? "" : row.item[thead.field]}
-                          onKeyDown={(e) => handleKeyDown(e, rowIndex)}
-                          ref={(input) =>
-                            input &&
-                            row.focusOn === thead.field &&
-                            input.focus()
+                    {/* editable 상태인 경우 input 요소로 렌더링 */}
+                    {row.isEditable && !thead.readOnly ? (
+                      <Form.Control
+                        type="text"
+                        data-field={thead.field}
+                        defaultValue={row.isNew ? "" : row.item[thead.field]}
+                        onKeyDown={(e) => handleKeyDown(e, rowIndex)}
+                        ref={(input) => {
+                          if (input && columnRef.current === columnIndex) {
+                            input.focus();
                           }
-                        />
-                      ) : (
-                        row.item[thead.field]
-                      )}
-                    </div>
+                        }}
+                      />
+                    ) : (
+                      <div className="tableContents">
+                        {row.item[thead.field]}
+                      </div>
+                    )}
                   </td>
                 ))}
               </tr>
