@@ -56,7 +56,6 @@ const HrManagementModel = () => {
         .then((response) => {
           let data = response.data;
           console.log("불러온 mainTabData", data);
-          // setMainTabData(EmpAdd({}));
           setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
@@ -64,7 +63,6 @@ const HrManagementModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     } else {
-      console.log("mainTabData가 비워집니다.");
       setMainTabData({});
     }
   }, [leftTablePkValue, editedEmpAdd]);

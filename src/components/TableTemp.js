@@ -39,7 +39,25 @@ const TableTemp = ({
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
-  console.log(tableName, tableData);
+  console.log(tableName, tableData, "Render");
+
+  //테이블 자신을 가르키는 dom ref
+  const myRef = useRef(null);
+  //테이블 바디 dom ref
+  const tbodyRef = useRef();
+  //선택된 컬럼(인덱스)
+  const columnRef = useRef();
+  //선택된 로우(인덱스)
+  const rowRef = useRef();
+  //테이블 포커스 여부 boolean ref
+  const tableFocus = useRef(rowRef.current && columnRef.current);
+  console.log("tableFocus", tableFocus);
+
+  //로우와 컬럼 ref 해제 함수
+  const releaseSelectedRef = useCallback(() => {
+    rowRef.current = null;
+    columnRef.current = null;
+  }, []);
 
   //현재 테이블의 선택된 행 index을 가져오는 함수
   const getSelectedRowIndex = () => {
@@ -63,17 +81,18 @@ const TableTemp = ({
     if (editableRowIndex !== -1) tableData[editableRowIndex].isEditable = false;
   }, [tableData]);
 
-  //테이블 자신을 가르키는 dom ref
-  const myRef = useRef(null);
-  //테이블 바디 dom ref
-  const tbodyRef = useRef();
-  //선택된 컬럼(인덱스)
-  const columnRef = useRef();
-  //선택된 로우(인덱스)
-  const rowRef = useRef();
-  //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(rowRef.current && columnRef.current);
-  console.log("tableFocus", tableFocus);
+  //row의 className을 얻는 함수
+  const getRowClassName = useCallback((currentRow, index) => {
+    if (rowRef.current === index || currentRow.checked) return "selectedTr";
+    if (index === rowRef.current) return "selectedTr";
+    return "";
+  }, []);
+
+  // 현재 테이블의 모든 인풋요소들을 가져옴
+  const getInputElements = useCallback(
+    () => tbodyRef.current.children[rowRef.current].querySelectorAll("input"),
+    []
+  );
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
@@ -88,7 +107,7 @@ const TableTemp = ({
       if (rowIndex > -1 && rowIndex < tableData.length) {
         tableData[rowIndex].selected = true;
         rowRef.current = rowIndex;
-        if (actions.setPkValue) actions.setPkValue(getPkValue(rowIndex));
+        if (actions.setPkValue) actions.setPkValue(getPkValue());
       }
 
       actions.setTableData([...tableData]);
@@ -109,7 +128,6 @@ const TableTemp = ({
       }
 
       tableData[rowIndex].isEditable = true;
-      tableData[rowIndex]["focusOn"] = field;
       console.log("newData", tableData);
       actions.setTableData([...tableData]);
     },
@@ -124,10 +142,7 @@ const TableTemp = ({
         event.preventDefault();
 
         // 현재 수정 중인 행의 모든 입력 필드를 가져옴
-        const currentRowInputs =
-          tbodyRef.current.children[rowIndex].querySelectorAll(
-            'input[type="text"]'
-          );
+        const currentRowInputs = getInputElements();
 
         let editedRow = {
           ...tableData[rowIndex],
@@ -196,25 +211,21 @@ const TableTemp = ({
   }, [tableData]);
 
   //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
-  const getPkValue = useCallback(
-    (rowIndex) => {
-      let pkValue = {};
-      tableHeaders.forEach((header) => {
-        if (header.isPk)
-          pkValue[header.field] = tableData[rowIndex].item[header.field];
-      });
-      return pkValue;
-    },
-    [tableData, tableHeaders]
-  );
+  const getPkValue = useCallback(() => {
+    let pkValue = {};
+    tableHeaders.forEach((header) => {
+      if (header.isPk)
+        pkValue[header.field] = tableData[rowRef.current].item[header.field];
+    });
+    return pkValue;
+  }, [tableData, rowRef]);
 
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
-          rowRef.current = null;
-          columnRef.current = null;
+          releaseSelectedRef();
           releaseEditable();
           actions.setTableData([...tableData]);
           tableFocus.current = false;
@@ -232,44 +243,42 @@ const TableTemp = ({
       if (tableFocus.current) {
         // event.preventDefault();
         console.log("tableName", tableName);
-        console.log("event.key", event.key);
-        const selectedRowIndex = getSelectedRowIndex();
+        console.log("event.key", event);
         const editableRowIndex = getEditableRowIndex();
+        if (event.key === "Escape" && editableRowIndex !== -1)
+          releaseEditable();
+
         switch (event.key) {
           case "ArrowDown":
             if (!rowRef) break;
-            if (rowRef.current < tableData.length - 1) {
-              rowRef.current++;
-            }
+            if (rowRef.current < tableData.length) rowRef.current++;
+
             break;
           case "ArrowUp":
             if (!rowRef) break;
-            if (rowRef.current > 0) {
-              rowRef.current--;
-            }
+            if (rowRef.current > 0) rowRef.current--;
+
             break;
           case "ArrowLeft":
             if (!columnRef) break;
-            if (columnRef.current > 0) {
-              columnRef.current--;
-            }
+            if (columnRef.current > 0) columnRef.current--;
+
             break;
           case "ArrowRight":
             if (!columnRef) break;
-            if (columnRef.current < tableHeaders.length - 1) {
+            if (columnRef.current < tableHeaders.length - 1)
               columnRef.current++;
-            }
             break;
           case "Enter":
-            if (editableRowIndex === -1 && rowRef) {
+            if (editableRowIndex === -1 && rowRef)
               tableData[rowRef.current].isEditable = true;
-            }
-            console.log("tableData", tableData);
-            tableFocus.current = true;
             break;
-          case "Escape":
-            releaseEditable();
+          case " ":
+            handleCheckbox(rowRef.current);
             break;
+          // case "Tab":
+          //   tableFocus.current = false;
+          //   break;
           default:
             break;
         }
@@ -332,12 +341,7 @@ const TableTemp = ({
         <tbody ref={tbodyRef}>
           {tableData.map((row, rowIndex) => {
             return (
-              <tr
-                key={rowIndex}
-                className={
-                  rowRef.current === rowIndex || row.checked ? "selectedTr" : ""
-                }
-              >
+              <tr key={rowIndex} className={getRowClassName(row, rowIndex)}>
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
                   <td>
@@ -391,6 +395,7 @@ const TableTemp = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr
+              className={getRowClassName({}, tableData.length)}
               onDoubleClick={() => handleDoubleClick(tableData.length)}
               onClick={(e) => handleRowClick(e, tableData.length)}
             >
@@ -407,7 +412,7 @@ const TableTemp = ({
             </tr>
           )}
         </tbody>
-        {tableFooter ? <tfoot>{tableFooter}</tfoot> : ""}
+        {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
     </>
   ) : (
