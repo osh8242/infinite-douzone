@@ -10,6 +10,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Col, Row, Form } from "react-bootstrap";
+import "../styles/commonComponent.css";
 
 function NoSocialFormForEmpRegister(props) {
   //props 속성들
@@ -36,10 +37,12 @@ function NoSocialFormForEmpRegister(props) {
 
   // 주민번호 유효성검사 함수
   const makeProcessedNoSocial = (inputValue) => {
+    noSocialRef.current.classList.remove("notValid");
     let processedNoSocial = inputValue;
 
     // 숫자 6자리 입력 이후 '-' 추가
     if (/^\d{6}$/.test(inputValue)) {
+      // noSocialRef.current.classList.remove("notValid");
       processedNoSocial = inputValue.replace(/(\d{6})(\d{0,1})/, "$1-$2");
       console.log("processedNoSocial => ", processedNoSocial);
       //input view update
@@ -48,16 +51,18 @@ function NoSocialFormForEmpRegister(props) {
 
     //주민등록번호 뒤의 7자리 중 첫 숫자가 짝수면 여자, 홀수면 남자
     else if (/^\d{6}-\d{1,7}$/.test(inputValue)) {
+      // noSocialRef.current.classList.remove("notValid");
       const firstBackDigit = processedNoSocial[7] ? processedNoSocial[7] : "";
 
       if (firstBackDigit) {
         genderListRef.current.value =
           firstBackDigit % 2 === 0 ? "여자" : "남자";
-        console.log("성별! ====> ", genderListRef.current.value);
+        // console.log("성별! ====> ", genderListRef.current.value);
       }
 
       //올바른 형식의 주민등록번호인 경우 성별 값과 주민등록번호 값 자동 update
       if (/^\d{6}-\d{7}$/.test(inputValue)) {
+        // noSocialRef.current.classList.remove("notValid");
         const newEmpData = {
           noSocial: noSocialRef.current.value,
           fgSex: genderListRef.current.value,
@@ -70,6 +75,7 @@ function NoSocialFormForEmpRegister(props) {
     // 모든 조건에 부합하지 않는 경우
     else {
       console.log("주민등록번호가 조건에 부합하지 않습니다");
+      noSocialRef.current.classList.add("notValid");
     }
 
     return processedNoSocial;
