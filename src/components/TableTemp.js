@@ -12,6 +12,15 @@ import "../styles/tableForm.css";
 const TableTemp = ({
   tableHeaders, // [필수]
   tableData, // [필수]
+  tableFooter, // [선택] <tfoot></tfoot>에 들어갈 <tr><td>.. 요소들
+  // 푸터 예시
+  // const tableFooter = () => {
+  //   return (
+  //     <tr>
+  //       <td colSpan="3">푸터입니다.</td>
+  //     </tr>
+  //   );
+  // };
 
   actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
@@ -397,6 +406,7 @@ const TableTemp = ({
             </tr>
           )}
         </tbody>
+        {tableFooter ? <tfoot>{tableFooter}</tfoot> : ""}
       </Table>
     </>
   ) : (

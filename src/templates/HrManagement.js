@@ -92,6 +92,14 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
     }
   };
 
+  const tableFooter = () => {
+    return (
+      <tr>
+        <td colSpan="3">푸터입니다.</td>
+      </tr>
+    );
+  };
+
   return (
     <>
       <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
@@ -128,6 +136,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               tableHeaders={HrManagementLeftTableHeaders}
               tableData={leftTableData}
               selectedRows={selectedRows}
+              tableFooter={tableFooter()}
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setLeftTablePkValue,

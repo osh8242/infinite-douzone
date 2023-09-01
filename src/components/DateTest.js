@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest({ id, label, type, value, onChange }) {
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
     setInputValue(value || "");

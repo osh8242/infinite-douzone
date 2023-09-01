@@ -47,7 +47,7 @@ function TextBoxComponent(props) {
   // console.log("value",value);
 
   // 입력값
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
     setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
@@ -165,6 +165,7 @@ function TextBoxComponent(props) {
           id={id}
           name={name}
           rows={rows}
+          value={inputValue}
           onChange={handleInputChange}
           onClick={onClick}
         />
@@ -172,7 +173,6 @@ function TextBoxComponent(props) {
     } else {
       return (
         <Form.Control
-          defaultValue={value}
           value={inputValue}
           type={type}
           id={id}
