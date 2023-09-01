@@ -43,6 +43,10 @@ td input {
   text-align: center;
 }
 
+#selectedTd{
+  background-color: rgb(100, 150, 200) !important;
+}
+
 .styleNone {
   color: transparent;
 }

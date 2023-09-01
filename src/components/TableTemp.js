@@ -4,13 +4,7 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -38,43 +32,58 @@ const TableTemp = ({
 }) => {
   console.log(tableName, tableData);
 
-  const selectedRowIndex = useMemo(() => {
-    return tableData?.findIndex((row) => row.selected);
-  }, [tableData]);
-
-  const editableRowIndex = useMemo(() => {
-    return tableData?.findIndex((row) => row.editableRow);
-  }, [tableData]);
-
   //현재 테이블의 선택된 행 index을 가져오는 함수
-  const getSelectedRowIndex = useCallback(() => {
+  const getSelectedRowIndex = () => {
     return tableData.findIndex((row) => row.selected);
-  }, [tableData]);
+  };
 
   // 수정 중인 행의 index를 찾는 함수
-  const getEditableRowIndex = useCallback(() => {
+  const getEditableRowIndex = () => {
     return tableData.findIndex((item) => item.isEditable);
-  }, [tableData]);
+  };
 
   //선택된 행을 선택해제하는 함수(체크해제 아님)
   const releaseSelection = useCallback(() => {
-    const selectedRowIndex = tableData.findIndex((row) => row.selected);
+    const selectedRowIndex = getSelectedRowIndex();
     if (selectedRowIndex !== -1) tableData[selectedRowIndex].selected = false;
   }, [tableData]);
 
   //수정중인 행을 수정해제하는 함수
   const releaseEditable = useCallback(() => {
+    const editableRowIndex = getEditableRowIndex();
     if (editableRowIndex !== -1) tableData[editableRowIndex].isEditable = false;
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
-  //테이블에 포커스 되어있는지 판단하는 boolean ref
+  //테이블 포커스 여부 boolean ref
   const tableFocus = useRef(false);
   //테이블 바디 dom ref
   const tbodyRef = useRef();
+  //선택된 컬럼(필드)
+  const columnRef = useRef();
 
-  // 더블 클릭 시 해당 row 를 editable row 로 변경 (편집 가능)
+  // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
+  const handleRowClick = useCallback(
+    (e, rowIndex, headerField) => {
+      columnRef.current = headerField;
+      if (rowIndex !== getEditableRowIndex()) {
+        releaseEditable();
+        if (tableData[tableData.length - 1].isNew) tableData?.pop();
+      }
+
+      releaseSelection();
+      if (rowIndex > -1 && rowIndex < tableData.length) {
+        tableData[rowIndex].selected = true;
+        if (actions.setPkValue) actions.setPkValue(getPkValue(rowIndex));
+      }
+
+      actions.setTableData([...tableData]);
+    },
+    [getEditableRowIndex, tableData]
+  );
+
+  // row DoubliClick 이벤트 : 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = useCallback(
     (rowIndex, field) => {
       if (readOnly) return;
@@ -128,24 +137,6 @@ const TableTemp = ({
       }
     },
     [tableData]
-  );
-
-  // row 클릭이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
-  const handleRowClick = useCallback(
-    (e, rowIndex) => {
-      releaseSelection();
-      if (rowIndex > -1 && rowIndex < tableData.length) {
-        tableData[rowIndex].selected = true;
-        if (actions.setPkValue) actions.setPkValue(getPkValue(rowIndex));
-      }
-
-      if (rowIndex !== editableRowIndex) {
-        releaseEditable();
-        if (tableData[tableData.length - 1].isNew) tableData?.pop();
-      }
-      actions.setTableData([...tableData]);
-    },
-    [getEditableRowIndex, tableData]
   );
 
   // 전체체크 or 전체해제
@@ -227,6 +218,8 @@ const TableTemp = ({
       if (tableFocus.current) {
         // event.preventDefault();
         console.log("event.key", event.key);
+        const selectedRowIndex = getSelectedRowIndex();
+        const editableRowIndex = getEditableRowIndex();
         switch (event.key) {
           case "ArrowDown":
             if (selectedRowIndex < tableData.length - 1) {
@@ -312,9 +305,6 @@ const TableTemp = ({
             return (
               <tr
                 key={rowIndex}
-                onClick={(e) => {
-                  handleRowClick(e, rowIndex);
-                }}
                 className={row.selected || row.checked ? "highlight-row" : ""}
               >
                 {/* 각 row 의 checkBox */}
@@ -333,6 +323,12 @@ const TableTemp = ({
                 {tableHeaders.map((thead, columnIndex) => (
                   <td
                     key={columnIndex}
+                    id={
+                      thead.field === columnRef.current && row.selected
+                        ? "selectedTd"
+                        : ""
+                    }
+                    onClick={(e) => handleRowClick(e, rowIndex, thead.field)}
                     onDoubleClick={() =>
                       handleDoubleClick(rowIndex, thead.field)
                     }
