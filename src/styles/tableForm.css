@@ -33,7 +33,7 @@
 }
 
 table {
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 td div {

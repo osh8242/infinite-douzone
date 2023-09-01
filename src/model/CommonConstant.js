@@ -55,7 +55,7 @@ const CommonConstant = () => {
       { field: "cdFamrel", text: "관계" },
       { field: "nmKrname", text: "성명" },
       { field: "ynFor", text: "외국인" },
-      { field: "noSocial", text: "주민등록번호", width: "100px" },
+      { field: "noSocial", text: "주민등록번호" },
       { field: "fgSchool", text: "학력" },
       { field: "fgGraduation", text: "졸업구분" },
       { field: "ynTogether", text: "동거" },

@@ -206,6 +206,7 @@ const TableTemp = ({
         if (tableFocus.current) {
           rowRef.current = null;
           columnRef.current = null;
+          releaseEditable();
           actions.setTableData([...tableData]);
           tableFocus.current = false;
         }
