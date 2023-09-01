@@ -11,6 +11,7 @@ import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import { Scrollbars } from "react-custom-scrollbars";
 import TempAdd from "../components/TempAdd";
+import SwsmAddress from "../components/SwsmAddress";
 import TempText from "../components/TempText";
 import SwsmText from "../components/SwsmText";
 import Spinner from "react-bootstrap/Spinner";
@@ -127,11 +128,14 @@ const LaborContract = () => {
                 {/* 근무장소  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
-                    <TempAdd
+                    <SwsmAddress
                       label={labels.workAddress}
                       isZonecode={false}
                       value={mainTabData ? mainTabData.address : ""}
                       value2={mainTabData ? mainTabData.addDetail : ""}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>

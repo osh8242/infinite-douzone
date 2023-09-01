@@ -51,12 +51,10 @@ function SwsmText(props) {
   const handleInputValueChange = (event) => {
     console.log("onChange :" + event.target.value);
     setInputValue(event.target.value);
-    // if (event.key === "Enter") console.log("enter");
   };
   const handleInputEndValueChange = (event) => {
     console.log("onChange :" + event.target.value);
     setInputEndValue(event.target.value);
-    // if (event.key === "Enter") console.log("enter");
   };
 
   const handleFocusOut = (event) => {
