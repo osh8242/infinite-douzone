@@ -56,12 +56,15 @@ const TableTemp = ({
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
-  //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(false);
   //테이블 바디 dom ref
   const tbodyRef = useRef();
-  //선택된 컬럼(필드)
+  //선택된 컬럼(인덱스)
   const columnRef = useRef();
+  //선택된 로우(인덱스)
+  const rowRef = useRef();
+  //테이블 포커스 여부 boolean ref
+  const tableFocus = useRef(rowRef.current && columnRef.current);
+  console.log("tableFocus", tableFocus);
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
@@ -75,6 +78,7 @@ const TableTemp = ({
       releaseSelection();
       if (rowIndex > -1 && rowIndex < tableData.length) {
         tableData[rowIndex].selected = true;
+        rowRef.current = rowIndex;
         if (actions.setPkValue) actions.setPkValue(getPkValue(rowIndex));
       }
 
@@ -200,8 +204,8 @@ const TableTemp = ({
     (event) => {
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
-          releaseSelection();
-          releaseEditable();
+          rowRef.current = null;
+          columnRef.current = null;
           actions.setTableData([...tableData]);
           tableFocus.current = false;
         }
@@ -217,45 +221,41 @@ const TableTemp = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
+        console.log("tableName", tableName);
         console.log("event.key", event.key);
         const selectedRowIndex = getSelectedRowIndex();
         const editableRowIndex = getEditableRowIndex();
         switch (event.key) {
           case "ArrowDown":
-            if (selectedRowIndex === -1) break;
-            if (selectedRowIndex < tableData.length - 1) {
-              tableData[selectedRowIndex].selected = false;
-              tableData[selectedRowIndex + 1].selected = true;
+            if (!rowRef) break;
+            if (rowRef.current < tableData.length - 1) {
+              rowRef.current++;
             }
             break;
           case "ArrowUp":
-            if (selectedRowIndex === -1) break;
-            if (selectedRowIndex > 0) {
-              tableData[selectedRowIndex].selected = false;
-              tableData[selectedRowIndex - 1].selected = true;
+            if (!rowRef) break;
+            if (rowRef.current > 0) {
+              rowRef.current--;
             }
             break;
           case "ArrowLeft":
-            if (selectedRowIndex === -1) break;
-            console.log("애로우 레프트", columnRef);
+            if (!columnRef) break;
             if (columnRef.current > 0) {
               columnRef.current--;
-              console.log("columnRef 좌", columnRef);
             }
             break;
           case "ArrowRight":
-            if (selectedRowIndex === -1) break;
+            if (!columnRef) break;
             if (columnRef.current < tableHeaders.length - 1) {
               columnRef.current++;
-              console.log("columnRef 우", columnRef);
             }
             break;
-
           case "Enter":
-            if (editableRowIndex === -1 && selectedRowIndex !== -1) {
-              tableData[selectedRowIndex].isEditable = true;
+            if (editableRowIndex === -1 && rowRef) {
+              tableData[rowRef.current].isEditable = true;
             }
             console.log("tableData", tableData);
+            tableFocus.current = true;
             break;
           case "Escape":
             releaseEditable();
@@ -324,7 +324,9 @@ const TableTemp = ({
             return (
               <tr
                 key={rowIndex}
-                className={row.selected || row.checked ? "selectedTr" : ""}
+                className={
+                  rowRef.current === rowIndex || row.checked ? "selectedTr" : ""
+                }
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
@@ -343,7 +345,8 @@ const TableTemp = ({
                   <td
                     key={columnIndex}
                     id={
-                      columnIndex === columnRef.current && row.selected
+                      columnIndex === columnRef.current &&
+                      rowRef.current === rowIndex
                         ? "selectedTd"
                         : ""
                     }
