@@ -92,7 +92,7 @@ function EmpRegisterationModel() {
     if (Object.keys(editedEmp).length !== 0) {
       console.log("update요청: ", editedEmp);
       axios
-        .put(url + "/emp/updateEmp", editedEmp, {
+        .put(url + "/emp/updateEmp", editedEmp.item, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {

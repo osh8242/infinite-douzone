@@ -76,31 +76,22 @@ function EmpRegisterationLayout() {
 
   return (
     <>
-      {/* <div id="empRegisterArea"> */}
-      {/* <div id="empRegisterHeader"> */}
       <EmpRegisterHeader
         selectedRows={selectedRows}
         actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
       />
-      {/* </div> */}
       <Container>
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 사원목록 테이블 */}
             {leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
-              // <TableForm
-              //   showCheckbox={true}
-              //   showHeaderArrow={true}
-              //   tableData={leftTableData}
-              //   rowClickHandler={setCdEmp}
-              //   minRow={20}
-              // />
               <TableTemp
-                showCheckbox={true}
-                showHeaderArrow={true}
+                showCheckbox
+                showHeaderArrow
+                rowAddable
                 tableHeaders={EmpRegisterLeftHeaders}
                 tableData={leftTableData}
-                rowAddable={true}
+                selectedRows={selectedRows}
                 actions={{
                   setTableData: actions.setLeftTableData,
                   setPkValue: actions.setMainTablePkValue,
@@ -116,7 +107,6 @@ function EmpRegisterationLayout() {
           <Col id="empRegisterLayoutRight">
             <Row id="empDataSortedMenuArea">
               <MenuTab menuList={mainTabMenuListForEmpRegister} />
-              {/* <div id="empDataSortedLine"></div> */}
             </Row>
             {/* 사원정보 편집 */}
             <Row id="baseData" ref={mainTabRef}>
