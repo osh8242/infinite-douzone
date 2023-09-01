@@ -73,19 +73,19 @@ function SwsmText(props) {
       <Row className="py-1">
         {/* 추가 있을때만 2 기본 4 */}
         <Col
-          md={md}
+          md={!isPeriod ? "2" : "4"}
           className="d-flex align-items-center justify-content-center"
         >
           <div>{label}</div>
         </Col>
 
         <Col
-          md={!subLabel && "7"}
+          md={!label2 ? "7" : "2"}
           className="d-flex align-items-center justify-content-center"
         >
           {/* subLabel 사용 시 */}
-          {subLabel && (
-            <Col md="2">
+          {label2 && (
+            <Col md="4">
               <div>{label2}</div>
             </Col>
           )}
@@ -93,7 +93,7 @@ function SwsmText(props) {
           <Form.Control
             type={type}
             placeholder={props.placeholder}
-            size={size}
+            size={5}
             disabled={disabled}
             readOnly={readOnly}
             plaintext={plaintext}
@@ -119,10 +119,10 @@ function SwsmText(props) {
           )}
 
           <Col
-            md="2"
+            md="3"
             className="d-flex align-items-center justify-content-center"
           >
-            {subLabel && <div>{label3}</div>}
+            {label3 && <div>{label3}</div>}
           </Col>
         </Col>
       </Row>

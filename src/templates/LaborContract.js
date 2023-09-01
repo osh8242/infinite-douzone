@@ -168,25 +168,28 @@ const LaborContract = () => {
                 {/* 휴게시간  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
-                    <TempText
-                      label={labels.breakTime}
+                    <SwsmText
                       isPeriod={true}
+                      label={labels.breakTime}
+                      labelKey={"startBreakTime"}
+                      labelKey2={"endBreakTime"}
                       value={mainTabData ? mainTabData.startBreakTime : ""}
                       PeriodEnd={mainTabData ? mainTabData.endBreakTime : ""}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>
                 {/* 근무일  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
-                    <TempText
+                    <SwsmText
                       label={labels.workingDay}
                       label2={"매 주 "}
                       label3={"일"}
-                      value={mainTabData ? mainTabData.workingDay : ""}
-                      subLabel={true}
-                      md={4}
                       size={1}
+                      value={mainTabData ? mainTabData.workingDay : ""}
                       labelKey={"workingDay"}
                       actions={{
                         setEdited: actions.setEditedSwsm,
@@ -197,14 +200,12 @@ const LaborContract = () => {
                 {/* 주휴일  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
-                    <TempText
+                    <SwsmText
                       label={labels.dayOff}
-                      label2={"매 주 "}
+                      label2={"매 주"}
                       label3={"요일"}
-                      type={"selectForm"}
+                      size={1}
                       value={mainTabData ? mainTabData.dayOff : ""}
-                      subLabel={true}
-                      md={4}
                       labelKey={"dayOff"}
                       actions={{
                         setEdited: actions.setEditedSwsm,
