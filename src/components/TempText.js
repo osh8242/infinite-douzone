@@ -75,12 +75,6 @@ function TempText(props) {
   };
 
   const handleFocusOut = (event) => {
-    console.log("blur");
-    console.log(inputValue);
-    console.log("label");
-    console.log(label);
-    console.log(labelKey);
-
     const newData = {
       [labelKey]: inputValue,
     };

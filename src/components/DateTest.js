@@ -22,6 +22,7 @@ function DateTest(props) {
     labelKey2,
     onChange,
   } = props;
+
   // const [date, setDate] = useState(new Date());
   // const [inputValue, setInputValue] = useState(value);
   const [startDate, setStartDate] = useState(value || "");

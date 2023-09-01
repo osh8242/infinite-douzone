@@ -43,30 +43,34 @@ const TempAdd = (props) => {
               type="text"
               name="zonecode"
               value={zonecode}
-              // size={5}
-              // disabled
             />
           )}
 
-          {/* 주소 */}
-          <Form.Control
-            id="addressArea"
-            type="text"
-            name="address"
-            value={value}
-            //disabled
-          />
+          <Row>
+            {/* 주소 */}
+            <Col md="10">
+              <Form.Control
+                id="addressArea"
+                type="text"
+                name="address"
+                value={value}
+              />
+            </Col>
 
-          {/* 버튼 클릭 시 Post 모달 호출 */}
-          <Button
-            id="addressSearchBtn"
-            variant="secondary"
-            onClick={() => setModalState({ ...modalState, show: true })}
-          >
-            검색
-          </Button>
+            {/* 버튼 클릭 시 Post 모달 호출 */}
+            <Col md="2">
+              <Button
+                id="addressSearchBtn"
+                variant="secondary"
+                onClick={() => setModalState({ ...modalState, show: true })}
+              >
+                검색
+              </Button>
+            </Col>
+          </Row>
         </Col>
       </Row>
+
       {/* 상세주소 */}
       <Row className="py-1">
         <Col
@@ -79,6 +83,7 @@ const TempAdd = (props) => {
           <Form.Control type="text" name="address-detail" value={value2} />
         </Col>
       </Row>
+
       <ModalComponent
         size="lg"
         show={modalState.show}

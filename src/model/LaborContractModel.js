@@ -175,7 +175,9 @@ const LaborContractModel = () => {
         })
         .then((response) => {
           let data = response.data;
+          //////////////////////////////////////////
           if (response.data === "") data = {};
+          // if (data === "" || data === null) data = {};
           setMainTabData(data);
         })
         .catch((error) => {

@@ -15,6 +15,8 @@ import TempText from "../components/TempText";
 import Spinner from "react-bootstrap/Spinner";
 import TempSelect from "../components/TempSelect";
 import LaborContractHeader from "./LaborContractHeader";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import HrManagement from "./HrManagementHeader";
 
 const LaborContract = () => {
   const {
@@ -35,18 +37,39 @@ const LaborContract = () => {
   } = SwsmConstant();
 
   const { state, actions, mainTablePkValue } = LaborContractModel();
-  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
+
+  const {
+    leftTableData,
+    // leftTablePkValue,
+    mainTabData,
+    subTableData,
+  } = state;
+
+  const handlerMainTab = (e) => {
+    console.log(e.target.value);
+    console.log(mainTabMenuList);
+    console.log(mainTabMenuList);
+  };
 
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
-      <Container>
-        <MenuTab menuList={mainTabMenuList} />
+      <Container fluid>
+        <MenuTab menuList={mainTabMenuList} onChange={handlerMainTab} />
         <SearchPanel>
           <Row>
             {/* 작성년월 */}
             <Col md="4">
-              <DateTest label={labels.dateOfCreation} />
+              <DateTest
+                label={labels.dateOfCreation}
+                value={mainTabData ? mainTabData.paymentDate : ""}
+                type={"date"}
+                isPeriod={false}
+                labelKey={"paymentDate"}
+                actions={{
+                  setEdited: actions.setEditedSwsm,
+                }}
+              />
             </Col>
             {/* 소득구분 */}
             <Col md="4">

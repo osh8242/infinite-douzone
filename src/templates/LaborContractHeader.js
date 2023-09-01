@@ -39,25 +39,38 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
+            size={"xl"}
             className="colorWhite backgroundBorderNone"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} size={"xl"} className="colorWhite" />
         </button>
         <button
           className="backgroundBorderNone"
           onClick={(e) => faTrashCanClickHandler(e)}
         >
-          <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
+          <FontAwesomeIcon
+            icon={faTrashCan}
+            size={"xl"}
+            className="colorWhite"
+          />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon
+            icon={faCalculator}
+            size={"xl"}
+            className="colorWhite"
+          />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon
+            icon={faBorderAll}
+            size={"xl"}
+            className="colorWhite"
+          />
         </button>
       </div>
       <ModalComponent
