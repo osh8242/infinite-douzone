@@ -12,6 +12,7 @@ import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import { Scrollbars } from "react-custom-scrollbars";
 import TempAdd from "../components/TempAdd";
 import TempText from "../components/TempText";
+import SwsmText from "../components/SwsmText";
 import Spinner from "react-bootstrap/Spinner";
 import TempSelect from "../components/TempSelect";
 import LaborContractHeader from "./LaborContractHeader";
@@ -25,7 +26,7 @@ const LaborContract = () => {
     incomeClassficationList, // 상단 조회 - 소득구분 목록
     SwsmLeftTableHeaders,
     SwsmSubTabHeaders,
-    labels,
+    labels, //
     salaryTypeList,
     otherBenefitStatusList,
     bonusPaymentStatusList,
@@ -137,7 +138,7 @@ const LaborContract = () => {
                 {/* 업무의 내용  */}
                 <Row>
                   <Col xs md={{ span: 10, offset: 1 }}>
-                    <TempText
+                    <SwsmText
                       label={labels.jobDescription}
                       value={mainTabData ? mainTabData.jobDescription : ""}
                       md={2}
@@ -151,11 +152,16 @@ const LaborContract = () => {
                 {/* 소정근로시간  */}
                 <Row>
                   <Col xs md={{ span: 5, offset: 1 }}>
-                    <TempText
+                    <SwsmText
                       isPeriod={true}
                       label={labels.workTime}
+                      labelKey={"startWorktime"}
+                      labelKey2={"endWorktime"}
                       value={mainTabData ? mainTabData.startWorktime : ""}
                       PeriodEnd={mainTabData ? mainTabData.endWorktime : ""}
+                      actions={{
+                        setEdited: actions.setEditedSwsm,
+                      }}
                     />
                   </Col>
                 </Row>

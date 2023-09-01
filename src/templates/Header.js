@@ -52,7 +52,6 @@ const Header = (props) => {
             type="text"
             id="findMenuBar"
             placeholder={"찾고싶은 메뉴를 검색하세요"}
-            // value=
           />
           <button className="backgroundBorderNone">
             <FontAwesomeIcon icon={faPlus} size={"2xl"} className="colorDark" />

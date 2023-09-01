@@ -23,12 +23,12 @@
     font-size: 12.5px;
 }
 
-#on{
+/* #on{
     border: solid 1px rgb(48, 150, 255);
 }
 #off {
     border: solid 1px grey;
-}
+} */
 
 .search-bar__input::placeholder{
     color:white;

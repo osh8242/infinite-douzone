@@ -23,12 +23,14 @@ function TempText(props) {
     type,
     label,
     labelKey,
+    labelKey2,
     rows,
     size,
     disabled,
     readOnly,
     plaintext,
     value,
+    PeriodEnd,
     md,
     subLabel,
     label2,
@@ -58,10 +60,12 @@ function TempText(props) {
   // console.log('md:' + md);
   //입력값
   const [inputValue, setInputValue] = useState(value);
+  const [inputEndValue, setInputEndValue] = useState(PeriodEnd);
 
   useEffect(() => {
     setInputValue(props.value);
-  }, [value]);
+    setInputEndValue(props.PeriodEnd);
+  }, [value, PeriodEnd]);
 
   //마스킹 함수
   const handleInputValueChange = (event) => {
@@ -77,6 +81,7 @@ function TempText(props) {
   const handleFocusOut = (event) => {
     const newData = {
       [labelKey]: inputValue,
+      [labelKey2]: inputEndValue,
     };
 
     actions.setEdited(newData);
@@ -215,7 +220,7 @@ function TempText(props) {
             plaintext={plaintext}
             value={inputValue}
             onChange={handleInputValueChange}
-            onBlur={handleFocusOut}
+            // onBlur={handleFocusOut}
           />
           {isPeriod && (
             <>
@@ -229,6 +234,7 @@ function TempText(props) {
                 plaintext={plaintext}
                 value={inputValue}
                 onChange={handleInputValueChange}
+                // onBlur={handleFocusOut}
               />
             </>
           )}
@@ -263,7 +269,7 @@ function TempText(props) {
               <div>{label2}</div>
             </Col>
           )}
-          {/* 기본 text */}{" "}
+          {/* 기본 text */}
           <Col md="4">
             <Form.Control
               type={type}
@@ -287,8 +293,9 @@ function TempText(props) {
                 disabled={disabled}
                 readOnly={readOnly}
                 plaintext={plaintext}
-                value={inputValue}
+                value={inputEndValue}
                 onChange={handleInputValueChange}
+                onBlur={handleFocusOut}
               />
             </>
           )}
@@ -345,7 +352,7 @@ function TempText(props) {
                   disabled={disabled}
                   readOnly={readOnly}
                   plaintext={plaintext}
-                  value={inputValue}
+                  value={inputEndValue}
                   onChange={handleInputValueChange}
                   onBlur={handleFocusOut}
                 />
