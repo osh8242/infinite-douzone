@@ -1,23 +1,23 @@
-#fullAddressArea {
+.fullAddressArea {
   display: flex;
   justify-content: space-evenly;
   gap: 4px;
 }
 
-#zoneCodeArea {
+.fullAddressArea .zoneCodeArea {
   width: 18%;
   text-justify: center;
 }
 
-#addressArea {
+.fullAddressArea .addressArea {
   width: 64%;
   flex: 1 1 0%;
 }
 
-#addressSearchBtn {
+.addressSearchBtn {
   width: 14%;
   font-size: small;
   color: rgb(57, 63, 80);
-  border: solid 1px rgb(230, 230, 230);
+  /* border: solid 1px rgb(230, 230, 230); */
   background-color: rgb(248, 248, 248);
 }

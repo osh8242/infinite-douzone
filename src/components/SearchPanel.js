@@ -1,8 +1,7 @@
 /* 작성자 : 현소현 */
-import {  Accordion, Button, Col, Row,} from 'react-bootstrap';
+import { Accordion, Button, Col, Row } from "react-bootstrap";
 
 const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
-  
   return (
     <>
       <Row>
@@ -11,19 +10,17 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
           <Accordion>
             <Accordion.Item eventKey="0">
               <Accordion.Header>
-            
-                  <Col className="my-1" md="8">
-                    {children[0]} {/* 기본 검색조건 */}
-                  </Col>
-                  <Col
-                    className="d-flex align-items-center justify-content-center"
-                    md={{ span: 2, offset: 2 }}
-                  >
-                    <Button variant="secondary" onClick={onSearch}>
-                      조회
-                    </Button>
-                  </Col>
-              
+                <Col className="my-1" md="8">
+                  {children[0]} {/* 기본 검색조건 */}
+                </Col>
+                <Col
+                  className="d-flex align-items-center justify-content-center"
+                  md={{ span: 2, offset: 2 }}
+                >
+                  <Button variant="secondary" onClick={onSearch}>
+                    조회
+                  </Button>
+                </Col>
               </Accordion.Header>
               <Accordion.Body>
                 <Row>
@@ -41,7 +38,7 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
           </Accordion>
         ) : (
           //더보기 없음
-          <Row>
+          <Row className="my-4">
             <Col className="my-1" md="8">
               {children} {/* 기본 검색조건 */}
             </Col>
@@ -61,4 +58,3 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
 };
 
 export default SearchPanel;
-

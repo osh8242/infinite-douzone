@@ -1,17 +1,12 @@
-import { Container } from "react-bootstrap";
 import "./App.scss";
 import Header from "./templates/Header";
-import LRlevel2Grid from "./templates/LRlevel2Grid";
-import EmpRegisterationLayout from "./templates/EmpRegisterationLayout";
-import SalaryInformationEntry from "./templates/SalaryInformationEntry";
+import HrManagement from "./templates/HrManagement";
 
 function App() {
   return (
     <div>
       <Header />
-      <Container fluid>
-        <LRlevel2Grid />
-      </Container>
+      <HrManagement />
     </div>
   );
 }

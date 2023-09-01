@@ -1,21 +1,19 @@
 /*
   작성자 : 김진
-  
   parameter : showCheckbox, showHeaderArrow, tableData
-
   showCheckbox : true 일 경우 체크박스 생성, false 체크박스 제거
   showHeaderArrow : true 일 경우 table header 에 arrow icon 생성, false arrow icon 제거
   tableData : table 로 만들 데이터
 */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { Form, Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSortUp,
-  faSortDown,
   faCheck,
+  faSortDown,
+  faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useState } from "react";
+import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
@@ -24,7 +22,7 @@ const TableForm = ({
   showHeaderArrow,
   tableData,
   rowClickHandler,
-  minRow,
+  cellClickHandler,
 }) => {
   // 예외처리 방법은 추후 수정
   // if (!tableData || tableData.length === 0) {
@@ -57,14 +55,14 @@ const TableForm = ({
   };
 
   // //////////////////////////////////////////////////////////////// 더블 클릭 후 편집한 데이터 -> DB 연결 이후 실반영되도록 수정 예정
-  const handleInputChange = (event, rowIndex, columnName) => {
+  const handleInputChange = useCallback((event, rowIndex, columnName) => {
     const updatedEditedData = { ...editedData };
     updatedEditedData[rowIndex] = {
       ...updatedEditedData[rowIndex],
       [columnName]: event.target.value,
     };
     setEditedData(updatedEditedData);
-  };
+  });
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   // editable row 이외 row 클릭 시 해당 row 비활성화
@@ -163,7 +161,7 @@ const TableForm = ({
             );
           })}
           {/* 빈 행 */}
-          {minRow &&
+          {/* {minRow &&
             Array(Math.max(minRow - tableData.length, 0))
               .fill(null)
               .map((_, index) => (
@@ -175,7 +173,7 @@ const TableForm = ({
                     .
                   </td>
                 </tr>
-              ))}
+              ))} */}
         </tbody>
       </Table>
     </>

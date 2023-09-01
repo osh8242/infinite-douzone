@@ -21,7 +21,7 @@
 }
 
 .tableContents {
-  margin: 2px 0px;
+  margin: 1px 0px;
 }
 
 .tableCheckBoxArea {
@@ -33,9 +33,31 @@
 }
 
 table {
-  table-layout: fixed;
+  table-layout: auto;
+}
+
+td div {
+  text-align: center;
+}
+td input {
+  text-align: center;
+}
+
+#selectedTd{
+  background-color: rgb(150, 175, 200) !important;
 }
 
 .styleNone {
   color: transparent;
 }
+
+.selectedTr {
+  background-color: rgb(200, 223, 255) !important; 
+}
+
+.selectedTr td,
+.selectedTr div {
+  background-color: transparent !important;
+  border-color: rgb(200, 223, 255);
+}
+

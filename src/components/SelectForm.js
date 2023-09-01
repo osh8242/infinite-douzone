@@ -12,10 +12,15 @@
 //    <SelectForm label="구분" optionList={optionList}/>
 //
 
-import { Col, Row } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Col, Row } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
-function SelectForm({ label, optionList, selectRef }) {
+function SelectForm({ label, optionList, selectRef, onChange }) {
+  const handleSelectChange = (event) => {
+    const selectedValue = selectRef.current.value;
+    if (onChange) onChange(selectedValue);
+  };
+
   return (
     <Row className="py-1">
       {label && (
@@ -27,7 +32,7 @@ function SelectForm({ label, optionList, selectRef }) {
         </Col>
       )}
       <Col className="d-flex align-items-center justify-content-center">
-        <Form.Select ref={selectRef}>
+        <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
           {optionList.map((option, index) => (
             <option value={option.key} key={index}>
               {option.value}
