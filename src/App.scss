@@ -21,6 +21,10 @@ input {
   caret-color: auto;
 }
 
+div[contenteditable] {
+  caret-color: auto;  /* 또는 원하는 색상으로 설정, 예: black */
+}
+
 // 자동완성 입력시 배경색이 바뀌는 것을 방지
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px white inset !important;

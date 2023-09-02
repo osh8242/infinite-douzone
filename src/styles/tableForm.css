@@ -61,3 +61,9 @@ td input {
   border-color: rgb(200, 223, 255);
 }
 
+div[contentEditable="true"] {
+  border-radius: 3px;
+  outline: none;
+  background-color: white !important;
+}
+

@@ -98,7 +98,10 @@ const TableTemp = ({
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback(
-    () => tbodyRef.current.children[rowRef.current].querySelectorAll("input"),
+    () =>
+      tbodyRef.current.children[rowRef.current].querySelectorAll(
+        "[contentEditable='true']"
+      ),
     []
   );
 
@@ -118,12 +121,13 @@ const TableTemp = ({
 
   // 추가중이던 행 제거
   const removeNewRow = useCallback(() => {
-    if (tableData[tableData.length - 1].isNew) tableData?.pop();
+    if (tableData?.[tableData.length - 1].isNew) tableData?.pop();
   }, [tableData]);
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
+      if (readOnly) return;
       rowRef.current = rowIndex;
       columnRef.current = columnIndex;
       if (rowIndex !== getEditableRowIndex()) {
@@ -174,9 +178,10 @@ const TableTemp = ({
         // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
         currentRowInputs.forEach((input, rowIndex) => {
           const field = input.getAttribute("data-field");
-          editedRow.item[field] = input.value;
+          editedRow.item[field] = input.innerText;
         });
         tableData[rowIndex] = editedRow;
+        console.log("editedRow", editedRow);
 
         //수정된 행을 반영하여 tableData를 수정함
         actions.setTableData([...tableData]);
@@ -303,6 +308,7 @@ const TableTemp = ({
               break;
             case "Enter":
               if (editableRowIndex === -1 && rowRef) {
+                event.preventDefault();
                 handleRowClick(event, rowRef.current, columnRef.current);
                 if (rowRef.current === tableData.length) pushNewRow();
                 setEditableRow(rowRef.current);
@@ -334,6 +340,16 @@ const TableTemp = ({
       document.removeEventListener("keydown", tableKeyDownHandler);
     };
   }, [tableMouseDownHandler, tableKeyDownHandler]);
+
+  // 입력커서 맨 뒤로 이동시키는 함수
+  const focusAtEnd = (element) => {
+    let range = document.createRange();
+    let selection = window.getSelection();
+    range.selectNodeContents(element);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
 
   return tableData ? (
     <>
@@ -395,33 +411,34 @@ const TableTemp = ({
                     key={columnIndex}
                     id={
                       columnIndex === columnRef.current &&
-                      rowRef.current === rowIndex
-                        ? "selectedTd"
-                        : ""
+                      rowRef.current === rowIndex &&
+                      "selectedTd"
                     }
                     onClick={(e) => handleRowClick(e, rowIndex, columnIndex)}
                     onDoubleClick={() =>
                       handleDoubleClick(rowIndex, thead.field)
                     }
                   >
-                    {/* editable 상태인 경우 input 요소로 렌더링 */}
-                    {row.isEditable && !thead.readOnly ? (
-                      <Form.Control
-                        type="text"
-                        data-field={thead.field}
-                        defaultValue={row.isNew ? "" : row.item[thead.field]}
-                        onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
-                        ref={(input) => {
-                          if (input && columnRef.current === columnIndex) {
-                            input.focus();
-                          }
-                        }}
-                      />
-                    ) : (
-                      <div className="tableContents">
-                        {row.item[thead.field]}
-                      </div>
-                    )}
+                    <div className="tableContents">
+                      {/* editable 상태인 경우 input 요소로 렌더링 */}
+                      {row.isEditable && !thead.readOnly ? (
+                        <div
+                          contentEditable
+                          data-field={thead.field}
+                          onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
+                          ref={(input) => {
+                            if (input && columnRef.current === columnIndex) {
+                              input.focus();
+                              focusAtEnd(input);
+                            }
+                          }}
+                        >
+                          {row.isNew ? "" : row.item[thead.field]}
+                        </div>
+                      ) : (
+                        <div>{row.item[thead.field]}</div>
+                      )}
+                    </div>
                   </td>
                 ))}
               </tr>
