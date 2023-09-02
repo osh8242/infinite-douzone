@@ -51,6 +51,19 @@ const SalConstant = () => {
         ],
     },
     codeHelperparams : {
+        empList: {
+            title : '사원 조회',
+            tableHeaders: [
+                { field: "pk", text: "Code"},
+                { field: "nmKrname", text: "사원명"},
+                { field: "noSocial", text: "주민(외국인)번호"},
+                { field: "daRetire", text: "퇴사일자"}],
+            tableData : [
+                { cdEmp:'Y701', nmEmp : '현소현',}, 
+                { pk:'Y702', name : '오승환'}, 
+                { pk:'Y703', name : '김진'},
+                { pk:'Y704', name : '이서연'}]
+            },
         cdEmp : {
             title : '사원번호 조회',
             tableHeaders: [
@@ -98,9 +111,22 @@ const SalConstant = () => {
         MEALS : '597', //식대
         BONUS : '505' //상여금
     },
-}
-    
+    params : {
+        selectBoxParams : { //selectbox 선택된 옵션
+            allowMonth : '',
+            allowYear : '',
+            current : ''
+        },
+        selectBoxParams : { //selectbox 선택된 옵션
+            allowMonth : '',
+            allowYear : '',
+            current : ''
+        },
+            
+    }
+}    
 };
+
 export default SalConstant;
 
 //국민연금 계산식
