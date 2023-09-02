@@ -1,5 +1,5 @@
 // 작성자 : 현소현
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
@@ -19,12 +19,14 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   //Model 관리되는 값
   const { state, actions } =  SalaryInformationEntryModel();
+  const [empFlag, setEmpFlag] = useState(false);
   //const {editedEmp, actionssetEditedEmp} = EmpRegisterationModel();
   
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback((codeHelperTableData, setDataAction) => {
+  const codeHelperShow = useCallback((codeHelperTableData, flag) => {
     actions.setModalState({ show: true });
     actions.setCodeHelperTableData(codeHelperTableData);
+    setEmpFlag(flag);
   }, []);
 
   //조회버튼
@@ -64,6 +66,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           onHide={() => actions.setModalState({ ...state.modalState, show: false })}
           onConfirm={() => alert('확인')}
           setLowData={actions.setAddRow}
+          empFlag = {empFlag}
+          table={state.codeHelperTableData}
           params={{ ynFor: 'n', daRetire: '' }}
           headers={[
             { field: "pk", text: "Code" },
@@ -71,7 +75,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             { field: "noSocial", text: "주민(외국인)번호" },
             { field: "daRetire", text: "퇴사일자" }
           ]}
-          emplist// emplist 변수의 값을 전달해야 합니다.
+          //table = {}
         />
 
         {/* 기본 검색조건 */}
@@ -103,7 +107,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
                   onChange={actions.setSearchCdEmp} 
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdEmp)}  
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdEmp,false)}  
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
               </Col>
@@ -113,7 +117,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   label={"부서코드"} 
                   value={state.searchVO.searchCdDept}
                   onChange={actions.setSearchCdDept}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept)}  
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept,false)}  
                 />
               </Col>
             </Row>
@@ -180,7 +184,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                 setPkValue: actions.setSearchAllowVo,
               }}
             />
-            <Button variant="secondary" onClick={()=>codeHelperShow(state.empListData)}>
+            <Button variant="secondary" onClick={()=>codeHelperShow(state.empListData,true)}>
               +
             </Button>
           </Col>

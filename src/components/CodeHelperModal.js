@@ -22,9 +22,8 @@ function CodeHelperModal(props) {
     onConfirm,
     onRowClick,
     setLowData,
-
     table,
-    emplist,
+    empFlag,
     params,
     headers,
 
@@ -32,16 +31,34 @@ function CodeHelperModal(props) {
 
   const { state, actions } =  ModalModel();
   //const [selectedRow, setSelectedRow] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); 
-  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [oriData, setOriData] = useState([]);
+  const [filteredData, setFilteredData ] = useState([]);
+
   useEffect(() => {
-    if (emplist) {
+    if (empFlag) {
       actions.setParams(params);
-      actions.setHeaders(headers);
+      actions.setHeaders(headers);           
     } else {
-      actions.setTableData(table);
-    }
-  }, [emplist, params, table]);
+      table&&actions.setTableData(table);
+    }  
+    setOriData(state.tableData.tableData);
+    setFilteredData(state.tableData.tableData); 
+  }, [empFlag, params, table, state.tableData]);
+  
+  useEffect(()=>{
+    if(searchTerm !== ''){
+      setFilteredData(oriData.filter((row)=>{
+        return state.tableData.searchField.some((field) =>
+            row[field].toLowerCase().includes(searchTerm.toLowerCase()) 
+        )
+      })
+      );
+    }else{
+      setFilteredData(oriData);
+    }   
+  },[searchTerm]);
+
 
   /* 클릭한 행반환 */
   const handleRowClick = (row) => {
@@ -52,11 +69,7 @@ function CodeHelperModal(props) {
   };
 
   /* table.searchField에 해당하는 field만 검색 */
-  const filteredData = state.tableData.tableData.filter((row) =>
-    state.tableData.searchField.some((field) =>
-        row[field].toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  
 
   return (
     <Modal show={show} size='lg' centered>

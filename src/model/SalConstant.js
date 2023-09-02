@@ -83,6 +83,7 @@ const SalConstant = () => {
                 { pk:'D001', nmDept : '인사팀'}, 
                 { pk:'D002', nmDept : '경영지원팀'}, 
                 { pk:'D003', nmDept : '개발팀'}],
+            searchField : ['nmDept'],
         },
         rankNo : {
 

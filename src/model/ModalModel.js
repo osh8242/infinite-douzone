@@ -14,8 +14,8 @@ const [tableData, setTableData] = useState({
     // { field: "noSocial", text: "주민(외국인)번호"},
     // { field: "daRetire", text: "퇴사일자"}],
     tableData : [],
-    searchField : [],
-    // searchField : ['nmKrname', 'noSocial'],
+    //searchField : ['pk'],
+    searchField : ['nmKrname', 'noSocial'],
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const [tableData, setTableData] = useState({
 
 // 메뉴별 조건에 맞는 emplist 
 const getEmpListForCodeHelper = (params) => {
-    return axios.post(
+    return params !== ''&&axios.post(
       url + "/emp/getEmpListForCodeHelper",
       params,
       {'Content-Type': 'application/json',},
