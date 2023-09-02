@@ -27,7 +27,7 @@ const TableTemp = ({
   // actions={{
   //   setTableData: actions.setSubTableData, // 테이블을 수정하려면 필수
   //   setEditedRow: actions.setEditedEmpFam,
-  //   getRowObject: EmpFam,
+  //   getRowObject: EmpFam, //객체화 함수
   // }}
   tableName, //[선택] console.log에 출력해볼 테이블이름..
 
@@ -41,12 +41,6 @@ const TableTemp = ({
 }) => {
   console.log(tableName, tableData, "Render");
 
-  const tableRows = useRef(tableData || []);
-
-  useEffect(() => {
-    tableRows.current = tableData.map((data) => actions.getRowObject(data));
-  }, [tableData]);
-
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
   //테이블 바디 dom ref
@@ -57,7 +51,6 @@ const TableTemp = ({
   const rowRef = useRef();
   //테이블 포커스 여부 boolean ref
   const tableFocus = useRef(rowRef.current && columnRef.current);
-  console.log("tableFocus", tableFocus);
 
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
@@ -81,6 +74,15 @@ const TableTemp = ({
     if (selectedRowIndex !== -1) tableData[selectedRowIndex].selected = false;
   }, [tableData]);
 
+  // 선택된 행을 수정상태로 바꾸는 함수
+  const setEditableRow = useCallback(
+    (rowIndex) => {
+      tableData[rowIndex].isEditable = true;
+      actions.setTableData([...tableData]);
+    },
+    [tableData]
+  );
+
   //수정중인 행을 수정해제하는 함수
   const releaseEditable = useCallback(() => {
     const editableRowIndex = getEditableRowIndex();
@@ -100,20 +102,39 @@ const TableTemp = ({
     []
   );
 
+  // 새로운 행(빈행)을 만드는 함수
+  const makeNewRow = useCallback(() => {
+    let newRow = pkValue || {};
+    newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
+    return newRow;
+  }, [pkValue]);
+
+  // 테이블에 새로운 행(빈행)을 넣는 함수
+  const pushNewRow = useCallback(() => {
+    const newRow = makeNewRow();
+    newRow["isNew"] = true;
+    tableData.push(newRow);
+  }, [tableData]);
+
+  // 추가중이던 행 제거
+  const removeNewRow = useCallback(() => {
+    if (tableData[tableData.length - 1].isNew) tableData?.pop();
+  }, [tableData]);
+
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
+      rowRef.current = rowIndex;
       columnRef.current = columnIndex;
       if (rowIndex !== getEditableRowIndex()) {
         releaseEditable();
-        if (tableData[tableData.length - 1].isNew) tableData?.pop();
+        removeNewRow();
       }
 
       releaseSelection();
-      if (rowIndex > -1 && rowIndex < tableData.length) {
-        tableData[rowIndex].selected = true;
-        rowRef.current = rowIndex;
-        if (actions.setPkValue) actions.setPkValue(getPkValue());
+      if (rowIndex > -1) {
+        if (actions.setPkValue && rowRef.current < tableData.length)
+          actions.setPkValue(getPkValue());
       }
 
       actions.setTableData([...tableData]);
@@ -125,23 +146,17 @@ const TableTemp = ({
   const handleDoubleClick = useCallback(
     (rowIndex, field) => {
       if (readOnly) return;
-      if (rowIndex === tableData.length) {
-        let newRow = pkValue || {};
-        newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
-        newRow["isNew"] = true;
-        console.log("newRow", newRow);
-        tableData.push(newRow);
-      }
+
+      if (rowIndex === tableData.length) pushNewRow();
 
       tableData[rowIndex].isEditable = true;
-      console.log("newData", tableData);
       actions.setTableData([...tableData]);
     },
     [tableData, pkValue]
   );
 
   // 더블 클릭 후 편집한 데이터
-  const handleKeyDown = useCallback(
+  const TdKeyDownHandler = useCallback(
     (event, rowIndex) => {
       if (readOnly) return;
       if (event.key === "Enter") {
@@ -174,7 +189,7 @@ const TableTemp = ({
   );
 
   // 전체체크 or 전체해제
-  const handleAllCheckboxChange = useCallback(() => {
+  const allCheckboxChangeHandler = useCallback(() => {
     const isAllChecked = checkedBoxCounter() === tableData.length;
     tableData.forEach((row, index) => {
       tableData[index].checked = !isAllChecked;
@@ -185,7 +200,7 @@ const TableTemp = ({
   }, [tableData]);
 
   // 각 행의 체크박스 체크 이벤트
-  const handleCheckbox = useCallback(
+  const checkboxHandler = useCallback(
     (rowIndex) => {
       tableData[rowIndex].checked = !tableData[rowIndex].checked;
       if (tableData[rowIndex].checked) {
@@ -199,13 +214,12 @@ const TableTemp = ({
       }
       actions.setSelectedRows([...selectedRows]);
       actions.setTableData([...tableData]);
-      console.log("selectedRows", selectedRows);
     },
     [tableData, actions]
   );
 
   /////// 정렬 화살표 기능.. 구현예정
-  const handleArrowDirection = (columnName) => {};
+  const arrowDirectionHandler = (columnName) => {};
 
   // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
@@ -233,6 +247,7 @@ const TableTemp = ({
         if (tableFocus.current) {
           releaseSelectedRef();
           releaseEditable();
+          removeNewRow();
           actions.setTableData([...tableData]);
           tableFocus.current = false;
         }
@@ -248,48 +263,62 @@ const TableTemp = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
-        console.log("tableName", tableName);
-        console.log("event.key", event);
         const editableRowIndex = getEditableRowIndex();
-        if (event.key === "Escape" && editableRowIndex !== -1)
-          releaseEditable();
+        let isValidKeyEvent = false;
 
-        switch (event.key) {
-          case "ArrowDown":
-            if (!rowRef) break;
-            if (rowRef.current < tableData.length) rowRef.current++;
-
-            break;
-          case "ArrowUp":
-            if (!rowRef) break;
-            if (rowRef.current > 0) rowRef.current--;
-
-            break;
-          case "ArrowLeft":
-            if (!columnRef) break;
-            if (columnRef.current > 0) columnRef.current--;
-
-            break;
-          case "ArrowRight":
-            if (!columnRef) break;
-            if (columnRef.current < tableHeaders.length - 1)
-              columnRef.current++;
-            break;
-          case "Enter":
-            if (editableRowIndex === -1 && rowRef)
-              handleRowClick(event, rowRef.current);
-            break;
-          case " ":
-            handleCheckbox(rowRef.current);
-            break;
-          // case "Tab":
-          //   tableFocus.current = false;
-          //   break;
-          default:
-            break;
+        if (editableRowIndex !== -1) {
+          switch (event.key) {
+            case "Escape":
+              releaseEditable();
+              removeNewRow();
+              isValidKeyEvent = true;
+              break;
+            default:
+              break;
+          }
         }
-        console.log("columnRef", columnRef);
-        actions.setTableData([...tableData]);
+
+        if (editableRowIndex === -1) {
+          switch (event.key) {
+            case "ArrowDown":
+              if (!rowRef) break;
+              if (rowRef.current < tableData.length) rowRef.current++;
+              isValidKeyEvent = true;
+              break;
+            case "ArrowUp":
+              if (!rowRef) break;
+              if (rowRef.current > 0) rowRef.current--;
+              isValidKeyEvent = true;
+              break;
+            case "ArrowLeft":
+              if (!columnRef) break;
+              if (columnRef.current > 0) columnRef.current--;
+              isValidKeyEvent = true;
+              break;
+            case "ArrowRight":
+              if (!columnRef) break;
+              if (columnRef.current < tableHeaders.length - 1)
+                columnRef.current++;
+              isValidKeyEvent = true;
+              break;
+            case "Enter":
+              if (editableRowIndex === -1 && rowRef) {
+                handleRowClick(event, rowRef.current, columnRef.current);
+                if (rowRef.current === tableData.length) pushNewRow();
+                setEditableRow(rowRef.current);
+              }
+              isValidKeyEvent = true;
+              break;
+            case " ":
+              checkboxHandler(rowRef.current);
+              isValidKeyEvent = true;
+              break;
+            default:
+              break;
+          }
+        }
+
+        if (isValidKeyEvent) actions.setTableData([...tableData]);
       }
     },
     [tableData, columnRef]
@@ -317,7 +346,7 @@ const TableTemp = ({
               <th id="tableCheckBoxHeader">
                 <input
                   type="checkbox"
-                  onChange={() => handleAllCheckboxChange()}
+                  onChange={() => allCheckboxChangeHandler()}
                   checked={checkedBoxCounter() === tableData.length}
                 />
               </th>
@@ -329,7 +358,7 @@ const TableTemp = ({
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
-                <div onClick={() => handleArrowDirection(thead)}>
+                <div onClick={() => arrowDirectionHandler(thead)}>
                   <div>{thead.text}</div>
                   <div id="tableHeader-arrow">
                     {thead.orderBy === "asc" ? (
@@ -355,7 +384,7 @@ const TableTemp = ({
                       <input
                         type="checkbox"
                         checked={row.checked}
-                        onChange={() => handleCheckbox(rowIndex)}
+                        onChange={() => checkboxHandler(rowIndex)}
                       />
                     </div>
                   </td>
@@ -381,7 +410,7 @@ const TableTemp = ({
                         type="text"
                         data-field={thead.field}
                         defaultValue={row.isNew ? "" : row.item[thead.field]}
-                        onKeyDown={(e) => handleKeyDown(e, rowIndex)}
+                        onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                         ref={(input) => {
                           if (input && columnRef.current === columnIndex) {
                             input.focus();
