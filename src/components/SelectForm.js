@@ -17,7 +17,7 @@ import Form from "react-bootstrap/Form";
 
 function SelectForm({ label, optionList, selectRef, onChange }) {
   const handleSelectChange = (event) => {
-    const selectedValue = selectRef.current.value;
+    const selectedValue = selectRef ? selectRef.current.value : event.target.value ;
     if (onChange) onChange(selectedValue);
   };
 
