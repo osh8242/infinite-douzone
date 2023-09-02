@@ -33,7 +33,7 @@
 }
 
 table {
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 td div {
@@ -43,16 +43,21 @@ td input {
   text-align: center;
 }
 
+#selectedTd{
+  background-color: rgb(150, 175, 200) !important;
+}
+
 .styleNone {
   color: transparent;
 }
 
-.highlight-row {
+.selectedTr {
   background-color: rgb(200, 223, 255) !important; 
 }
 
-.highlight-row td,
-.highlight-row div {
+.selectedTr td,
+.selectedTr div {
   background-color: transparent !important;
-  border-color: rgb(200, 223, 255)
+  border-color: rgb(200, 223, 255);
 }
+

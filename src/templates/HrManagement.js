@@ -79,7 +79,6 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               ? input.value
               : null;
         });
-        console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
       }
     }
@@ -88,10 +87,17 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
         event.target.blur();
         let newMainTabData = { ...mainTabData.item };
         newMainTabData[event.target.id] = value;
-        console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
       }
     }
+  };
+
+  const tableFooter = () => {
+    return (
+      <tr>
+        <td colSpan="3">푸터입니다.</td>
+      </tr>
+    );
   };
 
   return (
@@ -123,12 +129,14 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           <Col md="3">
             {/* 좌측 그리드 */}
             <TableTemp
+              tableName="EMP"
               showCheckbox
               showHeaderArrow
               rowAddable
               tableHeaders={HrManagementLeftTableHeaders}
               tableData={leftTableData}
               selectedRows={selectedRows}
+              tableFooter={tableFooter()}
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setLeftTablePkValue,
@@ -140,7 +148,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
-            <Col md="9">
+            <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
               <MenuTab menuList={mainTabMenuList} />
               {/* 우측 메인폼 */}
@@ -255,6 +263,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               <MenuTab menuList={subTabMenuList} />
               {/* 우측 서브 그리드 */}
               <TableTemp
+                tableName="EMPFAM"
                 showCheckbox
                 showHeaderArrow
                 rowAddable

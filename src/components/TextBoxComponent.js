@@ -164,6 +164,7 @@ function TextBoxComponent(props) {
           id={id}
           name={name}
           rows={rows}
+          value={inputValue}
           onChange={handleInputChange}
           onClick={onClick}
         />

@@ -49,16 +49,12 @@ const HrManagementModel = () => {
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
     console.log("leftTablePkValue", leftTablePkValue);
-    if (leftTablePkValue?.cdEmp) {
-      console.log("mainTabData 불러오기");
+    if (leftTablePkValue?.cdEmp && Object.keys(leftTablePkValue).length !== 0) {
       axios
-        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue, {
-          "Content-Type": "application/json",
-        })
+        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue)
         .then((response) => {
           let data = response.data;
           console.log("불러온 mainTabData", data);
-          // setMainTabData(EmpAdd({}));
           setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
@@ -66,7 +62,6 @@ const HrManagementModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     } else {
-      console.log("mainTabData가 비워집니다.");
       setMainTabData({});
     }
   }, [leftTablePkValue, editedEmpAdd]);
