@@ -128,6 +128,8 @@ const TableTemp = ({
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
       if (readOnly) return;
+      if (rowRef.current === rowIndex && columnRef.current === columnIndex)
+        return;
       rowRef.current = rowIndex;
       columnRef.current = columnIndex;
       if (rowIndex !== getEditableRowIndex()) {
@@ -136,10 +138,9 @@ const TableTemp = ({
       }
 
       releaseSelection();
-      if (rowIndex > -1) {
-        if (actions.setPkValue && rowRef.current < tableData.length)
-          actions.setPkValue(getPkValue());
-      }
+
+      if (actions.setPkValue && rowRef.current < tableData.length)
+        actions.setPkValue(getPkValue());
 
       actions.setTableData([...tableData]);
     },
@@ -255,6 +256,7 @@ const TableTemp = ({
           releaseEditable();
           removeNewRow();
           tableFocus.current = false;
+          if (actions.setTableData) actions.setTableData([...tableData]);
         }
       }
       if (myRef.current && myRef.current.contains(event.target)) {
