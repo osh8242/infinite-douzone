@@ -4,7 +4,7 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -29,7 +29,7 @@ const TableTemp = ({
   //   setEditedRow: actions.setEditedEmpFam,
   //   getRowObject: EmpFam,
   // }}
-  tableName,
+  tableName, //[선택] console.log에 출력해볼 테이블이름..
 
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
@@ -40,6 +40,12 @@ const TableTemp = ({
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
   console.log(tableName, tableData, "Render");
+
+  const tableRows = useRef(tableData || []);
+
+  useEffect(() => {
+    tableRows.current = tableData.map((data) => actions.getRowObject(data));
+  }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
@@ -198,10 +204,10 @@ const TableTemp = ({
     [tableData, actions]
   );
 
-  // 정렬 화살표 기능.. 구현예정
+  /////// 정렬 화살표 기능.. 구현예정
   const handleArrowDirection = (columnName) => {};
 
-  // 체크된 항목 계산함수
+  // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
     const checkedBoxCount = tableData.reduce(
       (sum, item) => (item.checked ? sum + 1 : sum),
@@ -271,7 +277,7 @@ const TableTemp = ({
             break;
           case "Enter":
             if (editableRowIndex === -1 && rowRef)
-              tableData[rowRef.current].isEditable = true;
+              handleRowClick(event, rowRef.current);
             break;
           case " ":
             handleCheckbox(rowRef.current);

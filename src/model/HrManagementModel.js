@@ -50,7 +50,6 @@ const HrManagementModel = () => {
   useEffect(() => {
     console.log("leftTablePkValue", leftTablePkValue);
     if (leftTablePkValue?.cdEmp && Object.keys(leftTablePkValue).length !== 0) {
-      console.log("mainTabData 불러오기");
       axios
         .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue)
         .then((response) => {
