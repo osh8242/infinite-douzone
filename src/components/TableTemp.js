@@ -39,7 +39,7 @@ const TableTemp = ({
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
-  console.log(tableName, tableData, "Render");
+  //console.log(tableName, tableData, "Render");
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
@@ -118,12 +118,13 @@ const TableTemp = ({
 
   // 추가중이던 행 제거
   const removeNewRow = useCallback(() => {
-    if (tableData[tableData.length - 1].isNew) tableData?.pop();
+    if (tableData[tableData.length - 1]?.isNew) tableData?.pop();
   }, [tableData]);
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
+      if(readOnly) return;
       rowRef.current = rowIndex;
       columnRef.current = columnIndex;
       if (rowIndex !== getEditableRowIndex()) {
@@ -248,7 +249,7 @@ const TableTemp = ({
           releaseSelectedRef();
           releaseEditable();
           removeNewRow();
-          actions.setTableData([...tableData]);
+          //actions.setTableData([...tableData]);
           tableFocus.current = false;
         }
       }

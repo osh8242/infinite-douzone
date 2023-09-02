@@ -1,11 +1,11 @@
 /* 현소현
-  `<CodeHelperModal
+  <CodeHelperModal
     show = {state.modalState.show}   
     onHide = {() => actions.setModalState({ ...state.modalState, show: false })} 
     onConfirm = {() => alert('확인')}
     setLowData = {actions.setAddRow}
     tableData = {setTableData()}
-  />`
+  />
  */
 
 import React, {useEffect, useState } from "react";
@@ -22,12 +22,14 @@ function CodeHelperModal(props) {
     onConfirm,
     onRowClick,
     setLowData,
-    table,
-    
-    empFlag,
-    params,//empFlag 전용
-    headers,//empFlag 전용
 
+    apiFlag,
+    
+    table,
+    codeHelperCode,
+    // url,      // apiFlag 전용
+    // params,   // apiFlag 전용
+    // headers,  // apiFlag 전용
   } = props;
 
   const { state, actions } =  ModalModel();
@@ -37,21 +39,25 @@ function CodeHelperModal(props) {
   const [filteredData, setFilteredData ] = useState([]);
 
   useEffect(() => {
-    if (empFlag) {
-      actions.setParams(params);
-      actions.setHeaders(headers);           
+    if (apiFlag) {
+      actions.setCodeHelperCode(codeHelperCode);
+      // actions.setParams(params);
+      // actions.setHeaders(headers);
+      // actions.setApiUrl(url);
     } else {
-      table&&actions.setTableData(table);
-    }  
+      table && actions.setTableData(table);
+    } 
     setOriData(state.tableData.tableData);
-    setFilteredData(state.tableData.tableData); 
-  }, [empFlag, params, table, state.tableData]);
+    setFilteredData(state.tableData.tableData);
+  }, [apiFlag, codeHelperCode, table, state.tableData]);
   
+  
+  /* table.searchField에 해당하는 field만 검색 */
   useEffect(()=>{
     if(searchTerm !== ''){
       setFilteredData(oriData.filter((row)=>{
         return state.tableData.searchField.some((field) =>
-            row[field].toLowerCase().includes(searchTerm.toLowerCase()) 
+          row[field].toLowerCase().includes(searchTerm.toLowerCase()) 
         )
       })
       );
@@ -64,12 +70,9 @@ function CodeHelperModal(props) {
   /* 클릭한 행반환 */
   const handleRowClick = (row) => {
     //console.log(row);
-    //setSelectedRow(row.pk);
-    setLowData&&setLowData(row);
-    onRowClick&&onRowClick();
+    setLowData && setLowData(row);
+    onRowClick && onRowClick();
   };
-
-  /* table.searchField에 해당하는 field만 검색 */
   
 
   return (
@@ -92,7 +95,7 @@ function CodeHelperModal(props) {
             <tbody>
               {filteredData.map((row) => (
                 //<tr key={row.pk} className={selectedRow === row.pk ? 'selected' : ''} onClick={() => handleRowClick(row)}>
-                <tr key={row.pk} onClick={() => handleRowClick(row)}>
+                <tr key={row.cdEmp} onClick={() => handleRowClick(row)}>
                   {state.tableData.tableHeaders.map((header) => (
                     <td key={header.field}>{row[header.field]}</td>
                   ))}
