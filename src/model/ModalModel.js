@@ -27,28 +27,26 @@ const [tableData, setTableData] = useState({
 
 // 메뉴별 조건에 맞는 codelist 
 const getCodeListForCodeHelper = (codeHelperCode) => {
-    return codeHelperCode !== ''&&axios.post(
+    return codeHelperCode !== '' && axios.post(
       url + codeHelperCode.url,
       codeHelperCode.params,
       {'Content-Type': 'application/json',},
     )
       .then((response) => {
-        const codeDataList = response.data.map((item) => ({
-
-          cdEmp: item.cdEmp,
-          nmKrname: item.nmKrname,
-          noSocial: item.noSocial,
-          daRetire: item.daRetire,
-          rankNo: item.rankNo,
-          ynFor: item.ynFor,
-
-        }));
+        const codeDataList = response.data.map((item) => {
+          const dynamicProperties = {};
+          for (const key in item) {
+            dynamicProperties[key] = item[key];
+          }
+          return dynamicProperties;
+        });
         
         setTableData({
           ...tableData,
-          tableData: codeDataList, title : codeHelperCode.title, tableHeaders: codeHelperCode.headers,
+          tableData: codeDataList,
+          title: codeHelperCode.title,
+          tableHeaders: codeHelperCode.headers,
         });
-
       })
       .catch((error) => {
         console.log("에러발생: ", error);
