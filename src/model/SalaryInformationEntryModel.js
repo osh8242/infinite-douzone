@@ -123,7 +123,7 @@ const SalaryInformationEntryModel = () => {
         const data = response.data.map((item) => (
           {
             item : {
-              pk: item.cdEmp,
+              cdEmp: item.cdEmp,
               nmEmp: item.nmEmp,
               rankNo: item.rankNo,
               mnReduction: item.mnReduction,

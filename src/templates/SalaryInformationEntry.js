@@ -34,28 +34,6 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
     alert("검색");
   }
 
-  // const setTableData = () => {
-  //   let tabledata;
-
-  //   getEmpListForCodeHelper(
-  //       { ynFor : 'n', daRetire : ''}, 
-  //       [
-  //         { field: "pk", text: "Code"},
-  //         { field: "nmKrname", text: "사원명"},
-  //         { field: "noSocial", text: "주민(외국인)번호"},
-  //         { field: "daRetire", text: "퇴사일자"}],
-  //         ['nmKrname', 'noSocial']
-  //     ).then((result) => {
-  //       console.log("result", result);
-  //       tabledata= result.data; 
-  //     })
-  //     .catch((error) => {
-  //       console.error('에러 발생:', error);
-  //     });
-    
-  //     return tabledata;
-  // }
-
   return (
     <>
     <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />

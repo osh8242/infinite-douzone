@@ -23,9 +23,10 @@ function CodeHelperModal(props) {
     onRowClick,
     setLowData,
     table,
+    
     empFlag,
-    params,
-    headers,
+    params,//empFlag 전용
+    headers,//empFlag 전용
 
   } = props;
 

@@ -30,6 +30,7 @@ const TableTemp = ({
   rowAddable, // [선택] 행 추가 가능여부
   minRow, // [선택] 테이블의 최소 행 갯수, 데이터가 부족해도 빈 행으로 추가한다. (구현부족)
 }) => {
+  console.log("tableData", tableHeaders, tableData);
   const tbodyRef = useRef();
 
   const [recentlyClickedRow, setRecentlyClickedRow] = useState();

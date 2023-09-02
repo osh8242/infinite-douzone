@@ -51,33 +51,10 @@ const SalConstant = () => {
         ],
     },
     codeHelperparams : {
-        empList: {
-            title : '사원 조회',
-            tableHeaders: [
-                { field: "pk", text: "Code"},
-                { field: "nmKrname", text: "사원명"},
-                { field: "noSocial", text: "주민(외국인)번호"},
-                { field: "daRetire", text: "퇴사일자"}],
-            tableData : [
-                { cdEmp:'Y701', nmEmp : '현소현',}, 
-                { pk:'Y702', name : '오승환'}, 
-                { pk:'Y703', name : '김진'},
-                { pk:'Y704', name : '이서연'}]
-            },
-        cdEmp : {
-            title : '사원번호 조회',
-            tableHeaders: [
-                { field: "cdEmp", text: "사원번호"},
-                { field: "nmEmp", text: "사원이름"}],
-            tableData : [
-                { pk:'Y701', name : '현소현'}, 
-                { pk:'Y702', name : '오승환'}, 
-                { pk:'Y703', name : '김진'}]
-            },
         cdDept : {
             title : '부서코드 조회',
             tableHeaders: [
-                { field: "cdDept", text: "부서코드"},
+                { field: "pk", text: "부서코드"},
                 { field: "nmDept", text: "부서이름"},]
             , tableData : [
                 { pk:'D001', nmDept : '인사팀'}, 
