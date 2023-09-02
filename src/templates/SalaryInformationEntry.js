@@ -1,17 +1,16 @@
 // 작성자 : 현소현
 import React, { useCallback } from "react";
-import { Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
 import TextBoxComponent from "../components/TextBoxComponent";
 import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
-import ModalComponent from "../components/ModalComponent";
 import DateTest from "../components/DateTest";
 import SalConstant from "../model/SalConstant";
 import CommonConstant from "../model/CommonConstant";
 import TableTemp from "../components/TableTemp";
-import CodeHelpComponent from "../components/CodeHelper";
 import HrManagementHeader from "./HrManagementHeader";
+import CodeHelperModal from "../components/CodeHelperModal";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   //상수
@@ -20,6 +19,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   //Model 관리되는 값
   const { state, actions } =  SalaryInformationEntryModel();
+  //const {editedEmp, actionssetEditedEmp} = EmpRegisterationModel();
   
   // 코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback((codeHelperTableData, setDataAction) => {
@@ -29,17 +29,50 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   //조회버튼
   const onSearch =()=> {
-    alert("검색버튼");
+    alert("검색");
   }
+
+  // const setTableData = () => {
+  //   let tabledata;
+
+  //   getEmpListForCodeHelper(
+  //       { ynFor : 'n', daRetire : ''}, 
+  //       [
+  //         { field: "pk", text: "Code"},
+  //         { field: "nmKrname", text: "사원명"},
+  //         { field: "noSocial", text: "주민(외국인)번호"},
+  //         { field: "daRetire", text: "퇴사일자"}],
+  //         ['nmKrname', 'noSocial']
+  //     ).then((result) => {
+  //       console.log("result", result);
+  //       tabledata= result.data; 
+  //     })
+  //     .catch((error) => {
+  //       console.error('에러 발생:', error);
+  //     });
+    
+  //     return tabledata;
+  // }
 
   return (
     <>
     <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
         {/* 코드 도움 모달 영역 */}
-        <ModalComponent title= {state.codeHelperTableData.title} show={state.modalState.show} onHide={() => actions.setModalState({ ...state.modalState, show: false })} size="lg" centered>
-          <CodeHelpComponent onRowClick={() => actions.setModalState({ ...state.modalState, show: false })} table={state.codeHelperTableData} setData={actions.setSearchCdDept} />
-        </ModalComponent> 
+        <CodeHelperModal
+          show={state.modalState.show}
+          onHide={() => actions.setModalState({ ...state.modalState, show: false })}
+          onConfirm={() => alert('확인')}
+          setLowData={actions.setAddRow}
+          params={{ ynFor: 'n', daRetire: '' }}
+          headers={[
+            { field: "pk", text: "Code" },
+            { field: "nmKrname", text: "사원명" },
+            { field: "noSocial", text: "주민(외국인)번호" },
+            { field: "daRetire", text: "퇴사일자" }
+          ]}
+          emplist// emplist 변수의 값을 전달해야 합니다.
+        />
 
         {/* 기본 검색조건 */}
         <SearchPanel onSearch={onSearch} showAccordion>
@@ -70,7 +103,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
                   onChange={actions.setSearchCdEmp} 
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdEmp, actions.setSearchCdEmp)}  
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdEmp)}  
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
               </Col>
@@ -80,11 +113,10 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   label={"부서코드"} 
                   value={state.searchVO.searchCdDept}
                   onChange={actions.setSearchCdDept}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept, actions.setSearchCdDept)}  
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept)}  
                 />
               </Col>
             </Row>
-
             <Row>
               <Col>
                 <TextBoxComponent 
@@ -148,6 +180,9 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                 setPkValue: actions.setSearchAllowVo,
               }}
             />
+            <Button variant="secondary" onClick={()=>codeHelperShow(state.empListData)}>
+              +
+            </Button>
           </Col>
           <Col md="3">
             <>

@@ -3,7 +3,7 @@ import axios from '../../node_modules/axios/index';
 import { currentDateStr, currentMonthStr, currentYearStr } from '../utils/DateUtils';
 import { nvl } from '../utils/NumberUtils';
 import SalConstant, { calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension } from './SalConstant';
-import { isEmpty } from '../utils/StringUtils';
+
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
@@ -46,8 +46,27 @@ const SalaryInformationEntryModel = () => {
   /* 사원정보 선택후 급여항목, 공제항목 검색조건 */
   const [searchAllowVo, setSearchAllowVo] = useState({ allowMonth: allowMonth, cdEmp: cdEmp });
   
+  /* 코드 도움 임시 */
+  const [addRow, setAddRow]= useState(); // 사원 코드도움창에서 선택한 로우 객체
+  const [empListData, setEmpListData] = useState({
+      title : '사원조회',
+      params : { jobOk : 'N'},
+      tableHeaders: [
+        { field: "pk", text: "Code"},
+        { field: "nmKrname", text: "사원명"},
+        { field: "noSocial", text: "주민(외국인)번호"},
+        { field: "daRetire", text: "퇴사일자"}],
+      tableData : [],
+      searchField : ['nmKrname', 'noSocial'],
+    });  
+
+  useEffect(() => {
+    insertSalEmp(addRow);
+  }, [addRow])
+
   useEffect(() => {
     salEmpdataTable();        // 검색조건에 맞는 사원리스트
+    getEmpListForCodeHelper();      // 임시 
   }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
 
   useEffect(() => {
@@ -100,11 +119,11 @@ const SalaryInformationEntryModel = () => {
         {'Content-Type': 'application/json',},
       )
       .then((response) => {
-        console.log('사원리스트 >> ', response.data);
+        //console.log('사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
           {
             item : {
-              cdEmp: item.cdEmp,
+              pk: item.cdEmp,
               nmEmp: item.nmEmp,
               rankNo: item.rankNo,
               mnReduction: item.mnReduction,
@@ -221,7 +240,7 @@ const SalaryInformationEntryModel = () => {
       {'Content-Type': 'application/json',},
       )
       .then((response) => {
-        //console.log( '급여항목 합계데이터 >> ',response.data);
+        //console.log( '급여항목 합계데이터 >> ', response.data);
         const data = response.data.map((item) => ({
           item : {
             cdAllow: item.cdAllow,
@@ -325,6 +344,48 @@ const SalaryInformationEntryModel = () => {
     return jsonparam;
   }
 
+  // 사원조회 컴포넌트
+  const getEmpListForCodeHelper = () => {
+    axios
+      .post(url + "/emp/getEmpListForCodeHelper", empListData.params)
+      .then((response) => {
+        const emplist = response.data.map((item) => ({
+          pk: item.cdEmp,
+          nmKrname: item.nmKrname,
+          noSocial: item.noSocial,
+          daRetire: item.daRetire,
+          rankNo: item.rankNo,
+          ynFor: item.ynFor,
+        }));
+    
+        console.log(emplist);
+        setEmpListData({ ...empListData, tableData: emplist });
+      })
+      .catch((error) => {
+        console.log("에러발생: ", error);
+        //에러 처리
+      });
+  }
+
+  // 급여_사원 insert
+  const insertSalEmp = (addRow) => {
+    //console.log('insertSalEmp_addRow');    
+    //console.log(addRow);
+
+    // axios.post(
+    //     url + '/saEmpInfo/getSalAllowPaySum',
+    //     addRow,
+    //     {'Content-Type': 'application/json',},
+    //   )
+    //   .then((response) => {
+    //     console.log('급여사원 insert > ' + response.data);
+    //     salEmpdataTable();//새로고침
+    //   })
+    //   .catch((error) => {
+    //     console.error('에러발생: ', error);
+    //   })
+  }
+
   return {
     state : {
       saInfoListData: saInfoListData  // 왼쪽 사원테이블
@@ -350,6 +411,9 @@ const SalaryInformationEntryModel = () => {
         , searchYnForlabor
         , searchCdEmp
       }
+
+      , empListData
+      , addRow
     }
     , actions:{
       setSaInfoListData 
@@ -377,6 +441,7 @@ const SalaryInformationEntryModel = () => {
       , setSearchCdProject
       , setSearchYnUnit
       , setSearchYnForlabor
+      , setAddRow
     }
 
   };
