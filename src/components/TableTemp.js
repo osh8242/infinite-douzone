@@ -208,16 +208,17 @@ const TableTemp = ({
   const checkboxHandler = useCallback(
     (rowIndex) => {
       tableData[rowIndex].checked = !tableData[rowIndex].checked;
+      let newSelectedRows = [...selectedRows];
       if (tableData[rowIndex].checked) {
         if (actions.setSelectedRows) {
-          selectedRows.push(tableData[rowIndex]);
+          newSelectedRows.push(tableData[rowIndex]);
         }
       }
       if (!tableData[rowIndex].checked) {
         tableData[rowIndex].selected = false;
-        selectedRows = tableData.filter((row) => row.checked);
+        newSelectedRows = tableData.filter((row) => row.checked);
       }
-      actions.setSelectedRows([...selectedRows]);
+      actions.setSelectedRows(newSelectedRows);
       actions.setTableData([...tableData]);
     },
     [tableData, actions]
@@ -253,7 +254,6 @@ const TableTemp = ({
           releaseSelectedRef();
           releaseEditable();
           removeNewRow();
-          actions.setTableData([...tableData]);
           tableFocus.current = false;
         }
       }
