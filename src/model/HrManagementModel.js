@@ -25,8 +25,6 @@ const HrManagementModel = () => {
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
-    setLeftTableData();
-    console.log("jobOk", jobOk);
     axios
       .get(
         `${url}/emp/getEmpListByJobOk?jobOk=${jobOk}+
@@ -154,8 +152,8 @@ const HrManagementModel = () => {
 
   //수정된 사원가족 update 요청
   useEffect(() => {
-    console.log("editedEmpFam", editedEmpFam.item);
-    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
+    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0) {
+      console.log("editedEmpFam 수정요청", editedEmpFam.item);
       axios
         .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam.item)
         .then((response) => {
@@ -166,6 +164,7 @@ const HrManagementModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
+    }
   }, [editedEmpFam]);
 
   //선택된 행 delete 요청

@@ -6,6 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Table } from "react-bootstrap";
+import PropTypes from "prop-types";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
@@ -89,6 +90,13 @@ const TableTemp = ({
     const editableRowIndex = getEditableRowIndex();
     if (editableRowIndex !== -1) tableData[editableRowIndex].isEditable = false;
   }, [tableData]);
+
+  //td의 className을 얻는 함수
+  const getTdClassName = useCallback((rowIndex, columnIndex) => {
+    if (columnIndex === columnRef.current && rowRef.current === rowIndex)
+      return "selectedTd";
+    else return "";
+  }, []);
 
   //row의 className을 얻는 함수
   const getRowClassName = useCallback((currentRow, index) => {
@@ -191,7 +199,7 @@ const TableTemp = ({
     (event, rowIndex) => {
       if (readOnly) return;
       if (event.key === "Enter") {
-        event.preventDefault();
+        //event.preventDefault();
 
         const editedRow = getEditedRow();
         tableData[rowIndex] = editedRow;
@@ -204,14 +212,14 @@ const TableTemp = ({
   );
 
   // 체크박스 전체해제 함수
-  const releaseAllCheckbox = useCallback(() => {
-    const newTableData = tableData.map((row, index) => {
-      tableData[index].checked = false;
-      return tableData[index];
-    });
-    actions.setTableData(newTableData);
-    actions.setSelectedRows([]);
-  }, [tableData]);
+  // const releaseAllCheckbox = useCallback(() => {
+  //   const newTableData = tableData.map((row, index) => {
+  //     tableData[index].checked = false;
+  //     return tableData[index];
+  //   });
+  //   actions.setTableData(newTableData);
+  //   actions.setSelectedRows([]);
+  // }, [tableData]);
 
   // 전체체크 or 전체해제 함수
   const allCheckboxChangeHandler = useCallback(() => {
@@ -240,8 +248,8 @@ const TableTemp = ({
       tableData[rowIndex].checked = !tableData[rowIndex].checked;
       if (actions.setSelectedRows) {
         const newSelectedRows = pushNewRowToSelectedRows();
-        actions.setSelectedRows(newSelectedRows);
         console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
+        actions.setSelectedRows(newSelectedRows);
       }
       actions.setTableData([...tableData]);
     },
@@ -277,7 +285,6 @@ const TableTemp = ({
         if (tableFocus.current) {
           releaseSelectedRef();
           releaseEditable();
-          releaseAllCheckbox();
           removeNewRow();
           tableFocus.current = false;
           if (actions.setTableData) actions.setTableData([...tableData]);
@@ -437,11 +444,7 @@ const TableTemp = ({
                 {tableHeaders.map((thead, columnIndex) => (
                   <td
                     key={columnIndex}
-                    id={
-                      columnIndex === columnRef.current &&
-                      rowRef.current === rowIndex &&
-                      "selectedTd"
-                    }
+                    className={getTdClassName(rowIndex, columnIndex)}
                     onClick={(e) => handleRowClick(e, rowIndex, columnIndex)}
                     onDoubleClick={() =>
                       handleDoubleClick(rowIndex, thead.field)
@@ -453,7 +456,11 @@ const TableTemp = ({
                       data-field={thead.field}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                       ref={(input) => {
-                        if (input && columnRef.current === columnIndex) {
+                        if (
+                          input &&
+                          rowRef.current === rowIndex &&
+                          columnRef.current === columnIndex
+                        ) {
                           input.focus();
                           focusAtEnd(input);
                         }
@@ -492,6 +499,18 @@ const TableTemp = ({
   ) : (
     <Spinner animation="border" variant="primary" />
   );
+};
+
+TableTemp.propTypes = {
+  tableHeaders: PropTypes.array.isRequired,
+  tableData: PropTypes.array.isRequired,
+  tableFooter: PropTypes.element,
+  actions: PropTypes.object.isRequired,
+  tableName: PropTypes.string,
+  showCheckbox: PropTypes.bool,
+  showHeaderArrow: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  rowAddable: PropTypes.bool,
 };
 
 export default TableTemp;
