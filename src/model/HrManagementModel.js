@@ -171,46 +171,48 @@ const HrManagementModel = () => {
   //선택된 행 delete 요청
   const deleteSelectedRows = useCallback(() => {
     const editedTableNames = {};
-
-    // 각 row에 대한 delete 요청을 생성
-    const deletePromises = selectedRows.map((row) => {
-      let pattern;
-      switch (row.table) {
-        case "empFam":
-          pattern = "/empFam/deleteEmpFam";
-          break;
-        case "emp":
-          pattern = "/emp/deleteEmp";
-          break;
-        default:
-          return Promise.resolve();
-      }
-      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-      return axios.delete(url + pattern, { data: row.item });
-    });
-
-    Promise.all(deletePromises)
-      .then((responses) => {
-        console.log("선택된 모든 행의 삭제 완료");
-        console.log("selectedRows", selectedRows);
-        setSelectedRows([]); // 선택행 배열 비우기
-        Object.keys(editedTableNames).forEach((tableName) => {
-          switch (tableName) {
-            case "empFam":
-              setEditedEmpFam({}); // 사원가족 리로드
-              break;
-            case "emp":
-              setEditedEmp({}); // 사원가족 리로드
-              break;
-            default:
-              break;
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("하나 이상의 요청에서 에러 발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
+    console.log("삭제요청된 행들", selectedRows);
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      // 각 row에 대한 delete 요청을 생성
+      const deletePromises = selectedRows.map((row) => {
+        let pattern;
+        switch (row.table) {
+          case "empFam":
+            pattern = "/empFam/deleteEmpFam";
+            break;
+          case "emp":
+            pattern = "/emp/deleteEmp";
+            break;
+          default:
+            return Promise.resolve();
+        }
+        if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+        return axios.delete(url + pattern, { data: row.item });
       });
+
+      Promise.all(deletePromises)
+        .then((responses) => {
+          console.log("선택된 모든 행의 삭제 완료");
+          console.log("selectedRows", selectedRows);
+          setSelectedRows([]); // 선택행 배열 비우기
+          Object.keys(editedTableNames).forEach((tableName) => {
+            switch (tableName) {
+              case "empFam":
+                setEditedEmpFam({}); // 사원가족 리로드
+                break;
+              case "emp":
+                setEditedEmp({}); // 사원가족 리로드
+                break;
+              default:
+                break;
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("하나 이상의 요청에서 에러 발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    }
   }, [selectedRows]);
 
   return {

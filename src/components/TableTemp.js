@@ -25,9 +25,10 @@ const TableTemp = ({
   actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
-  //   setTableData: actions.setSubTableData, // 테이블을 수정하려면 필수
-  //   setEditedRow: actions.setEditedEmpFam,
-  //   getRowObject: EmpFam, //객체화 함수
+  //   setTableData: actions.setSubTableData, // 읽기전용이 아니라면 필수
+  //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
+  //   setSelectedRows: actions.setSelectedRows, // 체크박스를 이용하여 삭제하려면 필수
+  //   getRowObject: EmpFam, //객체화 함수 필수
   // }}
   tableName, //[선택] console.log에 출력해볼 테이블이름..
 
@@ -124,6 +125,14 @@ const TableTemp = ({
     if (tableData?.[tableData.length - 1].isNew) tableData?.pop();
   }, [tableData]);
 
+  // pkValue 객체를 업데이트함
+  const updatePkValue = useCallback(() => {
+    if (actions.setPkValue) {
+      if (rowRef.current < tableData.length) actions.setPkValue(getPkValue());
+      if (rowRef.current === tableData.length) actions.setPkValue({});
+    }
+  }, [tableData]);
+
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
@@ -138,9 +147,7 @@ const TableTemp = ({
       }
 
       releaseSelection();
-
-      if (actions.setPkValue && rowRef.current < tableData.length)
-        actions.setPkValue(getPkValue());
+      updatePkValue();
 
       actions.setTableData([...tableData]);
     },
@@ -160,41 +167,53 @@ const TableTemp = ({
     [tableData, pkValue]
   );
 
-  // 더블 클릭 후 편집한 데이터
+  // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
+  const getEditedRow = useCallback(() => {
+    const currentRowInputs = getInputElements();
+
+    let editedRow = {
+      ...tableData[rowRef.current],
+      isEditable: false,
+      isNew: tableData[rowRef.current].isNew,
+    };
+
+    // 각 입력 필드의 값을 editedRow에 업데이트
+    currentRowInputs.forEach((input, rowIndex) => {
+      const field = input.getAttribute("data-field");
+      editedRow.item[field] = input.innerText;
+    });
+
+    return editedRow;
+  }, [tableData, rowRef.current]);
+
+  // 수정한 행에서 엔터키 입력 이벤트 처리
   const TdKeyDownHandler = useCallback(
     (event, rowIndex) => {
       if (readOnly) return;
       if (event.key === "Enter") {
         event.preventDefault();
 
-        // 현재 수정 중인 행의 모든 입력 필드를 가져옴
-        const currentRowInputs = getInputElements();
-
-        let editedRow = {
-          ...tableData[rowIndex],
-          isEditable: false,
-          isNew: tableData[rowIndex].isNew,
-        };
-
-        // 각 입력 필드의 값을 updatedRow와 editedRow에 저장
-        currentRowInputs.forEach((input, rowIndex) => {
-          const field = input.getAttribute("data-field");
-          editedRow.item[field] = input.innerText;
-        });
+        const editedRow = getEditedRow();
         tableData[rowIndex] = editedRow;
-        console.log("editedRow", editedRow);
 
-        //수정된 행을 반영하여 tableData를 수정함
         actions.setTableData([...tableData]);
-
-        //수정된 행을 setState하여 update 요청을 보냄
         actions.setEditedRow(editedRow);
       }
     },
     [tableData]
   );
 
-  // 전체체크 or 전체해제
+  // 체크박스 전체해제 함수
+  const releaseAllCheckbox = useCallback(() => {
+    const newTableData = tableData.map((row, index) => {
+      tableData[index].checked = false;
+      return tableData[index];
+    });
+    actions.setTableData(newTableData);
+    actions.setSelectedRows([]);
+  }, [tableData]);
+
+  // 전체체크 or 전체해제 함수
   const allCheckboxChangeHandler = useCallback(() => {
     const isAllChecked = checkedBoxCounter() === tableData.length;
     tableData.forEach((row, index) => {
@@ -205,21 +224,25 @@ const TableTemp = ({
     else actions.setSelectedRows([]);
   }, [tableData]);
 
+  // 체크된 행들을 반환하는 함수
+  const pushNewRowToSelectedRows = useCallback(() => {
+    if (actions.setSelectedRows) {
+      let newSelectedRows;
+      newSelectedRows = tableData.filter((row) => row.checked);
+      return newSelectedRows;
+    }
+    return [];
+  }, [tableData]);
+
   // 각 행의 체크박스 체크 이벤트
   const checkboxHandler = useCallback(
     (rowIndex) => {
       tableData[rowIndex].checked = !tableData[rowIndex].checked;
-      let newSelectedRows = [...selectedRows];
-      if (tableData[rowIndex].checked) {
-        if (actions.setSelectedRows) {
-          newSelectedRows.push(tableData[rowIndex]);
-        }
+      if (actions.setSelectedRows) {
+        const newSelectedRows = pushNewRowToSelectedRows();
+        actions.setSelectedRows(newSelectedRows);
+        console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
       }
-      if (!tableData[rowIndex].checked) {
-        tableData[rowIndex].selected = false;
-        newSelectedRows = tableData.filter((row) => row.checked);
-      }
-      actions.setSelectedRows(newSelectedRows);
       actions.setTableData([...tableData]);
     },
     [tableData, actions]
@@ -254,6 +277,7 @@ const TableTemp = ({
         if (tableFocus.current) {
           releaseSelectedRef();
           releaseEditable();
+          releaseAllCheckbox();
           removeNewRow();
           tableFocus.current = false;
           if (actions.setTableData) actions.setTableData([...tableData]);
@@ -290,11 +314,13 @@ const TableTemp = ({
             case "ArrowDown":
               if (!rowRef) break;
               if (rowRef.current < tableData.length) rowRef.current++;
+              updatePkValue();
               isValidKeyEvent = true;
               break;
             case "ArrowUp":
               if (!rowRef) break;
               if (rowRef.current > 0) rowRef.current--;
+              updatePkValue();
               isValidKeyEvent = true;
               break;
             case "ArrowLeft":
@@ -421,25 +447,19 @@ const TableTemp = ({
                       handleDoubleClick(rowIndex, thead.field)
                     }
                   >
-                    <div className="tableContents">
-                      {/* editable 상태인 경우 input 요소로 렌더링 */}
-                      {row.isEditable && !thead.readOnly ? (
-                        <div
-                          contentEditable
-                          data-field={thead.field}
-                          onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
-                          ref={(input) => {
-                            if (input && columnRef.current === columnIndex) {
-                              input.focus();
-                              focusAtEnd(input);
-                            }
-                          }}
-                        >
-                          {row.isNew ? "" : row.item[thead.field]}
-                        </div>
-                      ) : (
-                        <div>{row.item[thead.field]}</div>
-                      )}
+                    <div
+                      className="tableContents"
+                      contentEditable={row.isEditable && !thead.readOnly}
+                      data-field={thead.field}
+                      onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
+                      ref={(input) => {
+                        if (input && columnRef.current === columnIndex) {
+                          input.focus();
+                          focusAtEnd(input);
+                        }
+                      }}
+                    >
+                      {row.isNew ? "" : row.item[thead.field]}
                     </div>
                   </td>
                 ))}

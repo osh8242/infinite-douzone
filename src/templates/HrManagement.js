@@ -64,9 +64,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
 
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
   const submitMainTabData = (event, value) => {
-    console.log("event", event);
     if (event.key === "Enter") {
-      console.log("이벤트타겟", event.target);
       event.target.blur();
       if (mainTabRef.current) {
         let newMainTabData = { ...mainTabData.item };
