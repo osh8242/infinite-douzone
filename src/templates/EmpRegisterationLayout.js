@@ -159,6 +159,7 @@ function EmpRegisterationLayout() {
                   />
                   <CallNumberForm
                     label={labels.telHome}
+                    type="callNumber"
                     val1={mainTabData.telHome1}
                     val2={mainTabData.telHome2}
                     val3={mainTabData.telHome3}
@@ -169,6 +170,7 @@ function EmpRegisterationLayout() {
                   />
                   <CallNumberForm
                     label={labels.calEmp}
+                    type="callNumber"
                     val1={mainTabData.celEmp1}
                     val2={mainTabData.celEmp2}
                     val3={mainTabData.celEmp3}
