@@ -51,26 +51,29 @@ const SalConstant = () => {
         ],
     },
     codeHelperparams : {
-        cdEmp : {
-            title : '사원번호 조회',
-            tableHeaders: [
-                { field: "cdEmp", text: "사원번호"},
-                { field: "nmEmp", text: "사원이름"}],
-            tableData : [
-                { pk:'Y701', name : '현소현'}, 
-                { pk:'Y702', name : '오승환'}, 
-                { pk:'Y703', name : '김진'}]
-            },
         cdDept : {
             title : '부서코드 조회',
             tableHeaders: [
-                { field: "cdDept", text: "부서코드"},
+                { field: "pk", text: "부서코드"},
                 { field: "nmDept", text: "부서이름"},]
             , tableData : [
                 { pk:'D001', nmDept : '인사팀'}, 
                 { pk:'D002', nmDept : '경영지원팀'}, 
                 { pk:'D003', nmDept : '개발팀'}],
+            searchField : ['nmDept'],
         },
+        emplist:{
+            title : '사원조회',
+            url : "/emp/getEmpListForCodeHelper",
+            headers : [
+                        { field: "cdEmp", text: "사원코드" },
+                        { field: "nmKrname", text: "사원명" },
+                        { field: "noSocial", text: "주민(외국인)번호" },
+                        { field: "daRetire", text: "퇴사일자" }
+                      ],
+            params : { ynFor: 'n', daRetire: '' },
+            searchField : ['nmKrname','noSocial']
+          },
         rankNo : {
 
         },
@@ -98,9 +101,22 @@ const SalConstant = () => {
         MEALS : '597', //식대
         BONUS : '505' //상여금
     },
-}
-    
+    params : {
+        selectBoxParams : { //selectbox 선택된 옵션
+            allowMonth : '',
+            allowYear : '',
+            current : ''
+        },
+        selectBoxParams : { //selectbox 선택된 옵션
+            allowMonth : '',
+            allowYear : '',
+            current : ''
+        },
+            
+    }
+}    
 };
+
 export default SalConstant;
 
 //국민연금 계산식

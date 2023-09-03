@@ -3,7 +3,6 @@ import axios from '../../node_modules/axios/index';
 import { currentDateStr, currentMonthStr, currentYearStr } from '../utils/DateUtils';
 import { nvl } from '../utils/NumberUtils';
 import SalConstant, { calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension } from './SalConstant';
-import { isEmpty } from '../utils/StringUtils';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
@@ -22,10 +21,14 @@ const SalaryInformationEntryModel = () => {
   const [salDeductPaySumData, setSalDeductPaySumData] = useState();       // 공제항목 합계테이블 데이터(selectbox 조회)
 
   /* 상태 Data */
-  const [modalState, setModalState] = useState({ show: false });            // 모달창 show 여부
-  const [codeHelperTableData, setCodeHelperTableData] = useState('');       // 코드도움 테이블 data
-  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');  // 조회구분 selectbox 선택된 value
-  const [editedAllow, setEditedAllow]= useState();                          // 급여항목 테이블_ table row 수정된 객체
+  const [modalState, setModalState] = useState({ show: false });                // 모달창 show 여부
+  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');      // 조회구분 selectbox 선택된 value
+  const [editedAllow, setEditedAllow]= useState();                              // 급여항목 테이블_ table row 수정된 객체
+  const [addRow, setAddRow]= useState();                                        // 사원 코드도움창에서 선택한 로우 객체
+  const [codeHelperTableData, setCodeHelperTableData] = useState({              // 코드도움 테이블 data
+    data : '' ,
+    code : ''
+  });       
 
   /* 검색조건 Data */
   const [cdEmp, setCdEmp] = useState('A101');                       // 사원번호
@@ -45,7 +48,11 @@ const SalaryInformationEntryModel = () => {
 
   /* 사원정보 선택후 급여항목, 공제항목 검색조건 */
   const [searchAllowVo, setSearchAllowVo] = useState({ allowMonth: allowMonth, cdEmp: cdEmp });
-  
+
+  useEffect(() => {
+    insertSalEmp(addRow);
+  }, [addRow])
+
   useEffect(() => {
     salEmpdataTable();        // 검색조건에 맞는 사원리스트
   }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
@@ -100,7 +107,7 @@ const SalaryInformationEntryModel = () => {
         {'Content-Type': 'application/json',},
       )
       .then((response) => {
-        console.log('사원리스트 >> ', response.data);
+        //console.log('사원리스트 >> ', response.data);
         const data = response.data.map((item) => (
           {
             item : {
@@ -221,7 +228,7 @@ const SalaryInformationEntryModel = () => {
       {'Content-Type': 'application/json',},
       )
       .then((response) => {
-        //console.log( '급여항목 합계데이터 >> ',response.data);
+        //console.log( '급여항목 합계데이터 >> ', response.data);
         const data = response.data.map((item) => ({
           item : {
             cdAllow: item.cdAllow,
@@ -325,6 +332,26 @@ const SalaryInformationEntryModel = () => {
     return jsonparam;
   }
 
+
+  // 급여_사원 insert
+  const insertSalEmp = (addRow) => {
+    console.log('insertSalEmp_addRow');    
+    // //console.log(addRow);
+
+    // axios.post(
+    //     url + '/saEmpInfo/getSalAllowPaySum',
+    //     addRow,
+    //     {'Content-Type': 'application/json',},
+    //   )
+    //   .then((response) => {
+    //     console.log('급여사원 insert > ' + response.data);
+    //     salEmpdataTable();//새로고침
+    //   })
+    //   .catch((error) => {
+    //     console.error('에러발생: ', error);
+    //   })
+  }
+
   return {
     state : {
       saInfoListData: saInfoListData  // 왼쪽 사원테이블
@@ -350,6 +377,8 @@ const SalaryInformationEntryModel = () => {
         , searchYnForlabor
         , searchCdEmp
       }
+
+      , addRow
     }
     , actions:{
       setSaInfoListData 
@@ -377,6 +406,7 @@ const SalaryInformationEntryModel = () => {
       , setSearchCdProject
       , setSearchYnUnit
       , setSearchYnForlabor
+      , setAddRow
     }
 
   };
