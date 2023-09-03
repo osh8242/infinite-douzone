@@ -11,14 +11,14 @@ const [codeHelperCode, setCodeHelperCode] = useState('');
 
 const [tableData, setTableData] = useState({
     title : '',
-    tableHeaders: [{ field: "pk", text: "Code"}],
+    tableHeaders: [{ field: "codeId", text: "코드"}],
     // { field: "code", text: "Code"},
     // { field: "nmKrname", text: "사원명"},
     // { field: "noSocial", text: "주민(외국인)번호"},
     // { field: "daRetire", text: "퇴사일자"}],
     tableData : [],
     //searchField : ['pk'],
-    searchField : ['nmKrname', 'noSocial'],
+    searchField : ['codeId', 'codeName'],
   });
 
   useEffect(() => {
@@ -46,6 +46,7 @@ const getCodeListForCodeHelper = (codeHelperCode) => {
           tableData: codeDataList,
           title: codeHelperCode.title,
           tableHeaders: codeHelperCode.headers,
+          searchField : codeHelperCode.searchField,
         });
       })
       .catch((error) => {

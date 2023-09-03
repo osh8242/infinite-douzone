@@ -145,6 +145,14 @@ const CommonConstant = () => {
 
       inquiryYype: "조회구분",
     },
+    CODE : {// 코드도움창용 code테이블 parentId
+      URL : "/common/getCodeListForCodeHelper",
+      PARENT_ID :{
+        DEPT : "DEPT",        // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
+        RANK_NO : "RANK_NO",  // 직급 ( 주임, 선임, 책임, 수석, 사장)
+        OCCUP : "OCCUP"       // 직종 ()
+      }
+    }
   };
 };
 

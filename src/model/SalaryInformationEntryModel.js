@@ -27,8 +27,9 @@ const SalaryInformationEntryModel = () => {
   const [addRow, setAddRow]= useState();                                        // 사원 코드도움창에서 선택한 로우 객체
   const [codeHelperTableData, setCodeHelperTableData] = useState({              // 코드도움 테이블 data
     data : '' ,
-    code : ''
-  });       
+    code : '' ,
+    setData : setAddRow
+  });
 
   /* 검색조건 Data */
   const [cdEmp, setCdEmp] = useState('A101');                       // 사원번호
@@ -50,6 +51,7 @@ const SalaryInformationEntryModel = () => {
   const [searchAllowVo, setSearchAllowVo] = useState({ allowMonth: allowMonth, cdEmp: cdEmp });
 
   useEffect(() => {
+    console.log(addRow);
     insertSalEmp(addRow);
   }, [addRow])
 
@@ -58,8 +60,8 @@ const SalaryInformationEntryModel = () => {
   }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
 
   useEffect(() => {
-    // console.log('searchAllowVo>>>');
-    // console.log(searchAllowVo);
+    console.log('searchAllowVo>>>');
+    console.log(searchAllowVo);
     salAllowTableData();      // 선택한 사원의 급여항목 Table Data
     salDeductTableData();     // 선택한 사원의 공제항목 Table Data
     salEmpDetailTableData();  // 선택한 사원의 상세정보
