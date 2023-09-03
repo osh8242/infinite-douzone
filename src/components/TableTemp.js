@@ -4,8 +4,14 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Form, Table } from "react-bootstrap";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Table } from "react-bootstrap";
 import PropTypes from "prop-types";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -41,77 +47,85 @@ const TableTemp = ({
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
-  console.log(tableName, tableData, "Render");
+  const [tableRows, setTableRows] = useState(tableData || []);
+  useEffect(() => {
+    setTableRows(tableData);
+  }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
   //테이블 바디 dom ref
   const tbodyRef = useRef();
   //선택된 컬럼(인덱스)
-  const columnRef = useRef();
+  const [columnRef, setColumnRef] = useState(-1);
   //선택된 로우(인덱스)
-  const rowRef = useRef();
+  const [rowRef, setRowRef] = useState(-1);
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(rowRef.current && columnRef.current);
+  const tableFocus = useRef(rowRef && columnRef);
 
+  if (tableName === "EMP") {
+    console.log(tableName, tableRows, "Render");
+    console.log(tableName, "rowRef", rowRef);
+    console.log(tableName, "columnRef", columnRef);
+  }
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
-    rowRef.current = null;
-    columnRef.current = null;
+    setRowRef(-1);
+    setColumnRef(-1);
   }, []);
 
-  //현재 테이블의 선택된 행 index을 가져오는 함수
-  const getSelectedRowIndex = () => {
-    return tableData.findIndex((row) => row.selected);
-  };
-
   // 수정 중인 행의 index를 찾는 함수
-  const getEditableRowIndex = () => {
-    return tableData.findIndex((item) => item.isEditable);
-  };
-
-  //선택된 행을 선택해제하는 함수(체크해제 아님)
-  const releaseSelection = useCallback(() => {
-    const selectedRowIndex = getSelectedRowIndex();
-    if (selectedRowIndex !== -1) tableData[selectedRowIndex].selected = false;
-  }, [tableData]);
+  const editableRowIndex = useMemo(() => {
+    return tableRows.findIndex((item) => item.isEditable);
+  }, [tableRows]);
 
   // 선택된 행을 수정상태로 바꾸는 함수
   const setEditableRow = useCallback(
     (rowIndex) => {
-      tableData[rowIndex].isEditable = true;
-      actions.setTableData([...tableData]);
+      const newTableRows = [...tableRows];
+      newTableRows[rowIndex].isEditable = true;
+      setTableRows(newTableRows);
     },
-    [tableData]
+    [tableRows]
   );
 
   //수정중인 행을 수정해제하는 함수
-  const releaseEditable = useCallback(() => {
-    const editableRowIndex = getEditableRowIndex();
-    if (editableRowIndex !== -1) tableData[editableRowIndex].isEditable = false;
-  }, [tableData]);
+  const releaseEditable = useCallback(
+    (rowIndex) => {
+      if (editableRowIndex !== -1 && editableRowIndex !== rowIndex) {
+        const newTableRows = [...tableRows];
+        newTableRows[editableRowIndex].isEditable = false;
+        setTableRows(newTableRows);
+      }
+    },
+    [tableRows, editableRowIndex]
+  );
 
   //td의 className을 얻는 함수
-  const getTdClassName = useCallback((rowIndex, columnIndex) => {
-    if (columnIndex === columnRef.current && rowRef.current === rowIndex)
-      return "selectedTd";
-    else return "";
-  }, []);
+  const getTdClassName = useCallback(
+    (rowIndex, columnIndex) => {
+      if (columnIndex === columnRef && rowIndex === rowRef) return "selectedTd";
+      else return "";
+    },
+    [rowRef, columnRef]
+  );
 
   //row의 className을 얻는 함수
-  const getRowClassName = useCallback((currentRow, index) => {
-    if (rowRef.current === index || currentRow.checked) return "selectedTr";
-    if (index === rowRef.current) return "selectedTr";
-    return "";
-  }, []);
+  const getRowClassName = useCallback(
+    (row, index) => {
+      if (rowRef === index || row.checked) return "selectedTr";
+      return "";
+    },
+    [rowRef]
+  );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback(
     () =>
-      tbodyRef.current.children[rowRef.current].querySelectorAll(
+      tbodyRef.current.children[rowRef].querySelectorAll(
         "[contentEditable='true']"
       ),
-    []
+    [rowRef]
   );
 
   // 새로운 행(빈행)을 만드는 함수
@@ -119,72 +133,100 @@ const TableTemp = ({
     let newRow = pkValue || {};
     newRow = actions.getRowObject ? actions.getRowObject(newRow) : newRow;
     return newRow;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pkValue]);
-
-  // 테이블에 새로운 행(빈행)을 넣는 함수
-  const pushNewRow = useCallback(() => {
-    const newRow = makeNewRow();
-    newRow["isNew"] = true;
-    tableData.push(newRow);
-  }, [tableData]);
 
   // 추가중이던 행 제거
   const removeNewRow = useCallback(() => {
-    if (tableData?.[tableData.length - 1].isNew) tableData?.pop();
-  }, [tableData]);
+    if (tableRows?.[tableRows.length - 1]?.isNew) tableRows.pop();
+    setTableRows([...tableRows]);
+  }, [tableRows]);
+
+  //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
+  const getPkValue = useCallback(
+    (rowIndex) => {
+      let pkValue = {};
+      tableHeaders.forEach((header) => {
+        if (header.isPk)
+          pkValue[header.field] = tableRows[rowIndex].item[header.field];
+      });
+      return pkValue;
+    },
+    [tableHeaders, tableRows]
+  );
 
   // pkValue 객체를 업데이트함
-  const updatePkValue = useCallback(() => {
-    if (actions.setPkValue) {
-      let newPkValue = {};
-      if (rowRef.current < tableData.length) newPkValue = getPkValue();
-      actions.setPkValue({});
-    }
-  }, [tableData]);
+  const updatePkValue = useCallback(
+    (rowIndex) => {
+      if (
+        actions.setPkValue &&
+        rowRef !== rowIndex &&
+        rowRef > -1 &&
+        rowRef < tableRows.length
+      ) {
+        let newPkValue = {};
+        newPkValue = getPkValue(rowIndex);
+        actions.setPkValue(newPkValue);
+      }
+    },
+    [actions, rowRef, getPkValue]
+  );
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
       if (readOnly) return;
-      if (rowRef.current === rowIndex && columnRef.current === columnIndex)
-        return;
-      rowRef.current = rowIndex;
-      columnRef.current = columnIndex;
-      if (rowIndex !== getEditableRowIndex()) {
-        releaseEditable();
-        removeNewRow();
-      }
-
-      releaseSelection();
-      updatePkValue();
-
-      actions.setTableData([...tableData]);
+      if (rowRef === rowIndex && columnRef === columnIndex) return;
+      setRowRef(rowIndex);
+      setColumnRef(columnIndex);
+      releaseEditable(rowIndex);
+      if (editableRowIndex !== rowIndex) removeNewRow(rowIndex);
+      updatePkValue(rowIndex);
     },
-    [getEditableRowIndex, tableData]
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      rowRef,
+      columnRef,
+      releaseEditable,
+      editableRowIndex,
+      removeNewRow,
+      updatePkValue,
+    ]
   );
+
+  // 테이블에 새로운 행(빈행)을 넣는 함수
+  const pushNewRow = useCallback(() => {
+    const newRow = makeNewRow();
+    newRow["isNew"] = true;
+    tableRows.push(newRow);
+    setTableRows([...tableData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableRows]);
 
   // row DoubliClick 이벤트 : 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = useCallback(
     (rowIndex, field) => {
       if (readOnly) return;
+      if (rowIndex === tableRows.length) pushNewRow();
 
-      if (rowIndex === tableData.length) pushNewRow();
-
-      tableData[rowIndex].isEditable = true;
-      actions.setTableData([...tableData]);
+      tableRows[rowIndex].isEditable = true;
+      setTableRows([...tableRows]);
     },
-    [tableData, pkValue]
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [tableRows, pushNewRow]
   );
 
   // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
   const getEditedRow = useCallback(() => {
-    const currentRowInputs = getInputElements();
-
     let editedRow = {
-      ...tableData[rowRef.current],
+      ...tableRows[rowRef],
       isEditable: false,
-      isNew: tableData[rowRef.current].isNew,
+      isNew: tableRows[rowRef].isNew,
     };
+
+    const currentRowInputs = getInputElements();
 
     // 각 입력 필드의 값을 editedRow에 업데이트
     currentRowInputs.forEach((input, rowIndex) => {
@@ -193,7 +235,7 @@ const TableTemp = ({
     });
 
     return editedRow;
-  }, [tableData, rowRef.current]);
+  }, [tableRows, rowRef, getInputElements]);
 
   // 수정한 행에서 엔터키 입력 이벤트 처리
   const TdKeyDownHandler = useCallback(
@@ -203,13 +245,14 @@ const TableTemp = ({
         //event.preventDefault();
 
         const editedRow = getEditedRow();
-        tableData[rowIndex] = editedRow;
+        tableRows[rowIndex] = editedRow;
 
-        actions.setTableData([...tableData]);
+        setTableRows([...tableRows]);
         actions.setEditedRow(editedRow);
       }
     },
-    [tableData]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getEditedRow, tableRows, actions]
   );
 
   // 체크박스 전체해제 함수
@@ -222,62 +265,52 @@ const TableTemp = ({
   //   actions.setSelectedRows([]);
   // }, [tableData]);
 
-  // 전체체크 or 전체해제 함수
-  const allCheckboxChangeHandler = useCallback(() => {
-    const isAllChecked = checkedBoxCounter() === tableData.length;
-    tableData.forEach((row, index) => {
-      tableData[index].checked = !isAllChecked;
-    });
-    actions.setTableData([...tableData]);
-    if (isAllChecked) actions.setSelectedRows(tableData);
-    else actions.setSelectedRows([]);
-  }, [tableData]);
-
-  // 체크된 행들을 반환하는 함수
-  const pushNewRowToSelectedRows = useCallback(() => {
-    if (actions.setSelectedRows) {
-      let newSelectedRows;
-      newSelectedRows = tableData.filter((row) => row.checked);
-      return newSelectedRows;
-    }
-    return [];
-  }, [tableData]);
-
-  // 각 행의 체크박스 체크 이벤트
-  const checkboxHandler = useCallback(
-    (rowIndex) => {
-      tableData[rowIndex].checked = !tableData[rowIndex].checked;
-      if (actions.setSelectedRows) {
-        const newSelectedRows = pushNewRowToSelectedRows();
-        console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
-        actions.setSelectedRows(newSelectedRows);
-      }
-      actions.setTableData([...tableData]);
-    },
-    [tableData, actions]
-  );
-
-  /////// 정렬 화살표 기능.. 구현예정
-  const arrowDirectionHandler = (columnName) => {};
-
   // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
-    const checkedBoxCount = tableData.reduce(
+    const checkedBoxCount = tableRows.reduce(
       (sum, item) => (item.checked ? sum + 1 : sum),
       0
     );
     return checkedBoxCount;
-  }, [tableData]);
+  }, [tableRows]);
 
-  //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
-  const getPkValue = useCallback(() => {
-    let pkValue = {};
-    tableHeaders.forEach((header) => {
-      if (header.isPk)
-        pkValue[header.field] = tableData[rowRef.current].item[header.field];
+  // 전체체크 or 전체해제 함수
+  const allCheckboxChangeHandler = useCallback(() => {
+    const isAllChecked = checkedBoxCounter() === tableRows.length;
+    tableRows.forEach((row, index) => {
+      tableRows[index].checked = !isAllChecked;
     });
-    return pkValue;
-  }, [tableData, rowRef]);
+    setTableRows([...tableRows]);
+    if (isAllChecked) actions.setSelectedRows(tableRows);
+    else actions.setSelectedRows([]);
+  }, [actions, checkedBoxCounter, tableRows]);
+
+  // 체크된 행들을 반환하는 함수
+  const getSelectedRows = useCallback(() => {
+    if (actions.setSelectedRows) {
+      let newSelectedRows;
+      newSelectedRows = tableRows.filter((row) => row.checked);
+      return newSelectedRows;
+    }
+    return [];
+  }, [actions.setSelectedRows, tableRows]);
+
+  // 각 행의 체크박스 체크 이벤트
+  const checkboxHandler = useCallback(
+    (rowIndex) => {
+      tableRows[rowIndex].checked = !tableRows[rowIndex].checked;
+      if (actions.setSelectedRows) {
+        const newSelectedRows = getSelectedRows();
+        console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
+        actions.setSelectedRows(newSelectedRows);
+      }
+      setTableRows([...tableRows]);
+    },
+    [tableRows, actions, getSelectedRows]
+  );
+
+  /////// 정렬 화살표 기능.. 구현예정
+  const arrowDirectionHandler = (columnName) => {};
 
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
@@ -285,32 +318,28 @@ const TableTemp = ({
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           releaseSelectedRef();
-          releaseEditable();
           removeNewRow();
+          releaseEditable();
           tableFocus.current = false;
-          if (actions.setTableData) actions.setTableData([...tableData]);
         }
       }
       if (myRef.current && myRef.current.contains(event.target)) {
         tableFocus.current = true;
       }
     },
-    [tableData]
+    [releaseEditable, releaseSelectedRef, removeNewRow]
   );
 
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
-        const editableRowIndex = getEditableRowIndex();
-        let isValidKeyEvent = false;
-
+        console.log("이벤트키", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
               releaseEditable();
               removeNewRow();
-              isValidKeyEvent = true;
               break;
             default:
               break;
@@ -318,52 +347,60 @@ const TableTemp = ({
         }
 
         if (editableRowIndex === -1) {
+          console.log("스위치 키이벤트");
           switch (event.key) {
             case "ArrowDown":
-              if (!rowRef) break;
-              if (rowRef.current < tableData.length) rowRef.current++;
-              updatePkValue();
-              isValidKeyEvent = true;
+              if (rowRef < tableRows.length) setRowRef(rowRef + 1);
+              updatePkValue(rowRef + 1);
               break;
+
             case "ArrowUp":
-              if (!rowRef) break;
-              if (rowRef.current > 0) rowRef.current--;
-              updatePkValue();
-              isValidKeyEvent = true;
+              if (rowRef > 0) setRowRef(rowRef - 1);
+              updatePkValue(rowRef - 1);
               break;
+
             case "ArrowLeft":
-              if (!columnRef) break;
-              if (columnRef.current > 0) columnRef.current--;
-              isValidKeyEvent = true;
+              if (columnRef > 0) setColumnRef(columnRef - 1);
               break;
+
             case "ArrowRight":
-              if (!columnRef) break;
-              if (columnRef.current < tableHeaders.length - 1)
-                columnRef.current++;
-              isValidKeyEvent = true;
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
+
             case "Enter":
-              if (editableRowIndex === -1 && rowRef) {
+              if (editableRowIndex === -1 && rowRef > -1) {
                 event.preventDefault();
-                handleRowClick(event, rowRef.current, columnRef.current);
-                if (rowRef.current === tableData.length) pushNewRow();
-                setEditableRow(rowRef.current);
+                handleRowClick(event, rowRef, columnRef);
+                if (rowRef === tableRows.length) pushNewRow();
+                setEditableRow(rowRef);
               }
-              isValidKeyEvent = true;
               break;
+
             case " ":
-              checkboxHandler(rowRef.current);
-              isValidKeyEvent = true;
+              checkboxHandler(rowRef);
               break;
+
             default:
               break;
           }
         }
-
-        if (isValidKeyEvent) actions.setTableData([...tableData]);
       }
     },
-    [tableData, columnRef]
+    [
+      tableHeaders,
+      tableRows,
+      editableRowIndex,
+      rowRef,
+      columnRef,
+      releaseEditable,
+      removeNewRow,
+      updatePkValue,
+      checkboxHandler,
+      handleRowClick,
+      pushNewRow,
+      setEditableRow,
+    ]
   );
 
   //componentDidMount
@@ -387,7 +424,7 @@ const TableTemp = ({
     selection.addRange(range);
   };
 
-  return tableData ? (
+  return tableRows ? (
     <>
       <Table size="sm" bordered hover ref={myRef}>
         {/* header */}
@@ -399,7 +436,7 @@ const TableTemp = ({
                 <input
                   type="checkbox"
                   onChange={() => allCheckboxChangeHandler()}
-                  checked={checkedBoxCounter() === tableData.length}
+                  checked={checkedBoxCounter() === tableRows.length}
                 />
               </th>
             )}
@@ -426,7 +463,7 @@ const TableTemp = ({
         </thead>
         {/* content */}
         <tbody ref={tbodyRef}>
-          {tableData.map((row, rowIndex) => {
+          {tableRows.map((row, rowIndex) => {
             return (
               <tr key={rowIndex} className={getRowClassName(row, rowIndex)}>
                 {/* 각 row 의 checkBox */}
@@ -459,8 +496,8 @@ const TableTemp = ({
                       ref={(input) => {
                         if (
                           input &&
-                          rowRef.current === rowIndex &&
-                          columnRef.current === columnIndex
+                          rowRef === rowIndex &&
+                          columnRef === columnIndex
                         ) {
                           input.focus();
                           focusAtEnd(input);
@@ -477,9 +514,9 @@ const TableTemp = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr
-              className={getRowClassName({}, tableData.length)}
-              onDoubleClick={() => handleDoubleClick(tableData.length)}
-              onClick={(e) => handleRowClick(e, tableData.length)}
+              className={getRowClassName({}, tableRows.length)}
+              onDoubleClick={() => handleDoubleClick(tableRows.length)}
+              onClick={(e) => handleRowClick(e, tableRows.length)}
             >
               {showCheckbox && (
                 <td>
