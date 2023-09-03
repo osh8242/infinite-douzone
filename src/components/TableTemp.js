@@ -136,8 +136,9 @@ const TableTemp = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(() => {
     if (actions.setPkValue) {
-      if (rowRef.current < tableData.length) actions.setPkValue(getPkValue());
-      if (rowRef.current === tableData.length) actions.setPkValue({});
+      let newPkValue = {};
+      if (rowRef.current < tableData.length) newPkValue = getPkValue();
+      actions.setPkValue({});
     }
   }, [tableData]);
 
