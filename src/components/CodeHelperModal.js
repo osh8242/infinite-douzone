@@ -1,11 +1,16 @@
 /* 현소현
+
+  ex)
   <CodeHelperModal
     show = {state.modalState.show}   
     onHide = {() => actions.setModalState({ ...state.modalState, show: false })} 
     onConfirm = {() => alert('확인')}
+    apiFlag = {true} or {false}
     setLowData = {actions.setAddRow}
+    usePk = {''}
     tableData = {setTableData()}
   />
+  
  */
 
 import React, {useEffect, useState } from "react";
@@ -21,29 +26,25 @@ function CodeHelperModal(props) {
     onHide,
     onConfirm,
     onRowClick,
+
     setLowData,
+    usePk,  // 사용할 필드명  pk를 set? row를 set할거면 필요없움
 
     apiFlag,
-    
     table,
     codeHelperCode,
-    // url,      // apiFlag 전용
-    // params,   // apiFlag 전용
-    // headers,  // apiFlag 전용
   } = props;
 
   const { state, actions } =  ModalModel();
   //const [selectedRow, setSelectedRow] = useState(null);
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [oriData, setOriData] = useState([]);
   const [filteredData, setFilteredData ] = useState([]);
 
   useEffect(() => {
     if (apiFlag) {
-      actions.setCodeHelperCode(codeHelperCode);
-      // actions.setParams(params);
-      // actions.setHeaders(headers);
-      // actions.setApiUrl(url);
+      codeHelperCode && actions.setCodeHelperCode(codeHelperCode);
     } else {
       table && actions.setTableData(table);
     } 
@@ -56,10 +57,10 @@ function CodeHelperModal(props) {
   useEffect(()=>{
     if(searchTerm !== ''){
       setFilteredData(oriData.filter((row)=>{
-        return state.tableData.searchField.some((field) =>
-          row[field].toLowerCase().includes(searchTerm.toLowerCase()) 
-        )
-      })
+          return state.tableData.searchField.some((field) =>
+            row[field].toLowerCase().includes(searchTerm.toLowerCase()) 
+          )
+        })
       );
     }else{
       setFilteredData(oriData);
@@ -69,11 +70,12 @@ function CodeHelperModal(props) {
 
   /* 클릭한 행반환 */
   const handleRowClick = (row) => {
-    //console.log(row);
-    setLowData && setLowData(row);
+    console.log(row);
+    setSearchTerm('');
+    if(setLowData){ usePk ? setLowData(row[usePk]) : setLowData(row) }    
     onRowClick && onRowClick();
+    onHide();
   };
-  
 
   return (
     <Modal show={show} size='lg' centered>
@@ -93,9 +95,9 @@ function CodeHelperModal(props) {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((row) => (
+              {filteredData.map((row, rowIndex) => (
                 //<tr key={row.pk} className={selectedRow === row.pk ? 'selected' : ''} onClick={() => handleRowClick(row)}>
-                <tr key={row.cdEmp} onClick={() => handleRowClick(row)}>
+                <tr key={rowIndex} onClick={() => handleRowClick(row)}>
                   {state.tableData.tableHeaders.map((header) => (
                     <td key={header.field}>{row[header.field]}</td>
                   ))}

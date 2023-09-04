@@ -1,8 +1,8 @@
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useRef } from 'react';
-import { Accordion, Button, Col, Row } from 'react-bootstrap';
-import '../SearchPanel.scss'; // SCSS 파일 불러오기
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useRef } from "react";
+import { Accordion, Button, Col, Row } from "react-bootstrap";
+//import "../styles/SearchPanel.scss"; // SCSS 파일 불러오기
 
 const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
   const [isBodyOpen, setIsBodyOpen] = useState(false);
@@ -26,7 +26,10 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
               <Col className="my-1" md="8">
                 {children[0]}
               </Col>
-              <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                md={{ span: 2, offset: 2 }}
+              >
                 {isBodyOpen ? (
                   <Button variant="secondary" onClick={toggleArrowIcon}>
                     <FontAwesomeIcon icon={faCaretUp} />
@@ -45,7 +48,7 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                   ref={toggleButtonRef} // ref 할당
                   variant="secondary"
                   onClick={handleToggleBody}
-                  style={{ display: 'none' }} // 숨겨진 버튼
+                  style={{ display: "none" }} // 숨겨진 버튼
                 />
               </Col>
             </div>
@@ -63,23 +66,19 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
             </div>
           </div>
         ) : (
-          <div className="search-panel">
-            <div className="header d-flex flex-row">
-              <Row>
-                <Col className="my-1" md="8">
-                  {children}
-                </Col>
-                <Col
-                  className="d-flex align-items-center justify-content-center"
-                  md={{ span: 2, offset: 2 }}
-                >
-                  <Button variant="secondary" onClick={onSearch}>
-                    조회
-                  </Button>
-                </Col>
-              </Row>
-            </div>
-          </div>
+          <Row className="my-4">
+            <Col className="my-1" md="8">
+              {children} {/* 기본 검색조건 */}
+            </Col>
+            <Col
+              className="d-flex align-items-center justify-content-center"
+              md={{ span: 2, offset: 2 }}
+            >
+              <Button variant="secondary" onClick={onSearch}>
+                조회
+              </Button>
+            </Col>
+          </Row>
         )}
       </Row>
     </>

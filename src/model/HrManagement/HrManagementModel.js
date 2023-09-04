@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import Emp from "../vo/HrManagement/Emp";
-import EmpAdd from "../vo/HrManagement/EmpAdd";
-import EmpFam from "../vo/HrManagement/EmpFam";
+import Emp from "../../vo/HrManagement/Emp";
+import EmpAdd from "../../vo/HrManagement/EmpAdd";
+import EmpFam from "../../vo/HrManagement/EmpFam";
 
 const HrManagementModel = () => {
   const url = "http://localhost:8888"; // REST API 서버 주소
@@ -25,8 +25,6 @@ const HrManagementModel = () => {
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
-    setLeftTableData();
-    console.log("jobOk", jobOk);
     axios
       .get(
         `${url}/emp/getEmpListByJobOk?jobOk=${jobOk}+
@@ -154,8 +152,8 @@ const HrManagementModel = () => {
 
   //수정된 사원가족 update 요청
   useEffect(() => {
-    console.log("editedEmpFam", editedEmpFam.item);
-    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
+    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0) {
+      console.log("editedEmpFam 수정요청", editedEmpFam.item);
       axios
         .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam.item)
         .then((response) => {
@@ -166,51 +164,54 @@ const HrManagementModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
+    }
   }, [editedEmpFam]);
 
   //선택된 행 delete 요청
   const deleteSelectedRows = useCallback(() => {
     const editedTableNames = {};
-
-    // 각 row에 대한 delete 요청을 생성
-    const deletePromises = selectedRows.map((row) => {
-      let pattern;
-      switch (row.table) {
-        case "empFam":
-          pattern = "/empFam/deleteEmpFam";
-          break;
-        case "emp":
-          pattern = "/emp/deleteEmp";
-          break;
-        default:
-          return Promise.resolve();
-      }
-      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-      return axios.delete(url + pattern, { data: row.item });
-    });
-
-    Promise.all(deletePromises)
-      .then((responses) => {
-        console.log("선택된 모든 행의 삭제 완료");
-        console.log("selectedRows", selectedRows);
-        setSelectedRows([]); // 선택행 배열 비우기
-        Object.keys(editedTableNames).forEach((tableName) => {
-          switch (tableName) {
-            case "empFam":
-              setEditedEmpFam({}); // 사원가족 리로드
-              break;
-            case "emp":
-              setEditedEmp({}); // 사원가족 리로드
-              break;
-            default:
-              break;
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("하나 이상의 요청에서 에러 발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
+    console.log("삭제요청된 행들", selectedRows);
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      // 각 row에 대한 delete 요청을 생성
+      const deletePromises = selectedRows.map((row) => {
+        let pattern;
+        switch (row.table) {
+          case "empFam":
+            pattern = "/empFam/deleteEmpFam";
+            break;
+          case "emp":
+            pattern = "/emp/deleteEmp";
+            break;
+          default:
+            return Promise.resolve();
+        }
+        if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+        return axios.delete(url + pattern, { data: row.item });
       });
+
+      Promise.all(deletePromises)
+        .then((responses) => {
+          console.log("선택된 모든 행의 삭제 완료");
+          console.log("selectedRows", selectedRows);
+          setSelectedRows([]); // 선택행 배열 비우기
+          Object.keys(editedTableNames).forEach((tableName) => {
+            switch (tableName) {
+              case "empFam":
+                setEditedEmpFam({}); // 사원가족 리로드
+                break;
+              case "emp":
+                setEditedEmp({}); // 사원가족 리로드
+                break;
+              default:
+                break;
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("하나 이상의 요청에서 에러 발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    }
   }, [selectedRows]);
 
   return {

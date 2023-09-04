@@ -12,9 +12,9 @@ const CommonConstant = () => {
       { key: "cdEmp", value: "코드순" },
       { key: "nmKrname", value: "이름순" },
     ],
-    mainTabMenuList: ["기초정보", "인적정보"],
+
     mainTabMenuListForEmpRegister: ["기초정보", "가족사항"],
-    subTabMenuList: ["가족", "학력", "경력", "신체", "병역"],
+
     genderRadioList: [
       { key: "M", value: "남자" },
       { key: "F", value: "여자" },
@@ -48,23 +48,12 @@ const CommonConstant = () => {
         field: "cdEmp",
         text: "사원코드",
         isPk: true,
+        readOnly: true,
+        width: "75px",
       },
       { field: "nmKrname", text: "성명" },
     ],
-    HrManagementSubTableHeaders: [
-      { field: "cdFamrel", text: "관계" },
-      { field: "nmKrname", text: "성명" },
-      { field: "ynFor", text: "외국인" },
-      { field: "noSocial", text: "주민등록번호" },
-      { field: "fgSchool", text: "학력" },
-      { field: "fgGraduation", text: "졸업구분" },
-      { field: "ynTogether", text: "동거" },
-      { field: "ynLunarbir", text: "양음" },
-      { field: "daBirth", text: "생년월일" },
-      { field: "cdJob", text: "직업" },
-      { field: "nmKrcom", text: "직장명" },
-      { field: "cdOffpos", text: "직급" },
-    ],
+
     EmpRegisterLeftHeaders: [
       { field: "cdEmp", text: "사원코드", isPk: true },
       { field: "nmKrname", text: "성명" },
@@ -145,6 +134,14 @@ const CommonConstant = () => {
 
       inquiryYype: "조회구분",
     },
+    CODE : {// 코드도움창용 code테이블 parentId
+      URL : "/common/getCodeListForCodeHelper",
+      PARENT_ID :{
+        DEPT : "DEPT",        // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
+        RANK_NO : "RANK_NO",  // 직급 ( 주임, 선임, 책임, 수석, 사장)
+        OCCUP : "OCCUP"       // 직종 ()
+      }
+    }
   };
 };
 
