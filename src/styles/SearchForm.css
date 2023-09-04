@@ -68,26 +68,30 @@
     padding-left: 15px;
     margin-right: 10px;
     position: relative;
+    /* 추가된 부분 */
 }
 
 .search-bar__input {
     width: 50px;
-    border: none; 
+    border: none;
+    -webkit-appearance: none;
     text-align: center;
     margin-left: 10px;
     overflow: auto;
-    z-index: 1;    
+    z-index: -1;
     font-size: 12.5px;
 }
- 
+
+.search-bar__input::placeholder { 
+}
+
 .search-bar__input:focus {
     outline: none;
     width: 300px;
     text-align: left;
 }
 
-.search-bar__input::placeholder {
-    background-color: transparent;
+.search-bar__input:focus::placeholder {
     color: grey;
 }
 
@@ -95,6 +99,7 @@
     font-size: 11px;
 }
 
+/* 추가된 부분 시작 */
 .search-results {
     position: absolute;
     top: 100%;
@@ -105,7 +110,7 @@
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 0 0 4px 4px;
-    z-index: 20;
+    z-index: 10;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -120,7 +125,14 @@
     background-color: #f7f7f7;
 }
 
+/* 추가된 부분 끝 */
+/* ... 기존 스타일들 ... */
 
 .search-results li.selected {
     background-color: #e0e0e0;
+<<<<<<< HEAD
 } 
+=======
+    /* 선택된 아이템의 배경색 */
+}
+>>>>>>> parent of 4fc64b0 (fix. search 자동완성 수정)
