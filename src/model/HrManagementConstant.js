@@ -6,7 +6,6 @@ const HrManagementConstant = () => {
           field: "cdEmp",
           text: "사원코드",
           isPk: true,
-          readOnly: true,
           width: "75px",
         },
         { field: "nmKrname", text: "성명" },

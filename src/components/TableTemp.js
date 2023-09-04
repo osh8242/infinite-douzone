@@ -54,12 +54,16 @@ const TableTemp = ({
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(null);
+
   //테이블 바디 dom ref
   const tbodyRef = useRef();
+
+    //선택된 로우(인덱스)
+    const [rowRef, setRowRef] = useState(-1);
+
   //선택된 컬럼(인덱스)
   const [columnRef, setColumnRef] = useState(-1);
-  //선택된 로우(인덱스)
-  const [rowRef, setRowRef] = useState(-1);
+
   //테이블 포커스 여부 boolean ref
   const tableFocus = useRef(rowRef && columnRef);
 
