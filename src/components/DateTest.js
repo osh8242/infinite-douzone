@@ -77,7 +77,7 @@ function DateTest(props) {
   };
 
   return (
-    <Row className="py-1">
+    <Row>
       {label && (
         <Col
           md="4"
