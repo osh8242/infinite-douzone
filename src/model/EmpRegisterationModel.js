@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/EmpRegister/Emp";
+import { currentDateStr } from "../utils/DateUtils.js";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -66,8 +67,14 @@ function EmpRegisterationModel() {
   //사원 정보 insert POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
+      const newEditedEmp = { ...editedEmp };
+      newEditedEmp.item = {
+        ...newEditedEmp.item,
+        //현재의 날짜를 입사일자의 기본값으로 추가
+        daEnter: currentDateStr(),
+      };
       axios
-        .post(url + "/emp/insertEmp", editedEmp.item, {
+        .post(url + "/emp/insertEmp", newEditedEmp.item, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {
@@ -85,7 +92,7 @@ function EmpRegisterationModel() {
     if (Object.keys(editedEmp).length !== 0) {
       console.log("update요청: ", editedEmp);
       axios
-        .post(url + "/emp/updateEmp", editedEmp, {
+        .put(url + "/emp/updateEmp", editedEmp, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {
@@ -104,10 +111,15 @@ function EmpRegisterationModel() {
     const deletePromises = selectedRows.map((row) => {
       switch (row.table) {
         case "emp":
-          // console.log("url + '/emp/deleteEmp', row.item", row.item);
-          const deleteData = { cdEmp: row.item.cdEmp };
-          return axios.delete(url + "/emp/deleteEmp", {
-            data: deleteData,
+          // emp의 경우 퇴직처리 update
+          // console.log("url + '/emp/updateEmp', row.item", row.item);
+          const updateData = {
+            cdEmp: row.item.cdEmp,
+            jobOk: "퇴직",
+            daRetire: currentDateStr(),
+          };
+          console.log("daRetire ==>", updateData.daRetire);
+          return axios.put(url + "/emp/updateEmp", updateData, {
             "Content-Type": "qpplication/json",
           });
         default:
@@ -120,6 +132,7 @@ function EmpRegisterationModel() {
         if (responses) console.log("선택된 모든 행의 삭제 완료");
         setSelectedRows([]); // 선택행 배열 비우기
         setReloadSubTableData(!reloadSubTableData);
+        setEditedEmp([]);
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);

@@ -19,6 +19,7 @@ import TempSelect from "../components/TempSelect";
 import LaborContractHeader from "./LaborContractHeader";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import HrManagement from "./HrManagementHeader";
+import TableForm from "../components/TableForm";
 
 const LaborContract = () => {
   const {
@@ -83,7 +84,7 @@ const LaborContract = () => {
         </SearchPanel>
         <Row>
           <Col md="3">
-            <TableTemp
+            <TableForm
               showCheckbox={true}
               showHeaderArrow={true}
               tableHeaders={SwsmLeftTableHeaders}
@@ -321,7 +322,7 @@ const LaborContract = () => {
               </Scrollbars>
               {/* 기타 급여 탭 */}
               <MenuTab menuList={[subTabMenuList.otherBenefit]} />
-              <TableTemp
+              <TableForm
                 showCheckbox
                 showHeaderArrow
                 rowAddable
