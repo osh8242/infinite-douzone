@@ -12,27 +12,27 @@
 //    <SelectForm label="구분" optionList={optionList}/>
 //
 
-import { useRef } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Col, Row } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
-function SelectForm({ label, optionList, onChange }) {
-  const selectRef = useRef(null);
-
-  const handleSelectChange = () => {
-    const selectedValue = selectRef.current.value;
-    onChange(selectedValue);
+function SelectForm({ label, optionList, selectRef, onChange }) {
+  const handleSelectChange = (event) => {
+    const selectedValue = selectRef ? selectRef.current.value : event.target.value ;
+    if (onChange) onChange(selectedValue);
   };
 
   return (
     <Row className="py-1">
       {label && (
-        <Col md="4" className="d-flex align-items-center justify-content-center">
+        <Col
+          md="4"
+          className="d-flex align-items-center justify-content-center"
+        >
           <div>{label}</div>
         </Col>
       )}
       <Col className="d-flex align-items-center justify-content-center">
-        <Form.Select ref={selectRef} onChange={handleSelectChange}>
+        <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
           {optionList.map((option, index) => (
             <option value={option.key} key={index}>
               {option.value}

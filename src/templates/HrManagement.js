@@ -7,12 +7,13 @@ import MenuTab from "../components/MenuTab";
 import RadioForm from "../components/RadioForm";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
-import TableTemp from "../components/TableTemp";
+import TableForm from "../components/TableForm";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
+import HrManagementConstant from "../model/HrManagementConstant";
 import HrManagementModel from "../model/HrManagementModel";
-import Emp from "../vo/LRlevel2Grid/Emp";
-import EmpFam from "../vo/LRlevel2Grid/EmpFam";
+import Emp from "../vo/HrManagement/Emp";
+import EmpFam from "../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -22,8 +23,6 @@ import HrManagementHeader from "./HrManagementHeader";
 const HrManagement = ({ grid, mainTab, subTab }) => {
   //실행중에는 값이 고정인 값들
   const {
-    LRlevel2GridLeftTableHeaders,
-    LRlevel2GridSubTableHeaders,
     searchOption, // 검색옵션 리스트
     orderList, // 정렬기준 리스트
     mainTabMenuList, //메인탭 메뉴리스트
@@ -34,17 +33,26 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
     labels, // 속성명
   } = CommonConstant();
 
+  const { leftTableConstant, subTableConstant, tabConstant } =
+    HrManagementConstant();
+
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
-  const { leftTableData, leftTablePkValue, mainTabData, subTableData } = state;
+  const {
+    leftTableData,
+    leftTablePkValue,
+    mainTabData,
+    subTableData,
+    selectedRows,
+  } = state;
 
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
-  const orderRefRef = useRef();
+  const orderRef = useRef();
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
-    actions.setOrderRef(orderRefRef.current.value);
+    actions.setOrderRef(orderRef.current.value);
     if (jobOkRef.current.value === "yAndOnThisYear") {
       actions.setRefYear(new Date().getFullYear());
       actions.setJobOk("Y");
@@ -58,18 +66,19 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
 
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
   const submitMainTabData = (event, value) => {
-    console.log("event", event);
     if (event.key === "Enter") {
-      console.log("이벤트타겟", event.target);
       event.target.blur();
       if (mainTabRef.current) {
         let newMainTabData = { ...mainTabData.item };
         const inputElements = mainTabRef.current.querySelectorAll("input");
         Array.from(inputElements).forEach((input) => {
           newMainTabData[input.id] =
-            input.type === "radio" ? input.checked : input.value;
+            input.type !== "radio"
+              ? input.value
+              : input.checked
+              ? input.value
+              : null;
         });
-        console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
       }
     }
@@ -78,10 +87,17 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
         event.target.blur();
         let newMainTabData = { ...mainTabData.item };
         newMainTabData[event.target.id] = value;
-        console.log("newMainTabData", newMainTabData);
         actions.setEditedEmpAdd(newMainTabData);
       }
     }
+  };
+
+  const tableFooter = () => {
+    return (
+      <tr>
+        <td colSpan="3">푸터입니다.</td>
+      </tr>
+    );
   };
 
   return (
@@ -102,7 +118,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               <SelectForm
                 label={"정렬"}
                 optionList={orderList}
-                selectRef={orderRefRef}
+                selectRef={orderRef}
               />
             </Col>
           </Row>
@@ -112,25 +128,29 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           {/* 좌측 영역 */}
           <Col md="3">
             {/* 좌측 그리드 */}
-            <TableTemp
+            <TableForm
+              tableName="EMP"
               showCheckbox
               showHeaderArrow
               rowAddable
-              tableHeaders={LRlevel2GridLeftTableHeaders}
+              tableHeaders={leftTableConstant.headers}
               tableData={leftTableData}
+              selectedRows={selectedRows}
+              tableFooter={tableFooter()}
               actions={{
                 setTableData: actions.setLeftTableData,
                 setPkValue: actions.setLeftTablePkValue,
                 setEditedRow: actions.setEditedEmp,
+                setSelectedRows: actions.setSelectedRows,
                 getRowObject: Emp,
               }}
             />
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
-            <Col md="9">
+            <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={mainTabMenuList} />
+              <MenuTab menuList={tabConstant.mainTabMenuList} />
               {/* 우측 메인폼 */}
               <Row className="mb-5" ref={mainTabRef}>
                 <Col xs md="6">
@@ -240,15 +260,17 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                 </Col>
               </Row>
               {/* 우측 서브탭 */}
-              <MenuTab menuList={subTabMenuList} />
+              <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
-              <TableTemp
+              <TableForm
+                tableName="EMPFAM"
                 showCheckbox
                 showHeaderArrow
                 rowAddable
-                tableHeaders={LRlevel2GridSubTableHeaders}
+                tableHeaders={subTableConstant.headers}
                 tableData={subTableData}
                 pkValue={leftTablePkValue}
+                selectedRows={selectedRows}
                 actions={{
                   setTableData: actions.setSubTableData,
                   setEditedRow: actions.setEditedEmpFam,

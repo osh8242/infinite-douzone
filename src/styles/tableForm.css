@@ -33,9 +33,7 @@
 }
 
 table {
-  table-layout: fixed;
-}.selected-row {
-  background-color: yellow; 
+  table-layout: auto;
 }
 
 td div {
@@ -50,12 +48,16 @@ td input {
   color: transparent;
 }
 
-.highlight-row {
-  background-color: rgb(200, 223, 255) !important; 
+.selectedTr td{
+  background-color: rgb(200, 223, 255) !important;
 }
 
-.highlight-row td,
-.highlight-row div {
-  background-color: transparent !important;
-  border-color: rgb(200, 223, 255)
+.selectedTr .selectedTd{
+  background-color: rgb(150, 175, 200) !important;
+}
+
+div[contentEditable="true"] {
+  border-radius: 3px;
+  outline: none;
+  background-color: white !important;
 }

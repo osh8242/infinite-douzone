@@ -11,8 +11,22 @@
   --bs-nav-link-color: var(--bs-secondary-color) !important;
 }
 
-body {
-  user-select: none;
+// 커서 안보이게
+* {
+  caret-color: transparent;
+}
+
+/* input 요소에서만 커서를 보이게 함 */
+input {
+  caret-color: auto;
+}
+
+div[contenteditable] {
+  caret-color: auto;
+}
+
+div:not([contenteditable="true"]) {
+  caret-color: transparent;
 }
 
 // 자동완성 입력시 배경색이 바뀌는 것을 방지

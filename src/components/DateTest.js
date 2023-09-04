@@ -27,7 +27,7 @@ function DateTest(props) {
   // const [inputValue, setInputValue] = useState(value);
   const [startDate, setStartDate] = useState(value || "");
   const [endDate, setEndDate] = useState(value2 || "");
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value || "");
 
   DateTest.defaultProps = {
     label: "",
