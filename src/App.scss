@@ -22,7 +22,11 @@ input {
 }
 
 div[contenteditable] {
-  caret-color: auto;  /* 또는 원하는 색상으로 설정, 예: black */
+  caret-color: auto;
+}
+
+div:not([contenteditable="true"]) {
+  caret-color: transparent;
 }
 
 // 자동완성 입력시 배경색이 바뀌는 것을 방지

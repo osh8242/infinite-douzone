@@ -7,7 +7,7 @@ import MenuTab from "../components/MenuTab";
 import RadioForm from "../components/RadioForm";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
-import TableTemp from "../components/TableTemp";
+import TableForm from "../components/TableForm";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import HrManagementConstant from "../model/HrManagementConstant";
@@ -128,7 +128,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           {/* 좌측 영역 */}
           <Col md="3">
             {/* 좌측 그리드 */}
-            <TableTemp
+            <TableForm
               tableName="EMP"
               showCheckbox
               showHeaderArrow
@@ -262,7 +262,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
-              <TableTemp
+              <TableForm
                 tableName="EMPFAM"
                 showCheckbox
                 showHeaderArrow
