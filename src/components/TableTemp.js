@@ -4,6 +4,7 @@ import {
   faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
 import React, {
   useCallback,
   useEffect,
@@ -12,7 +13,6 @@ import React, {
   useState,
 } from "react";
 import { Table } from "react-bootstrap";
-import PropTypes from "prop-types";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 
@@ -148,7 +148,7 @@ const TableTemp = ({
       let pkValue = {};
       tableHeaders.forEach((header) => {
         if (header.isPk)
-          pkValue[header.field] = tableRows[rowIndex].item[header.field];
+          pkValue[header.field] = tableRows[rowIndex]?.item[header.field];
       });
       return pkValue;
     },
@@ -169,7 +169,7 @@ const TableTemp = ({
         actions.setPkValue(newPkValue);
       }
     },
-    [actions, rowRef, getPkValue]
+    [actions, rowRef, tableRows.length, getPkValue]
   );
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
@@ -255,16 +255,6 @@ const TableTemp = ({
     [getEditedRow, tableRows, actions]
   );
 
-  // 체크박스 전체해제 함수
-  // const releaseAllCheckbox = useCallback(() => {
-  //   const newTableData = tableData.map((row, index) => {
-  //     tableData[index].checked = false;
-  //     return tableData[index];
-  //   });
-  //   actions.setTableData(newTableData);
-  //   actions.setSelectedRows([]);
-  // }, [tableData]);
-
   // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
     const checkedBoxCount = tableRows.reduce(
@@ -318,8 +308,8 @@ const TableTemp = ({
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           releaseSelectedRef();
-          removeNewRow();
           releaseEditable();
+          removeNewRow();
           tableFocus.current = false;
         }
       }

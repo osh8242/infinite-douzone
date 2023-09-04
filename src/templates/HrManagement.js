@@ -10,6 +10,7 @@ import SelectForm from "../components/SelectForm";
 import TableTemp from "../components/TableTemp";
 import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
+import HrManagementConstant from "../model/HrManagementConstant";
 import HrManagementModel from "../model/HrManagementModel";
 import Emp from "../vo/HrManagement/Emp";
 import EmpFam from "../vo/HrManagement/EmpFam";
@@ -22,8 +23,6 @@ import HrManagementHeader from "./HrManagementHeader";
 const HrManagement = ({ grid, mainTab, subTab }) => {
   //실행중에는 값이 고정인 값들
   const {
-    HrManagementLeftTableHeaders,
-    HrManagementSubTableHeaders,
     searchOption, // 검색옵션 리스트
     orderList, // 정렬기준 리스트
     mainTabMenuList, //메인탭 메뉴리스트
@@ -33,6 +32,9 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
     contractRadioList, //근로계약서 작성여부
     labels, // 속성명
   } = CommonConstant();
+
+  const { leftTableConstant, subTableConstant, tabConstant } =
+    HrManagementConstant();
 
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
@@ -131,7 +133,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               showCheckbox
               showHeaderArrow
               rowAddable
-              tableHeaders={HrManagementLeftTableHeaders}
+              tableHeaders={leftTableConstant.headers}
               tableData={leftTableData}
               selectedRows={selectedRows}
               tableFooter={tableFooter()}
@@ -148,7 +150,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
           {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={mainTabMenuList} />
+              <MenuTab menuList={tabConstant.mainTabMenuList} />
               {/* 우측 메인폼 */}
               <Row className="mb-5" ref={mainTabRef}>
                 <Col xs md="6">
@@ -258,14 +260,14 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                 </Col>
               </Row>
               {/* 우측 서브탭 */}
-              <MenuTab menuList={subTabMenuList} />
+              <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
               <TableTemp
                 tableName="EMPFAM"
                 showCheckbox
                 showHeaderArrow
                 rowAddable
-                tableHeaders={HrManagementSubTableHeaders}
+                tableHeaders={subTableConstant.headers}
                 tableData={subTableData}
                 pkValue={leftTablePkValue}
                 selectedRows={selectedRows}
