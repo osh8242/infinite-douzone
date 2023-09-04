@@ -4,7 +4,6 @@ import { currentDateStr, currentMonthStr, currentYearStr } from '../utils/DateUt
 import { nvl } from '../utils/NumberUtils';
 import SalConstant, { calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension } from './SalConstant';
 
-
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
 
@@ -22,10 +21,15 @@ const SalaryInformationEntryModel = () => {
   const [salDeductPaySumData, setSalDeductPaySumData] = useState();       // 공제항목 합계테이블 데이터(selectbox 조회)
 
   /* 상태 Data */
-  const [modalState, setModalState] = useState({ show: false });            // 모달창 show 여부
-  const [codeHelperTableData, setCodeHelperTableData] = useState('');       // 코드도움 테이블 data
-  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');  // 조회구분 selectbox 선택된 value
-  const [editedAllow, setEditedAllow]= useState();                          // 급여항목 테이블_ table row 수정된 객체
+  const [modalState, setModalState] = useState({ show: false });                // 모달창 show 여부
+  const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');      // 조회구분 selectbox 선택된 value
+  const [editedAllow, setEditedAllow]= useState();                              // 급여항목 테이블_ table row 수정된 객체
+  const [addRow, setAddRow]= useState();                                        // 사원 코드도움창에서 선택한 로우 객체
+  const [codeHelperTableData, setCodeHelperTableData] = useState({              // 코드도움 테이블 data
+    data : '' ,
+    code : '' ,
+    setData : setAddRow
+  });
 
   /* 검색조건 Data */
   const [cdEmp, setCdEmp] = useState('A101');                       // 사원번호
@@ -45,33 +49,19 @@ const SalaryInformationEntryModel = () => {
 
   /* 사원정보 선택후 급여항목, 공제항목 검색조건 */
   const [searchAllowVo, setSearchAllowVo] = useState({ allowMonth: allowMonth, cdEmp: cdEmp });
-  
-  /* 코드 도움 임시 */
-  const [addRow, setAddRow]= useState(); // 사원 코드도움창에서 선택한 로우 객체
-  const [empListData, setEmpListData] = useState({
-      title : '사원조회',
-      params : { jobOk : 'N'},
-      tableHeaders: [
-        { field: "pk", text: "Code"},
-        { field: "nmKrname", text: "사원명"},
-        { field: "noSocial", text: "주민(외국인)번호"},
-        { field: "daRetire", text: "퇴사일자"}],
-      tableData : [],
-      searchField : ['nmKrname', 'noSocial'],
-    });  
 
   useEffect(() => {
+    console.log(addRow);
     insertSalEmp(addRow);
   }, [addRow])
 
   useEffect(() => {
     salEmpdataTable();        // 검색조건에 맞는 사원리스트
-    getEmpListForCodeHelper();      // 임시 
   }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
 
   useEffect(() => {
-    // console.log('searchAllowVo>>>');
-    // console.log(searchAllowVo);
+    console.log('searchAllowVo>>>');
+    console.log(searchAllowVo);
     salAllowTableData();      // 선택한 사원의 급여항목 Table Data
     salDeductTableData();     // 선택한 사원의 공제항목 Table Data
     salEmpDetailTableData();  // 선택한 사원의 상세정보
@@ -344,33 +334,11 @@ const SalaryInformationEntryModel = () => {
     return jsonparam;
   }
 
-  // 사원조회 컴포넌트
-  const getEmpListForCodeHelper = () => {
-    axios
-      .post(url + "/emp/getEmpListForCodeHelper", empListData.params)
-      .then((response) => {
-        const emplist = response.data.map((item) => ({
-          pk: item.cdEmp,
-          nmKrname: item.nmKrname,
-          noSocial: item.noSocial,
-          daRetire: item.daRetire,
-          rankNo: item.rankNo,
-          ynFor: item.ynFor,
-        }));
-    
-        console.log(emplist);
-        setEmpListData({ ...empListData, tableData: emplist });
-      })
-      .catch((error) => {
-        console.log("에러발생: ", error);
-        //에러 처리
-      });
-  }
 
   // 급여_사원 insert
   const insertSalEmp = (addRow) => {
-    //console.log('insertSalEmp_addRow');    
-    //console.log(addRow);
+    console.log('insertSalEmp_addRow');    
+    // //console.log(addRow);
 
     // axios.post(
     //     url + '/saEmpInfo/getSalAllowPaySum',
@@ -412,7 +380,6 @@ const SalaryInformationEntryModel = () => {
         , searchCdEmp
       }
 
-      , empListData
       , addRow
     }
     , actions:{
