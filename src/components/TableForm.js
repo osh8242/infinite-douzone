@@ -42,7 +42,7 @@ const TableForm = ({
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
   selectedRows, // [선택] 체크된 행들을 관리하고 싶다면..(가령 삭제)
-  showHeaderArrow, //
+  sortable = true, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
@@ -482,7 +482,9 @@ const TableForm = ({
               <th
                 id="tableHeader"
                 data-field={thead.field}
-                onClick={(e) => rowsOrderHandler(e, thead.field)}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
