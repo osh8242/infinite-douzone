@@ -343,7 +343,6 @@ const TableForm = ({
       setOrderRef(field);
       if (orderRef !== field || !isAsc) setIsAsc(true);
       else if (isAsc) setIsAsc(false);
-      );
     },
     [isAsc, orderRef]
   );
