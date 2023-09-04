@@ -17,6 +17,30 @@ function EmpRegisterationModel() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [reloadSubTableData, setReloadSubTableData] = useState(false);
 
+  // 코드도움 모달들의 상태관리
+  const [modalState, setModalState] = useState({ show: false });
+  const modals = [
+    { id: 1, isOpen: false },
+    { id: 2, isOpen: false },
+    { id: 3, isOpen: false },
+    { id: 4, isOpen: false },
+    { id: 5, isOpen: false },
+    { id: 6, isOpen: false },
+    { id: 7, isOpen: false },
+    { id: 8, isOpen: false },
+  ];
+  const [codeHelperTableData, setCodeHelperTableData] = useState([
+    {
+      // 코드도움 테이블 data
+      data: "대한민국",
+      code: "KOR",
+    },
+    { data: "미국", code: "USA" },
+    { data: "중국", code: "CH" },
+    { data: "일본", code: "JP" },
+    { data: "프랑스", code: "FR" },
+  ]);
+
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
     setLeftTableData();
@@ -106,20 +130,23 @@ function EmpRegisterationModel() {
   //사원 정보 delete 요청
   const deleteSelectedRows = useCallback(() => {
     // 각 row에 대한 delete 요청을 생성
+    console.log("selectedRows", selectedRows);
     const deletePromises = selectedRows.map((row) => {
       switch (row.table) {
         case "emp":
           // emp의 경우 퇴직처리 update
           // console.log("url + '/emp/updateEmp', row.item", row.item);
-          const updateData = {
+          const deleteData = {
             cdEmp: row.item.cdEmp,
-            jobOk: "퇴직",
-            daRetire: currentDateStr(),
           };
-          console.log("daRetire ==>", updateData.daRetire);
-          return axios.put(url + "/emp/updateEmp", updateData, {
-            "Content-Type": "qpplication/json",
-          });
+          // console.log("daRetire ==>", deleteData.daRetire);
+          return axios.delete(
+            url + "/emp/deleteData",
+            { data: deleteData },
+            {
+              "Content-Type": "qpplication/json",
+            }
+          );
         default:
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }
@@ -171,12 +198,16 @@ function EmpRegisterationModel() {
   // }, [mainTablePkValue, subTabData]);
 
   return {
-    leftTableData: leftTableData,
-    mainTablePk: mainTablePkValue,
-    mainTabData: mainTabData,
-    subTabData: subTabData,
-    selectedRows: selectedRows,
-    reloadSubTableData: reloadSubTableData,
+    state: {
+      leftTableData,
+      mainTablePkValue,
+      mainTabData,
+      subTabData,
+      selectedRows,
+      reloadSubTableData,
+      modalState,
+      codeHelperTableData,
+    },
     actions: {
       setLeftTableData,
       setEditedEmp,
@@ -186,6 +217,8 @@ function EmpRegisterationModel() {
       setSelectedRows,
       setReloadSubTableData,
       deleteSelectedRows,
+      setModalState,
+      setCodeHelperTableData,
     },
   };
 }

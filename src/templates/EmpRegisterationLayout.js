@@ -2,7 +2,7 @@
 // 사원등록 페이지 전용 레이아웃
 
 import { Col, Container, Row } from "react-bootstrap";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import MenuTab from "../components/MenuTab";
 import TextBoxComponent from "../components/TextBoxComponent";
 import AddressForm from "../components/AddressForm";
@@ -13,20 +13,15 @@ import CallNumberForm from "../components/CallNumberForm";
 import NoSocialFormForEmpRegister from "../components/NoSocialFormForEmpRegister";
 import EmailForm from "../components/EmailForm";
 import DateTest from "../components/DateTest";
-import TableTemp from "../components/TableTemp";
+import TableForm from "../components/TableForm";
 import Emp from "../vo/EmpRegister/Emp";
 import EmpRegisterHeader from "./EmpRegisterHeader";
+import CodeHelperModal from "../components/CodeHelperModal";
+import EmpConstant from "../model/EmpConstant";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
-  const {
-    mainTablePk,
-    leftTableData,
-    mainTabData,
-    subTabData,
-    selectedRows,
-    actions,
-  } = EmpRegisterationModel();
+  const { state, actions } = EmpRegisterationModel();
 
   //고정된 값을 가지는 state들
   const {
@@ -41,6 +36,32 @@ function EmpRegisterationLayout() {
   // 메뉴 탭 전환 기능 추후 수정 예정
   // const [selectedMenu, setSelectedMenu] = useState(0);
 
+  //Model 관리 값
+  const [apiFlag, setApiFlag] = useState(false);
+
+  //코드도움 상수 값
+  const { codeHelperparams } = EmpConstant();
+
+  //코드도움 아이콘 클릭이벤트
+  const codeHelperShow = useCallback(
+    (flag, codeHelperTableData, codeHelperCode) => {
+      actions.setModalState({ show: true });
+      setApiFlag(flag);
+      if (flag) {
+        actions.setCodeHelperTableData((prevState) => ({
+          ...prevState,
+          code: codeHelperCode,
+        }));
+      } else {
+        actions.setCodeHelperTableData((prevState) => ({
+          ...prevState,
+          data: codeHelperTableData,
+        }));
+      }
+    },
+    []
+  );
+
   const mainTabRef = useRef();
 
   //mainTab Enter key 이벤트 Emp 업데이트
@@ -49,7 +70,7 @@ function EmpRegisterationLayout() {
       // console.log("이벤트 타겟", event.target);
       event.target.blur();
       if (mainTabRef.current) {
-        let newMainTabData = { ...mainTabData.item };
+        let newMainTabData = { ...state.mainTabData.item };
         const inputItems = mainTabRef.current.querySelectorAll("input");
         Array.from(inputItems).forEach((input) => {
           if (input.id) {
@@ -57,7 +78,7 @@ function EmpRegisterationLayout() {
           }
           // console.log("input.id :", input.id, "input.value", input.value);
         });
-        newMainTabData.cdEmp = mainTablePk.cdEmp;
+        newMainTabData.cdEmp = state.mainTablePk.cdEmp;
         // newMainTabData = newMainTabData.filter((item) => item.key !== "");
         console.log("newMainTabData", newMainTabData);
         actions.setEditedEmp(newMainTabData);
@@ -66,9 +87,9 @@ function EmpRegisterationLayout() {
     if (event.type === "change") {
       if (mainTabRef.current) {
         event.target.blur();
-        let newMainTabData = { ...mainTabData };
+        let newMainTabData = { ...state.mainTabData };
         newMainTabData[event.target.id] = value;
-        newMainTabData.cdEmp = mainTablePk.cdEmp;
+        newMainTabData.cdEmp = state.mainTablePk.cdEmp;
         actions.setEditedEmp(newMainTabData);
       }
     }
@@ -76,22 +97,38 @@ function EmpRegisterationLayout() {
 
   return (
     <>
+      {/* 사원등록 전용 헤더 */}
       <EmpRegisterHeader
-        selectedRows={selectedRows}
+        selectedRows={state.selectedRows}
         actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
       />
       <Container>
+        {/* 코드도움 모달영역 */}
+        {/* <CodeHelperModal
+          show={state.modalState.show}
+          onHide={() =>
+            actions.setModalState({
+              ...state.modalState,
+              show: false,
+            })
+          }
+          onConfirm={() => alert("확인")}
+          // setLowData={actions.setAddRow}
+          apiFlag={apiFlag}
+          table={state.codeHelperTableData.data}
+          codeHelperCode={state.codeHelperTableData.code}
+        /> */}
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 사원목록 테이블 */}
-            {leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
-              <TableTemp
+            {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
+              <TableForm
                 showCheckbox
                 showHeaderArrow
                 rowAddable
                 tableHeaders={EmpRegisterLeftHeaders}
-                tableData={leftTableData}
-                selectedRows={selectedRows}
+                tableData={state.leftTableData}
+                selectedRows={state.selectedRows}
                 actions={{
                   setTableData: actions.setLeftTableData,
                   setPkValue: actions.setMainTablePkValue,
@@ -110,23 +147,23 @@ function EmpRegisterationLayout() {
             </Row>
             {/* 사원정보 편집 */}
             <Row id="baseData" ref={mainTabRef}>
-              {mainTabData ? (
+              {state.mainTabData ? (
                 <div id="baseDataContents">
                   <div id="baseDataContentsBackground"></div>
                   <DateTest
                     id="daEnter"
                     label={labels.daEnter}
-                    value={mainTabData.daEnter}
+                    value={state.mainTabData.daEnter}
                     onChange={submitMainTabData}
                   />
                   <NoSocialFormForEmpRegister
                     label={labels.noSocial}
                     ynForList={ynForList}
-                    ynFor={mainTabData.ynFor}
+                    ynFor={state.mainTabData.ynFor}
                     genderList={genderRadioList}
-                    fgSex={mainTabData.fgSex}
-                    noSocial={mainTabData.noSocial}
-                    pkValue={mainTablePk}
+                    fgSex={state.mainTabData.fgSex}
+                    noSocial={state.mainTabData.noSocial}
+                    pkValue={state.mainTablePk}
                     actions={{
                       setNoSocialForm: actions.setEditedEmp,
                     }}
@@ -134,25 +171,38 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="abbNation"
                     label={labels.abbNation}
-                    value={mainTabData.abbNation}
+                    value={state.mainTabData.abbNation}
                     onKeyDown={submitMainTabData}
+                    // onChange={submitMainTabData}
+                    // codeHelper
+                    // onClickCodeHelper={() =>
+                    //   codeHelperShow(false, codeHelperparams.cdEmp, "이건뭐지")
+                    // }
                   />
                   <TextBoxComponent
                     id="cdNation"
                     label={labels.cdNation}
-                    value={mainTabData.cdNation}
+                    value={state.mainTabData.cdNation}
                     onKeyDown={submitMainTabData}
                   />
                   <AddressForm
                     isZonecode={true}
-                    zipHome={mainTabData.zipHome ? mainTabData.zipHome : null}
+                    zipHome={
+                      state.mainTabData.zipHome
+                        ? state.mainTabData.zipHome
+                        : null
+                    }
                     addHome1={
-                      mainTabData.addHome1 ? mainTabData.addHome1 : null
+                      state.mainTabData.addHome1
+                        ? state.mainTabData.addHome1
+                        : null
                     }
                     addHome2={
-                      mainTabData.addHome2 ? mainTabData.addHome2 : null
+                      state.mainTabData.addHome2
+                        ? state.mainTabData.addHome2
+                        : null
                     }
-                    pkValue={mainTablePk}
+                    pkValue={state.mainTablePk}
                     actions={{
                       setAddress: actions.setEditedEmp,
                     }}
@@ -160,10 +210,10 @@ function EmpRegisterationLayout() {
                   <CallNumberForm
                     label={labels.telHome}
                     type="callNumber"
-                    val1={mainTabData.telHome1}
-                    val2={mainTabData.telHome2}
-                    val3={mainTabData.telHome3}
-                    pkValue={mainTablePk}
+                    val1={state.mainTabData.telHome1}
+                    val2={state.mainTabData.telHome2}
+                    val3={state.mainTabData.telHome3}
+                    pkValue={state.mainTablePk}
                     actions={{
                       setNewEmp: actions.setEditedEmp,
                     }}
@@ -171,19 +221,19 @@ function EmpRegisterationLayout() {
                   <CallNumberForm
                     label={labels.calEmp}
                     type="callNumber"
-                    val1={mainTabData.celEmp1}
-                    val2={mainTabData.celEmp2}
-                    val3={mainTabData.celEmp3}
-                    pkValue={mainTablePk}
+                    val1={state.mainTabData.celEmp1}
+                    val2={state.mainTabData.celEmp2}
+                    val3={state.mainTabData.celEmp3}
+                    pkValue={state.mainTablePk}
                     actions={{
                       setNewEmp: actions.setEditedEmp,
                     }}
                   />
                   <EmailForm
                     label={labels.emEmp}
-                    emEmp={mainTabData.emEmp}
+                    emEmp={state.mainTabData.emEmp}
                     optionList={emailList}
-                    pkValue={mainTablePk}
+                    pkValue={state.mainTablePk}
                     actions={{
                       setEmEmp: actions.setEditedEmp,
                     }}
@@ -191,50 +241,50 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="idMsn"
                     label={labels.idMsn}
-                    value={mainTabData.idMsn}
+                    value={state.mainTabData.idMsn}
                     onKeyDown={submitMainTabData}
                   />
                   <TextBoxComponent
                     id="cdDept"
                     label={labels.cdDept}
-                    value={mainTabData.cdDept}
+                    value={state.mainTabData.cdDept}
                     onKeyDown={submitMainTabData}
                   />
                   <TextBoxComponent
                     id="cdOccup"
                     label={labels.cdOccup}
-                    value={mainTabData.cdOccup}
+                    value={state.mainTabData.cdOccup}
                     onKeyDown={submitMainTabData}
                   />
                   <TextBoxComponent
                     id="rankNo"
                     label={labels.rankNo}
-                    value={mainTabData.rankNo}
+                    value={state.mainTabData.rankNo}
                     onKeyDown={submitMainTabData}
                   />
                   <TextBoxComponent
                     id="cdSalcls"
                     label={labels.cdSalcls}
-                    value={mainTabData.cdSalcls}
+                    value={state.mainTabData.cdSalcls}
                     onKeyDown={submitMainTabData}
                   />
                   <TextBoxComponent
                     id="cdField"
                     label={labels.cdField}
-                    value={mainTabData.cdField}
+                    value={state.mainTabData.cdField}
                     onKeyDown={submitMainTabData}
                   />
                   <TextBoxComponent
                     id="cdProject"
                     label={labels.cdProject}
-                    value={mainTabData.cdProject}
+                    value={state.mainTabData.cdProject}
                     onKeyDown={submitMainTabData}
                   />
-                  {mainTabData.daRetire ? (
+                  {state.mainTabData.daRetire ? (
                     <DateTest
                       id="daRetire"
                       label={labels.daRetire}
-                      value={mainTabData.daRetire}
+                      value={state.mainTabData.daRetire}
                       onChange={submitMainTabData}
                     />
                   ) : (
@@ -243,13 +293,19 @@ function EmpRegisterationLayout() {
                       placeholder={"----년 --월 --일"}
                       disabled={"disabled"}
                     />
+                    // <DateTest
+                    //   id="daRetire"
+                    //   label={labels.daRetire}
+                    //   value={state.mainTabData.daRetire}
+                    //   onChange={submitMainTabData}
+                    // />
                   )}
                   <CallNumberForm
                     label={labels.cdBank}
-                    val1={mainTabData.cdBank}
-                    val2={mainTabData.noBnkacct}
-                    val3={mainTabData.nmBnkowner}
-                    pkValue={mainTablePk}
+                    val1={state.mainTabData.cdBank}
+                    val2={state.mainTabData.noBnkacct}
+                    val3={state.mainTabData.nmBnkowner}
+                    pkValue={state.mainTablePk}
                     actions={{
                       setNewEmp: actions.setEditedEmp,
                     }}
