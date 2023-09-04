@@ -579,6 +579,7 @@ TableForm.propTypes = {
   actions: PropTypes.object.isRequired,
   tableName: PropTypes.string,
   showCheckbox: PropTypes.bool,
+  sortable: PropTypes.bool,
   showHeaderArrow: PropTypes.bool,
   readOnly: PropTypes.bool,
   rowAddable: PropTypes.bool,
