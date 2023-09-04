@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from "react";
 // import CommonModel from "../model/CommonModel";
-// import { Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 // import { faSearch } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import "../styles/SearchForm.css";
@@ -91,6 +91,13 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../styles/SearchForm.css";
 
+const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+  <div className="custom-date-input" onClick={onClick} ref={ref}>
+    <Form.Control type="text" value={value} />
+    <FontAwesomeIcon icon={faSearch} />
+  </div>
+));
+
 function SearchForm(props) {
   const { placeholder } = props;
   const [inputValue, setInputValue] = useState("");
@@ -116,6 +123,8 @@ function SearchForm(props) {
   }, [inputValue]);
 
   const onChange = (e) => {
+    console.log("search Data 변경 중");
+    console.log(e.target.value);
     setInputValue(e.target.value);
   };
 
@@ -211,5 +220,4 @@ function SearchForm(props) {
     </div>
   );
 }
-
 export default SearchForm;
