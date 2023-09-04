@@ -41,7 +41,6 @@ const TableForm = ({
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
-  selectedRows, // [선택] 체크된 행들을 관리하고 싶다면..(가령 삭제)
   sortable = true, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
@@ -88,7 +87,6 @@ const TableForm = ({
       else if (a.item[orderRef] > b.item[orderRef]) return isAsc ? 1 : -1;
       else return 0;
     });
-    console.log("newTableRows 정렬", newTableRows);
     setTableRows(newTableRows);
   }, [orderRef, isAsc]);
 
@@ -344,9 +342,10 @@ const TableForm = ({
     (event, field) => {
       setOrderRef(field);
       if (orderRef !== field || !isAsc) setIsAsc(true);
-      else setIsAsc(false);
+      else if (isAsc) setIsAsc(false);
+      );
     },
-    [isAsc]
+    [isAsc, orderRef]
   );
 
   //테이블 바깥 영역 클릭 핸들러 함수

@@ -1,6 +1,6 @@
 import "./App.scss";
 import Header from "./templates/Header";
-import HrManagement from "./templates/HrManagement";
+import HrManagement from "./templates/HrManageMent/HrManagement";
 
 function App() {
   return (
