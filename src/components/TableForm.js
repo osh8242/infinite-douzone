@@ -83,6 +83,7 @@ const TableForm = ({
     if (!orderRef && !isAsc) return;
     const newTableRows = [...tableRows];
     newTableRows.sort((a, b) => {
+      // 문자열비교(추후 숫자나 날짜도 비교가능해야함)
       if (a.item[orderRef] < b.item[orderRef]) return isAsc ? -1 : 1;
       else if (a.item[orderRef] > b.item[orderRef]) return isAsc ? 1 : -1;
       else return 0;
@@ -189,7 +190,6 @@ const TableForm = ({
       if (
         actions.setPkValue &&
         rowRef !== rowIndex &&
-        rowRef > -1 &&
         rowRef < tableRows.length
       ) {
         let newPkValue = {};
@@ -298,8 +298,8 @@ const TableForm = ({
       tableRows[index].checked = !isAllChecked;
     });
     setTableRows([...tableRows]);
-    if (isAllChecked) actions.setSelectedRows(tableRows);
-    else actions.setSelectedRows([]);
+    if (isAllChecked) actions.setSelectedRows([]);
+    else actions.setSelectedRows(tableRows);
   }, [actions, checkedBoxCounter, tableRows]);
 
   // 체크된 행들을 반환하는 함수
