@@ -23,11 +23,16 @@ const LaborContractModel = () => {
   // const reloadSubTableData = contextState.reloadSubTableData;
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
+  // useEffect(() => {-
+  //   console.log("searchData loading...");
+
+  // }, [searchData]);
+
   // leftTableData load
   useEffect(() => {
     setLeftTableData([]);
     axios
-      .get(url + "/emp/getAll")
+      .get(url + "/emp/getAllEmp")
       .then((response) => {
         console.log("SwsmModel > /emp/getAll", response);
         const data = response.data.map((item) => {

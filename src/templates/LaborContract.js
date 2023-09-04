@@ -50,7 +50,6 @@ const LaborContract = () => {
   const handlerMainTab = (e) => {
     console.log(e.target.value);
     console.log(mainTabMenuList);
-    console.log(mainTabMenuList);
   };
 
   return (
