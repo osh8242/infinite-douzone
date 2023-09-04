@@ -1,7 +1,7 @@
 import CommonConstant from "./CommonConstant";
 
 const SalConstant = () => {
-    const { CODE } = CommonConstant();
+    const { CODE,CODEHELPER_EMPLIST_URL } = CommonConstant();
 
  return {
     tableHeader : {
@@ -68,14 +68,14 @@ const SalConstant = () => {
         },
         emplist:{
             title : '사원조회'
-            , url : "/emp/getEmpListForCodeHelper"
+            , url : CODEHELPER_EMPLIST_URL  // "/emp/getEmpListForCodeHelper"
             , headers : [
                 { field: "cdEmp", text: "사원코드" },
                 { field: "nmKrname", text: "사원명" },
                 { field: "noSocial", text: "주민(외국인)번호" },
                 { field: "daRetire", text: "퇴사일자" }
                       ]
-            , params : { ynFor: 'n', daRetire: '' }
+            , params : { ynFor: 'n', refYear: '2023' }
             , searchField : ['nmKrname','noSocial']
           },
         rankNo : {

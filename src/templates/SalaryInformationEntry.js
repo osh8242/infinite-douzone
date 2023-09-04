@@ -58,7 +58,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           show={state.modalState.show}
           onHide={() => actions.setModalState({ ...state.modalState, show: false })}
           //onConfirm={() => alert('확인')}
-          setLowData={state.codeHelperTableData.setData}
+          setRowData={state.codeHelperTableData.setData}
           usePk={state.codeHelperTableData.usePk}
           apiFlag={apiFlag}
           table={state.codeHelperTableData.data}
@@ -90,10 +90,10 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             <Row>
               <Col>
                 <TextBoxComponent
-                  name="searchEmpCd" 
+                  name="searchEmpCd"
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
-                  onChange={actions.setSearchCdEmp} 
+                  onChange={actions.setSearchCdEmp}
                   codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.emplist, actions.setSearchCdEmp, 'cdEmp')}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />

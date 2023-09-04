@@ -152,7 +152,8 @@ const CommonConstant = () => {
         RANK_NO : "RANK_NO",  // 직급 ( 주임, 선임, 책임, 수석, 사장)
         OCCUP : "OCCUP"       // 직종 ()
       }
-    }
+    },
+    CODEHELPER_EMPLIST_URL : '/emp/getEmpListForCodeHelper',
   };
 };
 

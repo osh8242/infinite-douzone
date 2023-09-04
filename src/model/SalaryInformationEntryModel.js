@@ -48,11 +48,11 @@ const SalaryInformationEntryModel = () => {
   const [searchYnForlabor, setSearchYnForlabor] = useState('');     // 국외근로여부 검색
 
   /* 사원정보 선택후 급여항목, 공제항목 검색조건 */
-  const [searchAllowVo, setSearchAllowVo] = useState({ allowMonth: allowMonth, cdEmp: cdEmp });
+  const [searchAllowVo, setSearchAllowVo] = useState({ paymentDate: paymentDate, cdEmp: cdEmp });
 
   useEffect(() => {
     console.log(addRow);
-    insertSalEmp(addRow);
+    //insertSalEmp(addRow);
   }, [addRow])
 
   useEffect(() => {
@@ -75,12 +75,12 @@ const SalaryInformationEntryModel = () => {
     let searchParams = {};
     
     switch (selectedOption) {
-      case 'EmpAllThisMonth' : searchParams = {allowMonth:allowMonth}; break;
-      case 'EmpOneThisMonth' : searchParams = {allowYear:allowYear, cdEmp:cdEmp}; break;
-      // case 'EmpAllCurrent' : searchParams = {allowYear:allowYear,cdEmp:cdEmp}; break; 오늘날짜기준? 지급일기준?
-      // case 'EmpOneCurrent' : searchParams = {allowYear:allowYear,cdEmp:cdEmp}; break;
-      case 'EmpAllThisYear' : searchParams = {allowYear:allowYear}; break;
-      case 'EmpOneThisYear' : searchParams = {allowYear:allowYear, cdEmp:cdEmp};break;
+      case 'EmpAllThisMonth'  : searchParams = {allowMonth : allowMonth};                 break;
+      case 'EmpOneThisMonth'  : searchParams = {allowYear : allowYear, cdEmp:cdEmp};      break;
+      case 'EmpAllCurrent'    : searchParams = {paymentDate : paymentDate};               break; // 지급일기준
+      case 'EmpOneCurrent'    : searchParams = {paymentDate : paymentDate, cdEmp:cdEmp};  break; // 지급일기준
+      case 'EmpAllThisYear'   : searchParams = {allowYear : allowYear};                   break;
+      case 'EmpOneThisYear'   : searchParams = {allowYear : allowYear, cdEmp:cdEmp};      break;
       default: break;
     }
 
@@ -155,7 +155,7 @@ const SalaryInformationEntryModel = () => {
     
     axios.post(
       url + '/saallowpay/getSaAllowPayByCdEmp',
-      {...searchAllowVo, allowMonth: allowMonth},
+      {...searchAllowVo, paymentDate: paymentDate},
       {'Content-Type': 'application/json',},
       )
       .then((response) => {
@@ -193,7 +193,7 @@ const SalaryInformationEntryModel = () => {
           
     axios.post(
       url + '/sadeductpay/getSaDeductPayByCdEmp',
-      {...searchAllowVo, allowMonth: allowMonth},
+      {...searchAllowVo, paymentDate: paymentDate},
       {'Content-Type': 'application/json',},
       )
       .then((response) => {
@@ -280,7 +280,7 @@ const SalaryInformationEntryModel = () => {
     //급여테이블 수정
     axios
       .put(url + "/saallowpay/updateSalAllowPay"
-      , {...editRowData, allowMonth: allowMonth},
+      , {...editRowData, paymentDate: paymentDate},
       )
       .then((response) => {
         if (response.data === 1) console.log("급여테이블 수정 완료");
@@ -296,8 +296,8 @@ const SalaryInformationEntryModel = () => {
   const salDeductUpdate = (editRowData) => {
 
     let jsonparam = {
-      allowMonth:allowMonth,
-      cdEmp: editRowData.cdEmp,
+      paymentDate : paymentDate,
+      cdEmp : editRowData.cdEmp,
       calData : [
         // {cdDeduct : 'NATIONAL_PENSION', allowPay : calculationNationalPension(allowPay)},
       ]

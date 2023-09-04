@@ -57,7 +57,7 @@ function TextBoxComponent(props) {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onChange && onChange(sendValue);
+      onKeyDown && onKeyDown(sendValue);
     }
   }
 
