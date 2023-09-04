@@ -13,23 +13,23 @@ import "./CustomInput.scss";
 function TextBoxComponent(props) {
   /* props 속성들*/
   const {
-    type,     // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
+    type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
     id,
     name,
     label,
     value,
 
-    rows,               // textarea 전용 옵션 [선택] (몇행짜리 textbox)
-    codeHelper,         // 코드헬퍼 아이콘 생성
-    onClickCodeHelper,  // 코드헬퍼 전용 옵션 선택시 [필수]
-    
+    rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
+    codeHelper, // 코드헬퍼 아이콘 생성
+    onClickCodeHelper, // 코드헬퍼 전용 옵션 선택시 [필수]
+
     size,
     thousandSeparator, //세자리 콤마
-    suffix,   // %, 원화표시
-    mask,     // '*'
+    suffix, // %, 원화표시
+    mask, // '*'
 
     //이벤트 함수[선택]
-    onChange, 
+    onChange,
     onClick,
     onFocus,
     onKeyDown,
@@ -37,19 +37,18 @@ function TextBoxComponent(props) {
     // [선택] true false 옵션
     disabled,
     readOnly,
-    plaintext,  //inputbox 말고 평문으로 바꿔주는 옵션
+    plaintext, //inputbox 말고 평문으로 바꿔주는 옵션
 
     //유효성 검사
     validationFunction,
-    
   } = props;
 
   // console.log("label",label);
   // console.log("value",value);
 
   // 입력값
-  const [inputValue, setInputValue] = useState(value || '');  // 보여줄 값
-  const [sendValue, setSendValue] = useState(value || '');    // 보낼 값
+  const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
+  const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
 
   useEffect(() => {
     setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
@@ -59,13 +58,13 @@ function TextBoxComponent(props) {
     if (event.key === "Enter") {
       onKeyDown && onKeyDown(sendValue);
     }
-  }
+  };
 
   const handleInputChange = (event) => {
-      const newValue = event.target.value;
-      //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공  
-      setInputValue(makeProcessedValue(newValue));  // data 가공
-  }
+    const newValue = event.target.value;
+    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
+    setInputValue(makeProcessedValue(newValue)); // data 가공
+  };
 
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
@@ -74,7 +73,7 @@ function TextBoxComponent(props) {
       suffix && (processedValue = processSuffix(processedValue, suffix));
       thousandSeparator &&
         (processedValue = processThousandSeparator(processedValue));
-        setSendValue(makePureNumber(processedValue));
+      setSendValue(makePureNumber(processedValue));
     } else if (type === "regNum") {
       processedValue = /^\d{0,6}$/.test(newValue)
         ? newValue.replace(/(\d{6})(\d{0,1})/, "$1-$2")
@@ -84,7 +83,7 @@ function TextBoxComponent(props) {
 
       setSendValue(processedValue);
     } else {
-      setSendValue(processedValue)
+      setSendValue(processedValue);
     }
     return processedValue;
   };
@@ -134,10 +133,16 @@ function TextBoxComponent(props) {
     <Row className="py-1">
       {label ? (
         <>
-          <Col md="4" className="d-flex align-items-center justify-content-center">
+          <Col
+            md="4"
+            className="d-flex align-items-center justify-content-center"
+          >
             <div>{label}</div>
           </Col>
-          <Col md="8" className="d-flex align-items-center justify-content-center">
+          <Col
+            md="8"
+            className="d-flex align-items-center justify-content-center"
+          >
             {codeHelper ? (
               <div className="svg-wrapper">
                 <div className="svg-container">

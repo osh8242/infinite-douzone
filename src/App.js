@@ -1,12 +1,12 @@
 import "./App.scss";
 import Header from "./templates/Header";
-import SalaryInformationEntry from "./templates/SalaryInformationEntry";
+import HrManagement from "./templates/HrManagement";
 
 function App() {
   return (
     <div>
       <Header />
-        <SalaryInformationEntry />
+      <HrManagement />
     </div>
   );
 }
