@@ -4,44 +4,49 @@ import { useEffect, useState } from "react";
 function ModalModel(){
 const url = 'http://localhost:8888';
 
-const [params, setParams] = useState('');//  emplist 전용옵션 ex) { ynFor : 'n', daRetire : ''}
-const [headers, setHeaders] = useState([]);
+const [codeHelperCode, setCodeHelperCode] = useState('');
+// const [params, setParams] = useState('');//  emplist 전용옵션 ex) { ynFor : 'n', daRetire : ''}
+// const [headers, setHeaders] = useState([]);
+// const [apiUrl, setApiUrl] = useState('');
+
 const [tableData, setTableData] = useState({
     title : '',
-    tableHeaders: [{ field: "pk", text: "Code"}],
-    // { field: "pk", text: "Code"},
+    tableHeaders: [{ field: "codeId", text: "코드"}],
+    // { field: "code", text: "Code"},
     // { field: "nmKrname", text: "사원명"},
     // { field: "noSocial", text: "주민(외국인)번호"},
     // { field: "daRetire", text: "퇴사일자"}],
     tableData : [],
     //searchField : ['pk'],
-    searchField : ['nmKrname', 'noSocial'],
+    searchField : ['codeId', 'codeName'],
   });
 
   useEffect(() => {
-    getEmpListForCodeHelper(params);
-  }, [params]);
+    getCodeListForCodeHelper(codeHelperCode);
+  }, [codeHelperCode]);
 
-// 메뉴별 조건에 맞는 emplist 
-const getEmpListForCodeHelper = (params) => {
-    return params !== ''&&axios.post(
-      url + "/emp/getEmpListForCodeHelper",
-      params,
+// 메뉴별 조건에 맞는 codelist 
+const getCodeListForCodeHelper = (codeHelperCode) => {
+    return codeHelperCode !== '' && axios.post(
+      url + codeHelperCode.url,
+      codeHelperCode.params,
       {'Content-Type': 'application/json',},
     )
       .then((response) => {
-        const emplistdata = response.data.map((item) => ({
-          pk: item.cdEmp,
-          nmKrname: item.nmKrname,
-          noSocial: item.noSocial,
-          daRetire: item.daRetire,
-          rankNo: item.rankNo,
-          ynFor: item.ynFor,
-        }));
-  
+        const codeDataList = response.data.map((item) => {
+          const dynamicProperties = {};
+          for (const key in item) {
+            dynamicProperties[key] = item[key];
+          }
+          return dynamicProperties;
+        });
+        
         setTableData({
           ...tableData,
-          tableData: emplistdata, title : '사원조회', tableHeaders: headers,
+          tableData: codeDataList,
+          title: codeHelperCode.title,
+          tableHeaders: codeHelperCode.headers,
+          searchField : codeHelperCode.searchField,
         });
       })
       .catch((error) => {
@@ -56,8 +61,7 @@ const getEmpListForCodeHelper = (params) => {
         },
         actions : {
             setTableData
-            , setParams
-            , setHeaders
+            , setCodeHelperCode
         }
     }
 }
