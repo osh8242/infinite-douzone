@@ -8,7 +8,7 @@ import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
 import DateTest from "../components/DateTest";
 import SalConstant from "../model/SalConstant";
 import CommonConstant from "../model/CommonConstant";
-import TableTemp from "../components/TableTemp";
+import TableForm from "../components/TableForm";
 import HrManagementHeader from "./HrManagementHeader";
 import CodeHelperModal from "../components/CodeHelperModal";
 
@@ -58,7 +58,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           show={state.modalState.show}
           onHide={() => actions.setModalState({ ...state.modalState, show: false })}
           //onConfirm={() => alert('확인')}
-          setLowData={state.codeHelperTableData.setData}
+          setRowData={state.codeHelperTableData.setData}
           usePk={state.codeHelperTableData.usePk}
           apiFlag={apiFlag}
           table={state.codeHelperTableData.data}
@@ -90,10 +90,10 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             <Row>
               <Col>
                 <TextBoxComponent
-                  name="searchEmpCd" 
+                  name="searchEmpCd"
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
-                  onChange={actions.setSearchCdEmp} 
+                  onChange={actions.setSearchCdEmp}
                   codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.emplist, actions.setSearchCdEmp, 'cdEmp')}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
@@ -162,7 +162,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         <Row>
           <Col md="3">
             {/* 사원정보 table영역 */}
-            <TableTemp
+            <TableForm
               readOnly
               tableName={"사원정보 테이블"}
               showCheckbox={true}
@@ -181,7 +181,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           <Col md="3">
             <>
             {/* 급여항목 table영역 */}
-            <TableTemp
+            <TableForm
             tableName={"급여항목 테이블"}
               tableHeaders={tableHeader.salAllow}
               tableData={state.salAllowData.salData}
@@ -214,7 +214,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           <Col md="3">
             {/* 공제항목 table영역 */}
             <>
-            <TableTemp
+            <TableForm
               tableName={"공제항목 테이블"}
               readOnly
               tableHeaders={tableHeader.salDeduct}
@@ -239,7 +239,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             {/* 조회구분 영역*/}
             <SelectForm label={labels.inquiryYype} optionList={selectOption.salOptionByPeriodList} onChange={actions.setSelectedOption}/>
             <Row>
-              <TableTemp               
+              <TableForm
                 showCheckbox={false}
                 showHeaderArrow={false}
                 tableHeaders={tableHeader.salAllowSum}
@@ -249,7 +249,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               />
             </Row>
             <Row>
-              <TableTemp 
+              <TableForm 
                 tableHeaders={tableHeader.salDeductSum}
                 tableData={state.sumTableData.salDeductPaySumData} 
                 actions={{}}

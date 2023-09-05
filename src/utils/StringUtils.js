@@ -8,3 +8,13 @@ export const maskString = (length, input, maskingStr, startIndex = 0) => {
 export const isEmpty = (value) => {
     return value === undefined || value === null || value === '';
 }
+
+// 객체 쿼리스트링 만들기
+export const objectToQueryString = (obj) => {
+    const queryString = obj && Object.keys(obj)
+    .filter(key => obj[key] !== undefined && obj[key] !== null && obj[key] !== '')
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
+    .join('&');
+
+    return queryString ? `?${queryString}` : '';
+}
