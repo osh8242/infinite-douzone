@@ -29,10 +29,15 @@ div:not([contenteditable="true"]) {
   caret-color: transparent;
 }
 
+//모달 오른쪽 패딩 제거
+.modal-open {
+  padding-right: 0 !important;
+}
+
 // 자동완성 입력시 배경색이 바뀌는 것을 방지
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 /* import bootstrap to set changes */
-@import "~bootstrap/scss/bootstrap"; 
+@import "~bootstrap/scss/bootstrap";
