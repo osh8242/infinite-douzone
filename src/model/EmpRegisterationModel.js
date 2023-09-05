@@ -127,29 +127,34 @@ function EmpRegisterationModel() {
     }
   }, [editedEmp]);
 
+  useEffect(
+    () => console.log("셀렉티드로우즈 바뀐것", selectedRows),
+    [selectedRows]
+  );
+
   //사원 정보 delete 요청
   const deleteSelectedRows = useCallback(() => {
     // 각 row에 대한 delete 요청을 생성
-    console.log("selectedRows", selectedRows);
+    // console.log("selectedRows axios 직전", selectedRows);
     const deletePromises = selectedRows.map((row) => {
+      let pattern;
       switch (row.table) {
         case "emp":
           // emp의 경우 퇴직처리 update
           // console.log("url + '/emp/updateEmp', row.item", row.item);
-          const deleteData = {
-            cdEmp: row.item.cdEmp,
-          };
-          // console.log("daRetire ==>", deleteData.daRetire);
-          return axios.delete(
-            url + "/emp/deleteData",
-            { data: deleteData },
-            {
-              "Content-Type": "qpplication/json",
-            }
-          );
+          pattern = "/emp/deleteEmp";
+          break;
+        // console.log("daRetire ==>", deleteData.daRetire);
+        // return axios.delete(url + "/emp/deleteEmp", {
+        //   data: deleteData,
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // });
         default:
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }
+      return axios.delete(url + pattern, { data: row.item });
     });
 
     Promise.all(deletePromises)
@@ -158,6 +163,13 @@ function EmpRegisterationModel() {
         setSelectedRows([]); // 선택행 배열 비우기
         setReloadSubTableData(!reloadSubTableData);
         setEditedEmp([]);
+        // console.log("선택한 모든 행 =>", responses);
+        //삭제된 데이터 필터링
+        const undeletedEmpData = responses.filter((response) => {
+          return response.data != "";
+        });
+        //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
+        console.log("undeletedEmpData !!!!!", undeletedEmpData);
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
