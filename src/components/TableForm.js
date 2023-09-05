@@ -538,6 +538,7 @@ const TableForm = ({
                       contentEditable={row.isEditable && !thead.readOnly}
                       data-field={thead.field}
                       data-column-index={columnIndex}
+                      onFocus={(e) => focusAtEnd(e.target)}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                       ref={(input) => setInputRef(input, rowIndex, columnIndex)}
                     >

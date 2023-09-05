@@ -158,7 +158,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     id="nmEnName"
                     label={labels.nmEnName}
                     value={mainTabData.item?.nmEnName}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -166,7 +166,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     id="nmChName"
                     label={labels.nmChName}
                     value={mainTabData.item?.nmChName}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -176,7 +176,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     label={labels.noSocial}
                     disabled
                     value={mainTabData.item?.noSocial}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -211,7 +211,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     label={labels.cdDept}
                     disabled
                     value={mainTabData.item?.cdDept}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -220,7 +220,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     label={labels.rankNo}
                     disabled
                     value={mainTabData.item?.ankNo}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -228,7 +228,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     id="cdOffduty"
                     label={labels.cdOffduty}
                     value={mainTabData.item?.cdOffduty}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -246,7 +246,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     label={labels.daEnter}
                     disabled
                     value={mainTabData.item?.daEnter}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
                 <Col xs md="6">
@@ -255,7 +255,7 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
                     label={labels.daRetire}
                     disabled
                     value={mainTabData.item?.daRetire}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
                   />
                 </Col>
               </Row>
