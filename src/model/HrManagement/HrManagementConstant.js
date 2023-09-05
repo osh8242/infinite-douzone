@@ -11,6 +11,22 @@ const HrManagementConstant = () => {
         { field: "nmKrname", text: "성명" },
       ],
     },
+    leftStaticsTableConstant: {
+      headers: [
+        {
+          field: "jobOkY",
+          text: "재직",
+        },
+        {
+          field: "jobOkN",
+          text: "퇴직",
+        },
+        {
+          field: "jobOkSum",
+          text: "총합",
+        },
+      ],
+    },
 
     tabConstant: {
       mainTabMenuList: ["기초정보", "인적정보"],

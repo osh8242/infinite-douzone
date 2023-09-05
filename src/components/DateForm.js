@@ -147,48 +147,48 @@
 
 // export default DateForm;
 
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
+// import React, { useState } from "react";
+// import DatePicker from "react-datepicker";
 
-import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ko } from "date-fns/esm/locale";
-import { Col, Form, Row } from "react-bootstrap";
-import "react-datepicker/dist/react-datepicker.css";
-import "./CustomInput.scss";
+// import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { ko } from "date-fns/esm/locale";
+// import { Col, Form, Row } from "react-bootstrap";
+// import "react-datepicker/dist/react-datepicker.css";
+// import "./CustomInput.scss";
 
-const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
-  <div className="custom-date-input" onClick={onClick} ref={ref}>
-    <Form.Control type="text" value={value} />
-    <FontAwesomeIcon icon={faCalendarDays} />
-  </div>
-));
+// const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+//   <div className="custom-date-input" onClick={onClick} ref={ref}>
+//     <Form.Control type="text" value={value} />
+//     <FontAwesomeIcon icon={faCalendarDays} />
+//   </div>
+// ));
 
-const DateForm = ({ label }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  return (
-    <Row className="py-1">
-      {label && (
-        <Col
-          md="4"
-          className="d-flex align-items-center justify-content-center"
-        >
-          <div>{label}</div>
-        </Col>
-      )}
+// const DateForm = ({ label }) => {
+//   const [startDate, setStartDate] = useState(new Date());
+//   return (
+//     <Row className="py-1">
+//       {label && (
+//         <Col
+//           md="4"
+//           className="d-flex align-items-center justify-content-center"
+//         >
+//           <div>{label}</div>
+//         </Col>
+//       )}
 
-      <Col md="8" className="d-flex align-items-center justify-content-center">
-        <DatePicker
-          locale={ko}
-          customInput={<CustomInput />}
-          className="form-control"
-          dateFormat="yyyy년 MM월 dd일"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-        />
-      </Col>
-    </Row>
-  );
-};
+//       <Col md="8" className="d-flex align-items-center justify-content-center">
+//         <DatePicker
+//           locale={ko}
+//           customInput={<CustomInput />}
+//           className="form-control"
+//           dateFormat="yyyy년 MM월 dd일"
+//           selected={startDate}
+//           onChange={(date) => setStartDate(date)}
+//         />
+//       </Col>
+//     </Row>
+//   );
+// };
 
-export default DateForm;
+// export default DateForm;

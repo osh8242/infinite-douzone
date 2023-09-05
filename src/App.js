@@ -1,13 +1,21 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
-import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
 import Header from "./templates/Header";
-import HrManagement from "./templates/HrManageMent/HrManagement";
+import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
+import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
+import LaborContract from "./templates/LaborContract";
 
 function App() {
   return (
     <div>
-      <Header />
-      <EmpRegisterationLayout />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/LaborContract" element={<LaborContract />} />
+          <Route path="*" element={<HrManagementLayout />} />
+          <Route path="/EmpRegister" element={<EmpRegisterationLayout />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
