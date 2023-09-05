@@ -99,16 +99,28 @@ const TableForm = ({
     setColumnRef(-1);
   }, []);
 
-  //정렬상태 해제함수
-  const releaseOrder = useCallback(() => {
-    setOrderRef();
-    setIsAsc();
-  }, []);
+  const setInputRef = useCallback(
+    (input, rowIndex, columnIndex) => {
+      if (!inputRef.current[rowIndex]) {
+        inputRef.current[rowIndex] = [];
+      }
+      inputRef.current[rowIndex][columnIndex] = input;
+    },
+    [tableRows]
+  );
 
   // 수정 중인 행의 index를 찾는 함수
   const editableRowIndex = useMemo(() => {
     return tableRows.findIndex((item) => item.isEditable);
   }, [tableRows]);
+
+  useEffect(() => {
+    if (editableRowIndex !== -1) {
+      const input = inputRef.current[rowRef][columnRef];
+      input.focus();
+      focusAtEnd(input);
+    }
+  });
 
   // 선택된 행을 수정상태로 바꾸는 함수
   const setEditableRow = useCallback(
@@ -136,7 +148,6 @@ const TableForm = ({
   const getTdClassName = useCallback(
     (rowIndex, columnIndex) => {
       if (columnIndex === columnRef && rowIndex === rowRef) return "selectedTd";
-      else return "";
     },
     [rowRef, columnRef]
   );
@@ -145,7 +156,6 @@ const TableForm = ({
   const getRowClassName = useCallback(
     (row, index) => {
       if (rowRef === index || row.checked) return "selectedTr";
-      return "";
     },
     [rowRef]
   );
@@ -238,7 +248,6 @@ const TableForm = ({
     (rowIndex, field) => {
       if (readOnly) return;
       if (rowIndex === tableRows.length) pushNewRow();
-
       tableRows[rowIndex].isEditable = true;
       setTableRows([...tableRows]);
     },
@@ -550,12 +559,7 @@ const TableForm = ({
                       data-field={thead.field}
                       data-column-index={columnIndex}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
-                      ref={(input) => {
-                        if (!inputRef.current[rowIndex]) {
-                          inputRef.current[rowIndex] = [];
-                        }
-                        inputRef.current[rowIndex][columnIndex] = input;
-                      }}
+                      ref={(input) => setInputRef(input, rowIndex, columnIndex)}
                     >
                       {row.isNew ? "" : row.item[thead.field]}
                     </div>
@@ -576,9 +580,14 @@ const TableForm = ({
                   <FontAwesomeIcon icon={faPlus} />
                 </td>
               )}
-              {tableHeaders.map((thead, rowIndex) => (
-                <td key={rowIndex} style={{ color: "transparent" }}>
-                  <div id="tableContents"></div>
+              {tableHeaders.map((thead, columnIndex) => (
+                <td key={columnIndex} style={{ color: "transparent" }}>
+                  <div
+                    id="tableContents"
+                    ref={(input) =>
+                      setInputRef(input, tableRows.length, columnIndex)
+                    }
+                  ></div>
                 </td>
               ))}
             </tr>
