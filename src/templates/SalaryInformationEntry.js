@@ -10,7 +10,7 @@ import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import SalConstant from "../model/SalConstant";
 import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
-import HrManagementHeader from "./HrManagementHeader";
+import HrManagementHeader from "./HrManagement/HrManagementHeader";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   //상수
@@ -57,7 +57,9 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         {/* 코드 도움 모달 영역 */}
         <CodeHelperModal
           show={state.modalState.show}
-          onHide={() => actions.setModalState({ ...state.modalState, show: false })}
+          onHide={() =>
+            actions.setModalState({ ...state.modalState, show: false })
+          }
           //onConfirm={() => alert('확인')}
           setLowData={state.codeHelperTableData.setData}
           usePk={state.codeHelperTableData.usePk}
@@ -229,7 +231,12 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             <Button
               variant="secondary"
               onClick={() =>
-                codeHelperShow(true, "", codeHelperparams.emplist, actions.setAddRow)
+                codeHelperShow(
+                  true,
+                  "",
+                  codeHelperparams.emplist,
+                  actions.setAddRow
+                )
               }
             >
               +

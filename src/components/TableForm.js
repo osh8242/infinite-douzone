@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -32,7 +42,7 @@ const TableForm = ({
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
-  sortable = true, //
+  sortable, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
@@ -155,7 +165,10 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
+  const getInputElements = useCallback(
+    () => inputRef.current[rowRef],
+    [rowRef]
+  );
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -187,7 +200,11 @@ const TableForm = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(
     (rowIndex) => {
-      if (actions.setPkValue && rowRef !== rowIndex && rowRef < tableRows.length) {
+      if (
+        actions.setPkValue &&
+        rowRef !== rowIndex &&
+        rowRef < tableRows.length
+      ) {
         let newPkValue = {};
         newPkValue = getPkValue(rowIndex);
         actions.setPkValue(newPkValue);
@@ -425,7 +442,8 @@ const TableForm = ({
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -505,12 +523,16 @@ const TableForm = ({
               <th
                 id="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
                 <div>{thead.text}</div>
-                <div id="tableHeader-arrow">{getArrowDirection(thead.field)}</div>
+                <div id="tableHeader-arrow">
+                  {getArrowDirection(thead.field)}
+                </div>
               </th>
             ))}
           </tr>
@@ -574,7 +596,9 @@ const TableForm = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div
                     className="tableContents"
@@ -604,7 +628,7 @@ TableForm.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   tableData: PropTypes.array.isRequired,
   tableFooter: PropTypes.element,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.object,
   tableName: PropTypes.string,
   showCheckbox: PropTypes.bool,
   sortable: PropTypes.bool,

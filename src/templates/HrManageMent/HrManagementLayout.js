@@ -16,12 +16,13 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import ProfileImageForm from "../../components/ProfileImageForm";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
-const HrManagementLayout = ({ grid, mainTab, subTab }) => {
+const HrManagementLayout = () => {
   //실행중에는 값이 고정인 값들
   const {
     searchOption, // 검색옵션 리스트
@@ -45,6 +46,7 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
     leftTableData,
     leftTablePkValue,
     mainTabData,
+    empImageSrc,
     subTableData,
     selectedRows,
   } = state;
@@ -156,6 +158,7 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
                   tableName="EMP"
                   showCheckbox
                   showHeaderArrow
+                  sortable
                   rowAddable
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
@@ -188,7 +191,9 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
               {/* 우측 메인폼 */}
               <Row className="mb-5" ref={mainTabRef}>
                 <Row>
-                  <Col xs md="3"></Col>
+                  <Col xs md="3">
+                    <ProfileImageForm src={empImageSrc} />
+                  </Col>
                   <Col xs md="9">
                     <Row>
                       <Col xs md="6">
