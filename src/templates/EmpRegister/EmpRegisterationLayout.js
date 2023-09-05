@@ -41,8 +41,7 @@ function EmpRegisterationLayout() {
   // 메뉴 탭 전환 기능 추후 수정 예정
   // const [selectedMenu, setSelectedMenu] = useState(0);
 
-  //Modal 관리 값
-
+  //코드도움 Modal 관리 값
   const [apiFlag, setApiFlag] = useState(false);
 
   //코드도움 상수 값
@@ -50,8 +49,8 @@ function EmpRegisterationLayout() {
 
   //코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback(
-    (flag, codeHelperTableData, codeHelperCode) => {
-      actions.setModalState({ show: true });
+    (flag, codeHelperTableData, codeHelperCode, setFn, usePk) => {
+      actions.setCodeHelperState({ show: true });
       setApiFlag(flag);
       if (flag) {
         actions.setCodeHelperTableData((prevState) => ({
@@ -110,20 +109,21 @@ function EmpRegisterationLayout() {
       />
       <Container>
         {/* 코드도움 모달영역 */}
-        {/* <CodeHelperModal
-          show={state.modalState.show}
+        <CodeHelperModal
+          show={state.codeHelperState.show}
           onHide={() =>
-            actions.setModalState({
-              ...state.modalState,
+            actions.setCodeHelperState({
+              ...state.codeHelperState,
               show: false,
             })
           }
           onConfirm={() => alert("확인")}
-          // setLowData={actions.setAddRow}
-          apiFlag={apiFlag}
-          table={state.codeHelperTableData.data}
-          codeHelperCode={state.codeHelperTableData.code}
-        /> */}
+          apiFlag={true}
+          setLowData={actions.setAddRow}
+          usePk={""}
+          tableData={actions.setCodeHelperTableData}
+        />
+        {/* 삭제실패 사원목록 모달영역 */}
         <ModalComponent
           title={"삭제 실패 사원목록"}
           show={state.modalState.show}
@@ -131,8 +131,6 @@ function EmpRegisterationLayout() {
             actions.setModalState({ ...state.modalState, show: false })
           }
           size="md"
-          setRowData={actions.setAddRow}
-          apiFlag={apiFlag}
           centered
         >
           <TableForm
@@ -197,13 +195,17 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="abbNation"
                     label={labels.abbNation}
-                    value={state.mainTabData.abbNation}
-                    onKeyDown={submitMainTabData}
-                    // onChange={submitMainTabData}
-                    // codeHelper
-                    // onClickCodeHelper={() =>
-                    //   codeHelperShow(false, codeHelperparams.cdEmp, "이건뭐지")
-                    // }
+                    value={state.searchVO.searchAbbNationForER}
+                    onChange={actions.setSearchAbbNationForER}
+                    setLowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.abbNation,
+                        "abbNation"
+                      )
+                    }
                   />
                   <TextBoxComponent
                     id="cdNation"

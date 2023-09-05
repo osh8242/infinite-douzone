@@ -29,6 +29,9 @@ function EmpRegisterationModel() {
     { data: "", code: "", setData: setAddRow },
   ]);
 
+  // 코드도움 검색 값 상태관리
+  const [searchAbbNationForER, setSearchAbbNationForER] = useState("");
+
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
     setLeftTableData();
@@ -206,6 +209,9 @@ function EmpRegisterationModel() {
       undeletedEmpTableData,
       codeHelperState,
       codeHelperTableData,
+      searchVO: {
+        searchAbbNationForER,
+      },
     },
     actions: {
       setLeftTableData,
@@ -221,6 +227,8 @@ function EmpRegisterationModel() {
       setUndeletedEmpTableData,
       setCodeHelperState,
       setCodeHelperTableData,
+      setSearchAbbNationForER,
+      setAddRow,
     },
   };
 }
