@@ -38,12 +38,12 @@ const SalConstant = () => {
             { key: "EXTRABONUS" , value: "6.추상" },
         ],
         salOptionByPeriodList : [   // 조회구분 검색조건 옵션
-            { key: "EmpAllThisMonth", value: "0.전체사원 당월" },
-            { key: "EmpOneThisMonth", value: "1.현재사원 당월" },
-            { key: "EmpAllCurrent",  value: "2.전체사원 현재" },
-            { key: "EmpOneCurrent",   value: "3.현재사원 현재" },
-            { key: "EmpAllThisMonth", value: "4.전체사원 연간" },
-            { key: "EmpOneThisYear",  value: "5.현재사원 연간" },
+            { key: 'EmpAllThisMonth',  value: "0.전체사원 당월" },
+            { key: 'EmpNowThisMonth',  value: "1.현재사원 당월" },
+            { key: 'EmpAllCurrent',  value: "2.전체사원 현재" },
+            { key: 'EmpNowCurrent',  value: "3.현재사원 현재" },
+            { key: 'EmpAllThisYear',  value: "4.전체사원 연간" },
+            { key: 'EmpNowThisYear',  value: "5.현재사원 연간" },
         ],
         unitOption : [  // 생산직 여부 검색조건 옵션
             { key: "y", value: "생산직" },

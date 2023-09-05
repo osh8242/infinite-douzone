@@ -48,7 +48,7 @@ const TableForm = ({
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
   useEffect(() => {
-    setTableRows(tableData);
+    setTableRows(tableData || []);
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
@@ -204,8 +204,7 @@ const TableForm = ({
 
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
-    (e, rowIndex, columnIndex) => {
-      if (readOnly) return;
+    (e, rowIndex, columnIndex) => {      
       if (rowRef === rowIndex && columnRef === columnIndex) return;
       setRowRef(rowIndex);
       setColumnRef(columnIndex);
