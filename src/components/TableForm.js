@@ -298,8 +298,8 @@ const TableForm = ({
       tableRows[index].checked = !isAllChecked;
     });
     setTableRows([...tableRows]);
-    if (isAllChecked) actions.setSelectedRows(tableRows);
-    else actions.setSelectedRows([]);
+    if (isAllChecked) actions.setSelectedRows([]);
+    else actions.setSelectedRows(tableRows);
   }, [actions, checkedBoxCounter, tableRows]);
 
   // 체크된 행들을 반환하는 함수
