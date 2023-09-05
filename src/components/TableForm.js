@@ -1,20 +1,11 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
+import ConfirmComponent from "./ConfirmComponent";
 
 const TableForm = ({
   tableHeaders, // [필수]
@@ -70,6 +61,9 @@ const TableForm = ({
 
   //오름차순여부 (true면 오름차순, false면 내림차순)
   const [isAsc, setIsAsc] = useState(null);
+
+  //모달 경고창(인풋 pk누락)
+  const [pkInputWarningState, setPkInputWarningState] = useState(false);
 
   //테이블 포커스 여부 boolean ref
   const tableFocus = useRef(rowRef && columnRef);
@@ -161,13 +155,7 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(
-    () =>
-      tbodyRef.current.children[rowRef].querySelectorAll(
-        "[contentEditable='true']"
-      ),
-    [rowRef]
-  );
+  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -199,11 +187,7 @@ const TableForm = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(
     (rowIndex) => {
-      if (
-        actions.setPkValue &&
-        rowRef !== rowIndex &&
-        rowRef < tableRows.length
-      ) {
+      if (actions.setPkValue && rowRef !== rowIndex && rowRef < tableRows.length) {
         let newPkValue = {};
         newPkValue = getPkValue(rowIndex);
         actions.setPkValue(newPkValue);
@@ -245,7 +229,8 @@ const TableForm = ({
 
   // row DoubliClick 이벤트 : 해당 row 를 editable row 로 변경 (편집 가능)
   const handleDoubleClick = useCallback(
-    (rowIndex, field) => {
+    (event, rowIndex, columnIndex) => {
+      handleRowClick(event, rowIndex, columnIndex);
       if (readOnly) return;
       if (rowIndex === tableRows.length) pushNewRow();
       tableRows[rowIndex].isEditable = true;
@@ -296,12 +281,12 @@ const TableForm = ({
     (event, rowIndex) => {
       if (readOnly) return;
       if (event.key === "Enter") {
-        //event.preventDefault();
+        event.preventDefault();
 
         const editedRow = getEditedRow();
 
         if (!editedRow) {
-          alert("Pk값이 비어있습니다.");
+          setPkInputWarningState(true);
           return;
         }
         tableRows[rowIndex] = editedRow;
@@ -431,8 +416,7 @@ const TableForm = ({
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -512,16 +496,12 @@ const TableForm = ({
               <th
                 id="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
                 <div>{thead.text}</div>
-                <div id="tableHeader-arrow">
-                  {getArrowDirection(thead.field)}
-                </div>
+                <div id="tableHeader-arrow">{getArrowDirection(thead.field)}</div>
               </th>
             ))}
           </tr>
@@ -549,8 +529,8 @@ const TableForm = ({
                     key={columnIndex}
                     className={getTdClassName(rowIndex, columnIndex)}
                     onClick={(e) => handleRowClick(e, rowIndex, columnIndex)}
-                    onDoubleClick={() =>
-                      handleDoubleClick(rowIndex, thead.field)
+                    onDoubleClick={(e) =>
+                      handleDoubleClick(e, rowIndex, columnIndex)
                     }
                   >
                     <div
@@ -570,20 +550,23 @@ const TableForm = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr
-              className={getRowClassName({}, tableRows.length)}
-              onDoubleClick={() => handleDoubleClick(tableRows.length)}
-              onClick={(e) => handleRowClick(e, tableRows.length)}
-            >
+            <tr className={getRowClassName({}, tableRows.length)}>
               {showCheckbox && (
                 <td>
                   <FontAwesomeIcon icon={faPlus} />
                 </td>
               )}
               {tableHeaders.map((thead, columnIndex) => (
-                <td key={columnIndex} style={{ color: "transparent" }}>
+                <td
+                  key={columnIndex}
+                  style={{ color: "transparent" }}
+                  onDoubleClick={(e) =>
+                    handleDoubleClick(e, tableRows.length, columnIndex)
+                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                >
                   <div
-                    id="tableContents"
+                    className="tableContents"
                     ref={(input) =>
                       setInputRef(input, tableRows.length, columnIndex)
                     }
@@ -595,6 +578,11 @@ const TableForm = ({
         </tbody>
         {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
+      <ConfirmComponent
+        show={pkInputWarningState}
+        message={"필수입력항목이 누락되어있습니다"}
+        onConfirm={() => setPkInputWarningState(false)}
+      />
     </>
   ) : (
     <Spinner animation="border" variant="primary" />
