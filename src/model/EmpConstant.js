@@ -31,6 +31,18 @@ const EmpConstant = () => {
       cdField: {},
       cdProject: {},
     },
+    // 미삭제 사원 목록 테이블 헤더
+    EmpRegisterUndeletedEmpHeaders: [
+      {
+        field: "cdEmp",
+        text: "사원코드",
+        isPk: true,
+        readOnly: true,
+        // width: "75px",
+      },
+      { field: "nmKrname", text: "성명" },
+      { field: "useMenuList", text: "사용중인 메뉴" },
+    ],
   };
 };
 

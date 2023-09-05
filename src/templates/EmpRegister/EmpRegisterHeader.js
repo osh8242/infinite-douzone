@@ -7,8 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "react-bootstrap";
-import "../styles/header.css";
-import emp from "../styles/img/empRegisterLogo.png";
+import "../../styles/header.css";
+import emp from "../..//styles/img/empRegisterLogo.png";
 import { useState } from "react";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)

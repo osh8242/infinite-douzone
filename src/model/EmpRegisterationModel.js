@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "../../node_modules/axios/index";
 import Emp from "../vo/EmpRegister/Emp";
 import { currentDateStr } from "../utils/DateUtils.js";
+import EmpMenuUsage from "../vo/EmpRegister/EmpMenuUsage";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -19,19 +20,19 @@ function EmpRegisterationModel() {
 
   // 코드도움 모달들의 상태관리
   const [modalState, setModalState] = useState({ show: false });
-  const modals = [
-    { id: 1, isOpen: false },
-    { id: 2, isOpen: false },
-    { id: 3, isOpen: false },
-    { id: 4, isOpen: false },
-    { id: 5, isOpen: false },
-    { id: 6, isOpen: false },
-    { id: 7, isOpen: false },
-    { id: 8, isOpen: false },
-  ];
+  // const modals = [
+  //   { id: 1, isOpen: false },
+  //   { id: 2, isOpen: false },
+  //   { id: 3, isOpen: false },
+  //   { id: 4, isOpen: false },
+  //   { id: 5, isOpen: false },
+  //   { id: 6, isOpen: false },
+  //   { id: 7, isOpen: false },
+  //   { id: 8, isOpen: false },
+  // ];
+  // 코드도움 테이블 data
   const [codeHelperTableData, setCodeHelperTableData] = useState([
     {
-      // 코드도움 테이블 data
       data: "대한민국",
       code: "KOR",
     },
@@ -40,6 +41,9 @@ function EmpRegisterationModel() {
     { data: "일본", code: "JP" },
     { data: "프랑스", code: "FR" },
   ]);
+
+  //삭제되지 않은 사원들의 데이터를 모달로 띄워주기 위한 상태변수
+  const [undeletedEmpTableData, setUndeletedEmpTableData] = useState(null);
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -140,17 +144,8 @@ function EmpRegisterationModel() {
       let pattern;
       switch (row.table) {
         case "emp":
-          // emp의 경우 퇴직처리 update
-          // console.log("url + '/emp/updateEmp', row.item", row.item);
           pattern = "/emp/deleteEmp";
           break;
-        // console.log("daRetire ==>", deleteData.daRetire);
-        // return axios.delete(url + "/emp/deleteEmp", {
-        //   data: deleteData,
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // });
         default:
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }
@@ -170,6 +165,16 @@ function EmpRegisterationModel() {
         });
         //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
         console.log("undeletedEmpData !!!!!", undeletedEmpData);
+        const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
+          const undeletedEmp = {
+            cdEmp: item.data.cdEmp,
+            nmKrname: item.data.nmKrname,
+            useMenuList: item.data.useMenuList,
+          };
+          return EmpMenuUsage(undeletedEmp);
+        });
+        setUndeletedEmpTableData(undeletedEmpTableDataContent);
+        setModalState({ show: true });
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
@@ -219,6 +224,7 @@ function EmpRegisterationModel() {
       reloadSubTableData,
       modalState,
       codeHelperTableData,
+      undeletedEmpTableData,
     },
     actions: {
       setLeftTableData,
@@ -231,6 +237,7 @@ function EmpRegisterationModel() {
       deleteSelectedRows,
       setModalState,
       setCodeHelperTableData,
+      setUndeletedEmpTableData,
     },
   };
 }

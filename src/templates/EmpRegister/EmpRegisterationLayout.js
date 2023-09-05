@@ -3,21 +3,22 @@
 
 import { Col, Container, Row } from "react-bootstrap";
 import React, { useCallback, useRef, useState } from "react";
-import MenuTab from "../components/MenuTab";
-import TextBoxComponent from "../components/TextBoxComponent";
-import AddressForm from "../components/AddressForm";
-import "../styles/empRegisterationLayout.css";
-import EmpRegisterationModel from "../model/EmpRegisterationModel";
-import CommonConstant from "../model/CommonConstant";
-import CallNumberForm from "../components/CallNumberForm";
-import NoSocialFormForEmpRegister from "../components/NoSocialFormForEmpRegister";
-import EmailForm from "../components/EmailForm";
-import DateTest from "../components/DateTest";
-import TableForm from "../components/TableForm";
-import Emp from "../vo/EmpRegister/Emp";
+import MenuTab from "../../components/MenuTab";
+import TextBoxComponent from "../../components/TextBoxComponent";
+import AddressForm from "../../components/AddressForm";
+import "../../styles/empRegisterationLayout.css";
+import EmpRegisterationModel from "../../model/EmpRegisterationModel";
+import CommonConstant from "../../model/CommonConstant";
+import CallNumberForm from "../../components/CallNumberForm";
+import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
+import EmailForm from "../../components/EmailForm";
+import DateTest from "../../components/DateTest";
+import TableForm from "../../components/TableForm";
+import Emp from "../../vo/EmpRegister/Emp";
 import EmpRegisterHeader from "./EmpRegisterHeader";
-import CodeHelperModal from "../components/CodeHelperModal";
-import EmpConstant from "../model/EmpConstant";
+import CodeHelperModal from "../../components/CodeHelperModal";
+import EmpConstant from "../../model/EmpConstant";
+import ModalComponent from "../../components/ModalComponent";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
@@ -33,11 +34,23 @@ function EmpRegisterationLayout() {
     labels, //속성명
   } = CommonConstant();
 
+  const {
+    EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
+  } = EmpConstant();
+
   // 메뉴 탭 전환 기능 추후 수정 예정
   // const [selectedMenu, setSelectedMenu] = useState(0);
 
   //Model 관리 값
   const [apiFlag, setApiFlag] = useState(false);
+
+  // console.log(
+  //   "*******************************************************************"
+  // );
+  console.log("layout!! ", state.undeletedEmpTableData);
+  // console.log(
+  //   "*******************************************************************"
+  // );
 
   //코드도움 상수 값
   const { codeHelperparams } = EmpConstant();
@@ -118,6 +131,28 @@ function EmpRegisterationLayout() {
           table={state.codeHelperTableData.data}
           codeHelperCode={state.codeHelperTableData.code}
         /> */}
+        <ModalComponent
+          title={"삭제 실패 사원목록"}
+          show={state.modalState.show}
+          onHide={() =>
+            actions.setModalState({ ...state.modalState, show: false })
+          }
+          size="md"
+          centered
+        >
+          {state.undeletedEmpTableData ? (
+            <TableForm
+              tableHeaders={EmpRegisterUndeletedEmpHeaders}
+              tableData={state.undeletedEmpTableData}
+              selectedRows={state.selectedRows}
+              actions={{
+                setSelectedRows: actions.setSelectedRows,
+              }}
+            />
+          ) : (
+            "데이터가 없음!"
+          )}
+        </ModalComponent>
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 사원목록 테이블 */}
