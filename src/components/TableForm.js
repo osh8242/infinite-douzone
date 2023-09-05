@@ -56,6 +56,9 @@ const TableForm = ({
   //테이블 바디 dom ref
   const tbodyRef = useRef();
 
+  //테이블의 수정된 행에 걸리는 ref
+  const inputRef = useRef([]);
+
   //선택된 로우(인덱스)
   const [rowRef, setRowRef] = useState(-1);
 
@@ -74,8 +77,7 @@ const TableForm = ({
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
     console.log(tableName, tableRows, "Render");
-    console.log("orderRef", orderRef);
-    console.log("isAsc", isAsc);
+    console.log("inputRef", inputRef);
   }
 
   //정렬값이 바뀌면 테이블 정렬하기 useEffect
@@ -245,6 +247,19 @@ const TableForm = ({
     [tableRows, pushNewRow]
   );
 
+  //인풋값에 pk 값이 누락되어있는지 체크하는 함수
+  const isValidRow = useCallback(
+    (inputs) => {
+      for (let input of inputs) {
+        const columnIndex = input.getAttribute("data-column-index");
+        if (tableHeaders[columnIndex].isPk)
+          if (input.innerText === "" || !input.innerText) return false;
+        return true;
+      }
+    },
+    [tableHeaders]
+  );
+
   // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
   const getEditedRow = useCallback(() => {
     let editedRow = {
@@ -254,6 +269,9 @@ const TableForm = ({
     };
 
     const currentRowInputs = getInputElements();
+
+    // 입력필드에 pk값이 누락되었는지 체크
+    if (!isValidRow(currentRowInputs)) return false;
 
     // 각 입력 필드의 값을 editedRow에 업데이트
     currentRowInputs.forEach((input, rowIndex) => {
@@ -272,6 +290,11 @@ const TableForm = ({
         //event.preventDefault();
 
         const editedRow = getEditedRow();
+
+        if (!editedRow) {
+          alert("Pk값이 비어있습니다.");
+          return;
+        }
         tableRows[rowIndex] = editedRow;
 
         setTableRows([...tableRows]);
@@ -525,16 +548,13 @@ const TableForm = ({
                       className="tableContents"
                       contentEditable={row.isEditable && !thead.readOnly}
                       data-field={thead.field}
+                      data-column-index={columnIndex}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                       ref={(input) => {
-                        if (
-                          input &&
-                          rowRef === rowIndex &&
-                          columnRef === columnIndex
-                        ) {
-                          input.focus();
-                          focusAtEnd(input);
+                        if (!inputRef.current[rowIndex]) {
+                          inputRef.current[rowIndex] = [];
                         }
+                        inputRef.current[rowIndex][columnIndex] = input;
                       }}
                     >
                       {row.isNew ? "" : row.item[thead.field]}
@@ -558,7 +578,7 @@ const TableForm = ({
               )}
               {tableHeaders.map((thead, rowIndex) => (
                 <td key={rowIndex} style={{ color: "transparent" }}>
-                  <div id="tableContents">.</div>
+                  <div id="tableContents"></div>
                 </td>
               ))}
             </tr>
