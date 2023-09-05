@@ -20,7 +20,7 @@ import HrManagementHeader from "./HrManagementHeader";
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
-const HrManagement = ({ grid, mainTab, subTab }) => {
+const HrManagementLayout = ({ grid, mainTab, subTab }) => {
   //실행중에는 값이 고정인 값들
   const {
     searchOption, // 검색옵션 리스트
@@ -153,111 +153,118 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
               <MenuTab menuList={tabConstant.mainTabMenuList} />
               {/* 우측 메인폼 */}
               <Row className="mb-5" ref={mainTabRef}>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="nmEnName"
-                    label={labels.nmEnName}
-                    value={mainTabData.item?.nmEnName}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="nmChName"
-                    label={labels.nmChName}
-                    value={mainTabData.item?.nmChName}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="noSocial"
-                    type="regNum"
-                    label={labels.noSocial}
-                    disabled
-                    value={mainTabData.item?.noSocial}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <RadioForm
-                    id="fgSex"
-                    label={labels.fgSex}
-                    disabled
-                    optionList={genderRadioList}
-                    checked={mainTabData.item?.fgSex}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <DateTest
-                    id="daBirth"
-                    label={labels.daBirth}
-                    value={mainTabData.item?.daBirth}
-                    onChange={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <RadioForm
-                    id="fgWedding"
-                    label={labels.fgWedding}
-                    optionList={marryRadioList}
-                    checked={mainTabData.item?.fgWedding}
-                    onChange={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="cdDept"
-                    label={labels.cdDept}
-                    disabled
-                    value={mainTabData.item?.cdDept}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="rankNo"
-                    label={labels.rankNo}
-                    disabled
-                    value={mainTabData.item?.ankNo}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="cdOffduty"
-                    label={labels.cdOffduty}
-                    value={mainTabData.item?.cdOffduty}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <RadioForm
-                    id="ynDrawContracts"
-                    label={labels.ynDrawContracts}
-                    optionList={contractRadioList}
-                    checked={mainTabData.item?.ynDrawContracts}
-                    onChange={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="daEnter"
-                    label={labels.daEnter}
-                    disabled
-                    value={mainTabData.item?.daEnter}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
-                <Col xs md="6">
-                  <TextBoxComponent
-                    id="daRetire"
-                    label={labels.daRetire}
-                    disabled
-                    value={mainTabData.item?.daRetire}
-                    onEnter={submitMainTabData}
-                  />
-                </Col>
+                <Row>
+                  <Col xs md="3"></Col>
+                  <Col xs md="9">
+                    <Row>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="nmEnName"
+                          label={labels.nmEnName}
+                          value={mainTabData.item?.nmEnName}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="nmChName"
+                          label={labels.nmChName}
+                          value={mainTabData.item?.nmChName}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="noSocial"
+                          type="regNum"
+                          label={labels.noSocial}
+                          disabled
+                          value={mainTabData.item?.noSocial}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <RadioForm
+                          id="fgSex"
+                          label={labels.fgSex}
+                          disabled
+                          optionList={genderRadioList}
+                          checked={mainTabData.item?.fgSex}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <DateTest
+                          id="daBirth"
+                          label={labels.daBirth}
+                          value={mainTabData.item?.daBirth}
+                          onChange={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <RadioForm
+                          id="fgWedding"
+                          label={labels.fgWedding}
+                          optionList={marryRadioList}
+                          checked={mainTabData.item?.fgWedding}
+                          onChange={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="cdDept"
+                          label={labels.cdDept}
+                          disabled
+                          value={mainTabData.item?.cdDept}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="rankNo"
+                          label={labels.rankNo}
+                          disabled
+                          value={mainTabData.item?.ankNo}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="cdOffduty"
+                          label={labels.cdOffduty}
+                          value={mainTabData.item?.cdOffduty}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <RadioForm
+                          id="ynDrawContracts"
+                          label={labels.ynDrawContracts}
+                          optionList={contractRadioList}
+                          checked={mainTabData.item?.ynDrawContracts}
+                          onChange={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="daEnter"
+                          label={labels.daEnter}
+                          disabled
+                          value={mainTabData.item?.daEnter}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                      <Col xs md="6">
+                        <TextBoxComponent
+                          id="daRetire"
+                          label={labels.daRetire}
+                          disabled
+                          value={mainTabData.item?.daRetire}
+                          onEnter={submitMainTabData}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
               </Row>
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
@@ -288,4 +295,4 @@ const HrManagement = ({ grid, mainTab, subTab }) => {
   );
 };
 
-export default HrManagement;
+export default HrManagementLayout;

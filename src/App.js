@@ -1,19 +1,19 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
-import HrManagement from "./templates/HrManageMent/HrManagement";
+import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
 import LaborContract from "./templates/LaborContract";
 
 function App() {
   return (
     <div>
-      {/* <BrowserRouter> */}
-      <Header />
-      <LaborContract />
-      {/* <Routes>
-          <Route path="*" element={<HrManagement />} />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/LaborContract" element={<LaborContract />} />
+          <Route path="*" element={<HrManagementLayout />} />
         </Routes>
-      </BrowserRouter> */}
+      </BrowserRouter>
     </div>
   );
 }

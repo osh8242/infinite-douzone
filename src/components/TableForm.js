@@ -63,7 +63,7 @@ const TableForm = ({
   const [isAsc, setIsAsc] = useState(null);
 
   //모달 경고창(인풋 pk누락)
-  const [pkInputWarningState, setPkInputWarningState] = useState(false);
+  const [modalState, setModalState] = useState(false);
 
   //테이블 포커스 여부 boolean ref
   const tableFocus = useRef(rowRef && columnRef);
@@ -286,7 +286,7 @@ const TableForm = ({
         const editedRow = getEditedRow();
 
         if (!editedRow) {
-          setPkInputWarningState(true);
+          setModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
         tableRows[rowIndex] = editedRow;
@@ -307,6 +307,15 @@ const TableForm = ({
     );
     return checkedBoxCount;
   }, [tableRows]);
+
+  // 체크박스 전체해제
+  const releaseAllCheckbox = useCallback(() => {
+    tableRows.forEach((row, index) => {
+      tableRows[index].checked = false;
+    });
+    setTableRows([...tableRows]);
+    if (actions.setSelectedRows) actions.setSelectedRows([]);
+  }, [actions, tableRows]);
 
   // 전체체크 or 전체해제 함수
   const allCheckboxChangeHandler = useCallback(() => {
@@ -399,7 +408,6 @@ const TableForm = ({
         }
 
         if (editableRowIndex === -1) {
-          console.log("스위치 키이벤트");
           switch (event.key) {
             case "ArrowDown":
               if (rowRef < tableRows.length) setRowRef(rowRef + 1);
@@ -477,7 +485,7 @@ const TableForm = ({
 
   return tableRows ? (
     <>
-      <Table size="sm" bordered hover ref={myRef}>
+      <Table className="table" size="sm" bordered hover ref={myRef}>
         {/* header */}
         <thead>
           <tr>
@@ -536,6 +544,7 @@ const TableForm = ({
                     <div
                       className="tableContents"
                       contentEditable={row.isEditable && !thead.readOnly}
+                      suppressContentEditableWarning={true}
                       data-field={thead.field}
                       data-column-index={columnIndex}
                       onFocus={(e) => focusAtEnd(e.target)}
@@ -580,9 +589,9 @@ const TableForm = ({
         {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
       <ConfirmComponent
-        show={pkInputWarningState}
-        message={"필수입력항목이 누락되어있습니다"}
-        onConfirm={() => setPkInputWarningState(false)}
+        show={modalState.show}
+        message={modalState.message}
+        onConfirm={() => modalState({ show: false })}
       />
     </>
   ) : (

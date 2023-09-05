@@ -6,7 +6,7 @@
 
 // Test Code
 // <DateTest label={"생년월일"} isPeriod={true} type={"month"} />
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateTest(props) {
@@ -27,29 +27,24 @@ function DateTest(props) {
   // const [inputValue, setInputValue] = useState(value);
   const [startDate, setStartDate] = useState(value || "");
   const [endDate, setEndDate] = useState(value2 || "");
-  const [inputValue, setInputValue] = useState(value || "");
 
   DateTest.defaultProps = {
     label: "",
     isPeriod: false,
     type: "date",
   };
+
   useEffect(() => {
-    setInputValue(value || "");
+    setStartDate(value || "");
   }, [value]);
 
   useEffect(() => {
-    setStartDate(props.value);
-  }, [value]);
-
-  useEffect(() => {
-    setEndDate(props.value2);
+    setEndDate(value2 || "");
   }, [value2]);
 
   const onChangeHandeler = (e) => {
     const value = e.target.value;
     onChange(e, value);
-    setInputValue(value);
   };
 
   const handleStartDateChange = (event) => {
@@ -64,8 +59,8 @@ function DateTest(props) {
   };
 
   const handleEndDateChange = (event) => {
-    console.log("endData update : ");
-    console.log("labelKey2: " + labelKey2);
+    //console.log("endData update : ");
+    //console.log("labelKey2: " + labelKey2);
     setEndDate(event.target.value);
     if (props.onChangeEndDate) {
       props.onChangeEndDate(event.target.value);
@@ -81,7 +76,7 @@ function DateTest(props) {
       {label && (
         <Col
           md="4"
-          className="d-flex align-items-center justify-content-center"
+          className="label d-flex align-items-center justify-content-center"
         >
           <div>{label}</div>
         </Col>
