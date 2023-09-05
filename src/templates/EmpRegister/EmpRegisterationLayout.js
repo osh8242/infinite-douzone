@@ -41,7 +41,7 @@ function EmpRegisterationLayout() {
   // 메뉴 탭 전환 기능 추후 수정 예정
   // const [selectedMenu, setSelectedMenu] = useState(0);
 
-  //코드도움 Modal 관리 값
+  //코드도움 Modal 관리 값 -> api로 DB에서 데이터 가져올 때 사용
   const [apiFlag, setApiFlag] = useState(false);
 
   //코드도움 상수 값
@@ -51,16 +51,20 @@ function EmpRegisterationLayout() {
   const codeHelperShow = useCallback(
     (flag, codeHelperTableData, codeHelperCode, setFn, usePk) => {
       actions.setCodeHelperState({ show: true });
-      setApiFlag(flag);
+      // setApiFlag(flag);
       if (flag) {
         actions.setCodeHelperTableData((prevState) => ({
           ...prevState,
           code: codeHelperCode,
+          setData: setFn,
+          usePk: usePk,
         }));
       } else {
         actions.setCodeHelperTableData((prevState) => ({
           ...prevState,
           data: codeHelperTableData,
+          setData: setFn,
+          usePk: usePk,
         }));
       }
     },
@@ -97,6 +101,7 @@ function EmpRegisterationLayout() {
         newMainTabData.cdEmp = state.mainTablePk.cdEmp;
         actions.setEditedEmp(newMainTabData);
       }
+      //코드 헬퍼 저장 로직 필요
     }
   };
 
@@ -108,40 +113,6 @@ function EmpRegisterationLayout() {
         actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
       />
       <Container>
-        {/* 코드도움 모달영역 */}
-        <CodeHelperModal
-          show={state.codeHelperState.show}
-          onHide={() =>
-            actions.setCodeHelperState({
-              ...state.codeHelperState,
-              show: false,
-            })
-          }
-          onConfirm={() => alert("확인")}
-          apiFlag={true}
-          setLowData={actions.setAddRow}
-          usePk={""}
-          tableData={actions.setCodeHelperTableData}
-        />
-        {/* 삭제실패 사원목록 모달영역 */}
-        <ModalComponent
-          title={"삭제 실패 사원목록"}
-          show={state.modalState.show}
-          onHide={() =>
-            actions.setModalState({ ...state.modalState, show: false })
-          }
-          size="md"
-          centered
-        >
-          <TableForm
-            tableHeaders={EmpRegisterUndeletedEmpHeaders}
-            tableData={state.undeletedEmpTableData}
-            selectedRows={state.selectedRows}
-            actions={{
-              setSelectedRows: actions.setSelectedRows,
-            }}
-          />
-        </ModalComponent>
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 사원목록 테이블 */}
@@ -194,24 +165,42 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="abbNation"
+                    // name="searchAbbNation"
                     label={labels.abbNation}
-                    value={state.searchVO.searchAbbNationForER}
-                    onChange={actions.setSearchAbbNationForER}
-                    setLowData={actions.setAddRow}
+                    // onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchAbbNation}
+                    onChange={actions.setSearchAbbNation}
+                    setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
                       codeHelperShow(
                         false,
                         codeHelperparams.abbNation,
+                        "",
+                        actions.setSearchAbbNation,
                         "abbNation"
                       )
                     }
                   />
                   <TextBoxComponent
                     id="cdNation"
+                    // name="cdNation"
                     label={labels.cdNation}
-                    value={state.mainTabData.cdNation}
-                    onKeyDown={submitMainTabData}
+                    // value={state.mainTabData.cdNation}
+                    // onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdNation}
+                    onChange={actions.setSearchCdNation}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdNation,
+                        "",
+                        actions.setSearchCdNation,
+                        "cdNation"
+                      )
+                    }
                   />
                   <AddressForm
                     isZonecode={true}
@@ -275,38 +264,128 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="cdDept"
                     label={labels.cdDept}
-                    value={state.mainTabData.cdDept}
-                    onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdDept}
+                    // onKeyDown={submitMainTabData}
+                    onChange={actions.setSearchCdDept}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdDept,
+                        "",
+                        actions.setSearchCdDept,
+                        "cdDept"
+                      )
+                    }
                   />
+
+                  {/* 
+                  <TextBoxComponent
+                    id="cdNation"
+                    // name="cdNation"
+                    label={labels.cdNation}
+                    // value={state.mainTabData.cdNation}
+                    // onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdNation}
+                    onChange={actions.setSearchCdNation}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdNation,
+                        "",
+                        actions.setSearchCdNation,
+                        "cdNation"
+                      )
+                    }
+                  />
+                  */}
                   <TextBoxComponent
                     id="cdOccup"
                     label={labels.cdOccup}
-                    value={state.mainTabData.cdOccup}
-                    onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdOccup}
+                    onChange={actions.setSearchCdOccup}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdOccup,
+                        "",
+                        actions.setSearchCdOccup,
+                        "cdOccup"
+                      )
+                    }
                   />
                   <TextBoxComponent
                     id="rankNo"
                     label={labels.rankNo}
-                    value={state.mainTabData.rankNo}
-                    onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchRankNo}
+                    onChange={actions.setSearchRankNo}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.rankNo,
+                        "",
+                        actions.setSearchRankNo,
+                        "rankNo"
+                      )
+                    }
                   />
                   <TextBoxComponent
                     id="cdSalcls"
                     label={labels.cdSalcls}
-                    value={state.mainTabData.cdSalcls}
-                    onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdSalcls}
+                    onChange={actions.setSearchCdSalcls}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdSalcls,
+                        "",
+                        actions.setSearchCdSalcls,
+                        "cdSalcls"
+                      )
+                    }
                   />
                   <TextBoxComponent
                     id="cdField"
                     label={labels.cdField}
-                    value={state.mainTabData.cdField}
-                    onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdField}
+                    onChange={actions.setSearchCdField}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdField,
+                        "",
+                        actions.setSearchCdField,
+                        "cdField"
+                      )
+                    }
                   />
                   <TextBoxComponent
                     id="cdProject"
                     label={labels.cdProject}
-                    value={state.mainTabData.cdProject}
-                    onKeyDown={submitMainTabData}
+                    value={state.searchVO.searchCdProject}
+                    onChange={actions.setSearchCdProject}
+                    setRowData={actions.setAddRow}
+                    codeHelper
+                    onClickCodeHelper={() =>
+                      codeHelperShow(
+                        false,
+                        codeHelperparams.cdProject,
+                        "",
+                        actions.setSearchCdProject,
+                        "cdProject"
+                      )
+                    }
                   />
                   {state.mainTabData.daRetire ? (
                     <DateTest
@@ -355,7 +434,42 @@ function EmpRegisterationLayout() {
           </Col>
         </Row>
       </Container>
-      {/* </div> */}
+
+      {/* 코드도움 모달영역 */}
+      <CodeHelperModal
+        show={state.codeHelperState.show}
+        onHide={() =>
+          actions.setCodeHelperState({
+            ...state.codeHelperState,
+            show: false,
+          })
+        }
+        // onConfirm={() => alert("확인")}
+        setRowData={state.codeHelperTableData.setData}
+        usePk={state.codeHelperTableData.usePk}
+        apiFlag={apiFlag}
+        table={state.codeHelperTableData.data}
+        codeHelperCode={state.codeHelperTableData.code}
+      />
+      {/* 삭제실패 사원목록 모달영역 */}
+      <ModalComponent
+        title={"삭제 실패 사원목록"}
+        show={state.modalState.show}
+        onHide={() =>
+          actions.setModalState({ ...state.modalState, show: false })
+        }
+        size="md"
+        centered
+      >
+        <TableForm
+          tableHeaders={EmpRegisterUndeletedEmpHeaders}
+          tableData={state.undeletedEmpTableData}
+          selectedRows={state.selectedRows}
+          actions={{
+            setSelectedRows: actions.setSelectedRows,
+          }}
+        />
+      </ModalComponent>
     </>
   );
 }

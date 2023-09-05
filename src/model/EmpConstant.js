@@ -4,15 +4,15 @@ const EmpConstant = () => {
       cdDept: {
         title: "부서코드 조회",
         tableHeaders: [
-          { field: "pk", text: "부서코드" },
-          { field: "nmDept", text: "부서이름" },
+          { field: "cdDept", text: "부서코드" },
+          { field: "nmCdDept", text: "부서이름" },
         ],
         tableData: [
-          { pk: "D001", nmDept: "인사팀" },
-          { pk: "D002", nmDept: "경영지원팀" },
-          { pk: "D003", nmDept: "개발팀" },
+          { cdDept: "D001", nmCdDept: "인사팀" },
+          { cdDept: "D002", nmCdDept: "경영지원팀" },
+          { cdDept: "D003", nmCdDept: "개발팀" },
         ],
-        searchField: ["nmDept"],
+        searchField: ["nmCdDept"],
       },
       emplist: {
         title: "사원조회",
@@ -46,9 +46,53 @@ const EmpConstant = () => {
         ],
         searchField: ["nmRankNo"],
       },
-      cdOccup: {},
-      cdField: {},
-      cdProject: {},
+      cdOccup: {
+        title: "직종",
+        tableHeaders: [
+          { field: "cdOccup", text: "직종코드" },
+          { field: "nmCdOccup", text: "직종명" },
+        ],
+        tableData: [
+          { cdOccup: "J001", nmCdOccup: "직종A" },
+          { cdOccup: "J002", nmCdOccup: "직종B" },
+          { cdOccup: "J003", nmCdOccup: "직종C" },
+          { cdOccup: "J004", nmCdOccup: "직종D" },
+          { cdOccup: "J005", nmCdOccup: "직종E" },
+          { cdOccup: "J006", nmCdOccup: "직종F" },
+        ],
+      },
+      cdField: {
+        title: "현장",
+        tableHeaders: [
+          { field: "cdField", text: "현장코드" },
+          { field: "nmCdField", text: "현장" },
+        ],
+        tableData: [
+          { cdField: "F00A", nmCdField: "현장A" },
+          { cdField: "F00B", nmCdField: "현장B" },
+          { cdField: "F00C", nmCdField: "현장C" },
+          { cdField: "F00D", nmCdField: "현장D" },
+          { cdField: "F00E", nmCdField: "현장E" },
+          { cdField: "F00F", nmCdField: "현장F" },
+        ],
+        searchField: ["nmCdField"],
+      },
+      cdProject: {
+        title: "프로젝트",
+        tableHeaders: [
+          { field: "cdProject", text: "프로젝트코드" },
+          { field: "nmCdProject", text: "프로젝트명" },
+        ],
+        tableData: [
+          { cdProject: "P00A", nmCdProject: "프로젝트A" },
+          { cdProject: "P00B", nmCdProject: "프로젝트B" },
+          { cdProject: "P00C", nmCdProject: "프로젝트C" },
+          { cdProject: "P00D", nmCdProject: "프로젝트D" },
+          { cdProject: "P00E", nmCdProject: "프로젝트E" },
+          { cdProject: "P00F", nmCdProject: "프로젝트F" },
+        ],
+        searchField: ["nmCdProject"],
+      },
       abbNation: {
         title: "거주지국",
         tableHeaders: [
@@ -63,6 +107,7 @@ const EmpConstant = () => {
           { abbNation: "IN", nmAbbNation: "인도" },
           { abbNation: "PH", nmAbbNation: "필리핀" },
         ],
+        searchField: ["nmAbbNation"],
       },
       cdNation: {
         title: "국적",
@@ -78,9 +123,23 @@ const EmpConstant = () => {
           { cdNation: "IN", nmCdNation: "인도" },
           { cdNation: "PH", nmCdNation: "필리핀" },
         ],
+        searchField: ["nmCdNation"],
       },
-      cdSalsls: {},
+      cdSalcls: {
+        title: "호봉",
+        tableHeaders: [
+          { field: "cdSalcls", text: "호봉코드" },
+          { field: "nmCdSalcls", text: "호봉" },
+        ],
+        tableData: [
+          { cdSalcls: "S00A", nmCdSalcls: "호봉A" },
+          { cdSalcls: "S00B", nmCdSalcls: "호봉B" },
+          { cdSalcls: "S00C", nmCdSalcls: "호봉C" },
+        ],
+        searchField: ["nmCdSalcls"],
+      },
     },
+
     // 미삭제 사원 목록 테이블 헤더
     EmpRegisterUndeletedEmpHeaders: [
       {

@@ -29,8 +29,19 @@ function EmpRegisterationModel() {
     { data: "", code: "", setData: setAddRow },
   ]);
 
-  // 코드도움 검색 값 상태관리
-  const [searchAbbNationForER, setSearchAbbNationForER] = useState("");
+  // 코드도움 값 상태관리
+  const [searchAbbNation, setSearchAbbNation] = useState("");
+  const [searchCdNation, setSearchCdNation] = useState("");
+  const [searchCdDept, setSearchCdDept] = useState("");
+  const [searchCdOccup, setSearchCdOccup] = useState("");
+  const [searchRankNo, setSearchRankNo] = useState("");
+  const [searchCdSalcls, setSearchCdSalcls] = useState("");
+  const [searchCdField, setSearchCdField] = useState("");
+  const [searchCdProject, setSearchCdProject] = useState("");
+
+  // useEffect(() => {
+  //   console.log("empRegisterModel addRow => ", addRow);
+  // }, [addRow]);
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -208,9 +219,15 @@ function EmpRegisterationModel() {
       codeHelperTableData,
       undeletedEmpTableData,
       codeHelperState,
-      codeHelperTableData,
       searchVO: {
-        searchAbbNationForER,
+        searchAbbNation,
+        searchCdNation,
+        searchCdDept,
+        searchCdOccup,
+        searchRankNo,
+        searchCdSalcls,
+        searchCdField,
+        searchCdProject,
       },
     },
     actions: {
@@ -226,9 +243,16 @@ function EmpRegisterationModel() {
       setCodeHelperTableData,
       setUndeletedEmpTableData,
       setCodeHelperState,
-      setCodeHelperTableData,
-      setSearchAbbNationForER,
       setAddRow,
+
+      setSearchAbbNation,
+      setSearchCdNation,
+      setSearchCdDept,
+      setSearchCdOccup,
+      setSearchRankNo,
+      setSearchCdSalcls,
+      setSearchCdField,
+      setSearchCdProject,
     },
   };
 }
