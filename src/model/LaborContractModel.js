@@ -34,7 +34,7 @@ const LaborContractModel = () => {
     axios
       .get(url + "/emp/getAllEmp")
       .then((response) => {
-        console.log("SwsmModel > /emp/getAll", response);
+        console.log("SwsmModel > /emp/getAllEmp", response);
         const data = response.data.map((item) => {
           const swsmData = {
             cdEmp: item.cdEmp,

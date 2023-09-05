@@ -1,14 +1,19 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
-import HrManagement from "./templates/HrManagement";
+import HrManagement from "./templates/HrManageMent/HrManagement";
 import LaborContract from "./templates/LaborContract";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <div>
+      {/* <BrowserRouter> */}
       <Header />
       <LaborContract />
+      {/* <Routes>
+          <Route path="*" element={<HrManagement />} />
+        </Routes>
+      </BrowserRouter> */}
     </div>
   );
 }
