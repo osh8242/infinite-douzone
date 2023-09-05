@@ -18,32 +18,16 @@ function EmpRegisterationModel() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [reloadSubTableData, setReloadSubTableData] = useState(false);
 
-  // 코드도움 모달들의 상태관리
-  const [modalState, setModalState] = useState({ show: false });
-  // const modals = [
-  //   { id: 1, isOpen: false },
-  //   { id: 2, isOpen: false },
-  //   { id: 3, isOpen: false },
-  //   { id: 4, isOpen: false },
-  //   { id: 5, isOpen: false },
-  //   { id: 6, isOpen: false },
-  //   { id: 7, isOpen: false },
-  //   { id: 8, isOpen: false },
-  // ];
+  const [undeletedEmpTableData, setUndeletedEmpTableData] = useState(null); //미삭제 사원데이터를 관리하는 상태변수
+
+  const [modalState, setModalState] = useState({ show: false }); //일반 모달 창의 상태관리
+  const [codeHelperState, setCodeHelperState] = useState({ show: false }); //코드 도움 모달 창의 상태관리
+  const [addRow, setAddRow] = useState(); //코드도움 addRow
+
   // 코드도움 테이블 data
   const [codeHelperTableData, setCodeHelperTableData] = useState([
-    {
-      data: "대한민국",
-      code: "KOR",
-    },
-    { data: "미국", code: "USA" },
-    { data: "중국", code: "CH" },
-    { data: "일본", code: "JP" },
-    { data: "프랑스", code: "FR" },
+    { data: "", code: "", setData: setAddRow },
   ]);
-
-  //삭제되지 않은 사원들의 데이터를 모달로 띄워주기 위한 상태변수
-  const [undeletedEmpTableData, setUndeletedEmpTableData] = useState(null);
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -92,7 +76,7 @@ function EmpRegisterationModel() {
       });
   }, [mainTablePkValue, editedEmp]);
 
-  //사원 정보 insert POST 요청 (사원의 기초자료)
+  //사원 정보 INSERT POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
       const newEditedEmp = { ...editedEmp };
@@ -115,7 +99,7 @@ function EmpRegisterationModel() {
     }
   }, [editedEmp]);
 
-  //사원 정보 update POST 요청 (사원의 기초자료)
+  //사원 정보 UPDATE POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (Object.keys(editedEmp).length !== 0) {
       console.log("update요청: ", editedEmp);
@@ -131,12 +115,7 @@ function EmpRegisterationModel() {
     }
   }, [editedEmp]);
 
-  useEffect(
-    () => console.log("셀렉티드로우즈 바뀐것", selectedRows),
-    [selectedRows]
-  );
-
-  //사원 정보 delete 요청
+  //사원 정보 DELETE 요청
   const deleteSelectedRows = useCallback(() => {
     // 각 row에 대한 delete 요청을 생성
     // console.log("selectedRows axios 직전", selectedRows);
@@ -225,6 +204,8 @@ function EmpRegisterationModel() {
       modalState,
       codeHelperTableData,
       undeletedEmpTableData,
+      codeHelperState,
+      codeHelperTableData,
     },
     actions: {
       setLeftTableData,
@@ -238,6 +219,8 @@ function EmpRegisterationModel() {
       setModalState,
       setCodeHelperTableData,
       setUndeletedEmpTableData,
+      setCodeHelperState,
+      setCodeHelperTableData,
     },
   };
 }

@@ -41,16 +41,9 @@ function EmpRegisterationLayout() {
   // 메뉴 탭 전환 기능 추후 수정 예정
   // const [selectedMenu, setSelectedMenu] = useState(0);
 
-  //Model 관리 값
-  const [apiFlag, setApiFlag] = useState(false);
+  //Modal 관리 값
 
-  // console.log(
-  //   "*******************************************************************"
-  // );
-  console.log("layout!! ", state.undeletedEmpTableData);
-  // console.log(
-  //   "*******************************************************************"
-  // );
+  const [apiFlag, setApiFlag] = useState(false);
 
   //코드도움 상수 값
   const { codeHelperparams } = EmpConstant();
@@ -138,20 +131,18 @@ function EmpRegisterationLayout() {
             actions.setModalState({ ...state.modalState, show: false })
           }
           size="md"
+          setRowData={actions.setAddRow}
+          apiFlag={apiFlag}
           centered
         >
-          {state.undeletedEmpTableData ? (
-            <TableForm
-              tableHeaders={EmpRegisterUndeletedEmpHeaders}
-              tableData={state.undeletedEmpTableData}
-              selectedRows={state.selectedRows}
-              actions={{
-                setSelectedRows: actions.setSelectedRows,
-              }}
-            />
-          ) : (
-            "데이터가 없음!"
-          )}
+          <TableForm
+            tableHeaders={EmpRegisterUndeletedEmpHeaders}
+            tableData={state.undeletedEmpTableData}
+            selectedRows={state.selectedRows}
+            actions={{
+              setSelectedRows: actions.setSelectedRows,
+            }}
+          />
         </ModalComponent>
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
