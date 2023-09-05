@@ -98,7 +98,7 @@ function EmpRegisterationLayout() {
         event.target.blur();
         let newMainTabData = { ...state.mainTabData };
         newMainTabData[event.target.id] = value;
-        newMainTabData.cdEmp = state.mainTablePk.cdEmp;
+        newMainTabData.cdEmp = state.mainTablePkValue.cdEmp;
         actions.setEditedEmp(newMainTabData);
       }
       //코드 헬퍼 저장 로직 필요
@@ -158,7 +158,7 @@ function EmpRegisterationLayout() {
                     genderList={genderRadioList}
                     fgSex={state.mainTabData.fgSex}
                     noSocial={state.mainTabData.noSocial}
-                    pkValue={state.mainTablePk}
+                    pkValue={state.mainTablePkValue}
                     actions={{
                       setNoSocialForm: actions.setEditedEmp,
                     }}
@@ -178,7 +178,7 @@ function EmpRegisterationLayout() {
                         codeHelperparams.abbNation,
                         "",
                         actions.setSearchAbbNation,
-                        "abbNation"
+                        "nmAbbNation"
                       )
                     }
                   />
@@ -198,7 +198,7 @@ function EmpRegisterationLayout() {
                         codeHelperparams.cdNation,
                         "",
                         actions.setSearchCdNation,
-                        "cdNation"
+                        "nmCdNation"
                       )
                     }
                   />
@@ -219,7 +219,7 @@ function EmpRegisterationLayout() {
                         ? state.mainTabData.addHome2
                         : null
                     }
-                    pkValue={state.mainTablePk}
+                    pkValue={state.mainTablePkValue}
                     actions={{
                       setAddress: actions.setEditedEmp,
                     }}
@@ -230,7 +230,7 @@ function EmpRegisterationLayout() {
                     val1={state.mainTabData.telHome1}
                     val2={state.mainTabData.telHome2}
                     val3={state.mainTabData.telHome3}
-                    pkValue={state.mainTablePk}
+                    pkValue={state.mainTablePkValue}
                     actions={{
                       setNewEmp: actions.setEditedEmp,
                     }}
@@ -241,7 +241,7 @@ function EmpRegisterationLayout() {
                     val1={state.mainTabData.celEmp1}
                     val2={state.mainTabData.celEmp2}
                     val3={state.mainTabData.celEmp3}
-                    pkValue={state.mainTablePk}
+                    pkValue={state.mainTablePkValue}
                     actions={{
                       setNewEmp: actions.setEditedEmp,
                     }}
@@ -250,7 +250,7 @@ function EmpRegisterationLayout() {
                     label={labels.emEmp}
                     emEmp={state.mainTabData.emEmp}
                     optionList={emailList}
-                    pkValue={state.mainTablePk}
+                    pkValue={state.mainTablePkValue}
                     actions={{
                       setEmEmp: actions.setEditedEmp,
                     }}
@@ -266,7 +266,10 @@ function EmpRegisterationLayout() {
                     label={labels.cdDept}
                     value={state.searchVO.searchCdDept}
                     // onKeyDown={submitMainTabData}
-                    onChange={actions.setSearchCdDept}
+                    onChange={(e) => {
+                      actions.setSearchCdDept(e);
+                      submitMainTabData(e);
+                    }}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -275,33 +278,10 @@ function EmpRegisterationLayout() {
                         codeHelperparams.cdDept,
                         "",
                         actions.setSearchCdDept,
-                        "cdDept"
+                        "nmCdDept"
                       )
                     }
                   />
-
-                  {/* 
-                  <TextBoxComponent
-                    id="cdNation"
-                    // name="cdNation"
-                    label={labels.cdNation}
-                    // value={state.mainTabData.cdNation}
-                    // onKeyDown={submitMainTabData}
-                    value={state.searchVO.searchCdNation}
-                    onChange={actions.setSearchCdNation}
-                    setRowData={actions.setAddRow}
-                    codeHelper
-                    onClickCodeHelper={() =>
-                      codeHelperShow(
-                        false,
-                        codeHelperparams.cdNation,
-                        "",
-                        actions.setSearchCdNation,
-                        "cdNation"
-                      )
-                    }
-                  />
-                  */}
                   <TextBoxComponent
                     id="cdOccup"
                     label={labels.cdOccup}
@@ -315,7 +295,7 @@ function EmpRegisterationLayout() {
                         codeHelperparams.cdOccup,
                         "",
                         actions.setSearchCdOccup,
-                        "cdOccup"
+                        "nmCdOccup"
                       )
                     }
                   />
@@ -332,7 +312,7 @@ function EmpRegisterationLayout() {
                         codeHelperparams.rankNo,
                         "",
                         actions.setSearchRankNo,
-                        "rankNo"
+                        "nmRankNo"
                       )
                     }
                   />
@@ -349,7 +329,7 @@ function EmpRegisterationLayout() {
                         codeHelperparams.cdSalcls,
                         "",
                         actions.setSearchCdSalcls,
-                        "cdSalcls"
+                        "nmCdSalcls"
                       )
                     }
                   />
@@ -366,7 +346,7 @@ function EmpRegisterationLayout() {
                         codeHelperparams.cdField,
                         "",
                         actions.setSearchCdField,
-                        "cdField"
+                        "nmCdField"
                       )
                     }
                   />
@@ -383,11 +363,13 @@ function EmpRegisterationLayout() {
                         codeHelperparams.cdProject,
                         "",
                         actions.setSearchCdProject,
-                        "cdProject"
+                        "nmCdProject"
                       )
                     }
                   />
-                  {state.mainTabData.daRetire ? (
+                  {/* 퇴사년월일 */}
+                  {state.mainTabData.jobOk === "N" ||
+                  state.mainTabData.daRetire ? (
                     <DateTest
                       id="daRetire"
                       label={labels.daRetire}
@@ -412,7 +394,7 @@ function EmpRegisterationLayout() {
                     val1={state.mainTabData.cdBank}
                     val2={state.mainTabData.noBnkacct}
                     val3={state.mainTabData.nmBnkowner}
-                    pkValue={state.mainTablePk}
+                    pkValue={state.mainTablePkValue}
                     actions={{
                       setNewEmp: actions.setEditedEmp,
                     }}

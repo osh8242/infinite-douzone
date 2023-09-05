@@ -68,7 +68,11 @@ function NoSocialFormForEmpRegister(props) {
           fgSex: genderListRef.current.value,
           cdEmp: pkValue.cdEmp,
         };
-        actions.setNoSocialForm(newEmpData);
+        //update api 통일을 위해 item으로 포장
+        let item = {
+          item: newEmpData,
+        };
+        actions.setNoSocialForm(item);
       }
     }
 
@@ -104,7 +108,11 @@ function NoSocialFormForEmpRegister(props) {
       ynFor: ynForListRef.current.value,
       cdEmp: pkValue.cdEmp,
     };
-    actions.setNoSocialForm(newYnFor);
+    //update api 통일을 위한 item 포장
+    let item = {
+      item: newYnFor,
+    };
+    actions.setNoSocialForm(item);
   };
 
   // 주민번호 update
@@ -114,7 +122,11 @@ function NoSocialFormForEmpRegister(props) {
         noSocial: noSocialRef.current.value,
         cdEmp: pkValue.cdEmp,
       };
-      actions.setNoSocialForm(newNoSocial);
+      //update api 통일을 위한 item 포장
+      let item = {
+        item: newNoSocial,
+      };
+      actions.setNoSocialForm(item);
     }
   };
 
@@ -124,7 +136,11 @@ function NoSocialFormForEmpRegister(props) {
       fgSex: genderListRef.current.value,
       cdEmp: pkValue.cdEmp,
     };
-    actions.setNoSocialForm(newFgSex);
+    //update api 통일을 위한 item 포장
+    let item = {
+      item: newFgSex,
+    };
+    actions.setNoSocialForm(item);
   };
 
   return (
