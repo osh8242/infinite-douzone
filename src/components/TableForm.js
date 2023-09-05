@@ -20,7 +20,7 @@ const TableForm = ({
   //   );
   // };
 
-  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
   //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
@@ -336,7 +336,8 @@ const TableForm = ({
       return newSelectedRows;
     }
     return [];
-  }, [actions.setSelectedRows, tableRows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableRows]);
 
   // 각 행의 체크박스 체크 이벤트
   const checkboxHandler = useCallback(
@@ -591,7 +592,7 @@ const TableForm = ({
       <ConfirmComponent
         show={modalState.show}
         message={modalState.message}
-        onConfirm={() => modalState({ show: false })}
+        onConfirm={() => setModalState({ show: false })}
       />
     </>
   ) : (

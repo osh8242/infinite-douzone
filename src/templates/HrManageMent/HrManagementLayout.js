@@ -1,5 +1,5 @@
 // 작성자 : 오승환
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import DateTest from "../../components/DateTest";
@@ -12,6 +12,7 @@ import TextBoxComponent from "../../components/TextBoxComponent";
 import CommonConstant from "../../model/CommonConstant";
 import HrManagementConstant from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
+import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
@@ -25,16 +26,18 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
   const {
     searchOption, // 검색옵션 리스트
     orderList, // 정렬기준 리스트
-    mainTabMenuList, //메인탭 메뉴리스트
-    subTabMenuList, //서브탭 메뉴리스트
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
     labels, // 속성명
   } = CommonConstant();
 
-  const { leftTableConstant, subTableConstant, tabConstant } =
-    HrManagementConstant();
+  const {
+    leftTableConstant,
+    leftStaticsTableConstant,
+    subTableConstant,
+    tabConstant,
+  } = HrManagementConstant();
 
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
@@ -49,6 +52,25 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
   const orderRef = useRef();
+
+  //사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    let jobOkY = 0;
+    let jobOkN = 0;
+    leftTableData.forEach((row) => {
+      if (row.item["jobOk"] === "Y") jobOkY++;
+      else jobOkN++;
+    });
+    return [
+      {
+        item: {
+          jobOkY: jobOkY,
+          jobOkN: jobOkN,
+          jobOkSum: jobOkY + jobOkN,
+        },
+      },
+    ];
+  }, [leftTableData]);
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
@@ -128,23 +150,35 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
           {/* 좌측 영역 */}
           <Col md="3">
             {/* 좌측 그리드 */}
-            <TableForm
-              tableName="EMP"
-              showCheckbox
-              showHeaderArrow
-              rowAddable
-              tableHeaders={leftTableConstant.headers}
-              tableData={leftTableData}
-              selectedRows={selectedRows}
-              tableFooter={tableFooter()}
-              actions={{
-                setTableData: actions.setLeftTableData,
-                setPkValue: actions.setLeftTablePkValue,
-                setEditedRow: actions.setEditedEmp,
-                setSelectedRows: actions.setSelectedRows,
-                getRowObject: Emp,
-              }}
-            />
+            <Row>
+              <div className="leftTable">
+                <TableForm
+                  tableName="EMP"
+                  showCheckbox
+                  showHeaderArrow
+                  rowAddable
+                  tableHeaders={leftTableConstant.headers}
+                  tableData={leftTableData}
+                  selectedRows={selectedRows}
+                  tableFooter={tableFooter()}
+                  actions={{
+                    setTableData: actions.setLeftTableData,
+                    setPkValue: actions.setLeftTablePkValue,
+                    setEditedRow: actions.setEditedEmp,
+                    setSelectedRows: actions.setSelectedRows,
+                    getRowObject: Emp,
+                  }}
+                />
+              </div>
+            </Row>
+            <Row className="mt-3">
+              <TableForm
+                tableName="EMPSTATICS"
+                tableHeaders={leftStaticsTableConstant.headers}
+                tableData={leftStaticsTableData}
+                readOnly
+              />
+            </Row>
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
@@ -269,22 +303,24 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
-              <TableForm
-                tableName="EMPFAM"
-                showCheckbox
-                showHeaderArrow
-                rowAddable
-                tableHeaders={subTableConstant.headers}
-                tableData={subTableData}
-                pkValue={leftTablePkValue}
-                selectedRows={selectedRows}
-                actions={{
-                  setTableData: actions.setSubTableData,
-                  setEditedRow: actions.setEditedEmpFam,
-                  setSelectedRows: actions.setSelectedRows,
-                  getRowObject: EmpFam,
-                }}
-              />
+              <div className="subTable">
+                <TableForm
+                  tableName="EMPFAM"
+                  showCheckbox
+                  showHeaderArrow
+                  rowAddable
+                  tableHeaders={subTableConstant.headers}
+                  tableData={subTableData}
+                  pkValue={leftTablePkValue}
+                  selectedRows={selectedRows}
+                  actions={{
+                    setTableData: actions.setSubTableData,
+                    setEditedRow: actions.setEditedEmpFam,
+                    setSelectedRows: actions.setSelectedRows,
+                    getRowObject: EmpFam,
+                  }}
+                />
+              </div>
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />

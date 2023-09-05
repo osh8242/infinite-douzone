@@ -30,7 +30,7 @@ function ConfirmComponent(props) {
     <Modal show={show} backdrop="static" centered>
       <Modal.Body className="grid-example"> {message} </Modal.Body>
       <Modal.Footer>
-        {onlyConfirm && (
+        {!onlyConfirm && (
           <Button variant="secondary" onClick={onHide}>
             취소
           </Button>

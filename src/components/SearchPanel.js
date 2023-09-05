@@ -7,7 +7,7 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
 
   return (
     <>
-      <Row>
+      <Row className="my-3">
         {showAccordion ? (
           //더보기 +
           <Accordion>
