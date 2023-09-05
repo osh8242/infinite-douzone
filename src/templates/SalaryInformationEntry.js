@@ -93,7 +93,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchEmpCd"
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
-                  onChange={actions.setSearchCdEmp}
+                  onEnter={actions.setSearchCdEmp}
                   codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.emplist, actions.setSearchCdEmp, 'cdEmp')}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
@@ -103,7 +103,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchCdDept" 
                   label={"부서코드"} 
                   value={state.searchVO.searchCdDept}
-                  onChange={actions.setSearchCdDept}
+                  onEnter={actions.setSearchCdDept}
                   codeHelper onClickCodeHelper={() => codeHelperShow(false, codeHelperparams.cdDept, '', actions.setSearchCdDept, 'cdDept')}  
                 />
               </Col>
@@ -114,7 +114,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchRankNo"  
                   label={"직급코드"}  
                   value={state.searchVO.searchRankNo}
-                  onChange={actions.setSearchRankNo}
+                  onEnter={actions.setSearchRankNo}
                   codeHelper onClickCodeHelper={() => codeHelperShow(true,'', codeHelperparams.rankNo, actions.setSearchRankNo, 'codeId')}
                 />
               </Col>
@@ -123,7 +123,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchCdOccup"  
                   label={"직책코드"}  
                   value={state.searchVO.searchCdOccup}
-                  onChange={actions.setSearchCdOccup}
+                  onEnter={actions.setSearchCdOccup}
                   codeHelper onClickCodeHelper={() => codeHelperShow(true,'', codeHelperparams.occup, actions.setSearchCdOccup, 'codeId')}
                 />
               </Col>
@@ -171,7 +171,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               tableData={state.saInfoListData}
               actions={{
                 setTableData: actions.setSaInfoListData,
-                setPkValue: actions.setSearchAllowVo,
+                setPkValue: actions.setChangeCdEmp,
               }}
             />
             <Button variant="secondary" onClick={()=>codeHelperShow(true, '', codeHelperparams.emplist, actions.setAddRow)}>
