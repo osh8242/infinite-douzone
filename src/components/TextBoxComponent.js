@@ -41,11 +41,10 @@ function TextBoxComponent(props) {
 
     //유효성 검사
     validationFunction,
+
+    md = 4, // [선택]
+    placeholder, // [선택]
   } = props;
-
-  // console.log("label",label);
-  // console.log("value",value);
-
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
@@ -134,7 +133,7 @@ function TextBoxComponent(props) {
       {label ? (
         <>
           <Col
-            md="4"
+            md={md}
             className="d-flex align-items-center justify-content-center"
           >
             <div>{label}</div>
@@ -189,6 +188,7 @@ function TextBoxComponent(props) {
           onFocus={handleInputFocus}
           onClick={onClick}
           onKeyDown={handleKeyDown}
+          placeholder={placeholder ? placeholder : undefined}
         />
       );
     }

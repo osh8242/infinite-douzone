@@ -17,11 +17,8 @@ import SwsmAddress from "../components/SwsmAddress";
 import SwsmText from "../components/SwsmText";
 import Spinner from "react-bootstrap/Spinner";
 import TempSelect from "../components/TempSelect";
-import LaborContractSearch from "./LaborContractSearch";
 import LaborContractHeader from "./LaborContractHeader";
 // import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { Switch } from "react-router";
-
 import TableForm from "../components/TableForm";
 
 const LaborContract = () => {
@@ -61,7 +58,6 @@ const LaborContract = () => {
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container fluid>
-        {/* header/// */}
         <MenuTab menuList={mainTabMenuList} onChange={handlerMainTab} />
         <SearchPanel>
           <Row>
