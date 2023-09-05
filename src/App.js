@@ -2,16 +2,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
 import HrManagement from "./templates/HrManageMent/HrManagement";
+import LaborContract from "./templates/LaborContract";
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Header />
-        <Routes>
+      {/* <BrowserRouter> */}
+      <Header />
+      <LaborContract />
+      {/* <Routes>
           <Route path="*" element={<HrManagement />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   );
 }

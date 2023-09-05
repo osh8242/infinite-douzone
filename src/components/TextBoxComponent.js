@@ -151,7 +151,6 @@ function TextBoxComponent(props) {
       )}
     </Row>
   );
-
   function renderFormControl() {
     if (type === "textarea") {
       return (

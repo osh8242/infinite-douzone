@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
+import SearchForm from "../components/SearchForm";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 const logoUrl = {
@@ -42,19 +43,28 @@ const Header = (props) => {
           </select>
         </div>
         <div id="topRightNotificationHeader">
-          <input
+          {/* <input
+            type="text"
+            id="findMenuBar"
+            placeholder={"찾고싶은 메뉴를 검색하세요"}
+          /> */}
+          <SearchForm
             type="text"
             id="findMenuBar"
             placeholder={"찾고싶은 메뉴를 검색하세요"}
           />
           <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faPlus} className="colorDark" />
+            <FontAwesomeIcon icon={faPlus} size={"2xl"} className="colorDark" />
           </button>
           <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faBell} className="colorDark" />
+            <FontAwesomeIcon icon={faBell} size={"xl"} className="colorDark" />
           </button>
           <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faQuestionCircle} className="colorDark" />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              size={"xl"}
+              className="colorDark"
+            />
           </button>
           <select id="personalMenu">
             {/* 이름과 직종은 추후 변수로 변경 */}
