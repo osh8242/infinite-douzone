@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
-import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
+import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
+import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
 import LaborContract from "./templates/LaborContract";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 
@@ -16,7 +17,6 @@ function App() {
           <Route path="/lc" element={<LaborContract />} />
           <Route path="/si" element={<SalaryInformationEntry />} />
           <Route path="*" element={<HrManagementLayout />} />
-          <Route path="/EmpRegister" element={<EmpRegisterationLayout />} />
         </Routes>
       </BrowserRouter>
     </div>

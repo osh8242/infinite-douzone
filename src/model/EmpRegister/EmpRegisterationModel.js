@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import axios from "../../node_modules/axios/index";
-import Emp from "../vo/EmpRegister/Emp";
-import { currentDateStr } from "../utils/DateUtils.js";
-import EmpMenuUsage from "../vo/EmpRegister/EmpMenuUsage";
+import axios from "axios";
+import Emp from "../../vo/EmpRegister/Emp";
+import { currentDateStr } from "../../utils/DateUtils.js";
+import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
