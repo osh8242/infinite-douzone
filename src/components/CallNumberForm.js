@@ -25,16 +25,25 @@ function CallNumberForm(props) {
   const callNumber2 = useRef();
   const callNumber3 = useRef();
 
+  const callNumberRefs = [callNumber1, callNumber2, callNumber3];
+
+  // 모든 요소에 'notValid' className이 없다면 True 반환
+  const isValid = callNumberRefs.every(
+    (ref) => ref && ref.current && !ref.current.classList.contains("notValid")
+  );
+
   useEffect(() => {
     callNumber1.current.value = val1 || "";
     callNumber2.current.value = val2 || "";
     callNumber3.current.value = val3 || "";
-  });
 
-  // 모든 요소에 'notValid' className이 없다면 True 반환
-  // const isValid = [callNumber1, callNumber2, callNumber3].every(
-  //   (ref) => !ref.current.classList.contains("notValid")
-  // );
+    // 모든 ref의 "notValid" 클래스 제거
+    callNumberRefs.forEach((ref) => {
+      if (ref.current && ref.current.classList.contains("notValid")) {
+        ref.current.classList.remove("notValid");
+      }
+    });
+  }, [pkValue]);
 
   //update
   const handleKeyDown = (event) => {
@@ -89,7 +98,7 @@ function CallNumberForm(props) {
   // 전화번호 타입의 유효성 검사 결과에 따른 스타일 변경 함수
   const updateValidationClass = (isValid) => {
     [callNumber1, callNumber2, callNumber3].forEach((ref) => {
-      // ref.current.classList.toggle("notValid", !isValid);
+      ref.current.classList.toggle("notValid", !isValid);
     });
   };
 
