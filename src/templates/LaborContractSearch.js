@@ -1,27 +1,21 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Col, Row, Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import { Scrollbars } from "react-custom-scrollbars";
+import DateTest from "../components/DateTest";
 import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
-import DateTest from "../components/DateTest";
 import SelectForm from "../components/SelectForm";
-import SwsmConstant from "../model/SwsmConstant";
-// import TableTemp from "../components/TableTemp";
+import SwsmAddress from "../components/SwsmAddress";
+import SwsmText from "../components/SwsmText";
+import TableForm from "../components/TableForm";
+import TempSelect from "../components/TempSelect";
 import LaborContractModel from "../model/LaborContractModel";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
-import { Scrollbars } from "react-custom-scrollbars";
-// import TempAdd from "../components/TempAdd";
-import SwsmAddress from "../components/SwsmAddress";
-// import TempText from "../components/TempText";
-import SwsmText from "../components/SwsmText";
-import Spinner from "react-bootstrap/Spinner";
-import TempSelect from "../components/TempSelect";
-import LaborContractHeader from "./LaborContractHeader";
-// import { Routes, Route, BrowserRouter } from "react-router-dom";
-import TableForm from "../components/TableForm";
+import SwsmConstant from "../model/SwsmConstant";
 
-const LaborContract = () => {
+const LaborContractSearch = () => {
   const {
     mainTabMenuList, // 전체 구분 목록
     subTabMenuList, // 메뉴 구분 목록
@@ -41,24 +35,12 @@ const LaborContract = () => {
 
   const { state, actions, mainTablePkValue } = LaborContractModel();
 
-  const {
-    leftTableData,
-    // leftTablePkValue,
-    mainTabData,
-    subTableData,
-  } = state;
-
-  const handlerMainTab = (e) => {
-    console.log(e.target.value);
-    console.log(mainTabMenuList);
-    console.log(mainTabMenuList);
-  };
+  const { leftTableData, mainTabData, subTableData } = state;
 
   return (
     <>
-      <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container fluid>
-        <MenuTab menuList={mainTabMenuList} onChange={handlerMainTab} />
+        {/* header/// */}
         <SearchPanel>
           <Row>
             {/* 작성년월 */}
@@ -151,6 +133,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -167,6 +151,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -183,6 +169,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -199,6 +187,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -215,6 +205,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -347,4 +339,4 @@ const LaborContract = () => {
   );
 };
 
-export default LaborContract;
+export default LaborContractSearch;

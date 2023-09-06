@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -11,15 +11,9 @@ import SwsmText from "../components/SwsmText";
 import TableForm from "../components/TableForm";
 import TempSelect from "../components/TempSelect";
 import LaborContractModel from "../model/LaborContractModel";
-import SwsmConstant from "../model/SwsmConstant";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
-// import TempAdd from "../components/TempAdd";
-// import TempText from "../components/TempText";
-import LaborContractSearch from "./LaborContractSearch";
-import LaborContractHeader from "./LaborContractHeader";
-// import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { Switch } from "react-router";
+import SwsmConstant from "../model/SwsmConstant";
 
 const LaborContract = () => {
   const {
@@ -41,25 +35,11 @@ const LaborContract = () => {
 
   const { state, actions, mainTablePkValue } = LaborContractModel();
 
-  const {
-    leftTableData,
-    // leftTablePkValue,
-    mainTabData,
-    subTableData,
-  } = state;
-
-  const handlerMainTab = (e) => {
-    console.log(e.target.value);
-    console.log(mainTabMenuList);
-    console.log(mainTabMenuList);
-  };
+  const { leftTableData, mainTabData, subTableData } = state;
 
   return (
     <>
-      <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container fluid>
-        {/* header/// */}
-        <MenuTab menuList={mainTabMenuList} onChange={handlerMainTab} />
         <SearchPanel>
           <Row>
             {/* 작성년월 */}
@@ -87,7 +67,7 @@ const LaborContract = () => {
         <Row>
           <Col md="3">
             <TableForm
-              showCheckbox={false}
+              showCheckbox
               showHeaderArrow={true}
               tableHeaders={SwsmLeftTableHeaders}
               tableData={leftTableData}

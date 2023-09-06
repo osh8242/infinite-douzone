@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
@@ -239,10 +239,30 @@ const HrManagementModel = () => {
     }
   }, [selectedRows]);
 
+  ////사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    let jobOkY = 0;
+    let jobOkN = 0;
+    leftTableData.forEach((row) => {
+      if (row.item["jobOk"] === "Y") jobOkY++;
+      else jobOkN++;
+    });
+    return [
+      {
+        item: {
+          jobOkY: jobOkY,
+          jobOkN: jobOkN,
+          jobOkSum: jobOkY + jobOkN,
+        },
+      },
+    ];
+  }, [leftTableData]);
+
   return {
     state: {
       leftTableData,
       leftTablePkValue,
+      leftStaticsTableData,
       mainTabData,
       empImageSrc,
       subTableData,

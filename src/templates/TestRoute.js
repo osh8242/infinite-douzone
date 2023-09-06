@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import React from "react";
-import { Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Accordion, Container } from "react-bootstrap";
 import MenuTab from "../components/MenuTab";
 import SwsmConstant from "../model/SwsmConstant";
 import LaborContractModel from "../model/LaborContractModel";
@@ -9,6 +9,8 @@ import LaborContract from "./LaborContract";
 import LaborContractHeader from "./LaborContractHeader";
 // import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Link, Route, Routes } from "react-router-dom";
+import { Tab } from "react-bootstrap";
+import { Outlet } from "react-router-dom";
 const TestRoute = () => {
   // const {
   //   mainTabMenuList, // 전체 구분 목록
@@ -60,23 +62,33 @@ const TestRoute = () => {
   //   </>
   // );
 
+  // return (
+  //   <div>
+  //     <h3>사용자 목록</h3>
+  //     <ul>
+  //       <li>
+  //         <Link to="/profiles/ycLee">ycLee</Link>
+  //       </li>
+  //       <li>
+  //         <Link to="/profiles/gildong">gildong</Link>
+  //       </li>
+  //     </ul>
+  //     <Routes>
+  //       <Route path="/*" element={<div>유저를 선택해주세요.</div>} />
+  //       <Route path=":username" element={<LaborContract />} />
+  //     </Routes>
+  //   </div>
+  // );
+
   return (
     <div>
-      <h3>사용자 목록</h3>
-      <ul>
-        <li>
-          <Link to="/profiles/ycLee">ycLee</Link>
-        </li>
-        <li>
-          <Link to="/profiles/gildong">gildong</Link>
-        </li>
-      </ul>
-      <Routes>
-        <Route path="/*" element={<div>유저를 선택해주세요.</div>} />
-        <Route path=":username" element={<LaborContract />} />
-      </Routes>
+      <div>
+        <h2> 페이지입니다.</h2>
+        <p> 뜻</p>
+      </div>
+      <Outlet />
     </div>
   );
 };
 
-export default TestRoute();
+export default TestRoute;

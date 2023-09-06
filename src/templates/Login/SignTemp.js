@@ -8,6 +8,7 @@ import TempAdd from "../../components/TempAdd";
 import axios from "axios";
 
 function SignTemp() {
+  const [user, setUser] = useState({});
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -29,6 +30,12 @@ function SignTemp() {
     console.log("signup Handler");
     console.log("id: " + id);
     console.log("pwd: " + password);
+
+    user = {
+      userId: id,
+      userPwd: password,
+    };
+
     axios
       .post(
         url + "/user/signup",

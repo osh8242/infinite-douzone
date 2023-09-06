@@ -1,8 +1,9 @@
-import React from "react";
-import { useContext, useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import axios from "../../node_modules/axios/index";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
+import User from "../vo/User/User";
 import ContextModel from "./ContextModel";
 
 const LaborContractModel = () => {
@@ -51,6 +52,7 @@ const LaborContractModel = () => {
         console.log("ERROR : " + error);
       });
   }, []);
+
   //수정된 사원 update 요청
   useEffect(() => {
     if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
