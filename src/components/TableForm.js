@@ -28,7 +28,7 @@ const TableForm = ({
   //   getRowObject: EmpFam, //객체화 함수 필수
   // }}
   tableName, //[선택] console.log에 출력해볼 테이블이름..
-
+  codeHelper, //[선택] 코드헬퍼 사용시 코드헬퍼를 호출하는 함수
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
@@ -63,7 +63,7 @@ const TableForm = ({
   const [isAsc, setIsAsc] = useState(null);
 
   //모달 경고창(인풋 pk누락)
-  const [modalState, setModalState] = useState(false);
+  const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
   const tableFocus = useRef(rowRef && columnRef);
@@ -93,6 +93,7 @@ const TableForm = ({
     setColumnRef(-1);
   }, []);
 
+  // 테이블 td마다 ref 설정
   const setInputRef = useCallback(
     (input, rowIndex, columnIndex) => {
       if (!inputRef.current[rowIndex]) {
@@ -108,11 +109,12 @@ const TableForm = ({
     return tableRows.findIndex((item) => item.isEditable);
   }, [tableRows]);
 
+  //////// 랜더링 후에 처리할 SideEffect //////////
   useEffect(() => {
+    //수정으로 바뀌면 해당 셀에 오토포커스
     if (editableRowIndex !== -1) {
       const input = inputRef.current[rowRef][columnRef];
       input.focus();
-      focusAtEnd(input);
     }
   });
 
@@ -377,6 +379,7 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
+      console.log("이벤트클릭", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           releaseSelectedRef();
@@ -563,7 +566,7 @@ const TableForm = ({
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
               {showCheckbox && (
-                <td>
+                <td onClick={() => codeHelper && codeHelper()}>
                   <FontAwesomeIcon icon={faPlus} />
                 </td>
               )}
@@ -615,7 +618,7 @@ TableForm.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   tableData: PropTypes.array.isRequired,
   tableFooter: PropTypes.element,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.object,
   tableName: PropTypes.string,
   showCheckbox: PropTypes.bool,
   showHeaderArrow: PropTypes.bool,

@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
+import CodeHelperModal from "../../components/CodeHelperModal";
 import DateTest from "../../components/DateTest";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
@@ -46,6 +47,7 @@ const HrManagementLayout = () => {
     leftTableData,
     leftTablePkValue,
     leftStaticsTableData,
+    empCodeHelper,
     mainTabData,
     empImageSrc,
     subTableData,
@@ -108,6 +110,12 @@ const HrManagementLayout = () => {
 
   return (
     <>
+      <CodeHelperModal
+        props={empCodeHelper}
+        onHide={() => {
+          actions.setEmpCodeHelper({ ...empCodeHelper, show: false });
+        }}
+      />
       <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
         {/* 조회영역 */}

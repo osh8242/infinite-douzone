@@ -4,9 +4,11 @@ import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import CommonConstant from "../CommonConstant";
+import HrManagementConstant from "./HrManagementConstant";
 
 const HrManagementModel = () => {
   const { url } = CommonConstant(); // REST API 서버 주소
+  const { codeHelperParams } = HrManagementConstant();
 
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
@@ -15,6 +17,11 @@ const HrManagementModel = () => {
   const [leftTableData, setLeftTableData] = useState([]); // 좌측 그리드 데이터
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // 좌측 그리드 PK
   const [editedEmp, setEditedEmp] = useState({}); // 좌측 그리드 수정 ROW
+  const [empCodeHelper, setEmpCodeHelper] = useState({
+    show: false,
+    apiFlag: true,
+    codeHelperCode: codeHelperParams.emp,
+  });
 
   const [mainTabData, setMainTabData] = useState({}); // 메인탭 데이터
   const [editedEmpAdd, setEditedEmpAdd] = useState({}); // 메인탭 수정 ROW
@@ -263,6 +270,7 @@ const HrManagementModel = () => {
       leftTableData,
       leftTablePkValue,
       leftStaticsTableData,
+      empCodeHelper,
       mainTabData,
       empImageSrc,
       subTableData,
@@ -279,6 +287,7 @@ const HrManagementModel = () => {
       setLeftTableData,
       setLeftTablePkValue,
       setEditedEmp,
+      setEmpCodeHelper,
 
       setMainTabData,
       setEditedEmpAdd,
