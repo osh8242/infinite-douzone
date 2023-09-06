@@ -79,7 +79,10 @@ function CallNumberForm(props) {
           };
       }
 
-      actions.setNewEmp(newEmpData);
+      let item = {
+        item: newEmpData,
+      };
+      actions.setNewEmp(item);
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom"; // useNavigate 임포트
 import "../styles/SearchForm.css";
 
 function SearchForm(props) {
@@ -11,6 +12,7 @@ function SearchForm(props) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState();
   const searchRef = useRef(null);
   const inputRef = useRef(null);
+  const navigate = useNavigate(); // useNavigate 사용
 
   useEffect(() => {
     if (inputValue) {
@@ -35,7 +37,17 @@ function SearchForm(props) {
     console.log(`검색 완료: ${selectedWord}`);
     setSearchResults([]);
     setInputValue("");
-    // inputRef.current.blur();
+
+    // 선택된 검색어에 따라 URL을 동적으로 변경
+    if (selectedWord === "사원관리") {
+      navigate("/er");
+    } else if (selectedWord === "인사관리") {
+      navigate("/hr");
+    } else if (selectedWord === "표준근로계약") {
+      navigate("/lc/*");
+    } else if (selectedWord === "급여관리") {
+      navigate("/si");
+    }
   };
 
   const handleResultClick = (index) => {

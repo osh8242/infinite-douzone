@@ -53,6 +53,7 @@ const Header = (props) => {
             id="findMenuBar"
             placeholder={"찾고싶은 메뉴를 검색하세요"}
           />
+
           <button className="backgroundBorderNone">
             <FontAwesomeIcon icon={faPlus} size={"2xl"} className="colorDark" />
           </button>
@@ -71,7 +72,34 @@ const Header = (props) => {
             <option>김회계 주임연구원</option>
             {/* 하단에 추가할 메뉴를 넣습니다 */}
           </select>
-        </div>
+
+          <a
+            href="/signup"
+            style={{
+              backgroundColor: "white",
+              border: "1px solid gray",
+              color: "dimgray",
+              padding: "3px 10px 3px 10px",
+              marginRight: "0px",
+              marginLeft: "10px",
+            }}
+          >
+            회원가입
+          </a>
+          <a
+            href="/login"
+            style={{
+              backgroundColor: "white",
+              border: "1px solid gray",
+              color: "dimgray",
+              fontSize: "13px",
+              padding: "3px 10px 3px 10px",
+              marginRight: "10px",
+            }}
+          >
+            로그인
+          </a>
+        </div>{" "}
       </div>
       {/* <div id="secondTopHeader">
       {/* <div id="secondTopHeader">
