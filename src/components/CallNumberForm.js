@@ -3,6 +3,9 @@
 /*
   parameter: 
       label(라벨명)
+      type(전화번호(숫자)와 텍스트 구분)
+        - callNumber : 전화번호(숫자)
+        - null or text : 텍스트
       val1(첫 번째 열의 값)
       val2(두 번째 열의 값)
       val3(세 번째 열의 값)
@@ -12,10 +15,11 @@
 
 import { Col, Form, Row } from "react-bootstrap";
 import React, { useEffect, useRef } from "react";
+import "../styles/commonComponent.css";
 
 function CallNumberForm(props) {
   //props 속성들
-  const { label, val1, val2, val3, pkValue, actions } = props;
+  const { label, type, val1, val2, val3, pkValue, actions } = props;
 
   const callNumber1 = useRef();
   const callNumber2 = useRef();
@@ -27,11 +31,15 @@ function CallNumberForm(props) {
     callNumber3.current.value = val3 || "";
   });
 
+  // 모든 요소에 'notValid' className이 없다면 True 반환
+  // const isValid = [callNumber1, callNumber2, callNumber3].every(
+  //   (ref) => !ref.current.classList.contains("notValid")
+  // );
+
   //update
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-
       let newEmpData = {};
 
       switch (label) {
@@ -75,6 +83,37 @@ function CallNumberForm(props) {
     }
   };
 
+  // 전화번호 타입의 유효성 검사 결과에 따른 스타일 변경 함수
+  const updateValidationClass = (isValid) => {
+    [callNumber1, callNumber2, callNumber3].forEach((ref) => {
+      // ref.current.classList.toggle("notValid", !isValid);
+    });
+  };
+
+  // 전화번호 타입의 유효성 검사 함수
+  const onChangeCallNumber = (event) => {
+    updateValidationClass(true);
+    if (type === "callNumber") {
+      let inputValue = event.target.value;
+      // let lastChar = inputValue.slice(-1);
+      // console.log("lastChar => ", lastChar);
+
+      //전화번호 형식이 맞다면
+      if (/^[0-9]{0,5}$/.test(inputValue) || inputValue === "") {
+        console.log(inputValue);
+      } else {
+        updateValidationClass(false);
+        console.log("유효성검사 실패!");
+      }
+
+      //숫자가 아니라면 마지막 글자 제거
+      // if (!/^\d+$/.test(lastChar)) {
+      //   event.target.value = inputValue.slice(0, -1);
+      //   console.log("유효하지 않은 값입니다.");
+      // }
+    }
+  };
+
   return (
     <>
       <Row className="py-1">
@@ -89,19 +128,25 @@ function CallNumberForm(props) {
         <Col className="d-flex align-items-center justify-content-center">
           <Form.Control
             ref={callNumber1}
+            type={type}
             onKeyDown={handleKeyDown}
+            onChange={(event) => onChangeCallNumber(event)}
           ></Form.Control>
         </Col>
         <Col className="d-flex align-items-center justify-content-center">
           <Form.Control
             ref={callNumber2}
+            type={type}
             onKeyDown={handleKeyDown}
+            onChange={(event) => onChangeCallNumber(event)}
           ></Form.Control>
         </Col>
         <Col className="d-flex align-items-center justify-content-center">
           <Form.Control
             ref={callNumber3}
+            type={type}
             onKeyDown={handleKeyDown}
+            onChange={(event) => onChangeCallNumber(event)}
           ></Form.Control>
         </Col>
       </Row>

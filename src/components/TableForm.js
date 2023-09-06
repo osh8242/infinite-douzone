@@ -611,4 +611,16 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
+TableForm.propTypes = {
+  tableHeaders: PropTypes.array.isRequired,
+  tableData: PropTypes.array.isRequired,
+  tableFooter: PropTypes.element,
+  actions: PropTypes.object.isRequired,
+  tableName: PropTypes.string,
+  showCheckbox: PropTypes.bool,
+  showHeaderArrow: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  rowAddable: PropTypes.bool,
+};
+
 export default TableForm;
