@@ -37,6 +37,7 @@ const HrManagementLayout = () => {
   const {
     leftTableConstant,
     leftStaticsTableConstant,
+    codeHelperParams,
     subTableConstant,
     tabConstant,
   } = HrManagementConstant();
@@ -111,10 +112,10 @@ const HrManagementLayout = () => {
   return (
     <>
       <CodeHelperModal
-        props={empCodeHelper}
-        onHide={() => {
-          actions.setEmpCodeHelper({ ...empCodeHelper, show: false });
-        }}
+        show={empCodeHelper.show}
+        apiFlag={empCodeHelper.apiFlag}
+        onHide={empCodeHelper.onHide}
+        codeHelperCode={empCodeHelper.codeHelperCode}
       />
       <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
@@ -150,6 +151,7 @@ const HrManagementLayout = () => {
                   showHeaderArrow
                   sortable
                   rowAddable
+                  codeHelper={empCodeHelper}
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
@@ -159,6 +161,7 @@ const HrManagementLayout = () => {
                     setPkValue: actions.setLeftTablePkValue,
                     setEditedRow: actions.setEditedEmp,
                     setSelectedRows: actions.setSelectedRows,
+                    setCodeHelper: actions.setEmpCodeHelper,
                     getRowObject: Emp,
                   }}
                 />

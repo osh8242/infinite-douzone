@@ -34,7 +34,7 @@ const HrManagementConstant = () => {
     codeHelperParams: {
       emp: {
         title: "사원조회",
-        url: url + "/emp/getEmpListForHrManagement",
+        url: "/emp/getEmpListForHrManagement",
         headers: [
           { field: "cdEmp", text: "사원코드" },
           { field: "nmKrname", text: "사원명" },

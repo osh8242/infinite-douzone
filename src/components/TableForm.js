@@ -28,7 +28,7 @@ const TableForm = ({
   //   getRowObject: EmpFam, //객체화 함수 필수
   // }}
   tableName, //[선택] console.log에 출력해볼 테이블이름..
-  codeHelper, //[선택] 코드헬퍼 사용시 코드헬퍼를 호출하는 함수
+  codeHelper, //[선택] 코드헬퍼 사용시
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
@@ -566,7 +566,12 @@ const TableForm = ({
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
               {showCheckbox && (
-                <td onClick={() => codeHelper && codeHelper()}>
+                <td
+                  onClick={() =>
+                    codeHelper &&
+                    actions.setCodeHelper({ ...codeHelper, show: true })
+                  }
+                >
                   <FontAwesomeIcon icon={faPlus} />
                 </td>
               )}

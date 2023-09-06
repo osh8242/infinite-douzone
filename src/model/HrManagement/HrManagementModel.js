@@ -20,6 +20,9 @@ const HrManagementModel = () => {
   const [empCodeHelper, setEmpCodeHelper] = useState({
     show: false,
     apiFlag: true,
+    onHide: () => {
+      setEmpCodeHelper({ ...empCodeHelper, show: false });
+    },
     codeHelperCode: codeHelperParams.emp,
   });
 
