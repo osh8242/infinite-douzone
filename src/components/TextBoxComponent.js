@@ -33,6 +33,7 @@ function TextBoxComponent(props) {
     onClick,
     onFocus,
     onKeyDown,
+    onEnter,
 
     // [선택] true false 옵션
     disabled,
@@ -55,7 +56,7 @@ function TextBoxComponent(props) {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onChange && onChange(sendValue);
+      onEnter && onEnter(sendValue);
     }
   };
 

@@ -1,19 +1,19 @@
 // 작성자: 김진
 // 사원등록 페이지 전용 레이아웃
 
+import React, { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import React, { useRef, useState } from "react";
-import MenuTab from "../components/MenuTab";
-import TextBoxComponent from "../components/TextBoxComponent";
 import AddressForm from "../components/AddressForm";
-import "../styles/empRegisterationLayout.css";
-import EmpRegisterationModel from "../model/EmpRegisterationModel";
-import CommonConstant from "../model/CommonConstant";
 import CallNumberForm from "../components/CallNumberForm";
-import NoSocialFormForEmpRegister from "../components/NoSocialFormForEmpRegister";
-import EmailForm from "../components/EmailForm";
 import DateTest from "../components/DateTest";
-import TableTemp from "../components/TableTemp";
+import EmailForm from "../components/EmailForm";
+import MenuTab from "../components/MenuTab";
+import NoSocialFormForEmpRegister from "../components/NoSocialFormForEmpRegister";
+import TableForm from "../components/TableForm";
+import TextBoxComponent from "../components/TextBoxComponent";
+import CommonConstant from "../model/CommonConstant";
+import EmpRegisterationModel from "../model/EmpRegisterationModel";
+import "../styles/empRegisterationLayout.css";
 import Emp from "../vo/EmpRegister/Emp";
 import EmpRegisterHeader from "./EmpRegisterHeader";
 
@@ -95,7 +95,7 @@ function EmpRegisterationLayout() {
               //   rowClickHandler={setCdEmp}
               //   minRow={20}
               // />
-              <TableTemp
+              <TableForm
                 showCheckbox={true}
                 showHeaderArrow={true}
                 tableHeaders={EmpRegisterLeftHeaders}
@@ -156,12 +156,8 @@ function EmpRegisterationLayout() {
                   <AddressForm
                     isZonecode={true}
                     zipHome={mainTabData.zipHome ? mainTabData.zipHome : null}
-                    addHome1={
-                      mainTabData.addHome1 ? mainTabData.addHome1 : null
-                    }
-                    addHome2={
-                      mainTabData.addHome2 ? mainTabData.addHome2 : null
-                    }
+                    addHome1={mainTabData.addHome1 ? mainTabData.addHome1 : null}
+                    addHome2={mainTabData.addHome2 ? mainTabData.addHome2 : null}
                     pkValue={mainTablePk}
                     actions={{
                       setAddress: actions.setEditedEmp,

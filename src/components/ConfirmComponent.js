@@ -19,20 +19,22 @@
   <ConfirmComponent show={confirmState.show} onHide={() => setConfirmState({ ...confirmState, show: false })} message="삭제하시겠습니까?" onConfirm={onConfirm} />
 
 */
-import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 function ConfirmComponent(props) {
-  const { show, onHide, message, onConfirm } = props;
+  const { show, onHide, message, onConfirm, onlyConfirm = false } = props;
 
   return (
     <Modal show={show} backdrop="static" centered>
       <Modal.Body className="grid-example"> {message} </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          취소
-        </Button>
+        {!onlyConfirm && (
+          <Button variant="secondary" onClick={onHide}>
+            취소
+          </Button>
+        )}
         <Button variant="primary" onClick={onConfirm}>
           확인
         </Button>

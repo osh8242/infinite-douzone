@@ -1,14 +1,47 @@
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import imgLogo from "../../styles/img/wehago_logo.png";
 import TextBoxComponent from "../../components/TextBoxComponent";
 import CommonConstant from "../../model/CommonConstant";
 import RadioForm from "../../components/RadioForm";
 import TempAdd from "../../components/TempAdd";
+import axios from "axios";
 
 function SignTemp() {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
+  const [address, setAddress] = useState("");
+
+  const url = "http://localhost:8888";
   const {
     genderRadioList, //성별
   } = CommonConstant();
+
+  useEffect(() => {
+    setId(id);
+  }, [id]);
+
+  function SignUpHandler() {
+    console.log("signup Handler");
+    console.log("id: " + id);
+    console.log("pwd: " + password);
+    axios
+      .post(
+        url + "/user/signup",
+        { userId: id, userPwd: password },
+        { "Content-Type": "application/json" }
+      )
+      .then((response) => {
+        console.log("signUp Data: " + response.data);
+      })
+      .catch((error) => {
+        console.log("ERROR: " + error);
+      });
+  }
 
   return (
     <Container className="d-flex justify-content-center">
@@ -31,7 +64,13 @@ function SignTemp() {
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <TextBoxComponent type="textbox" label={"아이디"} size={3} md={3} />
+            <TextBoxComponent
+              type="textbox"
+              label={"아이디"}
+              size={3}
+              md={3}
+              value={id}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
@@ -41,6 +80,7 @@ function SignTemp() {
               label={"비밀번호"}
               md={3}
               placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
+              value={password}
             />
           </Col>
         </Row>
@@ -76,7 +116,11 @@ function SignTemp() {
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <Button className="w-100" style={{ marginTop: "3rem" }}>
+            <Button
+              className="w-100"
+              style={{ marginTop: "3rem" }}
+              onClick={SignUpHandler}
+            >
               회원가입하기
             </Button>
           </Col>

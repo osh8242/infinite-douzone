@@ -1,28 +1,25 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import { Scrollbars } from "react-custom-scrollbars";
+import DateTest from "../components/DateTest";
 import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
-import DateTest from "../components/DateTest";
 import SelectForm from "../components/SelectForm";
-import SwsmConstant from "../model/SwsmConstant";
-// import TableTemp from "../components/TableTemp";
+import SwsmAddress from "../components/SwsmAddress";
+import SwsmText from "../components/SwsmText";
+import TableForm from "../components/TableForm";
+import TempSelect from "../components/TempSelect";
 import LaborContractModel from "../model/LaborContractModel";
+import SwsmConstant from "../model/SwsmConstant";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
-import { Scrollbars } from "react-custom-scrollbars";
 // import TempAdd from "../components/TempAdd";
-import SwsmAddress from "../components/SwsmAddress";
 // import TempText from "../components/TempText";
-import SwsmText from "../components/SwsmText";
-import Spinner from "react-bootstrap/Spinner";
-import TempSelect from "../components/TempSelect";
 import LaborContractSearch from "./LaborContractSearch";
 import LaborContractHeader from "./LaborContractHeader";
 // import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { Switch } from "react-router";
-
-import TableForm from "../components/TableForm";
 
 const LaborContract = () => {
   const {

@@ -5,10 +5,15 @@ import LaborContract from "./LaborContract";
 import LaborContractHeader from "./LaborContractHeader";
 import { Container } from "react-bootstrap";
 import LaborContractModel from "../model/LaborContractModel";
+import SwsmConstant from "../model/SwsmConstant";
+import MenuTab from "../components/MenuTab";
 
 function LaborContractGrid() {
   const { state, actions } = LaborContractModel();
   const [selected, setSelected] = useState({});
+  const {
+    mainTabMenuList, // 전체 구분 목록
+  } = SwsmConstant();
 
   const [tab, setTabl] =
     (useState < "LaborContractSearch") |
@@ -25,14 +30,31 @@ function LaborContractGrid() {
     setSelected(!selected);
     history.push("/edit");
   };
+  const handlerMainTab = (e) => {
+    // 탭에 따라 다른 경로로 이동
+    switch (e.target.value) {
+      case "LaborContract":
+        history.push("/edit");
+        break;
+      case "LaborContractSearch":
+        history.push("/search");
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container fluid>
-        {/* <Router history={browserHistory}>
-        <IndexRoute component={LaborContractSearch} onChange={handleSearchMenu} />
-        <Route path="about" component={LaborContract}  />
-      </Router> */}
+        <MenuTab menuList={mainTabMenuList} onChange={handlerMainTab} />
+        <Router history={browserHistory}>
+          <IndexRoute
+            component={LaborContractSearch}
+            onChange={handleSearchMenu}
+          />
+          <Route path="LaborContract" component={LaborContract} />
+        </Router>
       </Container>
     </>
   );

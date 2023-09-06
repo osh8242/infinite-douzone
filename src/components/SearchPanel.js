@@ -2,12 +2,12 @@
 import { Accordion, Button, Col, Row } from "react-bootstrap";
 
 const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
-  console.log("childrend: search");
-  console.log(children);
+  //console.log("childrend: search");
+  //console.log(children);
 
   return (
     <>
-      <Row>
+      <Row className="my-3">
         {showAccordion ? (
           //더보기 +
           <Accordion>

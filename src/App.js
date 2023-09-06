@@ -1,21 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
-import HrManagement from "./templates/HrManageMent/HrManagement";
+import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContract from "./templates/LaborContract";
+import EmpRegisterationLayout from "./templates/EmpRegisterationLayout";
+import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 import Login from "./templates/Login/Login";
-import SignTemp from "./templates/Login/SignTemp";
+import SignUp from "./templates/Login/SignTemp";
 
 function App() {
   return (
     <div>
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
-          <Route path="/LaborContract" element={<LaborContract />} />
-          <Route path="/HrManagement" element={<HrManagement />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/SignTemp" element={<SignTemp />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/si" element={<SalaryInformationEntry />} />
+          <Route path="/er" element={<EmpRegisterationLayout />} />
+          <Route path="/lc" element={<LaborContract />} />
+          <Route path="/hr" element={<HrManagementLayout />} />
+          <Route path="*" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
