@@ -12,6 +12,7 @@ import SalConstant from "../model/SalConstant";
 import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
 import HrManagementHeader from "./HrManagement/HrManagementHeader";
 
+
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   //상수
   const { labels } = CommonConstant();
@@ -61,7 +62,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             actions.setModalState({ ...state.modalState, show: false })
           }
           //onConfirm={() => alert('확인')}
-          setLowData={state.codeHelperTableData.setData}
+          setRowData={state.codeHelperTableData.setData}
           usePk={state.codeHelperTableData.usePk}
           apiFlag={apiFlag}
           table={state.codeHelperTableData.data}
@@ -103,19 +104,10 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               <Col>
                 <TextBoxComponent
                   name="searchEmpCd"
-                  label={"사원코드"}
+                  label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
-                  onChange={actions.setSearchCdEmp}
-                  codeHelper
-                  onClickCodeHelper={() =>
-                    codeHelperShow(
-                      true,
-                      "",
-                      codeHelperparams.emplist,
-                      actions.setSearchCdEmp,
-                      "cdEmp"
-                    )
-                  }
+                  onEnter={actions.setSearchCdEmp}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.emplist, actions.setSearchCdEmp, 'cdEmp')}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
               </Col>
@@ -124,17 +116,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchCdDept"
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
-                  onChange={actions.setSearchCdDept}
-                  codeHelper
-                  onClickCodeHelper={() =>
-                    codeHelperShow(
-                      false,
-                      codeHelperparams.cdDept,
-                      "",
-                      actions.setSearchCdDept,
-                      "cdDept"
-                    )
-                  }
+                  onEnter={actions.setSearchCdDept}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(false, codeHelperparams.cdDept, '', actions.setSearchCdDept, 'cdDept')}  
                 />
               </Col>
             </Row>
@@ -144,17 +127,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchRankNo"
                   label={"직급코드"}
                   value={state.searchVO.searchRankNo}
-                  onChange={actions.setSearchRankNo}
-                  codeHelper
-                  onClickCodeHelper={() =>
-                    codeHelperShow(
-                      true,
-                      "",
-                      codeHelperparams.rankNo,
-                      actions.setSearchRankNo,
-                      "codeId"
-                    )
-                  }
+                  onEnter={actions.setSearchRankNo}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(true,'', codeHelperparams.rankNo, actions.setSearchRankNo, 'codeId')}
                 />
               </Col>
               <Col>
@@ -162,17 +136,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchCdOccup"
                   label={"직책코드"}
                   value={state.searchVO.searchCdOccup}
-                  onChange={actions.setSearchCdOccup}
-                  codeHelper
-                  onClickCodeHelper={() =>
-                    codeHelperShow(
-                      true,
-                      "",
-                      codeHelperparams.occup,
-                      actions.setSearchCdOccup,
-                      "codeId"
-                    )
-                  }
+                  onEnter={actions.setSearchCdOccup}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(true,'', codeHelperparams.occup, actions.setSearchCdOccup, 'codeId')}
                 />
               </Col>
             </Row>
@@ -225,7 +190,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               tableData={state.saInfoListData}
               actions={{
                 setTableData: actions.setSaInfoListData,
-                setPkValue: actions.setSearchAllowVo,
+                setPkValue: actions.setChangeCdEmp,
               }}
             />
             <Button
@@ -244,60 +209,59 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
           </Col>
           <Col md="3">
             <>
-              {/* 급여항목 table영역 */}
-              <TableForm
-                tableName={"급여항목 테이블"}
-                tableHeaders={tableHeader.salAllow}
-                tableData={state.salAllowData.salData}
-                rowAddable
-                tableFooter={
-                  <>
-                    <tr>
-                      <td>과세</td>
-                      <td>{state.salAllowData.sumData.taxYSum}</td>
-                    </tr>
-                    <tr>
-                      <td>비과세</td>
-                      <td>{state.salAllowData.sumData.taxNSum}</td>
-                    </tr>
-                    <tr>
-                      <td>총합계</td>
-                      <td>{state.salAllowData.sumData.sum}</td>
-                    </tr>
-                  </>
-                }
-                actions={{
-                  setTableData: actions.setSalData,
-                  setEditedRow: actions.setEditedAllow,
-                }}
-              />
+            {/* 급여항목 table영역 */}
+            <TableForm
+            tableName={"급여항목 테이블"}
+              tableHeaders={tableHeader.salAllow}
+              tableData={state.salAllowData.salData}
+              rowAddable
+              tableFooter={(
+                <>
+                  <tr>
+                    <td>과세</td> 
+                    <td>{state.salAllowData.sumData.taxYSum}</td>
+                  </tr>
+                  <tr>
+                    <td>비과세</td>
+                    <td>{state.salAllowData.sumData.taxNSum}</td>
+                  </tr>
+                  <tr>
+                    <td>총합계</td>
+                    <td>{state.salAllowData.sumData.sum}</td>
+                  </tr>
+                </>
+                )}
+              actions={{
+                setTableData: actions.setSalData,
+                setEditedRow: actions.setEditedAllow
+              }              
+            }
+            />
+           
             </>
           </Col>
           <Col md="3">
             {/* 공제항목 table영역 */}
             <>
-              <TableForm
-                tableName={"공제항목 테이블"}
-                readOnly
-                tableHeaders={tableHeader.salDeduct}
-                tableData={state.deductData.deductData}
-                actions={{}}
-                tableFooter={
-                  <>
-                    <tr>
-                      <td>공제액 계</td>
-                      <td>{state.deductData.sumData.sum}</td>
-                    </tr>
-                    <tr>
-                      <td>차인지급액</td>
-                      <td>
-                        {state.salAllowData.sumData.sum -
-                          state.deductData.sumData.sum}
-                      </td>
-                    </tr>
-                  </>
-                }
-              />
+            <TableForm
+              tableName={"공제항목 테이블"}
+              readOnly
+              tableHeaders={tableHeader.salDeduct}
+              tableData={state.deductData.deductData}
+              actions={{}}
+              tableFooter={(
+                <>
+                  <tr>
+                    <td>공제액 계</td> 
+                    <td>{state.deductData.sumData.sum}</td>
+                  </tr>
+                  <tr>
+                    <td>차인지급액</td>
+                    <td>{state.salAllowData.sumData.sum-state.deductData.sumData.sum}</td>
+                  </tr>
+                </>
+                )}
+            /> 
             </>
           </Col>
           <Col md="3">
@@ -318,7 +282,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               />
             </Row>
             <Row>
-              <TableForm
+              <TableForm 
                 tableHeaders={tableHeader.salDeductSum}
                 tableData={state.sumTableData.salDeductPaySumData}
                 actions={{}}

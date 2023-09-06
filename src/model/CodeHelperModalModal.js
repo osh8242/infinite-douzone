@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { objectToQueryString } from "../utils/StringUtils";
 
-function ModalModel(){
+function CodeHelperModalModal(){
 const url = 'http://localhost:8888';
 
 const [codeHelperCode, setCodeHelperCode] = useState('');
@@ -9,7 +10,7 @@ const [codeHelperCode, setCodeHelperCode] = useState('');
 // const [headers, setHeaders] = useState([]);
 // const [apiUrl, setApiUrl] = useState('');
 
-const [tableData, setTableData] = useState({
+const [modalData, setTModalData] = useState({
     title : '',
     tableHeaders: [{ field: "codeId", text: "코드"}],
     // { field: "code", text: "Code"},
@@ -27,9 +28,11 @@ const [tableData, setTableData] = useState({
 
 // 메뉴별 조건에 맞는 codelist 
 const getCodeListForCodeHelper = (codeHelperCode) => {
-    return codeHelperCode !== '' && axios.post(
-      url + codeHelperCode.url,
-      codeHelperCode.params,
+
+    return codeHelperCode !== '' && axios.get(
+      url + codeHelperCode.url
+       + objectToQueryString(codeHelperCode.params),
+      //{data : codeHelperCode.params},
       {'Content-Type': 'application/json',},
     )
       .then((response) => {
@@ -41,8 +44,8 @@ const getCodeListForCodeHelper = (codeHelperCode) => {
           return dynamicProperties;
         });
         
-        setTableData({
-          ...tableData,
+        setTModalData({
+          ...modalData,
           tableData: codeDataList,
           title: codeHelperCode.title,
           tableHeaders: codeHelperCode.headers,
@@ -57,13 +60,13 @@ const getCodeListForCodeHelper = (codeHelperCode) => {
 
     return {
         state : {
-            tableData : tableData
+            tableData : modalData
         },
         actions : {
-            setTableData
+          setTModalData
             , setCodeHelperCode
         }
     }
 }
 
-export default ModalModel;
+export default CodeHelperModalModal;

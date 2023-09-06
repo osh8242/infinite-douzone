@@ -6,7 +6,7 @@
     onHide = {() => actions.setModalState({ ...state.modalState, show: false })} 
     onConfirm = {() => alert('확인')}
     apiFlag = {true} or {false}
-    setLowData = {actions.setAddRow}
+    setRowData = {actions.setAddRow}
     usePk = {''}
     tableData = {setTableData()}
   />
@@ -18,21 +18,23 @@ import { Form, Row, Table } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import TextBoxComponent from "./TextBoxComponent";
-import ModalModel from "../model/ModalModel";
+import ModalModel from "../model/CodeHelperModalModal";
 
 function CodeHelperModal(props) {
   const {
-    show,
-    onHide,
-    onConfirm,
-    onRowClick,
+    show,           // [필수] 모달창 열기 modalstate -> true
+    onHide,         // [필수] 모달창 닫기 modalstate -> false
+    onConfirm,      // [선택] 
+    onRowClick,     // [선택]
 
-    setLowData,
-    usePk,  // 사용할 필드명  pk를 set? row를 set할거면 필요없움
+    setRowData,     // [필수] 객체 반환 받을 set함수 
+    usePk,          // [선택] rowData에서 특정 필드값을 set할거면 usePk='칼럼명' 설정... row(객체 전체)를 set할거면 false
 
-    apiFlag,
-    table,
-    codeHelperCode,
+    // [apiFlag, codeHelperCode]나 codeHelperCodes중 둘중 하나는 반드시 사용해야함
+    apiFlag,        // [선택] api 쏠때 true
+    codeHelperCode, // [apiFlag = true일때 필수] 관리 편리성 위해 url, pacodeHelperCode를 미리 만들어두기
+
+    table,          // [선택] api 안쏠때 프런트에 저장되어있는 tabledata를 이용해서 형식에 맞게 만들어둔  
   } = props;
 
   const { state, actions } =  ModalModel();
@@ -46,7 +48,7 @@ function CodeHelperModal(props) {
     if (apiFlag) {
       codeHelperCode && actions.setCodeHelperCode(codeHelperCode);
     } else {
-      table && actions.setTableData(table);
+      table && actions.setTModalData(table);
     } 
     setOriData(state.tableData.tableData);
     setFilteredData(state.tableData.tableData);
@@ -72,7 +74,7 @@ function CodeHelperModal(props) {
   const handleRowClick = (row) => {
     console.log(row);
     setSearchTerm('');
-    if(setLowData){ usePk ? setLowData(row[usePk]) : setLowData(row) }    
+    if(setRowData){ usePk ? setRowData(row[usePk]) : setRowData(row) }    
     onRowClick && onRowClick();
     onHide();
   };
