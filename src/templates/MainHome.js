@@ -1,4 +1,4 @@
-// 김진
+// 김진 서연
 // 메인 홈페이지
 // 임시로 위치만 잡아두었음 -> 나중에 요소 추가 및 예쁘게 수정할 예정
 // 상단의 Header는 로그인 여부에 따라 바뀌도록 수정
@@ -37,10 +37,10 @@ function MainHome() {
         <div
           style={{
             position: "absolute",
-            top: "50%", // 이미지의 중간 위에 텍스트 위치
-            left: "50%", // 이미지의 중간 가로 위치
-            transform: "translate(-50%, -50%)", // 텍스트를 중앙으로 정렬
-            textAlign: "center", // 텍스트 가운데 정렬
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
             color: "white",
           }}
         >

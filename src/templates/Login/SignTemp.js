@@ -16,11 +16,11 @@ function SignTemp() {
   const [phone, setPhone] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
   const [address, setAddress] = useState("");
+  const [birthday, setBirthday] = useState("");
 
   const url = "http://localhost:8888";
-  const {
-    genderRadioList, //성별
-  } = CommonConstant();
+
+  const { genderRadioList } = CommonConstant();
 
   useEffect(() => {
     setId(id);
@@ -31,17 +31,15 @@ function SignTemp() {
     console.log("id: " + id);
     console.log("pwd: " + password);
 
-    user = {
+    const newUser = {
       userId: id,
       userPwd: password,
     };
 
     axios
-      .post(
-        url + "/user/signup",
-        { userId: id, userPwd: password },
-        { "Content-Type": "application/json" }
-      )
+      .post(`${url}/user/signup`, newUser, {
+        "Content-Type": "application/json",
+      })
       .then((response) => {
         console.log("signUp Data: " + response.data);
       })
@@ -57,7 +55,7 @@ function SignTemp() {
           <img
             src={imgLogo}
             alt="Logo"
-            style={{ width: "500px", padding: "70px 0px 15px 0px" }}
+            style={{ width: "500px", padding: "30px 0px 15px 0px" }}
           />
           <h2
             style={{
@@ -77,6 +75,7 @@ function SignTemp() {
               size={3}
               md={3}
               value={id}
+              onChange={(e) => setId(e.target.value)}
             />
           </Col>
         </Row>
@@ -88,44 +87,88 @@ function SignTemp() {
               md={3}
               placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
               value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <TextBoxComponent type="email" label={"Email"} size={3} md={3} />
+            <TextBoxComponent
+              type="textbox"
+              label={"이름"}
+              md={3}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <TextBoxComponent type="textbox" label={"이름"} md={3} />
+            <TextBoxComponent
+              type="email"
+              label={"Email"}
+              size={3}
+              md={3}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <TextBoxComponent type={"date"} label={"생년월일"} md={3} />
+            <TextBoxComponent
+              type={"date"}
+              label={"생년월일"}
+              md={3}
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <TextBoxComponent type="tel" label={"연락처"} md={3} />
+            <TextBoxComponent
+              type="tel"
+              label={"연락처"}
+              md={3}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <RadioForm label={"성별"} optionList={genderRadioList} md={3} />
+            <RadioForm
+              label={"성별"}
+              optionList={genderRadioList}
+              md={3}
+              selectedOption={selectedGender}
+              onSelectOption={(option) => setSelectedGender(option)}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
-            <TempAdd label={"주소"} mb={3} md={3} />
+            <TempAdd
+              label={"주소"}
+              mb={3}
+              md={3}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
-          <Col md="9">
+          <Col md="9" className="d-flex flex-column align-items-center">
             <Button
-              className="w-100"
-              style={{ marginTop: "3rem" }}
+              className="btn-custom"
+              style={{
+                marginTop: "30px",
+                padding: "10px 40px",
+                fontSize: "16px",
+                width: "85%",
+                borderRadius: "15px",
+              }}
               onClick={SignUpHandler}
             >
               회원가입하기
@@ -136,4 +179,5 @@ function SignTemp() {
     </Container>
   );
 }
+
 export default SignTemp;

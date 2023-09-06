@@ -1,7 +1,7 @@
 // 작성자 : 오승환
 
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import { faBell, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faPlus, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import ContextModel from "../model/ContextModel";
@@ -67,6 +67,15 @@ const Header = (props) => {
               className="colorDark"
             />
           </button>
+          <button className="backgroundBorderNone">
+            <a href="/">
+              <FontAwesomeIcon
+                icon={faHome}
+                size={"xl"}
+                className="colorDark"
+              />
+            </a>
+          </button>
           <select id="personalMenu">
             {/* 이름과 직종은 추후 변수로 변경 */}
             <option>김회계 주임연구원</option>
@@ -82,6 +91,7 @@ const Header = (props) => {
               padding: "3px 10px 3px 10px",
               marginRight: "0px",
               marginLeft: "10px",
+              textDecoration: "none",
             }}
           >
             회원가입
@@ -95,11 +105,12 @@ const Header = (props) => {
               fontSize: "13px",
               padding: "3px 10px 3px 10px",
               marginRight: "10px",
+              textDecoration: "none",
             }}
           >
             로그인
           </a>
-        </div>{" "}
+        </div>
       </div>
       {/* <div id="secondTopHeader">
       {/* <div id="secondTopHeader">
