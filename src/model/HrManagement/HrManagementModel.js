@@ -29,8 +29,8 @@ const HrManagementModel = () => {
   useEffect(() => {
     axios
       .get(
-        `${url}/emp/getEmpListByJobOk?jobOk=${jobOk}+
-        ${orderRef ? "&orderRef=" + orderRef : ""}
+        `${url}/empAdd/getEmpAddListForHrManagement?jobOk=${jobOk}+
+        ${"&orderRef=" + orderRef}
         +
         ${refYear ? "&refYear=" + refYear : ""}`
       )
