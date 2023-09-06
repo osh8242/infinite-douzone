@@ -1,4 +1,4 @@
-import CommonConstant from "./CommonConstant";
+import CommonConstant from "../CommonConstant";
 
 const SalConstant = () => {
     const { CODE,CODEHELPER_EMPLIST_URL } = CommonConstant();
@@ -75,7 +75,7 @@ const SalConstant = () => {
                 { field: "noSocial", text: "주민(외국인)번호" },
                 { field: "daRetire", text: "퇴사일자" }
                       ]
-            , params : { ynFor: 'n', refYear: '2023' }
+            //, params : { ynFor: 'n', refYear: '2023' }
             , searchField : ['nmKrname','noSocial']
           },
         rankNo : {
@@ -98,6 +98,16 @@ const SalConstant = () => {
             , params : { parentId: CODE.PARENT_ID.OCCUP }
             , searchField : ['codeId','codeName']
         },
+        paymentDateList : {
+            title : '지급일 조회'
+            , url : "/saallowpay/getPaymentDateList"
+            , headers : [
+                //{ field: "dateId", text: "날짜ID" },
+                { field: "paymentDate", text: "지급일" },
+            ]
+            , params : { allowYear : '2023' , allowMonth : '2023-09'}
+            , searchField : ['paymentDate']
+        }
     },
     cdDeduct : {
         NATIONAL_PENSION: 'DEDUCT_NATION',  // 국민연금

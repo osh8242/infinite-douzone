@@ -1,19 +1,18 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
-import CodeHelperModal from "../components/CodeHelperModal";
-import DateTest from "../components/DateTest";
-import SearchPanel from "../components/SearchPanel";
-import SelectForm from "../components/SelectForm";
-import TableForm from "../components/TableForm";
-import TextBoxComponent from "../components/TextBoxComponent";
-import CommonConstant from "../model/CommonConstant";
-import SalConstant from "../model/SalConstant";
-import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
-import HrManagementHeader from "./HrManagement/HrManagementHeader";
+import CodeHelperModal from "../../components/CodeHelperModal";
+import DateTest from "../../components/DateTest";
+import SearchPanel from "../../components/SearchPanel";
+import SelectForm from "../../components/SelectForm";
+import TableForm from "../../components/TableForm";
+import TextBoxComponent from "../../components/TextBoxComponent";
+import CommonConstant from "../../model/CommonConstant";
+import SalConstant from "../../model/SalaryInformationEntry/SalConstant";
+import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
+import HrManagementHeader from "../HrManagement/HrManagementHeader";
 
-
-const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
+const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
   //상수
   const { labels } = CommonConstant();
   const { selectOption, tableHeader, codeHelperparams } = SalConstant();
@@ -25,6 +24,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   // 코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback(
     (flag, codeHelperTableData, codeHelperCode, setFn, usePk) => {
+
+      //console.log(flag, codeHelperTableData, codeHelperCode, setFn, usePk);
       actions.setModalState({ show: true });
       setApiFlag(flag);
       if (flag) {
@@ -48,7 +49,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
 
   //조회버튼
   const onSearch = () => {
-    alert("검색");
+    console.log("검색버튼");
   };
 
   return (
@@ -88,12 +89,19 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               />
             </Col>
             <Col>
-              <DateTest
+              {/* <DateTest
                 label={"지급일"}
-                type={"date"}
                 value={state.searchVO.paymentDate}
-                onChange={(e, value) => actions.setPaymentDate(value)}
+                //onChange={(e, value) => actions.setPaymentDate(value)}
+                onChange={actions.setPaymentDate}
                 //codeHelper
+              /> */}
+              <TextBoxComponent
+                name="paymentDate"
+                label={"지급일"}
+                value={state.searchVO.paymentDate}
+                onChange={actions.setPaymentDate}
+                codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.paymentDateList, actions.setPaymentDate, 'paymentDate')}
               />
             </Col>
           </Row>
@@ -371,4 +379,4 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   );
 };
 
-export default SalaryInformationEntry;
+export default SalaryInformationEntryLayout;

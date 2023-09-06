@@ -4,7 +4,7 @@ import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayo
 import Header from "./templates/Header";
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContract from "./templates/LaborContract";
-import SalaryInformationEntry from "./templates/SalaryInformationEntry";
+import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 
 function App() {
   return (
@@ -15,8 +15,8 @@ function App() {
           <Route path="/er" element={<EmpRegisterationLayout />} />
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc" element={<LaborContract />} />
-          <Route path="/si" element={<SalaryInformationEntry />} />
-          <Route path="*" element={<HrManagementLayout />} />
+          <Route path="/si" element={<SalaryInformationEntryLayout />} />
+          <Route path="*" element={<SalaryInformationEntryLayout />} />
         </Routes>
       </BrowserRouter>
     </div>
