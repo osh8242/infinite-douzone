@@ -97,8 +97,9 @@ function EmpRegisterationModel() {
       newEditedEmp.item = {
         ...newEditedEmp.item,
         //현재의 날짜를 입사일자의 기본값으로 추가
-        daEnter: currentDateStr(),
+        // daEnter: currentDateStr(),
       };
+      console.log("여기를 보십시오 => 모델 insert", newEditedEmp.item);
       axios
         .post(url + "/emp/insertEmp", newEditedEmp.item, {
           "Content-Type": "qpplication/json",

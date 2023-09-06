@@ -76,19 +76,19 @@ function EmpRegisterationLayout() {
   //mainTab Enter key 이벤트 Emp 업데이트
   const submitMainTabData = (event, value) => {
     if (event.key === "Enter") {
-      // console.log("이벤트 타겟", event.target);
       event.target.blur();
       if (mainTabRef.current) {
-        let newMainTabData = { ...state.mainTabData.item };
+        let newMainTabData = { ...state.mainTabData };
+        console.log(newMainTabData);
         const inputItems = mainTabRef.current.querySelectorAll("input");
         Array.from(inputItems).forEach((input) => {
           if (input.id) {
             newMainTabData[input.id] = input.value;
           }
-          // console.log("input.id :", input.id, "input.value", input.value);
+          console.log("input.id :", input.id, "input.value", input.value);
         });
         newMainTabData.cdEmp = state.mainTablePk.cdEmp;
-        // newMainTabData = newMainTabData.filter((item) => item.key !== "");
+        newMainTabData = newMainTabData.filter((item) => item.key !== "");
         console.log("newMainTabData", newMainTabData);
         actions.setEditedEmp(newMainTabData);
       }
@@ -103,6 +103,23 @@ function EmpRegisterationLayout() {
       }
       //코드 헬퍼 저장 로직 필요
     }
+  };
+
+  // 코드도움 값 update 로직
+  const submitValue = (data) => {
+    console.log("코드도움(empRegister Layout) data: ", data);
+    //item 포장
+    let { description, ...item } = data;
+    console.log(item);
+    item = {
+      ...item,
+      cdEmp: state.mainTablePkValue.cdEmp,
+    };
+    let newData = {
+      item,
+    };
+    console.log(newData); //item:{abbNation: 'KR'} item으로 포장된 vo객체
+    actions.setEditedEmp(newData);
   };
 
   return (
@@ -168,7 +185,7 @@ function EmpRegisterationLayout() {
                     // name="searchAbbNation"
                     label={labels.abbNation}
                     // onKeyDown={submitMainTabData}
-                    value={state.searchVO.searchAbbNation}
+                    value={state.mainTabData.abbNation}
                     onChange={actions.setSearchAbbNation}
                     setRowData={actions.setAddRow}
                     codeHelper
@@ -184,11 +201,8 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="cdNation"
-                    // name="cdNation"
                     label={labels.cdNation}
-                    // value={state.mainTabData.cdNation}
-                    // onKeyDown={submitMainTabData}
-                    value={state.searchVO.searchCdNation}
+                    value={state.mainTabData.cdNation}
                     onChange={actions.setSearchCdNation}
                     setRowData={actions.setAddRow}
                     codeHelper
@@ -259,17 +273,18 @@ function EmpRegisterationLayout() {
                     id="idMsn"
                     label={labels.idMsn}
                     value={state.mainTabData.idMsn}
-                    onKeyDown={submitMainTabData}
+                    onEnter={submitMainTabData}
+                    // onKeyDown={(event) => {}}
                   />
                   <TextBoxComponent
                     id="cdDept"
                     label={labels.cdDept}
-                    value={state.searchVO.searchCdDept}
+                    value={state.mainTabData.cdDept}
                     // onKeyDown={submitMainTabData}
-                    onChange={(e) => {
-                      actions.setSearchCdDept(e);
-                      submitMainTabData(e);
-                    }}
+                    // onChange={(e) => {
+                    //   actions.setSearchCdDept(e);
+                    //   submitMainTabData(e);
+                    // }}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -285,8 +300,8 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="cdOccup"
                     label={labels.cdOccup}
-                    value={state.searchVO.searchCdOccup}
-                    onChange={actions.setSearchCdOccup}
+                    value={state.mainTabData.cdOccup}
+                    // onChange={actions.setSearchCdOccup}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -302,8 +317,8 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="rankNo"
                     label={labels.rankNo}
-                    value={state.searchVO.searchRankNo}
-                    onChange={actions.setSearchRankNo}
+                    value={state.mainTabData.rankNo}
+                    // onChange={actions.setSearchRankNo}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -319,8 +334,8 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="cdSalcls"
                     label={labels.cdSalcls}
-                    value={state.searchVO.searchCdSalcls}
-                    onChange={actions.setSearchCdSalcls}
+                    value={state.mainTabData.cdSalcls}
+                    // onChange={actions.setSearchCdSalcls}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -336,8 +351,8 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="cdField"
                     label={labels.cdField}
-                    value={state.searchVO.searchCdField}
-                    onChange={actions.setSearchCdField}
+                    value={state.mainTabData.cdField}
+                    // onChange={actions.setSearchCdField}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -353,8 +368,8 @@ function EmpRegisterationLayout() {
                   <TextBoxComponent
                     id="cdProject"
                     label={labels.cdProject}
-                    value={state.searchVO.searchCdProject}
-                    onChange={actions.setSearchCdProject}
+                    value={state.mainTabData.cdProject}
+                    // onChange={actions.setSearchCdProject}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -427,8 +442,7 @@ function EmpRegisterationLayout() {
           })
         }
         // onConfirm={() => alert("확인")}
-        setRowData={state.codeHelperTableData.setData}
-        usePk={state.codeHelperTableData.usePk}
+        setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
         apiFlag={apiFlag}
         table={state.codeHelperTableData.data}
         codeHelperCode={state.codeHelperTableData.code}
