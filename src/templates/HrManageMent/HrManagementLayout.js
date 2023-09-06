@@ -1,9 +1,10 @@
 // 작성자 : 오승환
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import DateTest from "../../components/DateTest";
 import MenuTab from "../../components/MenuTab";
+import ProfileImageForm from "../../components/ProfileImageForm";
 import RadioForm from "../../components/RadioForm";
 import SearchPanel from "../../components/SearchPanel";
 import SelectForm from "../../components/SelectForm";
@@ -21,7 +22,7 @@ import HrManagementHeader from "./HrManagementHeader";
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
-const HrManagementLayout = ({ grid, mainTab, subTab }) => {
+const HrManagementLayout = () => {
   //실행중에는 값이 고정인 값들
   const {
     searchOption, // 검색옵션 리스트
@@ -44,7 +45,9 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
   const {
     leftTableData,
     leftTablePkValue,
+    leftStaticsTableData,
     mainTabData,
+    empImageSrc,
     subTableData,
     selectedRows,
   } = state;
@@ -52,25 +55,6 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
   //검색조건 : 재직구분, 정렬기준
   const jobOkRef = useRef();
   const orderRef = useRef();
-
-  //사원 테이블 재직 통계 계산
-  const leftStaticsTableData = useMemo(() => {
-    let jobOkY = 0;
-    let jobOkN = 0;
-    leftTableData.forEach((row) => {
-      if (row.item["jobOk"] === "Y") jobOkY++;
-      else jobOkN++;
-    });
-    return [
-      {
-        item: {
-          jobOkY: jobOkY,
-          jobOkN: jobOkN,
-          jobOkSum: jobOkY + jobOkN,
-        },
-      },
-    ];
-  }, [leftTableData]);
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = () => {
@@ -156,6 +140,7 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
                   tableName="EMP"
                   showCheckbox
                   showHeaderArrow
+                  sortable
                   rowAddable
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
@@ -186,9 +171,11 @@ const HrManagementLayout = ({ grid, mainTab, subTab }) => {
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList} />
               {/* 우측 메인폼 */}
-              <Row className="mb-5" ref={mainTabRef}>
+              <Row className="mb-5 justify-content-center" ref={mainTabRef}>
                 <Row>
-                  <Col xs md="3"></Col>
+                  <Col xs md="3">
+                    <ProfileImageForm src={empImageSrc} />
+                  </Col>
                   <Col xs md="9">
                     <Row>
                       <Col xs md="6">

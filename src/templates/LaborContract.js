@@ -6,15 +6,19 @@ import DateTest from "../components/DateTest";
 import MenuTab from "../components/MenuTab";
 import SearchPanel from "../components/SearchPanel";
 import SelectForm from "../components/SelectForm";
-import SwsmAddress from "../components/SwsmAddress";
-import SwsmText from "../components/SwsmText";
-import TableForm from "../components/TableForm";
-import TempSelect from "../components/TempSelect";
-import LaborContractModel from "../model/LaborContractModel";
 import SwsmConstant from "../model/SwsmConstant";
+// import TableTemp from "../components/TableTemp";
+import LaborContractModel from "../model/LaborContractModel";
 import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
+// import TempAdd from "../components/TempAdd";
+import SwsmAddress from "../components/SwsmAddress";
+// import TempText from "../components/TempText";
+import SwsmText from "../components/SwsmText";
+import TempSelect from "../components/TempSelect";
 import LaborContractHeader from "./LaborContractHeader";
+// import { Routes, Route, BrowserRouter } from "react-router-dom";
+import TableForm from "../components/TableForm";
 
 const LaborContract = () => {
   const {
@@ -81,7 +85,7 @@ const LaborContract = () => {
         <Row>
           <Col md="3">
             <TableForm
-              showCheckbox={true}
+              showCheckbox={false}
               showHeaderArrow={true}
               tableHeaders={SwsmLeftTableHeaders}
               tableData={leftTableData}

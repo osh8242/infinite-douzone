@@ -10,7 +10,7 @@ import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import SalConstant from "../model/SalConstant";
 import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
-import HrManagementHeader from "./HrManagementHeader";
+import HrManagementHeader from "./HrManagement/HrManagementHeader";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   //상수
@@ -105,7 +105,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchEmpCd"
                   label={"사원코드"}
                   value={state.searchVO.searchCdEmp}
-                  onChange={actions.setSearchCdEmp}
+                  onEnter={actions.setSearchCdEmp}
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
@@ -124,7 +124,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchCdDept"
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
-                  onChange={actions.setSearchCdDept}
+                  onEnter={actions.setSearchCdDept}
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
@@ -144,7 +144,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchRankNo"
                   label={"직급코드"}
                   value={state.searchVO.searchRankNo}
-                  onChange={actions.setSearchRankNo}
+                  onEnter={actions.setSearchRankNo}
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
@@ -162,7 +162,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   name="searchCdOccup"
                   label={"직책코드"}
                   value={state.searchVO.searchCdOccup}
-                  onChange={actions.setSearchCdOccup}
+                  onEnter={actions.setSearchCdOccup}
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
@@ -225,7 +225,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               tableData={state.saInfoListData}
               actions={{
                 setTableData: actions.setSaInfoListData,
-                setPkValue: actions.setSearchAllowVo,
+                setPkValue: actions.setChangeCdEmp,
               }}
             />
             <Button

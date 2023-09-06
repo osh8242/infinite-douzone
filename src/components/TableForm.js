@@ -32,7 +32,7 @@ const TableForm = ({
   pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
-  sortable = true, //
+  sortable, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
@@ -550,7 +550,7 @@ const TableForm = ({
                       data-column-index={columnIndex}
                       onFocus={(e) => focusAtEnd(e.target)}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
-                      ref={(input) => setInputRef(input, rowIndex, columnIndex)}
+                      ref={(div) => setInputRef(div, rowIndex, columnIndex)}
                     >
                       {row.isNew ? "" : row.item[thead.field]}
                     </div>
@@ -578,9 +578,7 @@ const TableForm = ({
                 >
                   <div
                     className="tableContents"
-                    ref={(input) =>
-                      setInputRef(input, tableRows.length, columnIndex)
-                    }
+                    ref={(div) => setInputRef(div, tableRows.length, columnIndex)}
                   ></div>
                 </td>
               ))}
@@ -604,7 +602,7 @@ TableForm.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   tableData: PropTypes.array.isRequired,
   tableFooter: PropTypes.element,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.object,
   tableName: PropTypes.string,
   showCheckbox: PropTypes.bool,
   sortable: PropTypes.bool,

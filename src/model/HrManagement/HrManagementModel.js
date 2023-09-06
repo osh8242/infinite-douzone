@@ -1,11 +1,12 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
+import CommonConstant from "../CommonConstant";
 
 const HrManagementModel = () => {
-  const url = "http://localhost:8888"; // REST API 서버 주소
+  const { url } = CommonConstant(); // REST API 서버 주소
 
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
@@ -17,6 +18,7 @@ const HrManagementModel = () => {
 
   const [mainTabData, setMainTabData] = useState({}); // 메인탭 데이터
   const [editedEmpAdd, setEditedEmpAdd] = useState({}); // 메인탭 수정 ROW
+  const [empImageSrc, setEmpImageSrc] = useState("");
 
   const [subTableData, setSubTableData] = useState([]); // 서브 그리드 데이터
   const [editedEmpFam, setEditedEmpFam] = useState({}); // 서브 그리드 수정 ROW
@@ -63,6 +65,29 @@ const HrManagementModel = () => {
       setMainTabData({});
     }
   }, [leftTablePkValue, editedEmpAdd]);
+
+  //초기 랜더링시 이미지 불러오기
+  useEffect(() => {
+    if (empImageSrc && empImageSrc !== "") {
+    }
+    console.log("empImageSrc", empImageSrc);
+    //"/empPhoto/getEmpPhotoByCdEmp/" + leftTablePkValue.cdEmp
+    axios
+      .get(url + "/empPhoto/image", {
+        responseType: "arraybuffer",
+      })
+      .then((response) => {
+        // ArrayBuffer를 Blob으로 변환하고 URL을 생성
+        const blob = new Blob([response.data], { type: "image/jpeg" });
+        const imageUrl = URL.createObjectURL(blob);
+        console.log("iamgeUrl", imageUrl);
+        setEmpImageSrc(imageUrl);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [leftTablePkValue]);
 
   //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
   useEffect(() => {
@@ -214,11 +239,32 @@ const HrManagementModel = () => {
     }
   }, [selectedRows]);
 
+  ////사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    let jobOkY = 0;
+    let jobOkN = 0;
+    leftTableData.forEach((row) => {
+      if (row.item["jobOk"] === "Y") jobOkY++;
+      else jobOkN++;
+    });
+    return [
+      {
+        item: {
+          jobOkY: jobOkY,
+          jobOkN: jobOkN,
+          jobOkSum: jobOkY + jobOkN,
+        },
+      },
+    ];
+  }, [leftTableData]);
+
   return {
     state: {
       leftTableData,
       leftTablePkValue,
+      leftStaticsTableData,
       mainTabData,
+      empImageSrc,
       subTableData,
       selectedRows,
       jobOk,
