@@ -122,7 +122,7 @@ function CodeHelperModal(props) {
   const handleRowClick = (row) => {
     setSearchTerm("");
     if (setRowData) {
-      usePk ? setRowData(row[usePk]) : setRowData(row);
+      usePk ? setRowData(row.item[usePk]) : setRowData(row.item);
     }
     onRowClick && onRowClick();
     onHide();
