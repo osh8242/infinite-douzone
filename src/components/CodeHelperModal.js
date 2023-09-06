@@ -18,7 +18,8 @@ import { Form, Row, Table } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import TextBoxComponent from "./TextBoxComponent";
-import ModalModel from "../model/CodeHelperModalModal";
+import axios from "axios";
+import { objectToQueryString } from "../utils/StringUtils";
 
 function CodeHelperModal(props) {
   const {
@@ -37,29 +38,75 @@ function CodeHelperModal(props) {
     table,          // [선택] api 안쏠때 프런트에 저장되어있는 tabledata를 이용해서 형식에 맞게 만들어둔  
   } = props;
 
-  const { state, actions } =  ModalModel();
-  //const [selectedRow, setSelectedRow] = useState(null);
+  //const { state, actions } =  ModalModel();
   
+  const [modalData, setTModalData] = useState({
+    title : '',
+    tableHeaders: [{ field: "codeId", text: "코드"}],
+    // { field: "code", text: "Code"},
+    // { field: "nmKrname", text: "사원명"},
+    // { field: "noSocial", text: "주민(외국인)번호"},
+    // { field: "daRetire", text: "퇴사일자"}],
+    tableData : [],
+    //searchField : ['pk'],
+    searchField : ['codeId', 'codeName'],
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [oriData, setOriData] = useState([]);
   const [filteredData, setFilteredData ] = useState([]);
 
   useEffect(() => {
+    getCodeListForCodeHelper(codeHelperCode);
+  }, [codeHelperCode]);
+
+  useEffect(() => {
     if (apiFlag) {
-      codeHelperCode && actions.setCodeHelperCode(codeHelperCode);
+      codeHelperCode && getCodeListForCodeHelper(codeHelperCode);
     } else {
-      table && actions.setTModalData(table);
+      table && setTModalData(table);
     } 
-    setOriData(state.tableData.tableData);
-    setFilteredData(state.tableData.tableData);
-  }, [apiFlag, codeHelperCode, table, state.tableData]);
+    setOriData(modalData.tableData);
+    setFilteredData(modalData.tableData);
+  }, [apiFlag, codeHelperCode, table , modalData.tableData]);
   
+  const getCodeListForCodeHelper = (codeHelperCode) => {
+    const url = 'http://localhost:8888';
+
+    return codeHelperCode !== '' && axios.get(
+      url + codeHelperCode.url
+       + objectToQueryString(codeHelperCode.params),
+      //{data : codeHelperCode.params},
+      {'Content-Type': 'application/json',},
+    )
+      .then((response) => {
+        const codeDataList = response.data.map((item) => {
+          const dynamicProperties = {};
+          for (const key in item) {
+            dynamicProperties[key] = item[key];
+          }
+          return dynamicProperties;
+        });
+        
+        setTModalData({
+          ...modalData,
+          tableData: codeDataList,
+          title: codeHelperCode.title,
+          tableHeaders: codeHelperCode.headers,
+          searchField : codeHelperCode.searchField,
+        });
+      })
+      .catch((error) => {
+        console.log("에러발생: ", error);
+        // 에러 처리
+      });
+  }
   
   /* table.searchField에 해당하는 field만 검색 */
   useEffect(()=>{
     if(searchTerm !== ''){
       setFilteredData(oriData.filter((row)=>{
-          return state.tableData.searchField.some((field) =>
+          return modalData.searchField.some((field) =>
             row[field].toLowerCase().includes(searchTerm.toLowerCase()) 
           )
         })
@@ -79,10 +126,12 @@ function CodeHelperModal(props) {
     onHide();
   };
 
+  
+
   return (
     <Modal show={show} size='lg' centered>
       <Modal.Header>
-        <Modal.Title>{state.tableData.title}</Modal.Title>
+        <Modal.Title>{modalData.title}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -91,7 +140,7 @@ function CodeHelperModal(props) {
           <Table striped bordered hover>
             <thead>
               <tr onClick={(e) => handleRowClick(e)}>
-                {state.tableData.tableHeaders.map((header) => (
+                {modalData.tableHeaders.map((header) => (
                   <th key={header.field}>{header.text}</th>
                 ))}
               </tr>
@@ -100,7 +149,7 @@ function CodeHelperModal(props) {
               {filteredData.map((row, rowIndex) => (
                 //<tr key={row.pk} className={selectedRow === row.pk ? 'selected' : ''} onClick={() => handleRowClick(row)}>
                 <tr key={rowIndex} onClick={() => handleRowClick(row)}>
-                  {state.tableData.tableHeaders.map((header) => (
+                  {modalData.tableHeaders.map((header) => (
                     <td key={header.field}>{row[header.field]}</td>
                   ))}
                 </tr>
