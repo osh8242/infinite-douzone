@@ -152,7 +152,9 @@ function EmpRegisterationLayout() {
                     id="daEnter"
                     label={labels.daEnter}
                     value={state.mainTabData.daEnter}
-                    onChange={submitMainTabData}
+                    actions={{
+                      setEdited: actions.setEditedEmp,
+                    }}
                   />
                   <NoSocialFormForEmpRegister
                     label={labels.noSocial}
@@ -376,6 +378,9 @@ function EmpRegisterationLayout() {
                       label={labels.daRetire}
                       value={state.mainTabData.daRetire}
                       // onChange={submitMainTabData}
+                      actions={{
+                        setEdited: actions.setEditedEmp,
+                      }}
                     />
                   ) : (
                     <TextBoxComponent
