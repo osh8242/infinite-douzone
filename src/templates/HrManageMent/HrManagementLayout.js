@@ -116,7 +116,10 @@ const HrManagementLayout = () => {
         onHide={empCodeHelper.onHide}
         codeHelperCode={empCodeHelper.codeHelperCode}
       />
-      <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
+      <HrManagementHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
       <Container>
         {/* 조회영역 */}
         <SearchPanel onSearch={onSearch}>
