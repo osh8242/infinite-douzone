@@ -3,7 +3,11 @@ import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 import "./CustomInput.scss";
 
 function TextBoxComponent(props) {
@@ -61,6 +65,7 @@ function TextBoxComponent(props) {
     const newValue = event.target.value;
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
     setInputValue(makeProcessedValue(newValue)); // data 가공
+    onChange && onChange(newValue);
   };
 
   const makeProcessedValue = (newValue) => {
@@ -130,10 +135,16 @@ function TextBoxComponent(props) {
     <Row className="py-1">
       {label ? (
         <>
-          <Col md="4" className="d-flex align-items-center justify-content-center">
+          <Col
+            md="4"
+            className="d-flex align-items-center justify-content-center"
+          >
             <div>{label}</div>
           </Col>
-          <Col md="8" className="d-flex align-items-center justify-content-center">
+          <Col
+            md="8"
+            className="d-flex align-items-center justify-content-center"
+          >
             {codeHelper ? (
               <div className="svg-wrapper">
                 <div className="svg-container">

@@ -97,7 +97,7 @@ const TableForm = ({
       else return 0;
     });
     setTableRows(newTableRows);
-  }, [orderRef, isAsc]);
+  }, [orderRef, isAsc, tableRows]);
 
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
@@ -108,11 +108,14 @@ const TableForm = ({
   // 테이블 td마다 ref 설정
   const setInputRef = useCallback(
     (input, rowIndex, columnIndex) => {
-      if (!inputRef.current[rowIndex]) {
-        inputRef.current[rowIndex] = [];
+      if (!readOnly) {
+        if (!inputRef.current[rowIndex]) {
+          inputRef.current[rowIndex] = [];
+        }
+        inputRef.current[rowIndex][columnIndex] = input;
       }
-      inputRef.current[rowIndex][columnIndex] = input;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [tableRows]
   );
 
@@ -295,7 +298,7 @@ const TableForm = ({
     });
 
     return editedRow;
-  }, [tableRows, rowRef, getInputElements]);
+  }, [tableRows, rowRef, getInputElements, isValidRow]);
 
   // 수정한 행에서 엔터키 입력 이벤트 처리
   const TdKeyDownHandler = useCallback(
@@ -464,12 +467,17 @@ const TableForm = ({
               checkboxHandler(rowRef);
               break;
 
+            case "Delete":
+              actions.deleteSelectedRows();
+              break;
+
             default:
               break;
           }
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       tableHeaders,
       tableRows,
@@ -549,7 +557,9 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
-                onClick={onRowClick && onRowClick(row)}
+                onClick={(row) => {
+                  if (onRowClick) onRowClick(row);
+                }}
               >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
@@ -579,7 +589,11 @@ const TableForm = ({
                       suppressContentEditableWarning={true}
                       data-field={thead.field}
                       data-column-index={columnIndex}
-                      onFocus={(e) => focusAtEnd(e.target)}
+                      onFocus={(e) => {
+                        setRowRef(rowIndex);
+                        setColumnRef(columnIndex);
+                        focusAtEnd(e.target);
+                      }}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                       ref={(div) => setInputRef(div, rowIndex, columnIndex)}
                     >

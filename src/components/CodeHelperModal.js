@@ -109,7 +109,7 @@ function CodeHelperModal(props) {
       setFilteredData(
         oriData.filter((row) => {
           return modalData.searchField.some((field) =>
-            row[field].toLowerCase().includes(searchTerm.toLowerCase())
+            row.item[field].toLowerCase().includes(searchTerm.toLowerCase())
           );
         })
       );
@@ -157,6 +157,7 @@ function CodeHelperModal(props) {
               </tbody>
             </Table> */}
             <TableForm
+              readOnly
               tableHeaders={modalData.tableHeaders}
               tableData={filteredData}
               onRowClick={handleRowClick}
@@ -165,9 +166,10 @@ function CodeHelperModal(props) {
           <Row>
             <Form.Group>
               <TextBoxComponent
+                type="text"
                 label={"찾을내용"}
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={setSearchTerm}
               />
             </Form.Group>
           </Row>
@@ -175,11 +177,21 @@ function CodeHelperModal(props) {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button
+          variant="secondary"
+          onClick={(e) => {
+            onHide();
+          }}
+        >
           닫기
         </Button>
         {onConfirm && (
-          <Button variant="primary" onClick={onConfirm}>
+          <Button
+            variant="primary"
+            onClick={(e) => {
+              onConfirm();
+            }}
+          >
             확인
           </Button>
         )}

@@ -18,6 +18,7 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import ConfirmComponent from "../../components/ConfirmComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -113,7 +114,9 @@ const HrManagementLayout = () => {
       <CodeHelperModal
         show={empCodeHelper.show}
         apiFlag={empCodeHelper.apiFlag}
-        onHide={empCodeHelper.onHide}
+        onHide={() =>
+          actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
+        }
         codeHelperCode={empCodeHelper.codeHelperCode}
       />
       <HrManagementHeader
@@ -164,6 +167,7 @@ const HrManagementLayout = () => {
                     setEditedRow: actions.setEditedEmp,
                     setSelectedRows: actions.setSelectedRows,
                     setCodeHelper: actions.setEmpCodeHelper,
+                    deleteSelectedRows: actions.deleteSelectedRows,
                     getRowObject: Emp,
                   }}
                 />
@@ -318,6 +322,7 @@ const HrManagementLayout = () => {
                     setTableData: actions.setSubTableData,
                     setEditedRow: actions.setEditedEmpFam,
                     setSelectedRows: actions.setSelectedRows,
+                    deleteSelectedRows: actions.deleteSelectedRows,
                     getRowObject: EmpFam,
                   }}
                 />
