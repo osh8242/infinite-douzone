@@ -37,7 +37,6 @@ const HrManagementLayout = () => {
   const {
     leftTableConstant,
     leftStaticsTableConstant,
-    codeHelperParams,
     subTableConstant,
     tabConstant,
   } = HrManagementConstant();
@@ -307,6 +306,7 @@ const HrManagementLayout = () => {
                   showCheckbox
                   showHeaderArrow
                   rowAddable
+                  sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
                   pkValue={leftTablePkValue}

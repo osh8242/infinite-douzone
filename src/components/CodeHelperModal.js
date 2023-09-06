@@ -20,6 +20,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { objectToQueryString } from "../utils/StringUtils";
 import TextBoxComponent from "./TextBoxComponent";
+import TableForm from "./TableForm";
 
 function CodeHelperModal(props) {
   const {
@@ -57,20 +58,19 @@ function CodeHelperModal(props) {
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    if (apiFlag && show) {
+    if (apiFlag) {
       codeHelperCode && getCodeListForCodeHelper(codeHelperCode);
     } else {
       table && setTModalData(table);
     }
     setOriData(modalData.tableData);
     setFilteredData(modalData.tableData);
-  }, [apiFlag, codeHelperCode, table, show]);
+  }, [show]);
 
   const getCodeListForCodeHelper = (codeHelperCode) => {
     const url = "http://localhost:8888";
 
-    return (
-      codeHelperCode !== "" &&
+    if (codeHelperCode !== "") {
       axios
         .get(
           url + codeHelperCode.url + objectToQueryString(codeHelperCode.params),
@@ -78,14 +78,14 @@ function CodeHelperModal(props) {
           { "Content-Type": "application/json" }
         )
         .then((response) => {
-          const codeDataList = response.data.map((item) => {
-            const dynamicProperties = {};
-            for (const key in item) {
-              dynamicProperties[key] = item[key];
+          const codeDataList = response.data.map((object) => {
+            const dynamicProperties = { item: {} };
+            for (const key in object) {
+              dynamicProperties.item[key] = object[key];
             }
             return dynamicProperties;
           });
-
+          console.log("codeDataList", codeDataList);
           setTModalData({
             ...modalData,
             tableData: codeDataList,
@@ -97,13 +97,15 @@ function CodeHelperModal(props) {
         .catch((error) => {
           console.log("에러발생: ", error);
           // 에러 처리
-        })
-    );
+        });
+    }
   };
 
   /* table.searchField에 해당하는 field만 검색 */
   useEffect(() => {
     if (searchTerm !== "") {
+      console.log("modalData", modalData);
+      console.log("searchTerm", searchTerm);
       setFilteredData(
         oriData.filter((row) => {
           return modalData.searchField.some((field) =>
@@ -118,7 +120,6 @@ function CodeHelperModal(props) {
 
   /* 클릭한 행반환 */
   const handleRowClick = (row) => {
-    console.log(row);
     setSearchTerm("");
     if (setRowData) {
       usePk ? setRowData(row[usePk]) : setRowData(row);
@@ -136,7 +137,7 @@ function CodeHelperModal(props) {
       <Modal.Body>
         <div className="container">
           <Row>
-            <Table striped bordered hover>
+            {/* <Table striped bordered hover>
               <thead>
                 <tr onClick={(e) => handleRowClick(e)}>
                   {modalData.tableHeaders.map((header) => (
@@ -154,14 +155,19 @@ function CodeHelperModal(props) {
                   </tr>
                 ))}
               </tbody>
-            </Table>
+            </Table> */}
+            <TableForm
+              tableHeaders={modalData.tableHeaders}
+              tableData={filteredData}
+              onRowClick={handleRowClick}
+            />
           </Row>
           <Row>
             <Form.Group>
               <TextBoxComponent
                 label={"찾을내용"}
                 value={searchTerm}
-                onChange={setSearchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </Form.Group>
           </Row>
