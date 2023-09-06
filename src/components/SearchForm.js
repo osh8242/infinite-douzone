@@ -47,7 +47,7 @@ function SearchForm({ placeholder }) {
     const urlMappings = {
       사원관리: "/er",
       인사관리: "/hr",
-      표준근로계약: "/lc/*",
+      표준근로계약관리: "/lc/*",
       급여관리: "/si",
       메인페이지: "/",
     };
