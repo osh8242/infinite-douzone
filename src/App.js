@@ -5,6 +5,7 @@ import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
 import LaborContract from "./templates/LaborContract";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
+import MainHome from "./templates/MainHome";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
+          <Route path="/" element={<MainHome />} />
           <Route path="/er" element={<EmpRegisterationLayout />} />
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc" element={<LaborContract />} />
