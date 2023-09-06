@@ -4,9 +4,11 @@ import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import CommonConstant from "../CommonConstant";
+import HrManagementConstant from "./HrManagementConstant";
 
 const HrManagementModel = () => {
   const { url } = CommonConstant(); // REST API 서버 주소
+  const { codeHelperParams } = HrManagementConstant();
 
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
@@ -15,6 +17,11 @@ const HrManagementModel = () => {
   const [leftTableData, setLeftTableData] = useState([]); // 좌측 그리드 데이터
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // 좌측 그리드 PK
   const [editedEmp, setEditedEmp] = useState({}); // 좌측 그리드 수정 ROW
+  const [empCodeHelper, setEmpCodeHelper] = useState({
+    show: false,
+    apiFlag: true,
+    codeHelperCode: codeHelperParams.emp,
+  });
 
   const [mainTabData, setMainTabData] = useState({}); // 메인탭 데이터
   const [editedEmpAdd, setEditedEmpAdd] = useState({}); // 메인탭 수정 ROW
@@ -29,8 +36,8 @@ const HrManagementModel = () => {
   useEffect(() => {
     axios
       .get(
-        `${url}/emp/getEmpListByJobOk?jobOk=${jobOk}+
-        ${orderRef ? "&orderRef=" + orderRef : ""}
+        `${url}/empAdd/getEmpAddListForHrManagement?jobOk=${jobOk}+
+        ${"&orderRef=" + orderRef}
         +
         ${refYear ? "&refYear=" + refYear : ""}`
       )
@@ -196,47 +203,46 @@ const HrManagementModel = () => {
   const deleteSelectedRows = useCallback(() => {
     const editedTableNames = {};
     console.log("삭제요청된 행들", selectedRows);
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      // 각 row에 대한 delete 요청을 생성
-      const deletePromises = selectedRows.map((row) => {
-        let pattern;
-        switch (row.table) {
-          case "empFam":
-            pattern = "/empFam/deleteEmpFam";
-            break;
-          case "emp":
-            pattern = "/emp/deleteEmp";
-            break;
-          default:
-            return Promise.resolve();
-        }
-        if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-        return axios.delete(url + pattern, { data: row.item });
-      });
 
-      Promise.all(deletePromises)
-        .then((responses) => {
-          console.log("선택된 모든 행의 삭제 완료");
-          console.log("selectedRows", selectedRows);
-          setSelectedRows([]); // 선택행 배열 비우기
-          Object.keys(editedTableNames).forEach((tableName) => {
-            switch (tableName) {
-              case "empFam":
-                setEditedEmpFam({}); // 사원가족 리로드
-                break;
-              case "emp":
-                setEditedEmp({}); // 사원가족 리로드
-                break;
-              default:
-                break;
-            }
-          });
-        })
-        .catch((error) => {
-          console.error("하나 이상의 요청에서 에러 발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
+    // 각 row에 대한 delete 요청을 생성
+    const deletePromises = selectedRows.map((row) => {
+      let pattern;
+      switch (row.table) {
+        case "empFam":
+          pattern = "/empFam/deleteEmpFam";
+          break;
+        case "emp":
+          pattern = "/emp/deleteEmp";
+          break;
+        default:
+          return Promise.resolve();
+      }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+      return axios.delete(url + pattern, { data: row.item });
+    });
+
+    Promise.all(deletePromises)
+      .then((responses) => {
+        console.log("선택된 모든 행의 삭제 완료");
+        console.log("selectedRows", selectedRows);
+        setSelectedRows([]); // 선택행 배열 비우기
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "empFam":
+              setEditedEmpFam({}); // 사원가족 리로드
+              break;
+            case "emp":
+              setEditedEmp({}); // 사원가족 리로드
+              break;
+            default:
+              break;
+          }
         });
-    }
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
   }, [selectedRows]);
 
   ////사원 테이블 재직 통계 계산
@@ -263,6 +269,7 @@ const HrManagementModel = () => {
       leftTableData,
       leftTablePkValue,
       leftStaticsTableData,
+      empCodeHelper,
       mainTabData,
       empImageSrc,
       subTableData,
@@ -279,6 +286,7 @@ const HrManagementModel = () => {
       setLeftTableData,
       setLeftTablePkValue,
       setEditedEmp,
+      setEmpCodeHelper,
 
       setMainTabData,
       setEditedEmpAdd,

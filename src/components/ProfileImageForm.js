@@ -10,7 +10,7 @@ function ProfileImageForm(props) {
       <Card.Body>
         {title && <Card.Title>{title}</Card.Title>}
         {text && <Card.Text>{text}</Card.Text>}
-        <div class="profile-button-container">
+        <div className="profile-button-container">
           <Button variant="secondary" onClick={(e) => handleUpdload(e)}>
             업로드
           </Button>

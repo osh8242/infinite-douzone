@@ -1,4 +1,7 @@
+import CommonConstant from "../CommonConstant";
+
 const HrManagementConstant = () => {
+  const { url } = CommonConstant();
   return {
     leftTableConstant: {
       headers: [
@@ -26,6 +29,19 @@ const HrManagementConstant = () => {
           text: "총합",
         },
       ],
+    },
+
+    codeHelperParams: {
+      emp: {
+        title: "사원조회",
+        url: "/emp/getEmpListForHrManagement",
+        headers: [
+          { field: "cdEmp", text: "사원코드" },
+          { field: "nmKrname", text: "사원명" },
+        ],
+        params: { jobOk: "Y", refYear: "2023", orderRef: "cdEmp" },
+        searchField: ["cdEmp", "nmKrname"],
+      },
     },
 
     tabConstant: {
