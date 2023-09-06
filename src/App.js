@@ -4,7 +4,6 @@ import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayo
 import Header from "./templates/Header";
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContract from "./templates/LaborContract";
-import EmpRegisterationLayout from "./templates/EmpRegisterationLayout";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 
 function App() {
