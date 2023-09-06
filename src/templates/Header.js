@@ -88,9 +88,10 @@ const Header = (props) => {
               backgroundColor: "white",
               border: "1px solid gray",
               color: "dimgray",
-              padding: "3px 10px 3px 10px",
+              padding: "4px 10px 4px 10px",
               marginRight: "0px",
-              marginLeft: "10px",
+              marginLeft: "7px",
+              borderRadius: "5px",
               textDecoration: "none",
             }}
           >
@@ -103,8 +104,10 @@ const Header = (props) => {
               border: "1px solid gray",
               color: "dimgray",
               fontSize: "13px",
-              padding: "3px 10px 3px 10px",
-              marginRight: "10px",
+              padding: "4px 14px 4px 14px",
+              marginRight: "7px",
+
+              borderRadius: "5px",
               textDecoration: "none",
             }}
           >
