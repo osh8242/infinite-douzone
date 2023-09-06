@@ -29,16 +29,6 @@ function EmpRegisterationModel() {
     { data: "", code: "", setData: setAddRow },
   ]);
 
-  // 코드도움 값 상태관리
-  const [searchAbbNation, setSearchAbbNation] = useState("");
-  const [searchCdNation, setSearchCdNation] = useState("");
-  const [searchCdDept, setSearchCdDept] = useState("");
-  const [searchCdOccup, setSearchCdOccup] = useState("");
-  const [searchRankNo, setSearchRankNo] = useState("");
-  const [searchCdSalcls, setSearchCdSalcls] = useState("");
-  const [searchCdField, setSearchCdField] = useState("");
-  const [searchCdProject, setSearchCdProject] = useState("");
-
   // useEffect(() => {
   //   console.log("empRegisterModel addRow => ", addRow);
   // }, [addRow]);
@@ -220,16 +210,6 @@ function EmpRegisterationModel() {
       codeHelperTableData,
       undeletedEmpTableData,
       codeHelperState,
-      searchVO: {
-        searchAbbNation,
-        searchCdNation,
-        searchCdDept,
-        searchCdOccup,
-        searchRankNo,
-        searchCdSalcls,
-        searchCdField,
-        searchCdProject,
-      },
     },
     actions: {
       setLeftTableData,
@@ -245,15 +225,6 @@ function EmpRegisterationModel() {
       setUndeletedEmpTableData,
       setCodeHelperState,
       setAddRow,
-
-      setSearchAbbNation,
-      setSearchCdNation,
-      setSearchCdDept,
-      setSearchCdOccup,
-      setSearchRankNo,
-      setSearchCdSalcls,
-      setSearchCdField,
-      setSearchCdProject,
     },
   };
 }

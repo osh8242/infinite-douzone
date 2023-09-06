@@ -73,36 +73,22 @@ function EmpRegisterationLayout() {
 
   const mainTabRef = useRef();
 
-  //mainTab Enter key 이벤트 Emp 업데이트
-  const submitMainTabData = (event, value) => {
-    if (event.key === "Enter") {
-      event.target.blur();
-      if (mainTabRef.current) {
-        let newMainTabData = { ...state.mainTabData };
-        console.log(newMainTabData);
-        const inputItems = mainTabRef.current.querySelectorAll("input");
-        Array.from(inputItems).forEach((input) => {
-          if (input.id) {
-            newMainTabData[input.id] = input.value;
-          }
-          console.log("input.id :", input.id, "input.value", input.value);
-        });
-        newMainTabData.cdEmp = state.mainTablePk.cdEmp;
-        newMainTabData = newMainTabData.filter((item) => item.key !== "");
-        console.log("newMainTabData", newMainTabData);
-        actions.setEditedEmp(newMainTabData);
-      }
-    }
-    if (event.type === "change") {
-      if (mainTabRef.current) {
-        event.target.blur();
-        let newMainTabData = { ...state.mainTabData };
-        newMainTabData[event.target.id] = value;
-        newMainTabData.cdEmp = state.mainTablePkValue.cdEmp;
-        actions.setEditedEmp(newMainTabData);
-      }
-      //코드 헬퍼 저장 로직 필요
-    }
+  //mainTab Enter 이벤트 발생시 Emp 업데이트
+  const submitMainTabData = (value, id) => {
+    console.log("value: ", value);
+    console.log("id: ", id);
+    let data = {
+      [id]: value,
+    };
+    //item 포장
+    data = {
+      item: {
+        ...data,
+        cdEmp: state.mainTablePkValue.cdEmp,
+      },
+    };
+    console.log(data);
+    actions.setEditedEmp(data);
   };
 
   // 코드도움 값 update 로직
@@ -136,7 +122,7 @@ function EmpRegisterationLayout() {
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
                 showCheckbox
-                showHeaderArrow
+                sortable
                 rowAddable
                 tableHeaders={EmpRegisterLeftHeaders}
                 tableData={state.leftTableData}
@@ -186,7 +172,7 @@ function EmpRegisterationLayout() {
                     label={labels.abbNation}
                     // onKeyDown={submitMainTabData}
                     value={state.mainTabData.abbNation}
-                    onChange={actions.setSearchAbbNation}
+                    // onChange={actions.setSearchAbbNation}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -203,7 +189,7 @@ function EmpRegisterationLayout() {
                     id="cdNation"
                     label={labels.cdNation}
                     value={state.mainTabData.cdNation}
-                    onChange={actions.setSearchCdNation}
+                    // onChange={actions.setSearchCdNation}
                     setRowData={actions.setAddRow}
                     codeHelper
                     onClickCodeHelper={() =>
@@ -389,7 +375,7 @@ function EmpRegisterationLayout() {
                       id="daRetire"
                       label={labels.daRetire}
                       value={state.mainTabData.daRetire}
-                      onChange={submitMainTabData}
+                      // onChange={submitMainTabData}
                     />
                   ) : (
                     <TextBoxComponent
@@ -447,6 +433,7 @@ function EmpRegisterationLayout() {
         table={state.codeHelperTableData.data}
         codeHelperCode={state.codeHelperTableData.code}
       />
+
       {/* 삭제실패 사원목록 모달영역 */}
       <ModalComponent
         title={"삭제 실패 사원목록"}
