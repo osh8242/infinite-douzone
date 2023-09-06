@@ -12,10 +12,10 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/si" element={<SalaryInformationEntry />} />
           <Route path="/er" element={<EmpRegisterationLayout />} />
-          <Route path="/lc" element={<LaborContract />} />
           <Route path="/hr" element={<HrManagementLayout />} />
+          <Route path="/lc" element={<LaborContract />} />
+          <Route path="/si" element={<SalaryInformationEntry />} />
           <Route path="*" element={<HrManagementLayout />} />
         </Routes>
       </BrowserRouter>
