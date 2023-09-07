@@ -29,7 +29,7 @@ const TableForm = ({
   //     </tr>
   //   );
   // };
-  pkValue, // [선택] 이 테이블의 pk가 노출되지 않을 때
+  pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
   actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
@@ -79,12 +79,12 @@ const TableForm = ({
   const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(rowRef && columnRef);
+  const tableFocus = useRef(false);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
-    console.log(tableName, tableRows, "Render");
-    console.log("inputRef", inputRef);
+    // console.log(tableName, tableRows, "Render");
+    // console.log("inputRef", inputRef);
   }
 
   //정렬값이 바뀌면 테이블 정렬하기 useEffect
@@ -98,7 +98,7 @@ const TableForm = ({
       else return 0;
     });
     setTableRows(newTableRows);
-  }, [orderRef, isAsc, tableRows]);
+  }, [orderRef, isAsc]);
 
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
@@ -401,9 +401,11 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
+      console.log("마우스 이벤트 타겟", event.target);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           setColumnRef(-1);
+          if (!actions.setPkValue) setRowRef(-1);
           releaseEditable();
           removeNewRow();
           tableFocus.current = false;
@@ -605,16 +607,15 @@ const TableForm = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
-              {showCheckbox && (
-                <td
-                  onClick={() =>
-                    codeHelper &&
-                    actions.setCodeHelper({ ...codeHelper, show: true })
-                  }
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </td>
-              )}
+              <td
+                onClick={() =>
+                  codeHelper &&
+                  actions.setCodeHelper({ ...codeHelper, show: true })
+                }
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </td>
+
               {tableHeaders.map((thead, columnIndex) => (
                 <td
                   key={columnIndex}
@@ -648,6 +649,11 @@ const TableForm = ({
   ) : (
     <Spinner animation="border" variant="primary" />
   );
+};
+
+TableForm.defaultProps = {
+  tableHeaders: [],
+  tableData: [],
 };
 
 TableForm.propTypes = {
