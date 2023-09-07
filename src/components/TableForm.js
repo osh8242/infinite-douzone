@@ -49,12 +49,13 @@ const TableForm = ({
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
+
   useEffect(() => {
     setTableRows(tableData || []);
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
-  const myRef = useRef(null);
+  const myRef = useRef(false);
 
   //테이블 바디 dom ref
   const tbodyRef = useRef();
@@ -369,7 +370,6 @@ const TableForm = ({
       tableRows[rowIndex].checked = !tableRows[rowIndex].checked;
       if (actions.setSelectedRows) {
         const newSelectedRows = getSelectedRows();
-        console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
         actions.setSelectedRows(newSelectedRows);
       }
       setTableRows([...tableRows]);
@@ -401,10 +401,9 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
-      console.log("이벤트클릭", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
-          releaseSelectedRef();
+          setColumnRef(-1);
           releaseEditable();
           removeNewRow();
           tableFocus.current = false;
@@ -421,7 +420,6 @@ const TableForm = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
-        console.log("이벤트키", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -558,7 +556,7 @@ const TableForm = ({
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
                 onClick={(e, row) => {
-                  if (onRowClick) onRowClick(e, row);
+                  if (onRowClick) onRowClick(row);
                 }}
               >
                 {/* 각 row 의 checkBox */}
