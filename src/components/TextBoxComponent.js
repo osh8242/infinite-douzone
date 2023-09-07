@@ -64,6 +64,7 @@ function TextBoxComponent(props) {
     const newValue = event.target.value;
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
     setInputValue(makeProcessedValue(newValue)); // data 가공
+    onChange && onChange(newValue);
   };
 
   const makeProcessedValue = (newValue) => {

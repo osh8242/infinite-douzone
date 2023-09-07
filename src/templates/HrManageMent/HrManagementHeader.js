@@ -12,7 +12,7 @@ import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import empAdd from "../../styles/img/empAddLogo.png";
 
-const HrManagementHeader = ({ deleteButtonHandler }) => {
+const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -21,7 +21,9 @@ const HrManagementHeader = ({ deleteButtonHandler }) => {
   };
 
   const faTrashCanClickHandler = (event) => {
-    setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+    if (existSelectedRows)
+      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+    else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
   return (
@@ -63,6 +65,7 @@ const HrManagementHeader = ({ deleteButtonHandler }) => {
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
+        onlyConfirm={!existSelectedRows}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
           deleteButtonHandler();

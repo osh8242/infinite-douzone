@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
+import CodeHelperModal from "../../components/CodeHelperModal";
 import DateTest from "../../components/DateTest";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
@@ -17,6 +18,7 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import ConfirmComponent from "../../components/ConfirmComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -46,6 +48,7 @@ const HrManagementLayout = () => {
     leftTableData,
     leftTablePkValue,
     leftStaticsTableData,
+    empCodeHelper,
     mainTabData,
     empImageSrc,
     subTableData,
@@ -108,7 +111,18 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
+      <CodeHelperModal
+        show={empCodeHelper.show}
+        apiFlag={empCodeHelper.apiFlag}
+        onHide={() =>
+          actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
+        }
+        codeHelperCode={empCodeHelper.codeHelperCode}
+      />
+      <HrManagementHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
       <Container>
         {/* 조회영역 */}
         <SearchPanel onSearch={onSearch}>
@@ -142,6 +156,7 @@ const HrManagementLayout = () => {
                   showHeaderArrow
                   sortable
                   rowAddable
+                  codeHelper={empCodeHelper}
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
@@ -151,6 +166,8 @@ const HrManagementLayout = () => {
                     setPkValue: actions.setLeftTablePkValue,
                     setEditedRow: actions.setEditedEmp,
                     setSelectedRows: actions.setSelectedRows,
+                    setCodeHelper: actions.setEmpCodeHelper,
+                    deleteSelectedRows: actions.deleteSelectedRows,
                     getRowObject: Emp,
                   }}
                 />
@@ -296,6 +313,7 @@ const HrManagementLayout = () => {
                   showCheckbox
                   showHeaderArrow
                   rowAddable
+                  sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
                   pkValue={leftTablePkValue}
@@ -304,6 +322,7 @@ const HrManagementLayout = () => {
                     setTableData: actions.setSubTableData,
                     setEditedRow: actions.setEditedEmpFam,
                     setSelectedRows: actions.setSelectedRows,
+                    deleteSelectedRows: actions.deleteSelectedRows,
                     getRowObject: EmpFam,
                   }}
                 />
