@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
-import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
+import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContractGrid from "./templates/LaborContractGrid";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 import MainHome from "./templates/MainHome";

@@ -45,10 +45,12 @@ function TextBoxComponent(props) {
 
     md = 4, // [선택]
     placeholder, // [선택]
+    height, // [선택] 스타일
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
+  const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   useEffect(() => {
     setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
@@ -191,6 +193,7 @@ function TextBoxComponent(props) {
           onClick={onClick}
           onKeyDown={handleKeyDown}
           placeholder={placeholder ? placeholder : undefined}
+          style={style}
         />
       );
     }
