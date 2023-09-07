@@ -121,12 +121,12 @@ function EmpRegisterationLayout() {
             {/* 좌측 사원목록 테이블 */}
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
-                showCheckbox
-                sortable
-                rowAddable
                 tableHeaders={EmpRegisterLeftHeaders}
                 tableData={state.leftTableData}
                 selectedRows={state.selectedRows}
+                showCheckbox
+                sortable
+                rowAddable
                 actions={{
                   setTableData: actions.setLeftTableData,
                   setPkValue: actions.setMainTablePkValue,
@@ -170,7 +170,6 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="abbNation"
-                    // name="searchAbbNation"
                     label={labels.abbNation}
                     // onKeyDown={submitMainTabData}
                     value={state.mainTabData.abbNation}
