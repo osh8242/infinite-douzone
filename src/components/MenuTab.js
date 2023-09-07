@@ -12,7 +12,12 @@ function MenuTab(props) {
   };
 
   return (
-    <Tabs id="menuTab" activeKey={key} onSelect={handleSelect} className="mb-3">
+    <Tabs
+      id="menuTab"
+      activeKey={key}
+      onSelect={onselect && handleSelect}
+      className="mb-3"
+    >
       {menuList.map((menu, index) => (
         <Tab eventKey={index} title={menu} key={index}></Tab>
       ))}

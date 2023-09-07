@@ -16,6 +16,7 @@ import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
+import findParentElement from "../utils/findParentElement";
 
 const TableForm = ({
   tableHeaders, // [필수]
@@ -401,7 +402,7 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
-      console.log("마우스 이벤트 타겟", event.target);
+      console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           setColumnRef(-1);
@@ -410,6 +411,7 @@ const TableForm = ({
           removeNewRow();
           tableFocus.current = false;
         }
+        if (findParentElement(event, "class", "table")) releaseAllCheckbox();
       }
       if (myRef.current && myRef.current.contains(event.target)) {
         tableFocus.current = true;
