@@ -3,9 +3,10 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 import "../styles/addressForm.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const TempAdd = (props) => {
-  const { label, isZonecode, value, value2 } = props;
+  const { label, isZonecode, value, value2, size, mb, md = 4 } = props;
   const [zonecode, setZonecode] = useState("");
   const [address, setAddress] = useState("");
   const [inputValue, setInputValue] = useState(value);
@@ -30,7 +31,7 @@ const TempAdd = (props) => {
     <>
       <Row className="py-1">
         <Col
-          md="2"
+          md={md}
           className="d-flex align-items-center justify-content-center"
         >
           <div>{label}</div>
@@ -43,10 +44,11 @@ const TempAdd = (props) => {
               type="text"
               name="zonecode"
               value={zonecode}
+              size={size}
             />
           )}
 
-          <Row>
+          <Row className={mb ? "mb-4" : ""}>
             {/* 주소 */}
             <Col md="10">
               <Form.Control
@@ -54,17 +56,18 @@ const TempAdd = (props) => {
                 type="text"
                 name="address"
                 value={value}
+                size={size}
               />
             </Col>
 
             {/* 버튼 클릭 시 Post 모달 호출 */}
-            <Col md="2">
+            <Col md="1">
               <Button
                 id="addressSearchBtn"
                 variant="secondary"
                 onClick={() => setModalState({ ...modalState, show: true })}
               >
-                검색
+                <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
               </Button>
             </Col>
           </Row>
@@ -74,13 +77,18 @@ const TempAdd = (props) => {
       {/* 상세주소 */}
       <Row className="py-1">
         <Col
-          md="2"
+          md={md}
           className="d-flex align-items-center justify-content-center"
         >
           <div>상세주소</div>
         </Col>
         <Col md="8">
-          <Form.Control type="text" name="address-detail" value={value2} />
+          <Form.Control
+            type="text"
+            name="address-detail"
+            size={size}
+            value={value2}
+          />
         </Col>
       </Row>
 

@@ -15,7 +15,7 @@ import Swsm from "../vo/SwsmGrid/Swsm";
 import SwsmOther from "../vo/SwsmGrid/SwsmOther";
 import SwsmConstant from "../model/SwsmConstant";
 
-const LaborContract = () => {
+const LaborContractSearch = () => {
   const {
     mainTabMenuList, // 전체 구분 목록
     subTabMenuList, // 메뉴 구분 목록
@@ -40,6 +40,7 @@ const LaborContract = () => {
   return (
     <>
       <Container fluid>
+        {/* header/// */}
         <SearchPanel>
           <Row>
             {/* 작성년월 */}
@@ -67,7 +68,7 @@ const LaborContract = () => {
         <Row>
           <Col md="3">
             <TableForm
-              showCheckbox
+              showCheckbox={false}
               showHeaderArrow={true}
               tableHeaders={SwsmLeftTableHeaders}
               tableData={leftTableData}
@@ -132,6 +133,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -148,6 +151,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -164,6 +169,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -180,6 +187,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -196,6 +205,8 @@ const LaborContract = () => {
                       actions={{
                         setEdited: actions.setEditedSwsm,
                       }}
+                      readOnly={true}
+                      disabled={true}
                     />
                   </Col>
                 </Row>
@@ -328,4 +339,4 @@ const LaborContract = () => {
   );
 };
 
-export default LaborContract;
+export default LaborContractSearch;

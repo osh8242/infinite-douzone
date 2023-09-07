@@ -1,0 +1,131 @@
+.page {
+    position: absolute;
+    top: 5%;
+    bottom: 10px;
+    width: 100%;
+    height: 90%;
+    max-width: 600px;
+    padding: 0 20px;
+
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    background-color: white;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 1%;
+}
+/* 
+@media screen and (max-width: 768px) {
+    .page {
+        top: 0;
+        bottom: 0;
+        height: auto;
+    }
+} */
+
+.title {
+    /* margin-top: 50px; */
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    color: #262626;
+}
+
+.contentWrap {
+    margin-top: 26px;
+    flex: 1;
+}
+
+.inputTitle {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    color: #262626;
+    margin-top: 20px;
+}
+
+.inputWrap {
+    display: flex;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+
+}
+
+.inputWrap {
+    border: 1px solid #558ef2;
+}
+
+.input {
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 17px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.input {
+    color: #262626;
+}
+
+.errorMessageWrap {
+    margin-top: 8px;
+    color: #ef0000;
+    font-size: 12px;
+    text-align: left;
+}
+
+.successMessageWrap {
+    margin-top: 8px;
+    color: #3CB371;
+    font-size: 12px;
+    text-align: left;
+}
+
+.bottomButton {
+    width: 70%;
+    height: 48px;
+    border: none;
+    font-weight: 700;
+    background-color: #007bff;
+    border-radius: 64px;
+    color: white;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.bottomButton:hover {
+    background-color: #558ef2;
+}
+
+.bottomButton:disabled {
+    background-color: #dadada;
+    color: white;
+}
+
+.imgContainer {
+    text-align: center;
+}
+
+.address {
+    margin: 0px;
+    padding: 5px;
+    float: left;
+    font-size: 12px;
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    border-radius: 1%;
+}
+
+.address:hover {
+    background-color: #1C90FB;
+}
