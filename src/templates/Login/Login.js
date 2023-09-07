@@ -1,189 +1,109 @@
-import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from "react";
+import { Row, Col, Button, Container } from "react-bootstrap";
+import imgLogo from "../../styles/img/wehago_logo.png";
+import TextBoxComponent from "../../components/TextBoxComponent";
 
-import styles from "../../styles/Login.module.css";
-import logoImg from "../../styles/img/wehago_logo.png";
-
-// redux-toolkit
-// import { useDispatch } from "react-redux";
-// import { saveToken, saveInfo } from "../store/CounterSlice";
-
-function Login() {
+function LoginTemp() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [checkFail, setCheckFail] = useState("");
-
-  // redux-toolkit dispatch
-  // const dispatch = useDispatch();
-  // const focusRef = useRef(null); // 로그인 실패시 사용할 Ref
-  // const loginInputRef = useRef(null); // 로그인 input 클릭시 사용할 Ref
-  // const passwordInputRef = useRef(null); // 패스워드 input 클릭시 사용할 Ref
-
-  const navigate = useNavigate();
-
-  // // result data
-  // let data = {};
-
-  // // 로그인 function
-  // const handleLogin = async () => {
-  //   await axios
-  //     .post("http://localhost:8889/api/user/login", {
-  //       userId: id,
-  //       userPwd: password,
-  //     })
-  //     .then((result) => {
-  //       data = result.data;
-
-  //       if (data.status === "OK") {
-  //         // HttpStatus.OK
-
-  //         localStorage.setItem("accessToken", data.data.tokenDTO.authorization); // localStorage 토큰 저장
-
-  //         if (localStorage.getItem("accessToken").includes("Bearer")) {
-  //           localStorage.setItem("userInfo", JSON.stringify(data.data.userDTO));
-
-  //           dispatch(saveToken(localStorage.getItem("accessToken"))); // redux-toolkit에 토큰 저장 (렌더링)
-
-  //           dispatch(
-  //             saveInfo({
-  //               // (렌더링)
-  //               copSeq: data.data.userDTO.copSeq,
-  //               copName: data.data.userDTO.copName,
-  //               userSeq: data.data.userDTO.userSeq,
-  //               userId: data.data.userDTO.userId,
-  //               userName: data.data.userDTO.userName,
-  //               userEmail: data.data.userDTO.userEmail,
-  //               userState: data.data.userDTO.userState,
-  //               userImage: data.data.userDTO.userImage,
-  //               userAddress: data.data.userDTO.userAddress,
-  //               empPosition: data.data.userDTO.empPosition,
-  //               empImage: data.data.userDTO.empImage,
-  //               authLevel: data.data.userDTO.authLevel,
-  //               userPhone: data.data.userDTO.userPhone,
-  //             })
-  //           );
-  //         }
-
-  //         navigate("/create/cop");
-  //       } else {
-  //         setCheckFail("아이디나 비밀번호를 다시 확인해주세요.");
-  //       }
-  //     })
-
-  //     .catch((error) => {
-  //       if (error.code === "ERR_BAD_REQUEST") {
-  //         setCheckFail("아이디와 비밀번호는 공란일 수 없습니다.");
-  //       } else {
-  //         setCheckFail("서버오류! 관리자에게 문의해주세요.");
-  //       }
-  //     });
-  // };
-
-  // // input tag focus 시 border 색상 변경 및 checkFail 초기화
-  // const failRef = () => {
-  //   setCheckFail("");
-  // };
-
-  // // 로그인 input 클릭
-  // const loginInputClick = () => {
-  //   loginInputRef.current.style.borderColor = "#007bff";
-  //   passwordInputRef.current.style.borderColor = "#ccc";
-  // };
-
-  // // 패스워드 input 클릭
-  // const passwordInputClick = () => {
-  //   passwordInputRef.current.style.borderColor = "#007bff";
-  //   loginInputRef.current.style.borderColor = "#ccc";
-  // };
 
   return (
-    <React.Fragment>
-      <>
-        <div className={styles.page}>
-          <div className={styles.imgContainer}>
-            <img src={logoImg} />
-          </div>
-          <div className={styles.title}>로그인</div>
-
-          <div className={styles.contentWrap} style={{ width: "450px" }}>
-            <div className={styles.inputTitle}>아이디</div>
-            {checkFail === "" ? (
-              <div className={styles.inputWrap}>
-                <input
-                  // ref={loginInputRef}
-                  type="text"
-                  className={styles.input}
-                  value={id}
-                  onChange={(e) => {
-                    setId(e.target.value);
-                  }}
-                  // onClick={loginInputClick}
-                />
-              </div>
-            ) : (
-              <div className={styles.inputWrap}>
-                <input
-                  // ref={focusRef}
-                  type="text"
-                  className={styles.input}
-                  style={{ borderColor: "red" }}
-                  value={id}
-                  onChange={(e) => {
-                    setId(e.target.value);
-                  }}
-                  // onClick={failRef}
-                />
-              </div>
-            )}
-            <div className={styles.inputTitle}>비밀번호</div>
-            {checkFail === "" ? (
-              <div className={styles.inputWrap}>
-                <input
-                  // ref={passwordInputRef}
-                  type="password"
-                  className={styles.input}
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  // onClick={passwordInputClick}
-                />
-              </div>
-            ) : (
-              <div className={styles.inputWrap}>
-                <input
-                  // ref={focusRef}
-                  type="password"
-                  className={styles.input}
-                  style={{ borderColor: "red" }}
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  // onClick={failRef}
-                />
-              </div>
-            )}
-            <div className={styles.loginCheck}>{/* {checkFail} */}</div>
-          </div>
-
-          <button
-            className={styles.bottomButton}
-            // onClick={handleLogin}
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "80vh" }}
+    >
+      <Col md="7" className="px-5">
+        <Row className="justify-content-center mb-4">
+          <img
+            src={imgLogo}
+            alt="Logo"
+            style={{ width: "500px", padding: "70px 0px 15px 0px" }}
+          />
+          <h2
+            style={{
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
           >
             로그인
-          </button>
+          </h2>
+        </Row>
+        <Row className="justify-content-center mb-4">
+          <Col md="8">
+            아이디
+            <TextBoxComponent
+              type="textbox"
+              size={3}
+              md={3}
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              height={45}
+            />
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-4">
+          <Col md="8">
+            비밀번호
+            <TextBoxComponent
+              type="password"
+              md={2}
+              placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              height={45}
+            />
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-4">
+          <Col md="9" className="d-flex flex-column align-items-center">
+            <Button
+              className="btn-custom"
+              style={{
+                marginTop: "40px",
+                padding: "10px 40px",
+                fontSize: "16px",
+                width: "85%",
+                borderRadius: "15px",
+              }}
+            >
+              로그인
+            </Button>
+            <Button
+              className="btn-custom"
+              style={{
+                marginTop: "10px",
+                padding: "0px 40px",
+                fontSize: "16px",
+                width: "85%",
+                borderRadius: "15px",
+                color: "darkblue",
+                backgroundColor: "white",
+                border: "none",
+              }}
+            >
+              회원가입
+            </Button>
 
-          <Link to="/signup" style={{ textDecoration: "none" }}>
-            회원가입
-          </Link>
-
-          <br />
-        </div>
-      </>
-    </React.Fragment>
+            {/* <a
+              href="/signup"
+              style={{
+                backgroundColor: "white",
+                border: "1px solid gray",
+                color: "dimgray",
+                padding: "4px 10px 4px 10px",
+                marginRight: "0px",
+                marginLeft: "7px",
+                borderRadius: "5px",
+                textDecoration: "none",
+              }}
+            >
+              회원가입
+            </a> */}
+          </Col>
+        </Row>
+      </Col>
+    </Container>
   );
 }
 
-export default Login;
+export default LoginTemp;

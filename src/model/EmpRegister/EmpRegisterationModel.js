@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import axios from "../../node_modules/axios/index";
-import Emp from "../vo/EmpRegister/Emp";
-import { currentDateStr } from "../utils/DateUtils.js";
-import EmpMenuUsage from "../vo/EmpRegister/EmpMenuUsage";
+import axios from "axios";
+import Emp from "../../vo/EmpRegister/Emp";
+import { currentDateStr } from "../../utils/DateUtils.js";
+import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -28,16 +28,6 @@ function EmpRegisterationModel() {
   const [codeHelperTableData, setCodeHelperTableData] = useState([
     { data: "", code: "", setData: setAddRow },
   ]);
-
-  // 코드도움 값 상태관리
-  const [searchAbbNation, setSearchAbbNation] = useState("");
-  const [searchCdNation, setSearchCdNation] = useState("");
-  const [searchCdDept, setSearchCdDept] = useState("");
-  const [searchCdOccup, setSearchCdOccup] = useState("");
-  const [searchRankNo, setSearchRankNo] = useState("");
-  const [searchCdSalcls, setSearchCdSalcls] = useState("");
-  const [searchCdField, setSearchCdField] = useState("");
-  const [searchCdProject, setSearchCdProject] = useState("");
 
   // useEffect(() => {
   //   console.log("empRegisterModel addRow => ", addRow);
@@ -99,12 +89,13 @@ function EmpRegisterationModel() {
         //현재의 날짜를 입사일자의 기본값으로 추가
         daEnter: currentDateStr(),
       };
+      console.log("여기를 보십시오 => 모델 insert 데이터", newEditedEmp.item);
       axios
         .post(url + "/emp/insertEmp", newEditedEmp.item, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
+          if (response.data !== 0) console.log("Emp insert 성공");
           setEditedEmp({});
         })
         .catch((error) => {
@@ -116,7 +107,7 @@ function EmpRegisterationModel() {
   //사원 정보 UPDATE POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (Object.keys(editedEmp).length !== 0) {
-      console.log("update요청: ", editedEmp);
+      console.log("update요청: ", editedEmp.item);
       axios
         .put(url + "/emp/updateEmp", editedEmp.item)
         .then((response) => {
@@ -219,16 +210,6 @@ function EmpRegisterationModel() {
       codeHelperTableData,
       undeletedEmpTableData,
       codeHelperState,
-      searchVO: {
-        searchAbbNation,
-        searchCdNation,
-        searchCdDept,
-        searchCdOccup,
-        searchRankNo,
-        searchCdSalcls,
-        searchCdField,
-        searchCdProject,
-      },
     },
     actions: {
       setLeftTableData,
@@ -244,15 +225,6 @@ function EmpRegisterationModel() {
       setUndeletedEmpTableData,
       setCodeHelperState,
       setAddRow,
-
-      setSearchAbbNation,
-      setSearchCdNation,
-      setSearchCdDept,
-      setSearchCdOccup,
-      setSearchRankNo,
-      setSearchCdSalcls,
-      setSearchCdField,
-      setSearchCdProject,
     },
   };
 }

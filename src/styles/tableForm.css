@@ -48,11 +48,11 @@ td input {
   color: transparent;
 }
 
-.selectedTr td{
+.selectedTr td {
   background-color: rgb(200, 223, 255) !important;
 }
 
-.selectedTr .selectedTd{
+.selectedTr .selectedTd {
   background-color: rgb(150, 175, 200) !important;
 }
 
