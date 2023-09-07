@@ -9,7 +9,6 @@ import {
   makePureNumber,
 } from "../utils/NumberUtils";
 import "./CustomInput.scss";
-import axios from "axios";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -47,7 +46,6 @@ function TextBoxComponent(props) {
     md = 4, // [선택]
     placeholder, // [선택]
     height, // [선택] 스타일
-    customEvent,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -64,39 +62,10 @@ function TextBoxComponent(props) {
     }
   };
 
-  const cusTomChangeHandler = (e) => {
-    console.log("custom handler on");
-    // console.log(e.target.value);
-    setInputValue(e.target.value);
-    console.log(inputValue);
-
-    const user = {
-      userId: inputValue,
-      userPwd: "",
-    };
-
-    console.log("user");
-    console.log(user);
-
-    // 임시 데이터 전송 // 추후 모델 분리 예정
-    axios
-      .post("http://localhost:8888/user/login", user)
-      .then((response) => {
-        console.log("login Data: " + response.data);
-      })
-      .catch((error) => {
-        console.log("ERROR: " + error);
-      });
-  };
-
   const handleInputChange = (event) => {
-    if (customEvent) {
-      cusTomChangeHandler(event);
-    } else {
-      const newValue = event.target.value;
-      //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
-      setInputValue(makeProcessedValue(newValue)); // data 가공
-    }
+    const newValue = event.target.value;
+    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
+    setInputValue(makeProcessedValue(newValue)); // data 가공
   };
 
   const makeProcessedValue = (newValue) => {

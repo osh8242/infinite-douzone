@@ -1,17 +1,7 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -76,7 +66,7 @@ const TableForm = ({
   const [modalState, setModalState] = useState(false);
 
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(false);
+  const tableFocus = useRef(rowRef && columnRef);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
@@ -165,10 +155,7 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(
-    () => inputRef.current[rowRef],
-    [rowRef]
-  );
+  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -200,11 +187,7 @@ const TableForm = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(
     (rowIndex) => {
-      if (
-        actions.setPkValue &&
-        rowRef !== rowIndex &&
-        rowRef < tableRows.length
-      ) {
+      if (actions.setPkValue && rowRef !== rowIndex && rowRef < tableRows.length) {
         let newPkValue = {};
         newPkValue = getPkValue(rowIndex);
         actions.setPkValue(newPkValue);
@@ -442,8 +425,7 @@ const TableForm = ({
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -523,16 +505,12 @@ const TableForm = ({
               <th
                 id="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
                 <div>{thead.text}</div>
-                <div id="tableHeader-arrow">
-                  {getArrowDirection(thead.field)}
-                </div>
+                <div id="tableHeader-arrow">{getArrowDirection(thead.field)}</div>
               </th>
             ))}
           </tr>
@@ -584,9 +562,11 @@ const TableForm = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
-              <td>
-                <FontAwesomeIcon icon={faPlus} size={"lg"} />
-              </td>
+              {showCheckbox && (
+                <td>
+                  <FontAwesomeIcon icon={faPlus} />
+                </td>
+              )}
               {tableHeaders.map((thead, columnIndex) => (
                 <td
                   key={columnIndex}
@@ -594,15 +574,11 @@ const TableForm = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) =>
-                    handleRowClick(e, tableRows.length, columnIndex)
-                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div
                     className="tableContents"
-                    ref={(div) =>
-                      setInputRef(div, tableRows.length, columnIndex)
-                    }
+                    ref={(div) => setInputRef(div, tableRows.length, columnIndex)}
                   ></div>
                 </td>
               ))}

@@ -3,19 +3,9 @@ import { Row, Col, Button, Container } from "react-bootstrap";
 import imgLogo from "../../styles/img/wehago_logo.png";
 import TextBoxComponent from "../../components/TextBoxComponent";
 
-function Login() {
+function LoginTemp() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-
-  function LoginHandler(e) {
-    console.log("LoginHandler function: ");
-    console.log(e.target.value);
-    console.log(e);
-    console.log("Login");
-    // console.log(e.target.value);
-    setId();
-    setPassword();
-  }
 
   return (
     <Container
@@ -48,7 +38,6 @@ function Login() {
               value={id}
               onChange={(e) => setId(e.target.value)}
               height={45}
-              customEvent={true}
             />
           </Col>
         </Row>
@@ -69,7 +58,6 @@ function Login() {
           <Col md="9" className="d-flex flex-column align-items-center">
             <Button
               className="btn-custom"
-              onClick={LoginHandler}
               style={{
                 marginTop: "40px",
                 padding: "10px 40px",
@@ -118,4 +106,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginTemp;

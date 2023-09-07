@@ -7,7 +7,7 @@ import RadioForm from "../../components/RadioForm";
 import TempAdd from "../../components/TempAdd";
 import axios from "axios";
 
-function Sign() {
+function SignTemp() {
   const [user, setUser] = useState({});
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -180,4 +180,4 @@ function Sign() {
   );
 }
 
-export default Sign;
+export default SignTemp;
