@@ -18,7 +18,7 @@ function EmpRegisterationModel() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [reloadSubTableData, setReloadSubTableData] = useState(false);
 
-  const [undeletedEmpTableData, setUndeletedEmpTableData] = useState(null); //미삭제 사원데이터를 관리하는 상태변수
+  const [undeletedEmpTableData, setUndeletedEmpTableData] = useState([]); //미삭제 사원데이터를 관리하는 상태변수
 
   const [modalState, setModalState] = useState({ show: false }); //일반 모달 창의 상태관리
   const [codeHelperState, setCodeHelperState] = useState({ show: false }); //코드 도움 모달 창의 상태관리
