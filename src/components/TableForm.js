@@ -434,6 +434,7 @@ const TableForm = ({
         }
 
         if (editableRowIndex === -1) {
+          event.preventDefault();
           switch (event.key) {
             case "ArrowDown":
               if (rowRef < tableRows.length) setRowRef(rowRef + 1);
@@ -456,7 +457,6 @@ const TableForm = ({
 
             case "Enter":
               if (editableRowIndex === -1 && rowRef > -1) {
-                event.preventDefault();
                 handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) pushNewRow();
                 setEditableRow(rowRef);
@@ -557,8 +557,8 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
-                onClick={(row) => {
-                  if (onRowClick) onRowClick(row);
+                onClick={(e, row) => {
+                  if (onRowClick) onRowClick(e, row);
                 }}
               >
                 {/* 각 row 의 checkBox */}

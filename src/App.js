@@ -19,7 +19,8 @@ function App() {
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc/*" element={<LaborContractGrid />} />
           <Route path="/si" element={<SalaryInformationEntry />} />
-          <Route path="*" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<HrManagementLayout />} />
         </Routes>
       </BrowserRouter>
     </div>
