@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import "../styles/SearchForm.css";
 
 function SearchForm({ placeholder }) {
-  // 상태 변수 및 리액트 훅 초기화
   const [inputValue, setInputValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
