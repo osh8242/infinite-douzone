@@ -2,12 +2,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
-import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
+import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
 import LaborContractGrid from "./templates/LaborContractGrid";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 import MainHome from "./templates/MainHome";
 import Login from "./templates/Login/Login";
-import SignUp from "./templates/Login/SignTemp";
+import SignUp from "./templates/Login/SignUp";
 
 function App() {
   return (
