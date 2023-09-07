@@ -1,12 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
-import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
 import Header from "./templates/Header";
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContractGrid from "./templates/LaborContractGrid";
 import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 import Login from "./templates/Login/Login";
-import SignUp from "./templates/Login/SignTemp";
+import SignUp from "./templates/Login/Sign";
+import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
+import LaborContract from "./templates/LaborContract";
+import MainHome from "./templates/MainHome";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={<MainHome />} />
           <Route path="/er" element={<EmpRegisterationLayout />} />
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc/*" element={<LaborContractGrid />} />

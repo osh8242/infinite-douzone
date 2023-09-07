@@ -36,7 +36,7 @@ const HrManagementModel = () => {
   useEffect(() => {
     axios
       .get(
-        `${url}/empAdd/getEmpAddListForHrManagement?jobOk=${jobOk}+
+        `${url}/emp/getEmpListForHrManagement?jobOk=${jobOk}+
         ${"&orderRef=" + orderRef}
         +
         ${refYear ? "&refYear=" + refYear : ""}`
@@ -77,7 +77,6 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (empImageSrc && empImageSrc !== "") {
     }
-    console.log("empImageSrc", empImageSrc);
     //"/empPhoto/getEmpPhotoByCdEmp/" + leftTablePkValue.cdEmp
     axios
       .get(url + "/empPhoto/image", {
@@ -87,7 +86,6 @@ const HrManagementModel = () => {
         // ArrayBuffer를 Blob으로 변환하고 URL을 생성
         const blob = new Blob([response.data], { type: "image/jpeg" });
         const imageUrl = URL.createObjectURL(blob);
-        console.log("iamgeUrl", imageUrl);
         setEmpImageSrc(imageUrl);
       })
       .catch((error) => {

@@ -23,7 +23,11 @@ function EmailForm(props) {
         emEmp: emEmpId.current.value + "@" + emEmpDomain.current.value,
         cdEmp: pkValue.cdEmp,
       };
-      actions.setEmEmp(newEmEmpById);
+      //update api 통일을 위한 item 포장
+      let item = {
+        item: newEmEmpById,
+      };
+      actions.setEmEmp(item);
     }
   };
 
@@ -32,7 +36,11 @@ function EmailForm(props) {
       emEmp: emEmpId.current.value + "@" + emEmpDomain.current.value,
       cdEmp: pkValue.cdEmp,
     };
-    actions.setEmEmp(newEmEmpByDomain);
+    //update api 통일을 위한 item 포장
+    let item = {
+      item: newEmEmpByDomain,
+    };
+    actions.setEmEmp(item);
   };
 
   return (

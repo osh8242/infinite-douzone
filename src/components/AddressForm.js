@@ -39,7 +39,11 @@ const AddressForm = (props) => {
     };
     setModalState({ ...modalState, show: false });
 
-    actions.setAddress(newAddress);
+    //update api를 통일하기 위해 item으로 포장
+    let item = {
+      item: newAddress,
+    };
+    actions.setAddress(item);
   };
 
   const [modalState, setModalState] = useState({
@@ -57,7 +61,11 @@ const AddressForm = (props) => {
         addHome2: addHome2Ref.current.value,
         cdEmp: pkValue.cdEmp,
       };
-      actions.setAddress(newDetailAddress);
+      //update api를 통일하기 위해 item으로 포장
+      let item = {
+        item: newDetailAddress,
+      };
+      actions.setAddress(item);
     }
   };
 
