@@ -6,7 +6,15 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 
-function RadioForm({ id, label, optionList, checked, disabled, onChange }) {
+function RadioForm({
+  id,
+  label,
+  optionList,
+  checked,
+  disabled,
+  onChange,
+  md = 4,
+}) {
   const [selectedOption, setSelectedOption] = useState(checked);
 
   useEffect(() => {
@@ -23,7 +31,7 @@ function RadioForm({ id, label, optionList, checked, disabled, onChange }) {
     <Row className="py-1">
       {label && (
         <Col
-          md="4"
+          md={md}
           className="d-flex align-items-center justify-content-center mt-1"
         >
           {label}
