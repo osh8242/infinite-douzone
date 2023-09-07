@@ -284,7 +284,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                 showCheckbox={false}
                 showHeaderArrow={false}
                 tableHeaders={tableHeader.salAllowSum}
-                tableData={state.sumTableData.salAllowPaySumData}
+                tableData={state.salPaySumData.allowPay}
                 actions={{}}
                 readOnly
               />
@@ -292,7 +292,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
             <Row>
               <TableForm 
                 tableHeaders={tableHeader.salDeductSum}
-                tableData={state.sumTableData.salDeductPaySumData}
+                tableData={state.salPaySumData.deductPay}
                 actions={{}}
                 readOnly
               />

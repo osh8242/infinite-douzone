@@ -225,8 +225,6 @@ const SalaryInformationEntryModel = () => {
         }));
 
         setSalPaySumData({ allowPay : totalSalAllowPaydata, deductPay : totalSalDeductPaydata});
-          
-      
 
       })
 
@@ -438,6 +436,7 @@ const SalaryInformationEntryModel = () => {
 
       , addRow
       , searchTotalDataVo
+     
     }
     , actions:{
       setSaInfoListData 
