@@ -218,7 +218,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
           <Col md="3">
             <>
             {/* 급여항목 table영역 */}
-            <TableForm
+             <TableForm
             tableName={"급여항목 테이블"}
               tableHeaders={tableHeader.salAllow}
               tableData={state.salAllowData.salData}
@@ -244,7 +244,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                 setEditedRow: actions.setEditedAllow
               }              
             }
-            />
+            /> 
            
             </>
           </Col>
@@ -265,11 +265,11 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   </tr>
                   <tr>
                     <td>차인지급액</td>
-                    <td>{state.salAllowData.sumData.sum-state.deductData.sumData.sum}</td>
+                    <td>{state.salAllowData.sumData.sum}</td>
                   </tr>
                 </>
                 )}
-            /> 
+            />
             </>
           </Col>
           <Col md="3">

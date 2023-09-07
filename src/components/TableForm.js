@@ -82,8 +82,8 @@ const TableForm = ({
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
-    console.log(tableName, tableRows, "Render");
-    console.log("inputRef", inputRef);
+    // console.log(tableName, tableRows, "Render");
+    // console.log("inputRef", inputRef);
   }
 
   //정렬값이 바뀌면 테이블 정렬하기 useEffect
@@ -401,7 +401,6 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
-      console.log("이벤트클릭", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           releaseSelectedRef();
@@ -421,7 +420,6 @@ const TableForm = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
-        console.log("이벤트키", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -557,7 +555,7 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
-                onClick={(row) => {
+                onClick={(e, row) => {
                   if (onRowClick) onRowClick(row);
                 }}
               >

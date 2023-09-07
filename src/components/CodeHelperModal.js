@@ -33,7 +33,7 @@ function CodeHelperModal(props) {
     usePk, // [선택] rowData에서 특정 필드값을 set할거면 usePk='칼럼명' 설정... row(객체 전체)를 set할거면 false
 
     // [apiFlag, codeHelperCode]나 codeHelperCodes중 둘중 하나는 반드시 사용해야함
-    apiFlag, // [선택] api 쏠때 true
+
     codeHelperCode, // [apiFlag = true일때 필수] 관리 편리성 위해 url, pacodeHelperCode를 미리 만들어두기
 
     table, // [선택] api 안쏠때 프런트에 저장되어있는 tabledata를 이용해서 형식에 맞게 만들어둔
@@ -56,48 +56,47 @@ function CodeHelperModal(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [oriData, setOriData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  //const [table, setTable] = useState([]);
 
   useEffect(() => {
-    if (apiFlag) {
-      codeHelperCode && getCodeListForCodeHelper(codeHelperCode);
-    } else {
-      table && setTModalData(table);
+    if(codeHelperCode){
+      const initialTableData =  getCodeListForCodeHelper(codeHelperCode)
+      setTModalData((prevData) => ({
+        ...prevData,
+        tableData: initialTableData,
+      }));
+    }else {
+      setTModalData(table);
     }
     setOriData(modalData.tableData);
     setFilteredData(modalData.tableData);
-  }, [show]);
+  },[]);
 
-  const getCodeListForCodeHelper = (codeHelperCode) => {
+
+  const getCodeListForCodeHelper = async (codeHelperCode) => {
     const url = "http://localhost:8888";
-
+  
     if (codeHelperCode !== "") {
-      axios
-        .get(
+      try {
+        const response = await axios.get(
           url + codeHelperCode.url + objectToQueryString(codeHelperCode.params),
-          //{data : codeHelperCode.params},
           { "Content-Type": "application/json" }
-        )
-        .then((response) => {
-          const codeDataList = response.data.map((object) => {
-            const dynamicProperties = { item: {} };
-            for (const key in object) {
-              dynamicProperties.item[key] = object[key];
-            }
-            return dynamicProperties;
-          });
-          console.log("codeDataList", codeDataList);
-          setTModalData({
-            ...modalData,
-            tableData: codeDataList,
-            title: codeHelperCode.title,
-            tableHeaders: codeHelperCode.headers,
-            searchField: codeHelperCode.searchField,
-          });
-        })
-        .catch((error) => {
-          console.log("에러발생: ", error);
-          // 에러 처리
+        );
+  
+        const codeDataList = response.data.map((object) => {
+          const dynamicProperties = { item: {} };
+          for (const key in object) {
+            dynamicProperties.item[key] = object[key];
+          }
+          return dynamicProperties;
         });
+  
+        return codeDataList;
+
+      } catch (error) {
+        console.log("에러발생: ", error);
+        // 에러 처리
+      }
     }
   };
 
@@ -121,23 +120,25 @@ function CodeHelperModal(props) {
   /* 클릭한 행반환 */
   const handleRowClick = (row) => {
     setSearchTerm("");
-        if (setRowData) {
-      usePk ? setRowData(row.item[usePk]) : setRowData(row.item);
+    if (setRowData) {
+     usePk ? setRowData(row.item[usePk]) : setRowData(row.item);
     }
     onRowClick && onRowClick();
     onHide();
   };
 
   return (
-    <Modal show={show} size="lg" centered>
-      <Modal.Header>
-        <Modal.Title>{modalData.title}</Modal.Title>
-      </Modal.Header>
+    <>
+    {console.log({modalData})}
+      <Modal show={show} size="lg" centered>
+        <Modal.Header>
+          <Modal.Title>{modalData.title}</Modal.Title>
+        </Modal.Header>
 
-      <Modal.Body>
-        <div className="container">
-          <Row>
-            {/* <Table striped bordered hover>
+        <Modal.Body>
+          <div className="container">
+            <Row>
+              {/* <Table striped bordered hover>
               <thead>
                 <tr onClick={(e) => handleRowClick(e)}>
                   {modalData.tableHeaders.map((header) => (
@@ -156,47 +157,48 @@ function CodeHelperModal(props) {
                 ))}
               </tbody>
             </Table> */}
-            <TableForm
+              {/* <TableForm
               readOnly
               tableHeaders={modalData.tableHeaders}
               tableData={filteredData}
               onRowClick={handleRowClick}
-            />
-          </Row>
-          <Row>
-            <Form.Group>
-              <TextBoxComponent
-                type="text"
-                label={"찾을내용"}
-                value={searchTerm}
-                onChange={setSearchTerm}
-              />
-            </Form.Group>
-          </Row>
-        </div>
-      </Modal.Body>
+            /> */}
+            </Row>
+            <Row>
+              <Form.Group>
+                <TextBoxComponent
+                  type="text"
+                  label={"찾을내용"}
+                  value={searchTerm}
+                  onChange={setSearchTerm}
+                />
+              </Form.Group>
+            </Row>
+          </div>
+        </Modal.Body>
 
-      <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={(e) => {
-            onHide();
-          }}
-        >
-          닫기
-        </Button>
-        {onConfirm && (
+        <Modal.Footer>
           <Button
-            variant="primary"
+            variant="secondary"
             onClick={(e) => {
-              onConfirm();
+              onHide();
             }}
           >
-            확인
+            닫기
           </Button>
-        )}
-      </Modal.Footer>
-    </Modal>
+          {onConfirm && (
+            <Button
+              variant="primary"
+              onClick={(e) => {
+                onConfirm();
+              }}
+            >
+              확인
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 
