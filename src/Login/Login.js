@@ -5,7 +5,7 @@ import { Row, Col, Button, Container } from "react-bootstrap";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
 
 const Login = () => {
-  const { sendDataToBackend } = useLoginModel();
+  const { LoginUser } = useLoginModel();
 
   return (
     <Container
@@ -46,12 +46,13 @@ const Login = () => {
           className="btn-custom"
           style={{
             marginTop: "40px",
+            marginLeft: "80px", // 임시
             padding: "10px 40px",
             fontSize: "16px",
-            width: "85%",
+            width: "75%",
             borderRadius: "15px",
           }}
-          onClick={sendDataToBackend}
+          onClick={LoginUser}
         >
           로그인
         </Button>
@@ -59,9 +60,10 @@ const Login = () => {
           className="btn-custom"
           style={{
             marginTop: "10px",
+            marginLeft: "80px", // 임시
             padding: "0px 40px",
             fontSize: "16px",
-            width: "85%",
+            width: "75%",
             borderRadius: "15px",
             color: "darkblue",
             backgroundColor: "white",

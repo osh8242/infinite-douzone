@@ -1,5 +1,5 @@
 import React from "react";
-import { useLogin } from "./LoginContext";
+import { useLogin } from "./LoginProvider";
 import { Col, Form, Row } from "react-bootstrap";
 
 const TextComponent = ({
@@ -11,7 +11,7 @@ const TextComponent = ({
   height,
   name,
 }) => {
-  const { values, updateValue } = useLogin();
+  const { loginInfo, updateLoginInfo } = useLogin(); // login 정보 저장
   const style = height ? { height: `${height}px` } : {};
 
   return (
@@ -20,8 +20,8 @@ const TextComponent = ({
         <Form.Control
           type={type}
           size={size}
-          value={values[name]}
-          onChange={(e) => updateValue(name, e.target.value)}
+          value={loginInfo[name]}
+          onChange={(e) => updateLoginInfo(name, e.target.value)}
           placeholder={placeholder ? placeholder : undefined}
           style={style}
         />

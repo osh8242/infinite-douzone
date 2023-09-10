@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginProvider } from "./LoginContext";
+import { LoginProvider } from "./LoginProvider";
 import Login from "./Login";
 
 const LoginGrid = () => {
