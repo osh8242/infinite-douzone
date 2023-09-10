@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import imgLogo from "../../styles/img/wehago_logo.png";
 import TextBoxComponent from "../../components/TextBoxComponent";
+import axios from "axios";
+// import LoginModel from "../../model/LoginModel";
+import TextComponent from "../../components/TextComponent";
+import LoginGrid from "../../Login/LoginGrid";
 
-function LoginTemp() {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
+  const url = "http://localhost:8888";
+  // const { actions } = LoginModel();
+
+  const [id, setId] = useState();
+  const [password, setPassword] = useState();
 
   return (
     <Container
@@ -30,28 +37,17 @@ function LoginTemp() {
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="8">
-            아이디
-            <TextBoxComponent
-              type="textbox"
-              size={3}
-              md={3}
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              height={45}
-            />
+            {/* 아이디
+            <TextComponent
+            // ref={inputRef}
+            // onEnter={submitLoginUser}
+            /> */}
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="8">
             비밀번호
-            <TextBoxComponent
-              type="password"
-              md={2}
-              placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              height={45}
-            />
+            <LoginGrid />
           </Col>
         </Row>
         <Row className="justify-content-center mb-4">
@@ -106,4 +102,4 @@ function LoginTemp() {
   );
 }
 
-export default LoginTemp;
+export default Login;
