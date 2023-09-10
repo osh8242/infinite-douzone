@@ -2,7 +2,6 @@
 import { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import CodeHelperModal from "../../components/CodeHelperModal";
 import DateTest from "../../components/DateTest";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
@@ -12,13 +11,19 @@ import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
 import CommonConstant from "../../model/CommonConstant";
-import HrManagementConstant from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import ConfirmComponent from "../../components/ConfirmComponent";
+import {
+  searchOption, // 검색옵션 리스트
+  orderList,
+  leftTableConstant,
+  leftStaticsTableConstant,
+  subTableConstant,
+  tabConstant,
+} from "../../model/HrManagement/HrManagementConstant";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -27,20 +32,11 @@ import ConfirmComponent from "../../components/ConfirmComponent";
 const HrManagementLayout = () => {
   //실행중에는 값이 고정인 값들
   const {
-    searchOption, // 검색옵션 리스트
-    orderList, // 정렬기준 리스트
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
     labels, // 속성명
   } = CommonConstant();
-
-  const {
-    leftTableConstant,
-    leftStaticsTableConstant,
-    subTableConstant,
-    tabConstant,
-  } = HrManagementConstant();
 
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
@@ -48,7 +44,6 @@ const HrManagementLayout = () => {
     leftTableData,
     leftTablePkValue,
     leftStaticsTableData,
-    empCodeHelper,
     mainTabData,
     empImageSrc,
     subTableData,
@@ -111,14 +106,14 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      <CodeHelperModal
+      {/* <CodeHelperModal
         show={empCodeHelper.show}
         apiFlag={empCodeHelper.apiFlag}
         onHide={() =>
           actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
         }
         codeHelperCode={empCodeHelper.codeHelperCode}
-      />
+      /> */}
       <HrManagementHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
@@ -156,7 +151,6 @@ const HrManagementLayout = () => {
                   showHeaderArrow
                   sortable
                   rowAddable
-                  codeHelper={empCodeHelper}
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
@@ -166,8 +160,7 @@ const HrManagementLayout = () => {
                     setPkValue: actions.setLeftTablePkValue,
                     setEditedRow: actions.setEditedEmp,
                     setSelectedRows: actions.setSelectedRows,
-                    setCodeHelper: actions.setEmpCodeHelper,
-                    deleteSelectedRows: actions.deleteSelectedRows,
+                    deleteCurrentRow: actions.deleteCurrentRow,
                     getRowObject: Emp,
                   }}
                 />
@@ -190,7 +183,7 @@ const HrManagementLayout = () => {
               {/* 우측 메인폼 */}
               <Row className="mb-5 justify-content-center" ref={mainTabRef}>
                 <Row>
-                  <Col xs md="3">
+                  <Col className="d-flex align-items-center" xs md="3">
                     <ProfileImageForm src={empImageSrc} />
                   </Col>
                   <Col xs md="9">

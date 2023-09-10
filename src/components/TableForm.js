@@ -16,7 +16,6 @@ import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
-import findParentElement from "../utils/findParentElement";
 
 const TableForm = ({
   tableHeaders, // [필수]
@@ -411,7 +410,6 @@ const TableForm = ({
           removeNewRow();
           tableFocus.current = false;
         }
-        if (findParentElement(event, "class", "table")) releaseAllCheckbox();
       }
       if (myRef.current && myRef.current.contains(event.target)) {
         tableFocus.current = true;
@@ -469,8 +467,13 @@ const TableForm = ({
               checkboxHandler(rowRef);
               break;
 
-            case "Delete":
-              actions.deleteSelectedRows();
+            case "F5":
+              console.log("actions", actions.deleteCurrentRow);
+              setModalState({
+                show: true,
+                message: "해당 행을 삭제하시겠습니까?",
+                onConfirm: actions.deleteCurrentRow(tableRows[rowRef]),
+              });
               break;
 
             default:
@@ -610,6 +613,7 @@ const TableForm = ({
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
               <td
+                className="d-flex justify-content-center"
                 onClick={() =>
                   codeHelper &&
                   actions.setCodeHelper({ ...codeHelper, show: true })
@@ -645,7 +649,12 @@ const TableForm = ({
       <ConfirmComponent
         show={modalState.show}
         message={modalState.message}
-        onConfirm={() => setModalState({ show: false })}
+        onConfirm={
+          modalState.onConfirm
+            ? modalState.onConfirm
+            : () => setModalState({ show: false })
+        }
+        onHide={() => setModalState({ show: false })}
       />
     </>
   ) : (
@@ -671,4 +680,4 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
-export default TableForm;
+export default React.memo(TableForm);

@@ -4,11 +4,9 @@ import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import CommonConstant from "../CommonConstant";
-import HrManagementConstant from "./HrManagementConstant";
 
 const HrManagementModel = () => {
   const { url } = CommonConstant(); // REST API 서버 주소
-  const { codeHelperParams } = HrManagementConstant();
 
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
@@ -17,11 +15,6 @@ const HrManagementModel = () => {
   const [leftTableData, setLeftTableData] = useState([]); // 좌측 그리드 데이터
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // 좌측 그리드 PK
   const [editedEmp, setEditedEmp] = useState({}); // 좌측 그리드 수정 ROW
-  const [empCodeHelper, setEmpCodeHelper] = useState({
-    show: false,
-    apiFlag: true,
-    codeHelperCode: codeHelperParams.emp,
-  });
 
   const [mainTabData, setMainTabData] = useState({}); // 메인탭 데이터
   const [editedEmpAdd, setEditedEmpAdd] = useState({}); // 메인탭 수정 ROW
@@ -243,6 +236,28 @@ const HrManagementModel = () => {
       });
   }, [selectedRows]);
 
+  //현재행 삭제요청
+  const deleteCurrentRow = useCallback((currentRow) => {
+    let pattern;
+    switch (currentRow.table) {
+      case "empFam":
+        pattern = "/empFam/deleteEmpFam";
+        break;
+      case "emp":
+        pattern = "/emp/deleteEmp";
+        break;
+      default:
+        console.log("설정되지 않은 테이블 행을 삭제요청받음");
+        return;
+    }
+    axios
+      .delete(url + pattern, { data: currentRow.item })
+      .then(console.log("삭제완료"))
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+      });
+  }, []);
+
   ////사원 테이블 재직 통계 계산
   const leftStaticsTableData = useMemo(() => {
     let jobOkY = 0;
@@ -267,7 +282,7 @@ const HrManagementModel = () => {
       leftTableData,
       leftTablePkValue,
       leftStaticsTableData,
-      empCodeHelper,
+
       mainTabData,
       empImageSrc,
       subTableData,
@@ -284,7 +299,6 @@ const HrManagementModel = () => {
       setLeftTableData,
       setLeftTablePkValue,
       setEditedEmp,
-      setEmpCodeHelper,
 
       setMainTabData,
       setEditedEmpAdd,
@@ -294,6 +308,8 @@ const HrManagementModel = () => {
 
       setSelectedRows,
       deleteSelectedRows,
+
+      deleteCurrentRow,
     },
   };
 };
