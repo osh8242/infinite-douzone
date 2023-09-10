@@ -56,15 +56,17 @@ const SalConstant = () => {
     },
     codeHelperparams : {
         cdDept : {
-            title : '부서코드 조회'
-            , tableHeaders: [
+            subject : '부서코드 조회',
+            headers: [
                 { field: "cdDept", text: "부서코드"},
-                { field: "nmDept", text: "부서이름"},]
-            , tableData : [
-                { cdDept:'D001', nmDept : '인사팀'}, 
-                { cdDept:'D002', nmDept : '경영지원팀'}, 
-                { cdDept:'D003', nmDept : '개발팀'}]
-            , searchField : ['cdDept','nmDept'],
+                { field: "nmDept", text: "부서이름"},
+            ],
+            tableData : [
+                { item : { cdDept:'D001', nmDept : '인사팀'}}, 
+                { item : { cdDept:'D002', nmDept : '경영지원팀'}}, 
+                { item : { cdDept:'D003', nmDept : '개발팀'}}],
+            searchField : ['cdDept','nmDept'],
+            usePk : 'cdDept'
         },
         emplist:{
             title : '사원조회'
@@ -98,8 +100,8 @@ const SalConstant = () => {
             , params : { parentId: CODE.PARENT_ID.OCCUP }
             , searchField : ['codeId','codeName']
         },
-        paymentDateList : {
-            title : '지급일 조회'
+        paymentDate : {
+            subject : '지급일 조회'
             , url : "/saallowpay/getPaymentDateList"
             , headers : [
                 //{ field: "dateId", text: "날짜ID" },
@@ -107,6 +109,7 @@ const SalConstant = () => {
             ]
             , params : { allowYear : '2023' , allowMonth : '2023-09'}
             , searchField : ['paymentDate']
+            , usePk : "paymentDate"
         }
     },
     cdDeduct : {
@@ -128,6 +131,12 @@ const SalConstant = () => {
             allowYear : '',
             current : ''
         },  
+    },
+    codeHelper : {
+        
+    },
+    label : {
+
     }
 }    
 };

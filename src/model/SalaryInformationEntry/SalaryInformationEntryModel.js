@@ -31,11 +31,15 @@ const SalaryInformationEntryModel = () => {
   //const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');    // 조회구분 selectbox 선택된 value
   const [selectedOption, setSelectedOption] = useState('');                     // 조회구분 selectbox 선택된 value
   const [editedAllow, setEditedAllow]= useState();                              // 급여항목 테이블_ table row 수정된 객체
+
   const [addRow, setAddRow]= useState();                                        // 사원 코드도움창에서 선택한 로우 객체
   const [codeHelperTableData, setCodeHelperTableData] = useState({              // 코드도움 테이블 data
-    data : '' ,
-    code : '' ,
-    setData : setAddRow
+    subject : '',
+    setRowData : setAddRow,
+    usePk : '',
+    tableHeaders : [],
+    tableData : [],
+    searchField : []
   });
 
   const [changeCdEmp, setChangeCdEmp] = useState({cdEmp:''});

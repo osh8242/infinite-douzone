@@ -11,41 +11,62 @@ import CommonConstant from "../../model/CommonConstant";
 import SalConstant from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import HrManagementHeader from "../HrManagement/HrManagementHeader";
+import axios from "axios";
+import { objectToQueryString } from "../../utils/StringUtils";
 
 const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
   //상수
-  const { labels } = CommonConstant();
+  const { url, labels } = CommonConstant();
   const { selectOption, tableHeader, codeHelperparams } = SalConstant();
 
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
-  const [apiFlag, setApiFlag] = useState(false);
+  const [isCardVisible, setIsCardVisible] = useState(false);
+
+  const toggleCardVisibility = () => {
+    setIsCardVisible(!isCardVisible);
+  };
 
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback(
-    (flag, codeHelperTableData, codeHelperCode, setFn, usePk) => {
-
-      //console.log(flag, codeHelperTableData, codeHelperCode, setFn, usePk);
-      actions.setModalState({ show: true });
-      setApiFlag(flag);
-      if (flag) {
-        actions.setCodeHelperTableData((prevState) => ({
-          ...prevState,
-          code: codeHelperCode,
-          setData: setFn,
-          usePk: usePk,
-        }));
-      } else {
-        actions.setCodeHelperTableData((prevState) => ({
-          ...prevState,
-          data: codeHelperTableData,
-          setData: setFn,
-          usePk: usePk,
-        }));
-      }
+  const codeHelperShow = useCallback((codeHelperCode, setFn) => {
+      actions.setModalState({ show: true });    
+      actions.setCodeHelperTableData(() => ({
+        subject: codeHelperCode.subject,
+        setRowData: setFn,
+        tableHeaders : codeHelperCode.headers,
+        tableData : codeHelperCode.url? apiCodeHelperData(codeHelperCode.url, codeHelperCode.params) : codeHelperCode.tableData,
+        usePk: codeHelperCode.usePk? codeHelperCode.usePk : '',
+        searchField : codeHelperCode.searchField,
+      }));
     },
     []
   );
+
+  const apiCodeHelperData = (url, params) => {
+    const serverUrl = "http://localhost:8888";
+
+    return axios.get(serverUrl + url + objectToQueryString(params))
+      .then((response) => {
+        // 데이터 추출
+        const data = response.data;
+        // 데이터를 가지고 작업 수행
+        const codeDataList = data.map((object) => {
+
+          const dynamicProperties = { item: {} };
+          for (const key in object) {
+            dynamicProperties.item[key] = object[key];
+          }
+          return dynamicProperties;
+        
+        });
+  
+        return codeDataList;
+      })
+      .catch((error) => {
+        console.error("API 호출 중 오류 발생:", error);
+        throw error; // 에러를 상위로 전파하여 처리
+      });
+  };
 
   //조회버튼
   const onSearch = () => {
@@ -59,15 +80,13 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
         {/* 코드 도움 모달 영역 */}
         <CodeHelperModal
           show={state.modalState.show}
-          onHide={() =>
-            actions.setModalState({ ...state.modalState, show: false })
-          }
-          //onConfirm={() => alert('확인')}
+          onHide={() => actions.setModalState({show: false})}
           setRowData={state.codeHelperTableData.setData}
           usePk={state.codeHelperTableData.usePk}
-          apiFlag={apiFlag}
-          table={state.codeHelperTableData.data}
-          codeHelperCode={state.codeHelperTableData.code}
+          tableHeaders = {state.codeHelperTableData.tableHeaders}
+          tableData={state.codeHelperTableData.tableData}
+          subject={state.codeHelperTableData.subject}
+          searchField={state.codeHelperTableData.searchField}
         />
 
         {/* 기본 검색조건 */}
@@ -89,19 +108,13 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
               />
             </Col>
             <Col>
-              {/* <DateTest
-                label={"지급일"}
-                value={state.searchVO.paymentDate}
-                //onChange={(e, value) => actions.setPaymentDate(value)}
-                onChange={actions.setPaymentDate}
-                //codeHelper
-              /> */}
               <TextBoxComponent
+                //type="date"
                 name="paymentDate"
                 label={"지급일"}
                 value={state.searchVO.paymentDate}
                 onChange={actions.setPaymentDate}
-                codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.paymentDateList, actions.setPaymentDate, 'paymentDate')}
+                codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.paymentDate, actions.setPaymentDate)}
               />
             </Col>
           </Row>
@@ -125,7 +138,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
                   onEnter={actions.setSearchCdDept}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(false, codeHelperparams.cdDept, '', actions.setSearchCdDept, 'cdDept')}  
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept,actions.setSearchCdDept)}  
                 />
               </Col>
             </Row>
@@ -187,7 +200,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
         </SearchPanel>
 
         <Row>
-          <Col md="3">
+          <Col >
             {/* 사원정보 table영역 */}
             <TableForm
               readOnly
@@ -215,7 +228,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
               +
             </Button>
           </Col>
-          <Col md="3">
+          <Col >
             <>
             {/* 급여항목 table영역 */}
              <TableForm
@@ -248,7 +261,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
            
             </>
           </Col>
-          <Col md="3">
+          <Col >
             {/* 공제항목 table영역 */}
             <>
             <TableForm
@@ -272,7 +285,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
             />
             </>
           </Col>
-          <Col md="3">
+          <Col>
             {/* 조회구분 영역*/}
             <SelectForm
               label={labels.inquiryYype}
@@ -298,10 +311,12 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
               />
             </Row>
           </Col>
+          
+          {isCardVisible ? (
           <Col md="3">
             {/* 사원 상세정보 영역 */}
             <div>
-              <Card>
+              <Card style={{fontSize:'8px'}}>
                 <Card.Header as="h5">사원정보</Card.Header>
                 <Card.Body>
                   {state.saInfoDetailData ? (
@@ -371,8 +386,21 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   )}
                 </Card.Body>
               </Card>
+              <Button onClick={toggleCardVisibility}>
+                {isCardVisible ? '>' : '<'}
+              </Button>
             </div>
           </Col>
+          ):(
+            <Col xs="1">
+              <div>
+                <Button onClick={toggleCardVisibility}>
+                  {isCardVisible ? '>' : '<'}
+                </Button>
+              </div>
+            </Col>
+          )}
+          
         </Row>
       </Container>
     </>
