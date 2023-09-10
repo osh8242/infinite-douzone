@@ -1,53 +1,33 @@
+//로그인 상태를 전역적으로 관리하기 위한 컨텍스트와 프로바이더를 제공
 import React, { createContext, useContext, useState } from "react";
 
-// 컨텍스트 생성
+// 로그인 상태를 저장할 컨텍스트 생성
 const LoginContext = createContext();
 
-// LoginProvider 컴포넌트 정의
 export const LoginProvider = ({ children }) => {
-  const [value, setValue] = useState("");
+  // id와 pwd의 상태를 관리하는 state
+  const [values, setValues] = useState({
+    userId: "",
+    userPwd: "",
+  });
 
-  const updateValue = (newValue) => {
-    setValue(newValue);
+  // 상태 업데이트 함수
+  const updateValue = (name, newValue) => {
+    setValues((prev) => ({ ...prev, [name]: newValue }));
   };
 
   return (
-    <LoginContext.Provider value={{ value, updateValue }}>
+    <LoginContext.Provider value={{ values, updateValue }}>
       {children}
     </LoginContext.Provider>
   );
 };
 
-// 커스텀 훅을 사용하여 컨텍스트 사용을 간소화
+// 컨텍스트를 쉽게 사용할 수 있도록 하는 커스텀 훅
 export const useLogin = () => {
   const context = useContext(LoginContext);
   if (!context) {
-    throw new Error("useLogin must be used within a LoginProvider");
+    throw new Error("No LoginProvider");
   }
   return context;
 };
-
-// 로그인 상태를 위한 컨텍스트 생성
-// const LoginContext = createContext();
-
-// export const LoginProvider = ({ children }) => {
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-//   // 로그인, 로그아웃 함수
-//   const login = () => setIsLoggedIn(true);
-//   const logout = () => setIsLoggedIn(false);
-
-//   return (
-//     <LoginContext.Provider value={{ isLoggedIn, login, logout }}>
-//       {children}
-//     </LoginContext.Provider>
-//   );
-// };
-
-// export const useLogin = () => {
-//   const context = useContext(LoginContext);
-//   if (!context) {
-//     throw new Error("useLogin must be used within a LoginProvider");
-//   }
-//   return context;
-// };

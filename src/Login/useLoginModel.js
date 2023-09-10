@@ -1,18 +1,22 @@
-import { useState } from "react";
+import axios from "axios";
+import { useLogin } from "./LoginContext";
 
-//로그인 상태와 해당 상태를 변경하는 함수  관리  커스텀 훅
 const useLoginModel = () => {
-  const [value, setValue] = useState("");
+  const url = "http://localhost:8888";
+  const { values } = useLogin();
 
-  const updateValue = (newValue) => {
-    setValue(newValue);
-    console.log("Update Value");
-    console.log(newValue);
+  const sendDataToBackend = async () => {
+    console.log(values);
+    try {
+      const response = await axios.post(url + "/user/login", values);
+      return response.data;
+    } catch (error) {
+      console.error("ERROR:", error);
+    }
   };
 
   return {
-    value,
-    updateValue,
+    sendDataToBackend,
   };
 };
 
