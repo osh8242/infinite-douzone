@@ -1,3 +1,14 @@
+////////////////////////////// 요청 Mapping Pattern
+export const urlPattern = {
+  insertEmp: "",
+  updateEmp: "",
+  deleteEmp: "/emp/deleteEmp",
+  insertEmpPhoto: "/empPhoto/insertEmpPhoto",
+  insertEmpFam: "/empFam/insertEmpFam",
+  updateEmpFam: "/empFam/updateEmpFamBySeqValAndCdEmp",
+  deleteEmpFam: "/empFam/deleteEmpFam",
+};
+
 ////////////////////////////// 상위 조건조회
 export const searchOption = [
   {

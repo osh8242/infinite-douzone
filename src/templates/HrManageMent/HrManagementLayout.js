@@ -71,6 +71,7 @@ const HrManagementLayout = () => {
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
   const submitMainTabData = (event, value) => {
     if (event.key === "Enter") {
+      console.log("엔터누름");
       event.target.blur();
       if (mainTabRef.current) {
         let newMainTabData = { ...mainTabData.item };
@@ -184,7 +185,10 @@ const HrManagementLayout = () => {
               <Row className="mb-5 justify-content-center" ref={mainTabRef}>
                 <Row>
                   <Col className="d-flex align-items-center" xs md="3">
-                    <ProfileImageForm src={empImageSrc} />
+                    <ProfileImageForm
+                      src={empImageSrc}
+                      handleUpload={actions.insertEmpPhoto}
+                    />
                   </Col>
                   <Col xs md="9">
                     <Row>
@@ -315,7 +319,9 @@ const HrManagementLayout = () => {
                     setTableData: actions.setSubTableData,
                     setEditedRow: actions.setEditedEmpFam,
                     setSelectedRows: actions.setSelectedRows,
-                    deleteSelectedRows: actions.deleteSelectedRows,
+                    insertRow: actions.insertEmpFam,
+                    updateRow: actions.updateEmpFam,
+                    deleteRow: actions.deleteRow,
                     getRowObject: EmpFam,
                   }}
                 />

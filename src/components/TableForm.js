@@ -30,7 +30,7 @@ const TableForm = ({
   //   );
   // };
   pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
-  actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
   //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
@@ -324,6 +324,15 @@ const TableForm = ({
     [getEditedRow, tableRows, actions]
   );
 
+  // 행 삭제 이벤트
+  const deleteRow = useCallback(
+    (rowRef) => {
+      const newTableRows = tableRows.filter((row, index) => index !== rowRef);
+      setTableRows(newTableRows);
+    },
+    [tableRows]
+  );
+
   // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
     const checkedBoxCount = tableRows.reduce(
@@ -401,7 +410,7 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
-      console.log("마우스 이벤트", event);
+      //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           setColumnRef(-1);
@@ -468,11 +477,15 @@ const TableForm = ({
               break;
 
             case "F5":
-              console.log("actions", actions.deleteCurrentRow);
+              console.log("actions", actions);
               setModalState({
                 show: true,
                 message: "해당 행을 삭제하시겠습니까?",
-                onConfirm: actions.deleteCurrentRow(tableRows[rowRef]),
+                onConfirm: () => {
+                  actions.deleteRow(tableRows[rowRef]);
+                  deleteRow(rowRef);
+                  setModalState({ show: false });
+                },
               });
               break;
 
@@ -562,8 +575,8 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
-                onClick={(e, row) => {
-                  if (onRowClick) onRowClick(row);
+                onClick={(e) => {
+                  if (onRowClick) onRowClick(row.item);
                 }}
               >
                 {/* 각 row 의 checkBox */}

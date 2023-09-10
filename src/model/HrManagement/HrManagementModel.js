@@ -4,6 +4,7 @@ import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import CommonConstant from "../CommonConstant";
+import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
   const { url } = CommonConstant(); // REST API 서버 주소
@@ -68,11 +69,8 @@ const HrManagementModel = () => {
 
   //초기 랜더링시 이미지 불러오기
   useEffect(() => {
-    if (empImageSrc && empImageSrc !== "") {
-    }
-    //"/empPhoto/getEmpPhotoByCdEmp/" + leftTablePkValue.cdEmp
     axios
-      .get(url + "/empPhoto/image", {
+      .get(url + "/empPhoto/getEmpPhotoByCdEmp", {
         responseType: "arraybuffer",
       })
       .then((response) => {
@@ -86,6 +84,42 @@ const HrManagementModel = () => {
         // 필요에 따라 다른 오류 처리 로직 추가
       });
   }, [leftTablePkValue]);
+
+  //insertEmpPhoto
+  const insertEmpPhoto = useCallback(
+    (event) => {
+      const file = event.target.files[0];
+
+      if (!file) {
+        console.error("파일이 없습니다.");
+        return;
+      }
+
+      // 파일 유형을 검사하여 이미지 파일만 허용
+      if (!file.type.startsWith("image/")) {
+        console.error("이미지 파일만 업로드가 가능합니다.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("pkValue", JSON.stringify(leftTablePkValue));
+
+      axios
+        .post(url + urlPattern.insertEmpPhoto, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log("파일업로드 성공!", response.data);
+        })
+        .catch((error) => {
+          console.error("File upload error:", error);
+        });
+    },
+    [leftTablePkValue]
+  );
 
   //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
   useEffect(() => {
@@ -173,6 +207,19 @@ const HrManagementModel = () => {
         });
   }, [editedEmpFam]);
 
+  //추가된 사원가족 insert 요청
+  const insertEmpFam = useCallback((row) => {
+    axios
+      .post(url + urlPattern.insertEmpFam, row.item)
+      .then((response) => {
+        if (response.data === 1) console.log("EmpFam insert 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
   //수정된 사원가족 update 요청
   useEffect(() => {
     if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0) {
@@ -190,6 +237,19 @@ const HrManagementModel = () => {
     }
   }, [editedEmpFam]);
 
+  //수정된 사원가족 update 요청
+  const updateEmpFam = useCallback((row) => {
+    axios
+      .put(url + urlPattern.updateEmpFam, row.item)
+      .then((response) => {
+        if (response.data === 1) console.log("EmpFam 업데이트 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
   //선택된 행 delete 요청
   const deleteSelectedRows = useCallback(() => {
     const editedTableNames = {};
@@ -200,10 +260,10 @@ const HrManagementModel = () => {
       let pattern;
       switch (row.table) {
         case "empFam":
-          pattern = "/empFam/deleteEmpFam";
+          pattern = urlPattern.deleteEmpFam;
           break;
         case "emp":
-          pattern = "/emp/deleteEmp";
+          pattern = urlPattern.deleteEmp;
           break;
         default:
           return Promise.resolve();
@@ -237,21 +297,21 @@ const HrManagementModel = () => {
   }, [selectedRows]);
 
   //현재행 삭제요청
-  const deleteCurrentRow = useCallback((currentRow) => {
+  const deleteRow = useCallback((row) => {
     let pattern;
-    switch (currentRow.table) {
+    switch (row.table) {
       case "empFam":
-        pattern = "/empFam/deleteEmpFam";
+        pattern = urlPattern.deleteEmpFam;
         break;
       case "emp":
-        pattern = "/emp/deleteEmp";
+        pattern = urlPattern.deleteEmp;
         break;
       default:
         console.log("설정되지 않은 테이블 행을 삭제요청받음");
         return;
     }
     axios
-      .delete(url + pattern, { data: currentRow.item })
+      .delete(url + pattern, { data: row.item })
       .then(console.log("삭제완료"))
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
@@ -302,14 +362,17 @@ const HrManagementModel = () => {
 
       setMainTabData,
       setEditedEmpAdd,
+      insertEmpPhoto,
 
       setSubTableData,
       setEditedEmpFam,
+      insertEmpFam,
+      updateEmpFam,
 
       setSelectedRows,
       deleteSelectedRows,
 
-      deleteCurrentRow,
+      deleteRow,
     },
   };
 };
