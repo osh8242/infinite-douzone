@@ -89,7 +89,7 @@ const SalaryInformationEntryLayout = ({}) => {
         <CodeHelperModal
           show={state.modalState.show}
           onHide={() => actions.setModalState({show: false})}
-          setRowData={state.codeHelperTableData.setData}
+          setRowData={state.codeHelperTableData.setRowData}
           usePk={state.codeHelperTableData.usePk}
           tableHeaders = {state.codeHelperTableData.tableHeaders}
           tableData={state.codeHelperTableData.tableData}
