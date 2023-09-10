@@ -8,11 +8,15 @@ const TextComponent = ({
   size,
   md = 4,
   placeholder,
-  height,
+  height = 3,
+  // width = 5,
   name,
 }) => {
   const { loginInfo, updateLoginInfo } = useLogin(); // login 정보 저장
-  const style = height ? { height: `${height}px` } : {};
+  const style = {
+    ...(height ? { height: `${height}px` } : {}),
+    // ...(width ? { width: `${width}px` } : {}),
+  };
 
   return (
     <Row className="justify-content-center mb-4">
