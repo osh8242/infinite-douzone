@@ -14,7 +14,7 @@ import HrManagementHeader from "../HrManagement/HrManagementHeader";
 import axios from "axios";
 import { objectToQueryString } from "../../utils/StringUtils";
 
-const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
+const SalaryInformationEntryLayout = ({}) => {
   //상수
   const { url, labels } = CommonConstant();
   const { selectOption, tableHeader, codeHelperparams } = SalConstant();
@@ -28,43 +28,51 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
   };
 
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback((codeHelperCode, setFn) => {
-      actions.setModalState({ show: true });    
-      actions.setCodeHelperTableData(() => ({
-        subject: codeHelperCode.subject,
-        setRowData: setFn,
-        tableHeaders : codeHelperCode.headers,
-        tableData : codeHelperCode.url? apiCodeHelperData(codeHelperCode.url, codeHelperCode.params) : codeHelperCode.tableData,
-        usePk: codeHelperCode.usePk? codeHelperCode.usePk : '',
-        searchField : codeHelperCode.searchField,
-      }));
-    },
-    []
-  );
+  const codeHelperShow = useCallback(async (codeHelperCode, setFn) => {
+  actions.setModalState({ show: true });
+
+  let codeDataList = codeHelperCode.tableData;
+  if (codeHelperCode.url) {
+    codeDataList = await fetchData(codeHelperCode.url, codeHelperCode.params);
+  }
+
+  actions.setCodeHelperTableData(() => ({
+    subject: codeHelperCode.subject,
+    setRowData: setFn,
+    tableHeaders: codeHelperCode.headers,
+    tableData: codeDataList,
+    usePk: codeHelperCode.usePk ? codeHelperCode.usePk : '',
+    searchField: codeHelperCode.searchField,
+  }));
+}, []);
+
+  async function fetchData(url, params) {
+    try {
+      const codeDataList = await apiCodeHelperData(url, params);
+      return codeDataList;
+    } catch (error) {
+      console.error("API 호출 중 오류 발생:", error);
+    }
+  }
 
   const apiCodeHelperData = (url, params) => {
     const serverUrl = "http://localhost:8888";
 
     return axios.get(serverUrl + url + objectToQueryString(params))
       .then((response) => {
-        // 데이터 추출
         const data = response.data;
-        // 데이터를 가지고 작업 수행
         const codeDataList = data.map((object) => {
-
           const dynamicProperties = { item: {} };
           for (const key in object) {
             dynamicProperties.item[key] = object[key];
           }
-          return dynamicProperties;
-        
+          return dynamicProperties;       
         });
-  
         return codeDataList;
       })
       .catch((error) => {
         console.error("API 호출 중 오류 발생:", error);
-        throw error; // 에러를 상위로 전파하여 처리
+        throw error;
       });
   };
 
@@ -128,7 +136,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
                   onEnter={actions.setSearchCdEmp}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(true, '', codeHelperparams.emplist, actions.setSearchCdEmp, 'cdEmp')}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.emplist, actions.setSearchCdEmp)}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
               </Col>
@@ -138,7 +146,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
                   onEnter={actions.setSearchCdDept}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept,actions.setSearchCdDept)}  
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept, actions.setSearchCdDept)}  
                 />
               </Col>
             </Row>
@@ -149,7 +157,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   label={"직급코드"}
                   value={state.searchVO.searchRankNo}
                   onEnter={actions.setSearchRankNo}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(true,'', codeHelperparams.rankNo, actions.setSearchRankNo, 'codeId')}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.rankNo, actions.setSearchRankNo)}
                 />
               </Col>
               <Col>
@@ -158,7 +166,7 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
                   label={"직책코드"}
                   value={state.searchVO.searchCdOccup}
                   onEnter={actions.setSearchCdOccup}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(true,'', codeHelperparams.occup, actions.setSearchCdOccup, 'codeId')}
+                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.occup, actions.setSearchCdOccup)}
                 />
               </Col>
             </Row>
@@ -400,7 +408,6 @@ const SalaryInformationEntryLayout = ({ grid, mainTab, subTab }) => {
               </div>
             </Col>
           )}
-          
         </Row>
       </Container>
     </>

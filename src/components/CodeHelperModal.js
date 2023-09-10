@@ -30,7 +30,6 @@ function CodeHelperModal(props) {
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    // console.log(tableData);
     setOriData(tableData);
     setFilteredData(tableData);
   }, [tableData]);

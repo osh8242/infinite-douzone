@@ -56,20 +56,20 @@ const SalConstant = () => {
     },
     codeHelperparams : {
         cdDept : {
-            subject : '부서코드 조회',
-            headers: [
+            subject : '부서코드 조회'
+            , headers: [
                 { field: "cdDept", text: "부서코드"},
                 { field: "nmDept", text: "부서이름"},
-            ],
-            tableData : [
+            ]
+            , tableData : [
                 { item : { cdDept:'D001', nmDept : '인사팀'}}, 
                 { item : { cdDept:'D002', nmDept : '경영지원팀'}}, 
-                { item : { cdDept:'D003', nmDept : '개발팀'}}],
-            searchField : ['cdDept','nmDept'],
-            usePk : 'cdDept'
+                { item : { cdDept:'D003', nmDept : '개발팀'}}]
+            , searchField : ['cdDept','nmDept']
+            , usePk : 'cdDept'
         },
         emplist:{
-            title : '사원조회'
+            subject : '사원조회'
             , url : CODEHELPER_EMPLIST_URL  // "/emp/getEmpListForCodeHelper"
             , headers : [
                 { field: "cdEmp", text: "사원코드" },
@@ -79,9 +79,10 @@ const SalConstant = () => {
                       ]
             //, params : { ynFor: 'n', refYear: '2023' }
             , searchField : ['nmKrname','noSocial']
+            , usePk : "cdEmp"
           },
         rankNo : {
-            title : '직급조회'
+            subject : '직급조회'
             , url : CODE.URL
             , headers : [
                 { field: "codeId", text: "직급코드" },
@@ -89,9 +90,10 @@ const SalConstant = () => {
                 ]
             , params : { parentId: CODE.PARENT_ID.RANK_NO }
             , searchField : ['codeId','codeName']
+            , usePk : "codeId"
         },
         occup : {
-            title : '직책조회'
+            subject : '직책조회'
             , url : CODE.URL
             , headers : [
                 { field: "codeId", text: "직책코드" },
@@ -99,6 +101,7 @@ const SalConstant = () => {
                 ]
             , params : { parentId: CODE.PARENT_ID.OCCUP }
             , searchField : ['codeId','codeName']
+            , usePk : "codeId"
         },
         paymentDate : {
             subject : '지급일 조회'
