@@ -5,7 +5,9 @@ import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContractGrid from "./templates/LaborContractGrid";
 import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 import Login from "./templates/Login/Login";
-import SignUp from "./templates/Login/Sign";
+import LoginGrid from "./Login/LoginGrid";
+// import SignUp from "./templates/Login/Sign";
+import SignUp from "./SignUp/SignUp";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
 import LaborContract from "./templates/LaborContract";
 import MainHome from "./templates/MainHome";
@@ -22,7 +24,7 @@ function App() {
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc/*" element={<LaborContractGrid />} />
           <Route path="/si" element={<SalaryInformationEntryLayout />} />
-          <Route path="*" element={<Login />} />
+          <Route path="/login" element={<LoginGrid />} />
         </Routes>
       </BrowserRouter>
     </div>
