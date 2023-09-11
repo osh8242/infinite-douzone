@@ -48,11 +48,9 @@ const LaborContractLayout = () => {
       <Container>
         {/* Header */}
         <SearchPanel>
-          <Row>
+          <Row md="10">
             {HeaderField.map((field, idx) => (
-              <Col key={idx} md="4">
-                {DispatcherComponent(field)}
-              </Col>
+              <Col key={idx}>{DispatcherComponent(field)}</Col>
             ))}
           </Row>
         </SearchPanel>

@@ -13,7 +13,11 @@ const DispatcherComponent = (field) => {
           type={field.type}
           label={field.label}
           md={field.md}
-          // isPeriod={field.isPeriod}
+          isPeriod={field.isPeriod}
+          valueMd={field.valueMd}
+          subLabel={field.subLabel}
+          endLabel={field.endLabel}
+          selectList={field.selectList}
         />
       );
     case "RadioForm":
@@ -31,7 +35,7 @@ const DispatcherComponent = (field) => {
         <DateForm
           label={field.label}
           type={field.type}
-          isPeriod={true}
+          isPeriod={field.isPeriod}
           labelKey={field.labelKey}
           labelKey2={field.labelKey2}
         />

@@ -123,6 +123,7 @@ const CommonConstant = () => {
       allowPay: "금액",
 
       inquiryYype: "조회구분",
+      searchText : "찾을내용"
     },
     CODE: {
       // 코드도움창용 code테이블 parentId
