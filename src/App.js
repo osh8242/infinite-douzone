@@ -3,6 +3,7 @@ import "./App.scss";
 import Header from "./templates/Header";
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LaborContractGrid from "./templates/LaborContractGrid";
+// import LaborContractGrid from "./LaborContract/LaborContract";
 import SalaryInformationEntry from "./templates/SalaryInformationEntry";
 import Login from "./templates/Login/Login";
 import LoginGrid from "./Login/LoginGrid";

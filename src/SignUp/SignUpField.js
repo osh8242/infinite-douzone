@@ -1,5 +1,6 @@
 import CommonConstant from "../../src/model/CommonConstant";
 const { genderRadioList } = CommonConstant();
+
 export const SignUpField = [
   {
     component: "TextBoxComponent",
