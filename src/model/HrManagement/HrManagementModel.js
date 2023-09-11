@@ -4,12 +4,10 @@ import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
-import CommonConstant from "../CommonConstant";
+import { url } from "../CommonConstant";
 import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
-  const { url } = CommonConstant(); // REST API 서버 주소
-
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
   const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준

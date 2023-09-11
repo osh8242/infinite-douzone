@@ -10,34 +10,31 @@ import SearchPanel from "../../components/SearchPanel";
 import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
-import CommonConstant from "../../model/CommonConstant";
+import {
+  contractRadioList,
+  genderRadioList,
+  labels,
+  marryRadioList, //결혼 여부
+} from "../../model/CommonConstant";
+import {
+  leftStaticsTableConstant,
+  leftTableConstant,
+  orderList,
+  searchOption,
+  subTableConstant,
+  tabConstant,
+} from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import {
-  searchOption, // 검색옵션 리스트
-  orderList,
-  leftTableConstant,
-  leftStaticsTableConstant,
-  subTableConstant,
-  tabConstant,
-} from "../../model/HrManagement/HrManagementConstant";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 const HrManagementLayout = () => {
-  //실행중에는 값이 고정인 값들
-  const {
-    genderRadioList, //성별
-    marryRadioList, //결혼여부
-    contractRadioList, //근로계약서 작성여부
-    labels, // 속성명
-  } = CommonConstant();
-
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
   const {
