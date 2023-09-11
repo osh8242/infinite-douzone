@@ -58,7 +58,7 @@ function TextBoxComponent(props) {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onEnter && onEnter(sendValue, id);
+      onEnter && onEnter(event, sendValue, id);
     }
   };
 
@@ -66,7 +66,7 @@ function TextBoxComponent(props) {
     const newValue = event.target.value;
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
     setInputValue(makeProcessedValue(newValue)); // data 가공
-    onChange && onChange(newValue);
+    onChange&&onChange(newValue);
   };
 
   const makeProcessedValue = (newValue) => {

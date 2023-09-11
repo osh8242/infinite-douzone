@@ -1,18 +1,7 @@
 const CommonConstant = () => {
   return {
     url: "http://localhost:8888",
-    searchOption: [
-      {
-        key: "yAndOnThisYear",
-        value: "재직자 + 당해년도 퇴사자",
-      },
-      { key: "Y", value: "재직자" },
-      { key: "N", value: "퇴직자" },
-    ],
-    orderList: [
-      { key: "cdEmp", value: "코드순" },
-      { key: "nmKrname", value: "이름순" },
-    ],
+
     genderRadioList: [
       { key: "M", value: "남자" },
       { key: "F", value: "여자" },
@@ -95,6 +84,7 @@ const CommonConstant = () => {
       allowPay: "금액",
 
       inquiryYype: "조회구분",
+      searchText: "찾을내용",
     },
     CODE: {
       // 코드도움창용 code테이블 parentId

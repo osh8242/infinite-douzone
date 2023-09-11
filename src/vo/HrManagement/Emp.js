@@ -3,7 +3,6 @@ const Emp = (empData) => {
   //   [labels.cdEmp]: item.cdEmp,
   //   [labels.nmKrname]: item.nmKrname,
   // }
-  console.log("Emp생성됨");
   return {
     item: empData,
     checked: false,

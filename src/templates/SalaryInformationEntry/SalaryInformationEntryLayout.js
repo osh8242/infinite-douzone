@@ -1,78 +1,83 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
-import CodeHelperModal from "../components/CodeHelperModal";
-import DateTest from "../components/DateTest";
-import SearchPanel from "../components/SearchPanel";
-import SelectForm from "../components/SelectForm";
-import TableForm from "../components/TableForm";
-import TextBoxComponent from "../components/TextBoxComponent";
-import CommonConstant from "../model/CommonConstant";
-import SalConstant from "../model/SalConstant";
-import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
-import HrManagementHeader from "./HrManageMent/HrManagementHeader";
+import CodeHelperModal from "../../components/CodeHelperModal";
+import SearchPanel from "../../components/SearchPanel";
+import SelectForm from "../../components/SelectForm";
+import TableForm from "../../components/TableForm";
+import TextBoxComponent from "../../components/TextBoxComponent";
+import CommonConstant from "../../model/CommonConstant";
+import SalConstant from "../../model/SalaryInformationEntry/SalConstant";
+import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
+import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
+import { fetchData } from "../../utils/codeHelperUtils";
 
-const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
+const SalaryInformationEntryLayout = ({}) => {
   //상수
-  const { labels } = CommonConstant();
+  const { url, labels } = CommonConstant();
   const { selectOption, tableHeader, codeHelperparams } = SalConstant();
 
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
-  const [apiFlag, setApiFlag] = useState(false);
+  const [isCardVisible, setIsCardVisible] = useState(false);
+
+  const toggleCardVisibility = () => {
+    setIsCardVisible(!isCardVisible);
+  };
 
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback(
-    (flag, codeHelperTableData, codeHelperCode, setFn, usePk) => {
-      actions.setModalState({ show: true });
-      setApiFlag(flag);
-      if (flag) {
-        actions.setCodeHelperTableData((prevState) => ({
-          ...prevState,
-          code: codeHelperCode,
-          setData: setFn,
-          usePk: usePk,
-        }));
-      } else {
-        actions.setCodeHelperTableData((prevState) => ({
-          ...prevState,
-          data: codeHelperTableData,
-          setData: setFn,
-          usePk: usePk,
-        }));
-      }
-    },
-    []
-  );
+  const codeHelperShow = useCallback(async (codeHelperCode, setFn) => {
+    actions.setModalState({ show: true });
+
+    let codeDataList = codeHelperCode.tableData;
+    if (codeHelperCode.url) {
+      codeDataList = await fetchData(codeHelperCode.url, codeHelperCode.params);
+    }
+
+    actions.setCodeHelperTableData(() => ({
+      subject: codeHelperCode.subject,
+      setRowData: setFn,
+      tableHeaders: codeHelperCode.headers,
+      tableData: codeDataList,
+      usePk: codeHelperCode.usePk ? codeHelperCode.usePk : "",
+      searchField: codeHelperCode.searchField,
+    }));
+  }, []);
 
   //조회버튼
   const onSearch = () => {
-    alert("검색");
+    console.log("검색버튼");
   };
 
   return (
     <>
-      <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
+      <SalaryInformationEntryHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+      />
       <Container>
         {/* 코드 도움 모달 영역 */}
         <CodeHelperModal
           show={state.modalState.show}
-          onHide={() =>
-            actions.setModalState({ ...state.modalState, show: false })
-          }
-          //onConfirm={() => alert('확인')}
-          setRowData={state.codeHelperTableData.setData}
+          onHide={() => actions.setModalState({ show: false })}
+          setRowData={state.codeHelperTableData.setRowData}
           usePk={state.codeHelperTableData.usePk}
-          apiFlag={apiFlag}
-          table={state.codeHelperTableData.data}
-          codeHelperCode={state.codeHelperTableData.code}
+          tableHeaders={state.codeHelperTableData.tableHeaders}
+          tableData={state.codeHelperTableData.tableData}
+          subject={state.codeHelperTableData.subject}
+          searchField={state.codeHelperTableData.searchField}
         />
 
         {/* 기본 검색조건 */}
         <SearchPanel onSearch={onSearch} showAccordion>
           <Row>
             <Col>
-              <DateTest
+              {/* <DateTest
+                type="month"
+                label={"귀속연월"}
+                value={state.searchVO.allowMonth}
+                onChange={(e, value) => actions.setAllowMonth(value)}
+              /> */}
+              <TextBoxComponent
                 type="month"
                 label={"귀속연월"}
                 value={state.searchVO.allowMonth}
@@ -87,12 +92,19 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               />
             </Col>
             <Col>
-              <DateTest
+              <TextBoxComponent
+                //type="date"
+                name="paymentDate"
                 label={"지급일"}
-                type={"date"}
                 value={state.searchVO.paymentDate}
-                onChange={(e, value) => actions.setPaymentDate(value)}
-                //codeHelper
+                onChange={actions.setPaymentDate}
+                codeHelper
+                onClickCodeHelper={() =>
+                  codeHelperShow(
+                    codeHelperparams.paymentDate,
+                    actions.setPaymentDate
+                  )
+                }
               />
             </Col>
           </Row>
@@ -109,11 +121,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
-                      true,
-                      "",
                       codeHelperparams.emplist,
-                      actions.setSearchCdEmp,
-                      "cdEmp"
+                      actions.setSearchCdEmp
                     )
                   }
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
@@ -128,11 +137,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
-                      false,
                       codeHelperparams.cdDept,
-                      "",
-                      actions.setSearchCdDept,
-                      "cdDept"
+                      actions.setSearchCdDept
                     )
                   }
                 />
@@ -148,11 +154,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
-                      true,
-                      "",
                       codeHelperparams.rankNo,
-                      actions.setSearchRankNo,
-                      "codeId"
+                      actions.setSearchRankNo
                     )
                   }
                 />
@@ -166,11 +169,8 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                   codeHelper
                   onClickCodeHelper={() =>
                     codeHelperShow(
-                      true,
-                      "",
                       codeHelperparams.occup,
-                      actions.setSearchCdOccup,
-                      "codeId"
+                      actions.setSearchCdOccup
                     )
                   }
                 />
@@ -214,7 +214,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
         </SearchPanel>
 
         <Row>
-          <Col md="3">
+          <Col>
             {/* 사원정보 table영역 */}
             <TableForm
               readOnly
@@ -242,7 +242,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               +
             </Button>
           </Col>
-          <Col md="3">
+          <Col>
             <>
               {/* 급여항목 table영역 */}
               <TableForm
@@ -273,7 +273,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
               />
             </>
           </Col>
-          <Col md="3">
+          <Col>
             {/* 공제항목 table영역 */}
             <>
               <TableForm
@@ -290,17 +290,14 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                     </tr>
                     <tr>
                       <td>차인지급액</td>
-                      <td>
-                        {state.salAllowData.sumData.sum -
-                          state.deductData.sumData.sum}
-                      </td>
+                      <td>{state.salAllowData.sumData.sum}</td>
                     </tr>
                   </>
                 }
               />
             </>
           </Col>
-          <Col md="3">
+          <Col>
             {/* 조회구분 영역*/}
             <SelectForm
               label={labels.inquiryYype}
@@ -312,7 +309,7 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
                 showCheckbox={false}
                 showHeaderArrow={false}
                 tableHeaders={tableHeader.salAllowSum}
-                tableData={state.sumTableData.salAllowPaySumData}
+                tableData={state.salPaySumData.allowPay}
                 actions={{}}
                 readOnly
               />
@@ -320,91 +317,105 @@ const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
             <Row>
               <TableForm
                 tableHeaders={tableHeader.salDeductSum}
-                tableData={state.sumTableData.salDeductPaySumData}
+                tableData={state.salPaySumData.deductPay}
                 actions={{}}
                 readOnly
               />
             </Row>
           </Col>
-          <Col md="3">
-            {/* 사원 상세정보 영역 */}
-            <div>
-              <Card>
-                <Card.Header as="h5">사원정보</Card.Header>
-                <Card.Body>
-                  {state.saInfoDetailData ? (
-                    <>
-                      <TextBoxComponent
-                        label={labels.daEnter}
-                        value={state.saInfoDetailData.daEnter}
-                      />
-                      <TextBoxComponent
-                        label="배우자공제"
-                        value={state.saInfoDetailData.ynMateDed}
-                      />
-                      <TextBoxComponent
-                        label="20세/60세/다자녀"
-                        value={
-                          state.saInfoDetailData.num20Family +
-                          "/" +
-                          state.saInfoDetailData.num60Family +
-                          "/" +
-                          state.saInfoDetailData.numManyFamily
-                        }
-                      />
-                      <TextBoxComponent label="조정율" value="구현중" />
-                      <TextBoxComponent
-                        label="거주구분"
-                        value={state.saInfoDetailData.ynResident}
-                      />
-                      <TextBoxComponent
-                        label="생산/국외"
-                        value={
-                          state.saInfoDetailData.ynUnit +
-                          "/" +
-                          state.saInfoDetailData.ynForLabor
-                        }
-                      />
-                      <TextBoxComponent
-                        label="연장근로비과세"
-                        value={state.saInfoDetailData.ynOverwork}
-                      />
-                      <TextBoxComponent
-                        label="퇴사일"
-                        value={state.saInfoDetailData.daRetire}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdOccup}
-                        value={state.saInfoDetailData.cdOccup}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdDept}
-                        value={state.saInfoDetailData.cdDept}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdField}
-                        value={state.saInfoDetailData.cdField}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdProject}
-                        value={state.saInfoDetailData.cdProject}
-                      />
-                      <TextBoxComponent
-                        label="주민(외국인)번호"
-                        value={state.saInfoDetailData.noSocial}
-                      />
-                    </>
-                  ) : (
-                    <Spinner animation="border" variant="primary" />
-                  )}
-                </Card.Body>
-              </Card>
-            </div>
-          </Col>
+
+          {isCardVisible ? (
+            <Col md="3">
+              {/* 사원 상세정보 영역 */}
+              <div>
+                <Card style={{ fontSize: "8px" }}>
+                  <Card.Header as="h5">사원정보</Card.Header>
+                  <Card.Body>
+                    {state.saInfoDetailData ? (
+                      <>
+                        <TextBoxComponent
+                          label={labels.daEnter}
+                          value={state.saInfoDetailData.daEnter}
+                        />
+                        <TextBoxComponent
+                          label="배우자공제"
+                          value={state.saInfoDetailData.ynMateDed}
+                        />
+                        <TextBoxComponent
+                          label="20세/60세/다자녀"
+                          value={
+                            state.saInfoDetailData.num20Family +
+                            "/" +
+                            state.saInfoDetailData.num60Family +
+                            "/" +
+                            state.saInfoDetailData.numManyFamily
+                          }
+                        />
+                        <TextBoxComponent label="조정율" value="구현중" />
+                        <TextBoxComponent
+                          label="거주구분"
+                          value={state.saInfoDetailData.ynResident}
+                        />
+                        <TextBoxComponent
+                          label="생산/국외"
+                          value={
+                            state.saInfoDetailData.ynUnit +
+                            "/" +
+                            state.saInfoDetailData.ynForLabor
+                          }
+                        />
+                        <TextBoxComponent
+                          label="연장근로비과세"
+                          value={state.saInfoDetailData.ynOverwork}
+                        />
+                        <TextBoxComponent
+                          label="퇴사일"
+                          value={state.saInfoDetailData.daRetire}
+                        />
+                        <TextBoxComponent
+                          label={labels.cdOccup}
+                          value={state.saInfoDetailData.cdOccup}
+                        />
+                        <TextBoxComponent
+                          label={labels.cdDept}
+                          value={state.saInfoDetailData.cdDept}
+                        />
+                        <TextBoxComponent
+                          label={labels.cdField}
+                          value={state.saInfoDetailData.cdField}
+                        />
+                        <TextBoxComponent
+                          label={labels.cdProject}
+                          value={state.saInfoDetailData.cdProject}
+                        />
+                        <TextBoxComponent
+                          label="주민(외국인)번호"
+                          value={state.saInfoDetailData.noSocial}
+                        />
+                      </>
+                    ) : (
+                      <Spinner animation="border" variant="primary" />
+                    )}
+                  </Card.Body>
+                </Card>
+                <Button onClick={toggleCardVisibility}>
+                  {isCardVisible ? ">" : "<"}
+                </Button>
+              </div>
+            </Col>
+          ) : (
+            <Col xs="1">
+              <div>
+                <Button onClick={toggleCardVisibility}>
+                  {isCardVisible ? ">" : "<"}
+                </Button>
+              </div>
+            </Col>
+          )}
         </Row>
       </Container>
     </>
   );
 };
 
-export default SalaryInformationEntry;
+export default SalaryInformationEntryLayout;

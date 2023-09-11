@@ -29,8 +29,8 @@ const TableForm = ({
   //     </tr>
   //   );
   // };
-  pkValue, // [선택] 이 테이블의 pk가 노출되지 않을 때
-  actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
+  actions = [], // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
   //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
@@ -49,12 +49,13 @@ const TableForm = ({
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
+
   useEffect(() => {
     setTableRows(tableData || []);
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
-  const myRef = useRef(null);
+  const myRef = useRef(false);
 
   //테이블 바디 dom ref
   const tbodyRef = useRef();
@@ -78,12 +79,12 @@ const TableForm = ({
   const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(rowRef && columnRef);
+  const tableFocus = useRef(false);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
-    console.log(tableName, tableRows, "Render");
-    console.log("inputRef", inputRef);
+    // console.log(tableName, tableRows, "Render");
+    // console.log("inputRef", inputRef);
   }
 
   //정렬값이 바뀌면 테이블 정렬하기 useEffect
@@ -97,7 +98,7 @@ const TableForm = ({
       else return 0;
     });
     setTableRows(newTableRows);
-  }, [orderRef, isAsc, tableRows]);
+  }, [orderRef, isAsc]);
 
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
@@ -323,6 +324,15 @@ const TableForm = ({
     [getEditedRow, tableRows, actions]
   );
 
+  // 행 삭제 이벤트
+  const deleteRow = useCallback(
+    (rowRef) => {
+      const newTableRows = tableRows.filter((row, index) => index !== rowRef);
+      setTableRows(newTableRows);
+    },
+    [tableRows]
+  );
+
   // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
     const checkedBoxCount = tableRows.reduce(
@@ -369,7 +379,6 @@ const TableForm = ({
       tableRows[rowIndex].checked = !tableRows[rowIndex].checked;
       if (actions.setSelectedRows) {
         const newSelectedRows = getSelectedRows();
-        console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
         actions.setSelectedRows(newSelectedRows);
       }
       setTableRows([...tableRows]);
@@ -401,10 +410,11 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
-      console.log("이벤트클릭", event);
+      //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
-          releaseSelectedRef();
+          setColumnRef(-1);
+          if (!actions.setPkValue) setRowRef(-1);
           releaseEditable();
           removeNewRow();
           tableFocus.current = false;
@@ -421,7 +431,6 @@ const TableForm = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
-        console.log("이벤트키", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -434,6 +443,7 @@ const TableForm = ({
         }
 
         if (editableRowIndex === -1) {
+          event.preventDefault();
           switch (event.key) {
             case "ArrowDown":
               if (rowRef < tableRows.length) setRowRef(rowRef + 1);
@@ -456,7 +466,6 @@ const TableForm = ({
 
             case "Enter":
               if (editableRowIndex === -1 && rowRef > -1) {
-                event.preventDefault();
                 handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) pushNewRow();
                 setEditableRow(rowRef);
@@ -467,8 +476,17 @@ const TableForm = ({
               checkboxHandler(rowRef);
               break;
 
-            case "Delete":
-              actions.deleteSelectedRows();
+            case "F5":
+              console.log("actions", actions);
+              setModalState({
+                show: true,
+                message: "해당 행을 삭제하시겠습니까?",
+                onConfirm: () => {
+                  actions.deleteRow(tableRows[rowRef]);
+                  deleteRow(rowRef);
+                  setModalState({ show: false });
+                },
+              });
               break;
 
             default:
@@ -557,8 +575,8 @@ const TableForm = ({
               <tr
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
-                onClick={(row) => {
-                  if (onRowClick) onRowClick(row);
+                onClick={(e) => {
+                  if (onRowClick) onRowClick(row.item);
                 }}
               >
                 {/* 각 row 의 checkBox */}
@@ -607,16 +625,16 @@ const TableForm = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
-              {showCheckbox && (
-                <td
-                  onClick={() =>
-                    codeHelper &&
-                    actions.setCodeHelper({ ...codeHelper, show: true })
-                  }
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </td>
-              )}
+              <td
+                className="d-flex justify-content-center"
+                onClick={() =>
+                  codeHelper &&
+                  actions.setCodeHelper({ ...codeHelper, show: true })
+                }
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </td>
+
               {tableHeaders.map((thead, columnIndex) => (
                 <td
                   key={columnIndex}
@@ -644,12 +662,22 @@ const TableForm = ({
       <ConfirmComponent
         show={modalState.show}
         message={modalState.message}
-        onConfirm={() => setModalState({ show: false })}
+        onConfirm={
+          modalState.onConfirm
+            ? modalState.onConfirm
+            : () => setModalState({ show: false })
+        }
+        onHide={() => setModalState({ show: false })}
       />
     </>
   ) : (
     <Spinner animation="border" variant="primary" />
   );
+};
+
+TableForm.defaultProps = {
+  tableHeaders: [],
+  tableData: [],
 };
 
 TableForm.propTypes = {
@@ -665,4 +693,4 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
-export default TableForm;
+export default React.memo(TableForm);

@@ -67,6 +67,7 @@ function SearchForm({ placeholder }) {
 
   // 키보드 입력 핸들러 (화살표 및 엔터 키 처리)
   const handleKeyDown = (e) => {
+    e.preventDefault();
     if (e.key === "ArrowDown") {
       const nextIndex = selectedResultIndex + 1;
       if (nextIndex < searchResults.length) {
