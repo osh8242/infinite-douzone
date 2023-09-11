@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
@@ -69,20 +70,24 @@ const HrManagementModel = () => {
 
   //초기 랜더링시 이미지 불러오기
   useEffect(() => {
-    axios
-      .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
-        responseType: "arraybuffer",
-      })
-      .then((response) => {
-        // ArrayBuffer를 Blob으로 변환하고 URL을 생성
-        const blob = new Blob([response.data], { type: "image/jpeg" });
-        const imageUrl = URL.createObjectURL(blob);
-        setEmpImageSrc(imageUrl);
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
+    if (leftTablePkValue.cdEmp) {
+      axios
+        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
+          responseType: "arraybuffer",
+        })
+        .then((response) => {
+          // ArrayBuffer를 Blob으로 변환하고 URL을 생성
+          console.log("이미지요청 데이터", response.data);
+          console.log("이미지요청 바디", response);
+          const blob = new Blob([response.data], { type: "image/jpeg" });
+          const imageUrl = URL.createObjectURL(blob);
+          setEmpImageSrc(imageUrl);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          setEmpImageSrc(defaultProfile);
+        });
+    } else setEmpImageSrc(defaultProfile);
   }, [leftTablePkValue]);
 
   //uploadEmpPhoto
