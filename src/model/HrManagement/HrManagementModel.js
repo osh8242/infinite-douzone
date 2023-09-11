@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
@@ -25,6 +25,56 @@ const HrManagementModel = () => {
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
+  //검색조건 : 재직구분, 정렬기준
+  const jobOkSelectRef = useRef();
+  const orderSelectRef = useRef();
+  //메인탭 Ref
+  const mainTabRef = useRef();
+
+  //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
+  const onSearch = useCallback((jobOkRef, orderRef) => {
+    setOrderRef(orderRef.current.value);
+    if (jobOkRef.current.value === "yAndOnThisYear") {
+      setRefYear(new Date().getFullYear());
+      setJobOk("Y");
+    } else {
+      setRefYear();
+      setJobOk(jobOkRef.current.value);
+    }
+  }, []);
+
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
+        if (mainTabRef.current) {
+          let newMainTabData = { ...mainTabData.item };
+          const inputElements = mainTabRef.current.querySelectorAll("input");
+          Array.from(inputElements).forEach((input) => {
+            newMainTabData[input.id] =
+              input.type !== "radio"
+                ? input.value
+                : input.checked
+                ? input.value
+                : null;
+          });
+          setEditedEmpAdd(newMainTabData);
+        }
+      }
+      if (event.type === "change") {
+        if (mainTabRef.current) {
+          event.target.blur();
+          let newMainTabData = { ...mainTabData.item };
+          newMainTabData[event.target.id] = value;
+          setEditedEmpAdd(newMainTabData);
+        }
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
+
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
     axios
@@ -44,7 +94,7 @@ const HrManagementModel = () => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [jobOk, refYear, orderRef, editedEmp]);
+  }, [jobOk, refYear, orderRef]);
 
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -64,7 +114,7 @@ const HrManagementModel = () => {
     } else {
       setMainTabData({});
     }
-  }, [leftTablePkValue, editedEmpAdd]);
+  }, [leftTablePkValue]);
 
   //초기 랜더링시 이미지 불러오기
   useEffect(() => {
@@ -166,7 +216,7 @@ const HrManagementModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     }
-  }, [leftTablePkValue, editedEmpFam]);
+  }, [leftTablePkValue]);
 
   //추가된 사원 insert 요청
   useEffect(() => {
@@ -346,10 +396,14 @@ const HrManagementModel = () => {
 
   return {
     state: {
+      jobOkSelectRef,
+      orderSelectRef,
+
       leftTableData,
       leftTablePkValue,
       leftStaticsTableData,
 
+      mainTabRef,
       mainTabData,
       empImageSrc,
       subTableData,
@@ -362,11 +416,13 @@ const HrManagementModel = () => {
       setJobOk,
       setRefYear,
       setOrderRef,
+      onSearch,
 
       setLeftTableData,
       setLeftTablePkValue,
       setEditedEmp,
 
+      submitMainTabData,
       setMainTabData,
       setEditedEmpAdd,
       updateEmpPhoto,

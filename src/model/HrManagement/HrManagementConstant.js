@@ -75,7 +75,6 @@ export const tabConstant = {
 };
 
 ////////////////////////////////// 우측 서브그리드
-
 export const subTableConstant = {
   headers: [
     { field: "cdFamrel", text: "관계" },

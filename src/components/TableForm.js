@@ -195,12 +195,14 @@ const TableForm = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(
     (rowIndex) => {
-      if (actions.setPkValue && rowRef !== rowIndex && rowIndex < tableRows.length) {
-        let newPkValue = {};
-        newPkValue = getPkValue(rowIndex);
-        actions.setPkValue(newPkValue);
-      } else {
-        actions.setPkValue({});
+      if (actions.setPkValue) {
+        if (rowRef !== rowIndex && rowIndex < tableRows.length) {
+          let newPkValue = {};
+          newPkValue = getPkValue(rowIndex);
+          actions.setPkValue(newPkValue);
+        } else {
+          actions.setPkValue({});
+        }
       }
     },
     [actions, rowRef, tableRows.length, getPkValue]
@@ -299,9 +301,9 @@ const TableForm = ({
           setModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
-        tableRows[rowIndex] = editedRow;
-
-        setTableRows([...tableRows]);
+        const newTableRows = [...tableRows, (tableRows[rowIndex] = editedRow)];
+        releaseEditable();
+        setTableRows(newTableRows);
         actions.setEditedRow(editedRow);
       }
     },

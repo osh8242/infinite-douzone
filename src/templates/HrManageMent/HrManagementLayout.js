@@ -1,13 +1,9 @@
 // 작성자 : 오승환
-import { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import DateTest from "../../components/DateTest";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
 import RadioForm from "../../components/RadioForm";
-import SearchPanel from "../../components/SearchPanel";
-import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
 import {
@@ -29,6 +25,7 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import HrSearchPanel from "./searchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -38,69 +35,17 @@ const HrManagementLayout = () => {
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
   const {
+    jobOkSelectRef,
+    orderSelectRef,
     leftTableData,
     leftTablePkValue,
     leftStaticsTableData,
+    mainTabRef,
     mainTabData,
     empImageSrc,
     subTableData,
     selectedRows,
   } = state;
-
-  //검색조건 : 재직구분, 정렬기준
-  const jobOkRef = useRef();
-  const orderRef = useRef();
-
-  //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
-  const onSearch = () => {
-    actions.setOrderRef(orderRef.current.value);
-    if (jobOkRef.current.value === "yAndOnThisYear") {
-      actions.setRefYear(new Date().getFullYear());
-      actions.setJobOk("Y");
-    } else {
-      actions.setRefYear();
-      actions.setJobOk(jobOkRef.current.value);
-    }
-  };
-
-  const mainTabRef = useRef();
-
-  //mainTab에서 Enter 입력시 EmpAdd 업데이트
-  const submitMainTabData = (event, value) => {
-    if (event.key === "Enter") {
-      console.log("엔터누름");
-      event.target.blur();
-      if (mainTabRef.current) {
-        let newMainTabData = { ...mainTabData.item };
-        const inputElements = mainTabRef.current.querySelectorAll("input");
-        Array.from(inputElements).forEach((input) => {
-          newMainTabData[input.id] =
-            input.type !== "radio"
-              ? input.value
-              : input.checked
-              ? input.value
-              : null;
-        });
-        actions.setEditedEmpAdd(newMainTabData);
-      }
-    }
-    if (event.type === "change") {
-      if (mainTabRef.current) {
-        event.target.blur();
-        let newMainTabData = { ...mainTabData.item };
-        newMainTabData[event.target.id] = value;
-        actions.setEditedEmpAdd(newMainTabData);
-      }
-    }
-  };
-
-  const tableFooter = () => {
-    return (
-      <tr>
-        <td colSpan="3">푸터입니다.</td>
-      </tr>
-    );
-  };
 
   return (
     <>
@@ -118,24 +63,33 @@ const HrManagementLayout = () => {
       />
       <Container>
         {/* 조회영역 */}
-        <SearchPanel onSearch={onSearch}>
+        <HrSearchPanel
+          onSearch={actions.onSearch}
+          jobOkSelectRef={jobOkSelectRef}
+          orderSelectRef={orderSelectRef}
+          searchOption={searchOption}
+          orderList={orderList}
+        />
+        {/* <SearchPanel
+          onSearch={() => actions.onSearch(jobOkSelectRef, orderSelectRef)}
+        >
           <Row>
             <Col>
               <SelectForm
                 label={"구분"}
                 optionList={searchOption}
-                selectRef={jobOkRef}
+                selectRef={jobOkSelectRef}
               />
             </Col>
             <Col>
               <SelectForm
                 label={"정렬"}
                 optionList={orderList}
-                selectRef={orderRef}
+                selectRef={orderSelectRef}
               />
             </Col>
           </Row>
-        </SearchPanel>
+        </SearchPanel> */}
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
@@ -152,7 +106,6 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
-                  tableFooter={tableFooter()}
                   actions={{
                     setTableData: actions.setLeftTableData,
                     setPkValue: actions.setLeftTablePkValue,
@@ -194,7 +147,7 @@ const HrManagementLayout = () => {
                           id="nmEnName"
                           label={labels.nmEnName}
                           value={mainTabData.item?.nmEnName}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -202,7 +155,7 @@ const HrManagementLayout = () => {
                           id="nmChName"
                           label={labels.nmChName}
                           value={mainTabData.item?.nmChName}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -212,7 +165,7 @@ const HrManagementLayout = () => {
                           label={labels.noSocial}
                           disabled
                           value={mainTabData.item?.noSocial}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -225,11 +178,12 @@ const HrManagementLayout = () => {
                         />
                       </Col>
                       <Col xs md="6">
-                        <DateTest
+                        <TextBoxComponent
                           id="daBirth"
+                          type="date"
                           label={labels.daBirth}
                           value={mainTabData.item?.daBirth}
-                          onChange={submitMainTabData}
+                          onChange={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -238,7 +192,7 @@ const HrManagementLayout = () => {
                           label={labels.fgWedding}
                           optionList={marryRadioList}
                           checked={mainTabData.item?.fgWedding}
-                          onChange={submitMainTabData}
+                          onChange={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -247,7 +201,7 @@ const HrManagementLayout = () => {
                           label={labels.cdDept}
                           disabled
                           value={mainTabData.item?.cdDept}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -256,7 +210,7 @@ const HrManagementLayout = () => {
                           label={labels.rankNo}
                           disabled
                           value={mainTabData.item?.ankNo}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -264,7 +218,7 @@ const HrManagementLayout = () => {
                           id="cdOffduty"
                           label={labels.cdOffduty}
                           value={mainTabData.item?.cdOffduty}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -273,7 +227,7 @@ const HrManagementLayout = () => {
                           label={labels.ynDrawContracts}
                           optionList={contractRadioList}
                           checked={mainTabData.item?.ynDrawContracts}
-                          onChange={submitMainTabData}
+                          onChange={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -282,7 +236,7 @@ const HrManagementLayout = () => {
                           label={labels.daEnter}
                           disabled
                           value={mainTabData.item?.daEnter}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -291,7 +245,7 @@ const HrManagementLayout = () => {
                           label={labels.daRetire}
                           disabled
                           value={mainTabData.item?.daRetire}
-                          onEnter={submitMainTabData}
+                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                     </Row>
