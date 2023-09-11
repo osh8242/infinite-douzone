@@ -46,6 +46,8 @@ function TextBoxComponent(props) {
     md = 4, // [선택]
     placeholder, // [선택]
     height, // [선택] 스타일
+
+    isPeriod = false,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -58,7 +60,7 @@ function TextBoxComponent(props) {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onEnter && onEnter(sendValue, id);
+      onEnter && onEnter(event, sendValue, id);
     }
   };
 
@@ -66,6 +68,7 @@ function TextBoxComponent(props) {
     const newValue = event.target.value;
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
     setInputValue(makeProcessedValue(newValue)); // data 가공
+    onChange && onChange(newValue);
   };
 
   const makeProcessedValue = (newValue) => {

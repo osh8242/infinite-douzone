@@ -54,7 +54,6 @@ export const SignUpField = [
   },
   {
     component: "TempAdd",
-    label: "주소",
     md: 3,
     stateName: "address",
   },

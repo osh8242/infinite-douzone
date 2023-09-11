@@ -8,7 +8,7 @@ const useLoginModel = () => {
   const LoginUser = async () => {
     console.log(loginInfo);
     try {
-      const response = await axios.post(url + "/auths/login", loginInfo);
+      const response = await axios.post(url + "/auth/login", loginInfo);
       return response.data;
     } catch (error) {
       console.error("ERROR:", error);

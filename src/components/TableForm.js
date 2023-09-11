@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -19,17 +29,19 @@ const TableForm = ({
   //     </tr>
   //   );
   // };
-
-  actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
+  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
   //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
   //   setSelectedRows: actions.setSelectedRows, // 체크박스를 이용하여 삭제하려면 필수
+  //   setPkValue : actions.setLeftTablePkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   //   getRowObject: EmpFam, //객체화 함수 필수
   // }}
   tableName, //[선택] console.log에 출력해볼 테이블이름..
+  codeHelper, //[선택] 코드헬퍼 사용시
+  onRowClick, //[선택] 로우클릭 커스텀 이벤트 추가(파라미터 row 전달)
 
-  pkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
   sortable, //
@@ -37,12 +49,13 @@ const TableForm = ({
   rowAddable, // [선택] 행 추가 가능여부
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
+
   useEffect(() => {
     setTableRows(tableData || []);
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
-  const myRef = useRef(null);
+  const myRef = useRef(false);
 
   //테이블 바디 dom ref
   const tbodyRef = useRef();
@@ -63,15 +76,15 @@ const TableForm = ({
   const [isAsc, setIsAsc] = useState(null);
 
   //모달 경고창(인풋 pk누락)
-  const [modalState, setModalState] = useState(false);
+  const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(rowRef && columnRef);
+  const tableFocus = useRef(false);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
-    console.log(tableName, tableRows, "Render");
-    console.log("inputRef", inputRef);
+    // console.log(tableName, tableRows, "Render");
+    // console.log("inputRef", inputRef);
   }
 
   //정렬값이 바뀌면 테이블 정렬하기 useEffect
@@ -93,13 +106,17 @@ const TableForm = ({
     setColumnRef(-1);
   }, []);
 
+  // 테이블 td마다 ref 설정
   const setInputRef = useCallback(
     (input, rowIndex, columnIndex) => {
-      if (!inputRef.current[rowIndex]) {
-        inputRef.current[rowIndex] = [];
+      if (!readOnly) {
+        if (!inputRef.current[rowIndex]) {
+          inputRef.current[rowIndex] = [];
+        }
+        inputRef.current[rowIndex][columnIndex] = input;
       }
-      inputRef.current[rowIndex][columnIndex] = input;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [tableRows]
   );
 
@@ -108,11 +125,12 @@ const TableForm = ({
     return tableRows.findIndex((item) => item.isEditable);
   }, [tableRows]);
 
+  //////// 랜더링 후에 처리할 SideEffect //////////
   useEffect(() => {
+    //수정으로 바뀌면 해당 셀에 오토포커스
     if (editableRowIndex !== -1) {
       const input = inputRef.current[rowRef][columnRef];
       input.focus();
-      focusAtEnd(input);
     }
   });
 
@@ -155,7 +173,10 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
+  const getInputElements = useCallback(
+    () => inputRef.current[rowRef],
+    [rowRef]
+  );
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -187,7 +208,11 @@ const TableForm = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(
     (rowIndex) => {
-      if (actions.setPkValue && rowRef !== rowIndex && rowRef < tableRows.length) {
+      if (
+        actions.setPkValue &&
+        rowRef !== rowIndex &&
+        rowRef < tableRows.length
+      ) {
         let newPkValue = {};
         newPkValue = getPkValue(rowIndex);
         actions.setPkValue(newPkValue);
@@ -274,7 +299,7 @@ const TableForm = ({
     });
 
     return editedRow;
-  }, [tableRows, rowRef, getInputElements]);
+  }, [tableRows, rowRef, getInputElements, isValidRow]);
 
   // 수정한 행에서 엔터키 입력 이벤트 처리
   const TdKeyDownHandler = useCallback(
@@ -297,6 +322,15 @@ const TableForm = ({
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [getEditedRow, tableRows, actions]
+  );
+
+  // 행 삭제 이벤트
+  const deleteRow = useCallback(
+    (rowRef) => {
+      const newTableRows = tableRows.filter((row, index) => index !== rowRef);
+      setTableRows(newTableRows);
+    },
+    [tableRows]
   );
 
   // 체크된 Row 개수 계산함수
@@ -345,7 +379,6 @@ const TableForm = ({
       tableRows[rowIndex].checked = !tableRows[rowIndex].checked;
       if (actions.setSelectedRows) {
         const newSelectedRows = getSelectedRows();
-        console.log("체크박스 이벤트", "newSelectedRows", newSelectedRows);
         actions.setSelectedRows(newSelectedRows);
       }
       setTableRows([...tableRows]);
@@ -377,9 +410,11 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
+      //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
-          releaseSelectedRef();
+          setColumnRef(-1);
+          if (!actions.setPkValue) setRowRef(-1);
           releaseEditable();
           removeNewRow();
           tableFocus.current = false;
@@ -396,7 +431,6 @@ const TableForm = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
-        console.log("이벤트키", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -409,6 +443,7 @@ const TableForm = ({
         }
 
         if (editableRowIndex === -1) {
+          event.preventDefault();
           switch (event.key) {
             case "ArrowDown":
               if (rowRef < tableRows.length) setRowRef(rowRef + 1);
@@ -425,12 +460,12 @@ const TableForm = ({
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
               if (editableRowIndex === -1 && rowRef > -1) {
-                event.preventDefault();
                 handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) pushNewRow();
                 setEditableRow(rowRef);
@@ -441,12 +476,26 @@ const TableForm = ({
               checkboxHandler(rowRef);
               break;
 
+            case "F5":
+              console.log("actions", actions);
+              setModalState({
+                show: true,
+                message: "해당 행을 삭제하시겠습니까?",
+                onConfirm: () => {
+                  actions.deleteRow(tableRows[rowRef]);
+                  deleteRow(rowRef);
+                  setModalState({ show: false });
+                },
+              });
+              break;
+
             default:
               break;
           }
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       tableHeaders,
       tableRows,
@@ -505,12 +554,16 @@ const TableForm = ({
               <th
                 id="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
                 <div>{thead.text}</div>
-                <div id="tableHeader-arrow">{getArrowDirection(thead.field)}</div>
+                <div id="tableHeader-arrow">
+                  {getArrowDirection(thead.field)}
+                </div>
               </th>
             ))}
           </tr>
@@ -519,7 +572,13 @@ const TableForm = ({
         <tbody ref={tbodyRef}>
           {tableRows.map((row, rowIndex) => {
             return (
-              <tr key={rowIndex} className={getRowClassName(row, rowIndex)}>
+              <tr
+                key={rowIndex}
+                className={getRowClassName(row, rowIndex)}
+                onClick={(e) => {
+                  if (onRowClick) onRowClick(row.item);
+                }}
+              >
                 {/* 각 row 의 checkBox */}
                 {showCheckbox && (
                   <td>
@@ -548,7 +607,11 @@ const TableForm = ({
                       suppressContentEditableWarning={true}
                       data-field={thead.field}
                       data-column-index={columnIndex}
-                      onFocus={(e) => focusAtEnd(e.target)}
+                      onFocus={(e) => {
+                        setRowRef(rowIndex);
+                        setColumnRef(columnIndex);
+                        focusAtEnd(e.target);
+                      }}
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                       ref={(div) => setInputRef(div, rowIndex, columnIndex)}
                     >
@@ -562,11 +625,16 @@ const TableForm = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
-              {showCheckbox && (
-                <td>
-                  <FontAwesomeIcon icon={faPlus} />
-                </td>
-              )}
+              <td
+                className="d-flex justify-content-center"
+                onClick={() =>
+                  codeHelper &&
+                  actions.setCodeHelper({ ...codeHelper, show: true })
+                }
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </td>
+
               {tableHeaders.map((thead, columnIndex) => (
                 <td
                   key={columnIndex}
@@ -574,11 +642,15 @@ const TableForm = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div
                     className="tableContents"
-                    ref={(div) => setInputRef(div, tableRows.length, columnIndex)}
+                    ref={(div) =>
+                      setInputRef(div, tableRows.length, columnIndex)
+                    }
                   ></div>
                 </td>
               ))}
@@ -590,12 +662,22 @@ const TableForm = ({
       <ConfirmComponent
         show={modalState.show}
         message={modalState.message}
-        onConfirm={() => setModalState({ show: false })}
+        onConfirm={
+          modalState.onConfirm
+            ? modalState.onConfirm
+            : () => setModalState({ show: false })
+        }
+        onHide={() => setModalState({ show: false })}
       />
     </>
   ) : (
     <Spinner animation="border" variant="primary" />
   );
+};
+
+TableForm.defaultProps = {
+  tableHeaders: [],
+  tableData: [],
 };
 
 TableForm.propTypes = {
@@ -611,16 +693,4 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
-TableForm.propTypes = {
-  tableHeaders: PropTypes.array.isRequired,
-  tableData: PropTypes.array.isRequired,
-  tableFooter: PropTypes.element,
-  actions: PropTypes.object.isRequired,
-  tableName: PropTypes.string,
-  showCheckbox: PropTypes.bool,
-  showHeaderArrow: PropTypes.bool,
-  readOnly: PropTypes.bool,
-  rowAddable: PropTypes.bool,
-};
-
-export default TableForm;
+export default React.memo(TableForm);

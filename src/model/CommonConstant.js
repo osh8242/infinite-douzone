@@ -1,18 +1,6 @@
 const CommonConstant = () => {
   return {
     url: "http://localhost:8888",
-    searchOption: [
-      {
-        key: "yAndOnThisYear",
-        value: "재직자 + 당해년도 퇴사자",
-      },
-      { key: "Y", value: "재직자" },
-      { key: "N", value: "퇴직자" },
-    ],
-    orderList: [
-      { key: "cdEmp", value: "코드순" },
-      { key: "nmKrname", value: "이름순" },
-    ],
 
     mainTabMenuListForEmpRegister: ["기초정보", "가족사항"],
 

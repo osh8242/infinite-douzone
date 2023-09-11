@@ -11,12 +11,19 @@ import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
 import CommonConstant from "../../model/CommonConstant";
-import HrManagementConstant from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import {
+  searchOption, // 검색옵션 리스트
+  orderList,
+  leftTableConstant,
+  leftStaticsTableConstant,
+  subTableConstant,
+  tabConstant,
+} from "../../model/HrManagement/HrManagementConstant";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -25,20 +32,11 @@ import HrManagementHeader from "./HrManagementHeader";
 const HrManagementLayout = () => {
   //실행중에는 값이 고정인 값들
   const {
-    searchOption, // 검색옵션 리스트
-    orderList, // 정렬기준 리스트
     genderRadioList, //성별
     marryRadioList, //결혼여부
     contractRadioList, //근로계약서 작성여부
     labels, // 속성명
   } = CommonConstant();
-
-  const {
-    leftTableConstant,
-    leftStaticsTableConstant,
-    subTableConstant,
-    tabConstant,
-  } = HrManagementConstant();
 
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
@@ -73,6 +71,7 @@ const HrManagementLayout = () => {
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
   const submitMainTabData = (event, value) => {
     if (event.key === "Enter") {
+      console.log("엔터누름");
       event.target.blur();
       if (mainTabRef.current) {
         let newMainTabData = { ...mainTabData.item };
@@ -108,7 +107,18 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
+      {/* <CodeHelperModal
+        show={empCodeHelper.show}
+        apiFlag={empCodeHelper.apiFlag}
+        onHide={() =>
+          actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
+        }
+        codeHelperCode={empCodeHelper.codeHelperCode}
+      /> */}
+      <HrManagementHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
       <Container>
         {/* 조회영역 */}
         <SearchPanel onSearch={onSearch}>
@@ -151,6 +161,7 @@ const HrManagementLayout = () => {
                     setPkValue: actions.setLeftTablePkValue,
                     setEditedRow: actions.setEditedEmp,
                     setSelectedRows: actions.setSelectedRows,
+                    deleteCurrentRow: actions.deleteCurrentRow,
                     getRowObject: Emp,
                   }}
                 />
@@ -173,8 +184,11 @@ const HrManagementLayout = () => {
               {/* 우측 메인폼 */}
               <Row className="mb-5 justify-content-center" ref={mainTabRef}>
                 <Row>
-                  <Col xs md="3">
-                    <ProfileImageForm src={empImageSrc} />
+                  <Col className="d-flex align-items-center" xs md="3">
+                    <ProfileImageForm
+                      src={empImageSrc}
+                      handleUpload={actions.insertEmpPhoto}
+                    />
                   </Col>
                   <Col xs md="9">
                     <Row>
@@ -296,6 +310,7 @@ const HrManagementLayout = () => {
                   showCheckbox
                   showHeaderArrow
                   rowAddable
+                  sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
                   pkValue={leftTablePkValue}
@@ -304,6 +319,9 @@ const HrManagementLayout = () => {
                     setTableData: actions.setSubTableData,
                     setEditedRow: actions.setEditedEmpFam,
                     setSelectedRows: actions.setSelectedRows,
+                    insertRow: actions.insertEmpFam,
+                    updateRow: actions.updateEmpFam,
+                    deleteRow: actions.deleteRow,
                     getRowObject: EmpFam,
                   }}
                 />

@@ -15,6 +15,7 @@ function SignUp() {
     setFormState((prevState) => ({ ...prevState, [stateName]: value }));
   };
 
+  //radioForm 공통 디스패처컴포넌트에서 setRadio 적용 필요......
   const renderComponent = (field) => {
     switch (field.component) {
       case "TextBoxComponent":
