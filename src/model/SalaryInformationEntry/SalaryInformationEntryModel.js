@@ -210,9 +210,10 @@ const SalaryInformationEntryModel = () => {
 
         /* 조회구분 영역 set */
         
-        const totalSalPaydata = response.data.totalSalPaydata;
         /* select box 영역  합계 */
-        const totalSalAllowPaydata = response.data.totalSalPaydata.salAllow.map((item) => ({
+        const totalSalPaydata = response.data.totalSalPaydata;
+    
+        const totalSalAllowPaydata = totalSalPaydata&&totalSalPaydata.salAllow.map((item) => ({
           item : {
             cdAllow: item.cdAllow,
             nmAllow: item.nmAllow,
@@ -221,7 +222,7 @@ const SalaryInformationEntryModel = () => {
           },
         }));
 
-        const totalSalDeductPaydata = response.data.totalSalPaydata.salDeduct.map((item) => ({
+        const totalSalDeductPaydata = totalSalPaydata&&totalSalPaydata.salDeduct.map((item) => ({
           item : {
             cdDeduct : item.cdDeduct,
             nmDeduct: item.nmDeduct,

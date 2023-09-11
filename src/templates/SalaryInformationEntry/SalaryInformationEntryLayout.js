@@ -2,7 +2,6 @@
 import React, { useCallback, useState } from "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import CodeHelperModal from "../../components/CodeHelperModal";
-import DateTest from "../../components/DateTest";
 import SearchPanel from "../../components/SearchPanel";
 import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
@@ -10,9 +9,9 @@ import TextBoxComponent from "../../components/TextBoxComponent";
 import CommonConstant from "../../model/CommonConstant";
 import SalConstant from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
-import HrManagementHeader from "../HrManagement/HrManagementHeader";
 import axios from "axios";
 import { objectToQueryString } from "../../utils/StringUtils";
+import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
@@ -63,9 +62,9 @@ const SalaryInformationEntryLayout = ({}) => {
         const data = response.data;
         const codeDataList = data.map((object) => {
           const dynamicProperties = { item: {} };
-          for (const key in object) {
-            dynamicProperties.item[key] = object[key];
-          }
+            for (const key in object) {
+              dynamicProperties.item[key] = object[key];
+            }
           return dynamicProperties;       
         });
         return codeDataList;
@@ -83,7 +82,7 @@ const SalaryInformationEntryLayout = ({}) => {
 
   return (
     <>
-      <HrManagementHeader deleteButtonHandler={actions.deleteSelectedRows} />
+      <SalaryInformationEntryHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
         {/* 코드 도움 모달 영역 */}
         <CodeHelperModal
@@ -101,8 +100,14 @@ const SalaryInformationEntryLayout = ({}) => {
         <SearchPanel onSearch={onSearch} showAccordion>
           <Row>
             <Col>
-              <DateTest
+              {/* <DateTest
                 type="month"
+                label={"귀속연월"}
+                value={state.searchVO.allowMonth}
+                onChange={(e, value) => actions.setAllowMonth(value)}
+              /> */}
+              <TextBoxComponent
+                type='month'
                 label={"귀속연월"}
                 value={state.searchVO.allowMonth}
                 onChange={(e, value) => actions.setAllowMonth(value)}

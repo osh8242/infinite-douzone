@@ -52,8 +52,9 @@ function CodeHelperModal(props) {
 
   // 클릭한 행반환
   const handleRowClick = (row) => {
+    // console.log(row);
     setSearchTerm("");
-    if (setRowData) usePk ? setRowData(row.item[usePk]) : setRowData(row.item)
+    if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row)
     onHide();
   };
 
