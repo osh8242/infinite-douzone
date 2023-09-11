@@ -70,7 +70,7 @@ const HrManagementModel = () => {
   //초기 랜더링시 이미지 불러오기
   useEffect(() => {
     axios
-      .get(url + "/empPhoto/getEmpPhotoByCdEmp", {
+      .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
         responseType: "arraybuffer",
       })
       .then((response) => {
@@ -85,7 +85,7 @@ const HrManagementModel = () => {
       });
   }, [leftTablePkValue]);
 
-  //insertEmpPhoto
+  //uploadEmpPhoto
   const insertEmpPhoto = useCallback(
     (event) => {
       const file = event.target.files[0];
@@ -101,12 +101,15 @@ const HrManagementModel = () => {
         return;
       }
 
+      const fileExtension = file.name.split(".").pop();
+
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("fileExtension", fileExtension);
       formData.append("pkValue", JSON.stringify(leftTablePkValue));
 
       axios
-        .post(url + urlPattern.insertEmpPhoto, formData, {
+        .put(url + urlPattern.updateEmpPhoto, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
