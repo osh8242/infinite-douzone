@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import "../styles/ProfileImageForm.scss";
 
 function ProfileImageForm(props) {
-  const { src, title, text, handleUpload, handleDownload } = props;
+  const { src, title, text, handleUpload } = props;
   const fileInput = useRef(null);
   return (
     <Card>

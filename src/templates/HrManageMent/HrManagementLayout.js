@@ -184,7 +184,7 @@ const HrManagementLayout = () => {
                   <Col className="d-flex align-items-center" xs md="3">
                     <ProfileImageForm
                       src={empImageSrc}
-                      handleUpload={actions.insertEmpPhoto}
+                      handleUpload={actions.updateEmpPhoto}
                     />
                   </Col>
                   <Col xs md="9">

@@ -89,7 +89,7 @@ const HrManagementModel = () => {
   }, [leftTablePkValue]);
 
   //uploadEmpPhoto
-  const insertEmpPhoto = useCallback(
+  const updateEmpPhoto = useCallback(
     (event) => {
       const file = event.target.files[0];
 
@@ -119,6 +119,7 @@ const HrManagementModel = () => {
         })
         .then((response) => {
           console.log("파일업로드 성공!", response.data);
+          setLeftTablePkValue({ ...leftTablePkValue });
         })
         .catch((error) => {
           console.error("File upload error:", error);
@@ -368,7 +369,7 @@ const HrManagementModel = () => {
 
       setMainTabData,
       setEditedEmpAdd,
-      insertEmpPhoto,
+      updateEmpPhoto,
 
       setSubTableData,
       setEditedEmpFam,
