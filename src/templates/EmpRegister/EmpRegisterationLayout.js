@@ -26,8 +26,6 @@ function EmpRegisterationLayout() {
 
   //고정된 값을 가지는 state들
   const {
-    EmpRegisterLeftHeaders,
-    mainTabMenuListForEmpRegister, //메뉴 탭 목록
     ynForList, //내외국인 구분
     genderRadioList, //성별구분
     emailList, //이메일 도메인 리스트
@@ -36,6 +34,8 @@ function EmpRegisterationLayout() {
 
   const {
     EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
+    EmpRegisterLeftHeaders,
+    mainTabMenuListForEmpRegister, //메뉴 탭 목록
   } = EmpConstant();
 
   // 메뉴 탭 전환 기능 추후 수정 예정
