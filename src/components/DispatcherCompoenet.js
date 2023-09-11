@@ -44,7 +44,7 @@ const DispatcherComponent = (field) => {
       return (
         <SelectForm
           label={field.label}
-          optionList={field.selectList}
+          optionList={field.optionList}
           subLabel={field.subLabel}
           endLabel={field.endLabel}
         />

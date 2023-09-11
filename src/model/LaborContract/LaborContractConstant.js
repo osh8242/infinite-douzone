@@ -45,6 +45,7 @@ export const SubTabHeaders = [
   { field: "otherType", text: "항목" },
   { field: "otherMoney", text: "금액" },
 ];
+
 // 주휴일 목록
 export const dayOffList = [
   { key: "mon", value: "1. 월" },
@@ -54,4 +55,53 @@ export const dayOffList = [
   { key: "fri", value: "5. 금" },
   { key: "sat", value: "6. 토" },
   { key: "sun", value: "7. 일" },
+];
+
+// 기타급여 목록
+export const otherBenefitStatusList = [
+  { key: "T", value: "1. 여" },
+  { key: "F", value: "2. 부" },
+];
+
+// 임금유형 목록
+export const salaryTypeList = [
+  { key: "monthlySal", value: "1. 월급" },
+  { key: "dailySal", value: "2. 일급" },
+  { key: "hourlySal", value: "3. 시급" },
+];
+// 상여금 목록
+export const bonusPaymentStatusList = [
+  { key: "T", value: "1. 여" },
+  { key: "F", value: "2. 부" },
+];
+// 임금지급일 목록
+export const salaryPaymentDateTypeList = [
+  { key: "month", value: "1. 매월" },
+  { key: "week", value: "2. 매주" },
+  { key: "day", value: "3. 매일" },
+];
+// 지급방법 목록
+export const paymentMethodList = [
+  { key: "account", value: "1. 예금통장에 입금" },
+  { key: "direct", value: "2. 직접지급" },
+];
+// 고용보험 목록
+export const empInsuranceList = [
+  { key: "T", value: "1. 여" },
+  { key: "F", value: "2. 부" },
+];
+// 산재보험 목록
+export const compensationInsuranceList = [
+  { key: "T", value: "1. 여" },
+  { key: "F", value: "2. 부" },
+];
+// 국민연금 목록
+export const nationalPensionList = [
+  { key: "T", value: "1. 여" },
+  { key: "F", value: "2. 부" },
+];
+// 건강보험 목록
+export const healthInsuranceList = [
+  { key: "T", value: "1. 여" },
+  { key: "F", value: "2. 부" },
 ];
