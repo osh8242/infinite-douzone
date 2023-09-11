@@ -20,7 +20,7 @@ function TextBoxComponent(props) {
     value,
 
     rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
-    codeHelper, // 코드헬퍼 아이콘 생성
+    //codeHelper, // 코드헬퍼 아이콘 생성
     onClickCodeHelper, // 코드헬퍼 전용 옵션 선택시 [필수]
 
     size,
@@ -146,13 +146,21 @@ function TextBoxComponent(props) {
             md="8"
             className="d-flex align-items-center justify-content-center"
           >
-            {codeHelper ? (
-              <div className="svg-wrapper">
-                <div className="svg-container">
-                  {renderFormControl()}
-                  <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+            {onClickCodeHelper ? (
+              type==='date'? (
+                <div className="svg-wrapper">
+                  <div className="svg-container2">
+                    {renderFormControl()}
+                    <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                  </div>
                 </div>
-              </div>
+                ):(
+                <div className="svg-wrapper">
+                  <div className="svg-container">
+                    {renderFormControl()}
+                    <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                  </div>
+                </div>)
             ) : (
               <>{renderFormControl()}</>
             )}

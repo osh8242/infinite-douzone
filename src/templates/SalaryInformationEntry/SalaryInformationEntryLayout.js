@@ -14,7 +14,7 @@ import { fetchData } from "../../utils/codeHelperUtils";
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
-  const { url, labels } = CommonConstant();
+  const { labels } = CommonConstant();
   const { selectOption, tableHeader, codeHelperparams } = SalConstant();
 
   //Model 관리되는 값
@@ -26,7 +26,7 @@ const SalaryInformationEntryLayout = ({}) => {
   };
 
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback(async (codeHelperCode, setFn) => {
+  const codeHelperShow = useCallback(async (codeHelperCode, setRowData) => {
   actions.setModalState({ show: true });
 
   let codeDataList = codeHelperCode.tableData;
@@ -36,7 +36,7 @@ const SalaryInformationEntryLayout = ({}) => {
 
   actions.setCodeHelperTableData(() => ({
     subject: codeHelperCode.subject,
-    setRowData: setFn,
+    setRowData: setRowData,
     tableHeaders: codeHelperCode.headers,
     tableData: codeDataList,
     usePk: codeHelperCode.usePk ? codeHelperCode.usePk : '',
@@ -55,7 +55,7 @@ const SalaryInformationEntryLayout = ({}) => {
       <Container>
         {/* 코드 도움 모달 영역 */}
         <CodeHelperModal
-          show={state.modalState.show}
+          show={state.modalState.show} 
           onHide={() => actions.setModalState({show: false})}
           setRowData={state.codeHelperTableData.setRowData}
           usePk={state.codeHelperTableData.usePk}
@@ -91,12 +91,12 @@ const SalaryInformationEntryLayout = ({}) => {
             </Col>
             <Col>
               <TextBoxComponent
-                //type="date"
+                type="date"
                 name="paymentDate"
                 label={"지급일"}
                 value={state.searchVO.paymentDate}
                 onChange={actions.setPaymentDate}
-                codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.paymentDate, actions.setPaymentDate)}
+                onClickCodeHelper={() => codeHelperShow(codeHelperparams.paymentDate, actions.setPaymentDate)}
               />
             </Col>
           </Row>
@@ -110,7 +110,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
                   onEnter={actions.setSearchCdEmp}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.emplist, actions.setSearchCdEmp)}
+                  onClickCodeHelper={() => codeHelperShow(codeHelperparams.emplist, actions.setSearchCdEmp)}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
               </Col>
@@ -120,7 +120,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
                   onEnter={actions.setSearchCdDept}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept, actions.setSearchCdDept)}  
+                  nClickCodeHelper={() => codeHelperShow(codeHelperparams.cdDept, actions.setSearchCdDept)}  
                 />
               </Col>
             </Row>
@@ -131,7 +131,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"직급코드"}
                   value={state.searchVO.searchRankNo}
                   onEnter={actions.setSearchRankNo}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.rankNo, actions.setSearchRankNo)}
+                  onClickCodeHelper={() => codeHelperShow(codeHelperparams.rankNo, actions.setSearchRankNo)}
                 />
               </Col>
               <Col>
@@ -140,7 +140,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"직책코드"}
                   value={state.searchVO.searchCdOccup}
                   onEnter={actions.setSearchCdOccup}
-                  codeHelper onClickCodeHelper={() => codeHelperShow(codeHelperparams.occup, actions.setSearchCdOccup)}
+                  onClickCodeHelper={() => codeHelperShow(codeHelperparams.occup, actions.setSearchCdOccup)}
                 />
               </Col>
             </Row>
