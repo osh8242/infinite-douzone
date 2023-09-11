@@ -70,26 +70,6 @@ const HrManagementLayout = () => {
           searchOption={searchOption}
           orderList={orderList}
         />
-        {/* <SearchPanel
-          onSearch={() => actions.onSearch(jobOkSelectRef, orderSelectRef)}
-        >
-          <Row>
-            <Col>
-              <SelectForm
-                label={"구분"}
-                optionList={searchOption}
-                selectRef={jobOkSelectRef}
-              />
-            </Col>
-            <Col>
-              <SelectForm
-                label={"정렬"}
-                optionList={orderList}
-                selectRef={orderSelectRef}
-              />
-            </Col>
-          </Row>
-        </SearchPanel> */}
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
@@ -134,7 +114,11 @@ const HrManagementLayout = () => {
               {/* 우측 메인폼 */}
               <Row className="mb-5 justify-content-center" ref={mainTabRef}>
                 <Row>
-                  <Col className="d-flex align-items-center" xs md="3">
+                  <Col
+                    className="d-flex align-items-center justify-content-center"
+                    xs
+                    md="3"
+                  >
                     <ProfileImageForm
                       src={empImageSrc}
                       handleUpload={actions.updateEmpPhoto}
@@ -161,7 +145,6 @@ const HrManagementLayout = () => {
                       <Col xs md="6">
                         <TextBoxComponent
                           id="noSocial"
-                          type="regNum"
                           label={labels.noSocial}
                           disabled
                           value={mainTabData.item?.noSocial}
@@ -236,7 +219,6 @@ const HrManagementLayout = () => {
                           label={labels.daEnter}
                           disabled
                           value={mainTabData.item?.daEnter}
-                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                       <Col xs md="6">
@@ -245,7 +227,6 @@ const HrManagementLayout = () => {
                           label={labels.daRetire}
                           disabled
                           value={mainTabData.item?.daRetire}
-                          onEnter={actions.submitMainTabData}
                         />
                       </Col>
                     </Row>
@@ -268,7 +249,6 @@ const HrManagementLayout = () => {
                   selectedRows={selectedRows}
                   actions={{
                     setTableData: actions.setSubTableData,
-                    setEditedRow: actions.setEditedEmpFam,
                     setSelectedRows: actions.setSelectedRows,
                     insertNewRow: actions.insertEmpFam,
                     updateEditedRow: actions.updateEmpFam,
