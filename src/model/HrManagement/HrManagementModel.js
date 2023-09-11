@@ -21,7 +21,6 @@ const HrManagementModel = () => {
   const [empImageSrc, setEmpImageSrc] = useState("");
 
   const [subTableData, setSubTableData] = useState([]); // 서브 그리드 데이터
-  const [editedEmpFam, setEditedEmpFam] = useState({}); // 서브 그리드 수정 ROW
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
@@ -120,13 +119,14 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (leftTablePkValue.cdEmp) {
       axios
-        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
-          responseType: "arraybuffer",
-        })
+        .get(
+          `${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`,
+          {
+            responseType: "arraybuffer",
+          }
+        )
         .then((response) => {
           // ArrayBuffer를 Blob으로 변환하고 URL을 생성
-          console.log("이미지요청 데이터", response.data);
-          console.log("이미지요청 바디", response);
           const blob = new Blob([response.data], { type: "image/jpeg" });
           const imageUrl = URL.createObjectURL(blob);
           setEmpImageSrc(imageUrl);
@@ -250,24 +250,9 @@ const HrManagementModel = () => {
   }, [editedEmp]);
 
   //추가된 사원가족 insert 요청
-  useEffect(() => {
-    if (editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
-      axios
-        .post(url + "/empFam/insertEmpFam", editedEmpFam.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmpFam({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-  }, [editedEmpFam]);
-
-  //추가된 사원가족 insert 요청
   const insertEmpFam = useCallback((row) => {
     axios
-      .post(url + urlPattern.insertEmpFam, row.item)
+      .post(url + urlPattern.insertEmpFam, row)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam insert 성공");
       })
@@ -278,26 +263,9 @@ const HrManagementModel = () => {
   }, []);
 
   //수정된 사원가족 update 요청
-  useEffect(() => {
-    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0) {
-      console.log("editedEmpFam 수정요청", editedEmpFam.item);
-      axios
-        .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmpFam({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-    }
-  }, [editedEmpFam]);
-
-  //수정된 사원가족 update 요청
   const updateEmpFam = useCallback((row) => {
     axios
-      .put(url + urlPattern.updateEmpFam, row.item)
+      .put(url + urlPattern.updateEmpFam, row)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam 업데이트 성공");
       })
@@ -337,7 +305,7 @@ const HrManagementModel = () => {
         Object.keys(editedTableNames).forEach((tableName) => {
           switch (tableName) {
             case "empFam":
-              setEditedEmpFam({}); // 사원가족 리로드
+              //setEditedEmpFam({}); // 사원가족 리로드
               break;
             case "emp":
               setEditedEmp({}); // 사원가족 리로드
@@ -428,7 +396,6 @@ const HrManagementModel = () => {
       updateEmpPhoto,
 
       setSubTableData,
-      setEditedEmpFam,
       insertEmpFam,
       updateEmpFam,
 

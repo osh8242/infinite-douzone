@@ -270,8 +270,8 @@ const HrManagementLayout = () => {
                     setTableData: actions.setSubTableData,
                     setEditedRow: actions.setEditedEmpFam,
                     setSelectedRows: actions.setSelectedRows,
-                    insertRow: actions.insertEmpFam,
-                    updateRow: actions.updateEmpFam,
+                    insertNewRow: actions.insertEmpFam,
+                    updateEditedRow: actions.updateEmpFam,
                     deleteRow: actions.deleteRow,
                     getRowObject: EmpFam,
                   }}

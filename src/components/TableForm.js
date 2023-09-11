@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import "../styles/tableForm.css";
@@ -23,7 +33,8 @@ const TableForm = ({
   actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
-  //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
+  //   insertNewRow : actions.insertEmpFam // 추가행을 삽입하려면 필수
+  //   updateEditedRow : actions.updateEmpFam // 행을 업데이트하려면 필수
   //   setSelectedRows: actions.setSelectedRows, // 체크박스를 이용하여 삭제하려면 필수
   //   setPkValue : actions.setLeftTablePkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   //   getRowObject: EmpFam, //객체화 함수 필수
@@ -114,6 +125,7 @@ const TableForm = ({
   const editableRowIndex = useMemo(() => {
     return tableRows.findIndex((item) => item.isEditable);
   }, [tableRows]);
+  console.log("editableRowIndex", editableRowIndex);
 
   //////// 랜더링 후에 처리할 SideEffect //////////
   useEffect(() => {
@@ -135,16 +147,10 @@ const TableForm = ({
   );
 
   //수정중인 행을 수정해제하는 함수
-  const releaseEditable = useCallback(
-    (rowIndex) => {
-      if (editableRowIndex !== -1 && editableRowIndex !== rowIndex) {
-        const newTableRows = [...tableRows];
-        newTableRows[editableRowIndex].isEditable = false;
-        setTableRows(newTableRows);
-      }
-    },
-    [tableRows, editableRowIndex]
-  );
+  const releaseEditable = useCallback(() => {
+    const newTableRows = tableRows.map((row) => (row.isEditable = false));
+    setTableRows(newTableRows);
+  }, []);
 
   //td의 className을 얻는 함수
   const getTdClassName = useCallback(
@@ -163,7 +169,10 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
+  const getInputElements = useCallback(
+    () => inputRef.current[rowRef],
+    [rowRef]
+  );
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -294,6 +303,7 @@ const TableForm = ({
       if (readOnly) return;
       if (event.key === "Enter") {
         event.preventDefault();
+        event.stopPropagation();
 
         const editedRow = getEditedRow();
 
@@ -301,14 +311,19 @@ const TableForm = ({
           setModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
-        const newTableRows = [...tableRows, (tableRows[rowIndex] = editedRow)];
-        releaseEditable();
+        if (editedRow.isNew) actions.insertNewRow(editedRow.item);
+        else actions.updateEditedRow(editedRow.item);
+
+        let newTableRows = [...tableRows];
+        newTableRows[rowIndex] = { ...editedRow, isEditable: false };
+
         setTableRows(newTableRows);
-        actions.setEditedRow(editedRow);
+        console.log("newTableRows", newTableRows);
+        console.log("newTableRows", JSON.parse(JSON.stringify(newTableRows)));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getEditedRow, tableRows, actions]
+    [getEditedRow, tableRows, editableRowIndex]
   );
 
   // 행 삭제 이벤트
@@ -447,7 +462,8 @@ const TableForm = ({
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -518,7 +534,7 @@ const TableForm = ({
     selection.removeAllRanges();
     selection.addRange(range);
   };
-
+  if (tableName === "EMPFAM") console.log("랜더직전 테이블로우", tableRows);
   return tableRows ? (
     <>
       <Table className="table" size="sm" bordered hover ref={myRef}>
@@ -540,12 +556,16 @@ const TableForm = ({
               <th
                 id="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
                 <div>{thead.text}</div>
-                <div id="tableHeader-arrow">{getArrowDirection(thead.field)}</div>
+                <div id="tableHeader-arrow">
+                  {getArrowDirection(thead.field)}
+                </div>
               </th>
             ))}
           </tr>
@@ -610,7 +630,8 @@ const TableForm = ({
               <td
                 className="d-flex justify-content-center"
                 onClick={() =>
-                  codeHelper && actions.setCodeHelper({ ...codeHelper, show: true })
+                  codeHelper &&
+                  actions.setCodeHelper({ ...codeHelper, show: true })
                 }
               >
                 <FontAwesomeIcon icon={faPlus} />
@@ -623,11 +644,15 @@ const TableForm = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div
                     className="tableContents"
-                    ref={(div) => setInputRef(div, tableRows.length, columnIndex)}
+                    ref={(div) =>
+                      setInputRef(div, tableRows.length, columnIndex)
+                    }
                   ></div>
                 </td>
               ))}
@@ -670,4 +695,4 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
-export default React.memo(TableForm);
+export default TableForm;
