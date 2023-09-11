@@ -30,7 +30,7 @@ const TableForm = ({
   //   );
   // };
   pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
-  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  actions = [], // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
   //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수

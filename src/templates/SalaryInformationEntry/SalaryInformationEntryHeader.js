@@ -46,6 +46,12 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler }) => {
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
+        <Button>
+            수당/공제 등록
+        </Button>
+        <Button>
+            재계산
+        </Button>
         <button className="backgroundBorderNone">
           <FontAwesomeIcon icon={faPrint} className="colorWhite" />
         </button>

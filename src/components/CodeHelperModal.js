@@ -13,7 +13,7 @@ const {labels} = CommonConstant();
 function CodeHelperModal(props) {
   const {
     show,
-    onHide, 
+    onHide,
 
     subject,
     setRowData, // [필수] 객체 반환 받을 set함수
@@ -52,7 +52,6 @@ function CodeHelperModal(props) {
 
   // 클릭한 행반환
   const handleRowClick = (row) => {
-    // console.log(row);
     setSearchTerm("");
     if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row)
     onHide();

@@ -9,9 +9,8 @@ import TextBoxComponent from "../../components/TextBoxComponent";
 import CommonConstant from "../../model/CommonConstant";
 import SalConstant from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
-import axios from "axios";
-import { objectToQueryString } from "../../utils/StringUtils";
 import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
+import { fetchData } from "../../utils/codeHelperUtils";
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
@@ -44,36 +43,6 @@ const SalaryInformationEntryLayout = ({}) => {
     searchField: codeHelperCode.searchField,
   }));
 }, []);
-
-  async function fetchData(url, params) {
-    try {
-      const codeDataList = await apiCodeHelperData(url, params);
-      return codeDataList;
-    } catch (error) {
-      console.error("API 호출 중 오류 발생:", error);
-    }
-  }
-
-  const apiCodeHelperData = (url, params) => {
-    const serverUrl = "http://localhost:8888";
-
-    return axios.get(serverUrl + url + objectToQueryString(params))
-      .then((response) => {
-        const data = response.data;
-        const codeDataList = data.map((object) => {
-          const dynamicProperties = { item: {} };
-            for (const key in object) {
-              dynamicProperties.item[key] = object[key];
-            }
-          return dynamicProperties;       
-        });
-        return codeDataList;
-      })
-      .catch((error) => {
-        console.error("API 호출 중 오류 발생:", error);
-        throw error;
-      });
-  };
 
   //조회버튼
   const onSearch = () => {
