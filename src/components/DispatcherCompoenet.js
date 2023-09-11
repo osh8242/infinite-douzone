@@ -41,7 +41,14 @@ const DispatcherComponent = (field) => {
         />
       );
     case "SelectForm":
-      return <SelectForm label={field.label} optionList={field.optionList} />;
+      return (
+        <SelectForm
+          label={field.label}
+          optionList={field.selectList}
+          subLabel={field.subLabel}
+          endLabel={field.endLabel}
+        />
+      );
     default:
       return null;
   }

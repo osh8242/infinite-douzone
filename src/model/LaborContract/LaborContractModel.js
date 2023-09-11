@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useContext, useEffect, useCallback } from "react";
 import axios from "axios";
-import LaborContractConstant from "../../LaborContract/LaborContractConstant";
 import Emp from "../../vo/HrManagement/Emp";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";

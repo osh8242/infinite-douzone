@@ -1,9 +1,13 @@
-import { labels } from "../../model/LaborContract/LaborContractConstant";
+import {
+  labels,
+  incomeClassficationList,
+  dayOffList,
+} from "./LaborContractConstant";
 
 export const HeaderField = [
   {
     component: "DateForm",
-    label: "업무의 내용",
+    label: labels.dateOfCreation,
     // label: labels.dateOfCreation,
     type: "date",
     stateName: "id",
@@ -11,12 +15,8 @@ export const HeaderField = [
   },
   {
     component: "SelectForm",
-    label: "소득구분",
-    optionList: [
-      { key: "empAll", value: "0. 전체" },
-      { key: "empRegistration", value: "1. 사원등록" },
-      { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
-    ],
+    label: labels.incomeClassfication,
+    optionList: incomeClassficationList,
     // label: labels.incomeClassfication,
     // optionList: incomeClassficationList,
   },
@@ -58,10 +58,11 @@ export const MainTabField = [
     endLabel: "일 ",
   },
   {
-    component: "TextBoxComponent",
+    component: "SelectForm",
     label: "주휴일  ",
     subLabel: "매 주 ",
     endLabel: "요일 ",
+    selectList: dayOffList,
   },
   {
     component: "TextBoxComponent",

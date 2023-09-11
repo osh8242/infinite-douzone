@@ -3,13 +3,12 @@ import { Col, Container, Row } from "react-bootstrap";
 import LaborContractModel from "../../model/LaborContract/LaborContractModel";
 import LaborContractHeader from "../LaborContractHeader";
 import SearchPanel from "../../components/SearchPanel";
-import LaborContractConstant from "../../LaborContract/LaborContractConstant";
+// import LaborContractConstant from "./src/model/LaborContract/LaborContractConstant";
 import SwsmConstant from "../../model/SwsmConstant";
 import DispatcherComponent from "../../components/DispatcherCompoenet";
-import {
-  HeaderField,
-  MainTabField,
-} from "../../model/LaborContract/LaborContractField";
+import { LeftTableHeaders } from "../../model/LaborContract/LaborContractConstant";
+import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
+
 import TableForm from "../../components/TableForm";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
@@ -20,7 +19,10 @@ import DateForm from "../../components/DateForm";
 import AddressForm from "../../components/AddressForm";
 import TempAdd from "../../components/TempAdd";
 import TextBoxComponent from "../../components/TextBoxComponent";
-
+import {
+  HeaderField,
+  MainTabField,
+} from "../../model/LaborContract/LaborContractField";
 import {
   searchOption, // 검색옵션 리스트
   orderList,
@@ -31,13 +33,6 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 
 const LaborContractLayout = () => {
-  const {
-    labels,
-    incomeClassficationList,
-
-    SwsmSubTabHeaders,
-  } = LaborContractConstant();
-
   const { SwsmLeftTableHeaders, subTabMenuList } = SwsmConstant();
   const { state, actions, mainTablePkValue } = LaborContractModel();
   const { leftTableData, mainTabData, subTableData, selectedRows } = state;
@@ -62,7 +57,7 @@ const LaborContractLayout = () => {
                 <TableForm
                   showCheckbox
                   showHeaderArrow={true}
-                  tableHeaders={SwsmLeftTableHeaders}
+                  tableHeaders={LeftTableHeaders}
                   tableData={leftTableData}
                   rowAddable={true}
                   actions={{
@@ -94,7 +89,7 @@ const LaborContractLayout = () => {
                 showCheckbox
                 showHeaderArrow
                 rowAddable
-                tableHeaders={SwsmSubTabHeaders}
+                tableHeaders={SubTabHeaders}
                 tableData={subTableData}
                 pkValue={mainTablePkValue}
                 actions={{
