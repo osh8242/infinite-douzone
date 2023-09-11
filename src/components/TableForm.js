@@ -30,7 +30,7 @@ const TableForm = ({
   //   );
   // };
   pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
-  actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  actions, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
   //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
@@ -324,6 +324,15 @@ const TableForm = ({
     [getEditedRow, tableRows, actions]
   );
 
+  // 행 삭제 이벤트
+  const deleteRow = useCallback(
+    (rowRef) => {
+      const newTableRows = tableRows.filter((row, index) => index !== rowRef);
+      setTableRows(newTableRows);
+    },
+    [tableRows]
+  );
+
   // 체크된 Row 개수 계산함수
   const checkedBoxCounter = useCallback(() => {
     const checkedBoxCount = tableRows.reduce(
@@ -401,6 +410,7 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
+      //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           setColumnRef(-1);
@@ -466,8 +476,17 @@ const TableForm = ({
               checkboxHandler(rowRef);
               break;
 
-            case "Delete":
-              actions.deleteSelectedRows();
+            case "F5":
+              console.log("actions", actions);
+              setModalState({
+                show: true,
+                message: "해당 행을 삭제하시겠습니까?",
+                onConfirm: () => {
+                  actions.deleteRow(tableRows[rowRef]);
+                  deleteRow(rowRef);
+                  setModalState({ show: false });
+                },
+              });
               break;
 
             default:
@@ -607,6 +626,7 @@ const TableForm = ({
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
               <td
+                className="d-flex justify-content-center"
                 onClick={() =>
                   codeHelper &&
                   actions.setCodeHelper({ ...codeHelper, show: true })
@@ -642,7 +662,12 @@ const TableForm = ({
       <ConfirmComponent
         show={modalState.show}
         message={modalState.message}
-        onConfirm={() => setModalState({ show: false })}
+        onConfirm={
+          modalState.onConfirm
+            ? modalState.onConfirm
+            : () => setModalState({ show: false })
+        }
+        onHide={() => setModalState({ show: false })}
       />
     </>
   ) : (
@@ -668,4 +693,4 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
-export default TableForm;
+export default React.memo(TableForm);
