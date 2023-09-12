@@ -4,14 +4,14 @@ import TextBoxComponent from "../../../components/TextBoxComponent";
 import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
 import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
 
-const MainTab = (props) => {
+const HrMainTab = (props) => {
   const { formData = { item: {} }, submitData, columnNumber = 1 } = props;
 
   const defaultMd = 12 / columnNumber;
   const columns = [];
-  const wrappingColTag = (input, index, span) => {
-    let md = defaultMd;
-    if (span) md = defaultMd * span <= 12 && 12;
+  const wrappingColTag = (input, index, span = 1) => {
+    let md = defaultMd * span;
+    if (md > 12) md = 12;
     return (
       <Col xs md={md} key={index}>
         {input}
@@ -81,17 +81,19 @@ const MainTab = (props) => {
   for (let i = 0; i < columns.length; i += columnNumber) {
     let mdSum = 0;
     let columnsNumInRow = columnNumber;
-    for (let j = i; j < i + columnNumber; j++) {
+    for (let j = i; j < i + columnNumber && j < columns.length; j++) {
       mdSum += inputs[j].span ? defaultMd * inputs[j].span : defaultMd;
       if (mdSum > 12) {
         columnsNumInRow = j;
-        i = j - columnNumber;
+        break;
       }
     }
+    console.log("로우 푸쉬", i, i + columnsNumInRow);
     rows.push(<Row key={i}>{columns.slice(i, i + columnsNumInRow)}</Row>);
+    i -= columnNumber - columnsNumInRow;
   }
 
   return <>{rows}</>;
 };
 
-export default MainTab;
+export default HrMainTab;
