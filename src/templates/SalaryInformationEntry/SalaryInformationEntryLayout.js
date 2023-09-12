@@ -14,10 +14,9 @@ import CodeHelperModal from "../../components/CodeHelperModal";
 import InsertSalaryData from "./InsertSalaryData";
 import ReCalculation from "./ReCalculation";
 import {labels} from "../../model/CommonConstant"
+import SiSeacrchPanel from "./searchPenel/SiSeacrchPanel";
 
-const SalaryInformationEntryLayout = ({}) => {
-  //상수
-
+const SalaryInformationEntryLayout = () => {
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
   
@@ -42,7 +41,7 @@ const SalaryInformationEntryLayout = ({}) => {
         }
         
         actions.setModalState((prevState) => ({ 
-          ...prevState, size : 'lg',
+          ...prevState,
           subject: data.subject
         }));
 
@@ -58,21 +57,30 @@ const SalaryInformationEntryLayout = ({}) => {
 
       case 'insertSalaryData' : // 수당/공제 등록
         
+        actions.setModalState((prevState) => ({ 
+          ...prevState, 
+          size : 'xl',
+          subject: data.subject
+        }))
+
         actions.setModalContentData(()=>({
-          data : data
+          data : data.reCalculationList
         }));
+
         break;
 
       case 'reCalculation' : // 재계산
 
-        actions.setModalState((prevState) => ({ 
-          ...prevState, 
-          subject: data.subject
-        }));
+       actions.setModalState((prevState) => ({ 
+          ...prevState
+          , subject: '재계산'
+          , onConfirm : alert("안뇽~")
+        }))
 
         actions.setModalContentData(()=>({
           data : data.list
         }));  
+
         break;
       
       default : break;
@@ -86,171 +94,73 @@ const SalaryInformationEntryLayout = ({}) => {
 
   return (
     <>
+      <ModalComponent
+        title={state.modalState.subject}
+        size={state.modalState.size}       
+        show={state.modalState.show}
+        onHide={()=>actions.setModalState({show:false})}
+        onConfirm = {state.modalState.onConfirm}
+      >
+      {modalType === 'default'?
+        <CodeHelperModal
+          setRowData={state.codeHelperTableData.setRowData}
+          usePk={state.codeHelperTableData.usePk}
+          tableHeaders = {state.codeHelperTableData.tableHeaders}
+          tableData={state.codeHelperTableData.tableData}
+          subject={state.codeHelperTableData.subject}
+          searchField={state.codeHelperTableData.searchField}
+          onHide={() => actions.setModalState({show: false})}
+        />
+
+      : modalType === 'insertSalaryData'?
+          <InsertSalaryData 
+            data = {state.modalContentData.data}
+          />
+
+      : modalType === 'reCalculation'?
+          <ReCalculation
+            data = {state.modalContentData.data}
+          />
+
+      : //default
+        <></>
+      
+      }
+      </ModalComponent>
+
       <SalaryInformationEntryHeader 
         deleteButtonHandler={actions.deleteSelectedRows} 
         modalShow={modalShow}           
       />
       <Container>
-        
-        <ModalComponent
-          title={state.modalState.subject}
-          size={state.modalState.size}       
-          show={state.modalState.show}
-          onHide={()=>actions.setModalState({show:false})}
-        >
-        {modalType === 'default'?
-           <CodeHelperModal
-              setRowData={state.codeHelperTableData.setRowData}
-              usePk={state.codeHelperTableData.usePk}
-              tableHeaders = {state.codeHelperTableData.tableHeaders}
-              tableData={state.codeHelperTableData.tableData}
-              subject={state.codeHelperTableData.subject}
-              searchField={state.codeHelperTableData.searchField}
-              onHide={() => actions.setModalState({show: false})}
-            />
+        {/* 조회영역 */}
+        <SiSeacrchPanel
+          onSearch = {onSearch}
+          modalShow={modalShow}
+          actions = {actions}
+          state = {state}
+        />
 
-        : modalType === 'insertSalaryData'?
-            <InsertSalaryData 
-              data = {state.modalContentData.data}
-            />
-
-        : modalType === 'reCalculation'?
-            <ReCalculation
-              data = {state.modalContentData.data}
-            />
-
-        : //default
-         <></>
-        
-        }
-       
-        </ModalComponent>
-
-        {/* 기본 검색조건 */}
-        <SearchPanel onSearch={onSearch} showAccordion>
-          <Row>
-            <Col>
-              <TextBoxComponent
-                type='month'
-                label={"귀속연월"}
-                value={state.searchVO.allowMonth}
-                onChange={(e, value) => actions.setAllowMonth(value)}
-              />
-            </Col>
-            <Col>
-              <SelectForm
-                label={"구분"}
-                optionList={salaryDivisionOption}
-                onChange={actions.setSalDivision}
-              />
-            </Col>
-            <Col>
-              <TextBoxComponent
-                type="date"
-                name="paymentDate"
-                label={"지급일"}
-                value={state.searchVO.paymentDate}
-                onChange={(e, value) => actions.setPaymentDate(value)}
-                onClickCodeHelper={() => modalShow('default',codeHelperData_paymentDate, actions.setPaymentDate)}
-              />
-            </Col>
-          </Row>
-
-          {/* 상세 검색조건 */}
-          <div>
-            <Row>
-              <Col>
-                <TextBoxComponent
-                  name="searchEmpCd"
-                  label={"사원코드"} 
-                  value={state.searchVO.searchCdEmp}
-                  onEnter={actions.setSearchCdEmp}
-                  onClickCodeHelper={() => modalShow('default', codeHelperData_emplist, actions.setSearchCdEmp)}
-                  //onChange={(e,value)=>actions.setSearchCdEmp(value)}
-                />
-              </Col>
-              <Col>
-                <TextBoxComponent
-                  name="searchCdDept"
-                  label={"부서코드"}
-                  value={state.searchVO.searchCdDept}
-                  onEnter={actions.setSearchCdDept}
-                  onClickCodeHelper={() => modalShow('default', codeHelperData_cdDept, actions.setSearchCdDept)}  
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <TextBoxComponent
-                  name="searchRankNo"
-                  label={"직급코드"}
-                  value={state.searchVO.searchRankNo}
-                  onEnter={actions.setSearchRankNo}
-                  onClickCodeHelper={() => modalShow('default', codeHelperData_rankNo, actions.setSearchRankNo)}
-                />
-              </Col>
-              <Col>
-                <TextBoxComponent
-                  name="searchCdOccup"
-                  label={"직책코드"}
-                  value={state.searchVO.searchCdOccup}
-                  onEnter={actions.setSearchCdOccup}
-                  onClickCodeHelper={() => modalShow(codeHelperData_occup, actions.setSearchCdOccup)}
-                />
-              </Col>
-            </Row>
-
-            {/* <Row>
-              <Col>
-                <TextBoxComponent 
-                  name="searchCdField"  
-                  label={"현장코드"}  
-                  value={state.searchVO.searchCdField}
-                  onChange={actions.setSearchCdField}
-                  codeHelper/>
-              </Col>
-              <Col>
-                <TextBoxComponent 
-                  name="searchCdProject"  
-                  label={"프로젝트코드"}  
-                  value={state.searchVO.searchCdField}
-                  onChange={actions.setSearchCdProject}
-                  codeHelper/>
-              </Col>
-            </Row> */}
-
-            <Row>
-              <Col>
-                <SelectForm
-                  label={"생산직여부"}
-                  optionList={unitOption}
-                />
-              </Col>
-              <Col>
-                <SelectForm
-                  label={"국외근로여부"}
-                  optionList={forLaborOption}
-                />
-              </Col>
-            </Row>
-          </div>
-        </SearchPanel>
-
+        {/* 메인영역 */}
         <Row>
-          <Col >
-            {/* 사원정보 table영역 */}
-            <TableForm
-              readOnly
-              //tableName={"사원정보 테이블"}
-              showCheckbox={true}
-              showHeaderArrow={true}
-              tableHeaders={salEmp.headers}
-              tableData={state.saInfoListData}
-              actions={{
-                setTableData: actions.setSaInfoListData,
-                setPkValue: actions.setChangeCdEmp,
-              }}
-            />
+          {/* 사원리스트 영역 */}
+          <Col>
+            <Row>
+              <div>
+                <TableForm
+                  tableName="SI_EMPLIST"
+                  readOnly
+                  showCheckbox
+                  showHeaderArrow
+                  tableHeaders={salEmp.headers}
+                  tableData={state.saInfoListData}
+                  actions={{
+                    setTableData: actions.setSaInfoListData,
+                    setPkValue: actions.setChangeCdEmp,
+                  }}
+                />
+              </div>
+            </Row>
           </Col>
           <Col >
             <>

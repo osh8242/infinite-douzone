@@ -26,7 +26,7 @@ const SalaryInformationEntryModel = () => {
   /* 상태 Data */
   const [modalState, setModalState] = useState({ 
     show: false ,
-    size : 'xl',
+    size : 'lg',
     subject : '',
   });   
   
