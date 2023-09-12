@@ -1,5 +1,4 @@
-import CommonConstant from "../CommonConstant";
-const { CODE, CODEHELPER_EMPLIST_URL } = CommonConstant();
+//import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
 
 /* url Pattern */
 
@@ -67,7 +66,7 @@ export const codeHelperData_cdDept =  {
 // 사원조회
 export const codeHelperData_emplist = {
     subject : '사원조회'
-    , url : CODEHELPER_EMPLIST_URL  // "/emp/getEmpListForCodeHelper"
+    , url :  "/emp/getEmpListForCodeHelper"  // "/emp/getEmpListForCodeHelper"
     , headers : [
         { field: "cdEmp", text: "사원코드" },
         { field: "nmKrname", text: "사원명" },
@@ -82,12 +81,12 @@ export const codeHelperData_emplist = {
 // 직급조회
 export const codeHelperData_rankNo = {
     subject : '직급조회'
-    , url : CODE.URL
+    , url : "CODE.URL"
     , headers : [
         { field: "codeId", text: "직급코드" },
         { field: "codeName", text: "직급명" },
         ]
-    , params : { parentId: CODE.PARENT_ID.RANK_NO }
+    , params : { parentId: "CODE.PARENT_ID.RANK_NO" }
     , searchField : ['codeId','codeName']
     , usePk : "codeId"
 };
@@ -95,12 +94,12 @@ export const codeHelperData_rankNo = {
 // 직책조회
 export const codeHelperData_occup = {
     subject : '직책조회'
-    , url : CODE.URL
+    , url : "CODE.URL"
     , headers : [
         { field: "codeId", text: "직책코드" },
         { field: "codeName", text: "직책명" },
         ]
-    , params : { parentId: CODE.PARENT_ID.OCCUP }
+    , params : { parentId: "CODE.PARENT_ID.OCCUP" }
     , searchField : ['codeId','codeName']
     , usePk : "codeId"
 };

@@ -5,7 +5,6 @@ import SearchPanel from "../../components/SearchPanel";
 import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
-import CommonConstant from "../../model/CommonConstant";
 import { codeHelperData_cdDept, codeHelperData_emplist, codeHelperData_occup, codeHelperData_paymentDate, codeHelperData_rankNo, forLaborOption, salAllow, salAllowSum, salDeduct, salDeductSum, salEmp, salaryDivisionOption, totalSalaryByPeriodOption, unitOption } from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
@@ -14,10 +13,10 @@ import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import InsertSalaryData from "./InsertSalaryData";
 import ReCalculation from "./ReCalculation";
+import {labels} from "../../model/CommonConstant"
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
-  const { labels } = CommonConstant();
 
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();

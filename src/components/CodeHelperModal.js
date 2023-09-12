@@ -7,9 +7,8 @@ import TextBoxComponent from "./TextBoxComponent";
 import PropTypes from 'prop-types';
 import TableForm from "./TableForm";
 import ModalComponent from "./ModalComponent";
-import CommonConstant from "../model/CommonConstant";
+import {labels} from "../model/CommonConstant";
 
-const {labels} = CommonConstant();
 function CodeHelperModal(props) {
   const {
     show,

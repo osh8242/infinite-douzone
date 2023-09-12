@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
-import "./CustomInput.scss";
+import "../styles/CustomInput.scss";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
