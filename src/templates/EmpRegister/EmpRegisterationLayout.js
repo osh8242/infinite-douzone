@@ -223,14 +223,11 @@ function EmpRegisterationLayout() {
                     type="callNumber"
                     value={state.mainTabData.celEmp1}
                   />
-                  <EmailForm
+                  <TextBoxComponent
                     label={labels.emEmp}
-                    emEmp={state.mainTabData.emEmp}
+                    type="email"
+                    value={state.mainTabData.emEmp}
                     optionList={emailList}
-                    pkValue={state.mainTablePkValue}
-                    actions={{
-                      setEmEmp: actions.setEditedEmp,
-                    }}
                   />
                   <TextBoxComponent
                     id="idMsn"

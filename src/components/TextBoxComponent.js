@@ -54,6 +54,7 @@ function TextBoxComponent(props) {
     subLabel = "",
     endLabel = "",
     selectList,
+    optionList, //커스텀을 위한 selectList
   } = props;
 
   // 입력값
@@ -132,6 +133,9 @@ function TextBoxComponent(props) {
         setSendValue(sendCallNumber);
         console.log(sendValue);
       }
+    } else if (type === "email") {
+      //email 다시 합쳐서 보내줘야 함!
+      //email id값 가져오기
     } else {
       setSendValue(processedValue);
     }
@@ -313,6 +317,26 @@ function TextBoxComponent(props) {
               className={hasFalseValid(isCallValid) ? "" : "invalid"}
             />
           ))}
+        </div>
+      );
+    } else if (type === "email") {
+      return (
+        <div className="widthFull d-flex align-items-center justify-content-center gap-2">
+          <Form.Control
+            value={value?.split("@")[0]}
+            onKeyDown={handleKeyDown}
+          />
+          @
+          <Form.Select
+            value={value?.split("@")[1]}
+            onChange={handleInputChange}
+          >
+            {optionList.map((option, index) => (
+              <option value={option.key} key={index}>
+                {option.value}
+              </option>
+            ))}
+          </Form.Select>
         </div>
       );
     } else {
