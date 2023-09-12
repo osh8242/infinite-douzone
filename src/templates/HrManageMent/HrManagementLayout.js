@@ -71,8 +71,7 @@ const HrManagementLayout = () => {
               <div className="leftTable">
                 <TableForm
                   tableName="EMP"
-                  showCheckbox
-                  showHeaderArrow
+                  //showCheckbox
                   sortable
                   rowAddable
                   tableHeaders={leftTableConstant.headers}
@@ -81,9 +80,10 @@ const HrManagementLayout = () => {
                   actions={{
                     setTableData: actions.setLeftTableData,
                     setPkValue: actions.setLeftTablePkValue,
-                    setEditedRow: actions.setEditedEmp,
+                    insertNewRow: actions.insertEmp,
+                    updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
-                    deleteCurrentRow: actions.deleteCurrentRow,
+                    deleteRow: actions.deleteRow,
                     getRowObject: Emp,
                   }}
                 />
@@ -99,7 +99,7 @@ const HrManagementLayout = () => {
             </Row>
           </Col>
           {/* 우측 영역 */}
-          {mainTabData.item ? (
+          {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList}>
@@ -111,14 +111,14 @@ const HrManagementLayout = () => {
                   <Col
                     className="d-flex align-items-center justify-content-center"
                     xs
-                    md="4"
+                    md="3"
                   >
                     <ProfileImageForm
                       src={empImageSrc}
                       handleUpload={actions.updateEmpPhoto}
                     />
                   </Col>
-                  <Col xs md="8">
+                  <Col xs md="9">
                     <MainTab
                       formData={mainTabData}
                       submitData={actions.submitMainTabData}

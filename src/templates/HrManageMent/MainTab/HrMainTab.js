@@ -6,12 +6,12 @@ import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
 
 const MainTab = (props) => {
   const { formData = { item: {} }, submitData, columnNumber = 1 } = props;
+
+  const defaultMd = 12 / columnNumber;
   const columns = [];
-
   const wrappingColTag = (input, index, span) => {
-    let md = 12 / columnNumber;
-    if (span) md = md * span <= 12 && 12;
-
+    let md = defaultMd;
+    if (span) md = defaultMd * span <= 12 && 12;
     return (
       <Col xs md={md} key={index}>
         {input}
@@ -30,7 +30,7 @@ const MainTab = (props) => {
               id={input.field}
               label={labels[input.field]}
               disabled={input.disabled}
-              value={formData?.item[input.field] || ""}
+              value={formData.item?.[input.field] || ""}
               onEnter={submitData}
             />,
             index,
@@ -46,7 +46,7 @@ const MainTab = (props) => {
               type={"date"}
               label={labels[input.field]}
               disabled={input.disabled}
-              value={formData?.item[input.field] || ""}
+              value={formData.item?.[input.field] || ""}
               onChange={submitData}
             />,
             index,
@@ -64,7 +64,7 @@ const MainTab = (props) => {
               label={labels[input.field]}
               disabled={input.disabled}
               optionList={RADIO_LIST[input.field]}
-              checked={formData?.item[input.field]}
+              checked={formData.item?.[input.field]}
               onChange={submitData}
             />,
             index,
@@ -79,7 +79,16 @@ const MainTab = (props) => {
 
   const rows = [];
   for (let i = 0; i < columns.length; i += columnNumber) {
-    rows.push(<Row key={i}>{columns.slice(i, i + columnNumber)}</Row>);
+    let mdSum = 0;
+    let columnsNumInRow = columnNumber;
+    for (let j = i; j < i + columnNumber; j++) {
+      mdSum += inputs[j].span ? defaultMd * inputs[j].span : defaultMd;
+      if (mdSum > 12) {
+        columnsNumInRow = j;
+        i = j - columnNumber;
+      }
+    }
+    rows.push(<Row key={i}>{columns.slice(i, i + columnsNumInRow)}</Row>);
   }
 
   return <>{rows}</>;

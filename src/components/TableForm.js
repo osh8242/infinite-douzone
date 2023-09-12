@@ -125,7 +125,6 @@ const TableForm = ({
   const editableRowIndex = useMemo(() => {
     return tableRows.findIndex((item) => item.isEditable);
   }, [tableRows]);
-  console.log("editableRowIndex", editableRowIndex);
 
   //////// 랜더링 후에 처리할 SideEffect //////////
   useEffect(() => {
@@ -318,8 +317,6 @@ const TableForm = ({
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
 
         setTableRows(newTableRows);
-        console.log("newTableRows", newTableRows);
-        console.log("newTableRows", JSON.parse(JSON.stringify(newTableRows)));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -479,7 +476,6 @@ const TableForm = ({
               break;
 
             case "F5":
-              console.log("actions", actions);
               setModalState({
                 show: true,
                 message: "해당 행을 삭제하시겠습니까?",
@@ -534,7 +530,7 @@ const TableForm = ({
     selection.removeAllRanges();
     selection.addRange(range);
   };
-  if (tableName === "EMPFAM") console.log("랜더직전 테이블로우", tableRows);
+
   return tableRows ? (
     <>
       <Table className="table" size="sm" bordered hover ref={myRef}>
@@ -627,20 +623,23 @@ const TableForm = ({
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr className={getRowClassName({}, tableRows.length)}>
-              <td
-                className="d-flex justify-content-center"
-                onClick={() =>
-                  codeHelper &&
-                  actions.setCodeHelper({ ...codeHelper, show: true })
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </td>
+              {showCheckbox && (
+                <td
+                  className="d-flex justify-content-center"
+                  onClick={() =>
+                    codeHelper &&
+                    actions.setCodeHelper({ ...codeHelper, show: true })
+                  }
+                >
+                  <div>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </div>
+                </td>
+              )}
 
               {tableHeaders.map((thead, columnIndex) => (
                 <td
                   key={columnIndex}
-                  style={{ color: "transparent" }}
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
@@ -653,7 +652,11 @@ const TableForm = ({
                     ref={(div) =>
                       setInputRef(div, tableRows.length, columnIndex)
                     }
-                  ></div>
+                  >
+                    {!showCheckbox && columnIndex === 0 && (
+                      <FontAwesomeIcon icon={faPlus} />
+                    )}
+                  </div>
                 </td>
               ))}
             </tr>
@@ -690,7 +693,6 @@ TableForm.propTypes = {
   tableName: PropTypes.string,
   showCheckbox: PropTypes.bool,
   sortable: PropTypes.bool,
-  showHeaderArrow: PropTypes.bool,
   readOnly: PropTypes.bool,
   rowAddable: PropTypes.bool,
 };
