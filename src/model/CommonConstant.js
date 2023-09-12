@@ -77,73 +77,19 @@ export const labels = {
   nmAllow: "급여항목",
   allowPay: "금액",
 
-  inquiryYype: "조회구분",
-};
-
-export const CODE = {
-  // 코드도움창용 code테이블 parentId
-  URL: "/common/getCodeListForCodeHelper",
-  PARENT_ID: {
-    DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
-    RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
-    OCCUP: "OCCUP", // 직종 ()
-  },
-};
-
-export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";
-
-const CommonConstant = () => {
-  return {
-    mainTabMenuListForEmpRegister: ["기초정보", "가족사항"],
-
-    //테이블 헤더 예시
-    // HrManagementLeftTableHeaders: [
-    //   {
-    //     field: "cdEmp",
-    //     text: "사원코드",
-    //     isPk: true,
-    //     readOnly: true,
-    //     width: "75px",
-    //   },
-    //   { field: "nmKrname", text: "성명" },
-    // ],
-
-    EmpRegisterLeftHeaders: [
-      { field: "cdEmp", text: "사원코드", isPk: true },
-      { field: "nmKrname", text: "성명" },
-      { field: "ynFor", text: "내외국인" },
-      { field: "noSocial", text: "주민번호" },
-      { field: "jobOk", text: "구분" },
-    ],
-    EmpRegisterMainHeaders: [
-      { field: "daEnter", text: "입사일자" },
-      { field: "ynFor", text: "내외국인" },
-      { field: "noSocial", text: "주민번호" },
-      { field: "fgSex", text: "성별" },
-      { field: "addNation", text: "거주지국" },
-      { field: "cdNation", text: "국적" },
-      { field: "zipHome", text: "우편번호" },
-      { field: "addHome1", text: "주소" },
-      { field: "addHome2", text: "상세주소" },
-      { field: "telHome1", text: "전화번호" },
-      { field: "telHome2", text: "전화번호2" },
-      { field: "telHome3", text: "전화번호3" },
-      { field: "celEmp1", text: "모바일번호1" },
-      { field: "celEmp2", text: "모바일번호2" },
-      { field: "celEmp3", text: "모바일번호3" },
-      { field: "emEmp", text: "이메일" },
-      { field: "idMsn", text: "메신저ID" },
-      { field: "cdDept", text: "부서" },
-      { field: "cdOccup", text: "직종" },
-      { field: "rankNo", text: "직급" },
-      { field: "cdSalcls", text: "호봉" },
-      { field: "cdField", text: "현장" },
-      { field: "cdProject", text: "프로젝트" },
-      { field: "daRetire", text: "퇴사일자" },
-      { field: "cdBank", text: "급여이체은행" },
-      { field: "noBnkacct", text: "계좌번호" },
-      { field: "nmBnkowner", text: "예금주" },
-    ],
+      inquiryYype: "조회구분",
+      searchText : "찾을내용"
+    },
+    CODE: {
+      // 코드도움창용 code테이블 parentId
+      URL: "/common/getCodeListForCodeHelper",
+      PARENT_ID: {
+        DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
+        RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
+        OCCUP: "OCCUP", // 직종 ()
+      },
+    },
+    CODEHELPER_EMPLIST_URL: "/emp/getEmpListForCodeHelper",
   };
 };
 

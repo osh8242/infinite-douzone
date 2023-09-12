@@ -2,10 +2,39 @@ import React, { useState } from "react";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import imgLogo from "../../styles/img/wehago_logo.png";
 import TextBoxComponent from "../../components/TextBoxComponent";
+import axios from "axios";
+import LoginModel from "../../model/LoginModel";
 
-function LoginTemp() {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
+  const url = "http://localhost:8888";
+  const { actions } = LoginModel();
+
+  const [id, setId] = useState("d");
+  const [password, setPassword] = useState("d");
+
+  const onClick = (e) => {
+    console.log("Click1");
+    console.log(e);
+    console.log(e.target.value);
+    console.log("user info :");
+    console.log(id);
+    console.log(password);
+
+    const newData = {
+      userId: "id",
+      userPwd: "password",
+    };
+
+    console.log(newData);
+
+    // actions.setLoginUser(newData);
+  };
+
+  const onChange = (e) => {
+    console.log("onChagne");
+  };
+
+  // const submitLoginUser = (event, value) => {};
 
   return (
     <Container
@@ -36,8 +65,8 @@ function LoginTemp() {
               size={3}
               md={3}
               value={id}
-              onChange={(e) => setId(e.target.value)}
               height={45}
+              // onEnter={submitLoginUser}
             />
           </Col>
         </Row>
@@ -49,7 +78,7 @@ function LoginTemp() {
               md={2}
               placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              // onChange={(e) => setPassword(e.target.value)}
               height={45}
             />
           </Col>
@@ -65,6 +94,7 @@ function LoginTemp() {
                 width: "85%",
                 borderRadius: "15px",
               }}
+              onClick={onClick}
             >
               로그인
             </Button>
@@ -80,6 +110,7 @@ function LoginTemp() {
                 backgroundColor: "white",
                 border: "none",
               }}
+              onClick={onClick}
             >
               회원가입
             </Button>
@@ -106,4 +137,4 @@ function LoginTemp() {
   );
 }
 
-export default LoginTemp;
+export default Login;

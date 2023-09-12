@@ -18,7 +18,7 @@ function ModalComponent(props) {
     title,
     onHide,
     onConfirm,
-    size,
+    size = 'lg',
     backdrop,
     animation,
   } = props;

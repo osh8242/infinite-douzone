@@ -4,10 +4,14 @@ import Header from "./templates/Header";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
 import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
 import LaborContractGrid from "./templates/LaborContractGrid";
-import SalaryInformationEntry from "./templates/SalaryInformationEntry";
-import MainHome from "./templates/MainHome";
+import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 import Login from "./templates/Login/Login";
-import SignUp from "./templates/Login/SignUp";
+import LoginGrid from "./Login/LoginGrid";
+// import SignUp from "./templates/Login/Sign";
+import SignUp from "./SignUp/SignUp";
+import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
+import LaborContract from "./templates/LaborContract";
+import MainHome from "./templates/MainHome";
 
 function App() {
   return (
@@ -20,9 +24,8 @@ function App() {
           <Route path="/er" element={<EmpRegisterationLayout />} />
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc/*" element={<LaborContractGrid />} />
-          <Route path="/si" element={<SalaryInformationEntry />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<HrManagementLayout />} />
+          <Route path="/si" element={<SalaryInformationEntryLayout />} />
+          <Route path="/login" element={<LoginGrid />} />
         </Routes>
       </BrowserRouter>
     </div>
