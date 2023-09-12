@@ -150,7 +150,7 @@ const SalaryInformationEntryLayout = ({}) => {
                 name="paymentDate"
                 label={"지급일"}
                 value={state.searchVO.paymentDate}
-                onChange={actions.setPaymentDate}
+                onChange={(e, value) => actions.setPaymentDate(value)}
                 onClickCodeHelper={() => modalShow('default',codeHelperData_paymentDate, actions.setPaymentDate)}
               />
             </Col>
