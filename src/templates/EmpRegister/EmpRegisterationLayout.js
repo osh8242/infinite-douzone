@@ -7,7 +7,6 @@ import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/commonComponent.css";
 import EmpRegisterHeader from "./EmpRegisterHeader";
 import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
-import CommonConstant from "../../model/CommonConstant";
 import EmpConstant from "../../model/EmpRegister/EmpConstant";
 import Emp from "../../vo/EmpRegister/Emp";
 import MenuTab from "../../components/MenuTab";
@@ -20,18 +19,19 @@ import DateTest from "../../components/DateTest";
 import TableForm from "../../components/TableForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
+import {
+  mainTabMenuListForEmpRegister, //메뉴 탭 목록
+  ynForList, //내외국인 구분
+  genderRadioList, //성별구분
+  emailList, //이메일 도메인 리스트
+  labels, //속성명
+} from "../../model/CommonConstant";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
   const { state, actions } = EmpRegisterationModel();
 
   //고정된 값을 가지는 state들
-  const {
-    ynForList, //내외국인 구분
-    genderRadioList, //성별구분
-    emailList, //이메일 도메인 리스트
-    labels, //속성명
-  } = CommonConstant();
 
   const {
     EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
@@ -122,7 +122,7 @@ function EmpRegisterationLayout() {
             {/* 좌측 사원목록 테이블 */}
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
-                tableHeaders={EmpRegisterLeftHeaders}
+                tableHeaders={EmpConstant.EmpRegisterLeftHeaders}
                 tableData={state.leftTableData}
                 selectedRows={state.selectedRows}
                 showCheckbox

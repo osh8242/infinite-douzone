@@ -30,10 +30,11 @@ const TableForm = ({
   //   );
   // };
   pkValue, // [선택] 이 테이블의 pk가 노출되지 않지만 필요할 때
-  actions = [], // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
+  actions = {}, // [대부분의 경우 => 필수] state값을 바꾸기 위한 set함수들..
   // 예시)
   // actions={{
-  //   setEditedRow: actions.setEditedEmpFam, // 행을 수정하려면 필수
+  //   insertNewRow : actions.insertEmpFam // 추가행을 삽입하려면 필수
+  //   updateEditedRow : actions.updateEmpFam // 행을 업데이트하려면 필수
   //   setSelectedRows: actions.setSelectedRows, // 체크박스를 이용하여 삭제하려면 필수
   //   setPkValue : actions.setLeftTablePkValue, // [선택] 현재 테이블의 pk값을 tableHeader나 tableData가 아닌 다른 곳에서 가져와야할 떄
   //   getRowObject: EmpFam, //객체화 함수 필수
@@ -124,6 +125,7 @@ const TableForm = ({
   const editableRowIndex = useMemo(() => {
     return tableRows.findIndex((item) => item.isEditable);
   }, [tableRows]);
+  console.log("editableRowIndex", editableRowIndex);
 
   //////// 랜더링 후에 처리할 SideEffect //////////
   useEffect(() => {
@@ -145,16 +147,10 @@ const TableForm = ({
   );
 
   //수정중인 행을 수정해제하는 함수
-  const releaseEditable = useCallback(
-    (rowIndex) => {
-      if (editableRowIndex !== -1 && editableRowIndex !== rowIndex) {
-        const newTableRows = [...tableRows];
-        newTableRows[editableRowIndex].isEditable = false;
-        setTableRows(newTableRows);
-      }
-    },
-    [tableRows, editableRowIndex]
-  );
+  const releaseEditable = useCallback(() => {
+    const newTableRows = tableRows.map((row) => (row.isEditable = false));
+    setTableRows(newTableRows);
+  }, []);
 
   //td의 className을 얻는 함수
   const getTdClassName = useCallback(
@@ -208,14 +204,14 @@ const TableForm = ({
   // pkValue 객체를 업데이트함
   const updatePkValue = useCallback(
     (rowIndex) => {
-      if (
-        actions.setPkValue &&
-        rowRef !== rowIndex &&
-        rowRef < tableRows.length
-      ) {
-        let newPkValue = {};
-        newPkValue = getPkValue(rowIndex);
-        actions.setPkValue(newPkValue);
+      if (actions.setPkValue) {
+        if (rowRef !== rowIndex && rowIndex < tableRows.length) {
+          let newPkValue = {};
+          newPkValue = getPkValue(rowIndex);
+          actions.setPkValue(newPkValue);
+        } else {
+          actions.setPkValue({});
+        }
       }
     },
     [actions, rowRef, tableRows.length, getPkValue]
@@ -307,6 +303,7 @@ const TableForm = ({
       if (readOnly) return;
       if (event.key === "Enter") {
         event.preventDefault();
+        event.stopPropagation();
 
         const editedRow = getEditedRow();
 
@@ -314,14 +311,19 @@ const TableForm = ({
           setModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
-        tableRows[rowIndex] = editedRow;
+        if (editedRow.isNew) actions.insertNewRow(editedRow.item);
+        else actions.updateEditedRow(editedRow.item);
 
-        setTableRows([...tableRows]);
-        actions.setEditedRow(editedRow);
+        let newTableRows = [...tableRows];
+        newTableRows[rowIndex] = { ...editedRow, isEditable: false };
+
+        setTableRows(newTableRows);
+        console.log("newTableRows", newTableRows);
+        console.log("newTableRows", JSON.parse(JSON.stringify(newTableRows)));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getEditedRow, tableRows, actions]
+    [getEditedRow, tableRows, editableRowIndex]
   );
 
   // 행 삭제 이벤트
@@ -532,7 +534,7 @@ const TableForm = ({
     selection.removeAllRanges();
     selection.addRange(range);
   };
-
+  if (tableName === "EMPFAM") console.log("랜더직전 테이블로우", tableRows);
   return tableRows ? (
     <>
       <Table className="table" size="sm" bordered hover ref={myRef}>
@@ -693,4 +695,4 @@ TableForm.propTypes = {
   rowAddable: PropTypes.bool,
 };
 
-export default React.memo(TableForm);
+export default TableForm;

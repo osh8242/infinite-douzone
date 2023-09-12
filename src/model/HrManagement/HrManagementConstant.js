@@ -3,7 +3,9 @@ export const urlPattern = {
   insertEmp: "",
   updateEmp: "",
   deleteEmp: "/emp/deleteEmp",
+  getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",
   insertEmpPhoto: "/empPhoto/insertEmpPhoto",
+  updateEmpPhoto: "/empPhoto/updateEmpPhoto",
   insertEmpFam: "/empFam/insertEmpFam",
   updateEmpFam: "/empFam/updateEmpFamBySeqValAndCdEmp",
   deleteEmpFam: "/empFam/deleteEmpFam",
@@ -73,7 +75,6 @@ export const tabConstant = {
 };
 
 ////////////////////////////////// 우측 서브그리드
-
 export const subTableConstant = {
   headers: [
     { field: "cdFamrel", text: "관계" },

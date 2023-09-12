@@ -2,11 +2,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Header from "./templates/Header";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
-import HrManagementLayout from "./templates/HrManageMent/HrManagementLayout";
-import LaborContractGrid from "./templates/LaborContractGrid";
+import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
+// import LaborContractGrid from "./templates/LaborContractGrid";
+// import LaborContractGrid from "./LaborContract/LaborContract";
+import LaborContractGrid from "./templates/LaborContract/LaborContractLayout";
 import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
-import Login from "./templates/Login/Login";
-import SignUp from "./templates/Login/SignUp";
+import LoginGrid from "./Login/LoginGrid";
+// import SignUp from "./templates/Login/Sign";
+import SignUp from "./SignUp/SignUp";
 import MainHome from "./templates/MainHome";
 
 function App() {
@@ -21,7 +24,7 @@ function App() {
           <Route path="/hr" element={<HrManagementLayout />} />
           <Route path="/lc/*" element={<LaborContractGrid />} />
           <Route path="/si" element={<SalaryInformationEntryLayout />} />
-          <Route path="*" element={<Login />} />
+          <Route path="/login" element={<LoginGrid />} />
         </Routes>
       </BrowserRouter>
     </div>

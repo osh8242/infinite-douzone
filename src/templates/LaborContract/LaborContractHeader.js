@@ -8,11 +8,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
-import ConfirmComponent from "../../components/ConfirmComponent";
-import "../../styles/header.css";
-import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
+import ModalComponent from "../components/ModalComponent";
+import "../styles/header.css";
+import empAdd from "../styles/img/swsmLogo.png";
 
-const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
+const LaborContractHeader = ({ deleteButtonHandler }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -21,18 +21,8 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   };
 
   const faTrashCanClickHandler = (event) => {
+    setShowModal(true);
   };
-
-  const insertSalaryDataHandler = (event) => {
-    // alert("수당 공제 클릭했댱");  
-    modalShow('insertSalaryData', '수당수당공제공제');
-  }
-
-  const reCalculationHandler = (event) => {
-    //alert("재계산 클릭했댱");  
-    modalShow('reCalculation', 'reCalculationList', );
-  }
-  
 
   return (
     <div id="secondTopHeader">
@@ -45,41 +35,47 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
           <i className={`fa fa-bars colorWhite`} />
         </Button>
         {/* 로고 */}
-        <img id="logo" src={salaryInformEntry} alt="" />
+        <img id="logo" src={empAdd} alt="" />
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
+            size={"xl"}
             className="colorWhite backgroundBorderNone"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        <Button onClick={(e) => insertSalaryDataHandler(e)} >
-            수당/공제 등록
-        </Button>
-        <Button onClick={(e) => reCalculationHandler(e)}>
-            재계산
-        </Button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} size={"xl"} className="colorWhite" />
         </button>
         <button
           className="backgroundBorderNone"
           onClick={(e) => faTrashCanClickHandler(e)}
         >
-          <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
+          <FontAwesomeIcon
+            icon={faTrashCan}
+            size={"xl"}
+            className="colorWhite"
+          />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon
+            icon={faCalculator}
+            size={"xl"}
+            className="colorWhite"
+          />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon
+            icon={faBorderAll}
+            size={"xl"}
+            className="colorWhite"
+          />
         </button>
       </div>
-      <ConfirmComponent
-        show={showModal.show}
-        message={showModal.message}
-        // onlyConfirm={!existSelectedRows}
+      <ModalComponent
+        show={showModal}
+        title={"선택된 행들을 삭제하시겠습니까?"}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
           deleteButtonHandler();
@@ -90,4 +86,4 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   );
 };
 
-export default SalaryInformationEntryHeader;
+export default LaborContractHeader;

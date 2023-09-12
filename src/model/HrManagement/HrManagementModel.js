@@ -1,14 +1,13 @@
 import axios from "axios";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
-import CommonConstant from "../CommonConstant";
+import { url } from "../CommonConstant";
 import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
-  const { url } = CommonConstant(); // REST API 서버 주소
-
   const [jobOk, setJobOk] = useState("Y"); //재직여부
   const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
   const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
@@ -22,9 +21,58 @@ const HrManagementModel = () => {
   const [empImageSrc, setEmpImageSrc] = useState("");
 
   const [subTableData, setSubTableData] = useState([]); // 서브 그리드 데이터
-  const [editedEmpFam, setEditedEmpFam] = useState({}); // 서브 그리드 수정 ROW
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
+
+  //검색조건 : 재직구분, 정렬기준
+  const jobOkSelectRef = useRef();
+  const orderSelectRef = useRef();
+  //메인탭 Ref
+  const mainTabRef = useRef();
+
+  //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
+  const onSearch = useCallback((jobOkRef, orderRef) => {
+    setOrderRef(orderRef.current.value);
+    if (jobOkRef.current.value === "yAndOnThisYear") {
+      setRefYear(new Date().getFullYear());
+      setJobOk("Y");
+    } else {
+      setRefYear();
+      setJobOk(jobOkRef.current.value);
+    }
+  }, []);
+
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
+        if (mainTabRef.current) {
+          let newMainTabData = { ...mainTabData.item };
+          const inputElements = mainTabRef.current.querySelectorAll("input");
+          Array.from(inputElements).forEach((input) => {
+            newMainTabData[input.id] =
+              input.type !== "radio"
+                ? input.value
+                : input.checked
+                ? input.value
+                : null;
+          });
+          setEditedEmpAdd(newMainTabData);
+        }
+      }
+      if (event.type === "change") {
+        if (mainTabRef.current) {
+          event.target.blur();
+          let newMainTabData = { ...mainTabData.item };
+          newMainTabData[event.target.id] = value;
+          setEditedEmpAdd(newMainTabData);
+        }
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
 
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
@@ -45,7 +93,7 @@ const HrManagementModel = () => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [jobOk, refYear, orderRef, editedEmp]);
+  }, [jobOk, refYear, orderRef]);
 
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -65,28 +113,33 @@ const HrManagementModel = () => {
     } else {
       setMainTabData({});
     }
-  }, [leftTablePkValue, editedEmpAdd]);
+  }, [leftTablePkValue]);
 
   //초기 랜더링시 이미지 불러오기
   useEffect(() => {
-    axios
-      .get(url + "/empPhoto/getEmpPhotoByCdEmp", {
-        responseType: "arraybuffer",
-      })
-      .then((response) => {
-        // ArrayBuffer를 Blob으로 변환하고 URL을 생성
-        const blob = new Blob([response.data], { type: "image/jpeg" });
-        const imageUrl = URL.createObjectURL(blob);
-        setEmpImageSrc(imageUrl);
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
+    if (leftTablePkValue.cdEmp) {
+      axios
+        .get(
+          `${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`,
+          {
+            responseType: "arraybuffer",
+          }
+        )
+        .then((response) => {
+          // ArrayBuffer를 Blob으로 변환하고 URL을 생성
+          const blob = new Blob([response.data], { type: "image/jpeg" });
+          const imageUrl = URL.createObjectURL(blob);
+          setEmpImageSrc(imageUrl);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          setEmpImageSrc(defaultProfile);
+        });
+    } else setEmpImageSrc(defaultProfile);
   }, [leftTablePkValue]);
 
-  //insertEmpPhoto
-  const insertEmpPhoto = useCallback(
+  //uploadEmpPhoto
+  const updateEmpPhoto = useCallback(
     (event) => {
       const file = event.target.files[0];
 
@@ -101,18 +154,22 @@ const HrManagementModel = () => {
         return;
       }
 
+      const fileExtension = file.name.split(".").pop();
+
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("fileExtension", fileExtension);
       formData.append("pkValue", JSON.stringify(leftTablePkValue));
 
       axios
-        .post(url + urlPattern.insertEmpPhoto, formData, {
+        .put(url + urlPattern.updateEmpPhoto, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
           console.log("파일업로드 성공!", response.data);
+          setLeftTablePkValue({ ...leftTablePkValue });
         })
         .catch((error) => {
           console.error("File upload error:", error);
@@ -159,7 +216,7 @@ const HrManagementModel = () => {
           // 필요에 따라 다른 오류 처리 로직 추가
         });
     }
-  }, [leftTablePkValue, editedEmpFam]);
+  }, [leftTablePkValue]);
 
   //추가된 사원 insert 요청
   useEffect(() => {
@@ -193,24 +250,9 @@ const HrManagementModel = () => {
   }, [editedEmp]);
 
   //추가된 사원가족 insert 요청
-  useEffect(() => {
-    if (editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0)
-      axios
-        .post(url + "/empFam/insertEmpFam", editedEmpFam.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmpFam({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-  }, [editedEmpFam]);
-
-  //추가된 사원가족 insert 요청
   const insertEmpFam = useCallback((row) => {
     axios
-      .post(url + urlPattern.insertEmpFam, row.item)
+      .post(url + urlPattern.insertEmpFam, row)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam insert 성공");
       })
@@ -221,26 +263,9 @@ const HrManagementModel = () => {
   }, []);
 
   //수정된 사원가족 update 요청
-  useEffect(() => {
-    if (!editedEmpFam.isNew && Object.keys(editedEmpFam).length !== 0) {
-      console.log("editedEmpFam 수정요청", editedEmpFam.item);
-      axios
-        .put(url + "/empFam/updateEmpFamBySeqValAndCdEmp", editedEmpFam.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmpFam({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-    }
-  }, [editedEmpFam]);
-
-  //수정된 사원가족 update 요청
   const updateEmpFam = useCallback((row) => {
     axios
-      .put(url + urlPattern.updateEmpFam, row.item)
+      .put(url + urlPattern.updateEmpFam, row)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam 업데이트 성공");
       })
@@ -280,7 +305,7 @@ const HrManagementModel = () => {
         Object.keys(editedTableNames).forEach((tableName) => {
           switch (tableName) {
             case "empFam":
-              setEditedEmpFam({}); // 사원가족 리로드
+              //setEditedEmpFam({}); // 사원가족 리로드
               break;
             case "emp":
               setEditedEmp({}); // 사원가족 리로드
@@ -339,10 +364,14 @@ const HrManagementModel = () => {
 
   return {
     state: {
+      jobOkSelectRef,
+      orderSelectRef,
+
       leftTableData,
       leftTablePkValue,
       leftStaticsTableData,
 
+      mainTabRef,
       mainTabData,
       empImageSrc,
       subTableData,
@@ -355,17 +384,18 @@ const HrManagementModel = () => {
       setJobOk,
       setRefYear,
       setOrderRef,
+      onSearch,
 
       setLeftTableData,
       setLeftTablePkValue,
       setEditedEmp,
 
+      submitMainTabData,
       setMainTabData,
       setEditedEmpAdd,
-      insertEmpPhoto,
+      updateEmpPhoto,
 
       setSubTableData,
-      setEditedEmpFam,
       insertEmpFam,
       updateEmpFam,
 

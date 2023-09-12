@@ -8,7 +8,8 @@ import {
   makeCommaNumber,
   makePureNumber,
 } from "../utils/NumberUtils";
-import "./CustomInput.scss";
+import "../styles/CustomInput.scss";
+import SelectForm from "./SelectForm";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -21,7 +22,7 @@ function TextBoxComponent(props) {
     value,
 
     rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
-    codeHelper, // 코드헬퍼 아이콘 생성
+    //codeHelper, // 코드헬퍼 아이콘 생성
     onClickCodeHelper, // 코드헬퍼 전용 옵션 선택시 [필수]
 
     size,
@@ -45,8 +46,14 @@ function TextBoxComponent(props) {
     validationFunction,
 
     md = 4, // [선택]
+    valueMd = 8,
     placeholder, // [선택]
     height, // [선택] 스타일
+
+    isPeriod,
+    subLabel = "",
+    endLabel = "",
+    selectList,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -179,19 +186,70 @@ function TextBoxComponent(props) {
           >
             <div>{label}</div>
           </Col>
-          <Col
-            md="8"
-            className="d-flex align-items-center justify-content-center"
-          >
-            {codeHelper ? (
-              <div className="svg-wrapper">
-                <div className="svg-container">
+          <Col className="d-flex align-items-center justify-content-center">
+            {subLabel ? (
+              <Col
+                md={2}
+                className="d-flex align-items-center justify-content-center"
+                style={{ marginLeft: 15, marginRight: 15 }}
+              >
+                {subLabel}
+              </Col>
+            ) : (
+              ""
+            )}
+            {selectList ? (
+              <Col md={4} style={{ marginRight: 12 }}>
+                <SelectForm optionList={selectList}></SelectForm>
+              </Col>
+            ) : (
+              ""
+            )}
+            {onClickCodeHelper ? (
+              type === "date" ? (
+                //<div className="">
+                <div className="svg-container2 svg-wrapper">
                   {renderFormControl()}
                   <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
                 </div>
-              </div>
+              ) : (
+                //</div>
+                <div className="svg-wrapper">
+                  <div className="svg-container">
+                    {renderFormControl()}
+                    <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                  </div>
+                </div>
+              )
             ) : (
-              <>{renderFormControl()}</>
+              <>
+                {renderFormControl()}
+                {selectList ? (
+                  <Col style={{ marginLeft: 10 }}>{endLabel}</Col>
+                ) : (
+                  ""
+                )}
+              </>
+            )}
+            {isPeriod ? (
+              <>
+                {" ~ "}
+                <Col
+                  md={6}
+                  className="d-flex align-items-center justify-content-center"
+                >
+                  {renderFormControl()}
+                </Col>
+              </>
+            ) : (
+              ""
+            )}
+            {endLabel && !selectList ? (
+              <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+                {endLabel}
+              </Col>
+            ) : (
+              ""
             )}
           </Col>
         </>

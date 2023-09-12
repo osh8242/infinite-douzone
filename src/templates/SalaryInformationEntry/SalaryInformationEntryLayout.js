@@ -1,47 +1,96 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
-import CodeHelperModal from "../../components/CodeHelperModal";
 import SearchPanel from "../../components/SearchPanel";
 import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
-import CommonConstant from "../../model/CommonConstant";
-import SalConstant from "../../model/SalaryInformationEntry/SalConstant";
+import {
+  codeHelperData_cdDept,
+  codeHelperData_emplist,
+  codeHelperData_occup,
+  codeHelperData_paymentDate,
+  codeHelperData_rankNo,
+  forLaborOption,
+  salAllow,
+  salAllowSum,
+  salDeduct,
+  salDeductSum,
+  salEmp,
+  salaryDivisionOption,
+  totalSalaryByPeriodOption,
+  unitOption,
+} from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import { fetchData } from "../../utils/codeHelperUtils";
+import ModalComponent from "../../components/ModalComponent";
+import CodeHelperModal from "../../components/CodeHelperModal";
+import InsertSalaryData from "./InsertSalaryData";
+import ReCalculation from "./ReCalculation";
+import { labels } from "../../model/CommonConstant";
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
-  const { url, labels } = CommonConstant();
-  const { selectOption, tableHeader, codeHelperparams } = SalConstant();
 
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
-  const [isCardVisible, setIsCardVisible] = useState(false);
 
+  const [isCardVisible, setIsCardVisible] = useState(false);
+  const [modalType, setModalType] = useState("");
   const toggleCardVisibility = () => {
     setIsCardVisible(!isCardVisible);
   };
 
   // 코드도움 아이콘 클릭이벤트
-  const codeHelperShow = useCallback(async (codeHelperCode, setFn) => {
-    actions.setModalState({ show: true });
+  const modalShow = useCallback(async (type, data, setRowData) => {
+    actions.setModalState({ ...state.modalState, show: true });
+    setModalType(type);
 
-    let codeDataList = codeHelperCode.tableData;
-    if (codeHelperCode.url) {
-      codeDataList = await fetchData(codeHelperCode.url, codeHelperCode.params);
+    switch (type) {
+      case "default":
+        let codeDataList = data.tableData;
+
+        if (data.url) {
+          codeDataList = await fetchData(data.url, data.params);
+        }
+
+        actions.setModalState((prevState) => ({
+          ...prevState,
+          size: "lg",
+          subject: data.subject,
+        }));
+
+        actions.setCodeHelperTableData(() => ({
+          // subject: data.subject,
+          setRowData: setRowData,
+          tableHeaders: data.headers,
+          tableData: codeDataList,
+          usePk: data.usePk ? data.usePk : "",
+          searchField: data.searchField,
+        }));
+        break;
+
+      case "insertSalaryData": // 수당/공제 등록
+        actions.setModalContentData(() => ({
+          data: data,
+        }));
+        break;
+
+      case "reCalculation": // 재계산
+        actions.setModalState((prevState) => ({
+          ...prevState,
+          subject: data.subject,
+        }));
+
+        actions.setModalContentData(() => ({
+          data: data.list,
+        }));
+        break;
+
+      default:
+        break;
     }
-
-    actions.setCodeHelperTableData(() => ({
-      subject: codeHelperCode.subject,
-      setRowData: setFn,
-      tableHeaders: codeHelperCode.headers,
-      tableData: codeDataList,
-      usePk: codeHelperCode.usePk ? codeHelperCode.usePk : "",
-      searchField: codeHelperCode.searchField,
-    }));
   }, []);
 
   //조회버튼
@@ -53,30 +102,45 @@ const SalaryInformationEntryLayout = ({}) => {
     <>
       <SalaryInformationEntryHeader
         deleteButtonHandler={actions.deleteSelectedRows}
+        modalShow={modalShow}
       />
       <Container>
-        {/* 코드 도움 모달 영역 */}
-        <CodeHelperModal
+        <ModalComponent
+          title={state.modalState.subject}
+          size={state.modalState.size}
           show={state.modalState.show}
           onHide={() => actions.setModalState({ show: false })}
-          setRowData={state.codeHelperTableData.setRowData}
-          usePk={state.codeHelperTableData.usePk}
-          tableHeaders={state.codeHelperTableData.tableHeaders}
-          tableData={state.codeHelperTableData.tableData}
-          subject={state.codeHelperTableData.subject}
-          searchField={state.codeHelperTableData.searchField}
-        />
+        >
+          {modalType === "default" ? (
+            <CodeHelperModal
+              setRowData={state.codeHelperTableData.setRowData}
+              usePk={state.codeHelperTableData.usePk}
+              tableHeaders={state.codeHelperTableData.tableHeaders}
+              tableData={state.codeHelperTableData.tableData}
+              subject={state.codeHelperTableData.subject}
+              searchField={state.codeHelperTableData.searchField}
+              onHide={() => actions.setModalState({ show: false })}
+            />
+          ) : modalType === "insertSalaryData" ? (
+            <InsertSalaryData data={state.modalContentData.data} />
+          ) : modalType === "reCalculation" ? (
+            <ReCalculation data={state.modalContentData.data} />
+          ) : (
+            //default
+            <></>
+          )}
+        </ModalComponent>
 
         {/* 기본 검색조건 */}
         <SearchPanel onSearch={onSearch} showAccordion>
           <Row>
             <Col>
-              {/* <DateTest
+              <TextBoxComponent
                 type="month"
                 label={"귀속연월"}
                 value={state.searchVO.allowMonth}
                 onChange={(e, value) => actions.setAllowMonth(value)}
-              /> */}
+              />{" "}
               <TextBoxComponent
                 type="month"
                 label={"귀속연월"}
@@ -87,21 +151,21 @@ const SalaryInformationEntryLayout = ({}) => {
             <Col>
               <SelectForm
                 label={"구분"}
-                optionList={selectOption.salOptionList}
+                optionList={salaryDivisionOption}
                 onChange={actions.setSalDivision}
               />
             </Col>
             <Col>
               <TextBoxComponent
-                //type="date"
+                type="date"
                 name="paymentDate"
                 label={"지급일"}
                 value={state.searchVO.paymentDate}
                 onChange={actions.setPaymentDate}
-                codeHelper
                 onClickCodeHelper={() =>
-                  codeHelperShow(
-                    codeHelperparams.paymentDate,
+                  modalShow(
+                    "default",
+                    codeHelperData_paymentDate,
                     actions.setPaymentDate
                   )
                 }
@@ -118,10 +182,10 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"사원코드"}
                   value={state.searchVO.searchCdEmp}
                   onEnter={actions.setSearchCdEmp}
-                  codeHelper
                   onClickCodeHelper={() =>
-                    codeHelperShow(
-                      codeHelperparams.emplist,
+                    modalShow(
+                      "default",
+                      codeHelperData_emplist,
                       actions.setSearchCdEmp
                     )
                   }
@@ -134,10 +198,10 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
                   onEnter={actions.setSearchCdDept}
-                  codeHelper
                   onClickCodeHelper={() =>
-                    codeHelperShow(
-                      codeHelperparams.cdDept,
+                    modalShow(
+                      "default",
+                      codeHelperData_cdDept,
                       actions.setSearchCdDept
                     )
                   }
@@ -151,10 +215,10 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"직급코드"}
                   value={state.searchVO.searchRankNo}
                   onEnter={actions.setSearchRankNo}
-                  codeHelper
                   onClickCodeHelper={() =>
-                    codeHelperShow(
-                      codeHelperparams.rankNo,
+                    modalShow(
+                      "default",
+                      codeHelperData_rankNo,
                       actions.setSearchRankNo
                     )
                   }
@@ -166,12 +230,8 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"직책코드"}
                   value={state.searchVO.searchCdOccup}
                   onEnter={actions.setSearchCdOccup}
-                  codeHelper
                   onClickCodeHelper={() =>
-                    codeHelperShow(
-                      codeHelperparams.occup,
-                      actions.setSearchCdOccup
-                    )
+                    modalShow(codeHelperData_occup, actions.setSearchCdOccup)
                   }
                 />
               </Col>
@@ -198,15 +258,12 @@ const SalaryInformationEntryLayout = ({}) => {
 
             <Row>
               <Col>
-                <SelectForm
-                  label={"생산직여부"}
-                  optionList={selectOption.unitOption}
-                />
+                <SelectForm label={"생산직여부"} optionList={unitOption} />
               </Col>
               <Col>
                 <SelectForm
                   label={"국외근로여부"}
-                  optionList={selectOption.forLaborOption}
+                  optionList={forLaborOption}
                 />
               </Col>
             </Row>
@@ -218,36 +275,23 @@ const SalaryInformationEntryLayout = ({}) => {
             {/* 사원정보 table영역 */}
             <TableForm
               readOnly
-              tableName={"사원정보 테이블"}
+              //tableName={"사원정보 테이블"}
               showCheckbox={true}
               showHeaderArrow={true}
-              tableHeaders={tableHeader.salEmp}
+              tableHeaders={salEmp.headers}
               tableData={state.saInfoListData}
               actions={{
                 setTableData: actions.setSaInfoListData,
                 setPkValue: actions.setChangeCdEmp,
               }}
             />
-            <Button
-              variant="secondary"
-              onClick={() =>
-                codeHelperShow(
-                  true,
-                  "",
-                  codeHelperparams.emplist,
-                  actions.setAddRow
-                )
-              }
-            >
-              +
-            </Button>
           </Col>
           <Col>
             <>
               {/* 급여항목 table영역 */}
               <TableForm
-                tableName={"급여항목 테이블"}
-                tableHeaders={tableHeader.salAllow}
+                //tableName={"급여항목 테이블"}
+                tableHeaders={salAllow.headers}
                 tableData={state.salAllowData.salData}
                 rowAddable
                 tableFooter={
@@ -277,9 +321,9 @@ const SalaryInformationEntryLayout = ({}) => {
             {/* 공제항목 table영역 */}
             <>
               <TableForm
-                tableName={"공제항목 테이블"}
+                //tableName={"공제항목 테이블"}
                 readOnly
-                tableHeaders={tableHeader.salDeduct}
+                tableHeaders={salDeduct.headers}
                 tableData={state.deductData.deductData}
                 actions={{}}
                 tableFooter={
@@ -301,14 +345,14 @@ const SalaryInformationEntryLayout = ({}) => {
             {/* 조회구분 영역*/}
             <SelectForm
               label={labels.inquiryYype}
-              optionList={selectOption.salOptionByPeriodList}
+              optionList={totalSalaryByPeriodOption}
               onChange={actions.setSelectedOption}
             />
             <Row>
               <TableForm
                 showCheckbox={false}
                 showHeaderArrow={false}
-                tableHeaders={tableHeader.salAllowSum}
+                tableHeaders={salAllowSum.headers}
                 tableData={state.salPaySumData.allowPay}
                 actions={{}}
                 readOnly
@@ -316,7 +360,7 @@ const SalaryInformationEntryLayout = ({}) => {
             </Row>
             <Row>
               <TableForm
-                tableHeaders={tableHeader.salDeductSum}
+                tableHeaders={salDeductSum.headers}
                 tableData={state.salPaySumData.deductPay}
                 actions={{}}
                 readOnly
