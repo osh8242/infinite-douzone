@@ -3,8 +3,13 @@ import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 import "../styles/CustomInput.scss";
+import SelectForm from "./SelectForm";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -40,8 +45,14 @@ function TextBoxComponent(props) {
     validationFunction,
 
     md = 4, // [선택]
+    valueMd = 8,
     placeholder, // [선택]
     height, // [선택] 스타일
+
+    isPeriod,
+    subLabel = "",
+    endLabel = "",
+    selectList,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -135,10 +146,25 @@ function TextBoxComponent(props) {
           <Col md={md} className="d-flex align-items-center justify-content-center">
             <div>{label}</div>
           </Col>
-          <Col
-            md="8"
-            className="d-flex align-items-center justify-content-center"
-          >
+          <Col className="d-flex align-items-center justify-content-center">
+            {subLabel ? (
+              <Col
+                md={2}
+                className="d-flex align-items-center justify-content-center"
+                style={{ marginLeft: 15, marginRight: 15 }}
+              >
+                {subLabel}
+              </Col>
+            ) : (
+              ""
+            )}
+            {selectList ? (
+              <Col md={4} style={{ marginRight: 12 }}>
+                <SelectForm optionList={selectList}></SelectForm>
+              </Col>
+            ) : (
+              ""
+            )}
             {onClickCodeHelper ? (
               type==='date'? (
                 //<div className="">
@@ -155,7 +181,34 @@ function TextBoxComponent(props) {
                   </div>
                 </div>)
             ) : (
-              <>{renderFormControl()}</>
+              <>
+                {renderFormControl()}
+                {selectList ? (
+                  <Col style={{ marginLeft: 10 }}>{endLabel}</Col>
+                ) : (
+                  ""
+                )}
+              </>
+            )}
+            {isPeriod ? (
+              <>
+                {" ~ "}
+                <Col
+                  md={6}
+                  className="d-flex align-items-center justify-content-center"
+                >
+                  {renderFormControl()}
+                </Col>
+              </>
+            ) : (
+              ""
+            )}
+            {endLabel && !selectList ? (
+              <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+                {endLabel}
+              </Col>
+            ) : (
+              ""
             )}
           </Col>
         </>
