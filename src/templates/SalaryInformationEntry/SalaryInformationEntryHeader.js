@@ -12,7 +12,7 @@ import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
 
-const SalaryInformationEntryHeader = ({ deleteButtonHandler }) => {
+const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -21,10 +21,17 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler }) => {
   };
 
   const faTrashCanClickHandler = (event) => {
-    // if (existSelectedRows)
-    //   setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
-    // else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
+
+  const insertSalaryDataHandler = (event) => {
+    //alert("수당 공제 클릭했댱");  
+    
+  }
+
+  const reCalculationHandler = (event) => {
+    //alert("재계산 클릭했댱");  
+    
+  }
 
   return (
     <div id="secondTopHeader">
@@ -46,10 +53,10 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler }) => {
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        <Button>
+        <Button onClick={(e) => modalShow('insert', '넹')} >
             수당/공제 등록
         </Button>
-        <Button>
+        <Button onClick={(e) => reCalculationHandler(e)}>
             재계산
         </Button>
         <button className="backgroundBorderNone">

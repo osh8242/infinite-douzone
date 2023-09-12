@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { nvl } from '../../utils/NumberUtils';
-import SalConstant, { calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension } from './SalConstant';
+import SalConstant, { CD_DEDUCT, EMPLOYMENT_INSURANCE, HEALTH_INSURANCE, NATIONAL_PENSION, calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension, cdDeduct } from './SalConstant';
 import PropTypes from 'prop-types';
 
 const SalaryInformationEntryModel = () => {
   const url = 'http://localhost:8888';
-
-  /* 급여자료 계산 전용 상수 */
-  const { cdDeduct, cdAllow } = SalConstant();
 
   /* 영역 테이블 Data */
   const [saInfoListData, setSaInfoListData] = useState([]);                 // 사원 테이블 리스트
@@ -27,11 +24,14 @@ const SalaryInformationEntryModel = () => {
   //const [salDeductPaySumData, setSalDeductPaySumData] = useState();       
 
   /* 상태 Data */
-  const [modalState, setModalState] = useState({ show: false });                // 모달창 show 여부
+  const [modalState, setModalState] = useState({ 
+    show: false ,
+    size : 'xl',
+  });   
+  
   //const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');    // 조회구분 selectbox 선택된 value
   const [selectedOption, setSelectedOption] = useState('');                     // 조회구분 selectbox 선택된 value
   const [editedAllow, setEditedAllow]= useState();                              // 급여항목 테이블_ table row 수정된 객체
-
   const [addRow, setAddRow]= useState();                                        // 사원 코드도움창에서 선택한 로우 객체
   const [codeHelperTableData, setCodeHelperTableData] = useState({              // 코드도움 테이블 data
     subject : '',
@@ -62,7 +62,7 @@ const SalaryInformationEntryModel = () => {
   const [searchYnForlabor, setSearchYnForlabor] = useState('');     // 국외근로여부 검색
 
   /* parmas들... */
-  const [searchVo, setSearchVo] = useState({
+  const [searchVo, searchVoDispatch] = useState({
     allowYear : allowYear,
     allowMonth : '',
     salDivision : '',
@@ -76,7 +76,7 @@ const SalaryInformationEntryModel = () => {
     searchCdProject : '',   // 프로젝트코드 검색
     searchYnUnit : '',      // 생산직여부 검색
     searchYnForlabor : ''   // 국외근로여부 검색
-  })
+  });
   
   /* 사원정보 선택후 급여항목, 공제항목 params */
   const [searchAllowVo, setSearchAllowVo] = useState({ 
@@ -150,8 +150,8 @@ const SalaryInformationEntryModel = () => {
 
   }, [editedAllow]);  //tabledata 변경
 
-  useEffect(() => {
-  }, [addRow])
+  useEffect(() => { 
+}, [addRow])
 
   useEffect(() => { 
     switch (selectedOption) {
@@ -324,9 +324,9 @@ const SalaryInformationEntryModel = () => {
     deductData.forEach((item) => {
       let allowPay = 0;
       switch(item.item.cdDeduct){
-        case cdDeduct.NATIONAL_PENSION : allowPay = calculationNationalPension(editRowData.allowPay); break; 
-        case cdDeduct.HEALTH_INSURANCE : allowPay = calculationHealthinsurance(editRowData.allowPay); break; 
-        case cdDeduct.EMPLOYMENT_INSURANCE : allowPay = calculationEmploymentInsurance(editRowData.allowPay); break;
+        case NATIONAL_PENSION : allowPay = calculationNationalPension(editRowData.allowPay); break; 
+        case HEALTH_INSURANCE : allowPay = calculationHealthinsurance(editRowData.allowPay); break; 
+        case EMPLOYMENT_INSURANCE : allowPay = calculationEmploymentInsurance(editRowData.allowPay); break;
         default: break;
       }
       
@@ -391,9 +391,6 @@ const SalaryInformationEntryModel = () => {
         console.error('에러발생: ', error);
       })
   }
- 
-  
-
 
   return {
     state : {
@@ -420,7 +417,6 @@ const SalaryInformationEntryModel = () => {
         , searchYnForlabor
         , searchCdEmp
       }
-
       , addRow
       , searchTotalDataVo
      
@@ -433,11 +429,12 @@ const SalaryInformationEntryModel = () => {
       , setSearchAllowVo
       , setModalState
 
+
       , setCdEmp
       , setSalDivision
       , setAllowMonth
       , setPaymentDate
-      , setSearchVo
+      , searchVoDispatch
 
       , setCodeHelperTableData
       , setEditedAllow
@@ -455,7 +452,7 @@ const SalaryInformationEntryModel = () => {
       , setAddRow
 
       , setSearchTotalDataVo
-      , setChangeCdEmp
+      , setChangeCdEmp    
     }
 
   };
@@ -470,20 +467,5 @@ SalaryInformationEntryModel.propTypes = {
   list: PropTypes.array,
   salDeduct: PropTypes.array,
 }
-
-
-// TableForm.propTypes = {
-//   tableHeaders: PropTypes.array.isRequired,
-//   tableData: PropTypes.array.isRequired,
-//   tableFooter: PropTypes.element,
-//   actions: PropTypes.object,
-//   tableName: PropTypes.string,
-//   showCheckbox: PropTypes.bool,
-//   sortable: PropTypes.bool,
-//   showHeaderArrow: PropTypes.bool,
-//   readOnly: PropTypes.bool,
-//   rowAddable: PropTypes.bool,
-// };
-
 
 export default SalaryInformationEntryModel;
