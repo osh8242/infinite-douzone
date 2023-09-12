@@ -531,7 +531,7 @@ const TableForm = ({
     selection.addRange(range);
   };
 
-  return tableRows ? (
+  return (
     <>
       <Table className="table" size="sm" bordered hover ref={myRef}>
         {/* header */}
@@ -675,8 +675,6 @@ const TableForm = ({
         onHide={() => setModalState({ show: false })}
       />
     </>
-  ) : (
-    <Spinner animation="border" variant="primary" />
   );
 };
 
