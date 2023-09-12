@@ -1,17 +1,8 @@
 // 작성자 : 오승환
-import { Col, Container, Row } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import RadioForm from "../../components/RadioForm";
 import TableForm from "../../components/TableForm";
-import TextBoxComponent from "../../components/TextBoxComponent";
-import {
-  contractRadioList,
-  genderRadioList,
-  labels,
-  marryRadioList,
-} from "../../model/CommonConstant";
 import {
   leftStaticsTableConstant,
   leftTableConstant,
@@ -25,6 +16,7 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import MainTab from "./MainTab/HrMainTab";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -107,7 +99,7 @@ const HrManagementLayout = () => {
             </Row>
           </Col>
           {/* 우측 영역 */}
-          {mainTabData ? (
+          {mainTabData.item ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList}>
@@ -127,7 +119,12 @@ const HrManagementLayout = () => {
                     />
                   </Col>
                   <Col xs md="8">
-                    <Row>
+                    <MainTab
+                      formData={mainTabData}
+                      submitData={actions.submitMainTabData}
+                      columnNumber={2}
+                    />
+                    {/* <Row>
                       <Col xs md="6">
                         <TextBoxComponent
                           id="nmEnName"
@@ -239,7 +236,7 @@ const HrManagementLayout = () => {
                           value={mainTabData.item?.daRetire}
                         />
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Col>
                 </Row>
               </Row>
