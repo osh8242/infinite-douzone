@@ -55,28 +55,31 @@ function TextBoxComponent(props) {
     endLabel = "",
     selectList,
   } = props;
+
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
-  // input의 개수가 여러개일 경우
-  const [inputCallNumber, setInputCallNumber] = useState(["", "", ""]); //보여줄 값
-  const [isValid, setIsValid] = useState([true, true, true]); //callNumber 유효값 검사
-  const [sendValueList, setSendValueList] = useState([]); //보낼 값
 
-  // const addItem = () => {
-  //   setInputCallNumber((prevInputCallNumber) => [
-  //     ...prevInputCallNumber,
-  //     "업데이트...",
-  //   ]);
-  // };
+  // callNumber type인 경우 '-'를 기준으로 값을 분리하여 배열에 할당한다.
+  const [inputCallNumber, setInputCallNumber] = useState(
+    type === "callNumber" && value ? value.split("-") : ["", "", ""]
+  );
+  const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
 
   useEffect(() => {
-    setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
+    if (type === "callNumber" && value) {
+      setInputCallNumber(value.split("-") || ["", "", ""]);
+    } else {
+      setInputValue(value || "");
+    } // value prop이 변경될 때마다 inputValue를 업데이트
   }, [value]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
+      if (type === "callNumber") {
+        makeProcessedValue();
+      }
       onEnter && onEnter(event, sendValue, id);
     }
   };
@@ -84,9 +87,12 @@ function TextBoxComponent(props) {
   const handleInputChange = (event, index) => {
     const newValue = event.target.value;
     if (type === "callNumber") {
-      const newInputCallNumber = [...inputCallNumber];
-      newInputCallNumber[index] = newValue;
-      setInputCallNumber(newInputCallNumber);
+      const updatedCallNumber = [...inputCallNumber];
+      updatedCallNumber[index] = newValue;
+      setInputCallNumber(updatedCallNumber); //보이는 value update
+      const updatedCallValid = [...isCallValid];
+      updatedCallValid[index] = validation(newValue);
+      setIsCallValid(updatedCallValid); //유효성 검사 수행과 그 결과에 따른 클래스 변경
     } else {
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       setInputValue(makeProcessedValue(newValue)); // data 가공
@@ -94,7 +100,7 @@ function TextBoxComponent(props) {
     }
   };
 
-  //유효성 검사
+  //값 가공함수
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
 
@@ -103,6 +109,7 @@ function TextBoxComponent(props) {
       thousandSeparator &&
         (processedValue = processThousandSeparator(processedValue));
       setSendValue(makePureNumber(processedValue));
+      // 주민번호 유효성 검사
     } else if (type === "regNum") {
       processedValue = /^\d{0,6}$/.test(newValue)
         ? newValue.replace(/(\d{6})(\d{0,1})/, "$1-$2")
@@ -112,27 +119,23 @@ function TextBoxComponent(props) {
 
       setSendValue(processedValue);
     } else if (type === "callNumber") {
-      updateValidationClass(true);
-      // 전화번호 유효성 검사
-      //전화번호 형식이 맞다면
-      if (/^[0-9]{0,5}$/.test(newValue) || newValue === "") {
-        console.log(newValue);
-      } else {
-        updateValidationClass(false);
-        console.log("유효성검사 실패!");
+      //전화번호를 위한 input 3개의 값을 '-'와 함께 저장
+      if (isCallValid) {
+        let sendCallNumber = "";
+        inputCallNumber.map((value, index) => {
+          if (index < inputCallNumber.length - 1) {
+            sendCallNumber += value + "-";
+          } else {
+            sendCallNumber += value;
+          }
+        });
+        setSendValue(sendCallNumber);
+        console.log(sendValue);
       }
     } else {
       setSendValue(processedValue);
     }
     return processedValue;
-  };
-
-  // 전화번호 타입의 유효성 검사 결과에 따른 스타일 변경 함수
-  const updateValidationClass = (isValid) => {
-    console.log("isValid => ", isValid);
-    // callNumberRefs.forEach((ref) => {
-    //   ref.current.classList.toggle("invalid", !isValid);
-    // });
   };
 
   const processSuffix = (value, suffix) => {
@@ -146,8 +149,9 @@ function TextBoxComponent(props) {
   };
 
   //유효성 검사
-  const validation = (object, value) => {
-    let returnValue = value;
+  const validation = (value) => {
+    //parameter에 object가 있었음(쓰는 곳이 없어서 임시제거)
+    let returnValue = true;
 
     if (thousandSeparator || suffix) {
       thousandSeparator && (value = value.replaceAll(/,/g, ""));
@@ -165,10 +169,32 @@ function TextBoxComponent(props) {
         alert("13자리 입력해주세요.");
         returnValue = value.slice(0, 14);
       }
+    } else if (type === "callNumber") {
+      // 전화번호 유효성 검사
+      if (/^[0-9]{0,4}$/.test(value) || value === "") {
+        returnValue = true;
+        setIsCallValid(true);
+        console.log("유효성검사 성공한 값 => ", value);
+      } else {
+        returnValue = false;
+        setIsCallValid(false);
+        console.log("유효성검사 실패! => ", value);
+      }
     }
 
     //validationFunction && validationFunction(value);
     return returnValue;
+  };
+
+  // boolean 타입의 배열의 값 중 하나라도 false 값이 있으면 false를 반환하는 함수 (유효성 검사 후 클래스 변환용 함수)
+  const hasFalseValid = (arr) => {
+    let result = true;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === false) {
+        result = false;
+      }
+    }
+    return result;
   };
 
   const handleInputFocus = (e) => {
@@ -277,16 +303,14 @@ function TextBoxComponent(props) {
           {inputCallNumber.map((value, index) => (
             <Form.Control
               key={index}
-              value={inputCallNumber[index]}
-              type={type}
-              id={value}
-              name={name}
-              size={size}
+              value={value}
+              type="text"
+              id={`callNumber${index + 1}`}
               disabled={disabled}
               onKeyDown={(event) => handleKeyDown(event, value)}
-              onChange={(event) => handleInputChange(event, value)}
+              onChange={(event) => handleInputChange(event, index)}
               onFocus={handleInputFocus}
-              className={isValid[index] ? "" : "invalid"}
+              className={hasFalseValid(isCallValid) ? "" : "invalid"}
             />
           ))}
         </div>

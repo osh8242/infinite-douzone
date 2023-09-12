@@ -7,7 +7,6 @@ import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/commonComponent.css";
 import EmpRegisterHeader from "./EmpRegisterHeader";
 import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
-import EmpConstant from "../../model/EmpRegister/EmpConstant";
 import Emp from "../../vo/EmpRegister/Emp";
 import MenuTab from "../../components/MenuTab";
 import TextBoxComponent from "../../components/TextBoxComponent";
@@ -214,28 +213,15 @@ function EmpRegisterationLayout() {
                       setAddress: actions.setEditedEmp,
                     }}
                   />
-                  <TextBoxComponent label="callNumber" type="callNumber" />
-                  <CallNumberForm
+                  <TextBoxComponent
                     label={labels.telHome}
                     type="callNumber"
-                    val1={state.mainTabData.telHome1}
-                    val2={state.mainTabData.telHome2}
-                    val3={state.mainTabData.telHome3}
-                    pkValue={state.mainTablePkValue}
-                    actions={{
-                      setNewEmp: actions.setEditedEmp,
-                    }}
+                    value={state.mainTabData.telHome1}
                   />
-                  <CallNumberForm
-                    label={labels.calEmp}
+                  <TextBoxComponent
+                    label={labels.celEmp}
                     type="callNumber"
-                    val1={state.mainTabData.celEmp1}
-                    val2={state.mainTabData.celEmp2}
-                    val3={state.mainTabData.celEmp3}
-                    pkValue={state.mainTablePkValue}
-                    actions={{
-                      setNewEmp: actions.setEditedEmp,
-                    }}
+                    value={state.mainTabData.celEmp1}
                   />
                   <EmailForm
                     label={labels.emEmp}
