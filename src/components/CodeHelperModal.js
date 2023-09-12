@@ -1,4 +1,5 @@
 /* 현소현  코드도움창 */
+import "../styles/CodeHelper.scss";
 
 import React, { useEffect, useState } from "react";
 import { Form, Row } from "react-bootstrap";
@@ -60,7 +61,7 @@ function CodeHelperModal(props) {
     <>
     {/* <ModalComponent title= {subject} show={show} onHide={onHide} onConfirm={onConfirm}> */}
         <div>
-          <Row>
+          <Row className="table-wrapper">
             <TableForm
               readOnly
               tableHeaders={tableHeaders}
