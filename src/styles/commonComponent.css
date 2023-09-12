@@ -14,7 +14,7 @@ input.form-control {
   border: 0;
 } */
 
-.notValid {
+.invalid {
   outline-style: solid !important;
   outline-width: 1px !important;
   outline-offset: -1px !important;

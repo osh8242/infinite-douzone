@@ -10,7 +10,7 @@ import TextBoxComponent from "../components/TextBoxComponent";
 import CommonConstant from "../model/CommonConstant";
 import SalConstant from "../model/SalConstant";
 import SalaryInformationEntryModel from "../model/SalaryInformationEntryModel";
-import HrManagementHeader from "./HrManagement/HrManagementHeader";
+import HrManagementHeader from "./HrManageMent/HrManagementHeader";
 
 const SalaryInformationEntry = ({ grid, mainTab, subTab }) => {
   //상수
