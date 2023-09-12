@@ -27,6 +27,7 @@ const SalaryInformationEntryModel = () => {
   const [modalState, setModalState] = useState({ 
     show: false ,
     size : 'xl',
+    subject : '',
   });   
   
   //const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');    // 조회구분 selectbox 선택된 value
@@ -40,6 +41,10 @@ const SalaryInformationEntryModel = () => {
     tableHeaders : [],
     tableData : [],
     searchField : []
+  });
+
+  const [modalContentData, setModalContentData] = useState({
+    data : ''
   });
 
   const [changeCdEmp, setChangeCdEmp] = useState({cdEmp:''});
@@ -419,7 +424,8 @@ const SalaryInformationEntryModel = () => {
       }
       , addRow
       , searchTotalDataVo
-     
+      , modalContentData
+
     }
     , actions:{
       setSaInfoListData 
@@ -453,6 +459,7 @@ const SalaryInformationEntryModel = () => {
 
       , setSearchTotalDataVo
       , setChangeCdEmp    
+      , setModalContentData
     }
 
   };

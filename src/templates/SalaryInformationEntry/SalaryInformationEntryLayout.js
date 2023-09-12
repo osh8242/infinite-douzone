@@ -13,6 +13,7 @@ import { fetchData } from "../../utils/codeHelperUtils";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import InsertSalaryData from "./InsertSalaryData";
+import ReCalculation from "./ReCalculation";
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
@@ -29,31 +30,41 @@ const SalaryInformationEntryLayout = ({}) => {
 
   // 코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(async (type, data, setRowData) => {
-    actions.setModalState({...state.modalState, show:true});
+
+    actions.setModalState({...state.modalState, show : true});
     setModalType(type);
+    
     switch(type){
       case 'default' :  
-      let codeDataList = data.tableData;
-      if (data.url) {
-        codeDataList = await fetchData(data.url, data.params);
-      }
-  
-      actions.setCodeHelperTableData(() => ({
-        subject: data.subject,
-        setRowData: setRowData,
-        tableHeaders: data.headers,
-        tableData: codeDataList,
-        usePk: data.usePk ? data.usePk : '',
-        searchField: data.searchField,
-      }));
-      break;
-      case 'insert' : //수당
-        actions.setCodeHelperTableData(()=>({
+        let codeDataList = data.tableData;
+
+        if (data.url) {
+          codeDataList = await fetchData(data.url, data.params);
+        }
+        
+        actions.setModalState((prevState) => ({ 
+          ...prevState, size : 'lg',
+          subject: data.subject
+        }));
+
+        actions.setCodeHelperTableData(() => ({
+          // subject: data.subject,
+          setRowData: setRowData,
+          tableHeaders: data.headers,
+          tableData: codeDataList,
+          usePk: data.usePk ? data.usePk : '',
+          searchField: data.searchField,
+        }));
+        break;
+
+      case 'insertSalaryData' : //수당
+        actions.setModalContentData(()=>({
           data : data
         }));
-      break;
-      case 'col' : //계산기
-      break;
+        break;
+
+      case 'reCalculation' : //계산기
+        break;
       
       default : break;
     } 
@@ -73,6 +84,7 @@ const SalaryInformationEntryLayout = ({}) => {
       <Container>
         
         <ModalComponent
+          title={state.modalState.subject}
           size={state.modalState.size}       
           show={state.modalState.show}
           onHide={()=>actions.setModalState({show:false})}
@@ -86,10 +98,19 @@ const SalaryInformationEntryLayout = ({}) => {
               subject={state.codeHelperTableData.subject}
               searchField={state.codeHelperTableData.searchField}
               onHide={() => actions.setModalState({show: false})}
-            /> :
-         modalType === 'insert'?
-            <InsertSalaryData data = {state.codeHelperTableData.data}/>
-         : 
+            />
+
+        : modalType === 'insertSalaryData'?
+            <InsertSalaryData 
+              data = {state.modalContentData.data}
+            />
+
+        : modalType === 'reCalculation'?
+            <ReCalculation
+              data = {state.modalContentData.data}
+            />
+
+        : //default
          <></>
         
         }

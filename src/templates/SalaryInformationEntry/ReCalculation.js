@@ -1,16 +1,16 @@
 import React from 'react';
 
-const InsertSalaryData = (props) => {
+const ReCalculation = (props) => {
     const {
         data,
     } = props;
 
     return (
         <div>
-            안뇽하세요 저는 수당/공제 서브메뉴입니댱
+            반가워용 저는 재계산이에용
             {data}
         </div>
     );
 };
 
-export default InsertSalaryData;
+export default ReCalculation;

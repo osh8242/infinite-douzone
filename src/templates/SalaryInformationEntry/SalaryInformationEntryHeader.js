@@ -25,13 +25,14 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
 
   const insertSalaryDataHandler = (event) => {
     //alert("수당 공제 클릭했댱");  
-    
+    modalShow('insertSalaryData', '수당수당공제공제');
   }
 
   const reCalculationHandler = (event) => {
     //alert("재계산 클릭했댱");  
-    
+    modalShow('insertSalaryData', '재계산산산');
   }
+  
 
   return (
     <div id="secondTopHeader">
@@ -53,7 +54,7 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        <Button onClick={(e) => modalShow('insert', '넹')} >
+        <Button onClick={(e) => insertSalaryDataHandler(e)} >
             수당/공제 등록
         </Button>
         <Button onClick={(e) => reCalculationHandler(e)}>
