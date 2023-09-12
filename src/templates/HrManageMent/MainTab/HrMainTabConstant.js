@@ -21,7 +21,6 @@ export const MAIN_TAB = {
       field: "noSocial",
       label: labels.noSocial,
       disabled: true,
-      span: 2,
     },
     { type: INPUT_TYPE.radio, field: "fgSex", label: labels.fgSex, disabled: true },
     { type: INPUT_TYPE.date, field: "daBirth", label: labels.daBirth },

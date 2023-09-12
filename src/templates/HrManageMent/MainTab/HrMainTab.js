@@ -11,7 +11,6 @@ const MainTab = (props) => {
   const wrappingColTag = (input, index, span) => {
     let md = 12 / columnNumber;
     if (span) md = md * span <= 12 && 12;
-    console.log("md", md);
 
     return (
       <Col xs md={md} key={index}>

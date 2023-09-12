@@ -124,119 +124,6 @@ const HrManagementLayout = () => {
                       submitData={actions.submitMainTabData}
                       columnNumber={2}
                     />
-                    {/* <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="nmEnName"
-                          label={labels.nmEnName}
-                          value={mainTabData.item?.nmEnName}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="nmChName"
-                          label={labels.nmChName}
-                          value={mainTabData.item?.nmChName}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="noSocial"
-                          label={labels.noSocial}
-                          disabled
-                          value={mainTabData.item?.noSocial}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="fgSex"
-                          label={labels.fgSex}
-                          disabled
-                          optionList={genderRadioList}
-                          checked={mainTabData.item?.fgSex}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daBirth"
-                          type="date"
-                          label={labels.daBirth}
-                          value={mainTabData.item?.daBirth}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="fgWedding"
-                          label={labels.fgWedding}
-                          optionList={marryRadioList}
-                          checked={mainTabData.item?.fgWedding}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="cdDept"
-                          label={labels.cdDept}
-                          disabled
-                          value={mainTabData.item?.cdDept}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="rankNo"
-                          label={labels.rankNo}
-                          disabled
-                          value={mainTabData.item?.ankNo}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Col xs md="6">
-                      <TextBoxComponent
-                        id="cdOffduty"
-                        label={labels.cdOffduty}
-                        value={mainTabData.item?.cdOffduty}
-                        onEnter={actions.submitMainTabData}
-                      />
-                    </Col>
-                    <Col xs md="6">
-                      <RadioForm
-                        id="ynDrawContracts"
-                        label={labels.ynDrawContracts}
-                        optionList={contractRadioList}
-                        checked={mainTabData.item?.ynDrawContracts}
-                        onChange={actions.submitMainTabData}
-                      />
-                    </Col>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daEnter"
-                          label={labels.daEnter}
-                          disabled
-                          value={mainTabData.item?.daEnter}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daRetire"
-                          label={labels.daRetire}
-                          disabled
-                          value={mainTabData.item?.daRetire}
-                        />
-                      </Col>
-                    </Row> */}
                   </Col>
                 </Row>
               </Row>
@@ -247,7 +134,6 @@ const HrManagementLayout = () => {
                 <TableForm
                   tableName="EMPFAM"
                   showCheckbox
-                  showHeaderArrow
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}
