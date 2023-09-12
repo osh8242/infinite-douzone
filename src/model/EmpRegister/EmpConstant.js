@@ -1,17 +1,8 @@
 const EmpConstant = () => {
   return {
+    //메뉴 탭 리스트
     mainTabMenuListForEmpRegister: ["기초정보", "가족사항"],
-    //테이블 헤더
-    HrManagementLeftTableHeaders: [
-      {
-        field: "cdEmp",
-        text: "사원코드",
-        isPk: true,
-        readOnly: true,
-        width: "75px",
-      },
-      { field: "nmKrname", text: "성명" },
-    ],
+    //왼쪽 테이블 헤더
     EmpRegisterLeftHeaders: [
       { field: "cdEmp", text: "사원코드", isPk: true, readOnly: true },
       { field: "nmKrname", text: "성명" },
@@ -19,6 +10,7 @@ const EmpConstant = () => {
       { field: "noSocial", text: "주민번호" },
       { field: "jobOk", text: "구분" },
     ],
+    //메인 탭 사용 필드
     EmpRegisterMainHeaders: [
       { field: "daEnter", text: "입사일자" },
       { field: "ynFor", text: "내외국인" },
@@ -48,6 +40,7 @@ const EmpConstant = () => {
       { field: "noBnkacct", text: "계좌번호" },
       { field: "nmBnkowner", text: "예금주" },
     ],
+    //코드도움
     codeHelperparams: {
       cdDept: {
         title: "부서코드 조회",

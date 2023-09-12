@@ -4,6 +4,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import React, { useCallback, useRef, useState } from "react";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
+import "../../styles/commonComponent.css";
 import EmpRegisterHeader from "./EmpRegisterHeader";
 import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
 import CommonConstant from "../../model/CommonConstant";
@@ -225,6 +226,7 @@ function EmpRegisterationLayout() {
                       setAddress: actions.setEditedEmp,
                     }}
                   />
+                  <TextBoxComponent label="callNumber" type="callNumber" />
                   <CallNumberForm
                     label={labels.telHome}
                     type="callNumber"
