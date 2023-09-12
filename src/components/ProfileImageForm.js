@@ -8,12 +8,7 @@ function ProfileImageForm(props) {
   const fileInput = useRef(null);
   return (
     <Card className="card-container">
-      <Card.Img
-        variant="top"
-        src={src}
-        alt="이미지 로드 실패"
-        style={{ height: "200px" }}
-      />
+      <Card.Img variant="top" src={src} alt="이미지 로드 실패" />
       <Card.Body>
         {title && <Card.Title>{title}</Card.Title>}
         {text && <Card.Text>{text}</Card.Text>}
@@ -25,10 +20,7 @@ function ProfileImageForm(props) {
             onChange={(event) => handleUpload(event)}
             ref={fileInput}
           />
-          <Button
-            variant="secondary"
-            onClick={(e) => fileInput.current.click(e)}
-          >
+          <Button variant="secondary" onClick={(e) => fileInput.current.click(e)}>
             이미지 업로드
           </Button>
         </div>

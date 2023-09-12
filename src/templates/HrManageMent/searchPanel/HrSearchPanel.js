@@ -28,4 +28,4 @@ const HrSearchPanel = (props) => {
   );
 };
 
-export default React.memo(HrSearchPanel);
+export default HrSearchPanel;

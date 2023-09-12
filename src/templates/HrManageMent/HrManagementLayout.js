@@ -10,7 +10,7 @@ import {
   contractRadioList,
   genderRadioList,
   labels,
-  marryRadioList, //결혼 여부
+  marryRadioList,
 } from "../../model/CommonConstant";
 import {
   leftStaticsTableConstant,
@@ -25,7 +25,7 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import HrSearchPanel from "./searchPanel/HrSearchPanel";
+import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -110,21 +110,23 @@ const HrManagementLayout = () => {
           {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={tabConstant.mainTabMenuList} />
+              <MenuTab menuList={tabConstant.mainTabMenuList}>
+                <div>하나하나</div>
+              </MenuTab>
               {/* 우측 메인폼 */}
               <Row className="mb-5 justify-content-center" ref={mainTabRef}>
                 <Row>
                   <Col
                     className="d-flex align-items-center justify-content-center"
                     xs
-                    md="3"
+                    md="4"
                   >
                     <ProfileImageForm
                       src={empImageSrc}
                       handleUpload={actions.updateEmpPhoto}
                     />
                   </Col>
-                  <Col xs md="9">
+                  <Col xs md="8">
                     <Row>
                       <Col xs md="6">
                         <TextBoxComponent
@@ -142,6 +144,8 @@ const HrManagementLayout = () => {
                           onEnter={actions.submitMainTabData}
                         />
                       </Col>
+                    </Row>
+                    <Row>
                       <Col xs md="6">
                         <TextBoxComponent
                           id="noSocial"
@@ -160,6 +164,8 @@ const HrManagementLayout = () => {
                           checked={mainTabData.item?.fgSex}
                         />
                       </Col>
+                    </Row>
+                    <Row>
                       <Col xs md="6">
                         <TextBoxComponent
                           id="daBirth"
@@ -178,6 +184,8 @@ const HrManagementLayout = () => {
                           onChange={actions.submitMainTabData}
                         />
                       </Col>
+                    </Row>
+                    <Row>
                       <Col xs md="6">
                         <TextBoxComponent
                           id="cdDept"
@@ -196,23 +204,25 @@ const HrManagementLayout = () => {
                           onEnter={actions.submitMainTabData}
                         />
                       </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="cdOffduty"
-                          label={labels.cdOffduty}
-                          value={mainTabData.item?.cdOffduty}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="ynDrawContracts"
-                          label={labels.ynDrawContracts}
-                          optionList={contractRadioList}
-                          checked={mainTabData.item?.ynDrawContracts}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
+                    </Row>
+                    <Col xs md="6">
+                      <TextBoxComponent
+                        id="cdOffduty"
+                        label={labels.cdOffduty}
+                        value={mainTabData.item?.cdOffduty}
+                        onEnter={actions.submitMainTabData}
+                      />
+                    </Col>
+                    <Col xs md="6">
+                      <RadioForm
+                        id="ynDrawContracts"
+                        label={labels.ynDrawContracts}
+                        optionList={contractRadioList}
+                        checked={mainTabData.item?.ynDrawContracts}
+                        onChange={actions.submitMainTabData}
+                      />
+                    </Col>
+                    <Row>
                       <Col xs md="6">
                         <TextBoxComponent
                           id="daEnter"
