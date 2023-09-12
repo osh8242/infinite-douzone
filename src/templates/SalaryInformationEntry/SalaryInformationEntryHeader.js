@@ -24,13 +24,13 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   };
 
   const insertSalaryDataHandler = (event) => {
-    //alert("수당 공제 클릭했댱");  
+    // alert("수당 공제 클릭했댱");  
     modalShow('insertSalaryData', '수당수당공제공제');
   }
 
   const reCalculationHandler = (event) => {
     //alert("재계산 클릭했댱");  
-    modalShow('insertSalaryData', '재계산산산');
+    modalShow('reCalculation', 'reCalculationList', );
   }
   
 

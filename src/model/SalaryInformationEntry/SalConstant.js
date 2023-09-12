@@ -157,6 +157,14 @@ export const MEALS = '597';                      // 식대
 export const BONUS = '505';                      // 상여금
 
 
+
+// 재계산 리스트
+export const reCalculationList = {
+    subject : '재계산',
+    reCalculationList : [{key : '' , value : '과세, 비과세 재계산'},
+                        {key : '' , value : '사원정보 변경'}]    
+}
+
 //국민연금 계산식
 export const calculationNationalPension = (value) => {
     return Number(value) * 0.1;

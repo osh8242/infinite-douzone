@@ -57,13 +57,23 @@ const SalaryInformationEntryLayout = ({}) => {
         }));
         break;
 
-      case 'insertSalaryData' : //수당
+      case 'insertSalaryData' : // 수당/공제 등록
+        
         actions.setModalContentData(()=>({
           data : data
         }));
         break;
 
-      case 'reCalculation' : //계산기
+      case 'reCalculation' : // 재계산
+
+        actions.setModalState((prevState) => ({ 
+          ...prevState, 
+          subject: data.subject
+        }));
+
+        actions.setModalContentData(()=>({
+          data : data.list
+        }));  
         break;
       
       default : break;
@@ -156,7 +166,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"사원코드"} 
                   value={state.searchVO.searchCdEmp}
                   onEnter={actions.setSearchCdEmp}
-                  onClickCodeHelper={() => modalShow('default',codeHelperData_emplist, actions.setSearchCdEmp)}
+                  onClickCodeHelper={() => modalShow('default', codeHelperData_emplist, actions.setSearchCdEmp)}
                   //onChange={(e,value)=>actions.setSearchCdEmp(value)}
                 />
               </Col>
@@ -166,7 +176,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"부서코드"}
                   value={state.searchVO.searchCdDept}
                   onEnter={actions.setSearchCdDept}
-                  onClickCodeHelper={() => modalShow('default',codeHelperData_cdDept, actions.setSearchCdDept)}  
+                  onClickCodeHelper={() => modalShow('default', codeHelperData_cdDept, actions.setSearchCdDept)}  
                 />
               </Col>
             </Row>
@@ -177,7 +187,7 @@ const SalaryInformationEntryLayout = ({}) => {
                   label={"직급코드"}
                   value={state.searchVO.searchRankNo}
                   onEnter={actions.setSearchRankNo}
-                  onClickCodeHelper={() => modalShow('default',codeHelperData_rankNo, actions.setSearchRankNo)}
+                  onClickCodeHelper={() => modalShow('default', codeHelperData_rankNo, actions.setSearchRankNo)}
                 />
               </Col>
               <Col>
