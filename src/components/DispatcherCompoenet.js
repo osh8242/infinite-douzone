@@ -1,9 +1,13 @@
+import React, { useState } from "react";
 import DateForm from "./DateForm";
 import SelectForm from "./SelectForm";
 import RadioForm from "./RadioForm";
 import TextBoxComponent from "./TextBoxComponent";
 import AddressForm from "./AddressForm";
 import TempAdd from "./TempAdd";
+import TestModel from "../model/LaborContract/TestModel";
+// const { state, actions } = TestModel();
+// const { leftTableData, mainTabData, subTableData } = state;
 
 const DispatcherComponent = (field) => {
   switch (field.component) {
@@ -18,6 +22,7 @@ const DispatcherComponent = (field) => {
           subLabel={field.subLabel}
           endLabel={field.endLabel}
           selectList={field.selectList}
+          value={field.value}
         />
       );
     case "RadioForm":
@@ -29,6 +34,7 @@ const DispatcherComponent = (field) => {
         />
       );
     case "AddressForm":
+      //
       return <TempAdd label={field.label} />;
     case "DateForm":
       return (
@@ -38,6 +44,7 @@ const DispatcherComponent = (field) => {
           isPeriod={field.isPeriod}
           labelKey={field.labelKey}
           labelKey2={field.labelKey2}
+          value={field.value}
         />
       );
     case "SelectForm":

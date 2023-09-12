@@ -12,6 +12,11 @@ import {
   healthInsuranceList,
 } from "./LaborContractConstant";
 
+// import TestModel from "./TestModel";
+
+// const { state, actions, mainTablePkValue } = TestModel();
+// const { leftTableData, mainTabData, subTableData } = state;
+
 export const HeaderField = [
   {
     component: "DateForm",
@@ -27,6 +32,10 @@ export const HeaderField = [
   },
 ];
 
+// console.log("Filedddd");
+// console.log(mainTabData);
+// console.log(mainTabData.jobDescription);
+
 export const MainTabField = [
   {
     component: "DateForm",
@@ -35,6 +44,11 @@ export const MainTabField = [
     isPeriod: "true",
     labelKey: "startEmpContractPeriod",
     labelKey2: "endEmpContractPeriod",
+    // actions: {
+    //   setEdited: actions.setEditedSwsm,
+    // },
+    // value: mainTabData ? mainTabData.startEmpContractPeriod : "",
+    // value2: mainTabData ? mainTabData.endEmpContractPeriod : "",
   },
   {
     component: "AddressForm",
@@ -43,6 +57,7 @@ export const MainTabField = [
   {
     component: "TextBoxComponent",
     label: labels.jobDescription,
+    // value: mainTabData.jobDescription,
   },
   {
     component: "TextBoxComponent",

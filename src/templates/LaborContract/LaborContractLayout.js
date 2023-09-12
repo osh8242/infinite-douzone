@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LaborContractModel from "../../model/LaborContract/LaborContractModel";
+import TestModel from "../../model/LaborContract/TestModel";
 import LaborContractHeader from "../LaborContractHeader";
 import SearchPanel from "../../components/SearchPanel";
 // import LaborContractConstant from "./src/model/LaborContract/LaborContractConstant";
@@ -23,18 +24,10 @@ import {
   HeaderField,
   MainTabField,
 } from "../../model/LaborContract/LaborContractField";
-import {
-  searchOption, // 검색옵션 리스트
-  orderList,
-  leftTableConstant,
-  leftStaticsTableConstant,
-  subTableConstant,
-  tabConstant,
-} from "../../model/HrManagement/HrManagementConstant";
 
 const LaborContractLayout = () => {
   const { SwsmLeftTableHeaders, subTabMenuList } = SwsmConstant();
-  const { state, actions, mainTablePkValue } = LaborContractModel();
+  const { state, actions, mainTablePkValue } = TestModel();
   const { leftTableData, mainTabData, subTableData, selectedRows } = state;
 
   return (
@@ -85,6 +78,7 @@ const LaborContractLayout = () => {
                 </Row>
               </Scrollbars>
               <MenuTab menuList={[subTabMenuList.otherBenefit]} />
+              {/* SubGrid */}
               <TableForm
                 showCheckbox
                 showHeaderArrow
