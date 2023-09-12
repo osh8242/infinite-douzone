@@ -20,11 +20,17 @@ const AddressForm = (props) => {
   const addHome2Ref = useRef();
 
   //비동기 데이터 load
+  // useEffect(() => {
+  //   zipHomeRef.current.value = zipHome;
+  //   addHome1Ref.current.value = addHome1;
+  //   addHome2Ref.current.value = addHome2;
+  // });
+
   useEffect(() => {
-    zipHomeRef.current.value = zipHome;
-    addHome1Ref.current.value = addHome1;
-    addHome2Ref.current.value = addHome2;
-  });
+    if (zipHomeRef.current) zipHomeRef.current.value = zipHome;
+    if (addHome1Ref.current) addHome1Ref.current.value = addHome1;
+    if (addHome2Ref.current) addHome2Ref.current.value = addHome2;
+  }, [zipHome, addHome1, addHome2]);
 
   // 선택된 주소를 주소 필드에 업데이트 및 update 요청(우편번호와 주소)
   const handleAddressSelected = ({ zonecode, address }) => {

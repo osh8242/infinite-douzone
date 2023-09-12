@@ -34,8 +34,8 @@ const DispatcherComponent = (field) => {
         />
       );
     case "AddressForm":
-      //
-      return <TempAdd label={field.label} />;
+      return <AddressForm />;
+    // return <TempAdd label={field.label} />;
     case "DateForm":
       return (
         <DateForm

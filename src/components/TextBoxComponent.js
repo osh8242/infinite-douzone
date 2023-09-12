@@ -143,7 +143,10 @@ function TextBoxComponent(props) {
     <Row className="py-1">
       {label ? (
         <>
-          <Col md={md} className="d-flex align-items-center justify-content-center">
+          <Col
+            md={md}
+            className="d-flex align-items-center justify-content-center"
+          >
             <div>{label}</div>
           </Col>
           <Col className="d-flex align-items-center justify-content-center">
@@ -166,20 +169,21 @@ function TextBoxComponent(props) {
               ""
             )}
             {onClickCodeHelper ? (
-              type==='date'? (
+              type === "date" ? (
                 //<div className="">
-                  <div className="svg-container2 svg-wrapper">
-                    {renderFormControl()}
-                    <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
-                  </div>
+                <div className="svg-container2 svg-wrapper">
+                  {renderFormControl()}
+                  <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                </div>
+              ) : (
                 //</div>
-                ):(
                 <div className="svg-wrapper">
                   <div className="svg-container">
                     {renderFormControl()}
                     <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
                   </div>
-                </div>)
+                </div>
+              )
             ) : (
               <>
                 {renderFormControl()}
