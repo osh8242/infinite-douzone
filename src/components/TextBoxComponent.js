@@ -8,7 +8,7 @@ import {
   makeCommaNumber,
   makePureNumber,
 } from "../utils/NumberUtils";
-import "./CustomInput.scss";
+import "../styles/CustomInput.scss";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -148,12 +148,12 @@ function TextBoxComponent(props) {
           >
             {onClickCodeHelper ? (
               type==='date'? (
-                <div className="svg-wrapper">
-                  <div className="svg-container2">
+                //<div className="">
+                  <div className="svg-container2 svg-wrapper">
                     {renderFormControl()}
                     <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
                   </div>
-                </div>
+                //</div>
                 ):(
                 <div className="svg-wrapper">
                   <div className="svg-container">
