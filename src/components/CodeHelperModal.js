@@ -25,7 +25,7 @@ function CodeHelperModal(props) {
   } = props;
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [oriData, setOriData] = useState([]);
+  const [oriData, setOriData] = useState(tableData);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
