@@ -6,7 +6,6 @@ import TextBoxComponent from "./TextBoxComponent";
 
 import PropTypes from 'prop-types';
 import TableForm from "./TableForm";
-import ModalComponent from "./ModalComponent";
 import {labels} from "../model/CommonConstant";
 
 function CodeHelperModal(props) {
@@ -52,6 +51,8 @@ function CodeHelperModal(props) {
   const handleRowClick = (row) => {
     setSearchTerm("");
     if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row)
+    setFilteredData([]);
+    setOriData([]);
     onHide();
   };
 
