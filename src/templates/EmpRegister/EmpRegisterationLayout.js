@@ -20,33 +20,21 @@ import TableForm from "../../components/TableForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 import {
-  mainTabMenuListForEmpRegister, //메뉴 탭 목록
   ynForList, //내외국인 구분
   genderRadioList, //성별구분
   emailList, //이메일 도메인 리스트
   labels, //속성명
 } from "../../model/CommonConstant";
+import {
+  EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
+  EmpRegisterLeftHeaders,
+  mainTabMenuListForEmpRegister, //메뉴 탭 목록
+  codeHelperparams, //코드도움 상수 값
+} from "../../model/EmpRegister/EmpConstant";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
   const { state, actions } = EmpRegisterationModel();
-
-  //고정된 값을 가지는 state들
-
-  const {
-    EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
-    EmpRegisterLeftHeaders,
-    mainTabMenuListForEmpRegister, //메뉴 탭 목록
-  } = EmpConstant();
-
-  // 메뉴 탭 전환 기능 추후 수정 예정
-  // const [selectedMenu, setSelectedMenu] = useState(0);
-
-  //코드도움 Modal 관리 값 -> api로 DB에서 데이터 가져올 때 사용
-  const [apiFlag, setApiFlag] = useState(false);
-
-  //코드도움 상수 값
-  const { codeHelperparams } = EmpConstant();
 
   //코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback(
@@ -122,7 +110,7 @@ function EmpRegisterationLayout() {
             {/* 좌측 사원목록 테이블 */}
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
-                tableHeaders={EmpConstant.EmpRegisterLeftHeaders}
+                tableHeaders={EmpRegisterLeftHeaders}
                 tableData={state.leftTableData}
                 selectedRows={state.selectedRows}
                 showCheckbox
@@ -435,7 +423,6 @@ function EmpRegisterationLayout() {
         }
         // onConfirm={() => alert("확인")}
         setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
-        apiFlag={apiFlag}
         table={state.codeHelperTableData.data}
         codeHelperCode={state.codeHelperTableData.code}
       />

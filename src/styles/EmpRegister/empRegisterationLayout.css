@@ -1,21 +1,3 @@
-/* * {
-  font-size: small;
-  overflow-x: hidden;
-} */
-
-/* #empRegisterArea {
-  width: 100vw;
-  height: 100vh;
-  background-color: aqua;
-} */
-
-/* #empRegisterHeader {
-  position: absolute;
-  width: 100%;
-  top: 52px;
-  left: 0;
-} */
-
 #empRegisterLayout {
   /* position: absolute; */
   /* top: 92px; */
@@ -31,12 +13,6 @@
   margin-bottom: 120px;
 }
 
-/* #empDataSortedLine {
-  position: absolute;
-  bottom: 13px;
-  border-top: solid 2px rgb(230, 230, 230);
-} */
-
 #empDataSortedMenuArea {
   position: relative;
   height: 50px;
@@ -44,7 +20,7 @@
 }
 
 #baseData {
-  margin-right: 16%;
+  /* margin-right: 16%; */
 }
 
 #baseDataContents {
