@@ -1,0 +1,32 @@
+// SearchPanel.scss
+// @import '~@fortawesome/fontawesome-free/css/all.min.css'; // Font Awesome 아이콘 스타일 불러오기
+
+.search-panel {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+
+  .arrow-button {
+    transition: transform 0.3s ease;
+
+    &.up {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.9s ease-out;
+
+  &.open {
+    max-height: 500px;
+  }
+}

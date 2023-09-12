@@ -1,8 +1,8 @@
 /* 현소현
 const [modalState, setModalState] = useState({ show: false , modalData: null });  //모달창
 
-<ModalComponent title= {'코드도움'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
-    <p>안녕하세요우!</p> //children
+<ModalComponent title= {'제목'} show={modalState.show} onHide={() => setModalState({ ...modalState, show: false })} size="lg" centered>
+    <p>내용</p> //children
 </ModalComponent> 
 
  */
@@ -18,7 +18,7 @@ function ModalComponent(props) {
     title,
     onHide,
     onConfirm,
-    size,
+    size = 'lg',
     backdrop,
     animation,
   } = props;

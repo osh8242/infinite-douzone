@@ -1,11 +1,12 @@
 // 작성자 : 오승환
 
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import { faBell, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faPlus, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
+import SearchForm from "../components/SearchForm";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 const logoUrl = {
@@ -42,25 +43,76 @@ const Header = (props) => {
           </select>
         </div>
         <div id="topRightNotificationHeader">
-          <input
+          {/* <input
+            type="text"
+            id="findMenuBar"
+            placeholder={"찾고싶은 메뉴를 검색하세요"}
+          /> */}
+          <SearchForm
             type="text"
             id="findMenuBar"
             placeholder={"찾고싶은 메뉴를 검색하세요"}
           />
+
           <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faPlus} className="colorDark" />
+            <FontAwesomeIcon icon={faPlus} size={"2xl"} className="colorDark" />
           </button>
           <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faBell} className="colorDark" />
+            <FontAwesomeIcon icon={faBell} size={"xl"} className="colorDark" />
           </button>
           <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faQuestionCircle} className="colorDark" />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              size={"xl"}
+              className="colorDark"
+            />
+          </button>
+          <button className="backgroundBorderNone">
+            <a href="/">
+              <FontAwesomeIcon
+                icon={faHome}
+                size={"xl"}
+                className="colorDark"
+              />
+            </a>
           </button>
           <select id="personalMenu">
             {/* 이름과 직종은 추후 변수로 변경 */}
             <option>김회계 주임연구원</option>
             {/* 하단에 추가할 메뉴를 넣습니다 */}
           </select>
+
+          <a
+            href="/signup"
+            style={{
+              backgroundColor: "white",
+              border: "1px solid gray",
+              color: "dimgray",
+              padding: "4px 10px 4px 10px",
+              marginRight: "0px",
+              marginLeft: "7px",
+              borderRadius: "5px",
+              textDecoration: "none",
+            }}
+          >
+            회원가입
+          </a>
+          <a
+            href="/login"
+            style={{
+              backgroundColor: "white",
+              border: "1px solid gray",
+              color: "dimgray",
+              fontSize: "13px",
+              padding: "4px 14px 4px 14px",
+              marginRight: "7px",
+
+              borderRadius: "5px",
+              textDecoration: "none",
+            }}
+          >
+            로그인
+          </a>
         </div>
       </div>
       {/* <div id="secondTopHeader">

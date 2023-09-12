@@ -39,25 +39,25 @@ table {
 td div {
   text-align: center;
 }
+
 td input {
   text-align: center;
-}
-
-#selectedTd{
-  background-color: rgb(150, 175, 200) !important;
 }
 
 .styleNone {
   color: transparent;
 }
 
-.selectedTr {
-  background-color: rgb(200, 223, 255) !important; 
+.selectedTr td {
+  background-color: rgb(200, 223, 255) !important;
 }
 
-.selectedTr td,
-.selectedTr div {
-  background-color: transparent !important;
-  border-color: rgb(200, 223, 255);
+.selectedTr .selectedTd {
+  background-color: rgb(150, 175, 200) !important;
 }
 
+div[contentEditable="true"] {
+  border-radius: 3px;
+  outline: none;
+  background-color: white !important;
+}

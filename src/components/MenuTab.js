@@ -1,16 +1,21 @@
-// 작성자 : 오승환
 import { useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
-function MenuTab({ menuList }) {
-  const [key, setKey] = useState(0);
+function MenuTab(props) {
+  const { menuList, onSelect, k } = props;
+  const [key, setKey] = useState(k);
+
+  const handleSelect = (k) => {
+    setKey(k);
+    onSelect(k);
+  };
 
   return (
     <Tabs
       id="menuTab"
       activeKey={key}
-      onSelect={(k) => setKey(k)}
+      onSelect={onselect && handleSelect}
       className="mb-3"
     >
       {menuList.map((menu, index) => (

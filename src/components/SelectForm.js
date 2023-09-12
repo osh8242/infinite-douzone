@@ -15,9 +15,17 @@
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-function SelectForm({ label, optionList, selectRef, onChange }) {
+SelectForm.defaultProps = {
+  optionList: [],
+};
+
+function SelectForm(props) {
+  const { label, optionList, selectRef, onChange, subLabel, endLabel } = props;
+
   const handleSelectChange = (event) => {
-    const selectedValue = selectRef.current.value;
+    const selectedValue = selectRef
+      ? selectRef.current.value
+      : event.target.value;
     if (onChange) onChange(selectedValue);
   };
 
@@ -32,6 +40,18 @@ function SelectForm({ label, optionList, selectRef, onChange }) {
         </Col>
       )}
       <Col className="d-flex align-items-center justify-content-center">
+        {subLabel ? (
+          <Col
+            md={2}
+            className="d-flex align-items-center justify-content-center"
+            style={{ marginLeft: 15, marginRight: 15 }}
+          >
+            {subLabel}
+          </Col>
+        ) : (
+          ""
+        )}
+
         <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
           {optionList.map((option, index) => (
             <option value={option.key} key={index}>
@@ -39,6 +59,13 @@ function SelectForm({ label, optionList, selectRef, onChange }) {
             </option>
           ))}
         </Form.Select>
+        {endLabel ? (
+          <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+            {endLabel}
+          </Col>
+        ) : (
+          ""
+        )}
       </Col>
     </Row>
   );
