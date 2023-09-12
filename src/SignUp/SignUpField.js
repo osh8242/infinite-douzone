@@ -1,5 +1,5 @@
-import CommonConstant from "../../src/model/CommonConstant";
-const { genderRadioList } = CommonConstant();
+// import CommonConstant from "../../src/model/CommonConstant";
+// const { genderRadioList } = CommonConstant();
 
 export const SignUpField = [
   {
