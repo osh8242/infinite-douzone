@@ -69,7 +69,7 @@ const FormPanel = ({
             id={id}
             label={LABELS[input.field]}
             disabled={disabled}
-            optionList={SELECT_LIST[input.field]}
+            optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
             onChange={submitData}
           />
