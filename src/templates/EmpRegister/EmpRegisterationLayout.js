@@ -18,7 +18,14 @@ import TableForm from "../../components/TableForm";
 import { LABELS } from "../../model/CommonConstant";
 import {
   EmpRegisterLeftHeaders,
-  codeHelperData,
+  codeHelperData_abbNation,
+  codeHelperData_cdNation,
+  codeHelperData_cdDept,
+  codeHelperData_rankNo,
+  codeHelperData_cdSalcls,
+  codeHelperData_cdProject,
+  codeHelperData_cdOccup,
+  codeHelperData_cdField,
   EmpRegisterUndeletedEmpHeaders,
   tabConstant,
 } from "../../model/EmpRegister/EmpConstant";
@@ -50,11 +57,25 @@ function EmpRegisterationLayout() {
           // subject: data.subject,
           setRowData: setRowData,
           tableHeaders: data.headers,
-          tableData: codeHelperData,
+          tableData: data.tableData,
           usePk: data.usePk ? data.usePk : "",
           searchField: data.searchField,
         }));
         break;
+      case "undeletedEmp":
+        actions.setModalState((prevState) => ({
+          ...prevState,
+          size: "md",
+          subject: data.subject,
+        }));
+        actions.setCodeHelperTableData(() => ({
+          // subject: data.subject,
+          setRowData: setRowData,
+          tableHeaders: data.headers,
+          tableData: state.undeletedEmpTableData,
+          usePk: data.usePk ? data.usePk : "",
+          searchField: data.searchField,
+        }));
       default:
         break;
     }
@@ -117,9 +138,11 @@ function EmpRegisterationLayout() {
                 actions={{
                   setTableData: actions.setLeftTableData,
                   setPkValue: actions.setMainTablePkValue,
-                  setEditedRow: actions.setEditedEmp,
-                  getRowObject: Emp,
                   setSelectedRows: actions.setSelectedRows,
+                  insertNewRow: actions.insertEmp,
+                  updateEditedRow: actions.updateEmp,
+                  deleteRow: actions.deleteRow,
+                  getRowObject: Emp,
                 }}
               />
             ) : (
@@ -132,22 +155,84 @@ function EmpRegisterationLayout() {
               <MenuTab
                 menuList={tabConstant.mainTabMenuListForEmpRegister}
                 ref={state.mainTabRef}
-              >
-                <FormPanel
-                  INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                  formData={state.mainTabData}
-                  submitData={actions.submitMainTabData} // update 함수
-                />
-                {/* 여기가 영역... 여기에 구현... */}
-              </MenuTab>
-              <Row id="empDataSortedMenuArea">
-                {/* <MenuTab menuList={tabConstant.mainTabMenuListForEmpRegister} /> */}
-              </Row>
+              ></MenuTab>
+              <FormPanel
+                INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                formData={state.mainTabData}
+                submitData={actions.submitMainTabData} // update 함수
+                codeHelperFn={{
+                  //여기다가 함수를 넣으면 됨............
+                  abbNation: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_abbNation,
+                      actions.setEditedEmp
+                    ),
+                  cdNation: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdNation,
+                      actions.setEditedEmp
+                    ),
+                  cdDept: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdDept,
+                      actions.setEditedEmp
+                    ),
+                  cdOccup: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdOccup,
+                      actions.setEditedEmp
+                    ),
+                  rankNo: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_rankNo,
+                      actions.setEditedEmp
+                    ),
+                  cdSalcls: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdSalcls,
+                      actions.setEditedEmp
+                    ),
+                  cdField: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdField,
+                      actions.setEditedEmp
+                    ),
+                  cdProject: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdProject,
+                      actions.setEditedEmp
+                    ),
+                }}
+              />
+              {/* 급여이체은행 -> 추후 분리 예정 */}
+              <CallNumberForm
+                label={LABELS.cdBank}
+                val1={state.mainTabData.cdBank}
+                val2={state.mainTabData.noBnkacct}
+                val3={state.mainTabData.nmBnkowner}
+                pkValue={state.mainTablePkValue}
+                actions={{
+                  setNewEmp: actions.setEditedEmp,
+                }}
+              />
+              {/* 여기가 영역... 여기에 구현... */}
+
+              {/* <Row id="empDataSortedMenuArea"> */}
+              {/* <MenuTab menuList={tabConstant.mainTabMenuListForEmpRegister} /> */}
+              {/* </Row> */}
               {/* 사원정보 편집 */}
-              <Row id="baseData" ref={state.mainTabRef}>
+              {/* <Row id="baseData" ref={state.mainTabRef}>
                 {state.mainTabData ? (
                   <div id="baseDataContents">
-                    {/* <div id="baseDataContentsBackground"></div> */}
+                    <div id="baseDataContentsBackground"></div> 
                     <TextBoxComponent
                       label={LABELS.daEnter}
                       id="daEnter"
@@ -352,7 +437,7 @@ function EmpRegisterationLayout() {
                         )
                       }
                     />
-                    {/* 퇴사년월일 */}
+                     퇴사년월일 
                     {state.mainTabData.jobOk === "N" ||
                     state.mainTabData.daRetire ? (
                       <TextBoxComponent
@@ -393,7 +478,7 @@ function EmpRegisterationLayout() {
                 ) : (
                   <div>Loading...</div>
                 )}
-              </Row>
+              </Row> */}
               {/* <div style={{ display: 'none' }}>
             <Row id="familyData">
             {subTableData ? (
@@ -419,26 +504,31 @@ function EmpRegisterationLayout() {
       >
         {modalType === "default" ? (
           <CodeHelperModal
-            show={state.codeHelperState.show}
-            onHide={() =>
-              actions.setCodeHelperState({
-                ...state.codeHelperState,
-                show: false,
-              })
-            }
-            // onConfirm={() => alert("확인")}
-            setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
-            table={state.codeHelperTableData.data}
-            codeHelperCode={state.codeHelperTableData.code}
+            setRowData={state.codeHelperTableData.setRowData}
+            usePk={state.codeHelperTableData.usePk}
+            tableHeaders={state.codeHelperTableData.tableHeaders}
+            tableData={state.codeHelperTableData.tableData}
+            subject={state.codeHelperTableData.subject}
+            searchField={state.codeHelperTableData.searchField}
+            onHide={() => actions.setModalState({ show: false })}
+
+            // show={state.codeHelperState.show}
+            // onHide={() =>
+            //   actions.setCodeHelperState({
+            //     ...state.codeHelperState,
+            //     show: false,
+            //   })
+            // }
+            // // onConfirm={() => alert("확인")}
+            // setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
+            // table={state.codeHelperTableData.data}
+            // codeHelperCode={state.codeHelperTableData.code}
           />
-        ) : modalType === "insertSalaryData" ? (
+        ) : modalType === "undeletedEmp" ? (
           <TableForm
             tableHeaders={EmpRegisterUndeletedEmpHeaders}
             tableData={state.undeletedEmpTableData}
             selectedRows={state.selectedRows}
-            actions={{
-              setSelectedRows: actions.setSelectedRows,
-            }}
           />
         ) : (
           //default

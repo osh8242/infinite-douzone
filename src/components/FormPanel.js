@@ -17,6 +17,7 @@ const FormPanel = ({
   submitData,
   columnNumber = 2,
   id,
+  codeHelperFn,
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -34,18 +35,29 @@ const FormPanel = ({
     let component;
     const id = input.field;
     const label = input.label || LABELS[input.field] || "라벨없음";
-    const value = input.value || formData.item?.[input.field] || "";
+    const value =
+      input.value ||
+      formData.item?.[input.field] ||
+      formData?.[input.field] ||
+      "";
+    // console.log("여기의 label 보세요", label);
+    // console.log("여기의 input.value 보세요", input.value);
+    // console.log(
+    //   "여기의 formData.item?.[input.field] 보세요",
+    //   formData.abbNation
+    // );
     // AddressForm 관련 변수들.. 나중에 깔끔하게 수정 예정...
     const isZonecode = input.isZonecode || false; //
-    const zipHome = input.zipHome || ""; //
-    const addHome1 = input.addHome1 || ""; //
-    const addHome2 = input.addHome2 || ""; //
+    // const zipHome = input.zipHome || ""; //
+    // const addHome1 = input.addHome1 || ""; //
+    // const addHome2 = input.addHome2 || ""; //
     // 주민번호 관련 변수들.. 나중에 깔끔하게 수정 예정...
-    const ynFor = input.ynFor || ""; //
-    const fgSex = input.fgSex || ""; //
-    const noSocial = input.noSocial || ""; //
+    // const ynFor = input.ynFor || ""; //
+    // const fgSex = input.fgSex || ""; //
+    // const noSocial = input.noSocial || ""; //
     const pkValue = input.pkValue || ""; // 나중에 삭제 예정..
     const actions = input.actions || []; // 나중에 삭제 예정..
+    const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     switch (input.type) {
       case INPUT_TYPE.text:
@@ -103,10 +115,10 @@ const FormPanel = ({
             label={label}
             disabled={disabled}
             isZonecode={isZonecode}
-            zipHome={zipHome}
-            addHome1={addHome1}
-            addHome2={addHome2}
-            pkValue={pkValue}
+            zipHome={formData.zipHome}
+            addHome1={formData.addHome1}
+            addHome2={formData.addHome2}
+            pkValue={formData.cdEmp}
             actions={actions}
           />
         );
@@ -117,8 +129,8 @@ const FormPanel = ({
             id={id}
             label={label}
             type="callNumber"
-            value={value}
-            // onEnter={submitData}
+            value={formData.celEmp1}
+            onEnter={submitData}
           />
         );
         break;
@@ -128,8 +140,8 @@ const FormPanel = ({
             id={id}
             label={label}
             type="email"
-            value={value}
-            // onEnter={submitData}
+            value={formData.emEmp}
+            onEnter={submitData}
           />
         );
         break;
@@ -137,10 +149,20 @@ const FormPanel = ({
         component = (
           <NoSocialFormForEmpRegister
             label={label}
-            ynFor={ynFor}
-            fgSex={fgSex}
-            noSocial={noSocial}
+            ynFor={formData.ynFor}
+            fgSex={formData.fgSex}
+            noSocial={formData.noSocial}
             pkValue={pkValue}
+          />
+        );
+        break;
+      case INPUT_TYPE.textCodeHelper:
+        component = (
+          <TextBoxComponent
+            type="text"
+            label={label}
+            value={value}
+            onClickCodeHelper={codeHelper}
           />
         );
         break;
