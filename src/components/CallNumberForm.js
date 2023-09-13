@@ -148,39 +148,30 @@ function CallNumberForm(props) {
 
   return (
     <>
-      <Row className="py-1">
-        {label && (
-          <Col
-            md="4"
-            className="d-flex align-items-center justify-content-center"
-          >
-            {label}
-          </Col>
-        )}
-        <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            ref={callNumber1}
-            type={type}
-            onKeyDown={handleKeyDown}
-            onChange={(event) => onChangeCallNumber(event)}
-          ></Form.Control>
-        </Col>
-        <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            ref={callNumber2}
-            type={type}
-            onKeyDown={handleKeyDown}
-            onChange={(event) => onChangeCallNumber(event)}
-          ></Form.Control>
-        </Col>
-        <Col className="d-flex align-items-center justify-content-center">
-          <Form.Control
-            ref={callNumber3}
-            type={type}
-            onKeyDown={handleKeyDown}
-            onChange={(event) => onChangeCallNumber(event)}
-          ></Form.Control>
-        </Col>
+      <Row>
+        <div className="widthFull labelAndContent py-1">
+          {label && <div className="label">{label}</div>}
+          <div className="widthFull labelAndContent">
+            <Form.Control
+              ref={callNumber1}
+              type={type}
+              onKeyDown={handleKeyDown}
+              onChange={(event) => onChangeCallNumber(event)}
+            ></Form.Control>
+            <Form.Control
+              ref={callNumber2}
+              type={type}
+              onKeyDown={handleKeyDown}
+              onChange={(event) => onChangeCallNumber(event)}
+            ></Form.Control>
+            <Form.Control
+              ref={callNumber3}
+              type={type}
+              onKeyDown={handleKeyDown}
+              onChange={(event) => onChangeCallNumber(event)}
+            ></Form.Control>
+          </div>
+        </div>
       </Row>
     </>
   );
