@@ -23,10 +23,20 @@ const SiSeacrchPanel = (props) => {
           <SearchPanel onSearch={onSearch} showAccordion>
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
-              formData={{item:{allowMonth : "2023-09"}}}
+              formData={[
+                { item: { allowMonth: state.allowMonth }},
+                { item: { salDivision: state.salDivision }},
+                { item: { paymentDate : state.paymentDate }}
+              ]}
               codeHelperFn = {{paymentDate : () => modalShow('default', codeHelperData_paymentDate, actions.setPaymentDate)}}
+              onChangeFn={{
+                allowMonth: (newValue)=> actions.setAllowMonth(newValue),
+                salDivision: (newValue)=> actions.setSalDivision(newValue),
+                paymentDate: (newValue)=>actions.setPaymentDate(newValue),
+              }}
               columnNumber={3}
             /> 
+            
           {/* <Row>
             <Col>
               <TextBoxComponent
@@ -65,9 +75,9 @@ const SiSeacrchPanel = (props) => {
                 searchCdDept: () => modalShow('default', codeHelperData_cdDept, actions.setSearchCdDept),
                 searchRankNo: () => modalShow('default', codeHelperData_rankNo, actions.setSearchRankNo),
                 searchCdOccup: () => modalShow('default', codeHelperData_occup, actions.setSearchCdOccup)
-                // 다른 codeHelperFn 추가
               }}
             /> 
+            
             {/* <Row>
               <Col>
                 <TextBoxComponent
@@ -124,7 +134,6 @@ const SiSeacrchPanel = (props) => {
               </Col>
             </Row> */}
           </div> 
-          
         </SearchPanel>
         </div>
     );

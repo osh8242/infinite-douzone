@@ -176,6 +176,12 @@ const SalaryInformationEntryModel = () => {
   
 
   const onSearch = () => {
+    //this.searchForm.submit()
+    console.log('++++++++++++++');
+    console.log(allowMonth);
+    console.log(salDivision);
+    console.log(paymentDate);
+    console.log('++++++++++++++');
     let searchParams = {
       allowYear : allowYear,
       allowMonth: allowMonth,

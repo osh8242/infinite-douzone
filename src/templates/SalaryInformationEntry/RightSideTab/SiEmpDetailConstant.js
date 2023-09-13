@@ -14,8 +14,8 @@ export const SI_EMP_DETAIL = {
       },
       {
         type: INPUT_TYPE.text,
-        field: "num20Family",
-        label: "20세/60세/다자녀",
+        field: "num2060many",
+        label: LABELS.num2060many,
       },
       {
         type: INPUT_TYPE.text,
@@ -25,7 +25,7 @@ export const SI_EMP_DETAIL = {
       {
         type: INPUT_TYPE.text,
         field: "ynUnit",
-        label: "생산/국외",
+        label: LABELS.ynUnitForlabor,
       },
 
       {
