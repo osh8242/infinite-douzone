@@ -2,6 +2,13 @@ export const url = "http://localhost:8888";
 
 export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
 
+export const INPUT_TYPE = {
+  text: 0,
+  date: 1,
+  select: 2,
+  radio: 3,
+};
+
 export const RADIO_LIST = {
   fgSex: [
     { key: "M", value: "남자" },
@@ -15,22 +22,12 @@ export const RADIO_LIST = {
     { key: "Y", value: "작성" },
     { key: "N", value: "미작성" },
   ],
+  ynForList: [
+    { key: "0", value: "내국인" },
+    { key: "1", value: "외국인" },
+    { key: "2", value: "외계인" },
+  ],
 };
-
-export const genderRadioList = [
-  { key: "M", value: "남자" },
-  { key: "F", value: "여자" },
-];
-
-export const marryRadioList = [
-  { key: "Y", value: "기혼" },
-  { key: "N", value: "미혼" },
-];
-
-export const contractRadioList = [
-  { key: "Y", value: "작성" },
-  { key: "N", value: "미작성" },
-];
 
 export const emailList = [
   { key: "daum.net", value: "daum.net" },
@@ -44,13 +41,7 @@ export const emailList = [
   { key: "tistory.com", value: "tistory.com" },
 ];
 
-export const ynForList = [
-  { key: "0", value: "내국인" },
-  { key: "1", value: "외국인" },
-  { key: "2", value: "외계인" },
-];
-
-export const labels = {
+export const LABELS = {
   cdEmp: "사원코드",
   nmKrname: "성명",
   nmEnName: "영문성명",

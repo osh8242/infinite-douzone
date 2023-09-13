@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
 import RadioForm from "../../../components/RadioForm";
 import TextBoxComponent from "../../../components/TextBoxComponent";
-import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
-import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
+import { INPUT_TYPE, LABELS, RADIO_LIST } from "../../../model/CommonConstant.js";
+import { MAIN_TAB } from "./HrMainTabConstant";
 
-const HrMainTab = (props) => {
+const HrPrimaryTab = (props) => {
   const { formData, submitData, columnNumber = 2 } = props;
 
   const defaultMd = 12 / columnNumber;
@@ -29,7 +29,7 @@ const HrMainTab = (props) => {
           wrappingColTag(
             <TextBoxComponent
               id={input.field}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               value={formData.item?.[input.field] || ""}
               onEnter={submitData}
@@ -45,7 +45,7 @@ const HrMainTab = (props) => {
             <TextBoxComponent
               id={input.field}
               type={"date"}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               value={formData.item?.[input.field] || ""}
               onChange={submitData}
@@ -62,7 +62,7 @@ const HrMainTab = (props) => {
           wrappingColTag(
             <RadioForm
               id={input.field}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               optionList={RADIO_LIST[input.field]}
               checked={formData.item?.[input.field]}
@@ -95,7 +95,7 @@ const HrMainTab = (props) => {
   return <>{rows}</>;
 };
 
-HrMainTab.defaultProp = {
+HrPrimaryTab.defaultProp = {
   formData: { item: {} },
   submitData: () => {
     console.log("HrMainTab.js", "submitData", "default");
@@ -103,10 +103,10 @@ HrMainTab.defaultProp = {
   columnNumber: 2,
 };
 
-HrMainTab.propsTypes = {
+HrPrimaryTab.propsTypes = {
   formData: PropTypes.object.isRequired,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
 };
 
-export default HrMainTab;
+export default HrPrimaryTab;

@@ -3,7 +3,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 function MenuTab(props) {
-  const { menuList, onSelect, k } = props;
+  const { menuList, onSelect, k, children } = props;
   const [key, setKey] = useState(k);
 
   const handleSelect = (k) => {
@@ -19,7 +19,9 @@ function MenuTab(props) {
       className="mb-3"
     >
       {menuList.map((menu, index) => (
-        <Tab eventKey={index} title={menu} key={index}></Tab>
+        <Tab eventKey={index} title={menu} key={index}>
+          {children?.[index]}
+        </Tab>
       ))}
     </Tabs>
   );
