@@ -6,10 +6,11 @@ import {
   RADIO_LIST,
   SELECT_LIST,
 } from "../model/CommonConstant.js";
+import AddressForm from "../../src/components/AddressForm.js";
 import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
 import TextBoxComponent from "./TextBoxComponent";
-
+import NoSocialFormForEmpRegister from "./NoSocialFormForEmpRegister.js";
 const FormPanel = ({
   INPUT_CONSTANT,
   formData,
@@ -28,14 +29,23 @@ const FormPanel = ({
       </Col>
     );
   };
-
   const inputs = INPUT_CONSTANT;
-
   inputs.forEach((input, index) => {
     let component;
     const id = input.field;
     const label = input.label || LABELS[input.field] || "라벨없음";
-    const value = formData.item?.[input.field] || "";
+    const value = input.value || formData.item?.[input.field] || "";
+    // AddressForm 관련 변수들.. 나중에 깔끔하게 수정 예정...
+    const isZonecode = input.isZonecode || false; //
+    const zipHome = input.zipHome || ""; //
+    const addHome1 = input.addHome1 || ""; //
+    const addHome2 = input.addHome2 || ""; //
+    // 주민번호 관련 변수들.. 나중에 깔끔하게 수정 예정...
+    const ynFor = input.ynFor || ""; //
+    const fgSex = input.fgSex || ""; //
+    const noSocial = input.noSocial || ""; //
+    const pkValue = input.pkValue || ""; // 나중에 삭제 예정..
+    const actions = input.actions || []; // 나중에 삭제 예정..
     const disabled = input.disabled;
     switch (input.type) {
       case INPUT_TYPE.text:
@@ -48,7 +58,6 @@ const FormPanel = ({
             onEnter={submitData}
           />
         );
-
         break;
       case INPUT_TYPE.date:
         component = (
@@ -61,13 +70,12 @@ const FormPanel = ({
             onChange={submitData}
           />
         );
-
         break;
       case INPUT_TYPE.select:
         component = (
           <SelectForm
             id={id}
-            label={LABELS[input.field]}
+            label={label}
             disabled={disabled}
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
@@ -79,11 +87,60 @@ const FormPanel = ({
         component = (
           <RadioForm
             id={id}
-            label={LABELS[input.field]}
+            label={label}
             disabled={disabled}
-            optionList={RADIO_LIST[input.field]}
+            optionList={input?.optionList || RADIO_LIST[input.field]}
             checked={value}
             onChange={submitData}
+          />
+        );
+        break;
+      // 나중에 깔끔하게 정리할 예정
+      case INPUT_TYPE.address:
+        component = (
+          <AddressForm
+            // id={id}
+            label={label}
+            disabled={disabled}
+            isZonecode={isZonecode}
+            zipHome={zipHome}
+            addHome1={addHome1}
+            addHome2={addHome2}
+            pkValue={pkValue}
+            actions={actions}
+          />
+        );
+        break;
+      case INPUT_TYPE.callNumber:
+        component = (
+          <TextBoxComponent
+            id={id}
+            label={label}
+            type="callNumber"
+            value={value}
+            // onEnter={submitData}
+          />
+        );
+        break;
+      case INPUT_TYPE.email:
+        component = (
+          <TextBoxComponent
+            id={id}
+            label={label}
+            type="email"
+            value={value}
+            // onEnter={submitData}
+          />
+        );
+        break;
+      case INPUT_TYPE.noSocial:
+        component = (
+          <NoSocialFormForEmpRegister
+            label={label}
+            ynFor={ynFor}
+            fgSex={fgSex}
+            noSocial={noSocial}
+            pkValue={pkValue}
           />
         );
         break;
@@ -92,13 +149,14 @@ const FormPanel = ({
     }
     columns.push(wrappingColTag(component, input, input.span));
   });
-
   const rows = [];
   for (let i = 0; i < columns.length; ) {
     let mdSum = 0;
     let tempRow = [];
     for (let j = i; j < columns.length; j++) {
-      mdSum += inputs[j].span ? Math.min(defaultMd * inputs[j].span, 12) : defaultMd;
+      mdSum += inputs[j].span
+        ? Math.min(defaultMd * inputs[j].span, 12)
+        : defaultMd;
       if (mdSum <= 12) {
         tempRow.push(columns[j]);
         i++;
@@ -106,10 +164,8 @@ const FormPanel = ({
     }
     rows.push(<Row key={i}>{tempRow}</Row>);
   }
-
   return <div id={id}>{rows}</div>;
 };
-
 FormPanel.defaultProps = {
   formData: { item: {} },
   submitData: () => {
@@ -117,12 +173,10 @@ FormPanel.defaultProps = {
   },
   columnNumber: 2,
 };
-
 FormPanel.propsTypes = {
   INPUT_CONSTANT: PropTypes.array.isRequired,
   formData: PropTypes.object.isRequired,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
 };
-
 export default FormPanel;

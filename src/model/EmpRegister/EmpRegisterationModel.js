@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Emp from "../../vo/EmpRegister/Emp";
 import { currentDateStr } from "../../utils/DateUtils.js";
@@ -14,6 +14,9 @@ function EmpRegisterationModel() {
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState([]);
   const [subTabData, setSubTabData] = useState([]);
+
+  //메인탭 Ref
+  const mainTabRef = useRef();
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [reloadSubTableData, setReloadSubTableData] = useState(false);
@@ -32,6 +35,37 @@ function EmpRegisterationModel() {
   // useEffect(() => {
   //   console.log("empRegisterModel addRow => ", addRow);
   // }, [addRow]);
+
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
+        if (mainTabRef.current) {
+          let newMainTabData = { ...mainTabData.item };
+          const inputElements = mainTabRef.current.querySelectorAll("input");
+          Array.from(inputElements).forEach((input) => {
+            newMainTabData[input.id] =
+              input.type !== "radio" && "address" && "noSocial" && ""
+                ? input.value
+                : input.checked
+                ? input.value
+                : null;
+          });
+          setEditedEmp(newMainTabData);
+        }
+      }
+      if (event.type === "change") {
+        if (mainTabRef.current) {
+          event.target.blur();
+          let newMainTabData = { ...mainTabData.item };
+          newMainTabData[event.target.id] = value;
+          setEditedEmp(newMainTabData);
+        }
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -225,6 +259,7 @@ function EmpRegisterationModel() {
       setUndeletedEmpTableData,
       setCodeHelperState,
       setAddRow,
+      submitMainTabData, //mainTab update 함수
     },
   };
 }

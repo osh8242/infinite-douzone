@@ -12,7 +12,9 @@ export const urlPattern = {
 };
 
 //메뉴 탭 리스트
-export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
+export const tabConstant = {
+  mainTabMenuListForEmpRegister: ["기초정보", "가족사항"],
+};
 
 //왼쪽 테이블 헤더
 export const EmpRegisterLeftHeaders = [
@@ -54,8 +56,9 @@ export const EmpRegisterMainHeaders = [
   { field: "nmBnkowner", text: "예금주" },
 ];
 
-//코드도움
-export const codeHelperparams = {
+// 코드도움 상수 모음
+export const codeHelperData = {
+  // 부서
   cdDept: {
     title: "부서코드 조회",
     tableHeaders: [
@@ -69,6 +72,7 @@ export const codeHelperparams = {
     ],
     searchField: ["description"],
   },
+  // 사원조회
   emplist: {
     title: "사원조회",
     url: "/emp/getEmpListForCodeHelper",
@@ -81,6 +85,7 @@ export const codeHelperparams = {
     params: { ynFor: "n", daRetire: "" },
     searchField: ["nmKrname", "noSocial"],
   },
+  //직급
   rankNo: {
     title: "직급",
     tableHeaders: [
@@ -101,6 +106,7 @@ export const codeHelperparams = {
     ],
     searchField: ["description"],
   },
+  // 직종
   cdOccup: {
     title: "직종",
     tableHeaders: [
@@ -116,6 +122,7 @@ export const codeHelperparams = {
       { cdOccup: "J006", description: "직종F" },
     ],
   },
+  // 현장
   cdField: {
     title: "현장",
     tableHeaders: [
@@ -132,6 +139,7 @@ export const codeHelperparams = {
     ],
     searchField: ["description"],
   },
+  // 프로젝트
   cdProject: {
     title: "프로젝트",
     tableHeaders: [
@@ -148,6 +156,7 @@ export const codeHelperparams = {
     ],
     searchField: ["description"],
   },
+  // 거주지국
   abbNation: {
     title: "거주지국",
     tableHeaders: [
@@ -164,6 +173,7 @@ export const codeHelperparams = {
     ],
     searchField: ["description"],
   },
+  // 국적
   cdNation: {
     title: "국적",
     tableHeaders: [
@@ -180,6 +190,7 @@ export const codeHelperparams = {
     ],
     searchField: ["description"],
   },
+  // 호봉
   cdSalcls: {
     title: "호봉",
     tableHeaders: [
