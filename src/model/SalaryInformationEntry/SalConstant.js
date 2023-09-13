@@ -1,6 +1,47 @@
-//import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
+import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
 
-/* url Pattern */
+/* 사원리스트 영역 */
+export const salEmp = {
+    headers : [
+        { field: "cdEmp", text: "사원번호", isPk:true },
+        { field: "nmEmp", text: "사원이름" },
+        { field: "rankNo", text: "직급" },
+        { field: "mnReduction", text: "감면율" },
+    ],
+};
+
+/* 급여항목 영역 */
+export const salAllow = {
+    headers : [
+        { field: "nmAllow", text: "급여항목" , readOnly : true},
+        { field: "allowPay", text: "지급금액" },
+    ]
+};
+
+/* 공제항목 영역 */
+export const salDeduct = {
+    headers : [
+        { field: "nmDeduct", text: "공제항목" },
+        { field: "allowPay", text: "지급금액" },
+    ]
+}
+
+/* 조회구분 영역 */
+export const salAllowSum =  {
+    headers : [
+        { field: "nmAllow", text: "항목" },
+        { field: "ynTax", text: "TX" },
+        { field: "sumAllowPay", text: "금액" }
+    ]
+};
+
+export const salDeductSum = {
+    headers : [
+        { field: "nmDeduct", text: "공제항목" },
+        { field: "sumDeductPay", text: "지급금액" },
+    ]
+};
+
 
 /* 검색옵션 */
 // 구분
@@ -34,7 +75,9 @@ export const totalSalaryByPeriodOption = [
     { key: 'EmpNowThisYear' ,  value: "5.현재사원 연간" },
 ];
 
+
 /* codeHelper */
+
 // 지급일 조회
 export const codeHelperData_paymentDate = {
     subject : '지급일 조회'
@@ -66,7 +109,7 @@ export const codeHelperData_cdDept =  {
 // 사원조회
 export const codeHelperData_emplist = {
     subject : '사원조회'
-    , url :  "/emp/getEmpListForCodeHelper"  // "/emp/getEmpListForCodeHelper"
+    , url : CODEHELPER_EMPLIST_URL  // "/emp/getEmpListForCodeHelper"
     , headers : [
         { field: "cdEmp", text: "사원코드" },
         { field: "nmKrname", text: "사원명" },
@@ -81,12 +124,12 @@ export const codeHelperData_emplist = {
 // 직급조회
 export const codeHelperData_rankNo = {
     subject : '직급조회'
-    , url : "CODE.URL"
+    , url : CODE.URL
     , headers : [
         { field: "codeId", text: "직급코드" },
         { field: "codeName", text: "직급명" },
         ]
-    , params : { parentId: "CODE.PARENT_ID.RANK_NO" }
+    , params : { parentId: CODE.PARENT_ID.RANK_NO }
     , searchField : ['codeId','codeName']
     , usePk : "codeId"
 };
@@ -94,54 +137,39 @@ export const codeHelperData_rankNo = {
 // 직책조회
 export const codeHelperData_occup = {
     subject : '직책조회'
-    , url : "CODE.URL"
+    , url : CODE.URL
     , headers : [
         { field: "codeId", text: "직책코드" },
         { field: "codeName", text: "직책명" },
         ]
-    , params : { parentId: "CODE.PARENT_ID.OCCUP" }
+    , params : { parentId: CODE.PARENT_ID.OCCUP }
     , searchField : ['codeId','codeName']
     , usePk : "codeId"
 };
 
-/* 사원리스트 영역 */
-export const salEmp = {
+/* 서브메뉴(모달) */
+// 수당/공제 등록
+export const modal_insertSalaryData = {
+    subject : '수당 및 공제 등록',
+    url : '/saallowpay/getsalAllowList',
     headers : [
-        { field: "cdEmp", text: "사원번호", isPk:true },
-        { field: "nmEmp", text: "사원이름" },
-        { field: "rankNo", text: "직급" },
-        { field: "mnReduction", text: "감면율" },
+        { field: "cdAllow", text: "Code" },
+        { field: "nmAllow", text: "수당명" },
+        { field: "ynTax", text: "과세여부" },
+        { field: "nmSalDivison", text: "근로소득유형" },
     ],
-};
-
-/* 급여항목 영역 */
-export const salAllow = {
-    headers : [
-        { field: "nmAllow", text: "급여항목" , readOnly : true},
-        { field: "allowPay", text: "지급금액" },
-    ]
-};
-
-/* 공제항목 영역 */
-export const salDeduct = {
-    headers : [
-        { field: "nmDeduct", text: "공제항목" },
-        { field: "allowPay", text: "지급금액" },
-    ]
 }
 
-/* 조회구분 영역 */
-export const salAllowSum =  [
-    { field: "nmAllow", text: "항목" },
-    { field: "ynTax", text: "TX" },
-    { field: "sumAllowPay", text: "금액" },
-];
-export const salDeductSum = [
-    { field: "nmDeduct", text: "공제항목" },
-    { field: "sumDeductPay", text: "지급금액" },
-];
+// 재계산 
+export const reCalculationList = {
+    subject : '재계산',
+    reCalculationList : 
+    [{key : '' , value : '과세, 비과세 재계산'}
+     , {key : '' , value : '사원정보 변경'}]    
+}
 
-/* 찐 상수 */
+
+
 // 공제항목
 export const NATIONAL_PENSION = 'DEDUCT_NATION';  // 국민연금
 export const HEALTH_INSURANCE = '502';            // 건강보험
@@ -156,13 +184,6 @@ export const MEALS = '597';                      // 식대
 export const BONUS = '505';                      // 상여금
 
 
-
-// 재계산 리스트
-export const reCalculationList = {
-    subject : '재계산',
-    reCalculationList : [{key : '' , value : '과세, 비과세 재계산'},
-                        {key : '' , value : '사원정보 변경'}]    
-}
 
 //국민연금 계산식
 export const calculationNationalPension = (value) => {
