@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
 import RadioForm from "../../../components/RadioForm";
 import TextBoxComponent from "../../../components/TextBoxComponent";
@@ -5,7 +6,7 @@ import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
 import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
 
 const HrMainTab = (props) => {
-  const { formData = { item: {} }, submitData, columnNumber = 1 } = props;
+  const { formData, submitData, columnNumber } = props;
 
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -94,6 +95,20 @@ const HrMainTab = (props) => {
   }
 
   return <>{rows}</>;
+};
+
+HrMainTab.defaultProp = {
+  formData: { item: {} },
+  submitData: () => {
+    console.log("HrMainTab.js", "submitData", "default");
+  },
+  columnNumber: 2,
+};
+
+HrMainTab.propsTypes = {
+  formData: PropTypes.object.isRequired,
+  submitData: PropTypes.func,
+  columnNumber: PropTypes.number,
 };
 
 export default HrMainTab;
