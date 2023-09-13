@@ -35,7 +35,7 @@ const FormPanel = ({
     let component;
     const id = input.field;
     const label = input.label || LABELS[input.field] || "라벨없음";
-    const value = formData.item?.[input.field] || "";
+    const value = input.value || formData.item?.[input.field] || "";
     const disabled = input.disabled;
     switch (input.type) {
       case INPUT_TYPE.text:
@@ -67,7 +67,7 @@ const FormPanel = ({
         component = (
           <SelectForm
             id={id}
-            label={LABELS[input.field]}
+            label={label}
             disabled={disabled}
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
@@ -79,9 +79,9 @@ const FormPanel = ({
         component = (
           <RadioForm
             id={id}
-            label={LABELS[input.field]}
+            label={label}
             disabled={disabled}
-            optionList={RADIO_LIST[input.field]}
+            optionList={input?.optionList || RADIO_LIST[input.field]}
             checked={value}
             onChange={submitData}
           />
