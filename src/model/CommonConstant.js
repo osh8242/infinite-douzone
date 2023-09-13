@@ -7,10 +7,10 @@ export const INPUT_TYPE = {
   date: 1,
   select: 2,
   radio: 3,
-  address : 4,
-  textCodeHelper :5,
-  callNumber : 100,
-  email : 101,  
+  address: 4,
+  textCodeHelper: 5,
+  callNumber: 100,
+  email: 101,
 };
 
 export const SELECT_LIST = {
@@ -42,6 +42,10 @@ export const RADIO_LIST = {
     { key: "0", value: "내국인" },
     { key: "1", value: "외국인" },
     { key: "2", value: "외계인" },
+  ],
+  fgDisorder: [
+    { key: "N", value: "비장애" },
+    { key: "Y", value: "장애" },
   ],
 };
 
@@ -83,6 +87,10 @@ export const LABELS = {
   cdJob: "직업",
   nmKrcom: "직장명",
   cdOffpos: "직급",
+  fgDisorder: "장애여부",
+  strHobby: "취미",
+  nmSpecial: "특기",
+  tyReligion: "종교",
   abbNation: "거주지국",
   cdNation: "국적",
   telHome: "전화번호",
@@ -102,24 +110,25 @@ export const LABELS = {
   allowPay: "금액",
 
   inquiryYype: "조회구분",
-  searchText : "찾을내용",
+  searchText: "찾을내용",
 
-  ynResident : "거주구분",
-  ynMateDed : "배우자공제",
-  ynOverwork : "연장근로비과세",
+  ynResident: "거주구분",
+  ynMateDed: "배우자공제",
+  ynOverwork: "연장근로비과세",
 
-  allowMonth :"귀속연월",
-  paymentDate : "지급일",
-  ynUnit : "생산직여부",
-  ynForlabor : "국외근로여부"
+  allowMonth: "귀속연월",
+  paymentDate: "지급일",
+  ynUnit: "생산직여부",
+  ynForlabor: "국외근로여부",
 };
 
 export const CODE = {
-  URL: "/common/getCodeListForCodeHelper",  
-  PARENT_ID: { DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
-      RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
-      OCCUP: "OCCUP", // 직종 ()
-  }  
+  URL: "/common/getCodeListForCodeHelper",
+  PARENT_ID: {
+    DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
+    RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
+    OCCUP: "OCCUP", // 직종 ()
+  },
 };
 
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";
