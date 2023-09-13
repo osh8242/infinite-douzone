@@ -105,30 +105,28 @@ const HrManagementLayout = () => {
           {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={tabConstant.mainTabMenuList} ref={mainTabRef}>
+              <MenuTab menuList={tabConstant.mainTabMenuList}>
                 {[
-                  <Row className="mb-5 justify-content-center">
-                    <Row>
-                      <Col
-                        className="d-flex align-items-center justify-content-center"
-                        xs
-                        md="3"
-                      >
-                        <ProfileImageForm
-                          src={empImageSrc}
-                          handleUpload={actions.updateEmpPhoto}
-                        />
-                      </Col>
-                      <Col xs md="9">
-                        <FormPanel
-                          INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                          formData={mainTabData}
-                          submitData={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
+                  <Row className="mb-5 justify-content-center" key={"mainTab1"}>
+                    <Col
+                      className="d-flex align-items-center justify-content-center"
+                      xs
+                      md="3"
+                    >
+                      <ProfileImageForm
+                        src={empImageSrc}
+                        handleUpload={actions.updateEmpPhoto}
+                      />
+                    </Col>
+                    <Col xs md="9">
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                        formData={mainTabData}
+                        submitData={actions.submitMainTabData}
+                      />
+                    </Col>
                   </Row>,
-                  <Row className="mb-5 justify-content-center">
+                  <Row className="mb-5 justify-content-center" key={"mainTab2"}>
                     <Col xs>
                       <FormPanel
                         INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
