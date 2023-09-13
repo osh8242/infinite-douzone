@@ -176,25 +176,25 @@ const SalaryInformationEntryModel = () => {
   
 
   const onSearch = () => {
-    let searchParams = {};
-    
+    let searchParams = {
+      allowYear : allowYear,
+      allowMonth: allowMonth,
+      salDivision: salDivision,
+      paymentDate: paymentDate,
+      
+      searchCdEmp : searchCdEmp,
+      searchCdDept : searchCdDept,
+      searchRankNo : searchRankNo,
+      searchCdOccup : searchCdOccup,
+      searchCdField : searchCdField, 
+      searchCdProject : searchCdProject,
+      searchYnUnit : searchYnUnit,
+      searchYnForlabor : searchYnForlabor,
+    };
+
     axios.post(
       url + '/saEmpInfo/getAll',
-        {
-          allowYear : allowYear,
-          allowMonth: allowMonth,
-          salDivision: salDivision,
-          paymentDate: paymentDate,
-          
-          searchCdEmp : searchCdEmp,
-          searchCdDept : searchCdDept,
-          searchRankNo : searchRankNo,
-          searchCdOccup : searchCdOccup,
-          searchCdField : searchCdField, 
-          searchCdProject : searchCdProject,
-          searchYnUnit : searchYnUnit,
-          searchYnForlabor : searchYnForlabor,
-        },
+        searchParams,
         {'Content-Type': 'application/json',},
       )
       .then((response) => {

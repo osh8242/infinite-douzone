@@ -1,64 +1,64 @@
 import { INPUT_TYPE, LABELS } from "../../../model/CommonConstant";
+import { forLaborOption, salaryDivisionOption, unitOption } from "../../../model/SalaryInformationEntry/SalConstant";
 
   
 export const SI_MAIN_SEARCHFIELD = [
     {
+      id: "allowMonth",
       type: INPUT_TYPE.month,
       field: "allowMonth",
       label: LABELS.allowMonth,
     },
     {
+      id: "inquiryYype",
       type: INPUT_TYPE.select,
       field: "inquiryYype",
       label: LABELS.inquiryYype,
+      optionList: salaryDivisionOption,
     },
     {
-      type: INPUT_TYPE.date,
+      id: "paymentDate",
+      type: INPUT_TYPE.dateCodeHelper,
       field: "paymentDate",
       label: LABELS.paymentDate,
-      
+      value: "2023-09-03"
     },
   ];
 
 export const SI_SUB_SEARCHFIELD = [
   {
-    type: INPUT_TYPE.text,
+    id: "searchCdEmp",
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchCdEmp",
     label: LABELS.cdEmp,
-    
   },{
-    type: INPUT_TYPE.text,
+    id: "searchCdDept",
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchCdDept",
     label: LABELS.cdDept,
     
   },{
-    type: INPUT_TYPE.text,
+    id: "searchRankNo",
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchRankNo",
     label: LABELS.rankNo,
   },{
-    type: INPUT_TYPE.text,
+    id: "searchCdOccup",
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchCdOccup",
     label: LABELS.cdOccup,
-  },
-  // {
-  //   type: INPUT_TYPE.date,
-  //   field: "searchCdField",
-  //   label: labels.allowMonth,
-  // },  
-  // {
-  //   type: INPUT_TYPE.date,
-  //   field: "searchCdProject",
-  //   label: labels.allowMonth,
-  // },  
-  {
-    type: INPUT_TYPE.text,
+  },{
+    id: "searchYnUnit",
+    type: INPUT_TYPE.select,
     field: "searchYnUnit",
     label: LABELS.ynUnit,
-  },
-  {
-    type: INPUT_TYPE.text,
+    optionList: unitOption
+  },{
+    id: "searchYnForlabor",
+    type: INPUT_TYPE.select,
     field: "searchYnForlabor",
     label: LABELS.ynForlabor,
+    optionList : forLaborOption
   },
 
 ]

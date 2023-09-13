@@ -1,7 +1,5 @@
 export const url = "http://localhost:8888";
-
 export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
-
 export const INPUT_TYPE = {
   text: 0,
   date: 1,
@@ -10,9 +8,11 @@ export const INPUT_TYPE = {
   address : 4,
   textCodeHelper :5,
   callNumber : 100,
-  email : 101,  
-};
+  email : 101,
+  month : 401,
+  dateCodeHelper : 402
 
+};
 export const SELECT_LIST = {
   tyEmploy: [
     { key: "public", value: "1. 공채" },
@@ -24,7 +24,6 @@ export const SELECT_LIST = {
     { key: "islam", value: "이슬람교" },
   ],
 };
-
 export const RADIO_LIST = {
   fgSex: [
     { key: "M", value: "남자" },
@@ -44,7 +43,6 @@ export const RADIO_LIST = {
     { key: "2", value: "외계인" },
   ],
 };
-
 export const emailList = [
   { key: "daum.net", value: "daum.net" },
   { key: "gmail.com", value: "gmail.com" },
@@ -56,7 +54,6 @@ export const emailList = [
   { key: "naver.com", value: "naver.com" },
   { key: "tistory.com", value: "tistory.com" },
 ];
-
 export const LABELS = {
   cdEmp: "사원코드",
   nmKrname: "성명",
@@ -94,32 +91,24 @@ export const LABELS = {
   cdField: "현장",
   cdProject: "프로젝트",
   cdBank: "급여이체은행",
-
   mnReduction: "감면율",
   nmEmp: "사원이름",
   nmDeduct: "공제항목",
   nmAllow: "급여항목",
   allowPay: "금액",
-
   inquiryYype: "조회구분",
-  searchText : "찾을내용",
-
-  ynResident : "거주구분",
-  ynMateDed : "배우자공제",
-  ynOverwork : "연장근로비과세",
-
-  allowMonth :"귀속연월",
-  paymentDate : "지급일",
-  ynUnit : "생산직여부",
-  ynForlabor : "국외근로여부"
+  searchText: "찾을내용",
+  allowMonth : "귀속연월",
+  paymentDate :"지급일",
+  ynUnit : "생산직 여부",
+  ynForlabor : "국외 근로여부"
 };
 
 export const CODE = {
-  URL: "/common/getCodeListForCodeHelper",  
+  URL: "/common/getCodeListForCodeHelper",
   PARENT_ID: { DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
       RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
       OCCUP: "OCCUP", // 직종 ()
-  }  
+  }
 };
-
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";

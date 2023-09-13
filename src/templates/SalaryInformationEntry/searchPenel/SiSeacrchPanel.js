@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import SelectForm from '../../../components/SelectForm';
 import TextBoxComponent from '../../../components/TextBoxComponent';
 import SearchPanel from '../../../components/SearchPanel';
@@ -17,15 +17,16 @@ const SiSeacrchPanel = (props) => {
         actions
     } = props;
     
-    
     return (
         <div>
           {/* 기본 검색조건 */}
           <SearchPanel onSearch={onSearch} showAccordion>
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
+              formData={{item:{allowMonth : "2023-09"}}}
+              codeHelperFn = {{paymentDate : () => modalShow('default', codeHelperData_paymentDate, actions.setPaymentDate)}}
+              columnNumber={3}
             /> 
-            
           {/* <Row>
             <Col>
               <TextBoxComponent
@@ -59,6 +60,13 @@ const SiSeacrchPanel = (props) => {
            <div>
            <FormPanel
               INPUT_CONSTANT = {SI_SUB_SEARCHFIELD}
+              codeHelperFn={{
+                searchCdEmp: () => modalShow('default', codeHelperData_emplist, actions.setSearchCdEmp),
+                searchCdDept: () => modalShow('default', codeHelperData_cdDept, actions.setSearchCdDept),
+                searchRankNo: () => modalShow('default', codeHelperData_rankNo, actions.setSearchRankNo),
+                searchCdOccup: () => modalShow('default', codeHelperData_occup, actions.setSearchCdOccup)
+                // 다른 codeHelperFn 추가
+              }}
             /> 
             {/* <Row>
               <Col>
@@ -116,6 +124,7 @@ const SiSeacrchPanel = (props) => {
               </Col>
             </Row> */}
           </div> 
+          
         </SearchPanel>
         </div>
     );
