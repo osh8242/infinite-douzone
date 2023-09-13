@@ -17,7 +17,7 @@ const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2 }) =
     );
   };
 
-  const inputs = INPUT_CONSTANT.primaryTabInputs;
+  const inputs = INPUT_CONSTANT;
 
   inputs.forEach((input, index) => {
     switch (input.type) {
