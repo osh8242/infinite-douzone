@@ -1,3 +1,16 @@
+////////////////////////////// 요청 Mapping Pattern    수정해야됨~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+export const urlPattern = {
+  insertEmp: "/emp/insertEmp",
+  updateEmp: "",
+  deleteEmp: "/emp/deleteEmp",
+  getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",
+  insertEmpPhoto: "/empPhoto/insertEmpPhoto",
+  updateEmpPhoto: "/empPhoto/updateEmpPhoto",
+  insertEmpFam: "/empFam/insertEmpFam",
+  updateEmpFam: "/empFam/updateEmpFamBySeqValAndCdEmp",
+  deleteEmpFam: "/empFam/deleteEmpFam",
+};
+
 //메뉴 탭 리스트
 export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
 

@@ -1,16 +1,15 @@
 export const url = "http://localhost:8888";
 
-export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
-
 export const INPUT_TYPE = {
   text: 0,
   date: 1,
   select: 2,
   radio: 3,
-  address : 4,
-  textCodeHelper :5,
-  callNumber : 100,
-  email : 101,  
+  address: 4,
+  textCodeHelper: 5,
+  callNumber: 100,
+  email: 101,
+  noSocial: 102,
 };
 
 export const RADIO_LIST = {
@@ -33,7 +32,7 @@ export const RADIO_LIST = {
   ],
 };
 
-export const emailList = [
+export const EMAIL_LIST = [
   { key: "daum.net", value: "daum.net" },
   { key: "gmail.com", value: "gmail.com" },
   { key: "hanmail.net", value: "hanmail.net" },

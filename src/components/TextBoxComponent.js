@@ -11,7 +11,7 @@ import {
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import SelectForm from "./SelectForm";
-import { emailList, ynForList, genderRadioList } from "../model/CommonConstant";
+import { EMAIL_LIST, RADIO_LIST } from "../model/CommonConstant";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -130,9 +130,9 @@ function TextBoxComponent(props) {
     } else {
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       if (event.target.id === id)
-      setInputValue(makeProcessedValue(newValue)); // data 가공
+        setInputValue(makeProcessedValue(newValue)); // data 가공
       else setInputSubValue(makeProcessedValue(newValue));
-    onChange && onChange(newValue);
+      onChange && onChange(newValue);
     }
   };
 
@@ -352,7 +352,7 @@ function TextBoxComponent(props) {
                     placeholder={placeholder ? placeholder : undefined}
                     style={style}
                   />
-                </Col>
+                </div>
               </>
             ) : (
               ""
@@ -425,10 +425,10 @@ function TextBoxComponent(props) {
           <span>@</span>
           <Form.Select
             id={`${id}-domain`}
-            value={inputValue?.split("@")[1] || emailList[0].key}
+            value={inputValue?.split("@")[1] || EMAIL_LIST[0].key}
             onChange={handleInputChange}
           >
-            {emailList.map((option, index) => (
+            {EMAIL_LIST.map((option, index) => (
               <option value={option.key} key={index}>
                 {option.value}
               </option>
@@ -436,33 +436,6 @@ function TextBoxComponent(props) {
           </Form.Select>
         </div>
       );
-    } else if (type === "noSocial") {
-      //내외국민, 주민번호, 성별 조합 case
-      {
-        /* 내외국민 구분 */
-      }
-      // <div className="widthFull d-flex align-items-center justify-content-center">
-      //   <Form.Select onChange={handleInputChange}>
-      //     {ynForList?.map((option, index) => (
-      //       <option value={option.value} key={option.key}>
-      //         {option.value}
-      //       </option>
-      //     ))}
-      //   </Form.Select>
-      //   {/* 주민등록번호 */}
-      //   <Form.Control
-      //     onChange={handleInputChange}
-      //     onKeyDown={handleKeyDown}
-      //   ></Form.Control>
-      //   {/* 성별 구분 */}
-      //   <Form.Select onChange={handleInputChange}>
-      //     {genderRadioList?.map((option, index) => (
-      //       <option key={option.key} value={option.value}>
-      //         {option.value}
-      //       </option>
-      //     ))}
-      //   </Form.Select>
-      // </div>;
     } else if (amount) {
       // amount 가 있다면 amount만큼의 input을 만들어준다.
       <div className="widthFull">{inputElements}</div>;

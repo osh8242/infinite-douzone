@@ -11,7 +11,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Col, Row, Form } from "react-bootstrap";
 import "../styles/commonComponent.css";
-import { ynForList, genderRadioList } from "../model/CommonConstant";
+import { RADIO_LIST } from "../model/CommonConstant";
 
 function NoSocialFormForEmpRegister(props) {
   //props 속성들
@@ -161,7 +161,7 @@ function NoSocialFormForEmpRegister(props) {
             onChange={handleYnFor}
             defaultValue={ynFor}
           >
-            {ynForList?.map((option, index) => (
+            {RADIO_LIST.ynForList?.map((option, index) => (
               <option value={option.value} key={option.key}>
                 {option.value}
               </option>
@@ -183,7 +183,7 @@ function NoSocialFormForEmpRegister(props) {
             onChange={handleFgSex}
             defaultValue={fgSex}
           >
-            {genderRadioList?.map((option, index) => (
+            {RADIO_LIST.fgSex?.map((option, index) => (
               <option key={option.key} value={option.value}>
                 {option.value}
               </option>

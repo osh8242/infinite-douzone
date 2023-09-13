@@ -15,14 +15,12 @@ import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
 import TableForm from "../../components/TableForm";
+import { LABELS, RADIO_LIST, EMAIL_LIST } from "../../model/CommonConstant";
 import {
-  LABELS,
-  RADIO_LIST,
-  emailList,
-  mainTabMenuListForEmpRegister,
-} from "../../model/CommonConstant";
-import EmpConstant, {
   EmpRegisterLeftHeaders,
+  codeHelperparams,
+  EmpRegisterUndeletedEmpHeaders,
+  mainTabMenuListForEmpRegister,
 } from "../../model/EmpRegister/EmpConstant";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import { Col, Container, Row } from "react-bootstrap";
@@ -30,21 +28,6 @@ import { Col, Container, Row } from "react-bootstrap";
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
   const { state, actions } = EmpRegisterationModel();
-
-  //고정된 값을 가지는 state들
-
-  const {
-    EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
-  } = EmpConstant();
-
-  // 메뉴 탭 전환 기능 추후 수정 예정
-  // const [selectedMenu, setSelectedMenu] = useState(0);
-
-  //코드도움 Modal 관리 값 -> api로 DB에서 데이터 가져올 때 사용
-  const [apiFlag, setApiFlag] = useState(false);
-
-  //코드도움 상수 값
-  const { codeHelperparams } = EmpConstant();
 
   //코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback(
@@ -158,9 +141,7 @@ function EmpRegisterationLayout() {
                   />
                   <NoSocialFormForEmpRegister
                     label={LABELS.noSocial}
-                    ynForList={RADIO_LIST.ynForList}
                     ynFor={state.mainTabData.ynFor}
-                    genderList={RADIO_LIST.genderList}
                     fgSex={state.mainTabData.fgSex}
                     noSocial={state.mainTabData.noSocial}
                     pkValue={state.mainTablePkValue}
