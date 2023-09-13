@@ -11,7 +11,7 @@ import { Button } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
-import { insertSalaryData, reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
+import { modal_insertSalaryData, reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
 
 const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -25,7 +25,7 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   };
 
   const insertSalaryDataHandler = (event) => {
-    modalShow('insertSalaryData', insertSalaryData);
+    modalShow('insertSalaryData', modal_insertSalaryData);
   }
 
   const reCalculationHandler = (event) => {

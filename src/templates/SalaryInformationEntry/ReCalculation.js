@@ -7,7 +7,18 @@ const ReCalculation = (props) => {
 
     return (
         <div>
-            반가워용 저는 재계산이에용
+           {/* <TableForm
+                  tableName="SI_EMPLIST"
+                  readOnly
+                  showCheckbox
+                  showHeaderArrow
+                  tableHeaders={salEmp.headers}
+                  tableData={state.saInfoListData}
+                  actions={{
+                    setTableData: actions.setSaInfoListData,
+                    setPkValue: actions.setChangeCdEmp,
+                  }}
+                /> */}
             {data}
         </div>
     );

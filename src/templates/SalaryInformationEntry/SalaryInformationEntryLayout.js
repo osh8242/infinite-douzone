@@ -1,20 +1,23 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
-import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
-import SearchPanel from "../../components/SearchPanel";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
-import TextBoxComponent from "../../components/TextBoxComponent";
-import { codeHelperData_cdDept, codeHelperData_emplist, codeHelperData_occup, codeHelperData_paymentDate, codeHelperData_rankNo, forLaborOption, salAllow, salAllowSum, salDeduct, salDeductSum, salEmp, salaryDivisionOption, totalSalaryByPeriodOption, unitOption } from "../../model/SalaryInformationEntry/SalConstant";
+import { salAllow, salAllowSum, salDeduct, salDeductSum, salEmp, totalSalaryByPeriodOption } from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import { fetchData } from "../../utils/codeHelperUtils";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
-import InsertSalaryData from "./InsertSalaryData";
 import ReCalculation from "./ReCalculation";
 import {labels} from "../../model/CommonConstant"
 import SiSeacrchPanel from "./searchPenel/SiSeacrchPanel";
+
+import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import SiEmpDetail from "./SiEmpDetail";
+import InsertSalaryData from "./InsertSalaryData";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight, faEyeSlash, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 
 const SalaryInformationEntryLayout = () => {
   //Model 관리되는 값
@@ -56,7 +59,12 @@ const SalaryInformationEntryLayout = () => {
         break;
 
       case 'insertSalaryData' : // 수당/공제 등록
-        
+      
+        let insertSalaryTableData = [];//default
+        if (data.url) {
+          insertSalaryTableData = await fetchData(data.url);
+        }
+
         actions.setModalState((prevState) => ({ 
           ...prevState, 
           size : 'xl',
@@ -64,9 +72,8 @@ const SalaryInformationEntryLayout = () => {
         }))
 
         actions.setModalContentData(()=>({
-          data : data.reCalculationList
+          tableData : insertSalaryTableData
         }));
-
         break;
 
       case 'reCalculation' : // 재계산
@@ -94,7 +101,7 @@ const SalaryInformationEntryLayout = () => {
 
   return (
     <>
-      <ModalComponent
+      <ModalComponent 
         title={state.modalState.subject}
         size={state.modalState.size}       
         show={state.modalState.show}
@@ -113,15 +120,15 @@ const SalaryInformationEntryLayout = () => {
         />
 
       : modalType === 'insertSalaryData'?
-          <InsertSalaryData 
-            data = {state.modalContentData.data}
+          <InsertSalaryData
+            insertSalaryTableData = {state.modalContentData.tableData}
+            actions = {actions}
           />
 
       : modalType === 'reCalculation'?
           <ReCalculation
             data = {state.modalContentData.data}
           />
-
       : //default
         <></>
       
@@ -132,7 +139,10 @@ const SalaryInformationEntryLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows} 
         modalShow={modalShow}           
       />
-      <Container>
+      <Container fluid>
+      
+        <Row>
+          <Col>
         {/* 조회영역 */}
         <SiSeacrchPanel
           onSearch = {onSearch}
@@ -140,96 +150,120 @@ const SalaryInformationEntryLayout = () => {
           actions = {actions}
           state = {state}
         />
-
+        
         {/* 메인영역 */}
         <Row>
           {/* 사원리스트 영역 */}
           <Col>
-            <Row>
-              <div>
+            <div className="table-container">
+              <Row>
+                  <TableForm
+                    tableName="SI_EMPLIST"
+                    readOnly
+                    showCheckbox
+                    showHeaderArrow
+                    tableHeaders={salEmp.headers}
+                    tableData={state.saInfoListData}
+                    actions={{
+                      setTableData: actions.setSaInfoListData,
+                      setPkValue: actions.setChangeCdEmp,
+                    }}
+                  />
+              </Row>
+              <Row className="table-footer">
                 <TableForm
-                  tableName="SI_EMPLIST"
-                  readOnly
-                  showCheckbox
-                  showHeaderArrow
-                  tableHeaders={salEmp.headers}
-                  tableData={state.saInfoListData}
-                  actions={{
-                    setTableData: actions.setSaInfoListData,
-                    setPkValue: actions.setChangeCdEmp,
-                  }}
-                />
-              </div>
-            </Row>
+                  tableFooter={(
+                    <>
+                      <tr>
+                        <th>인원(퇴직)</th> 
+                        <th>7(0)</th>
+                      </tr>
+                    </>
+                  )}/>
+              </Row>
+            </div>
           </Col>
-          <Col >
-            <>
-            {/* 급여항목 table영역 */}
-             <TableForm
-              //tableName={"급여항목 테이블"}
-              tableHeaders={salAllow.headers}
-              tableData={state.salAllowData.salData}
-              rowAddable
-              tableFooter={(
-                <>
-                  <tr>
-                    <td>과세</td> 
-                    <td>{state.salAllowData.sumData.taxYSum}</td>
-                  </tr>
-                  <tr>
-                    <td>비과세</td>
-                    <td>{state.salAllowData.sumData.taxNSum}</td>
-                  </tr>
-                  <tr>
-                    <td>총합계</td>
-                    <td>{state.salAllowData.sumData.sum}</td>
-                  </tr>
-                </>
-                )}
-              actions={{
-                setTableData: actions.setSalData,
-                setEditedRow: actions.setEditedAllow
-              }              
-            }
-            /> 
-           
-            </>
-          </Col>
-          <Col >
-            {/* 공제항목 table영역 */}
-            <>
-            <TableForm
-              //tableName={"공제항목 테이블"}
-              readOnly
-              tableHeaders={salDeduct.headers}
-              tableData={state.deductData.deductData}
-              actions={{}}
-              tableFooter={(
-                <>
-                  <tr>
-                    <td>공제액 계</td> 
-                    <td>{state.deductData.sumData.sum}</td>
-                  </tr>
-                  <tr>
-                    <td>차인지급액</td>
-                    <td>{state.salAllowData.sumData.sum}</td>
-                  </tr>
-                </>
-                )}
-            />
-            </>
-          </Col>
+
+          {/* 급여항목 table영역 */}
           <Col>
-            {/* 조회구분 영역*/}
+              <div className="table-container">
+              <Row>
+                <TableForm
+                  tableName="SI_SALARY_ALLOWPAY_LIST"
+                  tableHeaders={salAllow.headers}
+                  tableData={state.salAllowData.salData}
+                  rowAddable
+                  actions={{
+                    setTableData: actions.setSalData,
+                    setEditedRow: actions.setEditedAllow
+                  }}
+                /> 
+              </Row>
+              <Row className="table-footer">
+                <TableForm
+                  tableFooter={(
+                    <>
+                    <tr>
+                      <th>과세</th> 
+                      <td>{state.salAllowData.sumData.taxYSum}</td>
+                    </tr>
+                    <tr>
+                      <th>비과세</th>
+                      <td>{state.salAllowData.sumData.taxNSum}</td>
+                    </tr>
+                    <tr>
+                      <th>총합계</th>
+                      <td>{state.salAllowData.sumData.sum}</td>
+                    </tr>
+                  </>
+                  )}/>
+              </Row>
+              </div>
+          </Col>
+
+          {/* 공제항목 table영역 */}
+          <Col>
+            <div className="table-container">
+              <Row>
+                <div className="leftTable">
+                  <TableForm
+                    tableName="SI_SALARY_DEDUCTPAY_LIST"
+                    readOnly
+                    tableHeaders={salDeduct.headers}
+                    tableData={state.deductData.deductData}
+                    actions={{}}
+                  />
+                </div>
+              </Row>
+              <Row className="table-footer">
+                <TableForm
+                  tableFooter={(
+                    <>
+                      <tr>
+                        <th>공제액 계</th> 
+                        <td>{state.deductData.sumData.sum}</td>
+                      </tr>
+                      <tr>
+                        <th>차인지급액</th>
+                        <td>{state.salAllowData.sumData.sum}</td>
+                      </tr>
+                    </>
+                  )}
+                />
+              </Row>
+            </div>
+          </Col>
+
+          {/* 조회구분 영역*/}
+          <Col>
             <SelectForm
               label={labels.inquiryYype}
               optionList={totalSalaryByPeriodOption}
               onChange={actions.setSelectedOption}
             />
             <Row>
+
               <TableForm
-                showCheckbox={false}
-                showHeaderArrow={false}
                 tableHeaders={salAllowSum.headers}
                 tableData={state.salPaySumData.allowPay}
                 actions={{}}
@@ -245,96 +279,40 @@ const SalaryInformationEntryLayout = () => {
               />
             </Row>
           </Col>
-          
-          {isCardVisible ? (
+          </Row>
+          </Col>
+
+         {isCardVisible ? ( 
           <Col md="3">
-            {/* 사원 상세정보 영역 */}
-            <div>
-              <Card style={{fontSize:'8px'}}>
-                <Card.Header as="h5">사원정보</Card.Header>
-                <Card.Body>
-                  {state.saInfoDetailData ? (
-                    <>
-                      <TextBoxComponent
-                        label={labels.daEnter}
-                        value={state.saInfoDetailData.daEnter}
-                      />
-                      <TextBoxComponent
-                        label="배우자공제"
-                        value={state.saInfoDetailData.ynMateDed}
-                      />
-                      <TextBoxComponent
-                        label="20세/60세/다자녀"
-                        value={
-                          state.saInfoDetailData.num20Family +
-                          "/" +
-                          state.saInfoDetailData.num60Family +
-                          "/" +
-                          state.saInfoDetailData.numManyFamily
-                        }
-                      />
-                      <TextBoxComponent label="조정율" value="구현중" />
-                      <TextBoxComponent
-                        label="거주구분"
-                        value={state.saInfoDetailData.ynResident}
-                      />
-                      <TextBoxComponent
-                        label="생산/국외"
-                        value={
-                          state.saInfoDetailData.ynUnit +
-                          "/" +
-                          state.saInfoDetailData.ynForLabor
-                        }
-                      />
-                      <TextBoxComponent
-                        label="연장근로비과세"
-                        value={state.saInfoDetailData.ynOverwork}
-                      />
-                      <TextBoxComponent
-                        label="퇴사일"
-                        value={state.saInfoDetailData.daRetire}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdOccup}
-                        value={state.saInfoDetailData.cdOccup}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdDept}
-                        value={state.saInfoDetailData.cdDept}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdField}
-                        value={state.saInfoDetailData.cdField}
-                      />
-                      <TextBoxComponent
-                        label={labels.cdProject}
-                        value={state.saInfoDetailData.cdProject}
-                      />
-                      <TextBoxComponent
-                        label="주민(외국인)번호"
-                        value={state.saInfoDetailData.noSocial}
-                      />
-                    </>
-                  ) : (
-                    <Spinner animation="border" variant="primary" />
-                  )}
-                </Card.Body>
-              </Card>
-              <Button onClick={toggleCardVisibility}>
-                {isCardVisible ? '>' : '<'}
-              </Button>
+            <div style={{display : 'flex'}}>
+              <div className="rightside-custom-width">
+                <div onClick={toggleCardVisibility} className="rightside-icon-wrapper">
+                  <FontAwesomeIcon
+                    icon={faArrowRight} // 보이지 않을 때 아이콘
+                    style={{ cursor: 'pointer', fontSize: '20px' }}
+                  />
+                </div>
+              </div>
+              {/* 사원 상세정보 영역 */}
+              <SiEmpDetail
+                actions={actions}
+                state = {state}
+                isCardVisible
+                toggleCardVisibility
+              />
             </div>
           </Col>
-          ):(
-            <Col xs="1">
-              <div>
-                <Button onClick={toggleCardVisibility}>
-                  {isCardVisible ? '>' : '<'}
-                </Button>
+           ):( 
+            <Col xs={1} className="rightside-custom-width">
+              <div onClick={toggleCardVisibility} className="rightside-icon-wrapper">
+                <FontAwesomeIcon
+                  icon={faArrowLeft} // 보이지 않을 때 아이콘
+                  style={{ cursor: 'pointer', fontSize: '20px' }}
+                />
               </div>
             </Col>
-          )}
-        </Row>
+           )}
+        </Row>    
       </Container>
     </>
   );

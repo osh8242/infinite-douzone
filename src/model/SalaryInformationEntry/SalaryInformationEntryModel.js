@@ -44,7 +44,7 @@ const SalaryInformationEntryModel = () => {
   });
 
   const [modalContentData, setModalContentData] = useState({
-    data : ''
+    tableData : []
   });
 
   const [changeCdEmp, setChangeCdEmp] = useState({cdEmp:''});
@@ -214,7 +214,6 @@ const SalaryInformationEntryModel = () => {
         setSaInfoListData(getEmplist);
 
         /* 조회구분 영역 set */
-        
         /* select box 영역  합계 */
         const totalSalPaydata = response.data.totalSalPaydata;
     
@@ -281,7 +280,7 @@ const SalaryInformationEntryModel = () => {
           setSaInfoDetailData(saEmpDetail);
 
           /* select box 영역  합계 */
-          const totalSalAllowPaydata = response.data.totalSalPaydata.salAllow.map((item) => ({
+          const totalSalAllowPaydata = response.data.totalSalPaydata.salAllow&&response.data.totalSalPaydata.salAllow.map((item) => ({
             item : {
               cdAllow: item.cdAllow,
               nmAllow: item.nmAllow,
@@ -290,7 +289,7 @@ const SalaryInformationEntryModel = () => {
             },
           }));
          
-          const totalSalDeductPaydata = response.data.totalSalPaydata.salDeduct.map((item) => ({
+          const totalSalDeductPaydata = response.data.totalSalPaydata.salDeduct&&response.data.totalSalPaydata.salDeduct.map((item) => ({
             item : {
               cdDeduct : item.cdDeduct,
               nmDeduct: item.nmDeduct,
