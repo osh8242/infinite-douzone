@@ -81,21 +81,21 @@ const FormPanel = (props) => {
   });
 
   const rows = [];
-  for (let i = 0; i < columns.length; i += columnNumber) {
+  for (let i = 0; i < columns.length; ) {
     let mdSum = 0;
-    let columnsNumInRow = columnNumber;
     let tempRow = [];
-    for (let j = i; j < i + columnNumber; j++) {
+    for (let j = i; j < i + columnNumber && j < columns.length; j++) {
       mdSum += inputs[j].span ? defaultMd * inputs[j].span : defaultMd;
-      if (mdSum > 12 || j === columns.length) {
-        break;
-      } else {
+      if (mdSum <= 12) {
         tempRow.push(columns[j]);
+        i++;
+      } else {
+        break;
       }
     }
+    console.log("i", i);
     console.log("tempRow", tempRow);
     rows.push(<Row key={i}>{tempRow}</Row>);
-    i -= columnNumber - columnsNumInRow;
   }
 
   return <>{rows}</>;
