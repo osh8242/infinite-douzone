@@ -72,60 +72,54 @@ const AddressForm = (props) => {
   return (
     props && (
       <>
-        <Row className="py-1">
-          <Col
-            md="4"
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>주소</div>
-          </Col>
-          <Col md="8" className="fullAddressArea">
-            {/* 우편번호 */}
-            {isZonecode && (
+        <Row>
+          <div className="widthFull py-1 labelAndContent">
+            <div className="label">주소</div>
+            <div className="fullAddressArea labelAndContent widthFull">
+              {/* 우편번호 */}
+              {isZonecode && (
+                <Form.Control
+                  className="zoneCodeArea"
+                  type="text"
+                  name="zonecode"
+                  ref={zipHomeRef}
+                  disabled
+                />
+              )}
+
+              {/* 주소 */}
               <Form.Control
-                className="zoneCodeArea"
+                className="addressArea"
                 type="text"
-                name="zonecode"
-                ref={zipHomeRef}
+                name="address"
+                ref={addHome1Ref}
                 disabled
               />
-            )}
 
-            {/* 주소 */}
-            <Form.Control
-              className="addressArea"
-              type="text"
-              name="address"
-              ref={addHome1Ref}
-              disabled
-            />
-
-            {/* 버튼 클릭 시 Post 모달 호출 */}
-            <Button
-              className="addressSearchBtn"
-              variant="secondary"
-              onClick={() => setModalState({ ...modalState, show: true })}
-            >
-              검색
-            </Button>
-          </Col>
+              {/* 버튼 클릭 시 Post 모달 호출 */}
+              <Button
+                className="addressSearchBtn"
+                variant="secondary"
+                onClick={() => setModalState({ ...modalState, show: true })}
+              >
+                검색
+              </Button>
+            </div>
+          </div>
         </Row>
         {/* 상세주소 */}
-        <Row className="py-1">
-          <Col
-            md="4"
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>상세주소</div>
-          </Col>
-          <Col md="8">
-            <Form.Control
-              ref={addHome2Ref}
-              type="text"
-              name="address-detail"
-              onKeyDown={handleKeyDown}
-            />
-          </Col>
+        <Row>
+          <div className="widthFull py-1 labelAndContent">
+            <div className="label">상세주소</div>
+            <div className="widthFull">
+              <Form.Control
+                ref={addHome2Ref}
+                type="text"
+                name="address-detail"
+                onKeyDown={handleKeyDown}
+              />
+            </div>
+          </div>
         </Row>
         <ModalComponent
           size="lg"
