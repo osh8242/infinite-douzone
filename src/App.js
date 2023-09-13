@@ -4,8 +4,6 @@ import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayo
 import Header from "./templates/Header";
 
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
-import SalaryInformationEntry from "../src/templates/SalaryInformationEntry/SalaryInformationEntryLayout";
-import Login from "./templates/Login/Login";
 import LoginGrid from "./Login/LoginGrid";
 
 // import LaborContractGrid from "./templates/LaborContract/LaborContractLayout";
