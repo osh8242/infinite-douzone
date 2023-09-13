@@ -144,6 +144,15 @@ function EmpRegisterationLayout() {
                       setEdited: actions.setEditedEmp,
                     }}
                   />
+                  {/* <TextBoxComponent
+                    type="noSocial"
+                    label={labels.noSocial}
+                    value={{
+                      ynFor: state.mainTabData.ynFor,
+                      fgSex: state.mainTabData.fgSex,
+                      noSocial: state.mainTabData.noSocial,
+                    }}
+                  /> */}
                   <NoSocialFormForEmpRegister
                     label={labels.noSocial}
                     ynForList={ynForList}
@@ -369,12 +378,12 @@ function EmpRegisterationLayout() {
                     //   onChange={submitMainTabData}
                     // />
                   )}
-                  <TextBoxComponent
+                  {/* <TextBoxComponent
                     label={labels.cdBank}
                     amount={3}
                     id="cdBank,noBnkacct,nmBnkowner"
                     value="ddd"
-                  />
+                  /> */}
                   <CallNumberForm
                     label={labels.cdBank}
                     val1={state.mainTabData.cdBank}

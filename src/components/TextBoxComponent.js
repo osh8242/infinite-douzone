@@ -9,6 +9,7 @@ import {
   makePureNumber,
 } from "../utils/NumberUtils";
 import "../styles/CustomInput.scss";
+import "../styles/commonComponent.css";
 import SelectForm from "./SelectForm";
 import { emailList, ynForList, genderRadioList } from "../model/CommonConstant";
 
@@ -49,7 +50,7 @@ function TextBoxComponent(props) {
     validationFunction,
 
     md = 4, // [선택]
-    valueMd = 8,
+    // valueMd = 8,
     placeholder, // [선택]
     height, // [선택] 스타일
 
@@ -258,20 +259,18 @@ function TextBoxComponent(props) {
     }
   }
 
+  // 화면 render
   return (
     <Row className="py-1">
       {label ? (
-        <>
-          <Col
-            md={md}
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>{label}</div>
-          </Col>
-          <Col className="d-flex align-items-center justify-content-center">
+        <div className="labelAndContent">
+          {/* input labels */}
+          <div className="label">{label}</div>
+          {/* input contents */}
+          <div className="widthFull d-flex align-items-center">
             {subLabel ? (
               <Col
-                md={2}
+                // md={2}
                 className="d-flex align-items-center justify-content-center"
                 style={{ marginLeft: 15, marginRight: 15 }}
               >
@@ -281,7 +280,10 @@ function TextBoxComponent(props) {
               ""
             )}
             {selectList ? (
-              <Col md={4} style={{ marginRight: 12 }}>
+              <Col
+                // md={4}
+                style={{ marginRight: 12 }}
+              >
                 <SelectForm optionList={selectList}></SelectForm>
               </Col>
             ) : (
@@ -304,59 +306,72 @@ function TextBoxComponent(props) {
                 </div>
               )
             ) : (
-              <>
+              // 일반 TextBoxContent
+              <div className="widthFull">
                 {renderFormControl()}
                 {selectList ? (
-                  <Col style={{ marginLeft: 10 }}>{endLabel}</Col>
+                  <div
+                    // className="label"
+                    style={{ marginLeft: 10 }}
+                  >
+                    {endLabel}
+                  </div>
                 ) : (
                   ""
                 )}
-              </>
+              </div>
             )}
             {isPeriod ? (
               <>
                 {" ~ "}
-                <Col
-                  md={6}
-                  className="d-flex align-items-center justify-content-center"
+                <div
+                  // md={6}
+                  className="widthFull d-flex align-items-center justify-content-center"
                 >
                   {renderFormControl()}
-                </Col>
+                </div>
               </>
             ) : (
               ""
             )}
             {endLabel && !selectList ? (
-              <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+              <div
+                // md={2}
+                // className="label"
+                style={{ marginLeft: 15, marginRight: 15 }}
+              >
                 {endLabel}
-              </Col>
+              </div>
             ) : (
               ""
             )}
-          </Col>
-        </>
+          </div>
+        </div>
       ) : (
-        <>{renderFormControl()}</>
+        // label 이 없는 경우
+        <div>{renderFormControl()}</div>
       )}
     </Row>
   );
   function renderFormControl() {
     if (type === "textarea") {
       return (
-        <Form.Control
-          as="textarea"
-          id={id}
-          name={name}
-          rows={rows}
-          value={inputValue}
-          onChange={handleInputChange}
-          onClick={onClick}
-        />
+        <div className="widthFull">
+          <Form.Control
+            as="textarea"
+            id={id}
+            name={name}
+            rows={rows}
+            value={inputValue}
+            onChange={handleInputChange}
+            onClick={onClick}
+          />
+        </div>
       );
     } else if (type === "callNumber") {
       // 전화번호
       return (
-        <div className="d-flex align-items-center justify-content-center gap-4">
+        <div className="widthFull d-flex align-items-center gap-4">
           {inputCallNumber.map((value, index) => (
             <Form.Control
               key={index}
@@ -375,7 +390,7 @@ function TextBoxComponent(props) {
     } else if (type === "email") {
       // 이메일
       return (
-        <div className="widthFull d-flex align-items-center justify-content-center gap-2">
+        <div className="widthFull d-flex align-items-center gap-2">
           <Form.Control
             type="text"
             id={`${id}-emailId`}
@@ -384,7 +399,7 @@ function TextBoxComponent(props) {
             onKeyDown={handleKeyDown}
             undefined={undefined}
           />
-          <div>@</div>
+          <span>@</span>
           <Form.Select
             id={`${id}-domain`}
             value={inputValue?.split("@")[1] || emailList[0].key}
@@ -399,11 +414,11 @@ function TextBoxComponent(props) {
         </div>
       );
     } else if (type === "noSocial") {
-      // //내외국민, 주민번호, 성별 조합 case
-      // {
-      //   /* 내외국민 구분 */
-      // }
-      // <div className="d-flex align-items-center justify-content-center">
+      //내외국민, 주민번호, 성별 조합 case
+      {
+        /* 내외국민 구분 */
+      }
+      // <div className="widthFull d-flex align-items-center justify-content-center">
       //   <Form.Select onChange={handleInputChange}>
       //     {ynForList?.map((option, index) => (
       //       <option value={option.value} key={option.key}>
@@ -427,26 +442,29 @@ function TextBoxComponent(props) {
       // </div>;
     } else if (amount) {
       // amount 가 있다면 amount만큼의 input을 만들어준다.
-      <div>{inputElements}</div>;
+      <div className="widthFull">{inputElements}</div>;
     } else {
       return (
-        <Form.Control
-          //defaultValue={value}
-          value={inputValue}
-          type={type}
-          id={id}
-          name={name}
-          size={size}
-          disabled={disabled}
-          readOnly={readOnly}
-          plaintext={plaintext}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          onClick={onClick}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder ? placeholder : undefined}
-          style={style}
-        />
+        // inputs
+        <div className="widthFull">
+          <Form.Control
+            //defaultValue={value}
+            value={inputValue}
+            type={type}
+            id={id}
+            name={name}
+            size={size}
+            disabled={disabled}
+            readOnly={readOnly}
+            plaintext={plaintext}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            onClick={onClick}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder ? placeholder : undefined}
+            style={style}
+          />
+        </div>
       );
     }
   }

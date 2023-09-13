@@ -21,3 +21,22 @@ input.form-control {
   outline-color: rgb(255, 20, 52) !important;
   box-shadow: 0 0px 4px 2px rgba(255, 20, 52, 0.5) !important;
 }
+
+.label {
+  width: 160px;
+  height: 120%;
+  /* padding-right: 12px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(233, 236, 239);
+}
+
+.labelAndContent {
+  display: flex;
+  gap: 16px;
+}
+
+.widthFull {
+  width: 100%;
+}
