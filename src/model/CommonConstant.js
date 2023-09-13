@@ -101,7 +101,14 @@ export const LABELS = {
   allowMonth : "귀속연월",
   paymentDate :"지급일",
   ynUnit : "생산직 여부",
-  ynForlabor : "국외 근로여부"
+  ynForlabor : "국외 근로여부",
+
+  ynMateDed : "배우자공제",
+  ynResident : "거주구분",
+  ynOverwork : "연장근로비과세",
+  num2060many : "20세/60세/다자녀",
+  ynUnitForlabor : "생산/국외",
+
 };
 
 export const CODE = {
