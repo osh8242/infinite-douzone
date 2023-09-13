@@ -135,24 +135,16 @@ function EmpRegisterationLayout() {
             <Row id="baseData" ref={mainTabRef}>
               {state.mainTabData ? (
                 <div id="baseDataContents">
-                  <div id="baseDataContentsBackground"></div>
-                  <DateTest
-                    id="daEnter"
+                  {/* <div id="baseDataContentsBackground"></div> */}
+                  <TextBoxComponent
                     label={labels.daEnter}
+                    id="daEnter"
+                    type="date"
                     value={state.mainTabData.daEnter}
                     actions={{
                       setEdited: actions.setEditedEmp,
                     }}
                   />
-                  {/* <TextBoxComponent
-                    type="noSocial"
-                    label={labels.noSocial}
-                    value={{
-                      ynFor: state.mainTabData.ynFor,
-                      fgSex: state.mainTabData.fgSex,
-                      noSocial: state.mainTabData.noSocial,
-                    }}
-                  /> */}
                   <NoSocialFormForEmpRegister
                     label={labels.noSocial}
                     ynForList={ynForList}
@@ -356,9 +348,10 @@ function EmpRegisterationLayout() {
                   {/* 퇴사년월일 */}
                   {state.mainTabData.jobOk === "N" ||
                   state.mainTabData.daRetire ? (
-                    <DateTest
-                      id="daRetire"
+                    <TextBoxComponent
                       label={labels.daRetire}
+                      id="daRetire"
+                      type="date"
                       value={state.mainTabData.daRetire}
                       // onChange={submitMainTabData}
                       actions={{
@@ -378,12 +371,7 @@ function EmpRegisterationLayout() {
                     //   onChange={submitMainTabData}
                     // />
                   )}
-                  {/* <TextBoxComponent
-                    label={labels.cdBank}
-                    amount={3}
-                    id="cdBank,noBnkacct,nmBnkowner"
-                    value="ddd"
-                  /> */}
+
                   <CallNumberForm
                     label={labels.cdBank}
                     val1={state.mainTabData.cdBank}
