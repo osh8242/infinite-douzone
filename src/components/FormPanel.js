@@ -10,7 +10,13 @@ import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
 import TextBoxComponent from "./TextBoxComponent";
 
-const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2, id }) => {
+const FormPanel = ({
+  INPUT_CONSTANT,
+  formData,
+  submitData,
+  columnNumber = 2,
+  id,
+}) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
   const wrappingColTag = (input, index, span = 1) => {
@@ -104,7 +110,7 @@ const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2, id 
   return <div id={id}>{rows}</div>;
 };
 
-FormPanel.defaultProp = {
+FormPanel.defaultProps = {
   formData: { item: {} },
   submitData: () => {
     console.log("HrMainTab.js", "submitData", "default");

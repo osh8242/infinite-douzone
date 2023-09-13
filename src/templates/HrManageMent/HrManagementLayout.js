@@ -134,6 +134,7 @@ const HrManagementLayout = () => {
                         INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
+                        columnNumber={3}
                       />
                     </Col>
                   </Row>,
