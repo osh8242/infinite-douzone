@@ -1,8 +1,8 @@
 import { Button } from "react-bootstrap";
 import React from 'react';
-import TableForm from "../../components/TableForm";
+import TableForm from "../../../components/TableForm";
+import { modal_insertSalaryData } from "../../../model/SalaryInformationEntry/SalConstant";
 
-import { modal_insertSalaryData } from '../../model/SalaryInformationEntry/SalConstant';
 const InsertSalaryData = (props) => {
     const {
         insertSalaryTableData,

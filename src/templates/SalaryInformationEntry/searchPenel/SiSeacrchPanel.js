@@ -40,7 +40,7 @@ const SiSeacrchPanel = (props) => {
                 label={"지급일"}
                 value={state.searchVO.paymentDate}
                 onChange={(e, value) => actions.setPaymentDate(value)}
-                onClickCodeHelper={() => modalShow('default',codeHelperData_paymentDate, actions.setPaymentDate)}
+                onClickCodeHelper={() => modalShow('default', codeHelperData_paymentDate, actions.setPaymentDate)}
               />
             </Col>
           </Row>

@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { nvl } from '../../utils/NumberUtils';
@@ -66,6 +66,7 @@ const SalaryInformationEntryModel = () => {
   const [searchYnUnit, setSearchYnUnit] = useState('');             // 생산직여부 검색
   const [searchYnForlabor, setSearchYnForlabor] = useState('');     // 국외근로여부 검색
 
+  
   /* parmas들... */
   const [searchVo, searchVoDispatch] = useState({
     allowYear : allowYear,
@@ -135,9 +136,9 @@ const SalaryInformationEntryModel = () => {
 
   },[allowMonth])
 
-  useEffect(() => {
-    getAll();               // 검색조건별
-  }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
+  // useEffect(() => {
+  //   getAll();               // 검색조건별
+  // }, [allowMonth, salDivision, paymentDate, searchCdEmp, searchCdDept, searchRankNo, searchCdOccup, searchCdField, searchCdProject, searchYnUnit, searchYnForlabor]);
 
   useEffect(() => {
     if(dateId !== '') getSaPayByCdEmp();      // 사원리스트에서 선택한 사원의 급여항목, 공제항목 Table Data , 사원 상세정보  
@@ -173,8 +174,7 @@ const SalaryInformationEntryModel = () => {
   }, [selectedOption]);
   
 
-  /* 사원리스트 */
-  const getAll = () => {
+  const onSearch = () => {
     axios.post(
       url + '/saEmpInfo/getAll',
         {
@@ -241,7 +241,7 @@ const SalaryInformationEntryModel = () => {
       .catch((error) => {
         console.error('에러발생: ', error);
       });
-  }
+  };
 
   /* 급여정보_급여 항목 리스트 */
   const getSaPayByCdEmp = () => {
@@ -459,6 +459,7 @@ const SalaryInformationEntryModel = () => {
       , setSearchTotalDataVo
       , setChangeCdEmp    
       , setModalContentData
+      , onSearch
     }
 
   };

@@ -9,15 +9,17 @@ import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import { fetchData } from "../../utils/codeHelperUtils";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
-import ReCalculation from "./ReCalculation";
 import {labels} from "../../model/CommonConstant"
 import SiSeacrchPanel from "./searchPenel/SiSeacrchPanel";
 
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
-import SiEmpDetail from "./SiEmpDetail";
-import InsertSalaryData from "./InsertSalaryData";
+import SiEmpDetail from "./RightSideTab/SiEmpDetail"
+
+import ReCalculation from "./modalMenu/ReCalculation";
+import InsertSalaryData from "./modalMenu/InsertSalaryData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faEyeSlash, faLeftLong } from "@fortawesome/free-solid-svg-icons";
+
 
 const SalaryInformationEntryLayout = () => {
   //Model 관리되는 값
@@ -94,10 +96,6 @@ const SalaryInformationEntryLayout = () => {
     } 
   }, []);
 
-  //조회버튼
-  const onSearch = () => {
-    console.log("검색버튼");
-  };
 
   return (
     <>
@@ -145,8 +143,8 @@ const SalaryInformationEntryLayout = () => {
           <Col>
         {/* 조회영역 */}
         <SiSeacrchPanel
-          onSearch = {onSearch}
-          modalShow={modalShow}
+          onSearch = {actions.onSearch}
+          modalShow = {modalShow}
           actions = {actions}
           state = {state}
         />
@@ -282,9 +280,9 @@ const SalaryInformationEntryLayout = () => {
           </Row>
           </Col>
 
-         {isCardVisible ? ( 
-          <Col md="3">
-            <div style={{display : 'flex'}}>
+         {isCardVisible ? (
+          <Col md="3" className={`transition ${isCardVisible ? "visible" : "hidden"}`}>
+            <div style={{display : 'flex'}} >
               <div className="rightside-custom-width">
                 <div onClick={toggleCardVisibility} className="rightside-icon-wrapper">
                   <FontAwesomeIcon
@@ -296,9 +294,8 @@ const SalaryInformationEntryLayout = () => {
               {/* 사원 상세정보 영역 */}
               <SiEmpDetail
                 actions={actions}
-                state = {state}
-                isCardVisible
-                toggleCardVisibility
+                siEmpDetailData = {state.saInfoDetailData}
+                
               />
             </div>
           </Col>
@@ -312,7 +309,7 @@ const SalaryInformationEntryLayout = () => {
               </div>
             </Col>
            )}
-        </Row>    
+        </Row>
       </Container>
     </>
   );
