@@ -84,14 +84,12 @@ const FormPanel = (props) => {
   for (let i = 0; i < columns.length; ) {
     let mdSum = 0;
     let tempRow = [];
-    for (let j = i; j < i + columnNumber && j < columns.length; j++) {
-      mdSum += inputs[j].span ? defaultMd * inputs[j].span : defaultMd;
+    for (let j = i; j < columns.length; j++) {
+      mdSum += inputs[j].span ? Math.min(defaultMd * inputs[j].span, 12) : defaultMd;
       if (mdSum <= 12) {
         tempRow.push(columns[j]);
         i++;
-      } else {
-        break;
-      }
+      } else break;
     }
     rows.push(<Row key={i}>{tempRow}</Row>);
   }

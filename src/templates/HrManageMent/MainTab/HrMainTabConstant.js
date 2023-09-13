@@ -61,4 +61,5 @@ export const MAIN_TAB = {
       disabled: true,
     },
   ],
+  secondaryTabInputs: [],
 };
