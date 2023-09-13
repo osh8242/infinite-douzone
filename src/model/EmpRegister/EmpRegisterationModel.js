@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Emp from "../../vo/EmpRegister/Emp";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
+import { urlPattern } from "./EmpConstant";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -14,6 +15,9 @@ function EmpRegisterationModel() {
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState([]);
   const [subTabData, setSubTabData] = useState([]);
+
+  //메인탭 Ref
+  const mainTabRef = useRef();
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [reloadSubTableData, setReloadSubTableData] = useState(false);
@@ -32,6 +36,37 @@ function EmpRegisterationModel() {
   // useEffect(() => {
   //   console.log("empRegisterModel addRow => ", addRow);
   // }, [addRow]);
+
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
+        if (mainTabRef.current) {
+          let newMainTabData = { ...mainTabData.item };
+          const inputElements = mainTabRef.current.querySelectorAll("input");
+          Array.from(inputElements).forEach((input) => {
+            newMainTabData[input.id] =
+              input.type !== "radio" && "address" && "noSocial" && ""
+                ? input.value
+                : input.checked
+                ? input.value
+                : null;
+          });
+          setEditedEmp(newMainTabData);
+        }
+      }
+      if (event.type === "change") {
+        if (mainTabRef.current) {
+          event.target.blur();
+          let newMainTabData = { ...mainTabData.item };
+          newMainTabData[event.target.id] = value;
+          setEditedEmp(newMainTabData);
+        }
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
@@ -104,6 +139,22 @@ function EmpRegisterationModel() {
     }
   }, [editedEmp]);
 
+  // 사원 insert 함수
+  const insertEmp = useCallback((emp) => {
+    axios
+      .post(url + urlPattern.insertEmp, emp, {
+        "Content-Type": "qpplication/json",
+      })
+      .then((response) => {
+        if (response.data !== 0) console.log("Emp insert 성공");
+        setEditedEmp({});
+      })
+      .catch((error) => {
+        console.log("에러발생: ", error);
+      });
+    // }
+  }, []);
+
   //사원 정보 UPDATE POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (Object.keys(editedEmp).length !== 0) {
@@ -119,6 +170,22 @@ function EmpRegisterationModel() {
         });
     }
   }, [editedEmp]);
+
+  //사원 update 함수
+  const updateEmp = useCallback((emp) => {
+    if (editedEmp) {
+      console.log("update요청: ", emp);
+      axios
+        .put(url + urlPattern.updateEmp, emp)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp 업데이트 성공");
+          setEditedEmp();
+        })
+        .catch((error) => {
+          console.log("에러발생 -> ", error);
+        });
+    }
+  }, []);
 
   //사원 정보 DELETE 요청
   const deleteSelectedRows = useCallback(() => {
@@ -166,6 +233,52 @@ function EmpRegisterationModel() {
       });
   }, [selectedRows]);
 
+  //사원 delete 함수
+  const deleteEmp = useCallback(() => {
+    // 각 row에 대한 delete 요청을 생성
+    // console.log("selectedRows axios 직전", selectedRows);
+    const deletePromises = selectedRows.map((row) => {
+      let pattern;
+      switch (row.table) {
+        case "emp":
+          pattern = urlPattern.deleteEmp;
+          break;
+        default:
+          return Promise.resolve();
+      }
+      return axios.delete(url + pattern, { data: row.item });
+    });
+
+    Promise.all(deletePromises)
+      .then((responses) => {
+        if (responses) console.log("선택된 모든 행의 삭제 완료");
+        setSelectedRows([]); // 선택행 배열 비우기
+        setReloadSubTableData(!reloadSubTableData);
+        setEditedEmp([]);
+        // console.log("선택한 모든 행 =>", responses);
+        //삭제된 데이터 필터링
+        const undeletedEmpData = responses.filter((response) => {
+          return response.data != "";
+        });
+        //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
+        console.log("undeletedEmpData !!!!!", undeletedEmpData);
+        const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
+          const undeletedEmp = {
+            cdEmp: item.data.cdEmp,
+            nmKrname: item.data.nmKrname,
+            useMenuList: item.data.useMenuList,
+          };
+          return EmpMenuUsage(undeletedEmp);
+        });
+        setUndeletedEmpTableData(undeletedEmpTableDataContent);
+        setModalState({ show: true });
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
   // useEffect(() => {
@@ -212,6 +325,9 @@ function EmpRegisterationModel() {
       codeHelperState,
     },
     actions: {
+      insertEmp,
+      updateEmp,
+      deleteEmp,
       setLeftTableData,
       setEditedEmp,
       setMainTabData,
@@ -225,6 +341,7 @@ function EmpRegisterationModel() {
       setUndeletedEmpTableData,
       setCodeHelperState,
       setAddRow,
+      submitMainTabData, //mainTab update 함수
     },
   };
 }

@@ -91,66 +91,60 @@ const AddressForm = (props) => {
   return (
     props && (
       <>
-        <Row className="py-1">
-          <Col
-            md={md}
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>주소</div>
-          </Col>
-          <Col md={mdValue} className="fullAddressArea">
-            {/* 우편번호 */}
-            {isZonecode && (
-              <Form.Control
-                className="zoneCodeArea"
-                type="text"
-                name="zonecode"
-                ref={zipHomeRef}
-                disabled
-                size={size}
-              />
-            )}
-
-            {/* 주소 */}
-            <Form.Control
-              className="addressArea"
-              type="text"
-              name="address"
-              ref={addHome1Ref}
-              disabled
-            />
-            {/* 버튼 클릭 시 Post 모달 호출 */}
-
-            <Button
-              className="addressSearchBtn"
-              variant="secondary"
-              onClick={() => setModalState({ ...modalState, show: true })}
-            >
-              {iconBtn ? (
-                <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
-              ) : (
-                "검색"
+        <Row>
+          <div className="widthFull py-1 labelAndContent">
+            <div className="label">주소</div>
+            <div className="fullAddressArea labelAndContent widthFull">
+              {/* 우편번호 */}
+              {isZonecode && (
+                <Form.Control
+                  className="zoneCodeArea"
+                  type="text"
+                  name="zonecode"
+                  ref={zipHomeRef}
+                  disabled
+                  size={size}
+                />
               )}
-            </Button>
-          </Col>
+
+              {/* 주소 */}
+              <Form.Control
+                className="addressArea"
+                type="text"
+                name="address"
+                ref={addHome1Ref}
+                disabled
+              />
+              {/* 버튼 클릭 시 Post 모달 호출 */}
+
+              <Button
+                className="addressSearchBtn"
+                variant="secondary"
+                onClick={() => setModalState({ ...modalState, show: true })}
+              >
+                {iconBtn ? (
+                  <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
+                ) : (
+                  "검색"
+                )}
+              </Button>
+            </div>
+          </div>
         </Row>
         {/* 상세주소 */}
-        <Row className="py-1">
-          <Col
-            md={md}
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>상세주소</div>
-          </Col>
-          <Col md={mdValue}>
-            <Form.Control
-              ref={addHome2Ref}
-              type="text"
-              name="address-detail"
-              onKeyDown={handleKeyDown}
-              size={size}
-            />
-          </Col>
+        <Row>
+          <div className="widthFull py-1 labelAndContent">
+            <div className="label">상세주소</div>
+            <div className="widthFull">
+              <Form.Control
+                ref={addHome2Ref}
+                type="text"
+                name="address-detail"
+                onKeyDown={handleKeyDown}
+                size={size}
+              />
+            </div>
+          </div>
         </Row>
         <ModalComponent
           size="lg"

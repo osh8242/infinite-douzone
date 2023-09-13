@@ -6,16 +6,18 @@ import {
   RADIO_LIST,
   SELECT_LIST,
 } from "../model/CommonConstant.js";
+import AddressForm from "../../src/components/AddressForm.js";
 import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
 import TextBoxComponent from "./TextBoxComponent";
-
+import NoSocialFormForEmpRegister from "./NoSocialFormForEmpRegister.js";
 const FormPanel = ({
   INPUT_CONSTANT,
   formData,
   submitData,
   columnNumber = 2,
   id,
+  codeHelperFn,
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -28,14 +30,34 @@ const FormPanel = ({
       </Col>
     );
   };
-
   const inputs = INPUT_CONSTANT;
-
   inputs.forEach((input, index) => {
     let component = <div>input type null</div>;
     const id = input.field;
     const label = input.label || LABELS[input.field] || "라벨없음";
-    const value = input.value || formData.item?.[input.field] || "";
+    const value =
+      input.value ||
+      formData.item?.[input.field] ||
+      formData?.[input.field] ||
+      "";
+    // console.log("여기의 label 보세요", label);
+    // console.log("여기의 input.value 보세요", input.value);
+    // console.log(
+    //   "여기의 formData.item?.[input.field] 보세요",
+    //   formData.abbNation
+    // );
+    // AddressForm 관련 변수들.. 나중에 깔끔하게 수정 예정...
+    const isZonecode = input.isZonecode || false; //
+    // const zipHome = input.zipHome || ""; //
+    // const addHome1 = input.addHome1 || ""; //
+    // const addHome2 = input.addHome2 || ""; //
+    // 주민번호 관련 변수들.. 나중에 깔끔하게 수정 예정...
+    // const ynFor = input.ynFor || ""; //
+    // const fgSex = input.fgSex || ""; //
+    // const noSocial = input.noSocial || ""; //
+    const pkValue = input.pkValue || ""; // 나중에 삭제 예정..
+    const actions = input.actions || []; // 나중에 삭제 예정..
+    const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     switch (input.type) {
       case INPUT_TYPE.text:
@@ -48,7 +70,6 @@ const FormPanel = ({
             onEnter={submitData}
           />
         );
-
         break;
       case INPUT_TYPE.date:
         component = (
@@ -61,7 +82,6 @@ const FormPanel = ({
             onChange={submitData}
           />
         );
-
         break;
       case INPUT_TYPE.select:
         component = (
@@ -87,12 +107,70 @@ const FormPanel = ({
           />
         );
         break;
+      // 나중에 깔끔하게 정리할 예정
+      case INPUT_TYPE.address:
+        component = (
+          <AddressForm
+            // id={id}
+            label={label}
+            disabled={disabled}
+            isZonecode={isZonecode}
+            zipHome={formData.zipHome}
+            addHome1={formData.addHome1}
+            addHome2={formData.addHome2}
+            pkValue={formData.cdEmp}
+            actions={actions}
+          />
+        );
+        break;
+      case INPUT_TYPE.callNumber:
+        component = (
+          <TextBoxComponent
+            id={id}
+            label={label}
+            type="callNumber"
+            value={formData.celEmp1}
+            onEnter={submitData}
+          />
+        );
+        break;
+      case INPUT_TYPE.email:
+        component = (
+          <TextBoxComponent
+            id={id}
+            label={label}
+            type="email"
+            value={formData.emEmp}
+            onEnter={submitData}
+          />
+        );
+        break;
+      case INPUT_TYPE.noSocial:
+        component = (
+          <NoSocialFormForEmpRegister
+            label={label}
+            ynFor={formData.ynFor}
+            fgSex={formData.fgSex}
+            noSocial={formData.noSocial}
+            pkValue={pkValue}
+          />
+        );
+        break;
+      case INPUT_TYPE.textCodeHelper:
+        component = (
+          <TextBoxComponent
+            type="text"
+            label={label}
+            value={value}
+            onClickCodeHelper={codeHelper}
+          />
+        );
+        break;
       default:
         break;
     }
     columns.push(wrappingColTag(component, input.span));
   });
-
   const rows = [];
   for (let i = 0; i < columns.length; ) {
     let mdSum = 0;
@@ -108,10 +186,8 @@ const FormPanel = ({
     }
     rows.push(<Row key={`row-${i}`}>{tempRow}</Row>);
   }
-
   return <div id={id}>{rows}</div>;
 };
-
 FormPanel.defaultProps = {
   formData: { item: {} },
   submitData: () => {
@@ -119,12 +195,10 @@ FormPanel.defaultProps = {
   },
   columnNumber: 2,
 };
-
 FormPanel.propsTypes = {
   INPUT_CONSTANT: PropTypes.array.isRequired,
   formData: PropTypes.object,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
 };
-
 export default FormPanel;

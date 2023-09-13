@@ -28,36 +28,29 @@ function RadioForm({
   };
 
   return (
-    <Row className="py-1">
-      {label && (
-        <Col
-          md={md}
-          className="d-flex align-items-center justify-content-center mt-1"
-        >
-          {label}
-        </Col>
-      )}
-      <Col
-        md="8"
-        className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"
-      >
-        {optionList.map((option) => (
-          <div className="form-check form-check-inline" key={option.key}>
-            <label className="form-check-label">
-              <input
-                className="form-check-input"
-                id={id}
-                type="radio"
-                disabled={disabled}
-                value={option.key}
-                checked={selectedOption === option.key}
-                onChange={handleOptionChange}
-              />
-              {option.value}
-            </label>
-          </div>
-        ))}
-      </Col>
+    <Row>
+      <div className="py-1 widthFull labelAndContent">
+        {label && <div className="label">{label}</div>}
+        {/* <div className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"> */}
+        <div className="widthFull">
+          {optionList.map((option) => (
+            <div className="form-check form-check-inline" key={option.key}>
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  id={id}
+                  type="radio"
+                  disabled={disabled}
+                  value={option.key}
+                  checked={selectedOption === option.key}
+                  onChange={handleOptionChange}
+                />
+                {option.value}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
     </Row>
   );
 }

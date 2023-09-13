@@ -44,49 +44,47 @@ function SelectForm(props) {
   };
 
   return (
-    <Row className="py-1">
-      {label && (
-        <Col
-          md="4"
-          className="d-flex align-items-center justify-content-center"
-        >
-          <div>{label}</div>
-        </Col>
-      )}
-      <Col className="d-flex align-items-center justify-content-center">
-        {subLabel ? (
-          <Col
-            md={2}
-            className="d-flex align-items-center justify-content-center"
-            style={{ marginLeft: 15, marginRight: 15 }}
-          >
-            {subLabel}
-          </Col>
-        ) : (
-          ""
+    <div>
+      <div className="py-1 widthFull labelAndContent">
+        {label && (
+          // <div className="d-flex align-items-center justify-content-center">
+          <div className="label">{label}</div>
         )}
+        {/* <div className="d-flex align-items-center justify-content-center"> */}
+        <div className="widthFull d-flex align-items-center justify-content-center">
+          {subLabel ? (
+            <div
+              className="d-flex align-items-center justify-content-center"
+              style={{ marginLeft: 15, marginRight: 15 }}
+            >
+              {subLabel}
+            </div>
+          ) : (
+            ""
+          )}
 
-        <Form.Select
-          id={id}
-          ref={selectRef}
-          onChange={(e) => handleSelectChange(e)}
-          value={selectedValue}
-        >
-          {optionList.map((option, index) => (
-            <option value={option.key} key={index}>
-              {option.value}
-            </option>
-          ))}
-        </Form.Select>
-        {endLabel ? (
-          <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
-            {endLabel}
-          </Col>
-        ) : (
-          ""
-        )}
-      </Col>
-    </Row>
+          <Form.Select
+            id={id}
+            ref={selectRef}
+            value={selectedValue}
+            onChange={(e) => handleSelectChange(e)}
+          >
+            {optionList.map((option, index) => (
+              <option value={option.key} key={index}>
+                {option.value}
+              </option>
+            ))}
+          </Form.Select>
+          {endLabel ? (
+            <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+              {endLabel}
+            </Col>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

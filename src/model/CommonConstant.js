@@ -1,7 +1,5 @@
 export const url = "http://localhost:8888";
 
-export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
-
 export const INPUT_TYPE = {
   text: 0,
   date: 1,
@@ -11,6 +9,7 @@ export const INPUT_TYPE = {
   textCodeHelper: 5,
   callNumber: 100,
   email: 101,
+  noSocial: 102,
 };
 
 export const SELECT_LIST = {
@@ -49,7 +48,7 @@ export const RADIO_LIST = {
   ],
 };
 
-export const emailList = [
+export const EMAIL_LIST = [
   { key: "daum.net", value: "daum.net" },
   { key: "gmail.com", value: "gmail.com" },
   { key: "hanmail.net", value: "hanmail.net" },
@@ -94,7 +93,7 @@ export const LABELS = {
   abbNation: "거주지국",
   cdNation: "국적",
   telHome: "전화번호",
-  calEmp: "모바일번호",
+  celEmp: "모바일번호",
   emEmp: "이메일",
   idMsn: "메신저ID",
   cdOccup: "직종",
