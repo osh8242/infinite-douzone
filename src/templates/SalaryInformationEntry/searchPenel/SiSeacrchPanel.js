@@ -13,10 +13,15 @@ const SiSeacrchPanel = (props) => {
         actions
     } = props;
     
+    
     return (
         <div>
-            {/* 기본 검색조건 */}
-            <SearchPanel onSearch={onSearch} showAccordion>
+          {/* 기본 검색조건 */}
+          <SearchPanel onSearch={onSearch} showAccordion>
+          {/* <FormPanel 
+            INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
+            //formData = 
+          /> */}
           <Row>
             <Col>
               <TextBoxComponent
