@@ -419,7 +419,7 @@ const SalaryInformationEntryModel = () => {
       , modalState : modalState
       , codeHelperTableData
       
-      , searchVO : {
+      , searchVo : {
         cdEmp
         , salDivision
         , allowMonth

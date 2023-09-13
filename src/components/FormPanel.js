@@ -108,6 +108,7 @@ const FormPanel = ({
       case INPUT_TYPE.textCodeHelper:
         component = (
           <TextBoxComponent
+            id={id}
             type="text"
             label={label}
             value={value}
@@ -119,11 +120,12 @@ const FormPanel = ({
         case INPUT_TYPE.dateCodeHelper:
         component = (
           <TextBoxComponent
+            id={id}
             type="date"
             label={label}
             value={value}
             onClickCodeHelper={codeHelper}
-            onChange={(e, value) => onChangeFn(value)}
+            onChange={(e, value) => {onChangeFn(value); console.log("온체인지");}}
           />
         );
         break;

@@ -52,10 +52,10 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        <Button onClick={(e) => insertSalaryDataHandler(e)} >
+        <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
             수당/공제 등록
         </Button>
-        <Button onClick={(e) => reCalculationHandler(e)}>
+        <Button id="reCalculateBtn" onClick={(e) => reCalculationHandler(e)}>
             재계산
         </Button>
         <button className="backgroundBorderNone">

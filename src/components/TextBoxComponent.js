@@ -155,7 +155,7 @@ function TextBoxComponent(props) {
             md={md}
             className="d-flex align-items-center justify-content-center"
           >
-            <div>{label}</div>
+            <div className="smallText">{label}</div>
           </Col>
           <Col className="d-flex align-items-center justify-content-center">
             {subLabel ? (

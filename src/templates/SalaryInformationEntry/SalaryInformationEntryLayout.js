@@ -139,7 +139,7 @@ const SalaryInformationEntryLayout = () => {
       />
       <Container fluid>
       
-        <Row>
+        <Row style={{margin:'10px'}}>
           <Col>
         {/* 조회영역 */}
         <SiSeacrchPanel
@@ -253,7 +253,7 @@ const SalaryInformationEntryLayout = () => {
           </Col>
 
           {/* 조회구분 영역*/}
-          <Col>
+          <Col className="selectDivision">
             <SelectForm
               label={LABELS.inquiryYype}
               optionList={totalSalaryByPeriodOption}
@@ -285,10 +285,12 @@ const SalaryInformationEntryLayout = () => {
             <div style={{display : 'flex'}} >
               <div className="rightside-custom-width">
                 <div onClick={toggleCardVisibility} className="rightside-icon-wrapper">
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     icon={faArrowRight} // 보이지 않을 때 아이콘
                     style={{ cursor: 'pointer', fontSize: '20px' }}
-                  />
+                  /> */}
+                  <div id="fakeFaArrowRight"></div>
+                  <div id="fakeFaArrowRight-content">▶</div>
                 </div>
               </div>
               {/* 사원 상세정보 영역 */}
@@ -302,10 +304,12 @@ const SalaryInformationEntryLayout = () => {
            ):( 
             <Col xs={1} className="rightside-custom-width">
               <div onClick={toggleCardVisibility} className="rightside-icon-wrapper">
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   icon={faArrowLeft} // 보이지 않을 때 아이콘
                   style={{ cursor: 'pointer', fontSize: '20px' }}
-                />
+                /> */}
+                <div id="fakeFaArrowLeft"></div>
+                <div id="fakeFaArrowLeft-content">◀</div>
               </div>
             </Col>
            )}

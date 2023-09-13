@@ -19,7 +19,7 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
 
   return (
     <>
-      <Row>
+      <Row className='mt-3'> 
         {showAccordion ? (
           <div className="search-panel border rounded px-5">
             <div className="header d-flex flex-row px-5">
