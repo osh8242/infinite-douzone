@@ -2,10 +2,12 @@ import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
 import RadioForm from "../../../components/RadioForm";
 import TextBoxComponent from "../../../components/TextBoxComponent";
+// 라디오 리스트 상수 [필수]
 import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
+// 인풋 상수 [필수]
 import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
 
-const HrMainTab = (props) => {
+const FormPanel = (props) => {
   const { formData, submitData, columnNumber = 2 } = props;
 
   const defaultMd = 12 / columnNumber;
@@ -95,7 +97,7 @@ const HrMainTab = (props) => {
   return <>{rows}</>;
 };
 
-HrMainTab.defaultProp = {
+FormPanel.defaultProp = {
   formData: { item: {} },
   submitData: () => {
     console.log("HrMainTab.js", "submitData", "default");
@@ -103,10 +105,10 @@ HrMainTab.defaultProp = {
   columnNumber: 2,
 };
 
-HrMainTab.propsTypes = {
+FormPanel.propsTypes = {
   formData: PropTypes.object.isRequired,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
 };
 
-export default HrMainTab;
+export default FormPanel;

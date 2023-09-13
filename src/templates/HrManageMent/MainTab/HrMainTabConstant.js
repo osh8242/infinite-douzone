@@ -21,7 +21,6 @@ export const MAIN_TAB = {
       field: "noSocial",
       label: labels.noSocial,
       disabled: true,
-      span: 2,
     },
     {
       type: INPUT_TYPE.radio,
@@ -42,7 +41,6 @@ export const MAIN_TAB = {
       field: "rankNo",
       label: labels.rankNo,
       disabled: true,
-      span: 2,
     },
     { type: INPUT_TYPE.text, field: "cdOffduty", label: labels.cdOffduty },
     {
@@ -63,4 +61,5 @@ export const MAIN_TAB = {
       disabled: true,
     },
   ],
+  secondaryTabInputs: [],
 };
