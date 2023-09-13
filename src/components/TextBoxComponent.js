@@ -16,9 +16,11 @@ function TextBoxComponent(props) {
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
     id,
+    subId,
     name,
     label,
     value,
+    subValue,
 
     rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
     //codeHelper, // 코드헬퍼 아이콘 생성
@@ -56,23 +58,29 @@ function TextBoxComponent(props) {
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
+  const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
+  const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   useEffect(() => {
     setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
-  }, [value]);
+    setInputSubValue(subValue || "");
+  }, [value, subValue]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       onEnter && onEnter(event, sendValue, id);
+      if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
     //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
-    setInputValue(makeProcessedValue(newValue)); // data 가공
+    if (event.target.id === id)
+      setInputValue(makeProcessedValue(newValue)); // data 가공
+    else setInputSubValue(makeProcessedValue(newValue));
     onChange && onChange(event, newValue);
   };
 
@@ -201,7 +209,22 @@ function TextBoxComponent(props) {
                   md={6}
                   className="d-flex align-items-center justify-content-center"
                 >
-                  {renderFormControl()}
+                  <Form.Control
+                    value={inputSubValue}
+                    type={type}
+                    id={subId}
+                    name={name}
+                    size={size}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    plaintext={plaintext}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onClick={onClick}
+                    onKeyDown={handleKeyDown}
+                    placeholder={placeholder ? placeholder : undefined}
+                    style={style}
+                  />
                 </Col>
               </>
             ) : (

@@ -3,6 +3,8 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 import "../styles/addressForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const AddressForm = (props) => {
   /*
@@ -13,7 +15,18 @@ const AddressForm = (props) => {
     addHome2: 상세주소
     pkValue: pk값(사원코드, cdEmp)
   */
-  const { isZonecode, zipHome, addHome1, addHome2, pkValue, actions } = props;
+  const {
+    isZonecode,
+    zipHome,
+    addHome1,
+    addHome2,
+    pkValue,
+    actions,
+    md = 4,
+    mdValue = 8,
+    size,
+    iconBtn,
+  } = props;
 
   const zipHomeRef = useRef();
   const addHome1Ref = useRef();
@@ -80,12 +93,12 @@ const AddressForm = (props) => {
       <>
         <Row className="py-1">
           <Col
-            md="4"
+            md={md}
             className="d-flex align-items-center justify-content-center"
           >
             <div>주소</div>
           </Col>
-          <Col md="8" className="fullAddressArea">
+          <Col md={mdValue} className="fullAddressArea">
             {/* 우편번호 */}
             {isZonecode && (
               <Form.Control
@@ -94,6 +107,7 @@ const AddressForm = (props) => {
                 name="zonecode"
                 ref={zipHomeRef}
                 disabled
+                size={size}
               />
             )}
 
@@ -105,31 +119,36 @@ const AddressForm = (props) => {
               ref={addHome1Ref}
               disabled
             />
-
             {/* 버튼 클릭 시 Post 모달 호출 */}
+
             <Button
               className="addressSearchBtn"
               variant="secondary"
               onClick={() => setModalState({ ...modalState, show: true })}
             >
-              검색
+              {iconBtn ? (
+                <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
+              ) : (
+                "검색"
+              )}
             </Button>
           </Col>
         </Row>
         {/* 상세주소 */}
         <Row className="py-1">
           <Col
-            md="4"
+            md={md}
             className="d-flex align-items-center justify-content-center"
           >
             <div>상세주소</div>
           </Col>
-          <Col md="8">
+          <Col md={mdValue}>
             <Form.Control
               ref={addHome2Ref}
               type="text"
               name="address-detail"
               onKeyDown={handleKeyDown}
+              size={size}
             />
           </Col>
         </Row>

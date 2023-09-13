@@ -5,13 +5,21 @@ import RadioForm from "./RadioForm";
 import TextBoxComponent from "./TextBoxComponent";
 import AddressForm from "./AddressForm";
 import TempAdd from "./TempAdd";
-import TestModel from "../model/LaborContract/TestModel";
+import LaborContractModel from "../model/LaborContract/TestModel";
 // const { state, actions } = TestModel();
 // const { leftTableData, mainTabData, subTableData } = state;
 
 const DispatcherComponent = (field) => {
+  const { state, actions, mainTablePkValue } = LaborContractModel();
+  const { leftTableData, mainTabData, subTableData } = state;
+
   switch (field.component) {
     case "TextBoxComponent":
+      console.log({ mainTabData }.mainTabData[field.field]);
+      // console.log({ mainTabData }.mainTabData["cdEmp"]);
+      // console.log("test");
+      // console.log({ mainTabData }.workTime);
+
       return (
         <TextBoxComponent
           type={field.type}
@@ -22,7 +30,12 @@ const DispatcherComponent = (field) => {
           subLabel={field.subLabel}
           endLabel={field.endLabel}
           selectList={field.selectList}
-          value={field.value}
+          value={{ mainTabData }.mainTabData[field.field]}
+          // value={mainTabData}} // 해당 필드의 값
+          // value={mainTabData[field.field]} // 해당 필드의 값
+          // value={mainTabData`.${field}`}
+          // value={mainTabData`.${field.field}`}
+          // value={`${mainTabData}.${temp}`}
         />
       );
     case "RadioForm":

@@ -7,9 +7,11 @@ import SearchPanel from "../../components/SearchPanel";
 // import LaborContractConstant from "./src/model/LaborContract/LaborContractConstant";
 import SwsmConstant from "../../model/SwsmConstant";
 import DispatcherComponent from "../../components/DispatcherCompoenet";
-import { LeftTableHeaders } from "../../model/LaborContract/LaborContractConstant";
+import {
+  LeftTableHeaders,
+  subTabMenuList,
+} from "../../model/LaborContract/LaborContractConstant";
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
-
 import TableForm from "../../components/TableForm";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
@@ -27,12 +29,9 @@ import {
 } from "../../model/LaborContract/LaborContractField";
 
 const LaborContractLayout = () => {
-  const { SwsmLeftTableHeaders, subTabMenuList } = SwsmConstant();
+  const { SwsmLeftTableHeaders } = SwsmConstant();
   const { state, actions, mainTablePkValue } = TestModel();
   const { leftTableData, mainTabData, subTableData, selectedRows } = state;
-  const onSearch = () => {
-    console.log("onSearcing...");
-  };
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
@@ -76,7 +75,7 @@ const LaborContractLayout = () => {
               <Scrollbars style={{ height: 470, overflow: "hidden" }}>
                 <Row>
                   {MainTabField.map((field, idx) => (
-                    <Col key={idx} xs md="9">
+                    <Col key={idx} xs md="10">
                       {DispatcherComponent(field)}
                     </Col>
                   ))}
