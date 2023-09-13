@@ -7,6 +7,10 @@ export const INPUT_TYPE = {
   date: 1,
   select: 2,
   radio: 3,
+  address : 4,
+  textCodeHelper :5,
+  callNumber : 100,
+  email : 101,  
 };
 
 export const RADIO_LIST = {

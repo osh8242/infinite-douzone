@@ -120,7 +120,7 @@ const HrManagementLayout = () => {
                       </Col>
                       <Col xs md="9">
                         <FormPanel
-                          INPUT_CONSTANT={MAIN_TAB}
+                          INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
                           formData={mainTabData}
                           submitData={actions.submitMainTabData}
                         />
