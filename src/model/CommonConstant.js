@@ -9,6 +9,18 @@ export const INPUT_TYPE = {
   radio: 3,
 };
 
+export const SELECT_LIST = {
+  tyEmploy: [
+    { key: "public", value: "1. 공채" },
+    { key: "special", value: "2. 특채" },
+  ],
+  tyReligion: [
+    { key: "christianity", value: "기독교" },
+    { key: "buddhism", value: "불교" },
+    { key: "islam", value: "이슬람교" },
+  ],
+};
+
 export const RADIO_LIST = {
   fgSex: [
     { key: "M", value: "남자" },
@@ -53,6 +65,8 @@ export const LABELS = {
   cdDept: "부서",
   rankNo: "직급",
   cdOffduty: "직무",
+  tyEmploy: "채용구분",
+  dcMidretire: "중도퇴직정산",
   ynDrawContracts: "근로계약서",
   daEnter: "입사년월일",
   daRetire: "퇴사년월일",

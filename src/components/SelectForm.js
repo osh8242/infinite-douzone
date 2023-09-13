@@ -20,22 +20,25 @@ SelectForm.defaultProps = {
 };
 
 function SelectForm(props) {
-  const { label, optionList, selectRef, onChange, subLabel, endLabel } = props;
+  const {
+    label,
+    optionList,
+    selectedOption,
+    selectRef,
+    onChange,
+    subLabel,
+    endLabel,
+  } = props;
 
   const handleSelectChange = (event) => {
-    const selectedValue = selectRef
-      ? selectRef.current.value
-      : event.target.value;
+    const selectedValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChange) onChange(selectedValue);
   };
 
   return (
     <Row className="py-1">
       {label && (
-        <Col
-          md="4"
-          className="d-flex align-items-center justify-content-center"
-        >
+        <Col md="4" className="d-flex align-items-center justify-content-center">
           <div>{label}</div>
         </Col>
       )}
@@ -54,7 +57,11 @@ function SelectForm(props) {
 
         <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
           {optionList.map((option, index) => (
-            <option value={option.key} key={index}>
+            <option
+              value={option.key}
+              key={index}
+              selected={option.key === selectedOption}
+            >
               {option.value}
             </option>
           ))}
