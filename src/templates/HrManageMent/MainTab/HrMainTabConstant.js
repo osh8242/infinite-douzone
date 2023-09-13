@@ -13,7 +13,7 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.text,
       field: "noSocial",
       label: LABELS.noSocial,
-      disabled: true,
+      disabled: true,      
     },
     {
       type: INPUT_TYPE.radio,
