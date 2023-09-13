@@ -1,32 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import LaborContractModel from "../../model/LaborContract/LaborContractModel";
+import SearchPanel from "../../components/SearchPanel";
 import TestModel from "../../model/LaborContract/TestModel";
 import LaborContractHeader from "../LaborContractHeader";
-import SearchPanel from "../../components/SearchPanel";
 // import LaborContractConstant from "./src/model/LaborContract/LaborContractConstant";
-import SwsmConstant from "../../model/SwsmConstant";
+import Spinner from "react-bootstrap/Spinner";
+import { Scrollbars } from "react-custom-scrollbars";
 import DispatcherComponent from "../../components/DispatcherCompoenet";
+import MenuTab from "../../components/MenuTab";
+import TableForm from "../../components/TableForm";
 import {
   LeftTableHeaders,
+  SubTabHeaders,
   subTabMenuList,
 } from "../../model/LaborContract/LaborContractConstant";
-import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
-import TableForm from "../../components/TableForm";
-import Swsm from "../../vo/SwsmGrid/Swsm";
-import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
-import Spinner from "react-bootstrap/Spinner";
-import MenuTab from "../../components/MenuTab";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateForm from "../../components/DateForm";
-import AddressForm from "../../components/AddressForm";
-import TempAdd from "../../components/TempAdd";
-import SelectForm from "../../components/SelectForm";
-import TextBoxComponent from "../../components/TextBoxComponent";
 import {
   HeaderField,
   MainTabField,
 } from "../../model/LaborContract/LaborContractField";
+import SwsmConstant from "../../model/SwsmConstant";
+import Swsm from "../../vo/SwsmGrid/Swsm";
+import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 
 const LaborContractLayout = () => {
   const { SwsmLeftTableHeaders } = SwsmConstant();

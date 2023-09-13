@@ -1,11 +1,11 @@
 import { Col, Row } from "react-bootstrap";
-import RadioForm from "../../../components/RadioForm";
-import TextBoxComponent from "../../../components/TextBoxComponent";
-import DateForm from "../../../components/DateForm";
-import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
-import { INPUT_TYPE, MAIN_TAB } from "./LaborContractTabConstant";
-import SelectForm from "../../../components/SelectForm";
 import AddressForm from "../../../components/AddressForm";
+import DateForm from "../../../components/DateForm";
+import RadioForm from "../../../components/RadioForm";
+import SelectForm from "../../../components/SelectForm";
+import TextBoxComponent from "../../../components/TextBoxComponent";
+import { LABELS, RADIO_LIST } from "../../../model/CommonConstant.js";
+import { INPUT_TYPE, MAIN_TAB } from "./LaborContractTabConstant";
 
 const MainTab = (props) => {
   const { formData, submitData, columnNumber = 1 } = props;
@@ -93,7 +93,7 @@ const MainTab = (props) => {
           wrappingColTag(
             <RadioForm
               id={input.field}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               optionList={RADIO_LIST[input.field]}
               checked={formData?.item[input.field]}
@@ -109,7 +109,7 @@ const MainTab = (props) => {
           wrappingColTag(
             <AddressForm
               id={input.field}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               //   onChange={submitData}
             />,

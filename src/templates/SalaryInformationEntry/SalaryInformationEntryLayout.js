@@ -5,11 +5,10 @@ import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import { salAllow, salAllowSum, salDeduct, salDeductSum, salEmp, totalSalaryByPeriodOption } from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
-import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import { fetchData } from "../../utils/codeHelperUtils";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
-import {labels} from "../../model/CommonConstant"
+import {LABELS, labels} from "../../model/CommonConstant"
 import SiSeacrchPanel from "./searchPenel/SiSeacrchPanel";
 
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
@@ -17,6 +16,7 @@ import SiEmpDetail from "./RightSideTab/SiEmpDetail"
 
 import ReCalculation from "./modalMenu/ReCalculation";
 import InsertSalaryData from "./modalMenu/InsertSalaryData";
+import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faEyeSlash, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,21 +24,20 @@ import { faArrowLeft, faArrowRight, faEyeSlash, faLeftLong } from "@fortawesome/
 const SalaryInformationEntryLayout = () => {
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
-  
+
   const [isCardVisible, setIsCardVisible] = useState(false);
-  const [modalType , setModalType] = useState('');
+  const [modalType, setModalType] = useState("");
   const toggleCardVisibility = () => {
     setIsCardVisible(!isCardVisible);
   };
 
   // 코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(async (type, data, setRowData) => {
-
-    actions.setModalState({...state.modalState, show : true});
+    actions.setModalState({ ...state.modalState, show: true });
     setModalType(type);
-    
-    switch(type){
-      case 'default' :  
+
+    switch (type) {
+      case "default":
         let codeDataList = data.tableData;
 
         if (data.url) {
@@ -55,7 +54,7 @@ const SalaryInformationEntryLayout = () => {
           setRowData: setRowData,
           tableHeaders: data.headers,
           tableData: codeDataList,
-          usePk: data.usePk ? data.usePk : '',
+          usePk: data.usePk ? data.usePk : "",
           searchField: data.searchField,
         }));
         break;
@@ -91,9 +90,10 @@ const SalaryInformationEntryLayout = () => {
         }));  
 
         break;
-      
-      default : break;
-    } 
+
+      default:
+        break;
+    }
   }, []);
 
 
@@ -133,7 +133,7 @@ const SalaryInformationEntryLayout = () => {
       }
       </ModalComponent>
 
-      <SalaryInformationEntryHeader 
+      <SalaryInformationEntryHeader
         deleteButtonHandler={actions.deleteSelectedRows} 
         modalShow={modalShow}           
       />
@@ -255,7 +255,7 @@ const SalaryInformationEntryLayout = () => {
           {/* 조회구분 영역*/}
           <Col>
             <SelectForm
-              label={labels.inquiryYype}
+              label={LABELS.inquiryYype}
               optionList={totalSalaryByPeriodOption}
               onChange={actions.setSelectedOption}
             />
@@ -269,7 +269,7 @@ const SalaryInformationEntryLayout = () => {
               />
             </Row>
             <Row>
-              <TableForm 
+              <TableForm
                 tableHeaders={salDeductSum.headers}
                 tableData={state.salPaySumData.deductPay}
                 actions={{}}

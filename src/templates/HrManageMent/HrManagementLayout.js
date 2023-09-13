@@ -16,7 +16,9 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import HrMainTab from "./MainTab/HrMainTab";
+//import HrPrimaryTab from "./MainTab/HrPrimaryTab";
+import FormPanel from "../../components/FormPanel";
+import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -102,30 +104,33 @@ const HrManagementLayout = () => {
           {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={tabConstant.mainTabMenuList}>
-                <div>하나하나</div>
+              <MenuTab menuList={tabConstant.mainTabMenuList} ref={mainTabRef}>
+                {[
+                  <Row className="mb-5 justify-content-center">
+                    <Row>
+                      <Col
+                        className="d-flex align-items-center justify-content-center"
+                        xs
+                        md="3"
+                      >
+                        <ProfileImageForm
+                          src={empImageSrc}
+                          handleUpload={actions.updateEmpPhoto}
+                        />
+                      </Col>
+                      <Col xs md="9">
+                        <FormPanel
+                          INPUT_CONSTANT={MAIN_TAB}
+                          formData={mainTabData}
+                          submitData={actions.submitMainTabData}
+                        />
+                      </Col>
+                    </Row>
+                  </Row>,
+                  <div>둘둘</div>,
+                ]}
               </MenuTab>
-              {/* 우측 메인폼 */}
-              <Row className="mb-5 justify-content-center" ref={mainTabRef}>
-                <Row>
-                  <Col
-                    className="d-flex align-items-center justify-content-center"
-                    xs
-                    md="3"
-                  >
-                    <ProfileImageForm
-                      src={empImageSrc}
-                      handleUpload={actions.updateEmpPhoto}
-                    />
-                  </Col>
-                  <Col xs md="9">
-                    <HrMainTab
-                      formData={mainTabData}
-                      submitData={actions.submitMainTabData}
-                    />
-                  </Col>
-                </Row>
-              </Row>
+
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
