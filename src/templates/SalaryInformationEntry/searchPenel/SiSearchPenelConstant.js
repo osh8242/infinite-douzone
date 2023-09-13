@@ -1,22 +1,22 @@
-import { labels } from "../../../model/CommonConstant";
-import { INPUT_TYPE } from "../../HrManagement/MainTab/HrMainTabConstant";
+import { INPUT_TYPE, LABELS } from "../../../model/CommonConstant";
+
   
 export const SI_MAIN_SEARCHFIELD = [
     {
-      type: INPUT_TYPE.date,
-      field: "daEnter",
-      label: labels.allowMonth,
+      type: INPUT_TYPE.month,
+      field: "allowMonth",
+      label: LABELS.allowMonth,
     },
     {
       type: INPUT_TYPE.select,
-      field: "ynMateDed",
-      label: labels.inquiryYype,
+      field: "inquiryYype",
+      label: LABELS.inquiryYype,
     },
     {
       type: INPUT_TYPE.date,
-      field: "ynMateDed",
-      label: labels.paymentDate,
-      codeHelper : "Y"
+      field: "paymentDate",
+      label: LABELS.paymentDate,
+      
     },
   ];
 
@@ -24,21 +24,21 @@ export const SI_SUB_SEARCHFIELD = [
   {
     type: INPUT_TYPE.text,
     field: "searchCdEmp",
-    label: labels.cdEmp,
-    codeHelper : "Y"
+    label: LABELS.cdEmp,
+    
   },{
     type: INPUT_TYPE.text,
     field: "searchCdDept",
-    label: labels.cdDept,
-    codeHelper : "Y"
+    label: LABELS.cdDept,
+    
   },{
     type: INPUT_TYPE.text,
     field: "searchRankNo",
-    label: labels.rankNo,
+    label: LABELS.rankNo,
   },{
     type: INPUT_TYPE.text,
     field: "searchCdOccup",
-    label: labels.cdOccup,
+    label: LABELS.cdOccup,
   },
   // {
   //   type: INPUT_TYPE.date,
@@ -53,12 +53,12 @@ export const SI_SUB_SEARCHFIELD = [
   {
     type: INPUT_TYPE.text,
     field: "searchYnUnit",
-    label: labels.ynUnit,
+    label: LABELS.ynUnit,
   },
   {
     type: INPUT_TYPE.text,
     field: "searchYnForlabor",
-    label: labels.ynForlabor,
+    label: LABELS.ynForlabor,
   },
 
 ]

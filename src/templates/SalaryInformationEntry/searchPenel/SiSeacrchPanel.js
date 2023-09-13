@@ -3,7 +3,11 @@ import { Col, Row } from 'react-bootstrap';
 import SelectForm from '../../../components/SelectForm';
 import TextBoxComponent from '../../../components/TextBoxComponent';
 import SearchPanel from '../../../components/SearchPanel';
+
+import { SI_MAIN_SEARCHFIELD, SI_SUB_SEARCHFIELD } from "./SiSearchPenelConstant";
 import { codeHelperData_cdDept, codeHelperData_emplist, codeHelperData_occup, codeHelperData_paymentDate, codeHelperData_rankNo, forLaborOption, salaryDivisionOption, unitOption } from '../../../model/SalaryInformationEntry/SalConstant';
+import FormPanel from '../../../components/FormPanel';
+import { INPUT_TYPE, LABELS } from '../../../model/CommonConstant';
 
 const SiSeacrchPanel = (props) => {
     const {
@@ -18,21 +22,22 @@ const SiSeacrchPanel = (props) => {
         <div>
           {/* 기본 검색조건 */}
           <SearchPanel onSearch={onSearch} showAccordion>
-          {/* <FormPanel 
-            INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
-            //formData = 
-          /> */}
-          <Row>
+            <FormPanel
+              INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
+            /> 
+            
+          {/* <Row>
             <Col>
               <TextBoxComponent
+                name='allowYear'
                 type='month'
                 label={"귀속연월"}
                 value={state.searchVO.allowMonth}
-                onChange={(e, value) => actions.setAllowMonth(value)}
               />
             </Col>
             <Col>
               <SelectForm
+
                 label={"구분"}
                 optionList={salaryDivisionOption}
                 onChange={actions.setSalDivision}
@@ -48,11 +53,14 @@ const SiSeacrchPanel = (props) => {
                 onClickCodeHelper={() => modalShow('default', codeHelperData_paymentDate, actions.setPaymentDate)}
               />
             </Col>
-          </Row>
+          </Row> */}
 
           {/* 상세 검색조건 */}
-          <div>
-            <Row>
+           <div>
+           <FormPanel
+              INPUT_CONSTANT = {SI_SUB_SEARCHFIELD}
+            /> 
+            {/* <Row>
               <Col>
                 <TextBoxComponent
                   name="searchEmpCd"
@@ -93,26 +101,6 @@ const SiSeacrchPanel = (props) => {
                 />
               </Col>
             </Row>
-
-            {/* <Row>
-              <Col>
-                <TextBoxComponent 
-                  name="searchCdField"  
-                  label={"현장코드"}  
-                  value={state.searchVO.searchCdField}
-                  onChange={actions.setSearchCdField}
-                  codeHelper/>
-              </Col>
-              <Col>
-                <TextBoxComponent 
-                  name="searchCdProject"  
-                  label={"프로젝트코드"}  
-                  value={state.searchVO.searchCdField}
-                  onChange={actions.setSearchCdProject}
-                  codeHelper/>
-              </Col>
-            </Row> */}
-
             <Row>
               <Col>
                 <SelectForm
@@ -126,8 +114,8 @@ const SiSeacrchPanel = (props) => {
                   optionList={forLaborOption}
                 />
               </Col>
-            </Row>
-          </div>
+            </Row> */}
+          </div> 
         </SearchPanel>
         </div>
     );
