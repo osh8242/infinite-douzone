@@ -1,46 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import LaborContractModel from "../../model/LaborContract/LaborContractModel";
+import SearchPanel from "../../components/SearchPanel";
 import TestModel from "../../model/LaborContract/TestModel";
 import LaborContractHeader from "../LaborContractHeader";
-import SearchPanel from "../../components/SearchPanel";
 // import LaborContractConstant from "./src/model/LaborContract/LaborContractConstant";
-import SwsmConstant from "../../model/SwsmConstant";
-import DispatcherComponent from "../../components/DispatcherCompoenet";
-import { LeftTableHeaders } from "../../model/LaborContract/LaborContractConstant";
-import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
-
-import TableForm from "../../components/TableForm";
-import Swsm from "../../vo/SwsmGrid/Swsm";
-import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import Spinner from "react-bootstrap/Spinner";
-import MenuTab from "../../components/MenuTab";
 import { Scrollbars } from "react-custom-scrollbars";
-import DateForm from "../../components/DateForm";
-import AddressForm from "../../components/AddressForm";
-import TempAdd from "../../components/TempAdd";
-import TextBoxComponent from "../../components/TextBoxComponent";
+import DispatcherComponent from "../../components/DispatcherCompoenet";
+import MenuTab from "../../components/MenuTab";
+import TableForm from "../../components/TableForm";
+import {
+  LeftTableHeaders,
+  SubTabHeaders,
+  subTabMenuList,
+} from "../../model/LaborContract/LaborContractConstant";
 import {
   HeaderField,
   MainTabField,
 } from "../../model/LaborContract/LaborContractField";
+import SwsmConstant from "../../model/SwsmConstant";
+import Swsm from "../../vo/SwsmGrid/Swsm";
+import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 
 const LaborContractLayout = () => {
-  const { SwsmLeftTableHeaders, subTabMenuList } = SwsmConstant();
+  const { SwsmLeftTableHeaders } = SwsmConstant();
   const { state, actions, mainTablePkValue } = TestModel();
   const { leftTableData, mainTabData, subTableData, selectedRows } = state;
-
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
         {/* Header */}
-        <SearchPanel>
-          <Row md="10">
+        <SearchPanel showAccordion>
+          <Row>
             {HeaderField.map((field, idx) => (
               <Col key={idx}>{DispatcherComponent(field)}</Col>
             ))}
           </Row>
+
+          <div></div>
         </SearchPanel>
         <Row>
           {/* LeftGrid */}
@@ -71,7 +69,7 @@ const LaborContractLayout = () => {
               <Scrollbars style={{ height: 470, overflow: "hidden" }}>
                 <Row>
                   {MainTabField.map((field, idx) => (
-                    <Col key={idx} xs md="9">
+                    <Col key={idx} xs md="10">
                       {DispatcherComponent(field)}
                     </Col>
                   ))}

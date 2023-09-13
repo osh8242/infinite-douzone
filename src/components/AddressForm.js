@@ -3,6 +3,8 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 import "../styles/addressForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const AddressForm = (props) => {
   /*
@@ -13,18 +15,35 @@ const AddressForm = (props) => {
     addHome2: 상세주소
     pkValue: pk값(사원코드, cdEmp)
   */
-  const { isZonecode, zipHome, addHome1, addHome2, pkValue, actions } = props;
+  const {
+    isZonecode,
+    zipHome,
+    addHome1,
+    addHome2,
+    pkValue,
+    actions,
+    md = 4,
+    mdValue = 8,
+    size,
+    iconBtn,
+  } = props;
 
   const zipHomeRef = useRef();
   const addHome1Ref = useRef();
   const addHome2Ref = useRef();
 
   //비동기 데이터 load
+  // useEffect(() => {
+  //   zipHomeRef.current.value = zipHome;
+  //   addHome1Ref.current.value = addHome1;
+  //   addHome2Ref.current.value = addHome2;
+  // });
+
   useEffect(() => {
-    zipHomeRef.current.value = zipHome;
-    addHome1Ref.current.value = addHome1;
-    addHome2Ref.current.value = addHome2;
-  });
+    if (zipHomeRef.current) zipHomeRef.current.value = zipHome;
+    if (addHome1Ref.current) addHome1Ref.current.value = addHome1;
+    if (addHome2Ref.current) addHome2Ref.current.value = addHome2;
+  }, [zipHome, addHome1, addHome2]);
 
   // 선택된 주소를 주소 필드에 업데이트 및 update 요청(우편번호와 주소)
   const handleAddressSelected = ({ zonecode, address }) => {
@@ -84,6 +103,7 @@ const AddressForm = (props) => {
                   name="zonecode"
                   ref={zipHomeRef}
                   disabled
+                  size={size}
                 />
               )}
 
@@ -95,14 +115,18 @@ const AddressForm = (props) => {
                 ref={addHome1Ref}
                 disabled
               />
-
               {/* 버튼 클릭 시 Post 모달 호출 */}
+
               <Button
                 className="addressSearchBtn"
                 variant="secondary"
                 onClick={() => setModalState({ ...modalState, show: true })}
               >
-                검색
+                {iconBtn ? (
+                  <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
+                ) : (
+                  "검색"
+                )}
               </Button>
             </div>
           </div>
@@ -117,6 +141,7 @@ const AddressForm = (props) => {
                 type="text"
                 name="address-detail"
                 onKeyDown={handleKeyDown}
+                size={size}
               />
             </div>
           </div>

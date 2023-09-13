@@ -1,17 +1,8 @@
 // 작성자 : 오승환
-import { Col, Container, Row } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import RadioForm from "../../components/RadioForm";
 import TableForm from "../../components/TableForm";
-import TextBoxComponent from "../../components/TextBoxComponent";
-import {
-  contractRadioList,
-  genderRadioList,
-  labels,
-  marryRadioList,
-} from "../../model/CommonConstant";
 import {
   leftStaticsTableConstant,
   leftTableConstant,
@@ -25,7 +16,10 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import HrSearchPanel from "./searchPanel/HrSearchPanel";
+//import HrPrimaryTab from "./MainTab/HrPrimaryTab";
+import FormPanel from "../../components/FormPanel";
+import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
+import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -79,8 +73,7 @@ const HrManagementLayout = () => {
               <div className="leftTable">
                 <TableForm
                   tableName="EMP"
-                  showCheckbox
-                  showHeaderArrow
+                  //showCheckbox
                   sortable
                   rowAddable
                   tableHeaders={leftTableConstant.headers}
@@ -89,9 +82,10 @@ const HrManagementLayout = () => {
                   actions={{
                     setTableData: actions.setLeftTableData,
                     setPkValue: actions.setLeftTablePkValue,
-                    setEditedRow: actions.setEditedEmp,
+                    insertNewRow: actions.insertEmp,
+                    updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
-                    deleteCurrentRow: actions.deleteCurrentRow,
+                    deleteRow: actions.deleteRow,
                     getRowObject: Emp,
                   }}
                 />
@@ -110,139 +104,33 @@ const HrManagementLayout = () => {
           {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={tabConstant.mainTabMenuList}>
-                <div>하나하나</div>
+              <MenuTab menuList={tabConstant.mainTabMenuList} ref={mainTabRef}>
+                {[
+                  <Row className="mb-5 justify-content-center">
+                    <Row>
+                      <Col
+                        className="d-flex align-items-center justify-content-center"
+                        xs
+                        md="3"
+                      >
+                        <ProfileImageForm
+                          src={empImageSrc}
+                          handleUpload={actions.updateEmpPhoto}
+                        />
+                      </Col>
+                      <Col xs md="9">
+                        <FormPanel
+                          INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                          formData={mainTabData}
+                          submitData={actions.submitMainTabData}
+                        />
+                      </Col>
+                    </Row>
+                  </Row>,
+                  <div>둘둘</div>,
+                ]}
               </MenuTab>
-              {/* 우측 메인폼 */}
-              <Row className="mb-5 justify-content-center" ref={mainTabRef}>
-                <Row>
-                  <Col
-                    className="d-flex align-items-center justify-content-center"
-                    xs
-                    md="4"
-                  >
-                    <ProfileImageForm
-                      src={empImageSrc}
-                      handleUpload={actions.updateEmpPhoto}
-                    />
-                  </Col>
-                  <Col xs md="8">
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="nmEnName"
-                          label={labels.nmEnName}
-                          value={mainTabData.item?.nmEnName}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="nmChName"
-                          label={labels.nmChName}
-                          value={mainTabData.item?.nmChName}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="noSocial"
-                          label={labels.noSocial}
-                          disabled
-                          value={mainTabData.item?.noSocial}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="fgSex"
-                          label={labels.fgSex}
-                          disabled
-                          optionList={genderRadioList}
-                          checked={mainTabData.item?.fgSex}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daBirth"
-                          type="date"
-                          label={labels.daBirth}
-                          value={mainTabData.item?.daBirth}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="fgWedding"
-                          label={labels.fgWedding}
-                          optionList={marryRadioList}
-                          checked={mainTabData.item?.fgWedding}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="cdDept"
-                          label={labels.cdDept}
-                          disabled
-                          value={mainTabData.item?.cdDept}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="rankNo"
-                          label={labels.rankNo}
-                          disabled
-                          value={mainTabData.item?.ankNo}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Col xs md="6">
-                      <TextBoxComponent
-                        id="cdOffduty"
-                        label={labels.cdOffduty}
-                        value={mainTabData.item?.cdOffduty}
-                        onEnter={actions.submitMainTabData}
-                      />
-                    </Col>
-                    <Col xs md="6">
-                      <RadioForm
-                        id="ynDrawContracts"
-                        label={labels.ynDrawContracts}
-                        optionList={contractRadioList}
-                        checked={mainTabData.item?.ynDrawContracts}
-                        onChange={actions.submitMainTabData}
-                      />
-                    </Col>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daEnter"
-                          label={labels.daEnter}
-                          disabled
-                          value={mainTabData.item?.daEnter}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daRetire"
-                          label={labels.daRetire}
-                          disabled
-                          value={mainTabData.item?.daRetire}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Row>
+
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
@@ -250,7 +138,6 @@ const HrManagementLayout = () => {
                 <TableForm
                   tableName="EMPFAM"
                   showCheckbox
-                  showHeaderArrow
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}

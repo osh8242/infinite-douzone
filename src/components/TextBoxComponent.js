@@ -19,9 +19,11 @@ function TextBoxComponent(props) {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
     // custom type 옵션          ex) callNumber, email, noSocial(내외국민,주민번호,성별 조합)
     id,
+    subId,
     name,
     label,
     value,
+    subValue,
 
     rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
     //codeHelper, // 코드헬퍼 아이콘 생성
@@ -62,7 +64,9 @@ function TextBoxComponent(props) {
 
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
+  const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
+  const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   // callNumber type인 경우 '-'를 기준으로 값을 분리하여 배열에 할당한다.
@@ -76,8 +80,9 @@ function TextBoxComponent(props) {
       setInputCallNumber(value.split("-") || ["", "", ""]);
     } else {
       setInputValue(value || "");
+      setInputSubValue(subValue || "");
     } // value prop이 변경될 때마다 inputValue를 업데이트
-  }, [value]);
+  }, [value, subValue]);
 
   useEffect(() => {
     console.log("sendValue", sendValue);
@@ -91,6 +96,7 @@ function TextBoxComponent(props) {
         makeProcessedValue();
       }
       onEnter && onEnter(event, sendValue, id);
+      if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 
@@ -123,8 +129,10 @@ function TextBoxComponent(props) {
       }
     } else {
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
+      if (event.target.id === id)
       setInputValue(makeProcessedValue(newValue)); // data 가공
-      onChange && onChange(newValue);
+      else setInputSubValue(makeProcessedValue(newValue));
+    onChange && onChange(newValue);
     }
   };
 
@@ -328,8 +336,23 @@ function TextBoxComponent(props) {
                   // md={6}
                   className="widthFull d-flex align-items-center justify-content-center"
                 >
-                  {renderFormControl()}
-                </div>
+                  <Form.Control
+                    value={inputSubValue}
+                    type={type}
+                    id={subId}
+                    name={name}
+                    size={size}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    plaintext={plaintext}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onClick={onClick}
+                    onKeyDown={handleKeyDown}
+                    placeholder={placeholder ? placeholder : undefined}
+                    style={style}
+                  />
+                </Col>
               </>
             ) : (
               ""

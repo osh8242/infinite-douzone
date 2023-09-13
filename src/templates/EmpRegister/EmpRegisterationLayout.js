@@ -1,7 +1,6 @@
 // 작성자: 김진
 // 사원등록 페이지 전용 레이아웃
 
-import { Col, Container, Row } from "react-bootstrap";
 import React, { useCallback, useRef, useState } from "react";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/commonComponent.css";
@@ -12,28 +11,40 @@ import MenuTab from "../../components/MenuTab";
 import TextBoxComponent from "../../components/TextBoxComponent";
 import AddressForm from "../../components/AddressForm";
 import CallNumberForm from "../../components/CallNumberForm";
-import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
-// import EmailForm from "../../components/EmailForm";
-import DateTest from "../../components/DateTest";
-import TableForm from "../../components/TableForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
+import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
+import TableForm from "../../components/TableForm";
 import {
-  ynForList, //내외국인 구분
-  genderRadioList, //성별구분
-  emailList, //이메일 도메인 리스트
-  labels, //속성명
+  LABELS,
+  RADIO_LIST,
+  emailList,
+  mainTabMenuListForEmpRegister,
 } from "../../model/CommonConstant";
-import {
-  EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
+import EmpConstant, {
   EmpRegisterLeftHeaders,
-  mainTabMenuListForEmpRegister, //메뉴 탭 목록
-  codeHelperparams, //코드도움 상수 값
 } from "../../model/EmpRegister/EmpConstant";
+import "../../styles/EmpRegister/empRegisterationLayout.css";
+import { Col, Container, Row } from "react-bootstrap";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
   const { state, actions } = EmpRegisterationModel();
+
+  //고정된 값을 가지는 state들
+
+  const {
+    EmpRegisterUndeletedEmpHeaders, //미삭제 사원목록 테이블 헤더
+  } = EmpConstant();
+
+  // 메뉴 탭 전환 기능 추후 수정 예정
+  // const [selectedMenu, setSelectedMenu] = useState(0);
+
+  //코드도움 Modal 관리 값 -> api로 DB에서 데이터 가져올 때 사용
+  const [apiFlag, setApiFlag] = useState(false);
+
+  //코드도움 상수 값
+  const { codeHelperparams } = EmpConstant();
 
   //코드도움 아이콘 클릭이벤트
   const codeHelperShow = useCallback(
@@ -137,7 +148,7 @@ function EmpRegisterationLayout() {
                 <div id="baseDataContents">
                   {/* <div id="baseDataContentsBackground"></div> */}
                   <TextBoxComponent
-                    label={labels.daEnter}
+                    label={LABELS.daEnter}
                     id="daEnter"
                     type="date"
                     value={state.mainTabData.daEnter}
@@ -146,10 +157,10 @@ function EmpRegisterationLayout() {
                     }}
                   />
                   <NoSocialFormForEmpRegister
-                    label={labels.noSocial}
-                    ynForList={ynForList}
+                    label={LABELS.noSocial}
+                    ynForList={RADIO_LIST.ynForList}
                     ynFor={state.mainTabData.ynFor}
-                    genderList={genderRadioList}
+                    genderList={RADIO_LIST.genderList}
                     fgSex={state.mainTabData.fgSex}
                     noSocial={state.mainTabData.noSocial}
                     pkValue={state.mainTablePkValue}
@@ -159,7 +170,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="abbNation"
-                    label={labels.abbNation}
+                    label={LABELS.abbNation}
                     // onKeyDown={submitMainTabData}
                     value={state.mainTabData.abbNation}
                     // onChange={actions.setSearchAbbNation}
@@ -177,7 +188,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="cdNation"
-                    label={labels.cdNation}
+                    label={LABELS.cdNation}
                     value={state.mainTabData.cdNation}
                     // onChange={actions.setSearchCdNation}
                     setRowData={actions.setAddRow}
@@ -216,32 +227,32 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="telHome1"
-                    label={labels.telHome}
+                    label={LABELS.telHome}
                     type="callNumber"
                     value={state.mainTabData.telHome1}
                   />
                   <TextBoxComponent
                     id="celEmp1"
-                    label={labels.celEmp}
+                    label={LABELS.celEmp}
                     type="callNumber"
                     value={state.mainTabData.celEmp1}
                   />
                   <TextBoxComponent
                     id="emEmp"
-                    label={labels.emEmp}
+                    label={LABELS.emEmp}
                     type="email"
                     value={state.mainTabData.emEmp}
                   />
                   <TextBoxComponent
                     id="idMsn"
-                    label={labels.idMsn}
+                    label={LABELS.idMsn}
                     value={state.mainTabData.idMsn}
                     onEnter={submitMainTabData}
                     // onKeyDown={(event) => {}}
                   />
                   <TextBoxComponent
                     id="cdDept"
-                    label={labels.cdDept}
+                    label={LABELS.cdDept}
                     value={state.mainTabData.cdDept}
                     // onKeyDown={submitMainTabData}
                     // onChange={(e) => {
@@ -262,7 +273,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="cdOccup"
-                    label={labels.cdOccup}
+                    label={LABELS.cdOccup}
                     value={state.mainTabData.cdOccup}
                     // onChange={actions.setSearchCdOccup}
                     setRowData={actions.setAddRow}
@@ -279,7 +290,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="rankNo"
-                    label={labels.rankNo}
+                    label={LABELS.rankNo}
                     value={state.mainTabData.rankNo}
                     // onChange={actions.setSearchRankNo}
                     setRowData={actions.setAddRow}
@@ -296,7 +307,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="cdSalcls"
-                    label={labels.cdSalcls}
+                    label={LABELS.cdSalcls}
                     value={state.mainTabData.cdSalcls}
                     // onChange={actions.setSearchCdSalcls}
                     setRowData={actions.setAddRow}
@@ -313,7 +324,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="cdField"
-                    label={labels.cdField}
+                    label={LABELS.cdField}
                     value={state.mainTabData.cdField}
                     // onChange={actions.setSearchCdField}
                     setRowData={actions.setAddRow}
@@ -330,7 +341,7 @@ function EmpRegisterationLayout() {
                   />
                   <TextBoxComponent
                     id="cdProject"
-                    label={labels.cdProject}
+                    label={LABELS.cdProject}
                     value={state.mainTabData.cdProject}
                     // onChange={actions.setSearchCdProject}
                     setRowData={actions.setAddRow}
@@ -349,7 +360,7 @@ function EmpRegisterationLayout() {
                   {state.mainTabData.jobOk === "N" ||
                   state.mainTabData.daRetire ? (
                     <TextBoxComponent
-                      label={labels.daRetire}
+                      label={LABELS.daRetire}
                       id="daRetire"
                       type="date"
                       value={state.mainTabData.daRetire}
@@ -360,20 +371,20 @@ function EmpRegisterationLayout() {
                     />
                   ) : (
                     <TextBoxComponent
-                      label={labels.daRetire}
+                      label={LABELS.daRetire}
                       placeholder={"----년 --월 --일"}
                       disabled={"disabled"}
                     />
                     // <DateTest
                     //   id="daRetire"
-                    //   label={labels.daRetire}
+                    //   label={LABELS.daRetire}
                     //   value={state.mainTabData.daRetire}
                     //   onChange={submitMainTabData}
                     // />
                   )}
 
                   <CallNumberForm
-                    label={labels.cdBank}
+                    label={LABELS.cdBank}
                     val1={state.mainTabData.cdBank}
                     val2={state.mainTabData.noBnkacct}
                     val3={state.mainTabData.nmBnkowner}

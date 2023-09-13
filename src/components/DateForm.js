@@ -15,18 +15,20 @@ function DateForm(props) {
     isPeriod,
     type,
     value,
-    value2,
+    subValue,
     actions,
-    pkValue,
+    // pkValue,
     labelKey,
     labelKey2,
     onChange,
+    id,
+    subId,
   } = props;
 
   // const [date, setDate] = useState(new Date());
   // const [inputValue, setInputValue] = useState(value);
   const [startDate, setStartDate] = useState(value || "");
-  const [endDate, setEndDate] = useState(value2 || "");
+  const [endDate, setEndDate] = useState(subValue || "");
 
   DateForm.defaultProps = {
     label: "",
@@ -39,15 +41,22 @@ function DateForm(props) {
   }, [value]);
 
   useEffect(() => {
-    setEndDate(value2 || "");
-  }, [value2]);
+    setEndDate(subValue || "");
+  }, [subValue]);
 
   const onChangeHandeler = (e) => {
+    console.log("onChange!");
+    console.log(e);
+    console.log(e.target);
+    console.log(e.target.value);
     const value = e.target.value;
-    onChange(e, value);
+    if (e.target.id === id) setStartDate(value);
+    else setEndDate(value);
+
+    onChange && onChange(e, value);
   };
 
-  const handleStartDateChange = (event) => {
+  const handleStartDateChange = (event, newValue) => {
     setStartDate(event.target.value);
     if (props.onChangeStartDate) {
       props.onChangeStartDate(event.target.value);
@@ -83,19 +92,21 @@ function DateForm(props) {
       )}
       <Col md="8" className="d-flex align-items-center justify-content-center">
         <Form.Control
+          id={id}
           type={type ? type : "date"}
           placeholder="YYYY.MM.DD"
           value={startDate}
-          onChange={handleStartDateChange}
+          onChange={onChangeHandeler}
         />
         {isPeriod && (
           <>
             ~
             <Form.Control
+              id={subId}
               type={type}
               placeholder="YYYY.MM.DD"
               value={endDate}
-              onChange={handleEndDateChange}
+              onChange={onChangeHandeler}
             />
           </>
         )}

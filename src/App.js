@@ -1,17 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Header from "./templates/Header";
 import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayout";
+import Header from "./templates/Header";
+
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
-// import LaborContractGrid from "./templates/LaborContractGrid";
-// import LaborContractGrid from "./LaborContract/LaborContract";
-import LaborContractGrid from "./templates/LaborContract/LaborContractLayout";
-import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 import LoginGrid from "./Login/LoginGrid";
+
+// import LaborContractGrid from "./templates/LaborContract/LaborContractLayout";
+import LaborContractGrid from "./templates/LaborContract/TestLayout";
+import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 // import SignUp from "./templates/Login/Sign";
 import SignUp from "./SignUp/SignUp";
 import MainHome from "./templates/MainHome";
-
 function App() {
   return (
     <div>

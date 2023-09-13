@@ -1,6 +1,6 @@
 ////////////////////////////// 요청 Mapping Pattern
 export const urlPattern = {
-  insertEmp: "",
+  insertEmp: "/emp/insertEmp",
   updateEmp: "",
   deleteEmp: "/emp/deleteEmp",
   getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",

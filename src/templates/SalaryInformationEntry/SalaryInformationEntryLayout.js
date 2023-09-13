@@ -1,10 +1,13 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import CodeHelperModal from "../../components/CodeHelperModal";
+import ModalComponent from "../../components/ModalComponent";
 import SearchPanel from "../../components/SearchPanel";
 import SelectForm from "../../components/SelectForm";
 import TableForm from "../../components/TableForm";
 import TextBoxComponent from "../../components/TextBoxComponent";
+import { LABELS } from "../../model/CommonConstant";
 import {
   codeHelperData_cdDept,
   codeHelperData_emplist,
@@ -22,13 +25,10 @@ import {
   unitOption,
 } from "../../model/SalaryInformationEntry/SalConstant";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
-import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import { fetchData } from "../../utils/codeHelperUtils";
-import ModalComponent from "../../components/ModalComponent";
-import CodeHelperModal from "../../components/CodeHelperModal";
 import InsertSalaryData from "./InsertSalaryData";
 import ReCalculation from "./ReCalculation";
-import { labels } from "../../model/CommonConstant";
+import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 
 const SalaryInformationEntryLayout = ({}) => {
   //상수
@@ -135,12 +135,6 @@ const SalaryInformationEntryLayout = ({}) => {
         <SearchPanel onSearch={onSearch} showAccordion>
           <Row>
             <Col>
-              <TextBoxComponent
-                type="month"
-                label={"귀속연월"}
-                value={state.searchVO.allowMonth}
-                onChange={(e, value) => actions.setAllowMonth(value)}
-              />{" "}
               <TextBoxComponent
                 type="month"
                 label={"귀속연월"}
@@ -344,7 +338,7 @@ const SalaryInformationEntryLayout = ({}) => {
           <Col>
             {/* 조회구분 영역*/}
             <SelectForm
-              label={labels.inquiryYype}
+              label={LABELS.inquiryYype}
               optionList={totalSalaryByPeriodOption}
               onChange={actions.setSelectedOption}
             />
@@ -378,7 +372,7 @@ const SalaryInformationEntryLayout = ({}) => {
                     {state.saInfoDetailData ? (
                       <>
                         <TextBoxComponent
-                          label={labels.daEnter}
+                          label={LABELS.daEnter}
                           value={state.saInfoDetailData.daEnter}
                         />
                         <TextBoxComponent
@@ -417,19 +411,19 @@ const SalaryInformationEntryLayout = ({}) => {
                           value={state.saInfoDetailData.daRetire}
                         />
                         <TextBoxComponent
-                          label={labels.cdOccup}
+                          label={LABELS.cdOccup}
                           value={state.saInfoDetailData.cdOccup}
                         />
                         <TextBoxComponent
-                          label={labels.cdDept}
+                          label={LABELS.cdDept}
                           value={state.saInfoDetailData.cdDept}
                         />
                         <TextBoxComponent
-                          label={labels.cdField}
+                          label={LABELS.cdField}
                           value={state.saInfoDetailData.cdField}
                         />
                         <TextBoxComponent
-                          label={labels.cdProject}
+                          label={LABELS.cdProject}
                           value={state.saInfoDetailData.cdProject}
                         />
                         <TextBoxComponent
