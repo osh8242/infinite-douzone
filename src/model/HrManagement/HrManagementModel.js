@@ -222,7 +222,7 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (editedEmp?.isNew && Object.keys(editedEmp).length !== 0)
       axios
-        .post(url + "/emp/insertEmp", editedEmp.item)
+        .post(url + urlPattern.insertEmp, editedEmp.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmp({});
@@ -233,6 +233,20 @@ const HrManagementModel = () => {
         });
   }, [editedEmp]);
 
+  //추가된 사원 insert 요청
+  const insertEmp = useCallback((emp) => {
+    axios
+      .post(url + "/emp/insertEmp", emp)
+      .then((response) => {
+        if (response.data === 1) console.log("Emp insert 성공");
+        setEditedEmp({});
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
   //수정된 사원 update 요청
   useEffect(() => {
     if (editedEmp)
@@ -240,7 +254,7 @@ const HrManagementModel = () => {
         axios
           .put(url + "/emp/updateEmp", editedEmp.item)
           .then((response) => {
-            if (response.data === 1) console.log("Emp 업데이트 성공");
+            if (response.data === 1) console.log("Emp update 성공");
             setEditedEmp();
           })
           .catch((error) => {
@@ -249,10 +263,23 @@ const HrManagementModel = () => {
           });
   }, [editedEmp]);
 
-  //추가된 사원가족 insert 요청
-  const insertEmpFam = useCallback((row) => {
+  const updateEmp = useCallback((emp) => {
     axios
-      .post(url + urlPattern.insertEmpFam, row)
+      .put(url + "/emp/updateEmp", emp)
+      .then((response) => {
+        if (response.data === 1) console.log("Emp update 성공");
+        setEditedEmp();
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  //추가된 사원가족 insert 요청
+  const insertEmpFam = useCallback((empFam) => {
+    axios
+      .post(url + urlPattern.insertEmpFam, empFam)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam insert 성공");
       })
@@ -263,9 +290,9 @@ const HrManagementModel = () => {
   }, []);
 
   //수정된 사원가족 update 요청
-  const updateEmpFam = useCallback((row) => {
+  const updateEmpFam = useCallback((empFam) => {
     axios
-      .put(url + urlPattern.updateEmpFam, row)
+      .put(url + urlPattern.updateEmpFam, empFam)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam 업데이트 성공");
       })
@@ -388,7 +415,8 @@ const HrManagementModel = () => {
 
       setLeftTableData,
       setLeftTablePkValue,
-      setEditedEmp,
+      insertEmp,
+      updateEmp,
 
       submitMainTabData,
       setMainTabData,

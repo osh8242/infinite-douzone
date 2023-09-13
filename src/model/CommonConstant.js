@@ -2,6 +2,21 @@ export const url = "http://localhost:8888";
 
 export const mainTabMenuListForEmpRegister = ["기초정보", "가족사항"];
 
+export const RADIO_LIST = {
+  fgSex: [
+    { key: "M", value: "남자" },
+    { key: "F", value: "여자" },
+  ],
+  fgWedding: [
+    { key: "Y", value: "기혼" },
+    { key: "N", value: "미혼" },
+  ],
+  ynDrawContracts: [
+    { key: "Y", value: "작성" },
+    { key: "N", value: "미작성" },
+  ],
+};
+
 export const genderRadioList = [
   { key: "M", value: "남자" },
   { key: "F", value: "여자" },
