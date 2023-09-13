@@ -3,11 +3,13 @@ import { Col, Row } from "react-bootstrap";
 import RadioForm from "../../../components/RadioForm";
 import TextBoxComponent from "../../../components/TextBoxComponent";
 import { INPUT_TYPE, LABELS, RADIO_LIST } from "../../../model/CommonConstant.js";
-import { MAIN_TAB } from "./HrMainTabConstant";
 
-const HrPrimaryTab = (props) => {
-  const { formData, submitData, columnNumber = 2 } = props;
-
+const HrPrimaryTab = ({
+  INPUT_CONSTANT,
+  formData,
+  submitData,
+  columnNumber = 2,
+}) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
   const wrappingColTag = (input, index, span = 1) => {
@@ -20,7 +22,7 @@ const HrPrimaryTab = (props) => {
     );
   };
 
-  const inputs = MAIN_TAB.primaryTabInputs;
+  const inputs = INPUT_CONSTANT.primaryTabInputs;
 
   inputs.forEach((input, index) => {
     switch (input.type) {
@@ -104,6 +106,7 @@ HrPrimaryTab.defaultProp = {
 };
 
 HrPrimaryTab.propsTypes = {
+  INPUT_CONSTANT: PropTypes.array.isRequired,
   formData: PropTypes.object.isRequired,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,

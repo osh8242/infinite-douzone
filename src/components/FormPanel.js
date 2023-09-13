@@ -1,15 +1,10 @@
 import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
-import RadioForm from "../../../components/RadioForm";
-import TextBoxComponent from "../../../components/TextBoxComponent";
-// 라디오 리스트 상수 [필수]
-import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
-// 인풋 상수 [필수]
-import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
+import { INPUT_TYPE, LABELS, RADIO_LIST } from "../model/CommonConstant.js";
+import RadioForm from "./RadioForm";
+import TextBoxComponent from "./TextBoxComponent";
 
-const FormPanel = (props) => {
-  const { formData, submitData, columnNumber = 2 } = props;
-
+const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
   const wrappingColTag = (input, index, span = 1) => {
@@ -22,7 +17,7 @@ const FormPanel = (props) => {
     );
   };
 
-  const inputs = MAIN_TAB.primaryTabInputs;
+  const inputs = INPUT_CONSTANT.primaryTabInputs;
 
   inputs.forEach((input, index) => {
     switch (input.type) {
@@ -31,7 +26,7 @@ const FormPanel = (props) => {
           wrappingColTag(
             <TextBoxComponent
               id={input.field}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               value={formData.item?.[input.field] || ""}
               onEnter={submitData}
@@ -47,7 +42,7 @@ const FormPanel = (props) => {
             <TextBoxComponent
               id={input.field}
               type={"date"}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               value={formData.item?.[input.field] || ""}
               onChange={submitData}
@@ -64,7 +59,7 @@ const FormPanel = (props) => {
           wrappingColTag(
             <RadioForm
               id={input.field}
-              label={labels[input.field]}
+              label={LABELS[input.field]}
               disabled={input.disabled}
               optionList={RADIO_LIST[input.field]}
               checked={formData.item?.[input.field]}
@@ -106,6 +101,7 @@ FormPanel.defaultProp = {
 };
 
 FormPanel.propsTypes = {
+  INPUT_CONSTANT: PropTypes.array.isRequired,
   formData: PropTypes.object.isRequired,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
