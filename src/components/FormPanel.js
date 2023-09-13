@@ -39,9 +39,8 @@ const FormPanel = ({
     const value = input.value || formData.item?.[input.field] || "";
     const disabled = input.disabled;
     const codeHelper = codeHelperFn? codeHelperFn[input.field] : null;
-    const onChangeFn = onChange? onChange[input.field] : null;  
+    const onChangeFn = onChange? onChange[input.field] : null;
 
-    console.log(value);
     switch (input.type) {
       case INPUT_TYPE.text:
         component = (

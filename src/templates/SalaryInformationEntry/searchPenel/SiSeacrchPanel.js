@@ -32,7 +32,7 @@ const SiSeacrchPanel = (props) => {
               onChangeFn={{
                 allowMonth: (newValue)=> actions.setAllowMonth(newValue),
                 salDivision: (newValue)=> actions.setSalDivision(newValue),
-                paymentDate: (newValue)=>actions.setPaymentDate(newValue),
+                paymentDate: (newValue)=> actions.setPaymentDate(newValue)
               }}
               columnNumber={3}
             /> 
@@ -70,6 +70,12 @@ const SiSeacrchPanel = (props) => {
            <div>
            <FormPanel
               INPUT_CONSTANT = {SI_SUB_SEARCHFIELD}
+              formData={[
+                { item: { searchCdEmp: state.searchCdEmp }},
+                { item: { searchCdDept: state.searchCdDept }},
+                { item: { searchRankNo : state.searchRankNo }},
+                { item: { searchCdOccup : state.searchCdOccup }},
+              ]}
               codeHelperFn={{
                 searchCdEmp: () => modalShow('default', codeHelperData_emplist, actions.setSearchCdEmp),
                 searchCdDept: () => modalShow('default', codeHelperData_cdDept, actions.setSearchCdDept),

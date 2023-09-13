@@ -181,6 +181,9 @@ const SalaryInformationEntryModel = () => {
     console.log(allowMonth);
     console.log(salDivision);
     console.log(paymentDate);
+    console.log(searchCdEmp);
+    console.log(searchCdDept);
+    console.log(searchRankNo);
     console.log('++++++++++++++');
     let searchParams = {
       allowYear : allowYear,
