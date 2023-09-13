@@ -8,7 +8,7 @@ import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/Sala
 import { fetchData } from "../../utils/codeHelperUtils";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
-import {LABELS, labels} from "../../model/CommonConstant"
+import {LABELS} from "../../model/CommonConstant"
 import SiSeacrchPanel from "./searchPenel/SiSeacrchPanel";
 
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";

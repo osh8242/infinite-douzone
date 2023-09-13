@@ -6,9 +6,8 @@ import { Form, Row } from "react-bootstrap";
 import TextBoxComponent from "./TextBoxComponent";
 
 import PropTypes from "prop-types";
-import { LABELS } from "../model/CommonConstant";
 import TableForm from "./TableForm";
-import {labels} from "../model/CommonConstant";
+import {LABELS} from "../model/CommonConstant";
 
 function CodeHelperModal(props) {
   const {
@@ -73,7 +72,7 @@ function CodeHelperModal(props) {
             <Form.Group>
               <TextBoxComponent
                 type="text"
-                label={labels.searchText}
+                label={LABELS.searchText}
                 value={searchTerm}
                 onChange={setSearchTerm}
               />

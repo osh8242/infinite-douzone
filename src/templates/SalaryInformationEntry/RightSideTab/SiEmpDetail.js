@@ -3,7 +3,8 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import TextBoxComponent from "../../../components/TextBoxComponent";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import { SI_EMP_DETAIL} from "./SiEmpDetailConstant";
-import { INPUT_TYPE } from "../../HrManagement/MainTab/HrMainTabConstant";
+import { INPUT_TYPE } from "../../../model/CommonConstant";
+
 
 // 사원 상세정보 영역 
 const SiEmpDetail = (props) => {
