@@ -16,7 +16,8 @@ const FormPanel = ({
   submitData,
   columnNumber = 2,
   id,
-  codeHelperFn
+  codeHelperFn,
+  onChange
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -31,15 +32,16 @@ const FormPanel = ({
   };
 
   const inputs = INPUT_CONSTANT;
-  console.log(inputs);
   inputs.forEach((input, index) => {
     let component;
     const id = input.field;
     const label = input.label || LABELS[input.field] || "라벨없음";
     const value = input.value || formData.item?.[input.field] || "";
     const disabled = input.disabled;
-    const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
+    const codeHelper = codeHelperFn? codeHelperFn[input.field] : null;
+    const onChangeFn = onChange? onChange[input.field] : null;  
 
+    console.log(value);
     switch (input.type) {
       case INPUT_TYPE.text:
         component = (
@@ -49,6 +51,7 @@ const FormPanel = ({
             disabled={disabled}
             value={value}
             onEnter={submitData}
+            onChange={(e, value) => onChangeFn(value)}
           />
         );
 
@@ -110,6 +113,7 @@ const FormPanel = ({
             label={label}
             value={value}
             onClickCodeHelper={codeHelper}
+            onChange={(e, value) => onChangeFn(value)}
           />
         );
         break;
@@ -120,6 +124,7 @@ const FormPanel = ({
             label={label}
             value={value}
             onClickCodeHelper={codeHelper}
+            onChange={(e, value) => onChangeFn(value)}
           />
         );
         break;
@@ -160,6 +165,7 @@ FormPanel.propsTypes = {
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
   codeHelperFn: PropTypes.arrayOf(PropTypes.object),
+  onChange: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default FormPanel;
