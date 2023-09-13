@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
+import { modal_insertSalaryData, reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
 
 const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -24,15 +25,12 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   };
 
   const insertSalaryDataHandler = (event) => {
-    // alert("수당 공제 클릭했댱");  
-    modalShow('insertSalaryData', '수당수당공제공제');
+    modalShow('insertSalaryData', modal_insertSalaryData);
   }
 
   const reCalculationHandler = (event) => {
-    //alert("재계산 클릭했댱");  
-    modalShow('reCalculation', 'reCalculationList', );
+    modalShow('reCalculation', reCalculationList);
   }
-  
 
   return (
     <div id="secondTopHeader">

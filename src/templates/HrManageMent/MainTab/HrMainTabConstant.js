@@ -13,7 +13,7 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.text,
       field: "noSocial",
       label: LABELS.noSocial,
-      disabled: true,      
+      disabled: true,
     },
     {
       type: INPUT_TYPE.radio,
@@ -26,33 +26,39 @@ export const MAIN_TAB = {
     {
       type: INPUT_TYPE.text,
       field: "cdDept",
-      label: LABELS.cdDept,
       disabled: true,
     },
     {
       type: INPUT_TYPE.text,
       field: "rankNo",
-      label: LABELS.rankNo,
       disabled: true,
     },
     { type: INPUT_TYPE.text, field: "cdOffduty", label: LABELS.cdOffduty },
     {
       type: INPUT_TYPE.radio,
       field: "ynDrawContracts",
-      label: LABELS.ynDrawContracts,
     },
     {
       type: INPUT_TYPE.date,
       field: "daEnter",
-      label: LABELS.daEnter,
       disabled: true,
     },
     {
       type: INPUT_TYPE.date,
       field: "daRetire",
-      label: LABELS.daRetire,
       disabled: true,
     },
   ],
-  secondaryTabInputs: [],
+  secondaryTabInputs: [
+    {
+      type: INPUT_TYPE.select,
+      field: "tyEmploy",
+      label: LABELS.tyEmploy,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "dcMidretire",
+      label: LABELS.dcMidretire,
+    },
+  ],
 };

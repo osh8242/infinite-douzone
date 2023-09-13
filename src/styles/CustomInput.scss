@@ -28,14 +28,15 @@
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  z-index: -1;
 }
 
 .svg-container svg {
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 14.5px;
   transform: translateY(-50%);
-  z-index: 2;
+  // z-index: 2;
 }
 
 .svg-container2 input {
@@ -52,14 +53,15 @@
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  z-index: -1;
 }
 
 .svg-container2 svg {
   position: absolute;
   top: 50%;
-  right: 35px;
+  right: 36px;
   transform: translateY(-50%);
-  z-index: 2;
+  //z-index: 2;
 }
 
 // .widthFull {

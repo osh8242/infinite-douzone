@@ -20,12 +20,18 @@ SelectForm.defaultProps = {
 };
 
 function SelectForm(props) {
-  const { label, optionList, selectRef, onChange, subLabel, endLabel } = props;
+  const {
+    label,
+    optionList,
+    selectedOption,
+    selectRef,
+    onChange,
+    subLabel,
+    endLabel,
+  } = props;
 
   const handleSelectChange = (event) => {
-    const selectedValue = selectRef
-      ? selectRef.current.value
-      : event.target.value;
+    const selectedValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChange) onChange(selectedValue);
   };
 
@@ -49,22 +55,25 @@ function SelectForm(props) {
             ""
           )}
 
-          <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
-            {optionList.map((option, index) => (
-              <option value={option.key} key={index}>
-                {option.value}
-              </option>
-            ))}
-          </Form.Select>
-          {endLabel ? (
-            <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
-              {endLabel}
-            </Col>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
+        <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
+          {optionList.map((option, index) => (
+            <option
+              value={option.key}
+              key={index}
+              selected={option.key === selectedOption}
+            >
+              {option.value}
+            </option>
+          ))}
+        </Form.Select>
+        {endLabel ? (
+          <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+            {endLabel}
+          </Col>
+        ) : (
+          ""
+        )}
+      </Col>
     </Row>
   );
 }

@@ -90,6 +90,7 @@ const HrManagementLayout = () => {
                 />
               </div>
             </Row>
+            {/* 통계 테이블 */}
             <Row className="mt-3">
               <TableForm
                 tableName="EMPSTATICS"
@@ -126,7 +127,16 @@ const HrManagementLayout = () => {
                       </Col>
                     </Row>
                   </Row>,
-                  <div>둘둘</div>,
+                  <Row className="mb-5 justify-content-center">
+                    <Col xs>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                        formData={mainTabData}
+                        submitData={actions.submitMainTabData}
+                        columnNumber={3}
+                      />
+                    </Col>
+                  </Row>,
                 ]}
               </MenuTab>
 

@@ -1,12 +1,13 @@
 /* 현소현  코드도움창 */
+import "../styles/CodeHelper.scss";
 
 import React, { useEffect, useState } from "react";
 import { Form, Row } from "react-bootstrap";
 import TextBoxComponent from "./TextBoxComponent";
 
 import PropTypes from "prop-types";
-import { LABELS } from "../model/CommonConstant";
 import TableForm from "./TableForm";
+import {LABELS} from "../model/CommonConstant";
 
 function CodeHelperModal(props) {
   const {
@@ -49,35 +50,37 @@ function CodeHelperModal(props) {
   // 클릭한 행반환
   const handleRowClick = (row) => {
     setSearchTerm("");
-    if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row);
+    if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row)
+    setFilteredData([]);
+    setOriData([]);
     onHide();
   };
 
   return (
     <>
-      {/* <ModalComponent title= {subject} show={show} onHide={onHide} onConfirm={onConfirm}> */}
-      <div>
-        <Row>
-          <TableForm
-            readOnly
-            tableHeaders={tableHeaders}
-            tableData={filteredData}
-            onRowClick={handleRowClick}
-          />
-        </Row>
-        <Row>
-          <Form.Group>
-            <TextBoxComponent
-              type="text"
-              label={LABELS.searchText}
-              value={searchTerm}
-              onChange={setSearchTerm}
+    {/* <ModalComponent title= {subject} show={show} onHide={onHide} onConfirm={onConfirm}> */}
+        <div>
+          <Row className="table-wrapper">
+            <TableForm
+              readOnly
+              tableHeaders={tableHeaders}
+              tableData={filteredData}
+              onRowClick={handleRowClick}
             />
-          </Form.Group>
-        </Row>
-      </div>
-      {/* </ModalComponent> */}
-    </>
+          </Row>
+          <Row>
+            <Form.Group>
+              <TextBoxComponent
+                type="text"
+                label={LABELS.searchText}
+                value={searchTerm}
+                onChange={setSearchTerm}
+              />
+            </Form.Group>
+          </Row>
+        </div>
+    {/* </ModalComponent> */}
+   </>
   );
 }
 

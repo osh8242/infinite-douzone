@@ -1,10 +1,22 @@
 import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
-import { INPUT_TYPE, LABELS, RADIO_LIST } from "../model/CommonConstant.js";
+import {
+  INPUT_TYPE,
+  LABELS,
+  RADIO_LIST,
+  SELECT_LIST,
+} from "../model/CommonConstant.js";
 import RadioForm from "./RadioForm";
+import SelectForm from "./SelectForm.js";
 import TextBoxComponent from "./TextBoxComponent";
 
-const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2, id }) => {
+const FormPanel = ({
+  INPUT_CONSTANT,
+  formData,
+  submitData,
+  columnNumber = 2,
+  id,
+}) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
   const wrappingColTag = (input, index, span = 1) => {
@@ -20,59 +32,65 @@ const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2, id 
   const inputs = INPUT_CONSTANT;
 
   inputs.forEach((input, index) => {
+    let component;
+    const id = input.field;
+    const label = input.label || LABELS[input.field] || "라벨없음";
+    const value = formData.item?.[input.field] || "";
+    const disabled = input.disabled;
     switch (input.type) {
       case INPUT_TYPE.text:
-        columns.push(
-          wrappingColTag(
-            <TextBoxComponent
-              id={input.field}
-              label={LABELS[input.field]}
-              disabled={input.disabled}
-              value={formData.item?.[input.field] || ""}
-              onEnter={submitData}
-            />,
-            index,
-            input.span
-          )
+        component = (
+          <TextBoxComponent
+            id={id}
+            label={label}
+            disabled={disabled}
+            value={value}
+            onEnter={submitData}
+          />
         );
+
         break;
       case INPUT_TYPE.date:
-        columns.push(
-          wrappingColTag(
-            <TextBoxComponent
-              id={input.field}
-              type={"date"}
-              label={LABELS[input.field]}
-              disabled={input.disabled}
-              value={formData.item?.[input.field] || ""}
-              onChange={submitData}
-            />,
-            index,
-            input.span
-          )
+        component = (
+          <TextBoxComponent
+            type={"date"}
+            id={id}
+            label={label}
+            disabled={disabled}
+            value={value}
+            onChange={submitData}
+          />
         );
+
         break;
       case INPUT_TYPE.select:
+        component = (
+          <SelectForm
+            id={id}
+            label={LABELS[input.field]}
+            disabled={disabled}
+            optionList={input?.optionList || SELECT_LIST[input.field]}
+            selectedOption={value}
+            onChange={submitData}
+          />
+        );
         break;
       case INPUT_TYPE.radio:
-        columns.push(
-          wrappingColTag(
-            <RadioForm
-              id={input.field}
-              label={LABELS[input.field]}
-              disabled={input.disabled}
-              optionList={RADIO_LIST[input.field]}
-              checked={formData.item?.[input.field]}
-              onChange={submitData}
-            />,
-            index,
-            input.span
-          )
+        component = (
+          <RadioForm
+            id={id}
+            label={LABELS[input.field]}
+            disabled={disabled}
+            optionList={RADIO_LIST[input.field]}
+            checked={value}
+            onChange={submitData}
+          />
         );
         break;
       default:
         break;
     }
+    columns.push(wrappingColTag(component, input, input.span));
   });
 
   const rows = [];
@@ -92,7 +110,7 @@ const FormPanel = ({ INPUT_CONSTANT, formData, submitData, columnNumber = 2, id 
   return <div id={id}>{rows}</div>;
 };
 
-FormPanel.defaultProp = {
+FormPanel.defaultProps = {
   formData: { item: {} },
   submitData: () => {
     console.log("HrMainTab.js", "submitData", "default");

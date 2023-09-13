@@ -1,0 +1,64 @@
+.table-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    height: 70vh;
+    // overflow: auto;
+    // border: 1px solid rgb(222, 226, 230);    
+    position: relative;
+}
+
+.table-footer {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+}
+
+.table-footer tfoot th {
+    background-color: rgb(235, 234, 234);
+    text-align: center;
+}
+
+.table-footer tfoot td {
+    background-color: rgb(235, 234, 234);
+    text-align: right;
+}
+
+// rightside-icon css
+.rightside-custom-width {
+    width: 35px !important;
+}
+
+.rightside-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 100%; /* 부모 요소의 높이를 상속 */ 
+    
+}
+/* 트랜지션 정의 */
+.transition {
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out, max-width 1s ease-in-out;
+    opacity: 1;
+    max-width: 100%; /* 열린 상태에서 가로 크기를 최대로 유지 */
+    transform: translateX(0); /* 초기 위치 (열린 상태) */
+  }
+  
+  /* 숨김 상태의 트랜지션 정의 */
+  .transition.hidden {
+    opacity: 0;
+    max-width: 0; /* 닫힌 상태에서 가로 크기를 0으로 만듦 */
+    transform: translateX(-100%); /* 왼쪽으로 이동하여 숨김 상태로 만듦 */
+    overflow: hidden;
+  }
+  
+/////////////////////
+///siEnDetail css
+/// 
+.siEmpDetail-container{
+    padding-top: 10px;   
+}
