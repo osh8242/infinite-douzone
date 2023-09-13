@@ -16,9 +16,8 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 import HrMainTab from "./MainTab/HrMainTab";
-
+import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -123,7 +122,6 @@ const HrManagementLayout = () => {
                     <HrMainTab
                       formData={mainTabData}
                       submitData={actions.submitMainTabData}
-                      columnNumber={3}
                     />
                   </Col>
                 </Row>

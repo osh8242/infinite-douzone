@@ -6,7 +6,7 @@ import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
 import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
 
 const HrMainTab = (props) => {
-  const { formData, submitData, columnNumber } = props;
+  const { formData, submitData, columnNumber = 2 } = props;
 
   const defaultMd = 12 / columnNumber;
   const columns = [];

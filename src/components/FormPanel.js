@@ -8,7 +8,7 @@ import { RADIO_LIST, labels } from "../../../model/CommonConstant.js";
 import { INPUT_TYPE, MAIN_TAB } from "./HrMainTabConstant";
 
 const FormPanel = (props) => {
-  const { formData, submitData, columnNumber } = props;
+  const { formData, submitData, columnNumber = 2 } = props;
 
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -93,8 +93,6 @@ const FormPanel = (props) => {
         break;
       }
     }
-    console.log("i", i);
-    console.log("tempRow", tempRow);
     rows.push(<Row key={i}>{tempRow}</Row>);
   }
 
