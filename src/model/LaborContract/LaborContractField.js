@@ -1,3 +1,4 @@
+// import TestModel from "./LaborContractModel";
 import {
   labels,
   incomeClassficationList,
@@ -12,10 +13,8 @@ import {
   healthInsuranceList,
 } from "./LaborContractConstant";
 
-// import TestModel from "./TestModel";
-
 // const { state, actions, mainTablePkValue } = TestModel();
-// const { leftTableData, mainTabData, subTableData } = state;
+//const { leftTableData, mainTabData, subTableData } = state;
 
 export const HeaderField = [
   {
@@ -31,11 +30,20 @@ export const HeaderField = [
     optionList: incomeClassficationList,
   },
 ];
-
-// console.log("Filedddd");
-// console.log(mainTabData);
-// console.log(mainTabData.jobDescription);
-
+export const HeaderDetailField = [
+  {
+    component: "TextBoxComponent",
+    label: labels.dateOfCreation,
+    type: "date",
+    stateName: "id",
+    labelKey: "paymentDate",
+  },
+  {
+    component: "SelectForm",
+    label: labels.incomeClassfication,
+    optionList: incomeClassficationList,
+  },
+];
 export const MainTabField = [
   {
     component: "DateForm",
@@ -44,11 +52,8 @@ export const MainTabField = [
     isPeriod: "true",
     labelKey: "startEmpContractPeriod",
     labelKey2: "endEmpContractPeriod",
-    // actions: {
-    //   setEdited: actions.setEditedSwsm,
-    // },
-    // value: mainTabData ? mainTabData.startEmpContractPeriod : "",
-    // value2: mainTabData ? mainTabData.endEmpContractPeriod : "",
+    field: "startEmpContractPeriod",
+    subField: "endEmpContractPeriod",
   },
   {
     component: "AddressForm",
@@ -57,25 +62,28 @@ export const MainTabField = [
   {
     component: "TextBoxComponent",
     label: labels.jobDescription,
-    // value: mainTabData.jobDescription,
+    field: "jobDescription",
   },
   {
     component: "TextBoxComponent",
     label: labels.workTime,
     isPeriod: "true",
     valueMd: "4",
+    field: "workTime",
   },
   {
     component: "TextBoxComponent",
     label: labels.breakTime,
     isPeriod: "true",
     valueMd: "4",
+    field: "breakTime",
   },
   {
     component: "TextBoxComponent",
     label: labels.workingDay,
     subLabel: "매 주 ",
     endLabel: "일 ",
+    field: "startEmpContractPeriod",
   },
   {
     component: "SelectForm",

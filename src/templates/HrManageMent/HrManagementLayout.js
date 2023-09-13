@@ -19,6 +19,7 @@ import HrManagementHeader from "./HrManagementHeader";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 import HrMainTab from "./MainTab/HrMainTab";
 
+
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import Emp from "../../vo/HrManagement/Emp";
 import Swsm from "../../vo/SwsmGrid/Swsm";
@@ -16,6 +16,8 @@ const TestModel = () => {
   const [subTableData, setSubTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
+
+  const mainTabRef = useRef();
 
   useEffect(() => {
     axios
@@ -44,6 +46,7 @@ const TestModel = () => {
         })
         .catch(console.error);
 
+      // get으로 변경 예정.......................
       axios
         .post(url + "/swsmOther/getSwsmOtherByCdEmp", mainTablePkValue)
         .then((response) => {
@@ -75,6 +78,22 @@ const TestModel = () => {
       })
       .catch(console.error);
   }, [editedEmp]);
+
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter" || event.type === "change") {
+        let data = {
+          [event.target.id]: event.target.value,
+        };
+        setEditedSwsm(data);
+        console.log("엔터누름");
+        let newMainTabData = { ...mainTabData };
+        console.log(newMainTabData);
+        event.target.blur();
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
 
   // EDITED_SWSM 처리 부분 (update)
   useEffect(() => {
@@ -138,6 +157,8 @@ const TestModel = () => {
       .catch(console.error);
   }, [selectedRows]);
 
+  console.log(mainTabData);
+
   return {
     state: {
       leftTableData,
@@ -156,7 +177,7 @@ const TestModel = () => {
       setMainTabData,
       setSubTableData,
       // setCdEmp,
-
+      submitMainTabData,
       setEditedEmp,
       setEditedSwsm,
       setEditedSwsmOther,
