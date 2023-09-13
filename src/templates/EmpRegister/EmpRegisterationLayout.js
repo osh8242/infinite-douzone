@@ -13,7 +13,7 @@ import TextBoxComponent from "../../components/TextBoxComponent";
 import AddressForm from "../../components/AddressForm";
 import CallNumberForm from "../../components/CallNumberForm";
 import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
-import EmailForm from "../../components/EmailForm";
+// import EmailForm from "../../components/EmailForm";
 import DateTest from "../../components/DateTest";
 import TableForm from "../../components/TableForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
@@ -105,7 +105,7 @@ function EmpRegisterationLayout() {
       />
       <Container>
         <Row id="empRegisterLayout">
-          <Col md="4" id="empRegisterLayoutLeft">
+          <Col md="5" id="empRegisterLayoutLeft">
             {/* 좌측 사원목록 테이블 */}
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
@@ -214,20 +214,22 @@ function EmpRegisterationLayout() {
                     }}
                   />
                   <TextBoxComponent
+                    id="telHome1"
                     label={labels.telHome}
                     type="callNumber"
                     value={state.mainTabData.telHome1}
                   />
                   <TextBoxComponent
+                    id="celEmp1"
                     label={labels.celEmp}
                     type="callNumber"
                     value={state.mainTabData.celEmp1}
                   />
                   <TextBoxComponent
+                    id="emEmp"
                     label={labels.emEmp}
                     type="email"
                     value={state.mainTabData.emEmp}
-                    optionList={emailList}
                   />
                   <TextBoxComponent
                     id="idMsn"
@@ -367,6 +369,12 @@ function EmpRegisterationLayout() {
                     //   onChange={submitMainTabData}
                     // />
                   )}
+                  <TextBoxComponent
+                    label={labels.cdBank}
+                    amount={3}
+                    id="cdBank,noBnkacct,nmBnkowner"
+                    value="ddd"
+                  />
                   <CallNumberForm
                     label={labels.cdBank}
                     val1={state.mainTabData.cdBank}
@@ -396,19 +404,21 @@ function EmpRegisterationLayout() {
       </Container>
 
       {/* 코드도움 모달영역 */}
-      <CodeHelperModal
-        show={state.codeHelperState.show}
-        onHide={() =>
-          actions.setCodeHelperState({
-            ...state.codeHelperState,
-            show: false,
-          })
-        }
-        // onConfirm={() => alert("확인")}
-        setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
-        table={state.codeHelperTableData.data}
-        codeHelperCode={state.codeHelperTableData.code}
-      />
+      <ModalComponent>
+        <CodeHelperModal
+          show={state.codeHelperState.show}
+          onHide={() =>
+            actions.setCodeHelperState({
+              ...state.codeHelperState,
+              show: false,
+            })
+          }
+          // onConfirm={() => alert("확인")}
+          setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
+          table={state.codeHelperTableData.data}
+          codeHelperCode={state.codeHelperTableData.code}
+        />
+      </ModalComponent>
 
       {/* 삭제실패 사원목록 모달영역 */}
       <ModalComponent
