@@ -6,7 +6,7 @@ import { objectToQueryString } from "./StringUtils";
 export async function fetchData(url, params) {
     try {
       const tableDataList = await apiDataForTable(url, params);
-      console.log(tableDataList);
+      // console.log(tableDataList);
       return tableDataList;
     } catch (error) {
       console.error("API 호출 중 오류 발생:", error);
