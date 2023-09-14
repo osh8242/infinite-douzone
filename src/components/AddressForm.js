@@ -53,7 +53,7 @@ const AddressForm = (props) => {
     let item = {
       item: newAddress,
     };
-    actions.setAddress(item);
+    // actions.setAddress(item);
   };
 
   const [modalState, setModalState] = useState({

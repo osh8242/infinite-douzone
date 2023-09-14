@@ -164,7 +164,7 @@ function EmpRegisterationLayout() {
               <FormPanel
                 INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
                 formData={state.mainTabData}
-                submitData={actions.submitMainTabData} // update 함수
+                submitData={actions.setEditedEmp} // update 함수
                 codeHelperFn={{
                   //코드도움 함수모음
                   abbNation: () =>

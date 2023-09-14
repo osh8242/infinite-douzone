@@ -10,7 +10,6 @@ import AddressForm from "../../src/components/AddressForm.js";
 import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
 import TextBoxComponent from "./TextBoxComponent";
-import NoSocialFormForEmpRegister from "./NoSocialFormForEmpRegister.js";
 const FormPanel = ({
   INPUT_CONSTANT,
   formData,
@@ -40,23 +39,12 @@ const FormPanel = ({
       formData.item?.[input.field] ||
       formData?.[input.field] ||
       "";
-    // console.log("여기의 label 보세요", label);
-    // console.log("여기의 input.value 보세요", input.value);
-    // console.log(
-    //   "여기의 formData.item?.[input.field] 보세요",
-    //   formData.abbNation
-    // );
-    // AddressForm 관련 변수들.. 나중에 깔끔하게 수정 예정...
-    const isZonecode = input.isZonecode || false; //
-    // const zipHome = input.zipHome || ""; //
-    // const addHome1 = input.addHome1 || ""; //
-    // const addHome2 = input.addHome2 || ""; //
-    // 주민번호 관련 변수들.. 나중에 깔끔하게 수정 예정...
-    // const ynFor = input.ynFor || ""; //
-    // const fgSex = input.fgSex || ""; //
-    // const noSocial = input.noSocial || ""; //
+
+    const isZonecode = input.isZonecode || false; // AddressForm 관련 변수
+
     const pkValue = input.pkValue || ""; // 나중에 삭제 예정..
     const actions = input.actions || []; // 나중에 삭제 예정..
+
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     switch (input.type) {
@@ -123,15 +111,13 @@ const FormPanel = ({
       case INPUT_TYPE.address:
         component = (
           <AddressForm
-            // id={id}
             label={label}
             disabled={disabled}
             isZonecode={isZonecode}
             zipHome={formData.zipHome}
             addHome1={formData.addHome1}
-            addHome2={formData.addHome2}
             pkValue={formData.cdEmp}
-            actions={actions}
+            onChange={submitData}
           />
         );
         break;
@@ -154,17 +140,6 @@ const FormPanel = ({
             type="email"
             value={formData.emEmp}
             onEnter={submitData}
-          />
-        );
-        break;
-      case INPUT_TYPE.noSocial:
-        component = (
-          <NoSocialFormForEmpRegister
-            label={label}
-            ynFor={formData.ynFor}
-            fgSex={formData.fgSex}
-            noSocial={formData.noSocial}
-            pkValue={pkValue}
           />
         );
         break;
