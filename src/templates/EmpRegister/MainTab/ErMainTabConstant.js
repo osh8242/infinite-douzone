@@ -33,6 +33,7 @@ export const MAIN_TAB = {
     { type: INPUT_TYPE.callNumber, field: "telHome", span: 2 },
     { type: INPUT_TYPE.callNumber, field: "celEmp", span: 2 },
     { type: INPUT_TYPE.address, field: "address", isZonecode: true, span: 2 },
+    { type: INPUT_TYPE.text, field: "addHome2", span: 2 },
     { type: INPUT_TYPE.date, field: "daRetire", span: 2 },
     {
       type: INPUT_TYPE.textCodeHelper,
