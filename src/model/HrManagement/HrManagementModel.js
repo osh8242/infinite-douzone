@@ -71,8 +71,8 @@ const HrManagementModel = () => {
         .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue)
         .then((response) => {
           let data = response.data;
-          console.log("불러온 mainTabData", data);
-          setMainTabData(EmpAdd(data));
+          console.log("mainTabData", data);
+          setMainTabData(data);
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -200,10 +200,7 @@ const HrManagementModel = () => {
       axios
         .post(url + "/empFam/getEmpFamListByCdEmp", leftTablePkValue)
         .then((response) => {
-          console.log(
-            "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
-            response.data
-          );
+          console.log("EmpFam Loaded", response.data);
           const data = response.data.map((item) => {
             return EmpFam(item);
           });

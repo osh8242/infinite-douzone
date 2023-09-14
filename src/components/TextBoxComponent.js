@@ -85,7 +85,6 @@ function TextBoxComponent(props) {
   }, [value, subValue]);
 
   useEffect(() => {
-    console.log("sendValue", sendValue);
     // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
     // update 로직은 이 곳에서 사용하기로...
   }, [sendValue]);

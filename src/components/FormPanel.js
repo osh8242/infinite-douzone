@@ -21,12 +21,12 @@ const FormPanel = ({
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
-  const wrappingColTag = (input, span = 1) => {
+  const wrappingColTag = (component, field, span = 1) => {
     let md = defaultMd * span;
     if (md > 12) md = 12;
     return (
-      <Col xs md={md} key={input.field}>
-        {input}
+      <Col xs md={md} key={field}>
+        {component}
       </Col>
     );
   };
@@ -169,7 +169,7 @@ const FormPanel = ({
       default:
         break;
     }
-    columns.push(wrappingColTag(component, input.span));
+    columns.push(wrappingColTag(component, input.field, input.span));
   });
   const rows = [];
   for (let i = 0; i < columns.length; ) {

@@ -46,6 +46,10 @@ export const RADIO_LIST = {
     { key: "N", value: "비장애" },
     { key: "Y", value: "장애" },
   ],
+  fgOwnhouse: [
+    { key: "Y", value: "소유" },
+    { key: "N", value: "미소유" },
+  ],
 };
 
 export const EMAIL_LIST = [
@@ -90,6 +94,16 @@ export const LABELS = {
   strHobby: "취미",
   nmSpecial: "특기",
   tyReligion: "종교",
+  zipHome: "현주소 우편번호",
+  addHome1: "현주소",
+  addHome2: "현 상세주소",
+  originHome: "본적주소 우편번호",
+  originHome1: "본적주소",
+  originHome2: "본적 상세주소",
+  mnKeepgarden: "소유동산",
+  mnKeepstate: "소유부동산",
+  fgOwnhouse: "자택소유",
+
   abbNation: "거주지국",
   cdNation: "국적",
   telHome: "전화번호",
