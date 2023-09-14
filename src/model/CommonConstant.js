@@ -7,6 +7,7 @@ export const INPUT_TYPE = {
   radio: 3,
   address: 4,
   textCodeHelper: 5,
+  regNum: 6,
   callNumber: 100,
   email: 101,
   noSocial: 102,
@@ -21,6 +22,18 @@ export const SELECT_LIST = {
     { key: "christianity", value: "기독교" },
     { key: "buddhism", value: "불교" },
     { key: "islam", value: "이슬람교" },
+  ],
+  jobOk: [
+    { key: "Y", value: "재직" },
+    { key: "N", value: "퇴직" },
+  ],
+  ynFor: [
+    { key: "0", value: "내국인" },
+    { key: "1", value: "외국인" },
+  ],
+  fgSex: [
+    { key: "M", value: "남자" },
+    { key: "F", value: "여자" },
   ],
 };
 
@@ -40,7 +53,6 @@ export const RADIO_LIST = {
   ynForList: [
     { key: "0", value: "내국인" },
     { key: "1", value: "외국인" },
-    { key: "2", value: "외계인" },
   ],
 };
 
@@ -93,6 +105,9 @@ export const LABELS = {
   cdField: "현장",
   cdProject: "프로젝트",
   cdBank: "급여이체은행",
+  noBnkacct: "계좌번호",
+  nmBnkowner: "예금주",
+  jobOk: "재직구분",
 
   mnReduction: "감면율",
   nmEmp: "사원이름",
@@ -101,24 +116,25 @@ export const LABELS = {
   allowPay: "금액",
 
   inquiryYype: "조회구분",
-  searchText : "찾을내용",
+  searchText: "찾을내용",
 
-  ynResident : "거주구분",
-  ynMateDed : "배우자공제",
-  ynOverwork : "연장근로비과세",
+  ynResident: "거주구분",
+  ynMateDed: "배우자공제",
+  ynOverwork: "연장근로비과세",
 
-  allowMonth :"귀속연월",
-  paymentDate : "지급일",
-  ynUnit : "생산직여부",
-  ynForlabor : "국외근로여부"
+  allowMonth: "귀속연월",
+  paymentDate: "지급일",
+  ynUnit: "생산직여부",
+  ynForlabor: "국외근로여부",
 };
 
 export const CODE = {
-  URL: "/common/getCodeListForCodeHelper",  
-  PARENT_ID: { DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
-      RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
-      OCCUP: "OCCUP", // 직종 ()
-  }  
+  URL: "/common/getCodeListForCodeHelper",
+  PARENT_ID: {
+    DEPT: "DEPT", // 부서 ( 경영지원팀, 인사팀, 솔루션팀, 플랫폼팀)
+    RANK_NO: "RANK_NO", // 직급 ( 주임, 선임, 책임, 수석, 사장)
+    OCCUP: "OCCUP", // 직종 ()
+  },
 };
 
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";

@@ -201,7 +201,7 @@ function EmpRegisterationModel() {
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }
       return axios.delete(url + pattern, { data: row.item });
-    });
+    }, []);
 
     Promise.all(deletePromises)
       .then((responses) => {
@@ -270,7 +270,10 @@ function EmpRegisterationModel() {
           };
           return EmpMenuUsage(undeletedEmp);
         });
-        setUndeletedEmpTableData(undeletedEmpTableDataContent);
+        const itemUndeletedEmpTableDataContent = {
+          item: undeletedEmpTableDataContent,
+        };
+        setUndeletedEmpTableData(itemUndeletedEmpTableDataContent);
 
         // setModalState({ show: true });
       })
@@ -278,7 +281,7 @@ function EmpRegisterationModel() {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, []);
+  }, [selectedRows]);
 
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
