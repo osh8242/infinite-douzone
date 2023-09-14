@@ -38,7 +38,7 @@ function SelectForm(props) {
   };
 
   return (
-    <div>
+    <Row>
       <div className="py-1 widthFull labelAndContent">
         {label && (
           // <div className="d-flex align-items-center justify-content-center">
@@ -77,7 +77,7 @@ function SelectForm(props) {
           )}
         </div>
       </div>
-    </div>
+    </Row>
   );
 }
 
