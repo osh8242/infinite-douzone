@@ -271,7 +271,8 @@ function EmpRegisterationModel() {
           return EmpMenuUsage(undeletedEmp);
         });
         setUndeletedEmpTableData(undeletedEmpTableDataContent);
-        setModalState({ show: true });
+
+        // setModalState({ show: true });
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);

@@ -63,18 +63,18 @@ function EmpRegisterationLayout() {
         }));
         break;
       case "undeletedEmp":
+        console.log(state.undeletedEmpTableData);
+
         actions.setModalState((prevState) => ({
           ...prevState,
           size: "md",
           subject: data.subject,
         }));
+
         actions.setCodeHelperTableData(() => ({
           // subject: data.subject,
-          setRowData: setRowData,
           tableHeaders: data.headers,
           tableData: state.undeletedEmpTableData,
-          usePk: data.usePk ? data.usePk : "",
-          searchField: data.searchField,
         }));
       default:
         break;
@@ -122,6 +122,7 @@ function EmpRegisterationLayout() {
       <EmpRegisterHeader
         selectedRows={state.selectedRows}
         actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
+        modalShow={modalShow}
       />
       <Container>
         <Row id="empRegisterLayout">
@@ -511,25 +512,14 @@ function EmpRegisterationLayout() {
             subject={state.codeHelperTableData.subject}
             searchField={state.codeHelperTableData.searchField}
             onHide={() => actions.setModalState({ show: false })}
-
-            // show={state.codeHelperState.show}
-            // onHide={() =>
-            //   actions.setCodeHelperState({
-            //     ...state.codeHelperState,
-            //     show: false,
-            //   })
-            // }
-            // // onConfirm={() => alert("확인")}
-            // setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
-            // table={state.codeHelperTableData.data}
-            // codeHelperCode={state.codeHelperTableData.code}
           />
         ) : modalType === "undeletedEmp" ? (
-          <TableForm
-            tableHeaders={EmpRegisterUndeletedEmpHeaders}
-            tableData={state.undeletedEmpTableData}
-            selectedRows={state.selectedRows}
-          />
+          <div>
+            <TableForm
+              tableHeaders={state.codeHelperTableData.tableHeaders}
+              tableData={state.codeHelperTableData.tableData}
+            />
+          </div>
         ) : (
           //default
           <></>

@@ -10,6 +10,7 @@ import { Button } from "react-bootstrap";
 import "../../styles/header.css";
 import emp from "../..//styles/img/empRegisterLogo.png";
 import { useState } from "react";
+import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConstant";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 // const logoUrl = {
@@ -18,10 +19,15 @@ import { useState } from "react";
 // };
 
 function EmpRegisterHeader(props) {
-  const { actions } = props;
+  const { actions, modalShow } = props;
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
+  };
+
+  const clickTrashCanHandler = (e) => {
+    actions.deleteSelectedRows();
+    modalShow("undeletedEmp", EmpRegisterUndeletedEmpHeaders);
   };
 
   return (
@@ -49,7 +55,7 @@ function EmpRegisterHeader(props) {
         </button>
         <button
           className="backgroundBorderNone"
-          onClick={(e) => actions.deleteSelectedRows()}
+          onClick={(e) => clickTrashCanHandler(e)}
         >
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
