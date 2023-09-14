@@ -12,6 +12,7 @@
 //    <SelectForm label="구분" optionList={optionList}/>
 //
 
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
@@ -21,6 +22,7 @@ SelectForm.defaultProps = {
 
 function SelectForm(props) {
   const {
+    id,
     label,
     optionList,
     selectedOption,
@@ -30,11 +32,15 @@ function SelectForm(props) {
     endLabel,
   } = props;
 
+  const [selectedValue, setSelectedValue] = useState(selectedOption);
+  useEffect(() => {
+    setSelectedValue(selectedOption);
+  }, [selectedOption]);
+
   const handleSelectChange = (event) => {
-    const selectedValue = selectRef
-      ? selectRef.current.value
-      : event.target.value;
-    if (onChange) onChange(selectedValue);
+    const newValue = selectRef ? selectRef.current.value : event.target.value;
+    if (onChange) onChange(event, newValue);
+    setSelectedValue(newValue);
   };
 
   return (
@@ -57,13 +63,14 @@ function SelectForm(props) {
             ""
           )}
 
-          <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
+          <Form.Select
+            id={id}
+            ref={selectRef}
+            value={selectedValue}
+            onChange={(e) => handleSelectChange(e)}
+          >
             {optionList.map((option, index) => (
-              <option
-                value={option.key}
-                key={index}
-                selected={option.key === selectedOption}
-              >
+              <option value={option.key} key={index}>
                 {option.value}
               </option>
             ))}

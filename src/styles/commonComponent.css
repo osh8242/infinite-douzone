@@ -29,7 +29,7 @@ input.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(233, 236, 239);
+  /* background-color: rgb(233, 236, 239); */
 }
 
 .labelAndContent {

@@ -42,38 +42,6 @@ const HrManagementModel = () => {
     }
   }, []);
 
-  //mainTab에서 Enter 입력시 EmpAdd 업데이트
-  const submitMainTabData = useCallback(
-    (event, value) => {
-      if (event.key === "Enter") {
-        console.log("엔터누름");
-        event.target.blur();
-        if (mainTabRef.current) {
-          let newMainTabData = { ...mainTabData.item };
-          const inputElements = mainTabRef.current.querySelectorAll("input");
-          Array.from(inputElements).forEach((input) => {
-            newMainTabData[input.id] =
-              input.type !== "radio"
-                ? input.value
-                : input.checked
-                ? input.value
-                : null;
-          });
-          setEditedEmpAdd(newMainTabData);
-        }
-      }
-      if (event.type === "change") {
-        if (mainTabRef.current) {
-          event.target.blur();
-          let newMainTabData = { ...mainTabData.item };
-          newMainTabData[event.target.id] = value;
-          setEditedEmpAdd(newMainTabData);
-        }
-      }
-    },
-    [mainTabRef, mainTabData]
-  );
-
   //leftTableData 가져오는 비동기 GET 요청
   useEffect(() => {
     axios
@@ -178,6 +146,22 @@ const HrManagementModel = () => {
     [leftTablePkValue]
   );
 
+  //mainTab에서 Enter 입력시 EmpAdd 업데이트
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter" || event.type === "change") {
+        event.target.blur();
+        console.log("event.target.id", event.target.id);
+        console.log("value", value);
+        let newEmpAdd = { ...mainTabData.item };
+        newEmpAdd[event.target.id] = value;
+        console.log("newEmpAdd", newEmpAdd);
+        updateEmpAdd(newEmpAdd);
+      }
+    },
+    [leftTablePkValue, mainTabData]
+  );
+
   //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
   useEffect(() => {
     if (editedEmpAdd && Object.keys(editedEmpAdd).length !== 0) {
@@ -194,6 +178,20 @@ const HrManagementModel = () => {
         });
     }
   }, [editedEmpAdd]);
+
+  //update EmpAdd
+  const updateEmpAdd = useCallback((EmpAdd) => {
+    console.log("editedEmpAdd 업데이트 요청", EmpAdd);
+    axios
+      .put(url + "/empAdd/updateEmpAdd", EmpAdd)
+      .then((response) => {
+        if (response.data === 1) console.log("EmpAdd 업데이트 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {

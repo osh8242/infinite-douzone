@@ -31,7 +31,7 @@ const FormPanel = ({
   };
   const inputs = INPUT_CONSTANT;
   inputs.forEach((input, index) => {
-    let component;
+    let component = <div>input type null</div>;
     const id = input.field;
     const label = input.label || LABELS[input.field] || "라벨없음";
     const value =
@@ -171,20 +171,20 @@ const FormPanel = ({
         i++;
       } else break;
     }
-    rows.push(<Row key={i}>{tempRow}</Row>);
+    rows.push(<Row key={`row-${i}`}>{tempRow}</Row>);
   }
   return <div id={id}>{rows}</div>;
 };
 FormPanel.defaultProps = {
   formData: { item: {} },
   submitData: () => {
-    console.log("HrMainTab.js", "submitData", "default");
+    console.log("FormPanel.js", "submitData", "default");
   },
   columnNumber: 2,
 };
 FormPanel.propsTypes = {
   INPUT_CONSTANT: PropTypes.array.isRequired,
-  formData: PropTypes.object.isRequired,
+  formData: PropTypes.object,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
 };

@@ -60,5 +60,25 @@ export const MAIN_TAB = {
       field: "dcMidretire",
       label: LABELS.dcMidretire,
     },
+    {
+      type: INPUT_TYPE.radio,
+      field: "fgDisorder",
+      label: LABELS.fgDisorder,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "strHobby",
+      label: LABELS.strHobby,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "nmSpecial",
+      label: LABELS.nmSpecial,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "tyReligion",
+      label: LABELS.tyReligion,
+    },
   ],
 };

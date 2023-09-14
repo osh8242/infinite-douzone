@@ -54,6 +54,10 @@ export const RADIO_LIST = {
     { key: "0", value: "내국인" },
     { key: "1", value: "외국인" },
   ],
+  fgDisorder: [
+    { key: "N", value: "비장애" },
+    { key: "Y", value: "장애" },
+  ],
 };
 
 export const EMAIL_LIST = [
@@ -94,6 +98,10 @@ export const LABELS = {
   cdJob: "직업",
   nmKrcom: "직장명",
   cdOffpos: "직급",
+  fgDisorder: "장애여부",
+  strHobby: "취미",
+  nmSpecial: "특기",
+  tyReligion: "종교",
   abbNation: "거주지국",
   cdNation: "국적",
   telHome: "전화번호",
