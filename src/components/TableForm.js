@@ -2,7 +2,7 @@ import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Table } from "react-bootstrap";
+import { Form, Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
 
@@ -400,7 +400,7 @@ const TableForm = ({
           setColumnRef(-1);
           if (!actions.setPkValue) setRowRef(-1);
           releaseEditable();
-          removeNewRow();          
+          removeNewRow();
         }
       }
       if (myRef.current && myRef.current.contains(event.target)) {
@@ -556,7 +556,7 @@ const TableForm = ({
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
                 onClick={(e) => {
-                  if (onRowClick) onRowClick(row.item);
+                  if (onRowClick) onRowClick(e, row.item);
                 }}
               >
                 {/* 각 row 의 checkBox */}
@@ -581,7 +581,22 @@ const TableForm = ({
                       handleDoubleClick(e, rowIndex, columnIndex)
                     }
                   >
-                    <div
+                    <Form.Control
+                      type="text"
+                      data-field={thead.field}
+                      data-column-index={columnIndex}
+                      // onFocus={(e) => {
+                      //   setRowRef(rowIndex);
+                      //   setColumnRef(columnIndex);
+                      //   focusAtEnd(e.target);
+                      // }}
+                      disabled={!row.isEditable}
+                      onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
+                      ref={(div) => setInputRef(div, rowIndex, columnIndex)}
+                      defaultValue={row.isNew ? "" : row.item[thead.field]}
+                    />
+
+                    {/* <div
                       className="tableContents"
                       contentEditable={row.isEditable && !thead.readOnly}
                       suppressContentEditableWarning={true}
@@ -596,7 +611,7 @@ const TableForm = ({
                       ref={(div) => setInputRef(div, rowIndex, columnIndex)}
                     >
                       {row.isNew ? "" : row.item[thead.field]}
-                    </div>
+                    </div> */}
                   </td>
                 ))}
               </tr>
