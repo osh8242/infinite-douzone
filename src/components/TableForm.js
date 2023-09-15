@@ -2,7 +2,7 @@ import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Form, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
 
@@ -581,7 +581,7 @@ const TableForm = ({
                       handleDoubleClick(e, rowIndex, columnIndex)
                     }
                   >
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       data-field={thead.field}
                       data-column-index={columnIndex}
@@ -594,9 +594,9 @@ const TableForm = ({
                       onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
                       ref={(div) => setInputRef(div, rowIndex, columnIndex)}
                       defaultValue={row.isNew ? "" : row.item[thead.field]}
-                    />
+                    /> */}
 
-                    {/* <div
+                    <div
                       className="tableContents"
                       contentEditable={row.isEditable && !thead.readOnly}
                       suppressContentEditableWarning={true}
@@ -611,7 +611,7 @@ const TableForm = ({
                       ref={(div) => setInputRef(div, rowIndex, columnIndex)}
                     >
                       {row.isNew ? "" : row.item[thead.field]}
-                    </div> */}
+                    </div>
                   </td>
                 ))}
               </tr>
