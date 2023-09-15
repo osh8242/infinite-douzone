@@ -396,11 +396,11 @@ const TableForm = ({
       //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
+          tableFocus.current = false;
           setColumnRef(-1);
           if (!actions.setPkValue) setRowRef(-1);
           releaseEditable();
-          removeNewRow();
-          tableFocus.current = false;
+          removeNewRow();          
         }
       }
       if (myRef.current && myRef.current.contains(event.target)) {
