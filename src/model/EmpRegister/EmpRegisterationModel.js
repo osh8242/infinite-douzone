@@ -33,39 +33,21 @@ function EmpRegisterationModel() {
     { data: "", code: "", setData: setAddRow },
   ]);
 
-  // useEffect(() => {
-  //   console.log("empRegisterModel addRow => ", addRow);
-  // }, [addRow]);
-
+  // Main Tab 에서 Enter 입력시 Emp 업데이트
   const submitMainTabData = useCallback(
     (event, value) => {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" || event.type === "change") {
         console.log("엔터누름");
-        event.target.blur();
-        if (mainTabRef.current) {
-          let newMainTabData = { ...mainTabData.item };
-          const inputElements = mainTabRef.current.querySelectorAll("input");
-          Array.from(inputElements).forEach((input) => {
-            newMainTabData[input.id] =
-              input.type !== "radio" && "address" && "noSocial" && ""
-                ? input.value
-                : input.checked
-                ? input.value
-                : null;
-          });
-          setEditedEmp(newMainTabData);
-        }
-      }
-      if (event.type === "change") {
-        if (mainTabRef.current) {
-          event.target.blur();
-          let newMainTabData = { ...mainTabData.item };
-          newMainTabData[event.target.id] = value;
-          setEditedEmp(newMainTabData);
-        }
+        // event.target.blur();
+        console.log("event.target.id", event.target.id);
+        console.log("value", value);
+        let newEmp = { ...mainTabData.item };
+        newEmp[event.target.id] = value;
+        console.log(newEmp);
+        updateEmp(newEmp);
       }
     },
-    [mainTabRef, mainTabData]
+    [mainTablePkValue, mainTabData]
   );
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
@@ -94,30 +76,29 @@ function EmpRegisterationModel() {
 
   //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
-    // console.log(
-    //   "EmpREgisterationModel > /emp/getEmpByCdEmp",
-    //   "cdEmp : ",
-    //   mainTablePkValue
-    // );
-    axios
-      .post(url + "/emp/getEmpByCdEmp", mainTablePkValue, {
-        ContentType: "application/json",
-      })
-      .then((response) => {
-        console.log(
-          "EmpRegisterationModel > /emp/getEmpByCdEmp",
-          response.data
-        );
-        setMainTabData(response.data);
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-      });
-  }, [mainTablePkValue, editedEmp]);
+    if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
+      axios
+        .post(url + "/emp/getEmpByCdEmp", mainTablePkValue, {
+          ContentType: "application/json",
+        })
+        .then((response) => {
+          console.log(
+            "EmpRegisterationModel > /emp/getEmpByCdEmp",
+            response.data
+          );
+          setMainTabData(Emp(response.data));
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+        });
+    } else {
+      setMainTabData({});
+    }
+  }, [mainTablePkValue]);
 
   //사원 정보 INSERT POST 요청 (사원의 기초자료)
   useEffect(() => {
-    if (editedEmp.isNew && Object.keys(editedEmp).length !== 0) {
+    if (editedEmp && Object.keys(editedEmp).length !== 0) {
       const newEditedEmp = { ...editedEmp };
       newEditedEmp.item = {
         ...newEditedEmp.item,
@@ -156,35 +137,34 @@ function EmpRegisterationModel() {
   }, []);
 
   //사원 정보 UPDATE POST 요청 (사원의 기초자료)
-  useEffect(() => {
-    if (Object.keys(editedEmp).length !== 0) {
-      console.log("update요청: ", editedEmp.item);
-      axios
-        .put(url + "/emp/updateEmp", editedEmp.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp({});
-        })
-        .catch((error) => {
-          console.log("에러발생 -> ", error);
-        });
-    }
-  }, [editedEmp]);
+  // useEffect(() => {
+  //   if (editedEmp && Object.keys(editedEmp).length !== 0) {
+  //     console.log("emp useEffect update요청: ", editedEmp);
+  //     axios
+  //       .put(url + "/emp/updateEmp", editedEmp)
+  //       .then((response) => {
+  //         if (response.data === 1) console.log("Emp 업데이트 성공");
+  //         setEditedEmp({});
+  //       })
+  //       .catch((error) => {
+  //         console.log("에러발생 -> ", error);
+  //       });
+  //   }
+  //   console.log("update useEffect 함수실행", editedEmp);
+  // }, [editedEmp]);
 
   //사원 update 함수
   const updateEmp = useCallback((emp) => {
-    if (editedEmp) {
-      console.log("update요청: ", emp);
-      axios
-        .put(url + urlPattern.updateEmp, emp)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp();
-        })
-        .catch((error) => {
-          console.log("에러발생 -> ", error);
-        });
-    }
+    console.log("emp 함수 update요청: ", emp);
+    axios
+      .put(url + "/emp/updateEmp", emp)
+      .then((response) => {
+        if (response.data !== 0) console.log("Emp 업데이트 성공");
+        setEditedEmp();
+      })
+      .catch((error) => {
+        console.log("에러발생 -> ", error);
+      });
   }, []);
 
   //사원 정보 DELETE 요청

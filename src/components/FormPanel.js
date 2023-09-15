@@ -42,8 +42,8 @@ const FormPanel = ({
 
     const isZonecode = input.isZonecode || false; // AddressForm 관련 변수
 
-    const pkValue = input.pkValue || ""; // 나중에 삭제 예정..
-    const actions = input.actions || []; // 나중에 삭제 예정..
+    // const pkValue = input.pkValue || ""; // 나중에 삭제 예정..
+    // const actions = input.actions || []; // 나중에 삭제 예정..
 
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
@@ -127,7 +127,7 @@ const FormPanel = ({
             id={id}
             label={label}
             type="callNumber"
-            value={formData.celEmp1}
+            value={value}
             onEnter={submitData}
           />
         );
@@ -138,7 +138,7 @@ const FormPanel = ({
             id={id}
             label={label}
             type="email"
-            value={formData.emEmp}
+            value={value}
             onEnter={submitData}
           />
         );

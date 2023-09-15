@@ -1,4 +1,5 @@
 import { INPUT_TYPE, LABELS } from "../../../model/CommonConstant";
+import { LABELS_EMP } from "../../../model/EmpRegister/EmpConstant";
 
 export const TAB_MENU_LIST = {
   mainTabMenuList: ["기초정보", "가족사항"],
@@ -22,16 +23,20 @@ export const MAIN_TAB = {
     },
     { type: INPUT_TYPE.select, field: "ynFor", label: LABELS.ynFor, span: 1 },
     { type: INPUT_TYPE.select, field: "fgSex", label: LABELS.fgSex, span: 1 },
-    // {
-    //   type: INPUT_TYPE.noSocial,
-    //   field: "noSocial",
-    //   label: LABELS.noSocial,
-    //   span: 2,
-    // },
-    { type: INPUT_TYPE.text, field: "idMsn", span: 2 },
-    { type: INPUT_TYPE.email, field: "emEmp", span: 2 },
-    { type: INPUT_TYPE.callNumber, field: "telHome", span: 2 },
-    { type: INPUT_TYPE.callNumber, field: "celEmp", span: 2 },
+    { type: INPUT_TYPE.text, field: "idMsn", span: 1 },
+    { type: INPUT_TYPE.email, field: "emEmp", span: 1 },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telHome1",
+      label: LABELS_EMP.telHome1,
+      span: 1,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "celEmp1",
+      label: LABELS_EMP.celEmp1,
+      span: 1,
+    },
     { type: INPUT_TYPE.address, field: "address", isZonecode: true, span: 2 },
     { type: INPUT_TYPE.text, field: "addHome2", span: 2 },
     { type: INPUT_TYPE.date, field: "daRetire", span: 2 },

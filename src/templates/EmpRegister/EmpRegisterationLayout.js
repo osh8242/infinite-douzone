@@ -130,7 +130,7 @@ function EmpRegisterationLayout() {
       />
       <Container>
         <Row id="empRegisterLayout">
-          <Col md="5" id="empRegisterLayoutLeft">
+          <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
@@ -164,7 +164,7 @@ function EmpRegisterationLayout() {
               <FormPanel
                 INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
                 formData={state.mainTabData}
-                submitData={actions.setEditedEmp} // update 함수
+                submitData={actions.submitMainTabData} // update 함수
                 codeHelperFn={{
                   //코드도움 함수모음
                   abbNation: () =>
