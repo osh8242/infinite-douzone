@@ -138,7 +138,7 @@ const TableForm = ({
   const releaseEditable = useCallback(() => {
     const newTableRows = tableRows.map((row) => (row.isEditable = false));
     setTableRows(newTableRows);
-  }, []);
+  }, [tableRows]);
 
   //td의 className을 얻는 함수
   const getTdClassName = useCallback(
@@ -413,6 +413,7 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
+        console.log("이벤트키", event.key);
         // event.preventDefault();
         if (editableRowIndex !== -1) {
           switch (event.key) {

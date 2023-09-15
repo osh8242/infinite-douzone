@@ -3,15 +3,11 @@ import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import {
-  isNumber,
-  makeCommaNumber,
-  makePureNumber,
-} from "../utils/NumberUtils";
+import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
+import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
 import SelectForm from "./SelectForm";
-import { EMAIL_LIST, RADIO_LIST } from "../model/CommonConstant";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -131,7 +127,7 @@ function TextBoxComponent(props) {
       if (event.target.id === id)
         setInputValue(makeProcessedValue(newValue)); // data 가공
       else setInputSubValue(makeProcessedValue(newValue));
-      onChange && onChange(newValue);
+      onChange && onChange(event, newValue);
     }
   };
 
