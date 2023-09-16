@@ -55,16 +55,17 @@ const TableForm = ({
   useEffect(() => {
     setTableRows(tableData || []);
     console.log(typeof defaultSelectedRow, "타입");
-    switch (typeof defaultSelectedRow) {
-      case "number":
-        handleRowClick(null, defaultSelectedRow, 0);
-        break;
-      case "boolean":
-        handleRowClick(null, 0, 0);
-        break;
-      default:
-        break;
-    }
+    if (defaultSelectedRow)
+      switch (typeof defaultSelectedRow) {
+        case "number":
+          handleRowClick(null, defaultSelectedRow, 0);
+          break;
+        case "boolean":
+          handleRowClick(null, 0, 0);
+          break;
+        default:
+          break;
+      }
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
