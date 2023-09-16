@@ -277,19 +277,6 @@ function TextBoxComponent(props) {
           <div className="label">{label}</div>
           {/* input contents */}
           <div className="widthFull d-flex align-items-center">
-            {subLabel && (
-              <Col md={2} style={{ marginLeft: 50, marginRight: 5 }}>
-                {subLabel}
-              </Col>
-            )}
-            {/* {selectList && (
-              <div
-              // md={4}
-              // style={{ marginRight: 12 }}
-              >
-                <SelectForm optionList={selectList}></SelectForm>
-              </div>
-            )} */}
             {onClickCodeHelper ? (
               type === "date" ? (
                 //<div className="">
@@ -307,57 +294,52 @@ function TextBoxComponent(props) {
                 </div>
               )
             ) : (
-              // 일반 TextBoxContent
-              <div className="widthFull">
-                {!selectList ? (
-                  <>{renderFormControl()}</>
+              <>
+                {selectList ? (
+                  <div className="widthFull d-flex align-items-center gap-2">
+                    <div style={{ width: "40%" }}>
+                      <SelectForm optionList={selectList}></SelectForm>
+                    </div>
+                    <div>{renderFormControl()} </div>
+                    <div> {endLabel}</div>
+                  </div>
                 ) : (
                   <>
-                    <Row>
-                      <Col md={4}>
-                        <SelectForm optionList={selectList}></SelectForm>
-                      </Col>
-                      <Col md={7}>{renderFormControl()}</Col>
-                      <Col md={1}>{endLabel}</Col>
-                    </Row>
+                    {subLabel ? (
+                      <div className="widthFull d-flex align-items-center justify-content-between">
+                        <div className="widthFull d-flex align-items-center">
+                          <div
+                            style={{ width: "28%" }}
+                            className="d-flex justify-content-end"
+                          >
+                            {subLabel}
+                          </div>
+                          <div
+                            style={{
+                              width: "38%",
+                              paddingLeft: 20,
+                            }}
+                          >
+                            {renderFormControl()}
+                          </div>
+                          <div
+                            className="d-flex justify-content-start"
+                            style={{
+                              width: "30%",
+                              paddingLeft: 10,
+                            }}
+                          >
+                            {endLabel}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // 일반 TextBoxContent
+                      <>{renderFormControl()}</>
+                    )}
                   </>
                 )}
-              </div>
-            )}
-            {/* {isPeriod ? (
-              <>
-                {" ~ "}
-                <div
-                  // md={6}
-                  className="widthFull d-flex align-items-center justify-content-center"
-                >
-                  <Form.Control
-                    value={inputSubValue}
-                    type={type}
-                    id={subId}
-                    name={name}
-                    size={size}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                    plaintext={plaintext}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
-                    onClick={onClick}
-                    onKeyDown={handleKeyDown}
-                    placeholder={placeholder ? placeholder : undefined}
-                    style={style}
-                  />
-                </div>
               </>
-            ) : (
-              ""
-            )} */}
-            {endLabel && !selectList ? (
-              <Col md={2} style={{ marginLeft: 10, marginRight: 50 }}>
-                {endLabel}
-              </Col>
-            ) : (
-              ""
             )}
           </div>
         </div>

@@ -30,33 +30,29 @@ const TestAdd = (props) => {
 
   return (
     <>
-      <Row className="py-1">
+      <Row>
         <div className="labelAndContent">
           <div className="label">{label}</div>
-
-          <div className="widthFull ">
-            <Row>
-              <Col md="10">
-                <Form.Control
-                  id="address"
-                  type="text"
-                  name="address"
-                  value={address}
-                  size={size}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </Col>
-
-              <Col md="2">
-                <Button
-                  id="addressSearchBtn"
-                  variant="secondary"
-                  onClick={() => setModalState({ ...modalState, show: true })}
-                >
-                  <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
-                </Button>
-              </Col>
-            </Row>
+          <div className="widthFull d-flex align-items-center gap-2">
+            <div className="widthFull ">
+              <Form.Control
+                id="address"
+                type="text"
+                name="address"
+                value={address}
+                size={size}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div>
+              <Button
+                id="addressSearchBtn"
+                variant="secondary"
+                onClick={() => setModalState({ ...modalState, show: true })}
+              >
+                <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
+              </Button>
+            </div>
           </div>
         </div>
       </Row>

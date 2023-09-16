@@ -61,6 +61,7 @@ const LaborContractLayout = () => {
                   tableHeaders={LeftTableHeaders}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  rowAddable
                   actions={{
                     setTableData: actions.setLeftTableData,
                     setPkValue: actions.setMainTablePkValue,

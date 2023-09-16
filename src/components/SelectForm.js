@@ -52,28 +52,59 @@ function SelectForm(props) {
         )}
         {/* <div className="d-flex align-items-center justify-content-center"> */}
         <div className="widthFull d-flex align-items-center justify-content-center">
-          {subLabel && (
-            <Col md={2} style={{ marginLeft: 50, marginRight: 5 }}>
-              {subLabel}
-            </Col>
-          )}
-
-          <Form.Select
-            id={id}
-            ref={selectRef}
-            value={selectedValue}
-            onChange={(e) => handleSelectChange(e)}
-          >
-            {optionList.map((option, index) => (
-              <option value={option.key} key={index}>
-                {option.value}
-              </option>
-            ))}
-          </Form.Select>
-          {endLabel && (
-            <Col md={2} style={{ marginLeft: 10, marginRight: 50 }}>
-              {endLabel}
-            </Col>
+          {subLabel ? (
+            <div className="widthFull d-flex align-items-center justify-content-between">
+              <div className="widthFull d-flex align-items-center">
+                <div
+                  style={{ width: "28%" }}
+                  className="d-flex justify-content-end"
+                >
+                  {subLabel}
+                </div>
+                <div
+                  style={{
+                    width: "38%",
+                    paddingLeft: 20,
+                  }}
+                >
+                  <Form.Select
+                    id={id}
+                    ref={selectRef}
+                    value={selectedValue}
+                    onChange={(e) => handleSelectChange(e)}
+                  >
+                    {optionList.map((option, index) => (
+                      <option value={option.key} key={index}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+                <div
+                  className="d-flex justify-content-start"
+                  style={{
+                    width: "30%",
+                    paddingLeft: 10,
+                  }}
+                >
+                  {endLabel}
+                </div>
+              </div>
+            </div>
+          ) : (
+            // 일반 Select
+            <Form.Select
+              id={id}
+              ref={selectRef}
+              value={selectedValue}
+              onChange={(e) => handleSelectChange(e)}
+            >
+              {optionList.map((option, index) => (
+                <option value={option.key} key={index}>
+                  {option.value}
+                </option>
+              ))}
+            </Form.Select>
           )}
         </div>
       </div>
