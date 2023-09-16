@@ -251,6 +251,7 @@ function TextBoxComponent(props) {
     callNumberComponents.push(
       <Form.Control
         id={`${id}${i}`}
+        key={i}
         value={inputValue}
         type="callNumber"
         disabled={disabled}

@@ -113,9 +113,11 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  onRowClick={(e, row) => {
+                    actions.setLeftTablePkValue(row);
+                  }}
                   actions={{
                     setTableData: actions.setLeftTableData,
-                    setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: actions.insertEmp,
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
@@ -167,7 +169,7 @@ const HrManagementLayout = () => {
                         INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
-                        columnNumber={3}
+                        columnNumber={2}
                       />
                     </Col>
                   </Row>,

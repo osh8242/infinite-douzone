@@ -59,7 +59,7 @@ const FormPanel = ({
             disabled={disabled}
             value={value}
             onEnter={submitData}
-            onChange={(e, value) => onChangeFn(value)}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
           />
         );
         break;

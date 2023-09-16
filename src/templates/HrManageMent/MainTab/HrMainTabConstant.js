@@ -107,5 +107,11 @@ export const MAIN_TAB = {
       field: "fgOwnhouse",
       label: LABELS.fgOwnhouse,
     },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telHome",
+      label: LABELS.telHome,
+      span: 1,
+    },
   ],
 };
