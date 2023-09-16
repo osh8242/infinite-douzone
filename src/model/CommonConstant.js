@@ -132,7 +132,6 @@ export const LABELS = {
   noBnkacct: "계좌번호",
   nmBnkowner: "예금주",
   jobOk: "재직구분",
-  addHome2: "상세주소",
 
   mnReduction: "감면율",
   nmEmp: "사원이름",

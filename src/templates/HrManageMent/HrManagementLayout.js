@@ -116,8 +116,11 @@ const HrManagementLayout = () => {
                   onRowClick={(e, row) => {
                     actions.setLeftTablePkValue(row);
                   }}
+                  defaultSelectedRow
+                  defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
+                    setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: actions.insertEmp,
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,

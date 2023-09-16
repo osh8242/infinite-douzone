@@ -47,11 +47,24 @@ const TableForm = ({
   sortable, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
+  defaultSelectedRow, // [선택] 테이블 랜더시 초기 선택행 옵션(숫자, 디폴트는 index = 0)
+  defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온(디폴트 false)
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
 
   useEffect(() => {
     setTableRows(tableData || []);
+    console.log(typeof defaultSelectedRow, "타입");
+    switch (typeof defaultSelectedRow) {
+      case "number":
+        handleRowClick(null, defaultSelectedRow, 0);
+        break;
+      case "boolean":
+        handleRowClick(null, 0, 0);
+        break;
+      default:
+        break;
+    }
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
@@ -79,7 +92,7 @@ const TableForm = ({
   const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(false);
+  const tableFocus = useRef(defaultFocus);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
@@ -440,28 +453,32 @@ const TableForm = ({
         }
 
         if (editableRowIndex === -1) {
-          event.preventDefault();
           switch (event.key) {
             case "ArrowDown":
+              event.preventDefault();
               if (rowRef < tableRows.length) setRowRef(rowRef + 1);
               updatePkValue(rowRef + 1);
               break;
 
             case "ArrowUp":
+              event.preventDefault();
               if (rowRef > 0) setRowRef(rowRef - 1);
               updatePkValue(rowRef - 1);
               break;
 
             case "ArrowLeft":
+              event.preventDefault();
               if (columnRef > 0) setColumnRef(columnRef - 1);
               break;
 
             case "ArrowRight":
+              event.preventDefault();
               if (columnRef < tableHeaders.length - 1)
                 setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
+              event.preventDefault();
               if (editableRowIndex === -1 && rowRef > -1) {
                 handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) pushNewRow();
@@ -470,10 +487,12 @@ const TableForm = ({
               break;
 
             case " ":
+              event.preventDefault();
               checkboxHandler(rowRef);
               break;
 
             case "Delete":
+              event.preventDefault();
               setModalState({
                 show: true,
                 message: "해당 행을 삭제하시겠습니까?",
@@ -654,6 +673,7 @@ const TableForm = ({
 
               {tableHeaders.map((thead, columnIndex) => (
                 <td
+                  className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
@@ -708,6 +728,8 @@ TableForm.propTypes = {
   sortable: PropTypes.bool,
   readOnly: PropTypes.bool,
   rowAddable: PropTypes.bool,
+  defaultSelectedRow: PropTypes.number,
+  defaultFocus: PropTypes.bool,
 };
 
 export default TableForm;

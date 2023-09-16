@@ -143,7 +143,7 @@ function TextBoxComponent(props) {
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       if (event.target.id === id) setInputValue(makeProcessedValue(newValue)); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
-      onChange && onChange(newValue);
+      onChange && onChange(event, newValue);
     }
   };
 
@@ -254,14 +254,13 @@ function TextBoxComponent(props) {
   const callNumberComponents = [];
   for (let i = 1; i <= 3; i++) {
     callNumberComponents.push(
-      <Form.Control
+      <TextBoxComponent
         id={`${id}${i}`}
         key={i}
-        value={inputValue}
-        type="callNumber"
+        value={inputValue?.split("-")[i - 1]}
         disabled={disabled}
-        onKeyDown={(event) => handleKeyDown(event, id)}
-        onChange={(event) => handleInputChange(event, i)}
+        onEnter={onEnter}
+        onChange={onChange}
         onFocus={handleInputFocus}
         className={hasFalseValid(isCallValid) ? "" : "invalid"}
       />

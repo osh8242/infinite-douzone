@@ -5,6 +5,7 @@ import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import { url } from "../CommonConstant";
 import { urlPattern } from "./HrManagementConstant";
+import EmpAdd from "../../vo/HrManagement/EmpAdd";
 
 const HrManagementModel = () => {
   const [jobOk, setJobOk] = useState("Y"); //재직여부
@@ -69,7 +70,7 @@ const HrManagementModel = () => {
         .then((response) => {
           let data = response.data;
           console.log("mainTabData", data);
-          setMainTabData(data);
+          setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -84,9 +85,12 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (leftTablePkValue.cdEmp) {
       axios
-        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
-          responseType: "arraybuffer",
-        })
+        .get(
+          `${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`,
+          {
+            responseType: "arraybuffer",
+          }
+        )
         .then((response) => {
           // ArrayBuffer를 Blob으로 변환하고 URL을 생성
           const blob = new Blob([response.data], { type: "image/jpeg" });
