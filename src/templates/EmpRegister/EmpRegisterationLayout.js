@@ -8,12 +8,12 @@ import EmpRegisterHeader from "./EmpRegisterHeader";
 import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
 import Emp from "../../vo/EmpRegister/Emp";
 import MenuTab from "../../components/MenuTab";
-import TextBoxComponent from "../../components/TextBoxComponent";
-import AddressForm from "../../components/AddressForm";
+// import TextBoxComponent from "../../components/TextBoxComponent";
+// import AddressForm from "../../components/AddressForm";
 import CallNumberForm from "../../components/CallNumberForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
-import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
+// import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
 import TableForm from "../../components/TableForm";
 import { LABELS } from "../../model/CommonConstant";
 import {
@@ -26,8 +26,8 @@ import {
   codeHelperData_cdProject,
   codeHelperData_cdOccup,
   codeHelperData_cdField,
-  EmpRegisterUndeletedEmpHeaders,
   tabConstant,
+  codeHelperData_cdBank,
 } from "../../model/EmpRegister/EmpConstant";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
@@ -41,45 +41,49 @@ function EmpRegisterationLayout() {
   const [modalType, setModalType] = useState("");
 
   //코드도움 아이콘 클릭이벤트
-  const modalShow = useCallback(async (type, data, setRowData) => {
-    actions.setModalState({ ...state.modalState, show: true });
-    setModalType(type);
+  const modalShow = useCallback(
+    async (type, data, setRowData) => {
+      actions.setModalState({ ...state.modalState, show: true });
+      setModalType(type);
 
-    switch (type) {
-      case "default":
-        actions.setModalState((prevState) => ({
-          ...prevState,
-          size: "lg",
-          subject: data.subject,
-        }));
+      switch (type) {
+        case "default":
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            size: "lg",
+            subject: data.subject,
+          }));
 
-        actions.setCodeHelperTableData(() => ({
-          // subject: data.subject,
-          setRowData: setRowData,
-          tableHeaders: data.headers,
-          tableData: data.tableData,
-          usePk: data.usePk ? data.usePk : "",
-          searchField: data.searchField,
-        }));
-        break;
-      case "undeletedEmp":
-        actions.setModalState((prevState) => ({
-          ...prevState,
-          size: "md",
-          subject: data.subject,
-        }));
-        actions.setCodeHelperTableData(() => ({
-          // subject: data.subject,
-          setRowData: setRowData,
-          tableHeaders: data.headers,
-          tableData: state.undeletedEmpTableData,
-          usePk: data.usePk ? data.usePk : "",
-          searchField: data.searchField,
-        }));
-      default:
-        break;
-    }
-  }, []);
+          actions.setCodeHelperTableData(() => ({
+            // subject: data.subject,
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: data.tableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+        case "undeletedEmp":
+          console.log(state.undeletedEmpTableData);
+
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            size: "md",
+            subject: data.subject,
+          }));
+
+          actions.setCodeHelperTableData(() => ({
+            // subject: data.subject,
+            tableHeaders: data.headers,
+            tableData: state.undeletedEmpTableData,
+          }));
+          break;
+        default:
+          break;
+      }
+    },
+    [state]
+  );
 
   //mainTab Enter 이벤트 발생시 Emp 업데이트
   const submitMainTabData = (value, id) => {
@@ -100,21 +104,21 @@ function EmpRegisterationLayout() {
   };
 
   // 코드도움 값 update 로직
-  const submitValue = (data) => {
-    console.log("코드도움(empRegister Layout) data: ", data);
-    //item 포장
-    let { description, ...item } = data;
-    console.log(item);
-    item = {
-      ...item,
-      cdEmp: state.mainTablePkValue.cdEmp,
-    };
-    let newData = {
-      item,
-    };
-    console.log(newData); //item:{abbNation: 'KR'} item으로 포장된 vo객체
-    actions.setEditedEmp(newData);
-  };
+  // const submitValue = (data) => {
+  //   console.log("코드도움(empRegister Layout) data: ", data);
+  //   //item 포장
+  //   let { description, ...item } = data;
+  //   console.log(item);
+  //   item = {
+  //     ...item,
+  //     cdEmp: state.mainTablePkValue.cdEmp,
+  //   };
+  //   let newData = {
+  //     item,
+  //   };
+  //   console.log(newData); //item:{abbNation: 'KR'} item으로 포장된 vo객체
+  //   actions.setEditedEmp(newData);
+  // };
 
   return (
     <>
@@ -122,10 +126,11 @@ function EmpRegisterationLayout() {
       <EmpRegisterHeader
         selectedRows={state.selectedRows}
         actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
+        modalShow={modalShow}
       />
       <Container>
         <Row id="empRegisterLayout">
-          <Col md="5" id="empRegisterLayoutLeft">
+          <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
             {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
               <TableForm
@@ -161,7 +166,7 @@ function EmpRegisterationLayout() {
                 formData={state.mainTabData}
                 submitData={actions.submitMainTabData} // update 함수
                 codeHelperFn={{
-                  //여기다가 함수를 넣으면 됨............
+                  //코드도움 함수모음
                   abbNation: () =>
                     modalShow(
                       "default",
@@ -210,10 +215,16 @@ function EmpRegisterationLayout() {
                       codeHelperData_cdProject,
                       actions.setEditedEmp
                     ),
+                  cdBank: () =>
+                    modalShow(
+                      "default",
+                      codeHelperData_cdBank,
+                      actions.setEditedEmp
+                    ),
                 }}
               />
               {/* 급여이체은행 -> 추후 분리 예정 */}
-              <CallNumberForm
+              {/* <CallNumberForm
                 label={LABELS.cdBank}
                 val1={state.mainTabData.cdBank}
                 val2={state.mainTabData.noBnkacct}
@@ -222,7 +233,7 @@ function EmpRegisterationLayout() {
                 actions={{
                   setNewEmp: actions.setEditedEmp,
                 }}
-              />
+              /> */}
               {/* 여기가 영역... 여기에 구현... */}
 
               {/* <Row id="empDataSortedMenuArea"> */}
@@ -495,7 +506,7 @@ function EmpRegisterationLayout() {
         </Row>
       </Container>
 
-      {/* 코드도움 모달영역 */}
+      {/* 모달영역 */}
       <ModalComponent
         title={state.modalState.subject}
         size={state.modalState.size}
@@ -511,25 +522,14 @@ function EmpRegisterationLayout() {
             subject={state.codeHelperTableData.subject}
             searchField={state.codeHelperTableData.searchField}
             onHide={() => actions.setModalState({ show: false })}
-
-            // show={state.codeHelperState.show}
-            // onHide={() =>
-            //   actions.setCodeHelperState({
-            //     ...state.codeHelperState,
-            //     show: false,
-            //   })
-            // }
-            // // onConfirm={() => alert("확인")}
-            // setRowData={(event) => submitValue(event)} // 여기서 값을 반환합니다.
-            // table={state.codeHelperTableData.data}
-            // codeHelperCode={state.codeHelperTableData.code}
           />
         ) : modalType === "undeletedEmp" ? (
-          <TableForm
-            tableHeaders={EmpRegisterUndeletedEmpHeaders}
-            tableData={state.undeletedEmpTableData}
-            selectedRows={state.selectedRows}
-          />
+          <div>
+            <TableForm
+              tableHeaders={state.codeHelperTableData.tableHeaders}
+              tableData={state.codeHelperTableData.tableData}
+            />
+          </div>
         ) : (
           //default
           <></>
