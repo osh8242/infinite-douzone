@@ -11,10 +11,7 @@ import {LABELS} from "../model/CommonConstant";
 
 function CodeHelperModal(props) {
   const {
-    show,
     onHide,
-
-    subject,
     setRowData, // [필수] 객체 반환 받을 set함수
     onConfirm, // [선택] 확인버튼
     tableHeaders,
@@ -58,7 +55,6 @@ function CodeHelperModal(props) {
 
   return (
     <>
-    {/* <ModalComponent title= {subject} show={show} onHide={onHide} onConfirm={onConfirm}> */}
         <div>
           <Row className="table-wrapper">
             <TableForm
@@ -79,14 +75,11 @@ function CodeHelperModal(props) {
             </Form.Group>
           </Row>
         </div>
-    {/* </ModalComponent> */}
    </>
   );
 }
 
 CodeHelperModal.defaultProps = {
-  // show : false,
-  // onHide : null,
   tableHeaders: [],
   tableData: [{ item: {} }],
   subject: "",
