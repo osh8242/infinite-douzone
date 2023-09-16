@@ -135,25 +135,31 @@ const LaborContractModel = () => {
       .catch(console.error);
   }, [editedSwsm, mainTabData]);
 
-  const insertSwsmOther = useCallback((swsmOther) => {
-    console.log("SwsmOther insert Data: ");
-    console.log(swsmOther);
-    const newData = {
-      otherType: swsmOther.otherType,
-      otherMoney: swsmOther.otherMoney,
-      seqVal: swsmOther.seqVal,
-      cdEmp: mainTablePkValue.cdEmp,
-    };
-    axios
-      .post(url + swsmUrlPattern.insertSwsmOther, newData)
-      .then((response) => {
-        if (response.data === 1) console.log("SwsmOther insert 성공");
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, []);
+  const insertSwsmOther = useCallback(
+    (swsmOther) => {
+      console.log("SwsmOther insert Data: ");
+      console.log(swsmOther);
+      console.log(mainTabData);
+      console.log(mainTabData.cdEmp);
+      const newData = {
+        otherType: swsmOther.otherType,
+        otherMoney: swsmOther.otherMoney,
+        seqVal: swsmOther.seqVal,
+        cdEmp: mainTabData.cdEmp,
+      };
+      console.log(newData);
+      axios
+        .post(url + swsmUrlPattern.insertSwsmOther, newData)
+        .then((response) => {
+          if (response.data === 1) console.log("SwsmOther insert 성공");
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [mainTabData]
+  );
 
   const updateSwsmOther = useCallback((swsmOther) => {
     const newData = {
@@ -173,6 +179,8 @@ const LaborContractModel = () => {
   }, []);
 
   const deleteSelectedRows = useCallback(() => {
+    const editedTableNames = {};
+    console.log("삭제요청된 행들", selectedRows);
     const deletePromises = selectedRows.map((row) => {
       let endpoint;
       switch (row.table) {
@@ -185,6 +193,7 @@ const LaborContractModel = () => {
         default:
           return Promise.resolve();
       }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
       return axios.delete(url + endpoint, { data: row.item });
     });
 
@@ -192,8 +201,26 @@ const LaborContractModel = () => {
       .then(() => {
         console.log("선택된 모든 행의 삭제 완료");
         setSelectedRows([]);
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "empFam":
+              //setEditedEmpFam({}); // 사원가족 리로드
+              break;
+            case "emp":
+              setEditedEmp({}); // 사원가족 리로드
+              break;
+            case "swsmOther":
+              setEditedSwsmOther({}); // 사원가족 리로드
+              break;
+            default:
+              break;
+          }
+        });
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
   }, [selectedRows]);
 
   console.log(mainTabData);
