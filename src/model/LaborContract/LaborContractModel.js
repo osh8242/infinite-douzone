@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
-import Emp from "../../vo/HrManagement/Emp";
+import { url } from "../CommonConstant";
+import { swsmUrlPattern } from "./LaborContractConstant";
+import { urlPattern } from "../HrManagement/HrManagementConstant";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
+// import Emp from "../../vo/HrManagement/Emp";
 
 const LaborContractModel = () => {
-  const url = "http://localhost:8888";
-
-  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "A101" });
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" });
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});
@@ -16,12 +16,12 @@ const LaborContractModel = () => {
   const [subTableData, setSubTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
+  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "A101" });
 
   const mainTabRef = useRef();
-
   useEffect(() => {
     axios
-      .get(url + "/emp/getAllEmp")
+      .get(url + swsmUrlPattern.getAllEmp)
       .then((response) => {
         const data = response.data.map((item) => {
           return Swsm({
@@ -38,7 +38,7 @@ const LaborContractModel = () => {
   useEffect(() => {
     if (mainTablePkValue) {
       axios
-        .post(url + "/swsm/getSwsmByCdEmp", mainTablePkValue, {
+        .post(url + swsmUrlPattern.getSwsm, mainTablePkValue, {
           "Content-Type": "application/json",
         })
         .then((response) => {
@@ -48,7 +48,7 @@ const LaborContractModel = () => {
 
       // get으로 변경 예정.......................
       axios
-        .post(url + "/swsmOther/getSwsmOtherByCdEmp", mainTablePkValue)
+        .post(url + swsmUrlPattern.getSwsmOther, mainTablePkValue)
         .then((response) => {
           const data = response.data.map((item) =>
             SwsmOther({
@@ -67,7 +67,7 @@ const LaborContractModel = () => {
   //추가된 사원 insert 요청
   const insertEmp = useCallback((emp) => {
     axios
-      .post(url + "/emp/insertEmp", emp)
+      .post(url + urlPattern.insertEmp, emp)
       .then((response) => {
         if (response.data === 1) console.log("Emp insert 성공");
         setEditedEmp({});
@@ -83,7 +83,7 @@ const LaborContractModel = () => {
     if (Object.keys(editedEmp).length === 0) return;
 
     const action = editedEmp.isNew ? axios.post : axios.put;
-    const endpoint = editedEmp.isNew ? "/emp/insertEmp" : "/emp/updateEmp";
+    const endpoint = editedEmp.isNew ? urlPattern.insertEmp : "/emp/updateEmp";
 
     action(url + endpoint, editedEmp.item)
       .then((response) => {
@@ -127,7 +127,7 @@ const LaborContractModel = () => {
     };
 
     axios
-      .put(url + "/swsm/updateSwsm", updatedSwsm)
+      .put(url + swsmUrlPattern.updateSwsm, updatedSwsm)
       .then((response) => {
         if (response.data === 1) console.log("Swsm 업데이트 성공");
         setEditedSwsm({});
@@ -145,7 +145,7 @@ const LaborContractModel = () => {
       cdEmp: mainTablePkValue.cdEmp,
     };
     axios
-      .post(url + "/swsmOther/insertSwsmOther", newData)
+      .post(url + swsmUrlPattern.insertSwsmOther, newData)
       .then((response) => {
         if (response.data === 1) console.log("SwsmOther insert 성공");
       })
@@ -163,7 +163,7 @@ const LaborContractModel = () => {
       cdEmp: mainTablePkValue.cdEmp,
     };
     axios
-      .put(url + "/swsmOther/updateSwsmOtherByCdEmp", newData)
+      .put(url + swsmUrlPattern.updateSwsmOther, newData)
       .then((response) => {
         if (response.data === 1) console.log("swsmOther 업데이트 성공");
       })
@@ -177,10 +177,10 @@ const LaborContractModel = () => {
       let endpoint;
       switch (row.table) {
         case "empFam":
-          endpoint = "/empFam/deleteEmpFam";
+          endpoint = urlPattern.deleteEmpFam;
           break;
         case "swsmOther":
-          endpoint = "/swsmOther/deleteSwsmOther";
+          endpoint = swsmUrlPattern.deleteSwsmOther;
           break;
         default:
           return Promise.resolve();
@@ -212,15 +212,12 @@ const LaborContractModel = () => {
       setLeftTableData,
       setLeftTablePkValue,
       setMainTablePkValue,
-      // setRightTabData,
       setMainTabData,
       setSubTableData,
-      // setCdEmp,
       submitMainTabData,
       setEditedEmp,
       setEditedSwsm,
       setEditedSwsmOther,
-      // setCurrMenuTab,
       setSelectedRows,
       deleteSelectedRows,
       insertSwsmOther,

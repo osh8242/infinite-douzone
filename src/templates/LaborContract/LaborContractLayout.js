@@ -22,7 +22,6 @@ import { MAIN_TAB, HEAD_TAB } from "./MainTab/LaborContractTabConstant";
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
 const LaborContractLayout = () => {
-  //Model로 관리되는 값들
   const { state, actions, mainTablePkValue } = LaborContractModel();
   const { mainTabRef, leftTableData, mainTabData, subTableData, selectedRows } =
     state;
