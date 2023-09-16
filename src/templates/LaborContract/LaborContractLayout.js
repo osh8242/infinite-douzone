@@ -25,7 +25,8 @@ import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 const LaborContractLayout = () => {
   const { SwsmLeftTableHeaders } = SwsmConstant();
   const { state, actions, mainTablePkValue } = TestModel();
-  const { leftTableData, mainTabData, subTableData, selectedRows } = state;
+  const { leftTableData, mainTabData, subTableData, selectedRows, mainTabRef } =
+    state;
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
@@ -65,16 +66,20 @@ const LaborContractLayout = () => {
           {mainTabData ? (
             <Col md="9">
               {/* 근로정보 탭 */}
-              <MenuTab menuList={[subTabMenuList.WorkInformation]} />
-              <Scrollbars style={{ height: 470, overflow: "hidden" }}>
-                <Row>
-                  {MainTabField.map((field, idx) => (
-                    <Col key={idx} xs md="10">
-                      {DispatcherComponent(field)}
-                    </Col>
-                  ))}
-                </Row>
-              </Scrollbars>
+              <MenuTab
+                menuList={[subTabMenuList.WorkInformation]}
+                ref={mainTabRef}
+              >
+                <Scrollbars style={{ height: 470, overflow: "hidden" }}>
+                  <Row>
+                    {MainTabField.map((field, idx) => (
+                      <Col key={idx} xs md="10">
+                        {DispatcherComponent(field)}
+                      </Col>
+                    ))}
+                  </Row>
+                </Scrollbars>{" "}
+              </MenuTab>
               <MenuTab menuList={[subTabMenuList.otherBenefit]} />
               {/* SubGrid */}
               <TableForm

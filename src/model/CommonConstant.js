@@ -11,6 +11,8 @@ export const INPUT_TYPE = {
   callNumber: 100,
   email: 101,
   noSocial: 102,
+  dateCustom: 300,
+  addressCustom: 301,
   month: 401,
   dateCodeHelper: 402,
 };
@@ -154,6 +156,35 @@ export const LABELS = {
   paymentDate: "지급일",
   ynUnit: "생산직여부",
   ynForlabor: "국외근로여부",
+
+  // LaborContract
+  empContractPeriod: "근로계약기간",
+  workAddress: "근무장소",
+  addDetail: "상세주소",
+  jobDescription: "업무의 내용",
+  workTime: "소정근로시간",
+  breakTime: "휴게시간",
+  workingDay: "근무일",
+  dayOff: "주휴일",
+  salaryType: "임금유형",
+  otherBenefits: "기타급여",
+  bonusPaymentStatus: "상여금",
+  salaryPaymentDateType: "임금지급일",
+  paymentMethod: "지급방법",
+  empInsurance: "고용보험",
+  compensationInsurance: "산재보험",
+  nationalPension: "국민연금", //
+  healthInsurance: "건강보험",
+  dateOfCreation: " 작성일자",
+  incomeClassfication: "소득구분", ///
+
+  address: "근무장소",
+  startWorktime: "시작근로시간",
+  endWorktime: "종료근로시간",
+  startBreakTime: "시작휴게시간",
+  endBreakTime: "종료휴게시간",
+  bonusAmount: "상여금",
+  paymentDate: "작성일자",
 };
 
 export const CODE = {

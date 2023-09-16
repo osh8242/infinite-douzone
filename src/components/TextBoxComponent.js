@@ -19,11 +19,11 @@ function TextBoxComponent(props) {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
     // custom type 옵션          ex) callNumber, email( text & select )
     id,
-    subId,
+    // subId,
     name,
     label,
     value,
-    subValue,
+    // subValue,
 
     rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
     //codeHelper, // 코드헬퍼 아이콘 생성
@@ -51,7 +51,7 @@ function TextBoxComponent(props) {
     //유효성 검사
     validationFunction,
 
-    md = 4, // [선택]
+    // md = 4, // [선택]
     // valueMd = 8,
     placeholder, // [선택]
     height, // [선택] 스타일
@@ -64,9 +64,9 @@ function TextBoxComponent(props) {
 
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
-  const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
+  // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
-  const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
+  // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   const [isValid, setIsValid] = useState([true]); // 기본 유효성 검사 상태 값
@@ -74,8 +74,14 @@ function TextBoxComponent(props) {
 
   useEffect(() => {
     setInputValue(value || "");
-    setInputSubValue(subValue || "");
-  }, [value, subValue]);
+    // setInputSubValue(subValue || "");
+  }, [value]);
+
+  useEffect(() => {
+    console.log("sendValue", sendValue);
+    // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
+    // update 로직은 이 곳에서 사용하기로...
+  }, [sendValue]);
 
   // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
   const alertErrorMessage = () => {
@@ -90,13 +96,13 @@ function TextBoxComponent(props) {
         if (/^\d{6}-\d{7}$/.test(inputValue) || "") {
           //유효성에 맞다면 update 요청을 보낼 수 있다
           setSendValue(inputValue);
-          if (subValue) setSendSubValue(inputValue);
+          // if (subValue) setSendSubValue(inputValue);
         } else {
           alertErrorMessage();
         }
       }
       onEnter && onEnter(event, sendValue, id);
-      if (subValue) onEnter && onEnter(event, sendSubValue, subId);
+      // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 
@@ -135,9 +141,8 @@ function TextBoxComponent(props) {
       }
     } else {
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
-      if (event.target.id === id)
-        setInputValue(makeProcessedValue(newValue)); // data 가공
-      else setInputSubValue(makeProcessedValue(newValue));
+      if (event.target.id === id) setInputValue(makeProcessedValue(newValue)); // data 가공
+      // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(newValue);
     }
   };
@@ -273,22 +278,18 @@ function TextBoxComponent(props) {
           {/* input contents */}
           <div className="widthFull d-flex align-items-center">
             {subLabel && (
-              <div
-                // md={2}
-                className="d-flex align-items-center justify-content-center"
-                style={{ marginLeft: 15, marginRight: 15 }}
-              >
+              <Col md={2} style={{ marginLeft: 50, marginRight: 5 }}>
                 {subLabel}
-              </div>
+              </Col>
             )}
-            {selectList && (
+            {/* {selectList && (
               <div
               // md={4}
               // style={{ marginRight: 12 }}
               >
                 <SelectForm optionList={selectList}></SelectForm>
               </div>
-            )}
+            )} */}
             {onClickCodeHelper ? (
               type === "date" ? (
                 //<div className="">
@@ -308,18 +309,22 @@ function TextBoxComponent(props) {
             ) : (
               // 일반 TextBoxContent
               <div className="widthFull">
-                {renderFormControl()}
-                {selectList && (
-                  <div
-                    // className="label"
-                    style={{ marginLeft: 10 }}
-                  >
-                    {endLabel}
-                  </div>
+                {!selectList ? (
+                  <>{renderFormControl()}</>
+                ) : (
+                  <>
+                    <Row>
+                      <Col md={4}>
+                        <SelectForm optionList={selectList}></SelectForm>
+                      </Col>
+                      <Col md={7}>{renderFormControl()}</Col>
+                      <Col md={1}>{endLabel}</Col>
+                    </Row>
+                  </>
                 )}
               </div>
             )}
-            {isPeriod ? (
+            {/* {isPeriod ? (
               <>
                 {" ~ "}
                 <div
@@ -346,15 +351,11 @@ function TextBoxComponent(props) {
               </>
             ) : (
               ""
-            )}
+            )} */}
             {endLabel && !selectList ? (
-              <div
-                // md={2}
-                // className="label"
-                style={{ marginLeft: 15, marginRight: 15 }}
-              >
+              <Col md={2} style={{ marginLeft: 10, marginRight: 50 }}>
                 {endLabel}
-              </div>
+              </Col>
             ) : (
               ""
             )}

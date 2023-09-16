@@ -11,6 +11,7 @@ import { LeftTableHeaders } from "../../model/LaborContract/LaborContractConstan
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
 import { subTabMenuList } from "../../model/LaborContract/LaborContractConstant";
 import TableForm from "../../components/TableForm";
+import FormPanel from "../../components/FormPanel";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import Spinner from "react-bootstrap/Spinner";
@@ -32,7 +33,12 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 
-import MainTab from "./MainTab/LaborContractMainTab";
+import {
+  MAIN_TAB,
+  HEAD_TAB,
+  TAB_MENU_LIST,
+} from "./MainTab/LaborContractTabConstant";
+// import MainTab from "./MainTab/LaborContractMainTab";
 
 import {
   HeaderField,
@@ -42,24 +48,11 @@ import {
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
 //subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
 
-const HrManagementLayout = () => {
+const TestLayout = () => {
   //Model로 관리되는 값들
   const { state, actions, mainTablePkValue } = TestModel();
   const { mainTabRef, leftTableData, mainTabData, subTableData, selectedRows } =
     state;
-
-  //   const {
-  //     jobOkSelectRef,
-  //     orderSelectRef,
-  //     leftTableData,
-  //     leftTablePkValue,
-  //     leftStaticsTableData,
-  //     mainTabRef,
-  //     mainTabData,
-  //     empImageSrc,
-  //     subTableData,
-  //     selectedRows,
-  //   } = state;
 
   return (
     <>
@@ -69,13 +62,23 @@ const HrManagementLayout = () => {
         {/* 조회영역 */}
         <SearchPanel showAccordion>
           <Row>
-            {HeaderField.map((field, idx) => (
+            {/* {HeaderField.map((field, idx) => (
               <Col key={idx}>{DispatcherComponent(field)}</Col>
-            ))}
+            ))} */}
+            {mainTabData ? (
+              <FormPanel
+                INPUT_CONSTANT={HEAD_TAB.primaryTabInputs}
+                formData={mainTabData}
+                submitData={actions.submitMainTabData}
+              />
+            ) : (
+              <Spinner animation="border" variant="primary" />
+            )}
           </Row>
 
           <div></div>
         </SearchPanel>
+        {/* <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList} ref={mainTabRef}> */}
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
@@ -85,10 +88,8 @@ const HrManagementLayout = () => {
               <div className="leftTable">
                 <TableForm
                   tableName="EMP"
-                  showCheckbox
                   showHeaderArrow
                   sortable
-                  rowAddable
                   tableHeaders={LeftTableHeaders}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
@@ -108,21 +109,26 @@ const HrManagementLayout = () => {
           {mainTabData ? (
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
-              <MenuTab menuList={[subTabMenuList.WorkInformation]}>
-                <div>하나하나</div>
+              <MenuTab
+                menuList={[subTabMenuList.WorkInformation]}
+                ref={mainTabRef}
+              >
+                {[
+                  // <Scrollbars style={{ height: 400, overflow: "hidden" }}>
+                  <Row className="mb-5 justify-content-center">
+                    <Row>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                        formData={mainTabData}
+                        submitData={actions.submitMainTabData}
+                        actions={actions}
+                      />
+                    </Row>
+                  </Row>,
+                  // </Scrollbars>,
+                ]}
               </MenuTab>
               {/* 우측 메인폼 */}
-              <Scrollbars style={{ height: 470, overflow: "hidden" }}>
-                <Row className="mb-5 justify-content-center" ref={mainTabRef}>
-                  <Row>
-                    <MainTab
-                      formData={mainTabData}
-                      submitData={actions.submitMainTabData}
-                      columnNumber={1}
-                    />
-                  </Row>
-                </Row>
-              </Scrollbars>
 
               {/* 우측 서브탭 */}
               <MenuTab menuList={[subTabMenuList.otherBenefit]} />
@@ -142,9 +148,9 @@ const HrManagementLayout = () => {
                     setEditedRow: actions.setEditedSwsmOther,
                     setSelectedRows: actions.setSelectedRows,
                     getRowObject: SwsmOther,
-                    // insertNewRow: actions.insertEmpFam,
-                    // updateEditedRow: actions.updateEmpFam,
-                    // deleteRow: actions.deleteRow,
+                    insertNewRow: actions.insertSwsmOther,
+                    updateEditedRow: actions.updateSwsmOther,
+                    deleteRow: actions.deleteSelectedRows,
                   }}
                 />
               </div>
@@ -153,9 +159,10 @@ const HrManagementLayout = () => {
             <Spinner animation="border" variant="primary" />
           )}
         </Row>
+        {/* </MenuTab> */}
       </Container>
     </>
   );
 };
 
-export default HrManagementLayout;
+export default TestLayout;

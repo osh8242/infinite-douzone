@@ -64,6 +64,20 @@ const TestModel = () => {
     }
   }, [mainTablePkValue, editedSwsmOther]);
 
+  //추가된 사원 insert 요청
+  const insertEmp = useCallback((emp) => {
+    axios
+      .post(url + "/emp/insertEmp", emp)
+      .then((response) => {
+        if (response.data === 1) console.log("Emp insert 성공");
+        setEditedEmp({});
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
   // EDITED_EMP 처리 부분 (update & insert)
   useEffect(() => {
     if (Object.keys(editedEmp).length === 0) return;
@@ -81,15 +95,23 @@ const TestModel = () => {
 
   const submitMainTabData = useCallback(
     (event, value) => {
-      if (event.key === "Enter" || event.type === "change") {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
         let data = {
           [event.target.id]: event.target.value,
         };
         setEditedSwsm(data);
-        console.log("엔터누름");
-        let newMainTabData = { ...mainTabData };
-        console.log(newMainTabData);
-        event.target.blur();
+      }
+      if (event.type === "change") {
+        console.log("change");
+        let data = {
+          [event.target.id]: event.target.value,
+        };
+        // event.target.blur();
+        let newMainTabData = { ...mainTabData.item };
+        newMainTabData[event.target.id] = value;
+        setEditedSwsm(data);
       }
     },
     [mainTabRef, mainTabData]
@@ -108,30 +130,47 @@ const TestModel = () => {
       .put(url + "/swsm/updateSwsm", updatedSwsm)
       .then((response) => {
         if (response.data === 1) console.log("Swsm 업데이트 성공");
+        setEditedSwsm({});
       })
       .catch(console.error);
   }, [editedSwsm, mainTabData]);
 
-  // EDITED_SWSM_OTHER 처리 부분 (insert & update)
-  useEffect(() => {
-    if (Object.keys(editedSwsmOther).length === 0) return;
-
-    const updatedSwsmOther = {
-      ...editedSwsmOther.item,
-      cdEmp: mainTabData.cdEmp,
+  const insertSwsmOther = useCallback((swsmOther) => {
+    console.log("SwsmOther insert Data: ");
+    console.log(swsmOther);
+    const newData = {
+      otherType: swsmOther.otherType,
+      otherMoney: swsmOther.otherMoney,
+      seqVal: swsmOther.seqVal,
+      cdEmp: mainTablePkValue.cdEmp,
     };
-    const action = editedSwsmOther.isNew ? axios.post : axios.put;
-    const endpoint = editedSwsmOther.isNew
-      ? "/swsmOther/insertSwsmOther"
-      : "/swsmOther/updateSwsmOtherByCdEmp";
-
-    action(url + endpoint, updatedSwsmOther)
+    axios
+      .post(url + "/swsmOther/insertSwsmOther", newData)
       .then((response) => {
-        if (response.data === 1) console.log("SwsmOther 처리 성공");
-        setEditedSwsmOther({});
+        if (response.data === 1) console.log("SwsmOther insert 성공");
       })
-      .catch(console.error);
-  }, [editedSwsmOther, mainTabData]);
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  const updateSwsmOther = useCallback((swsmOther) => {
+    const newData = {
+      otherType: swsmOther.otherType,
+      otherMoney: swsmOther.otherMoney,
+      seqVal: swsmOther.seqVal,
+      cdEmp: mainTablePkValue.cdEmp,
+    };
+    axios
+      .put(url + "/swsmOther/updateSwsmOtherByCdEmp", newData)
+      .then((response) => {
+        if (response.data === 1) console.log("swsmOther 업데이트 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+  }, []);
 
   const deleteSelectedRows = useCallback(() => {
     const deletePromises = selectedRows.map((row) => {
@@ -165,7 +204,7 @@ const TestModel = () => {
       mainTabData,
       leftTablePkValue,
       mainTablePkValue,
-
+      mainTabRef,
       subTableData,
       selectedRows,
     },
@@ -184,6 +223,8 @@ const TestModel = () => {
       // setCurrMenuTab,
       setSelectedRows,
       deleteSelectedRows,
+      insertSwsmOther,
+      updateSwsmOther,
     },
   };
 };

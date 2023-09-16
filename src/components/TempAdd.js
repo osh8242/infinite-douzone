@@ -12,7 +12,7 @@ const TempAdd = (props) => {
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
-    setInputValue(props.value);
+    setAddress(props.value);
   }, [value]);
 
   // 선택된 주소를 주소 필드에 업데이트

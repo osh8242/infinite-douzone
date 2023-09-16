@@ -10,6 +10,8 @@ import AddressForm from "../../src/components/AddressForm.js";
 import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
 import TextBoxComponent from "./TextBoxComponent";
+import TestAdd from "./TestAdd";
+import DateForm from "./DateForm";
 const FormPanel = ({
   INPUT_CONSTANT,
   formData,
@@ -18,6 +20,7 @@ const FormPanel = ({
   id,
   codeHelperFn,
   onChange,
+  actions,
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -39,6 +42,7 @@ const FormPanel = ({
       input.value ||
       formData.item?.[input.field] ||
       formData?.[input.field] ||
+      { formData }.formData[input.field] ||
       "";
 
     const isZonecode = input.isZonecode || false; // AddressForm 관련 변수
@@ -60,6 +64,11 @@ const FormPanel = ({
             value={value}
             onEnter={submitData}
             onChange={(e, value) => onChangeFn && onChangeFn(value)}
+            // laborContract
+            subValue={{ formData }.formData[input.subField]}
+            subLabel={input.subLabel}
+            endLabel={input.endLabel}
+            selectList={input.selectList}
           />
         );
         break;
@@ -98,6 +107,9 @@ const FormPanel = ({
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
             onChange={submitData}
+            // laborContract
+            subLabel={input.subLabel}
+            endLabel={input.endLabel}
           />
         );
         break;
@@ -183,6 +195,40 @@ const FormPanel = ({
               onChangeFn(value);
               console.log("온체인지");
             }}
+          />
+        );
+        break;
+      case INPUT_TYPE.addressCustom:
+        component = (
+          <TestAdd
+            id={input.field}
+            label={LABELS[input.field]}
+            disabled={input.disabled}
+            onChange={submitData}
+            value={{ formData }.formData[input.field]}
+            subValue={{ formData }.formData[input.subField]}
+            selectList={input.selectList}
+            actions={{
+              setEdited: actions.setEditedSwsm,
+            }}
+          />
+        );
+        break;
+      case INPUT_TYPE.dateCustom:
+        component = (
+          <DateForm
+            id={input.field}
+            label={LABELS[input.label]}
+            subId={input.subField}
+            type={"date"}
+            disabled={input.disabled}
+            value={{ formData }.formData[input.field]}
+            subValue={{ formData }.formData[input.subField]}
+            onChange={submitData}
+            isPeriod={input.isPeriod}
+            labelKey={input.field}
+            labelKey2={input.subField}
+            valueMd={input.valueMd}
           />
         );
         break;
