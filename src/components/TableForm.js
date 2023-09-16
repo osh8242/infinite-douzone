@@ -555,7 +555,7 @@ const TableForm = ({
                 key={rowIndex}
                 className={getRowClassName(row, rowIndex)}
                 onClick={(e) => {
-                  if (onRowClick) onRowClick(row.item);
+                  if (onRowClick) onRowClick(e, row.item);
                 }}
               >
                 {/* 각 row 의 checkBox */}
