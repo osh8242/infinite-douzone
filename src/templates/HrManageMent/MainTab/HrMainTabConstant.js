@@ -60,5 +60,58 @@ export const MAIN_TAB = {
       field: "dcMidretire",
       label: LABELS.dcMidretire,
     },
+    {
+      type: INPUT_TYPE.radio,
+      field: "fgDisorder",
+      label: LABELS.fgDisorder,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "strHobby",
+      label: LABELS.strHobby,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "nmSpecial",
+      label: LABELS.nmSpecial,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "tyReligion",
+      label: LABELS.tyReligion,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "addHome1",
+      label: LABELS.add_home1,
+      span: 3,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "originHome1",
+      label: LABELS.origin_home1,
+      span: 3,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "mnKeepgarden",
+      label: LABELS.mnKeepgarden,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "mnKeepstate",
+      label: LABELS.mnKeepstate,
+    },
+    {
+      type: INPUT_TYPE.radio,
+      field: "fgOwnhouse",
+      label: LABELS.fgOwnhouse,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telHome",
+      label: LABELS.telHome,
+      span: 1,
+    },
   ],
 };

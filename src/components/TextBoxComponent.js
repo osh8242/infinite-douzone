@@ -9,18 +9,21 @@ import {
   makePureNumber,
 } from "../utils/NumberUtils";
 import "../styles/CustomInput.scss";
+import "../styles/commonComponent.css";
 import SelectForm from "./SelectForm";
+import { EMAIL_LIST, RADIO_LIST } from "../model/CommonConstant";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
+    // custom type 옵션          ex) callNumber, email( text & select )
     id,
-    subId,
+    // subId,
     name,
     label,
     value,
-    subValue,
+    // subValue,
 
     rows, // textarea 전용 옵션 [선택] (몇행짜리 textbox)
     //codeHelper, // 코드헬퍼 아이콘 생성
@@ -30,6 +33,8 @@ function TextBoxComponent(props) {
     thousandSeparator, //세자리 콤마
     suffix, // %, 원화표시
     mask, // '*'
+    // amount, // [선택] input의 개수 (기본 type 제공, 모든 input은 공통된 type을 가지게 됩니다.) ex) amount={3}
+    // amount 값 입력시 각각의 input에 넣을 id 값을 ',' 로 구분하여 문자열로 제공해야 합니다. ex) id="id1,id2,id3"
 
     //이벤트 함수[선택]
     onChange,
@@ -46,8 +51,8 @@ function TextBoxComponent(props) {
     //유효성 검사
     validationFunction,
 
-    md = 4, // [선택]
-    valueMd = 8,
+    // md = 4, // [선택]
+    // valueMd = 8,
     placeholder, // [선택]
     height, // [선택] 스타일
 
@@ -56,34 +61,93 @@ function TextBoxComponent(props) {
     endLabel = "",
     selectList,
   } = props;
+
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
-  const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
+  // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
-  const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
+  // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
+  const [isValid, setIsValid] = useState([true]); // 기본 유효성 검사 상태 값
+  const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
+
   useEffect(() => {
-    setInputValue(value || ""); // value prop이 변경될 때마다 inputValue를 업데이트
-    setInputSubValue(subValue || "");
-  }, [value, subValue]);
+    setInputValue(value || "");
+    // setInputSubValue(subValue || "");
+  }, [value]);
+
+  useEffect(() => {
+    console.log("sendValue", sendValue);
+    // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
+    // update 로직은 이 곳에서 사용하기로...
+  }, [sendValue]);
+
+  // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
+  const alertErrorMessage = () => {
+    alert("입력된 값이 유효하지 않습니다");
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
+      if (type === "callNumber") {
+        makeProcessedValue();
+      } else if (type === "regNum") {
+        if (/^\d{6}-\d{7}$/.test(inputValue) || "") {
+          //유효성에 맞다면 update 요청을 보낼 수 있다
+          setSendValue(inputValue);
+          // if (subValue) setSendSubValue(inputValue);
+        } else {
+          alertErrorMessage();
+        }
+      }
       onEnter && onEnter(event, sendValue, id);
-      if (subValue) onEnter && onEnter(event, sendSubValue, subId);
+      // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event, index) => {
     const newValue = event.target.value;
-    //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
-    if (event.target.id === id)
-      setInputValue(makeProcessedValue(newValue)); // data 가공
-    else setInputSubValue(makeProcessedValue(newValue));
-    onChange && onChange(event, newValue);
+
+    if (type === "callNumber") {
+      // let updatedCallNumber = [...inputValue];
+      // updatedCallNumber[index] = newValue;
+      // setInputCallNumber(updatedCallNumber); // 화면 상의 value update
+      if (event.target.id === id) setInputValue(newValue);
+
+      let updatedCallValid = [...isCallValid];
+      updatedCallValid[index] = validation(newValue); // 유효성 검사 수행
+      setIsCallValid(updatedCallValid); // 유효성 검사 결과에 따른 클래스(스타일) 변경
+    } else if (type === "email") {
+      //이메일 값 변경 로직
+      let updatedEmail = "";
+      if (event.target.id === `${id}-emailId`) {
+        //바뀐 값이 이메일 아이디라면
+        updatedEmail = newValue + "@" + value?.split("@")[1];
+        setInputValue(updatedEmail);
+      } else if (event.target.id === `${id}-domain`) {
+        //바뀐 값이 도메인이라면
+        updatedEmail = value?.split("@")[0] + "@" + newValue;
+        setInputValue(updatedEmail);
+      }
+    } else if (type === "regNum") {
+      //주민등록번호 유효값 검사
+      setInputValue(newValue);
+      makeProcessedValue(newValue);
+      if (!/^\d{6}-\d{1,7}$/.test(newValue)) {
+        setIsValid(false);
+      } else {
+        setIsValid(true);
+      }
+    } else {
+      //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
+      if (event.target.id === id) setInputValue(makeProcessedValue(newValue)); // data 가공
+      // else setInputSubValue(makeProcessedValue(newValue));
+      onChange && onChange(newValue);
+    }
   };
 
+  //값 가공함수
   const makeProcessedValue = (newValue) => {
     let processedValue = newValue;
 
@@ -98,8 +162,23 @@ function TextBoxComponent(props) {
         : newValue; //하이픈 넣기
 
       //마스킹처리 진행중...
-
-      setSendValue(processedValue);
+      // setSendValue(processedValue);
+      // } else if (type === "callNumber") {
+      //전화번호를 위한 input 3개의 값을 '-'와 함께 저장
+      // if (isCallValid) {
+      //   let sendCallNumber = "";
+      //   inputCallNumber.map((value, index) => {
+      //     if (index < inputCallNumber.length - 1) {
+      //       sendCallNumber += value + "-";
+      //     } else {
+      //       sendCallNumber += value;
+      //     }
+      //   });
+      //   setSendValue(sendCallNumber);
+      // }
+    } else if (type === "email") {
+      //email 다시 합쳐서 보내줘야 함!
+      //email id값 가져오기
     } else {
       setSendValue(processedValue);
     }
@@ -117,8 +196,9 @@ function TextBoxComponent(props) {
   };
 
   //유효성 검사
-  const validation = (object, value) => {
-    let returnValue = value;
+  const validation = (value) => {
+    //parameter에 object가 있었음(쓰는 곳이 없어서 임시제거)
+    let returnValue = true;
 
     if (thousandSeparator || suffix) {
       thousandSeparator && (value = value.replaceAll(/,/g, ""));
@@ -135,6 +215,18 @@ function TextBoxComponent(props) {
       if (value.length >= 14) {
         alert("13자리 입력해주세요.");
         returnValue = value.slice(0, 14);
+
+        setSendValue(value);
+      }
+    } else if (type === "callNumber") {
+      // 전화번호 유효성 검사
+      if (/^[0-9]{0,4}$/.test(value) || value === "") {
+        setIsCallValid(true);
+        returnValue = true;
+      } else {
+        setIsCallValid(false);
+        returnValue = false;
+        // console.log("유효성검사 실패! => ", value);
       }
     }
 
@@ -142,40 +234,62 @@ function TextBoxComponent(props) {
     return returnValue;
   };
 
+  // boolean 타입의 배열의 값 중 하나라도 false 값이 있으면 false를 반환하는 함수 (유효성 검사 후 클래스 변환용 함수)
+  const hasFalseValid = (arr) => {
+    let result = true;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === false) {
+        result = false;
+      }
+    }
+    return result;
+  };
+
   const handleInputFocus = (e) => {
     const obj = e.target;
     onFocus && onFocus(obj); // onFocus 이벤트 처리
   };
 
+  // callNumber 타입 컴포넌트 배열
+  const callNumberComponents = [];
+  for (let i = 1; i <= 3; i++) {
+    callNumberComponents.push(
+      <Form.Control
+        id={`${id}${i}`}
+        key={i}
+        value={inputValue}
+        type="callNumber"
+        disabled={disabled}
+        onKeyDown={(event) => handleKeyDown(event, id)}
+        onChange={(event) => handleInputChange(event, i)}
+        onFocus={handleInputFocus}
+        className={hasFalseValid(isCallValid) ? "" : "invalid"}
+      />
+    );
+  }
+
+  // 화면 render
   return (
     <Row className="py-1">
       {label ? (
-        <>
-          <Col
-            md={md}
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div className="smallText">{label}</div>
-          </Col>
-          <Col className="d-flex align-items-center justify-content-center">
-            {subLabel ? (
-              <Col
-                md={2}
-                className="d-flex align-items-center justify-content-center"
-                style={{ marginLeft: 15, marginRight: 15 }}
-              >
+        <div className="labelAndContent">
+          {/* input labels */}
+          <div className="label">{label}</div>
+          {/* input contents */}
+          <div className="widthFull d-flex align-items-center">
+            {subLabel && (
+              <Col md={2} style={{ marginLeft: 50, marginRight: 5 }}>
                 {subLabel}
               </Col>
-            ) : (
-              ""
             )}
-            {selectList ? (
-              <Col md={4} style={{ marginRight: 12 }}>
+            {/* {selectList && (
+              <div
+              // md={4}
+              // style={{ marginRight: 12 }}
+              >
                 <SelectForm optionList={selectList}></SelectForm>
-              </Col>
-            ) : (
-              ""
-            )}
+              </div>
+            )} */}
             {onClickCodeHelper ? (
               type === "date" ? (
                 //<div className="">
@@ -193,21 +307,29 @@ function TextBoxComponent(props) {
                 </div>
               )
             ) : (
-              <>
-                {renderFormControl()}
-                {selectList ? (
-                  <Col style={{ marginLeft: 10 }}>{endLabel}</Col>
+              // 일반 TextBoxContent
+              <div className="widthFull">
+                {!selectList ? (
+                  <>{renderFormControl()}</>
                 ) : (
-                  ""
+                  <>
+                    <Row>
+                      <Col md={4}>
+                        <SelectForm optionList={selectList}></SelectForm>
+                      </Col>
+                      <Col md={7}>{renderFormControl()}</Col>
+                      <Col md={1}>{endLabel}</Col>
+                    </Row>
+                  </>
                 )}
-              </>
+              </div>
             )}
-            {isPeriod ? (
+            {/* {isPeriod ? (
               <>
                 {" ~ "}
-                <Col
-                  md={6}
-                  className="d-flex align-items-center justify-content-center"
+                <div
+                  // md={6}
+                  className="widthFull d-flex align-items-center justify-content-center"
                 >
                   <Form.Control
                     value={inputSubValue}
@@ -225,57 +347,110 @@ function TextBoxComponent(props) {
                     placeholder={placeholder ? placeholder : undefined}
                     style={style}
                   />
-                </Col>
+                </div>
               </>
             ) : (
               ""
-            )}
+            )} */}
             {endLabel && !selectList ? (
-              <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+              <Col md={2} style={{ marginLeft: 10, marginRight: 50 }}>
                 {endLabel}
               </Col>
             ) : (
               ""
             )}
-          </Col>
-        </>
+          </div>
+        </div>
       ) : (
-        <>{renderFormControl()}</>
+        // label 이 없는 경우
+        <div>{renderFormControl()}</div>
       )}
     </Row>
   );
   function renderFormControl() {
     if (type === "textarea") {
       return (
-        <Form.Control
-          as="textarea"
-          id={id}
-          name={name}
-          rows={rows}
-          value={inputValue}
-          onChange={handleInputChange}
-          onClick={onClick}
-        />
+        <div className="widthFull">
+          <Form.Control
+            as="textarea"
+            id={id}
+            name={name}
+            rows={rows}
+            value={inputValue}
+            onChange={handleInputChange}
+            onClick={onClick}
+          />
+        </div>
+      );
+    } else if (type === "callNumber") {
+      // 전화번호
+      return (
+        <div className="widthFull d-flex align-items-center gap-2">
+          {/* {inputCallNumber.map((value, index) => (
+            <Form.Control
+              key={index}
+              value={inputValue}
+              type="text"
+              id={`${id}${index + 1}`}
+              disabled={disabled}
+              onKeyDown={(event) => handleKeyDown(event, value)}
+              onChange={(event) => handleInputChange(event, index)}
+              onFocus={handleInputFocus}
+              className={hasFalseValid(isCallValid) ? "" : "invalid"}
+            />
+          ))} */}
+          {callNumberComponents}
+        </div>
+      );
+    } else if (type === "email") {
+      // 이메일
+      return (
+        <div className="widthFull d-flex align-items-center gap-2">
+          <Form.Control
+            type="text"
+            id={`${id}-emailId`}
+            value={inputValue.split("@")[0] || inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            undefined={undefined}
+          />
+          <span>@</span>
+          <Form.Select
+            id={`${id}-domain`}
+            value={inputValue?.split("@")[1] || EMAIL_LIST[0].key}
+            onChange={handleInputChange}
+          >
+            {EMAIL_LIST.map((option, index) => (
+              <option value={option.key} key={index}>
+                {option.value}
+              </option>
+            ))}
+          </Form.Select>
+        </div>
       );
     } else {
       return (
-        <Form.Control
-          //defaultValue={value}
-          value={inputValue}
-          type={type}
-          id={id}
-          name={name}
-          size={size}
-          disabled={disabled}
-          readOnly={readOnly}
-          plaintext={plaintext}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          onClick={onClick}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder ? placeholder : undefined}
-          style={style}
-        />
+        // inputs
+        <div className="widthFull">
+          <Form.Control
+            //defaultValue={value}
+            value={inputValue}
+            type={type}
+            id={id}
+            name={name}
+            size={size}
+            disabled={disabled}
+            readOnly={readOnly}
+            plaintext={plaintext}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            onClick={onClick}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder ? placeholder : undefined}
+            style={style}
+            className={isValid ? "" : "invalid"}
+          />
+        </div>
       );
     }
   }

@@ -1,12 +1,18 @@
 // 작성자 : 오승환
 
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import { faBell, faPlus, faHome } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faPlus,
+  faHome,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
 import SearchForm from "../components/SearchForm";
+import DropDownMenu from "./DropDown";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 const logoUrl = {
@@ -21,6 +27,11 @@ const Header = (props) => {
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
+  };
+
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const toggleProfileDropdown = () => {
+    setShowProfileDropdown(!showProfileDropdown);
   };
 
   const optionList2 = [
@@ -43,11 +54,6 @@ const Header = (props) => {
           </select>
         </div>
         <div id="topRightNotificationHeader">
-          {/* <input
-            type="text"
-            id="findMenuBar"
-            placeholder={"찾고싶은 메뉴를 검색하세요"}
-          /> */}
           <SearchForm
             type="text"
             id="findMenuBar"
@@ -76,12 +82,13 @@ const Header = (props) => {
               />
             </a>
           </button>
-          <select id="personalMenu">
-            {/* 이름과 직종은 추후 변수로 변경 */}
-            <option>김회계 주임연구원</option>
-            {/* 하단에 추가할 메뉴를 넣습니다 */}
-          </select>
-
+          <button
+            className="backgroundBorderNone"
+            onClick={toggleProfileDropdown}
+          >
+            김회계 주임연구원 <FontAwesomeIcon icon={faChevronDown} />
+          </button>
+          {showProfileDropdown && <DropDownMenu />}
           <a
             href="/signup"
             style={{

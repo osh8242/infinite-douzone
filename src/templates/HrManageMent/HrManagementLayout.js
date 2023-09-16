@@ -1,5 +1,8 @@
 // 작성자 : 오승환
+import axios from "axios";
+import { useRef } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
+import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
 import ProfileImageForm from "../../components/ProfileImageForm";
 import TableForm from "../../components/TableForm";
@@ -16,8 +19,6 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-//import HrPrimaryTab from "./MainTab/HrPrimaryTab";
-import FormPanel from "../../components/FormPanel";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
@@ -34,13 +35,38 @@ const HrManagementLayout = () => {
     leftTableData,
     leftTablePkValue,
     leftStaticsTableData,
-    mainTabRef,
     mainTabData,
     empImageSrc,
     subTableData,
     selectedRows,
   } = state;
-
+  const tokenRef = useRef(null);
+  const getToken = () => {
+    axios
+      .get("http://localhost:8888/jwt/getToken?username=hong")
+      .then((response) => {
+        const token = response.headers["authorization"];
+        console.log("리스폰스 헤더", response.headers);
+        console.log("발급받은 토큰", token);
+        tokenRef.current = token;
+        validateToken();
+      })
+      .catch((e) => {
+        console.log("겟토큰 에러", e);
+      });
+  };
+  const validateToken = () => {
+    axios
+      .get("http://localhost:8888/jwt/validateToken", {
+        headers: { Authorization: tokenRef.current },
+      })
+      .then((response) => {
+        console.log("응답", response.data);
+      })
+      .catch((e) => {
+        console.log("토큰인증 에러", e);
+      });
+  };
   return (
     <>
       {/* <CodeHelperModal
@@ -55,6 +81,14 @@ const HrManagementLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
+      <button
+        onClick={() => {
+          getToken();
+        }}
+      >
+        JWT 토큰 발급받고 인증해보기
+      </button>
+
       <Container>
         {/* 조회영역 */}
         <HrSearchPanel
@@ -79,9 +113,11 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  onRowClick={(e, row) => {
+                    actions.setLeftTablePkValue(row);
+                  }}
                   actions={{
                     setTableData: actions.setLeftTableData,
-                    setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: actions.insertEmp,
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
@@ -123,6 +159,7 @@ const HrManagementLayout = () => {
                         INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
+                        columnNumber={2}
                       />
                     </Col>
                   </Row>,
@@ -132,7 +169,7 @@ const HrManagementLayout = () => {
                         INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
-                        columnNumber={3}
+                        columnNumber={2}
                       />
                     </Col>
                   </Row>,

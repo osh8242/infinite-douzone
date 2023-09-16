@@ -1,4 +1,12 @@
-export const url = "http://localhost:8888";
+export const swsmUrlPattern = {
+  getAllEmp: "/emp/getAllEmp",
+  getSwsm: "/swsm/getSwsmByCdEmp",
+  getSwsmOther: "/swsmOther/getSwsmOtherByCdEmp",
+  updateSwsm: "/swsm/updateSwsm",
+  insertSwsmOther: "/swsmOther/insertSwsmOther",
+  updateSwsmOther: "/swsmOther/updateSwsmOtherByCdEmp",
+  deleteSwsmOther: "/swsmOther/deleteSwsmOther",
+};
 
 export const labels = {
   empContractPeriod: "근로계약기간",

@@ -7,7 +7,7 @@ import TextBoxComponent from "./TextBoxComponent";
 
 import PropTypes from "prop-types";
 import TableForm from "./TableForm";
-import {LABELS} from "../model/CommonConstant";
+import { LABELS } from "../model/CommonConstant";
 
 function CodeHelperModal(props) {
   const {
@@ -23,6 +23,12 @@ function CodeHelperModal(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [oriData, setOriData] = useState(tableData);
   const [filteredData, setFilteredData] = useState([]);
+
+  console.log("headers");
+  console.log(tableHeaders);
+
+  console.log("tableData");
+  console.log(tableData);
 
   useEffect(() => {
     setOriData(tableData);
@@ -47,7 +53,7 @@ function CodeHelperModal(props) {
   // 클릭한 행반환
   const handleRowClick = (row) => {
     setSearchTerm("");
-    if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row)
+    if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row);
     setFilteredData([]);
     setOriData([]);
     onHide();

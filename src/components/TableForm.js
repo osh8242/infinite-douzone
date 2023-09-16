@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
@@ -138,7 +148,7 @@ const TableForm = ({
   const releaseEditable = useCallback(() => {
     const newTableRows = tableRows.map((row) => (row.isEditable = false));
     setTableRows(newTableRows);
-  }, []);
+  }, [tableRows]);
 
   //td의 className을 얻는 함수
   const getTdClassName = useCallback(
@@ -155,7 +165,10 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
+  const getInputElements = useCallback(
+    () => inputRef.current[rowRef],
+    [rowRef]
+  );
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -396,11 +409,11 @@ const TableForm = ({
       //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
+          tableFocus.current = false;
           setColumnRef(-1);
           if (!actions.setPkValue) setRowRef(-1);
           releaseEditable();
           removeNewRow();
-          tableFocus.current = false;
         }
       }
       if (myRef.current && myRef.current.contains(event.target)) {
@@ -413,6 +426,7 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
+        console.log("이벤트키", event.key);
         // event.preventDefault();
         if (editableRowIndex !== -1) {
           switch (event.key) {
@@ -443,7 +457,8 @@ const TableForm = ({
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -458,7 +473,7 @@ const TableForm = ({
               checkboxHandler(rowRef);
               break;
 
-            case "F5":
+            case "Delete":
               setModalState({
                 show: true,
                 message: "해당 행을 삭제하시겠습니까?",
@@ -535,7 +550,9 @@ const TableForm = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -580,6 +597,21 @@ const TableForm = ({
                       handleDoubleClick(e, rowIndex, columnIndex)
                     }
                   >
+                    {/* <Form.Control
+                      type="text"
+                      data-field={thead.field}
+                      data-column-index={columnIndex}
+                      // onFocus={(e) => {
+                      //   setRowRef(rowIndex);
+                      //   setColumnRef(columnIndex);
+                      //   focusAtEnd(e.target);
+                      // }}
+                      disabled={!row.isEditable}
+                      onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
+                      ref={(div) => setInputRef(div, rowIndex, columnIndex)}
+                      defaultValue={row.isNew ? "" : row.item[thead.field]}
+                    /> */}
+
                     <div
                       className="tableContents"
                       contentEditable={row.isEditable && !thead.readOnly}
@@ -603,7 +635,9 @@ const TableForm = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
+            <tr
+              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
+            >
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
@@ -624,11 +658,15 @@ const TableForm = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div
                     className="tableContents"
-                    ref={(div) => setInputRef(div, tableRows.length, columnIndex)}
+                    ref={(div) =>
+                      setInputRef(div, tableRows.length, columnIndex)
+                    }
                   >
                     {!showCheckbox && columnIndex === 0 && (
                       <FontAwesomeIcon icon={faPlus} />

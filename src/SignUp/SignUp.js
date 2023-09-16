@@ -4,7 +4,7 @@ import imgLogo from "../../src/styles/img/wehago_logo.png";
 import TextBoxComponent from "../../src/components/TextBoxComponent";
 import CommonConstant from "../../src/model/CommonConstant";
 import RadioForm from "../../src/components/RadioForm";
-import TempAdd from "../../src/components/TempAdd";
+import TempAdd from "../../src/components/TestAdd";
 import axios from "axios";
 import { SignUpField } from "./SignUpField";
 import AddressForm from "../components/AddressForm";

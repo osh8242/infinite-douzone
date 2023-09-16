@@ -2,7 +2,6 @@ import axios from "axios";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
-import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import { url } from "../CommonConstant";
 import { urlPattern } from "./HrManagementConstant";
@@ -27,8 +26,6 @@ const HrManagementModel = () => {
   //검색조건 : 재직구분, 정렬기준
   const jobOkSelectRef = useRef();
   const orderSelectRef = useRef();
-  //메인탭 Ref
-  const mainTabRef = useRef();
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = useCallback((jobOkRef, orderRef) => {
@@ -71,8 +68,8 @@ const HrManagementModel = () => {
         .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue)
         .then((response) => {
           let data = response.data;
-          console.log("불러온 mainTabData", data);
-          setMainTabData(EmpAdd(data));
+          console.log("mainTabData", data);
+          setMainTabData(data);
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -87,12 +84,9 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (leftTablePkValue.cdEmp) {
       axios
-        .get(
-          `${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`,
-          {
-            responseType: "arraybuffer",
-          }
-        )
+        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
+          responseType: "arraybuffer",
+        })
         .then((response) => {
           // ArrayBuffer를 Blob으로 변환하고 URL을 생성
           const blob = new Blob([response.data], { type: "image/jpeg" });
@@ -153,7 +147,7 @@ const HrManagementModel = () => {
         event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
-        let newEmpAdd = { ...mainTabData.item };
+        let newEmpAdd = { ...mainTabData };
         newEmpAdd[event.target.id] = value;
         console.log("newEmpAdd", newEmpAdd);
         updateEmpAdd(newEmpAdd);
@@ -200,10 +194,7 @@ const HrManagementModel = () => {
       axios
         .post(url + "/empFam/getEmpFamListByCdEmp", leftTablePkValue)
         .then((response) => {
-          console.log(
-            "LRlevel2GridModel > /empFam/getEmpFamListByCdEmp",
-            response.data
-          );
+          console.log("EmpFam Loaded", response.data);
           const data = response.data.map((item) => {
             return EmpFam(item);
           });
@@ -396,7 +387,6 @@ const HrManagementModel = () => {
       leftTablePkValue,
       leftStaticsTableData,
 
-      mainTabRef,
       mainTabData,
       empImageSrc,
       subTableData,

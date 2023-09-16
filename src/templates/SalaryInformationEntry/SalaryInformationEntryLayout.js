@@ -45,10 +45,10 @@ const SalaryInformationEntryLayout = () => {
         if (data.url) {
           codeDataList = await fetchData(data.url, data.params);
         }
-        
-        actions.setModalState((prevState) => ({ 
+
+        actions.setModalState((prevState) => ({
           ...prevState,
-          subject: data.subject
+          subject: data.subject,
         }));
 
         actions.setCodeHelperTableData(() => ({
@@ -87,12 +87,12 @@ const SalaryInformationEntryLayout = () => {
 
   return (
     <>
-      <ModalComponent 
+      <ModalComponent
         title={state.modalState.subject}
-        size={state.modalState.size}       
+        size={state.modalState.size}
         show={state.modalState.show}
-        onHide={()=>actions.setModalState({show:false})}
-        onConfirm = {state.modalState.onConfirm}
+        onHide={() => actions.setModalState({ show: false })}
+        onConfirm={state.modalState.onConfirm}
       >
           {modalType === 'codeHelper'?
             <CodeHelperModal
@@ -124,8 +124,8 @@ const SalaryInformationEntryLayout = () => {
       </ModalComponent>
 
       <SalaryInformationEntryHeader
-        deleteButtonHandler={actions.deleteSelectedRows} 
-        modalShow={modalShow}           
+        deleteButtonHandler={actions.deleteSelectedRows}
+        modalShow={modalShow}
       />
       <Container fluid>
         <Row style={{margin:'10px'}}>
@@ -204,7 +204,7 @@ const SalaryInformationEntryLayout = () => {
                 <div id="fakeFaArrowLeft-content">◀</div>
               </div>
             </Col>
-           )}
+          )}
         </Row>
       </Container>
     </>

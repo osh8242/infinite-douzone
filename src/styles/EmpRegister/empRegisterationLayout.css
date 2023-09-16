@@ -1,21 +1,3 @@
-/* * {
-  font-size: small;
-  overflow-x: hidden;
-} */
-
-/* #empRegisterArea {
-  width: 100vw;
-  height: 100vh;
-  background-color: aqua;
-} */
-
-/* #empRegisterHeader {
-  position: absolute;
-  width: 100%;
-  top: 52px;
-  left: 0;
-} */
-
 #empRegisterLayout {
   /* position: absolute; */
   /* top: 92px; */
@@ -28,14 +10,8 @@
 
 #empRegisterLayoutRight {
   margin-left: 12px;
-  margin-bottom: 120px;
+  /* margin-bottom: 120px; */
 }
-
-/* #empDataSortedLine {
-  position: absolute;
-  bottom: 13px;
-  border-top: solid 2px rgb(230, 230, 230);
-} */
 
 #empDataSortedMenuArea {
   position: relative;
@@ -44,7 +20,7 @@
 }
 
 #baseData {
-  margin-right: 16%;
+  /* margin-right: 16%; */
 }
 
 #baseDataContents {
@@ -55,7 +31,7 @@
   justify-content: right;
 }
 
-#baseDataContentsBackground {
+/* #baseDataContentsBackground {
   position: absolute;
   top: 0;
   left: 0;
@@ -64,4 +40,4 @@
   z-index: -1;
   background-color: rgb(233, 236, 239);
   border-radius: 2px;
-}
+} */
