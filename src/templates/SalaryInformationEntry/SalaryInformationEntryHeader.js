@@ -11,7 +11,7 @@ import { Button } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
-import { modal_insertSalaryData, reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
+import { modal_insertSalaryData, modal_reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
 
 const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -29,7 +29,7 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
   }
 
   const reCalculationHandler = (event) => {
-    modalShow('reCalculation', reCalculationList);
+    modalShow('reCalculation', modal_reCalculationList);
   }
 
   return (
@@ -77,7 +77,6 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
-        // onlyConfirm={!existSelectedRows}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
           deleteButtonHandler();
