@@ -11,8 +11,9 @@ export const INPUT_TYPE = {
   callNumber: 100,
   email: 101,
   noSocial: 102,
+  month: 401,
+  dateCodeHelper: 402,
 };
-
 export const SELECT_LIST = {
   tyEmploy: [
     { key: "public", value: "1. 공채" },
@@ -75,7 +76,6 @@ export const EMAIL_LIST = [
   { key: "naver.com", value: "naver.com" },
   { key: "tistory.com", value: "tistory.com" },
 ];
-
 export const LABELS = {
   cdEmp: "사원코드",
   nmKrname: "성명",
@@ -137,13 +137,18 @@ export const LABELS = {
   nmDeduct: "공제항목",
   nmAllow: "급여항목",
   allowPay: "금액",
-
   inquiryYype: "조회구분",
   searchText: "찾을내용",
+  allowMonth: "귀속연월",
+  paymentDate: "지급일",
+  ynUnit: "생산직 여부",
+  ynForlabor: "국외 근로여부",
 
-  ynResident: "거주구분",
   ynMateDed: "배우자공제",
+  ynResident: "거주구분",
   ynOverwork: "연장근로비과세",
+  num2060many: "20세/60세/다자녀",
+  ynUnitForlabor: "생산/국외",
 
   allowMonth: "귀속연월",
   paymentDate: "지급일",
@@ -159,5 +164,4 @@ export const CODE = {
     OCCUP: "OCCUP", // 직종 ()
   },
 };
-
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";

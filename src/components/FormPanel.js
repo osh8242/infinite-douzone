@@ -17,6 +17,7 @@ const FormPanel = ({
   columnNumber = 2,
   id,
   codeHelperFn,
+  onChange,
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -47,6 +48,8 @@ const FormPanel = ({
 
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
+    const onChangeFn = onChange ? onChange[input.field] : null;
+
     switch (input.type) {
       case INPUT_TYPE.text:
         component = (
@@ -56,6 +59,7 @@ const FormPanel = ({
             disabled={disabled}
             value={value}
             onEnter={submitData}
+            onChange={(e, value) => onChangeFn(value)}
           />
         );
         break;
@@ -70,6 +74,20 @@ const FormPanel = ({
             onChange={submitData}
           />
         );
+
+        break;
+      case INPUT_TYPE.month:
+        component = (
+          <TextBoxComponent
+            type={"month"}
+            id={id}
+            label={label}
+            disabled={disabled}
+            value={value}
+            onChange={submitData}
+          />
+        );
+
         break;
       case INPUT_TYPE.select:
         component = (
@@ -153,6 +171,21 @@ const FormPanel = ({
           />
         );
         break;
+      case INPUT_TYPE.dateCodeHelper:
+        component = (
+          <TextBoxComponent
+            id={id}
+            type="date"
+            label={label}
+            value={value}
+            onClickCodeHelper={codeHelper}
+            onChange={(e, value) => {
+              onChangeFn(value);
+              console.log("온체인지");
+            }}
+          />
+        );
+        break;
       default:
         break;
     }
@@ -187,5 +220,7 @@ FormPanel.propsTypes = {
   formData: PropTypes.object,
   submitData: PropTypes.func,
   columnNumber: PropTypes.number,
+  codeHelperFn: PropTypes.arrayOf(PropTypes.object),
+  onChange: PropTypes.arrayOf(PropTypes.object),
 };
 export default FormPanel;

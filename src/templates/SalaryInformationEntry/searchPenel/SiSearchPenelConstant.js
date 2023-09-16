@@ -1,64 +1,53 @@
-import { labels } from "../../../model/CommonConstant";
-import { INPUT_TYPE } from "../../HrManagement/MainTab/HrMainTabConstant";
-  
+import { INPUT_TYPE, LABELS } from "../../../model/CommonConstant";
+import { forLaborOption, salaryDivisionOption, unitOption } from "../../../model/SalaryInformationEntry/SalConstant";
+
 export const SI_MAIN_SEARCHFIELD = [
     {
-      type: INPUT_TYPE.date,
-      field: "daEnter",
-      label: labels.allowMonth,
+      type: INPUT_TYPE.month,
+      field: "allowMonth",
+      label: LABELS.allowMonth,
     },
     {
       type: INPUT_TYPE.select,
-      field: "ynMateDed",
-      label: labels.inquiryYype,
+      field: "salDivision",
+      label: LABELS.inquiryYype,
+      optionList: salaryDivisionOption,
     },
     {
-      type: INPUT_TYPE.date,
-      field: "ynMateDed",
-      label: labels.paymentDate,
-      codeHelper : "Y"
+      type: INPUT_TYPE.dateCodeHelper,
+      field: "paymentDate",
+      label: LABELS.paymentDate,
     },
   ];
 
 export const SI_SUB_SEARCHFIELD = [
   {
-    type: INPUT_TYPE.text,
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchCdEmp",
-    label: labels.cdEmp,
-    codeHelper : "Y"
+    label: LABELS.cdEmp,
   },{
-    type: INPUT_TYPE.text,
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchCdDept",
-    label: labels.cdDept,
-    codeHelper : "Y"
+    label: LABELS.cdDept,
+    
   },{
-    type: INPUT_TYPE.text,
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchRankNo",
-    label: labels.rankNo,
+    label: LABELS.rankNo,
   },{
-    type: INPUT_TYPE.text,
+    type: INPUT_TYPE.textCodeHelper,
     field: "searchCdOccup",
-    label: labels.cdOccup,
-  },
-  // {
-  //   type: INPUT_TYPE.date,
-  //   field: "searchCdField",
-  //   label: labels.allowMonth,
-  // },  
-  // {
-  //   type: INPUT_TYPE.date,
-  //   field: "searchCdProject",
-  //   label: labels.allowMonth,
-  // },  
-  {
-    type: INPUT_TYPE.text,
+    label: LABELS.cdOccup,
+  },{
+    type: INPUT_TYPE.select,
     field: "searchYnUnit",
-    label: labels.ynUnit,
-  },
-  {
-    type: INPUT_TYPE.text,
+    label: LABELS.ynUnit,
+    optionList: unitOption
+  },{
+    type: INPUT_TYPE.select,
     field: "searchYnForlabor",
-    label: labels.ynForlabor,
+    label: LABELS.ynForlabor,
+    optionList : forLaborOption
   },
 
 ]
