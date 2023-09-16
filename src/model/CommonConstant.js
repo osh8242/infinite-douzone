@@ -61,7 +61,7 @@ export const RADIO_LIST = {
     { key: "N", value: "비장애" },
     { key: "Y", value: "장애" },
   ],
-  fgOwnhouse: [
+  fgOwnHouse: [
     { key: "Y", value: "소유" },
     { key: "N", value: "미소유" },
   ],
@@ -116,7 +116,7 @@ export const LABELS = {
   originHome2: "본적 상세주소",
   mnKeepgarden: "소유동산",
   mnKeepstate: "소유부동산",
-  fgOwnhouse: "자택소유",
+  fgOwnHouse: "자택소유",
 
   abbNation: "거주지국",
   cdNation: "국적",
