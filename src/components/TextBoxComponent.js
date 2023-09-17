@@ -390,19 +390,6 @@ function TextBoxComponent(props) {
       // 전화번호
       return (
         <div className="widthFull d-flex align-items-center gap-2">
-          {/* {inputCallNumber.map((value, index) => (
-            <Form.Control
-              key={index}
-              value={inputValue}
-              type="text"
-              id={`${id}${index + 1}`}
-              disabled={disabled}
-              onKeyDown={(event) => handleKeyDown(event, value)}
-              onChange={(event) => handleInputChange(event, index)}
-              onFocus={handleInputFocus}
-              className={hasFalseValid(isCallValid) ? "" : "invalid"}
-            />
-          ))} */}
           {callNumberComponents}
         </div>
       );
