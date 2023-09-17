@@ -13,8 +13,9 @@ const RigtSideLayout = (props) => {
             <div>
                 <Accordion defaultActiveKey="1" flush>
                   <Accordion.Item eventKey="0">
-                  <Accordion.Header>임금대장 기재 사항</Accordion.Header>
-                    <Accordion.Body> 
+                  <Accordion.Header style={{width: '310px'}}>
+                    임금대장 기재 사항</Accordion.Header>
+                    <Accordion.Body style={{height: '75vh'}}> 
                       {/* 임금대장 기재 사항 영역 */}
                         <PayrollLedgerEntry
                           actions={actions}
@@ -24,7 +25,7 @@ const RigtSideLayout = (props) => {
                   </Accordion.Item>
                   <Accordion.Item eventKey="1">
                   <Accordion.Header>사원 상세정보</Accordion.Header>
-                    <Accordion.Body> 
+                    <Accordion.Body style={{height: '75vh'}}>  
                       {/* 사원 상세정보 영역 */}
                       <SiEmpDetail
                         actions={actions}

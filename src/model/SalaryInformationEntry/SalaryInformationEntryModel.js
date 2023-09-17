@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import axios from 'axios';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
-import { nvl } from '../../utils/NumberUtils';
 import { CD_DEDUCT, DELETE_EMPLIST_URL, EMPLOYMENT_INSURANCE, HEALTH_INSURANCE, NATIONAL_PENSION, calculationEmploymentInsurance, calculationHealthinsurance, calculationNationalPension, cdDeduct } from './SalConstant';
 
 const SalaryInformationEntryModel = () => {
@@ -28,7 +27,6 @@ const SalaryInformationEntryModel = () => {
     subject : '',
   });   
   
-  //const [selectedOption, setSelectedOption] = useState('EmpAllThisMonth');    // 조회구분 selectbox 선택된 value
   const [selectedOption, setSelectedOption] = useState(''); 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)                   // 조회구분 selectbox 선택된 value
 
@@ -48,7 +46,7 @@ const SalaryInformationEntryModel = () => {
     message : ''
   });
 
-  const [changeCdEmp, setChangeCdEmp] = useState({cdEmp:''});
+  
 
   /* 검색조건 Data */
   const allowYear = '2023'                                          // 귀속 년도
@@ -98,6 +96,8 @@ const SalaryInformationEntryModel = () => {
     dateId : dateId
   });
 
+  const [changeCdEmp, setChangeCdEmp] = useState({cdEmp:''});
+  
   useEffect(() => {
     setCdEmp(changeCdEmp);
   }, [changeCdEmp]);
@@ -396,8 +396,6 @@ useEffect(() => {
     return calList;
   }
 
-   
-
   /* 합계 데이터_selectbox */
   const getSalTotalPaySum = () =>{
     axios.post(
@@ -423,27 +421,35 @@ useEffect(() => {
             sumDeductPay: item.sumDeductPay
           },
         }));
-
         setSalPaySumData({ allowPay : totalSalAllowPaydata, deductPay : totalSalDeductPaydata});
-        
       })
       .catch((error) => {
         console.error('에러발생: ', error);
       })
   }
 
+  // 사원 상세정보 update
+ const submitEmpDetailData = useCallback(
+   (event, value) => {
+    if (event.key === "Enter") {
+      let newEmp = {[event.target.id] : value , cdEmp : cdEmp};
+      updateEmp(newEmp);
+    }
+  },
+  [cdEmp]
+);
 
-  
-  // useEffect(() => {
-  //   let deDuctsum = 0;
-  //   deductData.saDeductPayList&&deductData.saDeductPayList.forEach((item) => {
-  //     deDuctsum += parseInt(nvl(item.allowPay,0));
-  //   }); 
-
-  //   setCalDeductSum({item: {sum:deDuctsum}});
-  // }, [deductData]);
-
-
+const updateEmp = useCallback((emp) => {
+  axios
+    .put(url + "/saEmpInfo/updateSaEmpInfo", emp)
+    .then((response) => {
+      if (response.data !== 0) console.log("Emp 업데이트 성공");
+      //setEditedEmp();
+    })
+    .catch((error) => {
+      console.log("에러발생 -> ", error);
+    });
+}, []);
 
   return {
     state : {
@@ -511,6 +517,7 @@ useEffect(() => {
       , setSelectedRows
       , deleteSelectedRows
       , setAddSalAllowPayRow
+      , submitEmpDetailData
     }
 
   };

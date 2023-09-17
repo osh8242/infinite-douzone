@@ -18,8 +18,7 @@ const SalaryAllowPayList = (props) => {
     showCalculation(newShowYn);
   };
 
-  console.log(salAllowData.salAllowPayTotalTableData);
-  console.log(salAllowSumData.headers);
+
   return (
     <div>
       <Row>

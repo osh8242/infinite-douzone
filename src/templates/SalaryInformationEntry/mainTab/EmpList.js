@@ -6,8 +6,6 @@ import { leftStaticsTableConstant } from "../../../model/HrManagement/HrManageme
 import "../../../styles/HrManagement/HrManagementLayout.scss";
 const EmpList = (props) => {
   const { saInfoListData, actions } = props;
-
-  console.log(saInfoListData.salEmpListStaticsTableData);
   return (
     <div>
         <Row>
