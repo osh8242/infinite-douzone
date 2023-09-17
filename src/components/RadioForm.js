@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
+import "../styles/commonComponent.css";
 
 function RadioForm({
   id,
@@ -31,8 +32,22 @@ function RadioForm({
     <Row className="py-1">
       <div className="labelAndContent">
         {/* <div className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"> */}
-        {label && <div className="label">{label}</div>}
-        <div className="widthFull d-flex align-items-center ">
+        {label && (
+          <div
+            className="label"
+            style={{
+              color: "red",
+              display: "flex",
+              alignContent: "center",
+              paddingTop: "4px",
+              paddingBottom: "4px",
+              height: "120%",
+            }}
+          >
+            {label}
+          </div>
+        )}
+        <div className="widthFull d-flex align-items-center justify-content-center">
           {optionList.map((option) => (
             <div className="form-check form-check-inline" key={option.key}>
               <label className="form-check-label">

@@ -64,9 +64,7 @@ function TextBoxComponent(props) {
 
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
-  // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
-  // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   const [isValid, setIsValid] = useState([true]); // 기본 유효성 검사 상태 값
@@ -74,14 +72,13 @@ function TextBoxComponent(props) {
 
   useEffect(() => {
     setInputValue(value || "");
-    // setInputSubValue(subValue || "");
   }, [value]);
 
-  useEffect(() => {
-    console.log("sendValue", sendValue);
-    // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
-    // update 로직은 이 곳에서 사용하기로...
-  }, [sendValue]);
+  // useEffect(() => {
+  //   console.log("sendValue", sendValue);
+  //   // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
+  //   // update 로직은 이 곳에서 사용하기로...
+  // }, [sendValue]);
 
   // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
   const alertErrorMessage = () => {
@@ -95,7 +92,7 @@ function TextBoxComponent(props) {
           const updatedValues = {}; // 업데이트할 값들을 저장할 객체
 
           for (let index = 0; index < 3; index++) {
-            updatedValues[`${id}${index + 1}`] = inputCallNumber[index];
+            // updatedValues[`${id}${index + 1}`] = inputCallNumber[index];
           }
 
           onEnter && onEnter(event, updatedValues); // 새 객체를 전달
@@ -106,13 +103,11 @@ function TextBoxComponent(props) {
         if (/^\d{6}-\d{7}$/.test(inputValue) || "") {
           //유효성에 맞다면 update 요청을 보낼 수 있다
           setSendValue(inputValue);
-          // if (subValue) setSendSubValue(inputValue);
         } else {
           alertErrorMessage();
         }
       }
       onEnter && onEnter(event, sendValue, id);
-      // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 

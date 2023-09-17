@@ -15,6 +15,7 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import "../styles/commonComponent.css";
 
 SelectForm.defaultProps = {
   optionList: [],
@@ -46,11 +47,7 @@ function SelectForm(props) {
   return (
     <Row className="py-1">
       <div className="labelAndContent">
-        {label && (
-          // <div className="d-flex align-items-center justify-content-center">
-          <div className="label">{label}</div>
-        )}
-        {/* <div className="d-flex align-items-center justify-content-center"> */}
+        {label && <div className="label">{label}</div>}
         <div className="widthFull d-flex align-items-center justify-content-center">
           {subLabel && (
             <Col md={2} style={{ marginLeft: 50, marginRight: 5 }}>
