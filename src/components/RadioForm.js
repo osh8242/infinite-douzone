@@ -36,9 +36,8 @@ function RadioForm({
           <div
             className="label"
             style={{
-              color: "red",
               display: "flex",
-              alignContent: "center",
+              alignItems: "center",
               paddingTop: "4px",
               paddingBottom: "4px",
               height: "120%",
