@@ -21,6 +21,7 @@ import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
+import TableTest from "../../components/TableTest";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -105,7 +106,7 @@ const HrManagementLayout = () => {
             {/* 좌측 그리드 */}
             <Row>
               <div className="leftTable">
-                <TableForm
+                <TableTest
                   tableName="EMP"
                   //showCheckbox
                   sortable
@@ -183,7 +184,7 @@ const HrManagementLayout = () => {
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
               <div className="subTable">
-                <TableForm
+                <TableTest
                   tableName="EMPFAM"
                   showCheckbox
                   rowAddable

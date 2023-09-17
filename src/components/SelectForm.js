@@ -32,7 +32,7 @@ function SelectForm(props) {
     endLabel,
   } = props;
 
-  const [selectedValue, setSelectedValue] = useState(selectedOption);
+  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
   useEffect(() => {
     setSelectedValue(selectedOption);
   }, [selectedOption]);

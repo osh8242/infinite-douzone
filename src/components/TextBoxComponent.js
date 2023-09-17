@@ -78,7 +78,7 @@ function TextBoxComponent(props) {
   }, [value]);
 
   useEffect(() => {
-    console.log("sendValue", sendValue);
+    // console.log("sendValue", sendValue);
     // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
     // update 로직은 이 곳에서 사용하기로...
   }, [sendValue]);
@@ -141,7 +141,8 @@ function TextBoxComponent(props) {
       }
     } else {
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
-      if (event.target.id === id) setInputValue(makeProcessedValue(newValue)); // data 가공
+      //if (event.target.id === id)
+      setInputValue(makeProcessedValue(newValue)); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue);
     }

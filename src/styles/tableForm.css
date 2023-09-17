@@ -45,10 +45,14 @@ table {
 
 td div {
   text-align: center;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 td input {
   text-align: center;
+  height: 1.5rem;
+  width: 100%;
 }
 
 .styleNone {

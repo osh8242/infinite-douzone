@@ -1,3 +1,5 @@
+import { SELECT_LIST } from "../CommonConstant";
+
 ////////////////////////////// 요청 Mapping Pattern
 export const urlPattern = {
   insertEmp: "/emp/insertEmp",
@@ -79,8 +81,13 @@ export const subTableConstant = {
   headers: [
     { field: "cdFamrel", text: "관계" },
     { field: "nmKrname", text: "성명" },
-    { field: "ynFor", text: "외국인" },
-    { field: "noSocial", text: "주민등록번호" },
+    {
+      field: "ynFor",
+      text: "외국인",
+      type: "select",
+      optionList: SELECT_LIST.ynFor,
+    },
+    { field: "noSocial", text: "주민등록번호", width: "150px" },
     { field: "fgSchool", text: "학력" },
     { field: "fgGraduation", text: "졸업구분" },
     { field: "ynTogether", text: "동거" },
