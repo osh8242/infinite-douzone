@@ -64,7 +64,9 @@ function TextBoxComponent(props) {
 
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
+  // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
+  // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   const [isValid, setIsValid] = useState([true]); // 기본 유효성 검사 상태 값
@@ -72,12 +74,13 @@ function TextBoxComponent(props) {
 
   useEffect(() => {
     setInputValue(value || "");
+    // setInputSubValue(subValue || "");
   }, [value]);
 
   // useEffect(() => {
-  //   console.log("sendValue", sendValue);
-  //   // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
-  //   // update 로직은 이 곳에서 사용하기로...
+  // console.log("sendValue", sendValue);
+  // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
+  // update 로직은 이 곳에서 사용하기로...
   // }, [sendValue]);
 
   // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
@@ -88,26 +91,20 @@ function TextBoxComponent(props) {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       if (type === "callNumber") {
-        if (isCallValid.every((isValid) => isValid === true)) {
-          const updatedValues = {}; // 업데이트할 값들을 저장할 객체
-
-          for (let index = 0; index < 3; index++) {
-            // updatedValues[`${id}${index + 1}`] = inputCallNumber[index];
-          }
-
-          onEnter && onEnter(event, updatedValues); // 새 객체를 전달
-        } else {
-          alertErrorMessage();
-        }
+        makeProcessedValue();
       } else if (type === "regNum") {
         if (/^\d{6}-\d{7}$/.test(inputValue) || "") {
           //유효성에 맞다면 update 요청을 보낼 수 있다
           setSendValue(inputValue);
+          // if (subValue) setSendSubValue(inputValue);
         } else {
           alertErrorMessage();
         }
+      } else if (type === "email") {
+        setSendValue(inputValue);
       }
       onEnter && onEnter(event, sendValue, id);
+      // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 
@@ -118,22 +115,27 @@ function TextBoxComponent(props) {
       // let updatedCallNumber = [...inputValue];
       // updatedCallNumber[index] = newValue;
       // setInputCallNumber(updatedCallNumber); // 화면 상의 value update
-      if (event.target.id === id) setInputValue(newValue);
+      if (event.target.id === id) {
+        setInputValue(newValue);
 
-      let updatedCallValid = [...isCallValid];
-      updatedCallValid[index] = validation(newValue); // 유효성 검사 수행
-      setIsCallValid(updatedCallValid); // 유효성 검사 결과에 따른 클래스(스타일) 변경
+        // let updatedCallValid = [...isCallValid];
+        // updatedCallValid[index] = validation(newValue); // 유효성 검사 수행
+        let updatedCallValid = validation(newValue); // 유효성 검사 수행
+        setIsValid(updatedCallValid); // 유효성 검사 결과에 따른 클래스(스타일) 변경
+      }
     } else if (type === "email") {
       //이메일 값 변경 로직
       let updatedEmail = "";
-      if (event.target.id === `${id}-emailId`) {
+      if (event.target.id === `${id}Id`) {
         //바뀐 값이 이메일 아이디라면
-        updatedEmail = newValue + "@" + value?.split("@")[1];
+        updatedEmail = newValue + "@" + (inputValue.split("@")[1] || "");
         setInputValue(updatedEmail);
-      } else if (event.target.id === `${id}-domain`) {
+      } else if (event.target.id === `${id}Domain`) {
         //바뀐 값이 도메인이라면
-        updatedEmail = value?.split("@")[0] + "@" + newValue;
+        updatedEmail = (inputValue.split("@")[0] || "") + "@" + newValue;
         setInputValue(updatedEmail);
+
+        onChange && onChange("", updatedEmail, id);
       }
     } else if (type === "regNum") {
       //주민등록번호 유효값 검사
@@ -181,9 +183,6 @@ function TextBoxComponent(props) {
       //   });
       //   setSendValue(sendCallNumber);
       // }
-    } else if (type === "email") {
-      //email 다시 합쳐서 보내줘야 함!
-      //email id값 가져오기
     } else {
       setSendValue(processedValue);
     }
@@ -267,7 +266,7 @@ function TextBoxComponent(props) {
         onEnter={onEnter}
         onChange={onChange}
         onFocus={handleInputFocus}
-        className={hasFalseValid(isCallValid) ? "" : "invalid"}
+        className={isValid ? "" : "invalid"}
       />
     );
   }
@@ -399,20 +398,20 @@ function TextBoxComponent(props) {
         <div className="widthFull d-flex align-items-center gap-2">
           <Form.Control
             type="text"
-            id={`${id}-emailId`}
-            value={inputValue.split("@")[0] || inputValue}
+            id={`${id}Id`}
+            value={inputValue.split("@")[0] || ""}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            undefined={undefined}
+            // undefined={undefined}
           />
           <span>@</span>
           <Form.Select
-            id={`${id}-domain`}
-            value={inputValue?.split("@")[1] || EMAIL_LIST[0].key}
+            id={`${id}Domain`}
+            value={inputValue.split("@")[1] || EMAIL_LIST[0].value}
             onChange={handleInputChange}
           >
             {EMAIL_LIST.map((option, index) => (
-              <option value={option.key} key={index}>
+              <option value={option.value} key={index}>
                 {option.value}
               </option>
             ))}

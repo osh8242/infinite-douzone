@@ -163,6 +163,7 @@ const FormPanel = ({
             label={label}
             type="email"
             value={value}
+            onChange={submitData}
             onEnter={submitData}
           />
         );

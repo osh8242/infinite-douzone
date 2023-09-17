@@ -30,7 +30,7 @@ import {
   codeHelperData_cdBank,
 } from "../../model/EmpRegister/EmpConstant";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import FormPanel from "../../components/FormPanel";
 import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
 
@@ -223,6 +223,7 @@ function EmpRegisterationLayout() {
                     ),
                 }}
               />
+              <Form.Control type="text" style={{ outline: "none" }} />
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />
