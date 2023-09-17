@@ -20,7 +20,7 @@ import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
-import HrSearchPanel from "./searchPanel/HrSearchPanel";
+import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -116,8 +116,11 @@ const HrManagementLayout = () => {
                   onRowClick={(e, row) => {
                     actions.setLeftTablePkValue(row);
                   }}
+                  defaultSelectedRow
+                  defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
+                    setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: actions.insertEmp,
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,

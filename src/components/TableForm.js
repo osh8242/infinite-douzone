@@ -1,17 +1,7 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
@@ -47,11 +37,25 @@ const TableForm = ({
   sortable, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
+  defaultSelectedRow, // [선택] 테이블 랜더시 초기 선택행 옵션(숫자, 디폴트는 index = 0)
+  defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온(디폴트 false)
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
 
   useEffect(() => {
     setTableRows(tableData || []);
+    console.log(typeof defaultSelectedRow, "타입");
+    if (defaultSelectedRow)
+      switch (typeof defaultSelectedRow) {
+        case "number":
+          handleRowClick(null, defaultSelectedRow, 0);
+          break;
+        case "boolean":
+          handleRowClick(null, 0, 0);
+          break;
+        default:
+          break;
+      }
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
@@ -79,7 +83,7 @@ const TableForm = ({
   const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
-  const tableFocus = useRef(false);
+  const tableFocus = useRef(defaultFocus);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
@@ -165,10 +169,7 @@ const TableForm = ({
   );
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
-  const getInputElements = useCallback(
-    () => inputRef.current[rowRef],
-    [rowRef]
-  );
+  const getInputElements = useCallback(() => inputRef.current[rowRef], [rowRef]);
 
   // 새로운 행(빈행)을 만드는 함수
   const makeNewRow = useCallback(() => {
@@ -440,28 +441,31 @@ const TableForm = ({
         }
 
         if (editableRowIndex === -1) {
-          event.preventDefault();
           switch (event.key) {
             case "ArrowDown":
+              event.preventDefault();
               if (rowRef < tableRows.length) setRowRef(rowRef + 1);
               updatePkValue(rowRef + 1);
               break;
 
             case "ArrowUp":
+              event.preventDefault();
               if (rowRef > 0) setRowRef(rowRef - 1);
               updatePkValue(rowRef - 1);
               break;
 
             case "ArrowLeft":
+              event.preventDefault();
               if (columnRef > 0) setColumnRef(columnRef - 1);
               break;
 
             case "ArrowRight":
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              event.preventDefault();
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
+              event.preventDefault();
               if (editableRowIndex === -1 && rowRef > -1) {
                 handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) pushNewRow();
@@ -470,10 +474,12 @@ const TableForm = ({
               break;
 
             case " ":
+              event.preventDefault();
               checkboxHandler(rowRef);
               break;
 
             case "Delete":
+              event.preventDefault();
               setModalState({
                 show: true,
                 message: "해당 행을 삭제하시겠습니까?",
@@ -550,9 +556,7 @@ const TableForm = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -635,16 +639,11 @@ const TableForm = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr
-              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
-            >
+            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
-                  onClick={() =>
-                    codeHelper &&
-                    actions.setCodeHelper({ ...codeHelper, show: true })
-                  }
+                  onClick={() => codeHelper && actions.setCodeHelper()}
                 >
                   <div>
                     <FontAwesomeIcon icon={faPlus} />
@@ -654,22 +653,22 @@ const TableForm = ({
 
               {tableHeaders.map((thead, columnIndex) => (
                 <td
+                  className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) =>
-                    handleRowClick(e, tableRows.length, columnIndex)
-                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div
                     className="tableContents"
-                    ref={(div) =>
-                      setInputRef(div, tableRows.length, columnIndex)
-                    }
+                    ref={(div) => setInputRef(div, tableRows.length, columnIndex)}
                   >
                     {!showCheckbox && columnIndex === 0 && (
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        onClick={() => codeHelper && actions.setCodeHelper()}
+                      />
                     )}
                   </div>
                 </td>
@@ -708,6 +707,7 @@ TableForm.propTypes = {
   sortable: PropTypes.bool,
   readOnly: PropTypes.bool,
   rowAddable: PropTypes.bool,
+  defaultFocus: PropTypes.bool,
 };
 
 export default TableForm;
