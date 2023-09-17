@@ -32,12 +32,12 @@ export const EmpRegisterMainHeaders = [
   { field: "zipHome", text: "우편번호" },
   { field: "addHome1", text: "주소" },
   { field: "addHome2", text: "상세주소" },
-  { field: "telHome1", text: "전화번호" },
-  // { field: "telHome2", text: "전화번호2" },
-  // { field: "telHome3", text: "전화번호3" },
-  { field: "celEmp1", text: "모바일번호" },
-  // { field: "celEmp2", text: "모바일번호2" },
-  // { field: "celEmp3", text: "모바일번호3" },
+  { field: "telHome1", text: "전화번호1" },
+  { field: "telHome2", text: "전화번호2" },
+  { field: "telHome3", text: "전화번호3" },
+  { field: "celEmp1", text: "모바일번호1" },
+  { field: "celEmp2", text: "모바일번호2" },
+  { field: "celEmp3", text: "모바일번호3" },
   { field: "emEmp", text: "이메일" },
   { field: "idMsn", text: "메신저ID" },
   { field: "cdDept", text: "부서" },
@@ -53,8 +53,8 @@ export const EmpRegisterMainHeaders = [
 ];
 
 export const LABELS_EMP = {
-  telHome1: "전화번호",
-  celEmp1: "모바일번호",
+  telHome: "전화번호",
+  celEmp: "모바일번호",
 };
 
 // 코드도움 상수 모음

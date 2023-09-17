@@ -27,14 +27,14 @@ export const MAIN_TAB = {
     { type: INPUT_TYPE.email, field: "emEmp", span: 1 },
     {
       type: INPUT_TYPE.callNumber,
-      field: "telHome1",
-      label: LABELS_EMP.telHome1,
+      field: "telHome",
+      label: LABELS_EMP.telHome,
       span: 1,
     },
     {
       type: INPUT_TYPE.callNumber,
-      field: "celEmp1",
-      label: LABELS_EMP.celEmp1,
+      field: "celEmp",
+      label: LABELS_EMP.celEmp,
       span: 1,
     },
     { type: INPUT_TYPE.address, field: "address", isZonecode: true, span: 2 },

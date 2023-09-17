@@ -44,14 +44,14 @@ function SelectForm(props) {
   };
 
   return (
-    <Row>
-      <div className="py-1 widthFull labelAndContent">
+    <Row className="py-1">
+      <div className="labelAndContent">
         {label && (
           // <div className="d-flex align-items-center justify-content-center">
           <div className="label">{label}</div>
         )}
         {/* <div className="d-flex align-items-center justify-content-center"> */}
-        <div className="widthFull d-flex align-items-center justify-content-center">
+        <div className="widthFull d-flex align-items-center">
           {subLabel ? (
             <div
               className="d-flex align-items-center justify-content-center"

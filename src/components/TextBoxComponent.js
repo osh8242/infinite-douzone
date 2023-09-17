@@ -17,7 +17,7 @@ function TextBoxComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
-    // custom type 옵션          ex) callNumber, email, noSocial(내외국민,주민번호,성별 조합)
+    // custom type 옵션          ex) callNumber, email( text & select )
     id,
     subId,
     name,
@@ -33,7 +33,7 @@ function TextBoxComponent(props) {
     thousandSeparator, //세자리 콤마
     suffix, // %, 원화표시
     mask, // '*'
-    amount, // [선택] input의 개수 (기본 type 제공, 모든 input은 공통된 type을 가지게 됩니다.) ex) amount={3}
+    // amount, // [선택] input의 개수 (기본 type 제공, 모든 input은 공통된 type을 가지게 됩니다.) ex) amount={3}
     // amount 값 입력시 각각의 input에 넣을 id 값을 ',' 로 구분하여 문자열로 제공해야 합니다. ex) id="id1,id2,id3"
 
     //이벤트 함수[선택]
@@ -69,29 +69,25 @@ function TextBoxComponent(props) {
   const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
-  // callNumber type인 경우 '-'를 기준으로 값을 분리하여 배열에 할당한다.
+  //전화번호(callNumber) 타입의 상태 관리 변수
   const [inputCallNumber, setInputCallNumber] = useState(
-    type === "callNumber" && value ? value.split("-") : ["", "", ""]
+    value.split(" ") || ["", "", ""]
   );
+
   const [isValid, setIsValid] = useState([true]); // 기본 유효성 검사 상태 값
   const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
 
   useEffect(() => {
-    if (type === "callNumber" && value) {
-      setInputCallNumber(value.split("-") || ["", "", ""]);
+    if (type === "callNumber") {
+      setInputCallNumber(value.split(" "));
+      console.log(inputCallNumber[0], inputCallNumber[1], inputCallNumber[2]);
     } else {
       setInputValue(value || "");
       setInputSubValue(subValue || "");
-    } // value prop이 변경될 때마다 inputValue를 업데이트
+    }
   }, [value, subValue]);
 
-  // useEffect(() => {
-  //   console.log("sendValue", sendValue);
-
-  //   // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
-  //   // update 로직은 이 곳에서 사용하기로...
-  // }, [sendValue]);
-
+  // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
   const alertErrorMessage = () => {
     alert("입력된 값이 유효하지 않습니다");
   };
@@ -99,17 +95,28 @@ function TextBoxComponent(props) {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       if (type === "callNumber") {
-        makeProcessedValue();
+        if (isCallValid.every((isValid) => isValid === true)) {
+          const updatedValues = {}; // 업데이트할 값들을 저장할 객체
+
+          for (let index = 0; index < 3; index++) {
+            updatedValues[`${id}${index + 1}`] = inputCallNumber[index];
+          }
+
+          onEnter && onEnter(event, updatedValues); // 새 객체를 전달
+        } else {
+          alertErrorMessage();
+        }
       } else if (type === "regNum") {
         if (/^\d{6}-\d{7}$/.test(inputValue) || "") {
           //유효성에 맞다면 update 요청을 보낼 수 있다
+          setSendValue(inputValue);
         } else {
-          // alert("유효하지 않은 주민번호");
           alertErrorMessage();
         }
+      } else {
+        onEnter && onEnter(event, sendValue, id);
+        if (subValue) onEnter && onEnter(event, sendSubValue, subId);
       }
-      onEnter && onEnter(event, sendValue, id);
-      if (subValue) onEnter && onEnter(event, sendSubValue, subId);
     }
   };
 
@@ -117,22 +124,23 @@ function TextBoxComponent(props) {
     const newValue = event.target.value;
 
     if (type === "callNumber") {
-      let updatedCallNumber = [...inputCallNumber];
-      updatedCallNumber[index] = newValue;
-      setInputCallNumber(updatedCallNumber); //보이는 value update
-      let updatedCallValid = [...isCallValid];
-      updatedCallValid[index] = validation(newValue);
-      setIsCallValid(updatedCallValid); //유효성 검사 수행과 그 결과에 따른 클래스 변경
+      const updatedInputCallNumber = [...inputCallNumber];
+      updatedInputCallNumber[index] = newValue;
+      setInputCallNumber(updatedInputCallNumber);
+
+      const updatedCallValid = [...isCallValid];
+      updatedCallValid[index] = validation(newValue); // 유효성 검사 수행
+      setIsCallValid(updatedCallValid); // 유효성 검사 결과에 따른 클래스(스타일) 변경
     } else if (type === "email") {
       //이메일 값 변경 로직
       let updatedEmail = "";
       if (event.target.id === `${id}-emailId`) {
         //바뀐 값이 이메일 아이디라면
-        updatedEmail = newValue + "@" + value.split("@")[1];
+        updatedEmail = newValue + "@" + value?.split("@")[1];
         setInputValue(updatedEmail);
       } else if (event.target.id === `${id}-domain`) {
         //바뀐 값이 도메인이라면
-        updatedEmail = value.split("@")[0] + "@" + newValue;
+        updatedEmail = value?.split("@")[0] + "@" + newValue;
         setInputValue(updatedEmail);
       }
     } else if (type === "regNum") {
@@ -163,27 +171,9 @@ function TextBoxComponent(props) {
         (processedValue = processThousandSeparator(processedValue));
       setSendValue(makePureNumber(processedValue));
     } else if (type === "regNum") {
-      // 주민번호 유효성 검사
       processedValue = /^\d{0,6}$/.test(newValue)
         ? newValue.replace(/(\d{6})(\d{0,1})/, "$1-$2")
         : newValue; //하이픈 넣기
-
-      //마스킹처리 진행중...
-
-      setSendValue(processedValue);
-    } else if (type === "callNumber") {
-      //전화번호를 위한 input 3개의 값을 '-'와 함께 저장
-      if (isCallValid) {
-        let sendCallNumber = "";
-        inputCallNumber.map((value, index) => {
-          if (index < inputCallNumber.length - 1) {
-            sendCallNumber += value + "-";
-          } else {
-            sendCallNumber += value;
-          }
-        });
-        setSendValue(sendCallNumber);
-      }
     } else if (type === "email") {
       //email 다시 합쳐서 보내줘야 함!
       //email id값 가져오기
@@ -223,16 +213,17 @@ function TextBoxComponent(props) {
       if (value.length >= 14) {
         alert("13자리 입력해주세요.");
         returnValue = value.slice(0, 14);
+
+        setSendValue(value);
       }
     } else if (type === "callNumber") {
       // 전화번호 유효성 검사
       if (/^[0-9]{0,4}$/.test(value) || value === "") {
-        returnValue = true;
         setIsCallValid(true);
-        // console.log("유효성검사 성공한 값 => ", value);
+        returnValue = true;
       } else {
-        returnValue = false;
         setIsCallValid(false);
+        returnValue = false;
         // console.log("유효성검사 실패! => ", value);
       }
     }
@@ -257,32 +248,24 @@ function TextBoxComponent(props) {
     onFocus && onFocus(obj); // onFocus 이벤트 처리
   };
 
-  // 입력받은 amount의 수만큼 input을 반복하여주는 함수
-  // let idArray = []; // 각 input의 id값
-  // let inputElements = []; // 각 input
-  // if (amount >= 2) {
-  //   idArray = id.split(",");
-  //   for (let i = 0; i < amount; i++) {
-  //     inputElements.push(
-  //       <Form.Control
-  //         id={idArray[i]}
-  //         value={inputValue}
-  //         type={type}
-  //         name={name}
-  //         size={size}
-  //         disabled={disabled}
-  //         readOnly={readOnly}
-  //         plaintext={plaintext}
-  //         onChange={handleInputChange}
-  //         onFocus={handleInputFocus}
-  //         onClick={onClick}
-  //         onKeyDown={handleKeyDown}
-  //         placeholder={placeholder ? placeholder : undefined}
-  //         style={style}
-  //       />
-  //     );
-  //   }
-  // }
+  // callNumber 타입 컴포넌트 배열
+  const callNumberComponents = [];
+
+  for (let index = 0; index < 3; index++) {
+    callNumberComponents.push(
+      <Form.Control
+        id={`${id}${index + 1}`}
+        key={`${id}${index + 1}`}
+        value={inputCallNumber[index]}
+        type="callNumber"
+        disabled={disabled}
+        onKeyDown={(event) => handleKeyDown(event, id)}
+        onChange={(event) => handleInputChange(event, index)}
+        onFocus={handleInputFocus}
+        className={hasFalseValid(isCallValid) ? "" : "invalid"}
+      />
+    );
+  }
 
   // 화면 render
   return (
@@ -405,20 +388,8 @@ function TextBoxComponent(props) {
     } else if (type === "callNumber") {
       // 전화번호
       return (
-        <div className="widthFull d-flex align-items-center gap-4">
-          {inputCallNumber.map((value, index) => (
-            <Form.Control
-              key={index}
-              value={value}
-              type="text"
-              id={`callNumber${index + 1}`}
-              disabled={disabled}
-              onKeyDown={(event) => handleKeyDown(event, value)}
-              onChange={(event) => handleInputChange(event, index)}
-              onFocus={handleInputFocus}
-              className={hasFalseValid(isCallValid) ? "" : "invalid"}
-            />
-          ))}
+        <div className="widthFull d-flex align-items-center gap-2">
+          {callNumberComponents}
         </div>
       );
     } else if (type === "email") {
@@ -452,7 +423,6 @@ function TextBoxComponent(props) {
         // inputs
         <div className="widthFull">
           <Form.Control
-            //defaultValue={value}
             value={inputValue}
             type={type}
             id={id}
