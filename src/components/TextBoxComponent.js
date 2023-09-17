@@ -253,14 +253,13 @@ function TextBoxComponent(props) {
   const callNumberComponents = [];
   for (let i = 1; i <= 3; i++) {
     callNumberComponents.push(
-      <Form.Control
+      <TextBoxComponent
         id={`${id}${i}`}
         key={i}
-        value={inputValue}
-        type="callNumber"
+        value={inputValue?.split("-")[i - 1]}
         disabled={disabled}
-        onKeyDown={(event) => handleKeyDown(event, id)}
-        onChange={(event) => handleInputChange(event, i)}
+        onEnter={onEnter}
+        onChange={onChange}
         onFocus={handleInputFocus}
         className={hasFalseValid(isCallValid) ? "" : "invalid"}
       />

@@ -104,8 +104,8 @@ export const MAIN_TAB = {
     },
     {
       type: INPUT_TYPE.radio,
-      field: "fgOwnhouse",
-      label: LABELS.fgOwnhouse,
+      field: "fgOwnHouse",
+      label: LABELS.fgOwnHouse,
     },
     {
       type: INPUT_TYPE.callNumber,
