@@ -2,10 +2,10 @@ import axios from "axios";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
+import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import { url } from "../CommonConstant";
 import { urlPattern } from "./HrManagementConstant";
-import EmpAdd from "../../vo/HrManagement/EmpAdd";
 
 const HrManagementModel = () => {
   const [jobOk, setJobOk] = useState("Y"); //재직여부
@@ -85,12 +85,9 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (leftTablePkValue.cdEmp) {
       axios
-        .get(
-          `${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`,
-          {
-            responseType: "arraybuffer",
-          }
-        )
+        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
+          responseType: "arraybuffer",
+        })
         .then((response) => {
           // ArrayBuffer를 Blob으로 변환하고 URL을 생성
           const blob = new Blob([response.data], { type: "image/jpeg" });
@@ -161,21 +158,21 @@ const HrManagementModel = () => {
   );
 
   //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
-  useEffect(() => {
-    if (editedEmpAdd && Object.keys(editedEmpAdd).length !== 0) {
-      console.log("editedEmpAdd 업데이트 요청", editedEmpAdd);
-      axios
-        .put(url + "/empAdd/updateEmpAdd", editedEmpAdd)
-        .then((response) => {
-          if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-          setEditedEmpAdd({});
-        })
-        .catch((error) => {
-          console.error("에러발생: ", error);
-          // 필요에 따라 다른 오류 처리 로직 추가
-        });
-    }
-  }, [editedEmpAdd]);
+  // useEffect(() => {
+  //   if (editedEmpAdd && Object.keys(editedEmpAdd).length !== 0) {
+  //     console.log("editedEmpAdd 업데이트 요청", editedEmpAdd);
+  //     axios
+  //       .put(url + "/empAdd/updateEmpAdd", editedEmpAdd)
+  //       .then((response) => {
+  //         if (response.data === 1) console.log("EmpAdd 업데이트 성공");
+  //         setEditedEmpAdd({});
+  //       })
+  //       .catch((error) => {
+  //         console.error("에러발생: ", error);
+  //         // 필요에 따라 다른 오류 처리 로직 추가
+  //       });
+  //   }
+  // }, [editedEmpAdd]);
 
   //update EmpAdd
   const updateEmpAdd = useCallback((EmpAdd) => {
