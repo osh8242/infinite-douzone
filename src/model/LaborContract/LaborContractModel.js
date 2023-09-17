@@ -1,104 +1,202 @@
-import React, { useState } from "react";
-import { useContext, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
-import Emp from "../../vo/HrManagement/Emp";
+import { url } from "../CommonConstant";
+import { swsmUrlPattern } from "./LaborContractConstant";
+import { urlPattern } from "../HrManagement/HrManagementConstant";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
-import { url } from "../../model/LaborContract/LaborContractConstant";
+// import Emp from "../../vo/HrManagement/Emp";
 
 const LaborContractModel = () => {
-  const [jobOk, setJobOk] = useState("Y"); //재직여부
-  const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
-  const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
-
-  const [leftTableData, setLeftTableData] = useState([]);
-  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "A101" }); // cdEmp
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" });
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});
   const [editedSwsmOther, setEditedSwsmOther] = useState({});
-
+  const [leftTableData, setLeftTableData] = useState([]);
   const [subTableData, setSubTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState({});
-  const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "A101" });
 
-  // leftTableData load
+  const mainTabRef = useRef();
   useEffect(() => {
-    setLeftTableData([]);
     axios
-      .get(url + "/emp/getAllEmp")
+      .get(url + swsmUrlPattern.getAllEmp)
       .then((response) => {
-        console.log("SwsmModel > /emp/getAllEmp", response);
-
         const data = response.data.map((item) => {
-          const swsmData = {
+          return Swsm({
             cdEmp: item.cdEmp,
             nmKrname: item.nmKrname,
             noSocial: item.noSocial,
-          };
-          return Swsm(swsmData);
+          });
         });
-        console.log(data);
         setLeftTableData(data);
       })
-      .catch((error) => {
-        console.log("ERROR : " + error);
-      });
+      .catch(console.error);
   }, []);
 
-  // subTableData load
   useEffect(() => {
-    console.log(editedSwsmOther);
-    setSubTableData([]);
-    if (mainTablePkValue)
+    if (mainTablePkValue) {
       axios
-        .post(url + "/swsmOther/getSwsmOtherByCdEmp", mainTablePkValue, {
-          // "Content-Type": "application/json",
+        .post(url + swsmUrlPattern.getSwsm, mainTablePkValue, {
+          "Content-Type": "application/json",
         })
         .then((response) => {
-          const data = response.data.map((item) => {
-            const swsmOtherData = {
+          setMainTabData(response.data || {});
+        })
+        .catch(console.error);
+
+      // get으로 변경 예정.......................
+      axios
+        .post(url + swsmUrlPattern.getSwsmOther, mainTablePkValue)
+        .then((response) => {
+          const data = response.data.map((item) =>
+            SwsmOther({
               otherType: item.otherType,
               otherMoney: item.otherMoney,
               seqVal: item.seqVal,
               cdEmp: item.cdEmp,
-            };
-            return SwsmOther(swsmOtherData);
-          });
+            })
+          );
           setSubTableData(data);
         })
-        .catch((error) => {
-          console.error("ERROR : ", error);
-        });
+        .catch(console.error);
+    }
   }, [mainTablePkValue, editedSwsmOther]);
 
+  //추가된 사원 insert 요청
+  const insertEmp = useCallback((emp) => {
+    axios
+      .post(url + urlPattern.insertEmp, emp)
+      .then((response) => {
+        if (response.data === 1) console.log("Emp insert 성공");
+        setEditedEmp({});
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  // EDITED_EMP 처리 부분 (update & insert)
+  useEffect(() => {
+    if (Object.keys(editedEmp).length === 0) return;
+
+    const action = editedEmp.isNew ? axios.post : axios.put;
+    const endpoint = editedEmp.isNew ? urlPattern.insertEmp : "/emp/updateEmp";
+
+    action(url + endpoint, editedEmp.item)
+      .then((response) => {
+        if (response.data === 1) console.log("Emp 처리 성공");
+        setEditedEmp({});
+      })
+      .catch(console.error);
+  }, [editedEmp]);
+
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
+        let data = {
+          [event.target.id]: event.target.value,
+        };
+        setEditedSwsm(data);
+      }
+      if (event.type === "change") {
+        console.log("change");
+        let data = {
+          [event.target.id]: event.target.value,
+        };
+        // event.target.blur();
+        let newMainTabData = { ...mainTabData.item };
+        newMainTabData[event.target.id] = value;
+        setEditedSwsm(data);
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
+
+  // EDITED_SWSM 처리 부분 (update)
+  useEffect(() => {
+    if (Object.keys(editedSwsm).length === 0 || editedSwsm.isNew) return;
+
+    const updatedSwsm = {
+      ...editedSwsm,
+      cdEmp: mainTabData.cdEmp,
+    };
+
+    axios
+      .put(url + swsmUrlPattern.updateSwsm, updatedSwsm)
+      .then((response) => {
+        if (response.data === 1) console.log("Swsm 업데이트 성공");
+        setEditedSwsm({});
+      })
+      .catch(console.error);
+  }, [editedSwsm, mainTabData]);
+
+  const insertSwsmOther = useCallback((swsmOther) => {
+    console.log("SwsmOther insert Data: ");
+    console.log(swsmOther);
+    const newData = {
+      otherType: swsmOther.otherType,
+      otherMoney: swsmOther.otherMoney,
+      seqVal: swsmOther.seqVal,
+      cdEmp: mainTablePkValue.cdEmp,
+    };
+    axios
+      .post(url + swsmUrlPattern.insertSwsmOther, newData)
+      .then((response) => {
+        if (response.data === 1) console.log("SwsmOther insert 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  const updateSwsmOther = useCallback((swsmOther) => {
+    const newData = {
+      otherType: swsmOther.otherType,
+      otherMoney: swsmOther.otherMoney,
+      seqVal: swsmOther.seqVal,
+      cdEmp: mainTablePkValue.cdEmp,
+    };
+    axios
+      .put(url + swsmUrlPattern.updateSwsmOther, newData)
+      .then((response) => {
+        if (response.data === 1) console.log("swsmOther 업데이트 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+  }, []);
+
   const deleteSelectedRows = useCallback(() => {
-    // 각 row에 대한 delete 요청을 생성
     const deletePromises = selectedRows.map((row) => {
+      let endpoint;
       switch (row.table) {
         case "empFam":
-          console.log("url + '/empFam/deleteEmpFam', row.item", row.item);
-          return axios.delete(url + "/empFam/deleteEmpFam", { data: row.item });
+          endpoint = urlPattern.deleteEmpFam;
+          break;
         case "swsmOther":
-          console.log("url + '/swsmOther/deleteSwsmOther', row.item", row.item);
-          return axios.delete(url + "/swsmOther/deleteSwsmOther", {
-            data: row.item,
-          });
+          endpoint = swsmUrlPattern.deleteSwsmOther;
+          break;
         default:
           return Promise.resolve();
       }
+      return axios.delete(url + endpoint, { data: row.item });
     });
 
     Promise.all(deletePromises)
-      .then((responses) => {
+      .then(() => {
         console.log("선택된 모든 행의 삭제 완료");
-        setSelectedRows([]); // 선택행 배열 비우기
-        setEditedSwsmOther([]);
+        setSelectedRows([]);
       })
-      .catch((error) => {
-        console.error("하나 이상의 요청에서 에러 발생: ", error);
-      });
+      .catch(console.error);
   }, [selectedRows]);
+
+  console.log(mainTabData);
 
   return {
     state: {
@@ -106,6 +204,7 @@ const LaborContractModel = () => {
       mainTabData,
       leftTablePkValue,
       mainTablePkValue,
+      mainTabRef,
       subTableData,
       selectedRows,
     },
@@ -115,35 +214,15 @@ const LaborContractModel = () => {
       setMainTablePkValue,
       setMainTabData,
       setSubTableData,
-
+      submitMainTabData,
       setEditedEmp,
       setEditedSwsm,
       setEditedSwsmOther,
       setSelectedRows,
       deleteSelectedRows,
+      insertSwsmOther,
+      updateSwsmOther,
     },
   };
 };
-
 export default LaborContractModel;
-//leftTableData 가져오는 비동기 GET 요청
-//   useEffect(() => {
-//     axios
-//       .get(
-//         `${url}/emp/getEmpListForHrManagement?jobOk=${jobOk}+
-//         ${"&orderRef=" + orderRef}
-//         +
-//         ${refYear ? "&refYear=" + refYear : ""}`
-//       )
-//       .then((response) => {
-//         console.log(response.data);
-//         const data = response.data.map((item) => {
-//           return Emp(item);
-//         });
-//         setLeftTableData(data);
-//       })
-//       .catch((error) => {
-//         console.error("에러발생: ", error);
-//         // 필요에 따라 다른 오류 처리 로직 추가
-//       });
-//   }, [jobOk, refYear, orderRef, editedEmp]);

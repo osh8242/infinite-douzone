@@ -8,9 +8,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
-import ModalComponent from "../components/ModalComponent";
-import "../styles/header.css";
-import empAdd from "../styles/img/swsmLogo.png";
+import ModalComponent from "../../components/ModalComponent";
+import "../../styles/header.css";
+import empAdd from "../../styles/img/swsmLogo.png";
 
 const LaborContractHeader = ({ deleteButtonHandler }) => {
   const [showSidebar, setShowSidebar] = useState(false);

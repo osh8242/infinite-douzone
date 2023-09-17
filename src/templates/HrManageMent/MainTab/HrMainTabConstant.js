@@ -80,5 +80,38 @@ export const MAIN_TAB = {
       field: "tyReligion",
       label: LABELS.tyReligion,
     },
+    {
+      type: INPUT_TYPE.text,
+      field: "addHome1",
+      label: LABELS.add_home1,
+      span: 3,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "originHome1",
+      label: LABELS.origin_home1,
+      span: 3,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "mnKeepgarden",
+      label: LABELS.mnKeepgarden,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "mnKeepstate",
+      label: LABELS.mnKeepstate,
+    },
+    {
+      type: INPUT_TYPE.radio,
+      field: "fgOwnHouse",
+      label: LABELS.fgOwnHouse,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telHome",
+      label: LABELS.telHome,
+      span: 1,
+    },
   ],
 };

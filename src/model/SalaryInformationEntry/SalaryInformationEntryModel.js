@@ -20,8 +20,7 @@ const SalaryInformationEntryModel = () => {
       allowPay : [],
       deductPay : []
     }
-  );         // 급여항목 합계테이블 데이터(selectbox 조회)
-  //const [salDeductPaySumData, setSalDeductPaySumData] = useState();       
+  );       
 
   /* 상태 Data */
   const [modalState, setModalState] = useState({ 
@@ -65,7 +64,6 @@ const SalaryInformationEntryModel = () => {
   const [searchCdProject, setSearchCdProject] = useState('');       // 프로젝트코드 검색
   const [searchYnUnit, setSearchYnUnit] = useState('');             // 생산직여부 검색
   const [searchYnForlabor, setSearchYnForlabor] = useState('');     // 국외근로여부 검색
-
   
   /* parmas들... */
   const [searchVo, searchVoDispatch] = useState({
@@ -110,10 +108,11 @@ const SalaryInformationEntryModel = () => {
 
   /* 조회구분 params */
   const [selectedOptionVo, setSelectedOptionVo] = useState({
-    allowYear : '',
-    paymentDate : '',
-    allowMonth : '',
-    nowFlag : false
+    allowYear : false,
+    paymentDate : false,
+    allowMonth : false,
+    nowFlag : false,
+    dateId : dateId
   });
 
   useEffect(() => {
@@ -124,6 +123,8 @@ const SalaryInformationEntryModel = () => {
     setSearchAllowVo((prevState) => ({ ...prevState, dateId: dateId }));
     setSearchTotalDataVo((prevState) => ({ ...prevState, dateId: dateId }));
     setEditAllowData((prevState) => ({ ...prevState,dateId: dateId }));
+    setSelectedOptionVo((prevState) => ({ ...prevState,dateId: dateId }));
+
   }, [dateId]);
 
   useEffect(() => {
@@ -161,12 +162,12 @@ const SalaryInformationEntryModel = () => {
 
   useEffect(() => { 
     switch (selectedOption) {
-      case 'EmpAllThisMonth'  : setSelectedOptionVo({allowMonth : allowMonth});                      break;
-      case 'EmpNowThisMonth'  : setSelectedOptionVo({allowMonth : allowMonth, nowFlag : true});      break;
-      case 'EmpAllCurrent'    : setSelectedOptionVo({paymentDate : paymentDate});                    break;
-      case 'EmpNowCurrent'    : setSelectedOptionVo({paymentDate : paymentDate, nowFlag : true});    break;
-      case 'EmpAllThisYear'   : setSelectedOptionVo({allowYear : allowYear});                        break;
-      case 'EmpNowThisYear'   : setSelectedOptionVo({allowYear : allowYear, nowFlag : true});        break;
+      case 'EmpAllThisMonth'  : setSelectedOptionVo({allowMonthFlag : true, dateId : dateId});                            break;
+      case 'EmpNowThisMonth'  : setSelectedOptionVo({allowMonthFlag : true, nowFlag : true, dateId : dateId});            break;
+      case 'EmpAllCurrent'    : setSelectedOptionVo({paymentDateFlag : true, dateId : dateId});                           break;
+      case 'EmpNowCurrent'    : setSelectedOptionVo({paymentDateFlag : true, nowFlag : true, dateId : dateId});           break;
+      case 'EmpAllThisYear'   : setSelectedOptionVo({allowYearFlag : true, dateId : dateId});                             break;
+      case 'EmpNowThisYear'   : setSelectedOptionVo({allowYearFlag : true, nowFlag : true, dateId : dateId});             break;
       default: break;
     }
 
@@ -175,23 +176,34 @@ const SalaryInformationEntryModel = () => {
   
 
   const onSearch = () => {
+    //this.searchForm.submit()
+    console.log('++++++++++++++');
+    console.log(allowMonth);
+    console.log(salDivision);
+    console.log(paymentDate);
+    console.log(searchCdEmp);
+    console.log(searchCdDept);
+    console.log(searchRankNo);
+    console.log('++++++++++++++');
+    let searchParams = {
+      allowYear : allowYear,
+      allowMonth: allowMonth,
+      salDivision: salDivision,
+      paymentDate: paymentDate,
+      
+      searchCdEmp : searchCdEmp,
+      searchCdDept : searchCdDept,
+      searchRankNo : searchRankNo,
+      searchCdOccup : searchCdOccup,
+      searchCdField : searchCdField, 
+      searchCdProject : searchCdProject,
+      searchYnUnit : searchYnUnit,
+      searchYnForlabor : searchYnForlabor,
+    };
+
     axios.post(
       url + '/saEmpInfo/getAll',
-        {
-          allowYear : allowYear,
-          allowMonth: allowMonth,
-          salDivision: salDivision,
-          paymentDate: paymentDate,
-          
-          searchCdEmp : searchCdEmp,
-          searchCdDept : searchCdDept,
-          searchRankNo : searchRankNo,
-          searchCdOccup : searchCdOccup,
-          searchCdField : searchCdField, 
-          searchCdProject : searchCdProject,
-          searchYnUnit : searchYnUnit,
-          searchYnForlabor : searchYnForlabor,
-        },
+        searchParams,
         {'Content-Type': 'application/json',},
       )
       .then((response) => {
@@ -407,7 +419,7 @@ const SalaryInformationEntryModel = () => {
       , modalState : modalState
       , codeHelperTableData
       
-      , searchVO : {
+      , searchVo : {
         cdEmp
         , salDivision
         , allowMonth

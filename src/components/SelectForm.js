@@ -51,16 +51,11 @@ function SelectForm(props) {
           <div className="label">{label}</div>
         )}
         {/* <div className="d-flex align-items-center justify-content-center"> */}
-        <div className="widthFull d-flex align-items-center">
-          {subLabel ? (
-            <div
-              className="d-flex align-items-center justify-content-center"
-              style={{ marginLeft: 15, marginRight: 15 }}
-            >
+        <div className="widthFull d-flex align-items-center justify-content-center">
+          {subLabel && (
+            <Col md={2} style={{ marginLeft: 50, marginRight: 5 }}>
               {subLabel}
-            </div>
-          ) : (
-            ""
+            </Col>
           )}
 
           <Form.Select
@@ -75,12 +70,10 @@ function SelectForm(props) {
               </option>
             ))}
           </Form.Select>
-          {endLabel ? (
-            <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
+          {endLabel && (
+            <Col md={2} style={{ marginLeft: 10, marginRight: 50 }}>
               {endLabel}
             </Col>
-          ) : (
-            ""
           )}
         </div>
       </div>

@@ -11,8 +11,11 @@ export const INPUT_TYPE = {
   callNumber: 100,
   email: 101,
   noSocial: 102,
+  dateCustom: 300,
+  addressCustom: 301,
+  month: 401,
+  dateCodeHelper: 402,
 };
-
 export const SELECT_LIST = {
   tyEmploy: [
     { key: "public", value: "1. 공채" },
@@ -59,6 +62,10 @@ export const RADIO_LIST = {
     { key: "N", value: "비장애" },
     { key: "Y", value: "장애" },
   ],
+  fgOwnHouse: [
+    { key: "Y", value: "소유" },
+    { key: "N", value: "미소유" },
+  ],
 };
 
 export const EMAIL_LIST = [
@@ -72,7 +79,6 @@ export const EMAIL_LIST = [
   { key: "naver.com", value: "naver.com" },
   { key: "tistory.com", value: "tistory.com" },
 ];
-
 export const LABELS = {
   cdEmp: "사원코드",
   nmKrname: "성명",
@@ -103,6 +109,16 @@ export const LABELS = {
   strHobby: "취미",
   nmSpecial: "특기",
   tyReligion: "종교",
+  zipHome: "현주소 우편번호",
+  addHome1: "현주소",
+  addHome2: "현 상세주소",
+  originHome: "본적주소 우편번호",
+  originHome1: "본적주소",
+  originHome2: "본적 상세주소",
+  mnKeepgarden: "소유동산",
+  mnKeepstate: "소유부동산",
+  fgOwnHouse: "자택소유",
+
   abbNation: "거주지국",
   cdNation: "국적",
   telHome: "전화번호",
@@ -117,25 +133,58 @@ export const LABELS = {
   noBnkacct: "계좌번호",
   nmBnkowner: "예금주",
   jobOk: "재직구분",
-  addHome2: "상세주소",
 
   mnReduction: "감면율",
   nmEmp: "사원이름",
   nmDeduct: "공제항목",
   nmAllow: "급여항목",
   allowPay: "금액",
-
   inquiryYype: "조회구분",
   searchText: "찾을내용",
+  allowMonth: "귀속연월",
+  paymentDate: "지급일",
+  ynUnit: "생산직 여부",
+  ynForlabor: "국외 근로여부",
 
-  ynResident: "거주구분",
   ynMateDed: "배우자공제",
+  ynResident: "거주구분",
   ynOverwork: "연장근로비과세",
+  num2060many: "20세/60세/다자녀",
+  ynUnitForlabor: "생산/국외",
 
   allowMonth: "귀속연월",
   paymentDate: "지급일",
   ynUnit: "생산직여부",
   ynForlabor: "국외근로여부",
+
+  // LaborContract
+  empContractPeriod: "근로계약기간",
+  workAddress: "근무장소",
+  addDetail: "상세주소",
+  jobDescription: "업무의 내용",
+  workTime: "소정근로시간",
+  breakTime: "휴게시간",
+  workingDay: "근무일",
+  dayOff: "주휴일",
+  salaryType: "임금유형",
+  otherBenefits: "기타급여",
+  bonusPaymentStatus: "상여금",
+  salaryPaymentDateType: "임금지급일",
+  paymentMethod: "지급방법",
+  empInsurance: "고용보험",
+  compensationInsurance: "산재보험",
+  nationalPension: "국민연금", //
+  healthInsurance: "건강보험",
+  dateOfCreation: " 작성일자",
+  incomeClassfication: "소득구분", ///
+
+  address: "근무장소",
+  startWorktime: "시작근로시간",
+  endWorktime: "종료근로시간",
+  startBreakTime: "시작휴게시간",
+  endBreakTime: "종료휴게시간",
+  bonusAmount: "상여금",
+  paymentDate: "작성일자",
 };
 
 export const CODE = {
@@ -146,5 +195,4 @@ export const CODE = {
     OCCUP: "OCCUP", // 직종 ()
   },
 };
-
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";

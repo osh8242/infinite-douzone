@@ -68,9 +68,9 @@ const SiEmpDetail = (props) => {
     <div className="siEmpDetail-container">
       <Container className="siEmpDetail-container">
         <Card>
-          <Card.Header as="h5">사원정보</Card.Header>
+          <Card.Header as="h6">사원정보</Card.Header>
           <Card.Body>
-              <>{rows}</>
+              <div id="siEmpDetail-content">{rows}</div>
           </Card.Body>
         </Card>
         </Container>

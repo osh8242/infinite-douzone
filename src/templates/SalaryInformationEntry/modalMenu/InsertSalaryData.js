@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import React from 'react';
 import TableForm from "../../../components/TableForm";
+import MenuTab from "../../../components/MenuTab";
 import { modal_insertSalaryData } from "../../../model/SalaryInformationEntry/SalConstant";
 
 const InsertSalaryData = (props) => {
@@ -13,9 +14,10 @@ const InsertSalaryData = (props) => {
     return (
         <div>
             {/* <ButtonBox> */}
-                <Button>수당등록</Button>
-                <Button>공제등록</Button>
-                <Button>비과세감면설정</Button>
+                {/* <Button variant="secondary">수당등록</Button>
+                <Button variant="secondary">공제등록</Button>
+                <Button variant="secondary">비과세감면설정</Button> */}
+                <MenuTab menuList={["수당등록","공제등록","비과세감면설정"]}/>
             {/* </ButtonBox> */}
                 <div className="tableData_container">
                     <TableForm

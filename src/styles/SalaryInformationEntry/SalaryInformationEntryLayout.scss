@@ -1,6 +1,7 @@
 .table-container {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    margin: 4px;
     height: 70vh;
     // overflow: auto;
     // border: 1px solid rgb(222, 226, 230);    
@@ -61,4 +62,41 @@
 /// 
 .siEmpDetail-container{
     padding-top: 10px;   
+}
+
+// #siEmpDetail-content {
+//     color: blue;
+//     font-size: 8px;
+// }
+
+.selectDivision {
+    margin-left: 2px;
+}
+
+#fakeFaArrowLeft{
+    // width: 20px;
+    position: relative;
+    height: 72px;
+    border-top: 10px solid transparent;
+    border-right: 20px solid rgb(235, 234, 234);
+    border-bottom: 10px solid transparent;
+}
+
+#fakeFaArrowRight{
+    // width: 20px;
+    position: relative;
+    height: 72px;
+    border-top: 10px solid transparent;
+    border-left: 20px solid rgb(235, 234, 234);
+    border-bottom: 10px solid transparent;
+}
+
+#fakeFaArrowLeft-content {
+    position: absolute;
+    color: rgb(57, 63, 80);
+}
+
+#fakeFaArrowRight-content {
+    position: absolute;
+    color: rgb(57, 63, 80);
 }
