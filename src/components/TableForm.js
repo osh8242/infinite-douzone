@@ -643,7 +643,7 @@ const TableForm = ({
                   className="d-flex justify-content-center"
                   onClick={() =>
                     codeHelper &&
-                    actions.setCodeHelper({ ...codeHelper, show: true })
+                    actions.setCodeHelper()
                   }
                 >
                   <div>
@@ -669,7 +669,11 @@ const TableForm = ({
                     }
                   >
                     {!showCheckbox && columnIndex === 0 && (
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FontAwesomeIcon icon={faPlus} 
+                        onClick={() =>
+                        codeHelper &&
+                        actions.setCodeHelper()
+                      }/>
                     )}
                   </div>
                 </td>
