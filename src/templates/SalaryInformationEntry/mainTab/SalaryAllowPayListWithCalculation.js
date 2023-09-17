@@ -42,7 +42,7 @@ const SalaryAllowPayCalculation = (props) => {
             />
           </Row>
           <Row className="table-footer">
-            <TableForm
+            {/* <TableForm
               tableFooter={
                 <>
                   <tr>
@@ -59,7 +59,7 @@ const SalaryAllowPayCalculation = (props) => {
                   </tr>
                 </>
               }
-            />
+            /> */}
           </Row>
         </div>
       </div>
