@@ -19,11 +19,24 @@ const useLoginModel = () => {
         console.log(response.data.message || "로그인에 실패하였습니다.");
       }
     } catch (error) {
-      console.error("ERROR:", error);
-      console.log("로그인 처리 중 오류가 발생했습니다.");
+      console.error("ERROR: " + error);
+      if (error.response) {
+        if (
+          error.response.status === 401 &&
+          error.response.data.message === "CHECK_ID"
+        ) {
+          console.log("아이디를 찾을 수 없습니다.");
+        } else if (
+          error.response.status === 401 &&
+          error.response.data.message === "CHECK_PWD"
+        ) {
+          console.log("비밀번호가 틀렸습니다.");
+        } else {
+          console.log("로그인 처리 중 오류가 발생했습니다.");
+        }
+      }
     }
   };
-
   // function fetchData() {
   //   return axios
   //     .post(`${url}/auth/login`)
