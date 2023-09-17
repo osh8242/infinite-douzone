@@ -1,6 +1,6 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Alert, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import { fetchData } from "../../utils/codeHelperUtils";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
@@ -9,6 +9,7 @@ import CodeHelperModal from "../../components/CodeHelperModal";
 
 import SalaryInformationEntryHeader from "./SalaryInformationEntryHeader";
 import SiSeacrchPanel from "./searchPenel/SiSeacrchPanel";
+
 import EmpList from "./mainTab/EmpList";
 import SalaryAllowPayList from "./mainTab/SalaryAllowPayList";
 import SalaryDeductPayList from "./mainTab/SalaryDeductPayList";
@@ -19,6 +20,8 @@ import SalaryDeductPayListWithCalculation from "./mainTab/SalaryDeductPayListWit
 import CalculationInsert from "./modalMenu/CalculationInsert";
 import ReCalculation from "./modalMenu/ReCalculation";
 import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
+import AddSalAllowPay from "./modalMenu/AddSalAllowPay";
+
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
 
 const SalaryInformationEntryLayout = () => {
@@ -60,10 +63,19 @@ const SalaryInformationEntryLayout = () => {
         }));
         break;
 
+      case 'addSalAllowPay' :   
+      actions.setModalState((prevState) => ({  
+          ...prevState,   
+          onConfirm : actions.addAllowPay,
+          size : data.size,
+          subject: data.subject
+        }));
+        break;
+
       default: 
         actions.setModalState((prevState) => ({ 
           ...prevState, 
-          size : 'xl',
+          size : data.size,
           subject: data.subject
         }))
         break;
@@ -118,6 +130,15 @@ const SalaryInformationEntryLayout = () => {
                 insertSalaryTableData = {state.modalContentData.tableData}
                 actions = {actions}
               />
+          : modalType === 'addSalAllowPay'?
+              <AddSalAllowPay
+                actions = {actions}
+              />
+          : modalType === 'alert'?
+              <Alert
+                actions = {actions}
+                message = {state.modalContentData.message}
+              />
           : //default
             <></>
           }
@@ -125,6 +146,8 @@ const SalaryInformationEntryLayout = () => {
 
       <SalaryInformationEntryHeader
         deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={state.selectedRows.length !== 0}
+        actions={actions}
         modalShow={modalShow}
       />
       <Container fluid>
@@ -170,10 +193,10 @@ const SalaryInformationEntryLayout = () => {
                     {selectedComponent === null && (
                       <>
                         <Col md={3}>
-                          <SalaryAllowPayList actions={actions} state={state} showCalculation = {showCalculation}/>
+                          <SalaryAllowPayList actions={actions} salAllowData={state.salAllowData} showCalculation = {showCalculation} modalShow={modalShow}/>
                         </Col>
                         <Col md={3}>
-                          <SalaryDeductPayList actions={actions} state={state} showCalculation = {showCalculation}/>
+                          <SalaryDeductPayList actions={actions} salDeductData={state.deductData} showCalculation = {showCalculation}/>
                         </Col>
                         <Col className="selectDivision">
                           <SelctDivisionList actions={actions} state={state} />

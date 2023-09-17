@@ -1,5 +1,7 @@
 import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
 
+export const DELETE_EMPLIST_URL = "/saEmpInfo/deleteSaEmpList";
+
 /* 사원리스트 영역 */
 export const salEmp = {
     headers : [
@@ -14,8 +16,15 @@ export const salEmp = {
 export const salAllow = {
     headers : [
         { field: "nmAllow", text: "급여항목" , readOnly : true},
-        { field: "allowPay", text: "지급금액" },
-       
+        { field: "allowPay", text: "지급금액" }
+    ]
+};
+
+export const salAllowSumData = {
+    headers : [
+        { field: "taxYSum", text: "과세" },
+        { field: "taxNSum", text: "비과세" },
+        { field: "sum", text: "총합계" },
     ]
 };
 
@@ -164,15 +173,27 @@ export const codeHelperData_occup = {
     , usePk : "codeId"
 };
 
+
 /* 서브메뉴(모달) */
+// 급여항목 입력
+export const modal_addSalAllow = {
+    subject : '급여항목 입력',
+    size : 'sm',
+    
+};
+
 // 수당/공제 등록 모달제목
 export const modal_insertSalaryData = {
-    subject : '수당 및 공제 등록'
+    subject : '수당 및 공제 등록',
+    size: 'xl',
+    url : '/saallowpay/getsalAllowList', // selectList 불러올 url
+    params : { salDivison : 'BONUS' }
 }
 
 // 재계산 
 export const modal_reCalculationList = {
     subject : '재계산', 
+    size: 'xl'
 }
 
 export const modal_insertSalaryAllowData = {

@@ -13,15 +13,18 @@ import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
 import { modal_insertSalaryData, modal_reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
 
-const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
+const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow , actions}) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
   const faTrashCanClickHandler = (event) => {
+    if (existSelectedRows)
+      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+    else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
   const insertSalaryDataHandler = (event) => {
@@ -77,9 +80,10 @@ const SalaryInformationEntryHeader = ({ deleteButtonHandler, modalShow }) => {
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
+        onlyConfirm={!existSelectedRows}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
-          deleteButtonHandler();
+          actions.deleteSelectedRows();
           setShowModal(false);
         }}
       />
