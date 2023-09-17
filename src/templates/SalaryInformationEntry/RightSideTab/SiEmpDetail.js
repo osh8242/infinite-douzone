@@ -10,14 +10,16 @@ import FormPanel from "../../../components/FormPanel";
 // 사원 상세정보 영역 
 const SiEmpDetail = (props) => {
   const {
+    siEmpDetailData
   } = props;
 
   return (
-    <div className="siEmpDetail-container">
+    <div>
       <Container className="siEmpDetail-container">
         <FormPanel
             INPUT_CONSTANT = {SI_EMP_DETAIL}
             columnNumber = {1}
+            formData = {siEmpDetailData}
           /> 
       </Container>
     </div>

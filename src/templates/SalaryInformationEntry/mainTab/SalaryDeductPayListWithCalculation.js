@@ -33,7 +33,7 @@ const SalaryDeductPayCalculation = (props) => {
             </div>
           </Row>
           <Row className="table-footer">
-            <TableForm
+            {/* <TableForm
               tableFooter={
                 <>
                   <tr>
@@ -43,12 +43,12 @@ const SalaryDeductPayCalculation = (props) => {
                   <tr>
                     <th>차인지급액</th>
                     <td>
-                      {/* {deductData.sumData.sum} */}
+                      {/* {deductData.sumData.sum}
                     </td>
                   </tr>
                 </>
               }
-            />
+            /> */}
           </Row>
         </div>
       </div>

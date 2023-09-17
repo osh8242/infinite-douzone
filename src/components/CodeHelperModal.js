@@ -24,12 +24,6 @@ function CodeHelperModal(props) {
   const [oriData, setOriData] = useState(tableData);
   const [filteredData, setFilteredData] = useState([]);
 
-  console.log("headers");
-  console.log(tableHeaders);
-
-  console.log("tableData");
-  console.log(tableData);
-
   useEffect(() => {
     setOriData(tableData);
     setFilteredData(tableData);
@@ -51,7 +45,7 @@ function CodeHelperModal(props) {
   }, [searchTerm]);
 
   // 클릭한 행반환
-  const handleRowClick = (row) => {
+  const handleRowClick = (e,row) => {
     setSearchTerm("");
     if (setRowData) usePk ? setRowData(row[usePk]) : setRowData(row);
     setFilteredData([]);

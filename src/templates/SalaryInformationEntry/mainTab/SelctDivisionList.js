@@ -8,6 +8,7 @@ import {
   totalSalaryByPeriodOption,
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import TableForm from "../../../components/TableForm";
+import "../../../styles/HrManagement/HrManagementLayout.scss";
 
 const SelctDivisionList = (props) => {
   const { state, actions } = props;
@@ -19,21 +20,25 @@ const SelctDivisionList = (props) => {
         onChange={actions.setSelectedOption}
       />
       <Row>
-        <TableForm
-          tableHeaders={salAllowSum.headers}
-          tableData={state.salPaySumData.allowPay}
-          actions={{}}
-          readOnly
-        />
+        <div className="leftTable" style={{height: '32vh'}}>
+          <TableForm
+            tableHeaders={salAllowSum.headers}
+            tableData={state.salPaySumData.allowPay}
+            actions={{}}
+            readOnly
+          />
+        </div>
       </Row>
       <Row>
-        <TableForm
-          tableHeaders={salDeductSum.headers}
-          tableData={state.salPaySumData.deductPay}
-          actions={{}}
-          readOnly
-        />
-      </Row>
+        <div className="leftTable" style={{height: '32vh'}}>
+          <TableForm
+            tableHeaders={salDeductSum.headers}
+            tableData={state.salPaySumData.deductPay}
+            actions={{}}
+            readOnly
+          />
+        </div>
+      </Row> 
     </div>
   );
 };

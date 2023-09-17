@@ -193,7 +193,6 @@ const FormPanel = ({
             onClickCodeHelper={codeHelper}
             onChange={(e, value) => {
               onChangeFn(value);
-              console.log("온체인지");
             }}
           />
         );

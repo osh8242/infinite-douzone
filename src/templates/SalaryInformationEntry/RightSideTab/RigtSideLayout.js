@@ -10,7 +10,7 @@ const RigtSideLayout = (props) => {
     } = props;
     return (
         <div>
-            <div style={{padding : '4px', backgroundColor : 'lightgrey'}}>
+            <div>
                 <Accordion defaultActiveKey="1" flush>
                   <Accordion.Item eventKey="0">
                   <Accordion.Header>임금대장 기재 사항</Accordion.Header>
