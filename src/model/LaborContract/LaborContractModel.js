@@ -126,6 +126,9 @@ const LaborContractModel = () => {
       cdEmp: mainTabData.cdEmp,
     };
 
+    console.log("testtingggg");
+    console.log(updatedSwsm);
+
     axios
       .put(url + swsmUrlPattern.updateSwsm, updatedSwsm)
       .then((response) => {

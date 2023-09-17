@@ -35,11 +35,13 @@ function SelectForm(props) {
   const [selectedValue, setSelectedValue] = useState(selectedOption);
   useEffect(() => {
     setSelectedValue(selectedOption);
+    console.log(selectedOption);
   }, [selectedOption]);
 
   const handleSelectChange = (event) => {
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChange) onChange(event, newValue);
+    console.log(newValue);
     setSelectedValue(newValue);
   };
 

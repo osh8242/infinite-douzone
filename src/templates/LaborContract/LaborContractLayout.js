@@ -12,7 +12,7 @@ import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
-import "../../styles/HrManagement/HrManagementLayout.scss";
+import "../../styles/LaborContract/LaborContractLayout.scss";
 
 import { MAIN_TAB, HEAD_TAB } from "./MainTab/LaborContractTabConstant";
 // import MainTab from "./MainTab/LaborContractMainTab";
@@ -81,45 +81,45 @@ const LaborContractLayout = () => {
               <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                 {[
                   // <Scrollbars style={{ height: 400, overflow: "hidden" }}>
-                  <Row key="key" className="mb-5 justify-content-center">
-                    <Row>
-                      <FormPanel
-                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                        formData={mainTabData}
-                        submitData={actions.submitMainTabData}
-                        actions={actions}
-                      />
-                    </Row>
+                  <Row key="key" className="mt-4 mb-5 justify-content-center">
+                    <FormPanel
+                      INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                      formData={mainTabData}
+                      submitData={actions.submitMainTabData}
+                      actions={actions}
+                    />
                   </Row>,
                   // </Scrollbars>,
                 ]}
               </MenuTab>
               {/* 우측 메인폼 */}
-
               {/* 우측 서브탭 */}
-              <MenuTab menuList={[subTabMenuList.otherBenefit]} />
-              {/* 우측 서브 그리드 */}
-              <div className="subTable">
-                <TableForm
-                  tableName="SwsmOther"
-                  showCheckbox
-                  rowAddable
-                  sortable
-                  tableHeaders={SubTabHeaders}
-                  tableData={subTableData}
-                  pkValue={mainTablePkValue}
-                  selectedRows={selectedRows}
-                  actions={{
-                    setTableData: actions.setSubTableData,
-                    setEditedRow: actions.setEditedSwsmOther,
-                    setSelectedRows: actions.setSelectedRows,
-                    getRowObject: SwsmOther,
-                    insertNewRow: actions.insertSwsmOther,
-                    updateEditedRow: actions.updateSwsmOther,
-                    deleteRow: actions.deleteSelectedRows,
-                  }}
-                />
-              </div>
+              <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                {[
+                  <Row key="key" className="mt-4 mb-4 justify-content-center">
+                    <TableForm
+                      tableName="SwsmOther"
+                      showCheckbox
+                      rowAddable
+                      sortable
+                      tableHeaders={SubTabHeaders}
+                      tableData={subTableData}
+                      pkValue={mainTablePkValue}
+                      selectedRows={selectedRows}
+                      actions={{
+                        setTableData: actions.setSubTableData,
+                        setEditedRow: actions.setEditedSwsmOther,
+                        setSelectedRows: actions.setSelectedRows,
+                        getRowObject: SwsmOther,
+                        insertNewRow: actions.insertSwsmOther,
+                        updateEditedRow: actions.updateSwsmOther,
+                        deleteRow: actions.deleteSelectedRows,
+                      }}
+                    />
+                  </Row>,
+                  // </Scrollbars>,
+                ]}
+              </MenuTab>
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />

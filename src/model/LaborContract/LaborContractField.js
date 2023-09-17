@@ -18,9 +18,9 @@ import {
 
 export const HeaderField = [
   {
-    component: "DateForm",
+    component: "month",
     label: labels.dateOfCreation,
-    type: "date",
+    type: "month",
     stateName: "id",
     labelKey: "paymentDate",
   },

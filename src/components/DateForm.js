@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
 function DateForm(props) {
-  const { label, type, value, subValue, onChange, id } = props;
+  const { label, type, value, subValue, onChange, id, dateType } = props;
 
   // const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(value || "");
@@ -11,7 +11,6 @@ function DateForm(props) {
   DateForm.defaultProps = {
     label: "",
     isPeriod: false,
-    type: "date",
   };
 
   useEffect(() => {
@@ -20,24 +19,27 @@ function DateForm(props) {
 
   const onChangeHandeler = (e) => {
     const value = e.target.value;
-    if (e.target.id === id) setStartDate(value);
-    onChange && onChange(e, value);
+    setStartDate(value);
+    if (e.target.type !== "month") onChange && onChange(e, value);
   };
 
   return (
-    <Row>
-      <div className="py-1 widthFull labelAndContent">
-        {label && <div className="label">{label}</div>}
-        <div className="widthFull d-flex align-items-center justify-content-center">
-          <Form.Control
-            id={id}
-            type={type ? type : "date"}
-            placeholder="YYYY.MM.DD"
-            value={startDate}
-            onChange={onChangeHandeler}
-          />
+    <Row className="py-1">
+      {label ? (
+        <div className="labelAndContent">
+          <div className="label">{label}</div>
+          <div className="widthFull d-flex align-items-center">
+            <Form.Control
+              id={id}
+              type={dateType ? "month" : "date"}
+              value={startDate}
+              onChange={onChangeHandeler}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
     </Row>
   );
 }

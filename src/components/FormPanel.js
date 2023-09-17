@@ -69,6 +69,7 @@ const FormPanel = ({
             subLabel={input.subLabel}
             endLabel={input.endLabel}
             selectList={input.selectList}
+            selectId={{ formData }.formData[input.selectId]}
           />
         );
         break;
@@ -220,7 +221,7 @@ const FormPanel = ({
             id={input.field}
             label={LABELS[input.label]}
             subId={input.subField}
-            type={"date"}
+            dateType={input.dateType}
             disabled={input.disabled}
             value={{ formData }.formData[input.field]}
             subValue={{ formData }.formData[input.subField]}
