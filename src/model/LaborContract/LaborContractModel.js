@@ -39,7 +39,9 @@ const LaborContractModel = () => {
   useEffect(() => {
     if (mainTablePkValue) {
       api
-        .post(swsmUrlPattern.getSwsm, mainTablePkValue)
+        .post(swsmUrlPattern.getSwsm, mainTablePkValue, {
+          "Content-Type": "application/json",
+        })
         .then((response) => {
           setMainTabData(response.data || {});
         })
@@ -62,7 +64,7 @@ const LaborContractModel = () => {
     }
   }, [mainTablePkValue, editedSwsmOther]);
 
-  // 추가된 사원 insert 요청
+  //추가된 사원 insert 요청
   const insertEmp = useCallback((emp) => {
     api
       .post(urlPattern.insertEmp, emp)
@@ -72,16 +74,18 @@ const LaborContractModel = () => {
       })
       .catch((error) => {
         console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
       });
   }, []);
 
+  // EDITED_EMP 처리 부분 (update & insert)
   useEffect(() => {
     if (Object.keys(editedEmp).length === 0) return;
 
-    const action = editedEmp.isNew ? api.post : api.put;
+    const action = editedEmp.isNew ? axios.post : axios.put;
     const endpoint = editedEmp.isNew ? urlPattern.insertEmp : "/emp/updateEmp";
 
-    action(endpoint, editedEmp.item)
+    action(url + endpoint, editedEmp.item)
       .then((response) => {
         if (response.data === 1) console.log("Emp 처리 성공");
         setEditedEmp({});
@@ -89,6 +93,31 @@ const LaborContractModel = () => {
       .catch(console.error);
   }, [editedEmp]);
 
+  const submitMainTabData = useCallback(
+    (event, value) => {
+      if (event.key === "Enter") {
+        console.log("엔터누름");
+        event.target.blur();
+        let data = {
+          [event.target.id]: event.target.value,
+        };
+        setEditedSwsm(data);
+      }
+      if (event.type === "change") {
+        console.log("change");
+        let data = {
+          [event.target.id]: event.target.value,
+        };
+        // event.target.blur();
+        let newMainTabData = { ...mainTabData.item };
+        newMainTabData[event.target.id] = value;
+        setEditedSwsm(data);
+      }
+    },
+    [mainTabRef, mainTabData]
+  );
+
+  // EDITED_SWSM 처리 부분 (update)
   useEffect(() => {
     if (Object.keys(editedSwsm).length === 0 || editedSwsm.isNew) return;
 
@@ -108,13 +137,17 @@ const LaborContractModel = () => {
 
   const insertSwsmOther = useCallback(
     (swsmOther) => {
+      console.log("SwsmOther insert Data: ");
+      console.log(swsmOther);
+      console.log(mainTabData);
+      console.log(mainTabData.cdEmp);
       const newData = {
         otherType: swsmOther.otherType,
         otherMoney: swsmOther.otherMoney,
         seqVal: swsmOther.seqVal,
         cdEmp: mainTabData.cdEmp,
       };
-
+      console.log(newData);
       api
         .post(swsmUrlPattern.insertSwsmOther, newData)
         .then((response) => {
@@ -122,6 +155,7 @@ const LaborContractModel = () => {
         })
         .catch((error) => {
           console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
         });
     },
     [mainTabData]
@@ -134,7 +168,6 @@ const LaborContractModel = () => {
       seqVal: swsmOther.seqVal,
       cdEmp: mainTablePkValue.cdEmp,
     };
-
     api
       .put(swsmUrlPattern.updateSwsmOther, newData)
       .then((response) => {
@@ -147,6 +180,7 @@ const LaborContractModel = () => {
 
   const deleteSelectedRows = useCallback(() => {
     const editedTableNames = {};
+    console.log("삭제요청된 행들", selectedRows);
     const deletePromises = selectedRows.map((row) => {
       let endpoint;
       switch (row.table) {
@@ -160,21 +194,23 @@ const LaborContractModel = () => {
           return Promise.resolve();
       }
       if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-      return api.delete(endpoint, { data: row.item });
+      return axios.delete(url + endpoint, { data: row.item });
     });
 
     Promise.all(deletePromises)
       .then(() => {
+        console.log("선택된 모든 행의 삭제 완료");
         setSelectedRows([]);
         Object.keys(editedTableNames).forEach((tableName) => {
           switch (tableName) {
             case "empFam":
+              //setEditedEmpFam({}); // 사원가족 리로드
               break;
             case "emp":
-              setEditedEmp({});
+              setEditedEmp({}); // 사원가족 리로드
               break;
             case "swsmOther":
-              setEditedSwsmOther({});
+              setEditedSwsmOther({}); // 사원가족 리로드
               break;
             default:
               break;
@@ -205,6 +241,7 @@ const LaborContractModel = () => {
       setMainTablePkValue,
       setMainTabData,
       setSubTableData,
+      submitMainTabData,
       setEditedEmp,
       setEditedSwsm,
       setEditedSwsmOther,
