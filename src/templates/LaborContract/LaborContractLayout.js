@@ -62,6 +62,8 @@ const LaborContractLayout = () => {
                   tableData={leftTableData}
                   selectedRows={selectedRows}
                   rowAddable
+                  defaultSelectedRow
+                  defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
                     setPkValue: actions.setMainTablePkValue,
