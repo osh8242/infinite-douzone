@@ -7,6 +7,19 @@ const Emp = (empData) => {
   //   [labels.jobOk]: item.jobOk,
   // }
   console.log("사원등록 Emp 생성");
+  empData["telHome"] =
+    (empData.telHome1 || "") +
+    "-" +
+    (empData.telHome2 || "") +
+    "-" +
+    (empData.telHome3 || "");
+  empData["celEmp"] =
+    (empData.celEmp1 || "") +
+    "-" +
+    (empData.celEmp2 || "") +
+    "-" +
+    (empData.celEmp3 || "");
+  empData["address"] = (empData.zipHome || "") + "-" + (empData.addHome1 || "");
   return {
     item: empData,
     checked: false,

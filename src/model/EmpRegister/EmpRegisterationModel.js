@@ -4,6 +4,7 @@ import Emp from "../../vo/EmpRegister/Emp";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 import { urlPattern } from "./EmpConstant";
+import { id } from "date-fns/locale";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -33,14 +34,16 @@ function EmpRegisterationModel() {
     (event, value, id) => {
       if (event.key === "Enter" || event.type === "change") {
         event.target.blur();
-        console.log("id", id);
-        console.log("event.target.id", event.target.id);
-        console.log("value", value);
 
+        console.log("value", value);
         let newEmp = { ...mainTabData.item };
-        console.log("================", newEmp);
-        const updatedId = id ? id : event.target.id;
-        newEmp[updatedId] = value;
+        newEmp[event.target.id] = value;
+        updateEmp(newEmp);
+      } else {
+        // 이벤트가 없는 경우
+        // console.log("AddressForm아 제발 고쳐져라~~~~ 넘어온 value => ", value);
+        let newEmp = { ...mainTabData.item };
+        newEmp[id] = value;
         updateEmp(newEmp);
       }
     },

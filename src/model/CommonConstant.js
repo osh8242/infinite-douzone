@@ -10,7 +10,6 @@ export const INPUT_TYPE = {
   regNum: 6,
   callNumber: 100,
   email: 101,
-  noSocial: 102,
   dateCustom: 300,
   addressCustom: 301,
   month: 401,
@@ -69,15 +68,15 @@ export const RADIO_LIST = {
 };
 
 export const EMAIL_LIST = [
-  { key: "daum.net", value: "daum.net" },
-  { key: "gmail.com", value: "gmail.com" },
-  { key: "hanmail.net", value: "hanmail.net" },
-  { key: "kakao.com", value: "kakao.com" },
-  { key: "msn.com", value: "msn.com" },
-  { key: "mail.com", value: "mail.com" },
-  { key: "nate.com", value: "nate.com" },
-  { key: "naver.com", value: "naver.com" },
-  { key: "tistory.com", value: "tistory.com" },
+  { key: "daum", value: "daum.net" },
+  { key: "gmail", value: "gmail.com" },
+  { key: "hanmail", value: "hanmail.net" },
+  { key: "kakao", value: "kakao.com" },
+  { key: "msn", value: "msn.com" },
+  { key: "mail", value: "mail.com" },
+  { key: "nate", value: "nate.com" },
+  { key: "naver", value: "naver.com" },
+  { key: "tistory", value: "tistory.com" },
 ];
 export const LABELS = {
   cdEmp: "사원코드",

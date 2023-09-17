@@ -38,7 +38,12 @@ export const MAIN_TAB = {
       span: 1,
     },
     { type: INPUT_TYPE.address, field: "address", isZonecode: true, span: 2 },
-    { type: INPUT_TYPE.text, field: "addHome2", span: 2 },
+    {
+      type: INPUT_TYPE.text,
+      field: "addHome2",
+      label: LABELS_EMP.addHome2,
+      span: 2,
+    },
     { type: INPUT_TYPE.date, field: "daRetire", span: 2 },
     {
       type: INPUT_TYPE.textCodeHelper,

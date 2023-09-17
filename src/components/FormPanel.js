@@ -134,7 +134,6 @@ const FormPanel = ({
           />
         );
         break;
-      // 나중에 깔끔하게 정리할 예정
       case INPUT_TYPE.address:
         component = (
           <AddressForm
