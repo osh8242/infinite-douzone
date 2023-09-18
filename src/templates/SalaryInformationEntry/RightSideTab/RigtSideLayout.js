@@ -17,10 +17,10 @@ const RigtSideLayout = (props) => {
                     임금대장 기재 사항</Accordion.Header>
                     <Accordion.Body style={{height: '75vh'}}> 
                       {/* 임금대장 기재 사항 영역 */}
-                        <PayrollLedgerEntry
-                          actions={actions}
-                          siEmpDetailData = {state.saInfoDetailData}
-                        />
+                      <PayrollLedgerEntry
+                        actions={actions}
+                        siEmpDetailData = {state.saInfoDetailData}
+                      />
                     </Accordion.Body>
                   </Accordion.Item>
                   <Accordion.Item eventKey="1">

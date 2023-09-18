@@ -15,9 +15,21 @@ export const SI_EMP_DETAIL = [
   },
   {
     type: INPUT_TYPE.text,
-    field: "num2060many",
-    id : "num2060many",
-    label: LABELS.num2060many,
+    field: "num20Family",
+    id : "num20Family",
+    label: LABELS.num20Family,
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "num60Family",
+    id : "num60Family",
+    label: LABELS.num60Family,
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "numManyFamily",
+    id : "numManyFamily",
+    label: LABELS.numManyFamily,
   },
   {
     type: INPUT_TYPE.text,
@@ -29,9 +41,14 @@ export const SI_EMP_DETAIL = [
     type: INPUT_TYPE.text,
     field: "ynUnit",
     id : "ynUnit",
-    label: LABELS.ynUnitForlabor,
+    label: LABELS.ynUnit,
   },
-
+  {
+    type: INPUT_TYPE.text,
+    field: "ynForLabor",
+    id : "ynForLabor",
+    label: LABELS.ynForLabor,
+  },
   {
     type: INPUT_TYPE.text,
     field: "ynOverwork",
@@ -76,29 +93,30 @@ export const SI_EMP_DETAIL = [
     label: LABELS.noSocial,
   },
 ];
+
 export const SI_EMP_PAYROLL_CRITERIA = [
   {
     type: INPUT_TYPE.text,
-    field: "workDay",
-    id: "workDay",
+    field: "workday",
+    id: "workday",
     label: "현재 귀속일 근무일수",
   },
   {
     type: INPUT_TYPE.text,
-    field: "overWorkTime",
-    id: "overWorkTime",
+    field: "overTime",
+    id: "overTime",
     label: "현재 귀속월 추가 근무시간",
   },
   {
     type: INPUT_TYPE.text,
-    field: "overWorkTime",
-    id: "overWorkTime",
+    field: "allowMonthWorktime",
+    id: "allowMonthWorktime",
     label: "현재 귀속월 총 근무시간",
   },
   {
     type: INPUT_TYPE.text,
-    field: "HourlyWage",
-    id: "HourlyWage",
+    field: "hourlywage",
+    id: "hourlywage",
     label: "통상시급(원)",
   },
 ];

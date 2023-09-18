@@ -1,6 +1,8 @@
 import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
 
 export const DELETE_EMPLIST_URL = "/saEmpInfo/deleteSaEmpList";
+export const UPDATE_SALEMP_DETAIL_URL = "/saEmpInfo/updateSaEmpInfo";
+export const UPDATE_EMPPAYROLL_INFO_URL = "/saEmpInfo/updateSaEmpPayrollInfo";
 
 /* 사원리스트 영역 */
 export const salEmp = {
@@ -202,7 +204,10 @@ export const modal_insertSalaryAllowData = {
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "수당명" },
         { field: "ynTax", text: "과세여부" },
-        { field: "nmSalDivison", text: "근로소득유형" },
+        { field: "nmSalDivison"
+          , text: "근로소득유형"
+          , type : "select"
+          , optionList : [{ key: "SAL" , value: "급여" },{ key: "BONUS" , value: "상여" }] },
         { field: "commonlyYn", text: "통상" },
         { field: "monthlyYn", text: "월정" },
     ],

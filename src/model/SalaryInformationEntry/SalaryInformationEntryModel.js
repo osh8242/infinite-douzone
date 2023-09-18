@@ -123,12 +123,12 @@ const SalaryInformationEntryModel = () => {
   /* 조회구분 */
   useEffect(() => { 
     switch (selectedOption) {
-      case 'EmpAllThisMonth'  : setSelectedOptionVo({allowMonthFlag : true, dateId : dateId});                            break;
-      case 'EmpNowThisMonth'  : setSelectedOptionVo({allowMonthFlag : true, nowFlag : true, dateId : dateId});            break;
-      case 'EmpAllCurrent'    : setSelectedOptionVo({paymentDateFlag : true, dateId : dateId});                           break;
-      case 'EmpNowCurrent'    : setSelectedOptionVo({paymentDateFlag : true, nowFlag : true, dateId : dateId});           break;
-      case 'EmpAllThisYear'   : setSelectedOptionVo({allowYearFlag : true, dateId : dateId});                             break;
-      case 'EmpNowThisYear'   : setSelectedOptionVo({allowYearFlag : true, nowFlag : true, dateId : dateId});             break;
+      case 'EmpAllThisMonth'  : setSelectedOptionVo({...selectedOptionVo, allowMonthFlag : true});                            break;
+      case 'EmpNowThisMonth'  : setSelectedOptionVo({...selectedOptionVo, allowMonthFlag : true, nowFlag : true});            break;
+      case 'EmpAllCurrent'    : setSelectedOptionVo({...selectedOptionVo, paymentDateFlag : true});                           break;
+      case 'EmpNowCurrent'    : setSelectedOptionVo({...selectedOptionVo, paymentDateFlag : true, nowFlag : true});           break;
+      case 'EmpAllThisYear'   : setSelectedOptionVo({...selectedOptionVo, allowYearFlag : true});                             break;
+      case 'EmpNowThisYear'   : setSelectedOptionVo({...selectedOptionVo, allowYearFlag : true, nowFlag : true});             break;
       default: break;
     }
 
@@ -220,11 +220,12 @@ const SalaryInformationEntryModel = () => {
           /* 급여 항목 */
           const saAllowPayList = response.data.saAllowPayList.map((item) => ({
             item : {
-              cdEmp : item.cdEmp,
+              cdEmp : cdEmp,
               cdAllow :item.cdAllow,
               nmAllow: item.nmAllow,
               allowPay: item.allowPay,
-              calculation : ''
+              ynTax : item.ynTax,
+              salDivision : item.salDivision
             },
           }));
           setSalData(saAllowPayList);
@@ -246,10 +247,11 @@ const SalaryInformationEntryModel = () => {
 
           /* select box 영역  합계 */
           const totalSalAllowPaydata = response.data.totalSalPaydata.salAllow&&response.data.totalSalPaydata.salAllow.map((item) => ({
+            
             item : {
               cdAllow: item.cdAllow,
               nmAllow: item.nmAllow,
-              ynTax: item.ynTax='N'?'비과':'과세',
+              ynTax: item.ynTax==='N'?'비과':'과세',
               sumAllowPay: item.sumAllowPay
             },
           }));
@@ -320,9 +322,9 @@ const deleteSelectedRows = () => {
   axios.post(url + "/saallowpay/mergeSalAllowPay", data)
     .then((response) => {
       // alert
-      setModalState({message:"입력 성공"});
+      //setModalState({message:"입력 성공"});
       // 리로드
-      setSearchAllowVo({dateId:dateId,cdEmp:cdEmp})
+      setSearchAllowVo({ dateId : dateId, cdEmp : cdEmp})
     })
     .catch((error) => {
       setModalState({message:"입력 실패"});
@@ -330,7 +332,7 @@ const deleteSelectedRows = () => {
     });
 }, [addSalAllowPayRow]);
 
-
+/** 급여항목 통계  */
 useEffect(() => {
   let taxYSum = 0;
   let taxNSum = 0;
@@ -443,13 +445,24 @@ const updateEmp = useCallback((emp) => {
   axios
     .put(url + "/saEmpInfo/updateSaEmpInfo", emp)
     .then((response) => {
-      if (response.data !== 0) console.log("Emp 업데이트 성공");
+      if (response.data !== 0) console.log("EmpList 업데이트 성공");
       //setEditedEmp();
     })
     .catch((error) => {
       console.log("에러발생 -> ", error);
     });
 }, []);
+
+// const submitEmpPayrollLedgerEntryData = useCallback(
+//   (event, value) => {
+//    if (event.key === "Enter") {
+//      let newEmp = {[event.target.id] : value , cdEmp : cdEmp};
+//      updateEmp(newEmp);
+//    }
+//  },
+//  [cdEmp, dateId]
+// );
+
 
   return {
     state : {
@@ -518,6 +531,7 @@ const updateEmp = useCallback((emp) => {
       , deleteSelectedRows
       , setAddSalAllowPayRow
       , submitEmpDetailData
+      //,submitEmpPayrollLedgerEntryData
     }
 
   };

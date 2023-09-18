@@ -21,12 +21,12 @@ const AddSalAllowPay = (props) => {
             modal_insertSalaryData.params
           );
           const options = searchOption.map((row) => ({
-            key: row.item.cdAllow,
+            key: row.item,
             value: row.item.nmAllow,
           }));
           setSearchOptionOption(options);
 
-          setCdAllow(searchOption[0].item.cdAllow); // 첫번째 cdAllow setting
+          setCdAllow(searchOption[0].item); // 첫번째 cdAllow setting
 
         } catch (error) {
           console.error("데이터 가져오기 오류:", error);
@@ -37,7 +37,7 @@ const AddSalAllowPay = (props) => {
   }, []);
 
   const onClickHandler = () => {
-    actions.setAddSalAllowPayRow({ cdAllow: cdAllow, allowPay: allowPay });
+    actions.setAddSalAllowPayRow({...cdAllow, allowPay: allowPay });
   };
 
   return (
