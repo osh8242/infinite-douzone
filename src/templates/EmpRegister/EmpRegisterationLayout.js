@@ -260,17 +260,6 @@ function EmpRegisterationLayout() {
           <></>
         )}
       </ModalComponent>
-
-      {/* 삭제실패 사원목록 모달영역 */}
-      {/* <ModalComponent
-        title={"삭제 실패 사원목록"}
-        show={state.modalState.show}
-        onHide={() =>
-          actions.setModalState({ ...state.modalState, show: false })
-        }
-        size="md"
-        centered
-      ></ModalComponent> */}
     </>
   );
 }
