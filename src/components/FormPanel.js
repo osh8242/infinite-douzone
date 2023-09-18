@@ -131,6 +131,7 @@ const FormPanel = ({
             disabled={disabled}
             value={value}
             onChange={submitData}
+            onEnter={submitData}
           />
         );
         break;
