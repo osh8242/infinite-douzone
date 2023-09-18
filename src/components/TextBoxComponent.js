@@ -59,7 +59,14 @@ function TextBoxComponent(props) {
     isPeriod,
     subLabel = "",
     endLabel = "",
+
+    // select
+    onChangeSelect,
+    selectId,
     selectList,
+    selectedOption,
+    selectRef,
+    subField,
   } = props;
 
   // 입력값
@@ -72,16 +79,37 @@ function TextBoxComponent(props) {
   const [isValid, setIsValid] = useState([true]); // 기본 유효성 검사 상태 값
   const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
 
+  const [selectedValue, setSelectedValue] = useState(selectedOption);
+
+  useEffect(() => {
+    setSelectedValue(selectedOption);
+    console.log(selectedOption);
+  }, [selectedOption]);
+
+  const handleSelectChange = (event) => {
+    console.log("subField");
+    console.log(subField);
+    // if (event.target.value === "F")
+    // disable true 변경
+    console.log("value" + event.target.value);
+    event.target.id = subField;
+    console.log("id" + event.target.id);
+    const newValue = selectRef ? selectRef.current.value : event.target.value;
+    if (onChangeSelect) onChangeSelect(event, newValue);
+    console.log(newValue);
+    setSelectedValue(newValue);
+  };
+
   useEffect(() => {
     setInputValue(value || "");
     // setInputSubValue(subValue || "");
   }, [value]);
 
-  useEffect(() => {
-    console.log("sendValue", sendValue);
-    // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
-    // update 로직은 이 곳에서 사용하기로...
-  }, [sendValue]);
+  // useEffect(() => {
+  //   console.log("sendValue", sendValue);
+  //   // 업데이트된 sendValue 값을 이곳에서 사용할 수 있음
+  //   // update 로직은 이 곳에서 사용하기로...
+  // }, [sendValue]);
 
   // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
   const alertErrorMessage = () => {
@@ -297,7 +325,20 @@ function TextBoxComponent(props) {
                 {selectList ? (
                   <div className="widthFull d-flex align-items-center gap-2">
                     <div style={{ width: "40%" }}>
-                      <SelectForm optionList={selectList}></SelectForm>
+                      <Form.Select
+                        id={selectId}
+                        ref={selectRef}
+                        value={selectedValue}
+                        onChange={(e) => handleSelectChange(e)}
+                      >
+                        {selectList.map((option, index) => (
+                          <option value={option.key} key={index}>
+                            {option.value}
+                          </option>
+                        ))}
+                      </Form.Select>
+
+                      {/* <SelectForm optionList={selectList}></SelectForm> */}
                     </div>
                     <div>{renderFormControl()} </div>
                     <div> {endLabel}</div>

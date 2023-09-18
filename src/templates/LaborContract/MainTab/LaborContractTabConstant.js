@@ -145,6 +145,7 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.text,
       label: LABELS.salaryType,
       endLabel: "원 ",
+      selectId: "salaryType",
       selectList: salaryTypeList,
       field: "salaryAmount",
     },

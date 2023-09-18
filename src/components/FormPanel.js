@@ -70,6 +70,8 @@ const FormPanel = ({
             endLabel={input.endLabel}
             selectList={input.selectList}
             selectId={{ formData }.formData[input.selectId]}
+            subField={input.selectId}
+            onChangeSelect={submitData}
           />
         );
         break;

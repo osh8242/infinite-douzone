@@ -121,6 +121,8 @@ const LaborContractModel = () => {
   useEffect(() => {
     if (Object.keys(editedSwsm).length === 0 || editedSwsm.isNew) return;
 
+    console.log(editedSwsm);
+
     const updatedSwsm = {
       ...editedSwsm,
       cdEmp: mainTabData.cdEmp,
