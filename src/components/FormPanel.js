@@ -176,6 +176,7 @@ const FormPanel = ({
             label={label}
             value={value}
             onClickCodeHelper={codeHelper}
+            onEnter={submitData}
           />
         );
         break;
