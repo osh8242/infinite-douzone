@@ -6,6 +6,15 @@ export const TAB_MENU_LIST = {
 };
 
 export const CODE_HELPER_DATA = {
+  leftTableCodeHelper: {
+    title: "사원 조회",
+    headers: [
+      { field: "cdEmp", text: "사원코드" },
+      { field: "nmKrname", text: "사원명" },
+    ],
+    tableData: [],
+    searchField: ["cdEmp", "nmKrname"],
+  },
   cdOffduty: {
     title: "직무 조회",
     headers: [
@@ -54,7 +63,11 @@ export const MAIN_TAB = {
       field: "rankNo",
       disabled: true,
     },
-    { type: INPUT_TYPE.textCodeHelper, field: "cdOffduty", label: LABELS.cdOffduty },
+    {
+      type: INPUT_TYPE.textCodeHelper,
+      field: "cdOffduty",
+      label: LABELS.cdOffduty,
+    },
     {
       type: INPUT_TYPE.radio,
       field: "ynDrawContracts",

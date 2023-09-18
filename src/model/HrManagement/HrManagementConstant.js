@@ -5,6 +5,7 @@ export const urlPattern = {
   insertEmp: "/emp/insertEmp",
   updateEmp: "",
   deleteEmp: "/emp/deleteEmp",
+  deleteEmpAdd: "/empAdd/deleteEmpAdd",
   getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",
   insertEmpPhoto: "/empPhoto/insertEmpPhoto",
   updateEmpPhoto: "/empPhoto/updateEmpPhoto",

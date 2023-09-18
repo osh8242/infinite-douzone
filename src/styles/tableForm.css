@@ -8,7 +8,7 @@
 .tableHeader {
   position: sticky;
   text-align: center;
-  cursor: pointer;  
+  cursor: pointer;
   top: 0;
   background-color: rgba(233, 236, 239) !important;
 }
@@ -58,6 +58,12 @@ td input {
   margin: 0 !important;
   height: 2rem;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+td input[type="checkbox"] {
+  height: 1rem;
 }
 
 td select {

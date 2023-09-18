@@ -36,16 +36,17 @@ const HrManagementLayout = () => {
     jobOkSelectRef,
     orderSelectRef,
     leftTableData,
+    leftCodeHelperTableData,
     leftTablePkValue,
     leftStaticsTableData,
     mainTabData,
     empImageSrc,
     subTableData,
     selectedRows,
-    modalState,
-  } = state;
 
-  const [codeHelperTableData, setCodeHelperTableData] = useState([]);
+    modalState,
+    codeHelperTableData,
+  } = state;
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
@@ -54,13 +55,7 @@ const HrManagementLayout = () => {
 
       switch (type) {
         case "default":
-          actions.setModalState((prevState) => ({
-            ...prevState,
-            size: "lg",
-            title: data.title,
-          }));
-
-          setCodeHelperTableData(() => ({
+          actions.setCodeHelperTableData(() => ({
             setRowData: setRowData,
             tableHeaders: data.headers,
             tableData: data.tableData,
@@ -68,11 +63,27 @@ const HrManagementLayout = () => {
             searchField: data.searchField,
           }));
           break;
+
+        case "leftTable":
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            title: data.title,
+          }));
+
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: leftCodeHelperTableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+
         default:
           break;
       }
     },
-    [modalState]
+    [modalState, leftCodeHelperTableData]
   );
 
   const tokenRef = useRef(null);
@@ -105,14 +116,6 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      {/* <CodeHelperModal
-        show={empCodeHelper.show}
-        apiFlag={empCodeHelper.apiFlag}
-        onHide={() =>
-          actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
-        }
-        codeHelperCode={empCodeHelper.codeHelperCode}
-      /> */}
       <HrManagementHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
@@ -146,13 +149,21 @@ const HrManagementLayout = () => {
                   //showCheckbox
                   sortable
                   rowAddable
+                  showCheckbox
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  codeHelper
                   defaultSelectedRow
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
+                    setCodeHelper: () =>
+                      modalShow(
+                        "leftTable",
+                        CODE_HELPER_DATA.leftTableCodeHelper,
+                        actions.registEmpAdd
+                      ),
                     setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: (row) => {
                       actions.insertEmp(row);
@@ -168,7 +179,7 @@ const HrManagementLayout = () => {
             </Row>
             {/* 통계 테이블 */}
             <Row className="mt-3">
-              <TableForm
+              <TableTest
                 tableName="EMPSTATICS"
                 tableHeaders={leftStaticsTableConstant.headers}
                 tableData={leftStaticsTableData}
@@ -229,7 +240,6 @@ const HrManagementLayout = () => {
               <div className="hr-subTable">
                 <TableTest
                   tableName="EMPFAM"
-                  showCheckbox
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}
