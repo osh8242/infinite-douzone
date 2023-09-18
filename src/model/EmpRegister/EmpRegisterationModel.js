@@ -39,9 +39,9 @@ function EmpRegisterationModel() {
         let newEmp = { ...mainTabData.item };
         newEmp[event.target.id] = value;
         updateEmp(newEmp);
+        setMainTablePkValue({ ...mainTablePkValue });
       } else {
         // 이벤트가 없는 경우
-        // console.log("AddressForm아 제발 고쳐져라~~~~ 넘어온 value => ", value);
         let newEmp = { ...mainTabData.item };
         newEmp[id] = value;
         updateEmp(newEmp);
