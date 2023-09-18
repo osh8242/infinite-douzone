@@ -44,7 +44,6 @@ const TableForm = ({
 
   useEffect(() => {
     setTableRows(tableData || []);
-    console.log(typeof defaultSelectedRow, "타입");
     if (defaultSelectedRow)
       switch (typeof defaultSelectedRow) {
         case "number":

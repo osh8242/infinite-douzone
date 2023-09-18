@@ -1,22 +1,12 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
-import TextBoxComponent from "./TextBoxComponent";
 import SelectForm from "./SelectForm";
+import TextBoxComponent from "./TextBoxComponent";
 
 const TableTest = ({
   tableHeaders, // [필수]
@@ -128,9 +118,7 @@ const TableTest = ({
     //수정으로 바뀌면 해당 셀에 오토포커스
     if (editableRowIndex !== -1) {
       const input =
-        tbodyRef.current.children[rowRef].children[columnRef].querySelector(
-          "input"
-        );
+        tbodyRef.current.children[rowRef].children[columnRef].querySelector("input");
       input.focus();
       // focusAtEnd(input);
     }
@@ -413,7 +401,8 @@ const TableTest = ({
 
   //수정행에 대한 TextBoxComponent 반환함수
   const getInputTd = useCallback(
-    (row, rowIndex, columnIndex) => {
+    (rowIndex, columnIndex) => {
+      const row = tableRows[rowIndex];
       const type = tableHeaders[columnIndex].type;
       const field = tableHeaders[columnIndex].field;
       switch (type) {
@@ -438,6 +427,27 @@ const TableTest = ({
               value={row.isNew ? "" : row.item[field]}
             />
           );
+      }
+    },
+    [tableRows]
+  );
+
+  const getTdValue = useCallback(
+    (rowIndex, columnIndex) => {
+      const type = tableHeaders[columnIndex]?.type;
+      const field = tableHeaders[columnIndex].field;
+      const value = tableRows[rowIndex].item[field];
+      switch (type) {
+        case "select":
+          let selectFormValue;
+          const optionList = tableHeaders[columnIndex].optionList;
+          optionList.forEach((option, index) => {
+            if (option.key === value) selectFormValue = option.value;
+          });
+          return selectFormValue;
+        default:
+          const row = tableRows[rowIndex];
+          return row.isNew ? "" : row.item[field];
       }
     },
     [tableRows]
@@ -500,8 +510,7 @@ const TableTest = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -596,9 +605,7 @@ const TableTest = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -644,10 +651,10 @@ const TableTest = ({
                     }
                   >
                     {row.isEditable ? (
-                      getInputTd(row, rowIndex, columnIndex)
+                      getInputTd(rowIndex, columnIndex)
                     ) : (
                       <div className="tableContents">
-                        {row.isNew ? "" : row.item[thead.field]}
+                        {getTdValue(rowIndex, columnIndex)}
                       </div>
                     )}
 
@@ -674,9 +681,7 @@ const TableTest = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr
-              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
-            >
+            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
@@ -695,9 +700,7 @@ const TableTest = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) =>
-                    handleRowClick(e, tableRows.length, columnIndex)
-                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (
