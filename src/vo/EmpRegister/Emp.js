@@ -19,7 +19,8 @@ const Emp = (empData) => {
     (empData.celEmp2 || "") +
     "-" +
     (empData.celEmp3 || "");
-  empData["address"] = (empData.zipHome || "") + "-" + (empData.addHome1 || "");
+  empData["zipHome-addHome1"] =
+    (empData.zipHome || "") + "-" + (empData.addHome1 || "");
   return {
     item: empData,
     checked: false,

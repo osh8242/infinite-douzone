@@ -29,6 +29,16 @@ function EmpRegisterationModel() {
     { data: "", code: "", setData: setAddRow },
   ]);
 
+  // parameter로 넘어온 value가 JSON 형식인지 판단하는 함수 [ true: JSON, false: X ]
+  const isJSON = (value) => {
+    try {
+      JSON.parse(value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   // Main Tab 에서 Enter 입력시 Emp 업데이트
   const submitMainTabData = useCallback(
     (event, value, id) => {
@@ -36,15 +46,34 @@ function EmpRegisterationModel() {
         event.target.blur();
 
         console.log("value", value);
+
         let newEmp = { ...mainTabData.item };
-        newEmp[event.target.id] = value;
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // 넘어온 값이 JSON 객체인 경우
+          Object.keys(value).forEach((key) => {
+            const columnValue = value[key];
+            newEmp[key] = columnValue;
+          });
+        } else {
+          newEmp[event.target.id] = value;
+        }
         updateEmp(newEmp);
         setMainTablePkValue({ ...mainTablePkValue });
       } else {
         // 이벤트가 없는 경우
         let newEmp = { ...mainTabData.item };
-        newEmp[id] = value;
+
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // 넘어온 값이 JSON 객체인 경우
+          Object.keys(value).forEach((key) => {
+            const columnValue = value[key];
+            newEmp[key] = columnValue;
+          });
+        } else {
+          newEmp[id] = value;
+        }
         updateEmp(newEmp);
+        setMainTablePkValue({ ...mainTablePkValue });
       }
     },
     [mainTablePkValue, mainTabData]

@@ -18,7 +18,6 @@ const AddressForm = (props) => {
   const {
     isZonecode,
     id,
-    name,
     label,
     value,
     // zipHome,
@@ -47,8 +46,21 @@ const AddressForm = (props) => {
     const newValue = `${zonecode}-${address}`;
     setInputValue(newValue);
 
-    onChange("", zonecode, "zipHome");
-    onChange("", address, "addHome1");
+    // 값 update
+    const zonecodeId = id.split("-")[0];
+    const addressId = id.split("-")[1];
+
+    const JSONValue = {
+      [zonecodeId]: zonecode,
+      [addressId]: address,
+    };
+
+    if (isZonecode) {
+      onChange && onChange("", JSONValue, "");
+      // onChange("", address, addressId);
+    } else {
+      onChange && onChange("", address, addressId);
+    }
 
     setModalState({ ...modalState, show: false });
   };
@@ -63,13 +75,13 @@ const AddressForm = (props) => {
       <>
         <Row>
           <div className="widthFull py-1 labelAndContent">
-            <div className="label">주소</div>
+            <div className="label">{label}</div>
             <div className="fullAddressArea labelAndContent widthFull">
               {/* 우편번호 */}
               {isZonecode && (
                 <Form.Control
-                  id="zipHome"
-                  key="zipHome"
+                  id={id.split("-")[0]}
+                  key={id.split("-")[0]}
                   type="text"
                   value={inputValue?.split("-")[0] || ""}
                   name="zonecode"
@@ -82,8 +94,8 @@ const AddressForm = (props) => {
 
               {/* 주소 */}
               <Form.Control
-                id="addHome1"
-                key="addHome1"
+                id={id.split("-")[1]}
+                key={id.split("-")[1]}
                 type="text"
                 value={inputValue?.split("-")[1] || ""}
                 name="address"
