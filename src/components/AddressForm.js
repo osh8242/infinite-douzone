@@ -17,43 +17,40 @@ const AddressForm = (props) => {
   */
   const {
     isZonecode,
-    zipHome,
-    addHome1,
-    pkValue,
-    actions,
-    md = 4,
-    mdValue = 8,
+    id,
+    name,
+    label,
+    value,
+    // zipHome,
+    // addHome1,
+    // pkValue,
+    // actions,
+    // md = 4,
+    // mdValue = 8,
     size,
     iconBtn,
+    onChange,
   } = props;
 
-  const zipHomeRef = useRef();
-  const addHome1Ref = useRef();
+  //입력값
+  const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
+  const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
 
   //비동기 데이터 load
   useEffect(() => {
-    if (zipHomeRef.current) zipHomeRef.current.value = zipHome;
-    if (addHome1Ref.current) addHome1Ref.current.value = addHome1;
-  }, [zipHome, addHome1]);
+    setInputValue(value || "");
+  }, [value]);
 
-  // 선택된 주소를 주소 필드에 업데이트 및 update 요청(우편번호와 주소)
+  // 선택된 주소를 주소 필드에 업데이트 (우편번호와 주소)
+  // parameter로 받는 address와 zonecode는 Post 컴포넌트로부터 받는다
   const handleAddressSelected = ({ zonecode, address }) => {
-    //입력 필드 update
-    zipHomeRef.current.value = zonecode;
-    addHome1Ref.current.value = address;
-    //각 입력 필드의 값을 editedData에 저장 (update 요청)
-    const newAddress = {
-      zipHome: zipHomeRef.current.value,
-      addHome1: addHome1Ref.current.value,
-      cdEmp: pkValue.cdEmp,
-    };
-    setModalState({ ...modalState, show: false });
+    const newValue = `${zonecode}-${address}`;
+    setInputValue(newValue);
 
-    //update api를 통일하기 위해 item으로 포장
-    let item = {
-      item: newAddress,
-    };
-    // actions.setAddress(item);
+    onChange("", zonecode, "zipHome");
+    onChange("", address, "addHome1");
+
+    setModalState({ ...modalState, show: false });
   };
 
   const [modalState, setModalState] = useState({
@@ -71,22 +68,28 @@ const AddressForm = (props) => {
               {/* 우편번호 */}
               {isZonecode && (
                 <Form.Control
-                  className="zoneCodeArea"
+                  id="zipHome"
+                  key="zipHome"
                   type="text"
+                  value={inputValue?.split("-")[0] || ""}
                   name="zonecode"
-                  ref={zipHomeRef}
+                  className="zoneCodeArea"
                   disabled
                   size={size}
+                  onChange={handleAddressSelected}
                 />
               )}
 
               {/* 주소 */}
               <Form.Control
-                className="addressArea"
+                id="addHome1"
+                key="addHome1"
                 type="text"
+                value={inputValue?.split("-")[1] || ""}
                 name="address"
-                ref={addHome1Ref}
+                className="addressArea"
                 disabled
+                onChange={handleAddressSelected}
               />
               {/* 버튼 클릭 시 Post 모달 호출 */}
 

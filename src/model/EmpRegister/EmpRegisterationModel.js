@@ -4,6 +4,7 @@ import Emp from "../../vo/EmpRegister/Emp";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 import { urlPattern } from "./EmpConstant";
+import { id } from "date-fns/locale";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -15,15 +16,10 @@ function EmpRegisterationModel() {
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState([]);
   const [subTabData, setSubTabData] = useState([]);
-
-  //메인탭 Ref
-  const mainTabRef = useRef();
-
+  const mainTabRef = useRef(); //메인탭 Ref
   const [selectedRows, setSelectedRows] = useState([]);
   const [reloadSubTableData, setReloadSubTableData] = useState(false);
-
   const [undeletedEmpTableData, setUndeletedEmpTableData] = useState([]); //미삭제 사원데이터를 관리하는 상태변수
-
   const [modalState, setModalState] = useState({ show: false }); //일반 모달 창의 상태관리
   const [codeHelperState, setCodeHelperState] = useState({ show: false }); //코드 도움 모달 창의 상태관리
   const [addRow, setAddRow] = useState(); //코드도움 addRow
@@ -35,15 +31,19 @@ function EmpRegisterationModel() {
 
   // Main Tab 에서 Enter 입력시 Emp 업데이트
   const submitMainTabData = useCallback(
-    (event, value) => {
+    (event, value, id) => {
       if (event.key === "Enter" || event.type === "change") {
-        console.log("엔터누름");
-        // event.target.blur();
-        console.log("event.target.id", event.target.id);
+        event.target.blur();
+
         console.log("value", value);
         let newEmp = { ...mainTabData.item };
         newEmp[event.target.id] = value;
-        console.log(newEmp);
+        updateEmp(newEmp);
+        setMainTablePkValue({ ...mainTablePkValue });
+      } else {
+        // 이벤트가 없는 경우
+        let newEmp = { ...mainTabData.item };
+        newEmp[id] = value;
         updateEmp(newEmp);
       }
     },
@@ -160,7 +160,7 @@ function EmpRegisterationModel() {
       .put(url + "/emp/updateEmp", emp)
       .then((response) => {
         if (response.data !== 0) console.log("Emp 업데이트 성공");
-        setEditedEmp();
+        setEditedEmp({});
       })
       .catch((error) => {
         console.log("에러발생 -> ", error);

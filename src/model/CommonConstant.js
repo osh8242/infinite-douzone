@@ -10,7 +10,6 @@ export const INPUT_TYPE = {
   regNum: 6,
   callNumber: 100,
   email: 101,
-  noSocial: 102,
   dateCustom: 300,
   addressCustom: 301,
   month: 401,
@@ -27,16 +26,17 @@ export const SELECT_LIST = {
     { key: "islam", value: "이슬람교" },
   ],
   jobOk: [
-    { key: "Y", value: "재직" },
-    { key: "N", value: "퇴직" },
+    { key: "재직", value: "재직" },
+    { key: "퇴직", value: "퇴직" },
   ],
   ynFor: [
-    { key: "0", value: "내국인" },
-    { key: "1", value: "외국인" },
+    { key: "내국인", value: "내국인" },
+    { key: "외국인", value: "외국인" },
+    { key: "외계인", value: "외계인" },
   ],
   fgSex: [
-    { key: "M", value: "남자" },
-    { key: "F", value: "여자" },
+    { key: "남자", value: "남자" },
+    { key: "여자", value: "여자" },
   ],
 };
 
@@ -68,15 +68,15 @@ export const RADIO_LIST = {
 };
 
 export const EMAIL_LIST = [
-  { key: "daum.net", value: "daum.net" },
-  { key: "gmail.com", value: "gmail.com" },
-  { key: "hanmail.net", value: "hanmail.net" },
-  { key: "kakao.com", value: "kakao.com" },
-  { key: "msn.com", value: "msn.com" },
-  { key: "mail.com", value: "mail.com" },
-  { key: "nate.com", value: "nate.com" },
-  { key: "naver.com", value: "naver.com" },
-  { key: "tistory.com", value: "tistory.com" },
+  { key: "daum", value: "daum.net" },
+  { key: "gmail", value: "gmail.com" },
+  { key: "hanmail", value: "hanmail.net" },
+  { key: "kakao", value: "kakao.com" },
+  { key: "msn", value: "msn.com" },
+  { key: "mail", value: "mail.com" },
+  { key: "nate", value: "nate.com" },
+  { key: "naver", value: "naver.com" },
+  { key: "tistory", value: "tistory.com" },
 ];
 export const LABELS = {
   cdEmp: "사원코드",
