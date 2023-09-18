@@ -55,7 +55,6 @@ function CodeHelperModal(props) {
 
   return (
     <>
-      {/* <ModalComponent title= {subject} show={show} onHide={onHide} onConfirm={onConfirm}> */}
       <div>
         <Row className="table-wrapper">
           <TableForm
@@ -76,14 +75,11 @@ function CodeHelperModal(props) {
           </Form.Group>
         </Row>
       </div>
-      {/* </ModalComponent> */}
     </>
   );
 }
 
 CodeHelperModal.defaultProps = {
-  // show : false,
-  // onHide : null,
   tableHeaders: [],
   tableData: [{ item: {} }],
   subject: "",

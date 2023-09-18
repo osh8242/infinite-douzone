@@ -1,79 +1,23 @@
 import React from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
-import TextBoxComponent from "../../../components/TextBoxComponent";
+import { Container } from "react-bootstrap";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
-import { SI_EMP_DETAIL} from "./SiEmpDetailConstant";
-import { INPUT_TYPE } from "../../../model/CommonConstant";
+import { SI_EMP_DETAIL } from "./SiEmpDetailConstant";
+import FormPanel from "../../../components/FormPanel";
 
-
-// 사원 상세정보 영역 
+// 사원 상세정보 영역
 const SiEmpDetail = (props) => {
-  const {
-    siEmpDetailData,
-    columnNumber = 1
-  } = props;
-
-  const defaultMd = 12 / columnNumber;
-  const columns = [];
-
-  const wrappingColTag = (input, index, span = 1) => {
-    let md = defaultMd * span;
-    if (md > 12) md = 12;
-    return (
-      <Col xs md={md} key={index}>
-        {input}
-      </Col>
-    );
-  };
-
-  const inputs = SI_EMP_DETAIL.empDetailInputs;
-  inputs.forEach((input, index) => {
-    switch (input.type) {
-      case INPUT_TYPE.text:
-        columns.push(
-          wrappingColTag(
-            <TextBoxComponent
-              id={input.field}
-              label={input.label}
-              value={siEmpDetailData[input.field] || ""}
-            />,
-            index,
-            input.span
-          )
-        );
-        break;
-      
-      default:
-        break;
-    }
-  });
-
-  const rows = [];
-  for (let i = 0; i < columns.length; ) {
-    let mdSum = 0;
-    let tempRow = [];
-    for (let j = i; j < i + columnNumber && j < columns.length; j++) {
-      mdSum += inputs[j].span ? Math.min(defaultMd * inputs[j].span,12) : defaultMd;
-      if (mdSum <= 12) {
-        tempRow.push(columns[j]);
-        i++;
-      } else {
-        break;
-      }
-    }
-    rows.push(<Row key={i}>{tempRow}</Row>);
-  }
+  const { actions, siEmpDetailData } = props;
 
   return (
-    <div className="siEmpDetail-container">
+    <div>
       <Container className="siEmpDetail-container">
-        <Card>
-          <Card.Header as="h6">사원정보</Card.Header>
-          <Card.Body>
-              <div id="siEmpDetail-content">{rows}</div>
-          </Card.Body>
-        </Card>
-        </Container>
+        <FormPanel
+          INPUT_CONSTANT={SI_EMP_DETAIL}
+          columnNumber={1}
+          formData={siEmpDetailData}
+          submitData={actions.submitEmpDetailData} //update 함수
+        />
+      </Container>
     </div>
   );
 };
