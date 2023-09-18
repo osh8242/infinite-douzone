@@ -39,7 +39,6 @@ const AddressForm = (props) => {
   //비동기 데이터 load
   useEffect(() => {
     setInputValue(value || "");
-    console.log("useEffect! ,", value);
   }, [value]);
 
   // 선택된 주소를 주소 필드에 업데이트 (우편번호와 주소)
