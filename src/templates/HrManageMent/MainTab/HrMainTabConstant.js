@@ -5,6 +5,27 @@ export const TAB_MENU_LIST = {
   subTabMenuList: ["가족", "학력", "경력", "신체", "병역"],
 };
 
+export const CODE_HELPER_DATA = {
+  cdOffduty: {
+    title: "직무 조회",
+    headers: [
+      { field: "cdOffduty", text: "직무코드" },
+      { field: "nmCdOffduty", text: "직무명" },
+    ],
+    tableData: [
+      { item: { cdOffduty: "C001", nmCdOffduty: "경영회계" } },
+      { item: { cdOffduty: "C003", nmCdOffduty: "금융보험" } },
+      { item: { cdOffduty: "C004", nmCdOffduty: "교육과학" } },
+      { item: { cdOffduty: "C005", nmCdOffduty: "법률행정" } },
+      { item: { cdOffduty: "C006", nmCdOffduty: "보건의료" } },
+      { item: { cdOffduty: "C007", nmCdOffduty: "문화예술" } },
+      { item: { cdOffduty: "C008", nmCdOffduty: "농림어업" } },
+    ],
+    searchField: ["cdOffduty", "nmCdOffduty"],
+    usePk: "cdOffduty",
+  },
+};
+
 export const MAIN_TAB = {
   primaryTabInputs: [
     { type: INPUT_TYPE.text, field: "nmEnName", label: LABELS.nmEnName },
@@ -33,7 +54,7 @@ export const MAIN_TAB = {
       field: "rankNo",
       disabled: true,
     },
-    { type: INPUT_TYPE.text, field: "cdOffduty", label: LABELS.cdOffduty },
+    { type: INPUT_TYPE.textCodeHelper, field: "cdOffduty", label: LABELS.cdOffduty },
     {
       type: INPUT_TYPE.radio,
       field: "ynDrawContracts",

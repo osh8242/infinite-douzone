@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
+import AddressForm from "../../src/components/AddressForm.js";
 import {
   INPUT_TYPE,
   LABELS,
   RADIO_LIST,
   SELECT_LIST,
 } from "../model/CommonConstant.js";
-import AddressForm from "../../src/components/AddressForm.js";
+import DateForm from "./DateForm";
 import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
-import TextBoxComponent from "./TextBoxComponent";
 import TestAdd from "./TestAdd";
-import DateForm from "./DateForm";
+import TextBoxComponent from "./TextBoxComponent";
 const FormPanel = ({
   INPUT_CONSTANT,
   formData,
@@ -171,6 +171,7 @@ const FormPanel = ({
       case INPUT_TYPE.textCodeHelper:
         component = (
           <TextBoxComponent
+            id={id}
             type="text"
             label={label}
             value={value}
@@ -237,9 +238,7 @@ const FormPanel = ({
     let mdSum = 0;
     let tempRow = [];
     for (let j = i; j < columns.length; j++) {
-      mdSum += inputs[j].span
-        ? Math.min(defaultMd * inputs[j].span, 12)
-        : defaultMd;
+      mdSum += inputs[j].span ? Math.min(defaultMd * inputs[j].span, 12) : defaultMd;
       if (mdSum <= 12) {
         tempRow.push(columns[j]);
         i++;

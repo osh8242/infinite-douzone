@@ -153,6 +153,12 @@ const HrManagementModel = () => {
         console.log("newEmpAdd", newEmpAdd);
         updateEmpAdd(newEmpAdd);
       }
+      if (event.type === "click") {
+        let newEmpAdd = { ...mainTabData };
+        Object.assign(newEmpAdd, value);
+        console.log("newEmpAdd", newEmpAdd);
+        updateEmpAdd(newEmpAdd);
+      }
     },
     [leftTablePkValue, mainTabData]
   );
@@ -165,7 +171,7 @@ const HrManagementModel = () => {
   //       .put(url + "/empAdd/updateEmpAdd", editedEmpAdd)
   //       .then((response) => {
   //         if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-  //         setEditedEmpAdd({});
+  //         setLeftTablePkValue({...leftTablePkValue});
   //       })
   //       .catch((error) => {
   //         console.error("에러발생: ", error);
@@ -181,6 +187,7 @@ const HrManagementModel = () => {
       .put(url + "/empAdd/updateEmpAdd", EmpAdd)
       .then((response) => {
         if (response.data === 1) console.log("EmpAdd 업데이트 성공");
+        setLeftTablePkValue({ ...leftTablePkValue });
       })
       .catch((error) => {
         console.error("에러발생: ", error);

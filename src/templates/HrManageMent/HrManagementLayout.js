@@ -1,11 +1,14 @@
 // 작성자 : 오승환
 import axios from "axios";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
+import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
+import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
 import TableForm from "../../components/TableForm";
+import TableTest from "../../components/TableTest";
 import {
   leftStaticsTableConstant,
   leftTableConstant,
@@ -19,9 +22,8 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
+import { CODE_HELPER_DATA, MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
-import TableTest from "../../components/TableTest";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -41,6 +43,38 @@ const HrManagementLayout = () => {
     subTableData,
     selectedRows,
   } = state;
+
+  const [modalState, setModalState] = useState({ show: false });
+  const [codeHelperTableData, setCodeHelperTableData] = useState([]);
+
+  //코드도움 아이콘 클릭이벤트
+  const modalShow = useCallback(
+    async (type, data, setRowData) => {
+      setModalState({ ...modalState, show: true });
+
+      switch (type) {
+        case "default":
+          setModalState((prevState) => ({
+            ...prevState,
+            size: "lg",
+            title: data.title,
+          }));
+
+          setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: data.tableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+        default:
+          break;
+      }
+    },
+    [modalState]
+  );
+
   const tokenRef = useRef(null);
   const getToken = () => {
     axios
@@ -68,6 +102,7 @@ const HrManagementLayout = () => {
         console.log("토큰인증 에러", e);
       });
   };
+
   return (
     <>
       {/* <CodeHelperModal
@@ -164,6 +199,14 @@ const HrManagementLayout = () => {
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
                         columnNumber={2}
+                        codeHelperFn={{
+                          cdOffduty: () =>
+                            modalShow(
+                              "default",
+                              CODE_HELPER_DATA.cdOffduty,
+                              actions.submitMainTabData
+                            ),
+                        }}
                       />
                     </Col>
                   </Row>,
@@ -209,6 +252,21 @@ const HrManagementLayout = () => {
           )}
         </Row>
       </Container>
+      <ModalComponent
+        title={modalState.title}
+        size={modalState.size}
+        show={modalState.show}
+        onHide={() => setModalState({ show: false })}
+      >
+        <CodeHelperModal
+          setRowData={codeHelperTableData.setRowData}
+          usePk={codeHelperTableData.usePk}
+          tableHeaders={codeHelperTableData.tableHeaders}
+          tableData={codeHelperTableData.tableData}
+          searchField={codeHelperTableData.searchField}
+          onHide={() => setModalState({ show: false })}
+        />
+      </ModalComponent>
     </>
   );
 };
