@@ -84,6 +84,7 @@ export const subTableConstant = {
     {
       field: "ynFor",
       text: "외국인",
+      width: "90px",
       type: "select",
       optionList: SELECT_LIST.ynFor,
     },

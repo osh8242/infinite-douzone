@@ -100,6 +100,7 @@ const TableTest = ({
       else return 0;
     });
     setTableRows(newTableRows);
+    console.log("정렬 useEffect", newTableRows);
   }, [orderRef, isAsc]);
 
   //로우와 컬럼 ref 해제 함수
@@ -117,9 +118,12 @@ const TableTest = ({
   useEffect(() => {
     //수정으로 바뀌면 해당 셀에 오토포커스
     if (editableRowIndex !== -1) {
+      const columnIndex = showCheckbox ? columnRef + 1 : columnRef;
       const input =
-        tbodyRef.current.children[rowRef].children[columnRef].querySelector("input");
-      input.focus();
+        tbodyRef.current.children[rowRef].children[columnIndex].querySelector(
+          "input, select"
+        );
+      input && input.focus();
       // focusAtEnd(input);
     }
   });
@@ -136,8 +140,12 @@ const TableTest = ({
 
   //수정중인 행을 수정해제하는 함수
   const releaseEditable = useCallback(() => {
-    const newTableRows = tableRows.map((row) => (row.isEditable = false));
-    setTableRows(newTableRows);
+    if (editableRowIndex !== -1) {
+      const newTableRows = tableRows.map((row) => {
+        return { ...row, isEditable: false };
+      });
+      setTableRows(newTableRows);
+    }
   }, [tableRows]);
 
   //td의 className을 얻는 함수
@@ -156,10 +164,6 @@ const TableTest = ({
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback((event, rowIndex, columnIndex) => {
-    console.log(
-      "겟인풋엘레먼츠",
-      tbodyRef.current.children[rowIndex].querySelectorAll("input")
-    );
     return tbodyRef.current.children[rowIndex].querySelectorAll("input");
   }, []);
 
@@ -212,8 +216,10 @@ const TableTest = ({
       if (rowRef === rowIndex && columnRef === columnIndex) return;
       setRowRef(rowIndex);
       setColumnRef(columnIndex);
-      releaseEditable(rowIndex);
-      if (editableRowIndex !== rowIndex) removeNewRow(rowIndex);
+      if (editableRowIndex !== rowIndex) {
+        removeNewRow(rowIndex);
+        releaseEditable(rowIndex);
+      }
       updatePkValue(rowIndex);
     },
 
@@ -244,6 +250,7 @@ const TableTest = ({
       if (rowIndex === tableRows.length) pushNewRow();
       tableRows[rowIndex].isEditable = true;
       setTableRows([...tableRows]);
+      console.log("더블클릭 tableRows", tableRows);
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -279,7 +286,7 @@ const TableTest = ({
 
       // 각 입력 필드의 값을 editedRow에 업데이트
       currentRowInputs.forEach((input, index) => {
-        const field = tableHeaders[index].field;
+        const field = input.id;
         editedRow.item[field] = input.value;
       });
 
@@ -402,6 +409,7 @@ const TableTest = ({
   //수정행에 대한 TextBoxComponent 반환함수
   const getInputTd = useCallback(
     (rowIndex, columnIndex) => {
+      //console.log("겟인풋TD tableRows", tableRows);
       const row = tableRows[rowIndex];
       const type = tableHeaders[columnIndex].type;
       const field = tableHeaders[columnIndex].field;
@@ -409,6 +417,7 @@ const TableTest = ({
         case "select":
           return (
             <SelectForm
+              id={field}
               optionList={tableHeaders[columnIndex].optionList}
               selectedOption={row.item[field]}
               onChange={(e, value) => {
@@ -421,6 +430,7 @@ const TableTest = ({
         default: // 타입이 명시되지않으면 일반 text 타입 반환
           return (
             <TextBoxComponent
+              id={field}
               type="text"
               readOnly={!row.isEditable}
               onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
@@ -434,6 +444,7 @@ const TableTest = ({
 
   const getTdValue = useCallback(
     (rowIndex, columnIndex) => {
+      //console.log("겟TD벨류 tableRows", tableRows);
       const type = tableHeaders[columnIndex]?.type;
       const field = tableHeaders[columnIndex].field;
       const value = tableRows[rowIndex].item[field];
@@ -459,11 +470,11 @@ const TableTest = ({
       //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
-          tableFocus.current = false;
           setColumnRef(-1);
           if (!actions.setPkValue) setRowRef(-1);
-          releaseEditable();
           removeNewRow();
+          releaseEditable();
+          tableFocus.current = false;
         }
       }
       if (myRef.current && myRef.current.contains(event.target)) {
