@@ -171,59 +171,58 @@ function EmpRegisterationLayout() {
                     modalShow(
                       "default",
                       codeHelperData_abbNation,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdNation: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdNation,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdDept: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdDept,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdOccup: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdOccup,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   rankNo: () =>
                     modalShow(
                       "default",
                       codeHelperData_rankNo,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdSalcls: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdSalcls,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdField: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdField,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdProject: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdProject,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                   cdBank: () =>
                     modalShow(
                       "default",
                       codeHelperData_cdBank,
-                      actions.setEditedEmp
+                      actions.submitMainTabData
                     ),
                 }}
               />
-              <Form.Control type="text" style={{ outline: "none" }} />
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />
@@ -240,7 +239,9 @@ function EmpRegisterationLayout() {
       >
         {modalType === "default" ? (
           <CodeHelperModal
-            setRowData={state.codeHelperTableData.setRowData}
+            setRowData={state.codeHelperTableData.setRowData} // 우측 메인 탭에서 가져온 row 데이터를 반환받을 함수
+            // => 여기서 onChange 이벤트를 발생시켜서 값을 update 할 수 있도록 해야한다.
+
             usePk={state.codeHelperTableData.usePk}
             tableHeaders={state.codeHelperTableData.tableHeaders}
             tableData={state.codeHelperTableData.tableData}
