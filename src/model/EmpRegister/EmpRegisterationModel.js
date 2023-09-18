@@ -30,14 +30,14 @@ function EmpRegisterationModel() {
   ]);
 
   // parameter로 넘어온 value가 JSON 형식인지 판단하는 함수 [ true: JSON, false: X ]
-  const isJSON = (value) => {
-    try {
-      JSON.parse(value);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
+  // const isJSON = (value) => {
+  //   try {
+  //     JSON.parse(value);
+  //     return true;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // };
 
   // Main Tab 에서 Enter 입력시 Emp 업데이트
   const submitMainTabData = useCallback(
