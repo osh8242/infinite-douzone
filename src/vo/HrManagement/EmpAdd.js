@@ -9,8 +9,20 @@ const EmpAdd = (empAddData) => {
     (empAddData.telHome2 || "") +
     "-" +
     (empAddData.telHome3 || "");
+
   empAddData["celEmp"] =
-    empAddData.celEmp1 + "-" + empAddData.celEmp2 + "-" + empAddData.celEmp3;
+    (empAddData.celEmp1 || "") +
+    "-" +
+    (empAddData.celEmp2 || "") +
+    "-" +
+    (empAddData.celEmp3 || "");
+
+  empAddData["telOffice"] =
+    (empAddData.telOffice1 || "") +
+    "-" +
+    (empAddData.telOffice2 || "") +
+    "-" +
+    (empAddData.telOffice3 || "");
   return empAddData;
 };
 

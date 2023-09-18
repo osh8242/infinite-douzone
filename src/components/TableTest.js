@@ -44,19 +44,20 @@ const TableTest = ({
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
 
+  //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
     setTableRows(tableData || []);
-    if (defaultSelectedRow)
-      switch (typeof defaultSelectedRow) {
-        case "number":
-          handleRowClick(null, defaultSelectedRow, 0);
-          break;
-        case "boolean":
-          handleRowClick(null, 0, 0);
-          break;
-        default:
-          break;
-      }
+    // if (defaultSelectedRow)
+    //   switch (typeof defaultSelectedRow) {
+    //     case "number":
+    //       handleRowClick(null, defaultSelectedRow, 0);
+    //       break;
+    //     case "boolean":
+    //       handleRowClick(null, 0, 0);
+    //       break;
+    //     default:
+    //       break;
+    //   }
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
@@ -431,7 +432,7 @@ const TableTest = ({
           return (
             <TextBoxComponent
               id={field}
-              type="text"
+              type={type || "text"}
               readOnly={!row.isEditable}
               onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
               value={row.isNew ? "" : row.item[field]}

@@ -13,7 +13,7 @@
 //
 
 import { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../styles/commonComponent.css";
 
@@ -36,7 +36,6 @@ function SelectForm(props) {
   const [selectedValue, setSelectedValue] = useState(selectedOption || "");
   useEffect(() => {
     setSelectedValue(selectedOption);
-    console.log(selectedOption);
   }, [selectedOption]);
 
   const handleSelectChange = (event) => {
@@ -54,10 +53,7 @@ function SelectForm(props) {
           {subLabel ? (
             <div className="widthFull d-flex align-items-center justify-content-between">
               <div className="widthFull d-flex align-items-center">
-                <div
-                  style={{ width: "28%" }}
-                  className="d-flex justify-content-end"
-                >
+                <div style={{ width: "28%" }} className="d-flex justify-content-end">
                   {subLabel}
                 </div>
                 <div

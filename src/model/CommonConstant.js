@@ -122,6 +122,7 @@ export const LABELS = {
   cdNation: "국적",
   telHome: "전화번호",
   celEmp: "모바일번호",
+  telOffice: "담당전화",
   emEmp: "이메일",
   idMsn: "메신저ID",
   cdOccup: "직종",

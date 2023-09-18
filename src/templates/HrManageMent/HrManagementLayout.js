@@ -42,19 +42,19 @@ const HrManagementLayout = () => {
     empImageSrc,
     subTableData,
     selectedRows,
+    modalState,
   } = state;
 
-  const [modalState, setModalState] = useState({ show: false });
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
     async (type, data, setRowData) => {
-      setModalState({ ...modalState, show: true });
+      actions.setModalState({ ...modalState, show: true });
 
       switch (type) {
         case "default":
-          setModalState((prevState) => ({
+          actions.setModalState((prevState) => ({
             ...prevState,
             size: "lg",
             title: data.title,
@@ -140,7 +140,7 @@ const HrManagementLayout = () => {
           <Col md="3">
             {/* 좌측 그리드 */}
             <Row>
-              <div className="leftTable">
+              <div className="hr-leftTable">
                 <TableTest
                   tableName="EMP"
                   //showCheckbox
@@ -149,15 +149,15 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
-                  onRowClick={(e, row) => {
-                    actions.setLeftTablePkValue(row);
-                  }}
                   defaultSelectedRow
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
                     setPkValue: actions.setLeftTablePkValue,
-                    insertNewRow: actions.insertEmp,
+                    insertNewRow: (row) => {
+                      actions.insertEmp(row);
+                      actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
+                    },
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
                     deleteRow: actions.deleteRow,
@@ -216,7 +216,7 @@ const HrManagementLayout = () => {
                         INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
-                        columnNumber={2}
+                        columnNumber={3}
                       />
                     </Col>
                   </Row>,
@@ -226,7 +226,7 @@ const HrManagementLayout = () => {
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
-              <div className="subTable">
+              <div className="hr-subTable">
                 <TableTest
                   tableName="EMPFAM"
                   showCheckbox
@@ -256,7 +256,7 @@ const HrManagementLayout = () => {
         title={modalState.title}
         size={modalState.size}
         show={modalState.show}
-        onHide={() => setModalState({ show: false })}
+        onHide={() => actions.setModalState({ show: false })}
       >
         <CodeHelperModal
           setRowData={codeHelperTableData.setRowData}
@@ -264,7 +264,7 @@ const HrManagementLayout = () => {
           tableHeaders={codeHelperTableData.tableHeaders}
           tableData={codeHelperTableData.tableData}
           searchField={codeHelperTableData.searchField}
-          onHide={() => setModalState({ show: false })}
+          onHide={() => actions.setModalState({ show: false })}
         />
       </ModalComponent>
     </>

@@ -24,6 +24,8 @@ const HrManagementModel = () => {
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
+  const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
+
   //검색조건 : 재직구분, 정렬기준
   const jobOkSelectRef = useRef();
   const orderSelectRef = useRef();
@@ -144,6 +146,7 @@ const HrManagementModel = () => {
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
   const submitMainTabData = useCallback(
     (event, value) => {
+      console.log("서브밋메인탭 데이터", event, value);
       if (event.key === "Enter" || event.type === "change") {
         event.target.blur();
         console.log("event.target.id", event.target.id);
@@ -181,19 +184,22 @@ const HrManagementModel = () => {
   // }, [editedEmpAdd]);
 
   //update EmpAdd
-  const updateEmpAdd = useCallback((EmpAdd) => {
-    console.log("editedEmpAdd 업데이트 요청", EmpAdd);
-    axios
-      .put(url + "/empAdd/updateEmpAdd", EmpAdd)
-      .then((response) => {
-        if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-        setLeftTablePkValue({ ...leftTablePkValue });
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, []);
+  const updateEmpAdd = useCallback(
+    (EmpAdd) => {
+      console.log("editedEmpAdd 업데이트 요청", EmpAdd);
+      axios
+        .put(url + "/empAdd/updateEmpAdd", EmpAdd)
+        .then((response) => {
+          if (response.data === 1) console.log("EmpAdd 업데이트 성공");
+          setLeftTablePkValue({ ...leftTablePkValue });
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [leftTablePkValue]
+  );
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -402,6 +408,8 @@ const HrManagementModel = () => {
       jobOk,
       refYear,
       orderRef,
+
+      modalState,
     },
     actions: {
       setJobOk,
@@ -427,6 +435,8 @@ const HrManagementModel = () => {
       deleteSelectedRows,
 
       deleteRow,
+
+      setModalState,
     },
   };
 };

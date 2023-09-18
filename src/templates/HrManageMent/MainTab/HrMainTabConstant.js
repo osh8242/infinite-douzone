@@ -132,7 +132,16 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.callNumber,
       field: "telHome",
       label: LABELS.telHome,
-      span: 1,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "celEmp",
+      label: LABELS.celEmp,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telOffice",
+      label: LABELS.telOffice,
     },
   ],
 };
