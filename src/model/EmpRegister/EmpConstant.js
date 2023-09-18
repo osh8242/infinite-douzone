@@ -55,6 +55,7 @@ export const EmpRegisterMainHeaders = [
 export const LABELS_EMP = {
   telHome: "전화번호",
   celEmp: "모바일번호",
+  addHome1: "주소",
   addHome2: "상세주소",
 };
 

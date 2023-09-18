@@ -36,15 +36,34 @@ function EmpRegisterationModel() {
         event.target.blur();
 
         console.log("value", value);
+
         let newEmp = { ...mainTabData.item };
-        newEmp[event.target.id] = value;
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // 넘어온 값이 JSON 객체인 경우
+          Object.keys(value).forEach((key) => {
+            const columnValue = value[key];
+            newEmp[key] = columnValue;
+          });
+        } else {
+          newEmp[event.target.id] = value;
+        }
         updateEmp(newEmp);
         setMainTablePkValue({ ...mainTablePkValue });
       } else {
         // 이벤트가 없는 경우
         let newEmp = { ...mainTabData.item };
-        newEmp[id] = value;
+
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // 넘어온 값이 JSON 객체인 경우
+          Object.keys(value).forEach((key) => {
+            const columnValue = value[key];
+            newEmp[key] = columnValue;
+          });
+        } else {
+          newEmp[id] = value;
+        }
         updateEmp(newEmp);
+        setMainTablePkValue({ ...mainTablePkValue });
       }
     },
     [mainTablePkValue, mainTabData]

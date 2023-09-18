@@ -153,11 +153,12 @@ function TextBoxComponent(props) {
         setIsValid(true);
       }
     } else {
-      setSendValue(inputValue);
+      // setSendValue(inputValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
       setInputValue(makeProcessedValue(newValue)); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
+      onChange && onChange(event, newValue, id);
       onChange && onChange(event, newValue, id);
     }
   };

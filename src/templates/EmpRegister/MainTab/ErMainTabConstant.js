@@ -37,7 +37,13 @@ export const MAIN_TAB = {
       label: LABELS_EMP.celEmp,
       span: 1,
     },
-    { type: INPUT_TYPE.address, field: "address", isZonecode: true, span: 2 },
+    {
+      type: INPUT_TYPE.address,
+      field: "zipHome-addHome1",
+      label: LABELS_EMP.addHome1,
+      isZonecode: true,
+      span: 2,
+    },
     {
       type: INPUT_TYPE.text,
       field: "addHome2",

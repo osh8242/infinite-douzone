@@ -45,8 +45,6 @@ function CodeHelperModal(props) {
 
   // 클릭한 행반환
   const handleRowClick = (event, row) => {
-    console.log("row", row);
-    console.log("setRowData", setRowData);
     setSearchTerm("");
     if (setRowData)
       usePk ? setRowData(event, { [usePk]: row[usePk] }) : setRowData(event, row);
