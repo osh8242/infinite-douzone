@@ -163,6 +163,7 @@ function TextBoxComponent(props) {
       setInputValue(makeProcessedValue(newValue)); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue, id);
+      onChange && onChange(event, newValue, id);
     }
   };
 
