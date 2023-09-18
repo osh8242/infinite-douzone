@@ -184,6 +184,8 @@ export const LABELS = {
   endBreakTime: "종료휴게시간",
   bonusAmount: "상여금",
   paymentDate: "작성일자",
+  startEmpContractPeriod: "계약시작기간",
+  endEmpContractPeriod: "계약종료기간",
 };
 
 export const CODE = {

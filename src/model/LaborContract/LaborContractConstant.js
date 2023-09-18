@@ -9,7 +9,8 @@ export const swsmUrlPattern = {
 };
 
 export const labels = {
-  empContractPeriod: "근로계약기간",
+  startEmpContractPeriod: "계약시작기간",
+  endEmpContractPeriod: "계약종료기간",
   workAddress: "근무장소",
   jobDescription: "업무의 내용",
   workTime: "소정근로시간",
@@ -52,7 +53,7 @@ export const LeftTableHeaders = [
 // 우측하단테이블 - 기타급여 목록
 export const SubTabHeaders = [
   { field: "otherType", text: "항목" },
-  { field: "otherMoney", text: "금액" },
+  { field: "otherMoney", text: "금액", width: "50%" },
 ];
 
 // 주휴일 목록
