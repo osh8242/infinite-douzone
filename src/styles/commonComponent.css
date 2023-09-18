@@ -35,8 +35,7 @@ input.form-control {
 
 .col-md-6 .label {
   width: 160px !important;
-  height: 150% !important;
-  /* padding-right: 12px; */
+  height: 140% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
