@@ -9,6 +9,7 @@ export const urlPattern = {
   getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",
   insertEmpPhoto: "/empPhoto/insertEmpPhoto",
   updateEmpPhoto: "/empPhoto/updateEmpPhoto",
+  deleteEmpPhoto: "/empPhoto/deleteEmpPhoto",
   insertEmpFam: "/empFam/insertEmpFam",
   updateEmpFam: "/empFam/updateEmpFamBySeqValAndCdEmp",
   deleteEmpFam: "/empFam/deleteEmpFam",

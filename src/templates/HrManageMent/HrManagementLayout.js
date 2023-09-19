@@ -1,13 +1,12 @@
 // 작성자 : 오승환
 import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
 import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import TableForm from "../../components/TableForm";
 import TableTest from "../../components/TableTest";
 import {
   leftStaticsTableConstant,
@@ -202,6 +201,7 @@ const HrManagementLayout = () => {
                       <ProfileImageForm
                         src={empImageSrc}
                         handleUpload={actions.updateEmpPhoto}
+                        handleDelete={actions.deleteEmpPhoto}
                       />
                     </Col>
                     <Col xs md="9">

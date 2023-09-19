@@ -46,8 +46,8 @@ const TableTest = ({
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    setTableRows(tableData || []);
-    // if (defaultSelectedRow)
+    setTableRows([...tableData]);
+    // if (defaultSelectedRow && tableData.length > 0)
     //   switch (typeof defaultSelectedRow) {
     //     case "number":
     //       handleRowClick(null, defaultSelectedRow, 0);
@@ -86,7 +86,7 @@ const TableTest = ({
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
   if (tableName === "EMP") {
-    // console.log(tableName, tableRows, "Render");
+    // console.log(tableName, tableData, "Render");
     // console.log("inputRef", inputRef);
   }
 
@@ -536,7 +536,7 @@ const TableTest = ({
 
             case " ":
               event.preventDefault();
-              checkboxHandler(rowRef);
+              showCheckbox && checkboxHandler(rowRef);
               break;
 
             case "Delete":
