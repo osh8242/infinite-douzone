@@ -42,6 +42,7 @@ function TextBoxComponent(props) {
     onFocus,
     onKeyDown,
     onEnter,
+    className,
 
     // [선택] true false 옵션
     disabled,

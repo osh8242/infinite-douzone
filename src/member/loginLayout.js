@@ -13,7 +13,7 @@ const LoginLayout = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loginError, setLoginError] = useState(false); // 로그인 에러 상태 추가
+  const [loginError, setLoginError] = useState(""); // 로그인 에러 상태 추가
   const [loginErrorCount, setLoginErrorCount] = useState(0);
   const [keyframeTrigger, setKeyframeTrigger] = useState(0);
   const handleLogin = async () => {
@@ -37,6 +37,7 @@ const LoginLayout = () => {
           console.log(userInfoObject);
           //////////
           dispatch(loginSuccess(userInfoObject));
+          window.location.href = "/"; // 임시 리다이렉트
         }
 
         // window.location.href = "/lc"; // 임시 리다이렉트
