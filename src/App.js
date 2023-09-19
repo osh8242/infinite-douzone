@@ -13,6 +13,9 @@ import MyPage from "./templates/myPage";
 import { LoginProvider } from "./Login/LoginProvider";
 import { Provider } from "react-redux";
 import store from "./member/store";
+import LoginFindId from "./member/loginFindId";
+import LoginFindPwd from "./member/loginFindPwd";
+
 function App() {
   return (
     <div>
@@ -28,6 +31,8 @@ function App() {
             <Route path="/lc/*" element={<LaborContractLayout />} />
             <Route path="/si" element={<SalaryInformationEntryLayout />} />
             <Route path="/login" element={<LoginLayout />} />
+            <Route path="/loginFindId" element={<LoginFindId />} />
+            <Route path="/loginFindPwd" element={<LoginFindPwd />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </BrowserRouter>
