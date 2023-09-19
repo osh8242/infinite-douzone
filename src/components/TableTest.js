@@ -414,6 +414,7 @@ const TableTest = ({
       const row = tableRows[rowIndex];
       const type = tableHeaders[columnIndex].type;
       const field = tableHeaders[columnIndex].field;
+      const disabled = tableHeaders[columnIndex].field;
       switch (type) {
         case "select":
           return (
@@ -426,6 +427,28 @@ const TableTest = ({
                 EditedRow[field] = value;
                 actions.updateEditedRow(EditedRow);
               }}
+            />
+          );
+        case "date":
+          return (
+            <TextBoxComponent
+              type={"date"}
+              id={field}
+              value={row.isNew ? "" : row.item[field]}
+              onChange={(e, value) => {
+                let EditedRow = { ...tableRows[rowIndex] }.item;
+                EditedRow[field] = value;
+                actions.updateEditedRow(EditedRow);
+              }}
+            />
+          );
+        case "textCodeHelper":
+          return (
+            <TextBoxComponent
+              id={field}
+              type="text"
+              value={row.isNew ? "" : row.item[field]}
+              onClickCodeHelper={codeHelper}
             />
           );
         default: // 타입이 명시되지않으면 일반 text 타입 반환
@@ -697,7 +720,7 @@ const TableTest = ({
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
-                  onClick={() => codeHelper && actions.setCodeHelper()}
+                  onClick={() => codeHelper && actions.newRowCodeHelper()}
                 >
                   <div>
                     <FontAwesomeIcon icon={faPlus} />

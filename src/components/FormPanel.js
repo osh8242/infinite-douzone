@@ -252,7 +252,7 @@ const FormPanel = ({
 FormPanel.defaultProps = {
   formData: { item: {} },
   submitData: () => {
-    console.log("FormPanel.js", "submitData", "default");
+    console.log("FormPanel.js", "submitData is defaultProps");
   },
   columnNumber: 2,
 };

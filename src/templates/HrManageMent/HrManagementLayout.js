@@ -9,6 +9,7 @@ import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
 import TableTest from "../../components/TableTest";
 import {
+  CODE_HELPER_DATA,
   leftStaticsTableConstant,
   leftTableConstant,
   orderList,
@@ -21,7 +22,7 @@ import "../../styles/HrManagement/HrManagementLayout.scss";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
-import { CODE_HELPER_DATA, MAIN_TAB } from "./MainTab/HrMainTabConstant";
+import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -157,7 +158,7 @@ const HrManagementLayout = () => {
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
-                    setCodeHelper: () =>
+                    newRowCodeHelper: () =>
                       modalShow(
                         "leftTable",
                         CODE_HELPER_DATA.leftTableCodeHelper,
