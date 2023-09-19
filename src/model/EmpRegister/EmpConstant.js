@@ -222,14 +222,14 @@ export const codeHelperData_cdBank = {
 };
 
 // 미삭제 사원 목록 테이블 헤더
-export const EmpRegisterUndeletedEmpHeaders = {
-  subject: "삭제 실패된 사원목록",
-  headers: [
-    { field: "cdEmp", text: "사원코드" },
-    { field: "nmKrname", text: "성명" },
-    { field: "useMenuList", text: "사용중인 메뉴" },
-  ],
-  tableData: [],
-  searchField: ["cdEmp", "nmKrname", "useMenuList"],
-  usePk: "cdEmp",
-};
+// export const EmpRegisterUndeletedEmpHeaders = {
+//   subject: "삭제 실패된 사원목록",
+//   headers: [
+//     { field: "cdEmp", text: "사원코드" },
+//     { field: "nmKrname", text: "성명" },
+//     { field: "useMenuList", text: "사용중인 메뉴" },
+//   ],
+//   tableData: [],
+//   searchField: ["cdEmp", "nmKrname", "useMenuList"],
+//   usePk: "cdEmp",
+// };
