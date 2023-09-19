@@ -157,72 +157,85 @@ function EmpRegisterationLayout() {
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (
             <Col id="empRegisterLayoutRight">
-              <MenuTab
-                menuList={tabConstant.mainTabMenuListForEmpRegister}
-                ref={state.mainTabRef}
-              ></MenuTab>
-              <FormPanel
-                INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                formData={state.mainTabData}
-                submitData={actions.submitMainTabData} // update 함수
-                codeHelperFn={{
-                  //코드도움 함수모음
-                  abbNation: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_abbNation,
-                      actions.submitMainTabData
-                    ),
-                  cdNation: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdNation,
-                      actions.submitMainTabData
-                    ),
-                  cdDept: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdDept,
-                      actions.submitMainTabData
-                    ),
-                  cdOccup: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdOccup,
-                      actions.submitMainTabData
-                    ),
-                  rankNo: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_rankNo,
-                      actions.submitMainTabData
-                    ),
-                  cdSalcls: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdSalcls,
-                      actions.submitMainTabData
-                    ),
-                  cdField: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdField,
-                      actions.submitMainTabData
-                    ),
-                  cdProject: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdProject,
-                      actions.submitMainTabData
-                    ),
-                  cdBank: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdBank,
-                      actions.submitMainTabData
-                    ),
-                }}
-              />
+              <MenuTab menuList={tabConstant.mainTabMenuListForEmpRegister}>
+                {[
+                  <Row key={"mainTeb1"}>
+                    <Col>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                        formData={state.mainTabData}
+                        submitData={actions.submitMainTabData} // update 함수
+                        codeHelperFn={{
+                          //코드도움 함수모음
+                          abbNation: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_abbNation,
+                              actions.submitMainTabData
+                            ),
+                          cdNation: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdNation,
+                              actions.submitMainTabData
+                            ),
+                          cdDept: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdDept,
+                              actions.submitMainTabData
+                            ),
+                          cdOccup: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdOccup,
+                              actions.submitMainTabData
+                            ),
+                          rankNo: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_rankNo,
+                              actions.submitMainTabData
+                            ),
+                          cdSalcls: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdSalcls,
+                              actions.submitMainTabData
+                            ),
+                          cdField: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdField,
+                              actions.submitMainTabData
+                            ),
+                          cdProject: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdProject,
+                              actions.submitMainTabData
+                            ),
+                          cdBank: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdBank,
+                              actions.submitMainTabData
+                            ),
+                        }}
+                      />
+                    </Col>
+                  </Row>,
+                  <Row key={"mainTeb2"}>
+                    <Col>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                        formData={state.mainTabData}
+                        submitData={actions.submitMainTabData} // update 함수
+                      />
+                    </Col>
+                  </Row>,
+                ]}
+              </MenuTab>
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />

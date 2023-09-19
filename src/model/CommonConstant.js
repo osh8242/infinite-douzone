@@ -38,6 +38,30 @@ export const SELECT_LIST = {
     { key: "남자", value: "남자" },
     { key: "여자", value: "여자" },
   ],
+  ynEmploy: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynSanjae: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynLonginsur: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynForlabor: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynUnit: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynOverwork: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
 };
 
 export const RADIO_LIST = {
@@ -117,6 +141,10 @@ export const LABELS = {
   mnKeepgarden: "소유동산",
   mnKeepstate: "소유부동산",
   fgOwnHouse: "자택소유",
+  mnMmaverage: "월평균임금",
+  ynEmploy: "고용보험적용",
+  ynSanjae: "산재보험적용",
+  ynLonginsur: "장기요양보험적용",
 
   abbNation: "거주지국",
   cdNation: "국적",
