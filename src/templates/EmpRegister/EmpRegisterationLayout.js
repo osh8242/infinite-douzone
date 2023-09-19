@@ -10,12 +10,12 @@ import Emp from "../../vo/EmpRegister/Emp";
 import MenuTab from "../../components/MenuTab";
 // import TextBoxComponent from "../../components/TextBoxComponent";
 // import AddressForm from "../../components/AddressForm";
-import CallNumberForm from "../../components/CallNumberForm";
+// import CallNumberForm from "../../components/CallNumberForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 // import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
 import TableForm from "../../components/TableForm";
-import { LABELS } from "../../model/CommonConstant";
+// import { LABELS } from "../../model/CommonConstant";
 import {
   EmpRegisterLeftHeaders,
   codeHelperData_abbNation,
