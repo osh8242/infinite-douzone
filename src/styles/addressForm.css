@@ -1,7 +1,7 @@
 .fullAddressArea {
   display: flex;
   justify-content: space-evenly;
-  gap: 4px;
+  gap: 6px;
 }
 
 .fullAddressArea .zoneCodeArea {
