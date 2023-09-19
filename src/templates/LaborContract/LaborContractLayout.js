@@ -13,8 +13,11 @@ import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
-
+// import useLoginModel from "../../Login/useLoginModel";
 import { MAIN_TAB, HEAD_TAB } from "./MainTab/LaborContractTabConstant";
+
+import { useSelector } from "react-redux";
+
 // import MainTab from "./MainTab/LaborContractMainTab";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -26,10 +29,48 @@ const LaborContractLayout = () => {
   const { mainTabRef, leftTableData, mainTabData, subTableData, selectedRows } =
     state;
 
+  const authData = useSelector((states) => states.auth);
+  console.log("login success:");
+  console.log(authData);
+  // const { LoginUser } = useLoginModel();
+  // console.log("Login Test");
+  // console.log(LoginUser);
+
+  console.log("Redux info....");
+  // const user = useSelector((state) => state.auth.user);
+  // console.log(user);
+  // console.log(user?.message);
+
+  // setTimeout(() => {
+  //   console.log(
+  //     "Delayed fetch from localStorage:",
+  //     localStorage.getItem("userInfo2")
+  //   );
+  // }, 2000);
+
+  console.log("localstore get");
+  // console.log(JSON.stringify(localStorage.getItem("userInfo")));
+
+  let userInfoString = localStorage.getItem("userInfo");
+
+  if (userInfoString) {
+    let userInfoObject = JSON.parse(userInfoString);
+    console.log("user value return");
+    console.log(userInfoObject);
+    console.log(userInfoObject.empImg);
+  } else {
+    console.log("userInfo 없음");
+  }
+
+  const entireState = useSelector((state) => state);
+  console.log(entireState);
+  console.log("Before useSelector");
+  const user = useSelector((state) => state.auth.user);
+  console.log("After useSelector:", user);
+
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
-
       <Container>
         {/* 조회영역 */}
         <SearchPanel showAccordion>

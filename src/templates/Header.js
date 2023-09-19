@@ -113,7 +113,6 @@ const Header = (props) => {
               fontSize: "13px",
               padding: "4px 14px 4px 14px",
               marginRight: "7px",
-
               borderRadius: "5px",
               textDecoration: "none",
             }}

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useLogin } from "./LoginProvider";
 import { url } from "../model/CommonConstant";
-
+// import { User } from "../../vo/User/User";
 const useLoginModel = () => {
-  const { loginInfo, updateToken } = useLogin();
+  const { loginInfo, updateToken, updateLoginInfo } = useLogin();
 
   const LoginUser = async () => {
     try {
@@ -13,8 +13,24 @@ const useLoginModel = () => {
       // 토큰이 반환된 경우
       if (response.data.token) {
         updateToken(response.data.token);
-        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("accessToken", response.data.token);
+        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
         console.log("로그인에 성공하였습니다.");
+
+        /////////// context 정보 저장 --> redux 변경 예정
+        updateLoginInfo({
+          userId: response.data.userId,
+          userPwd: response.data.userPwd,
+          userCompanyCode: response.data.companyCode,
+        });
+
+        console.log("LoginUser");
+        console.log(LoginUser);
+
+        console.log("login user info ..");
+        console.log(localStorage.getItem("userInfo"));
+        console.log(response.data);
+        window.location.href = `/mypage`; // 임시 리다이렉트
       } else {
         console.log(response.data.message || "로그인에 실패하였습니다.");
       }

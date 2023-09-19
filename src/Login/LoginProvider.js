@@ -12,6 +12,7 @@ export const LoginProvider = ({ children }) => {
     userId: "",
     userPwd: "",
     companyCode: "",
+    userImg: "",
   });
 
   // JWT 토큰 상태 관리

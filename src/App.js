@@ -4,27 +4,35 @@ import EmpRegisterationLayout from "./templates/EmpRegister/EmpRegisterationLayo
 import Header from "./templates/Header";
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LoginGrid from "./Login/LoginGrid";
-import LaborContractGrid from "./templates/LaborContract/LaborContractLayout";
+import LoginLayout from "./member/loginLayout";
+import LaborContractLayout from "./templates/LaborContract/LaborContractLayout";
 import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 import SignUp from "./SignUp/SignUp";
 import MainHome from "./templates/MainHome";
 import MyPage from "./templates/myPage";
+import { LoginProvider } from "./Login/LoginProvider";
+import { Provider } from "react-redux";
+import store from "./member/store";
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<MainHome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/er" element={<EmpRegisterationLayout />} />
-          <Route path="/hr" element={<HrManagementLayout />} />
-          <Route path="/lc/*" element={<LaborContractGrid />} />
-          <Route path="/si" element={<SalaryInformationEntryLayout />} />
-          <Route path="/login" element={<LoginGrid />} />
-          <Route path="/mypage" element={<MyPage />} />
-        </Routes>
-      </BrowserRouter>
+      {/* <LoginProvider> */}
+      <Provider store={store}>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<MainHome />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/er" element={<EmpRegisterationLayout />} />
+            <Route path="/hr" element={<HrManagementLayout />} />
+            <Route path="/lc/*" element={<LaborContractLayout />} />
+            <Route path="/si" element={<SalaryInformationEntryLayout />} />
+            <Route path="/login" element={<LoginLayout />} />
+            <Route path="/mypage" element={<MyPage />} />
+          </Routes>
+        </BrowserRouter>
+        {/* </LoginProvider> */}
+      </Provider>
     </div>
   );
 }

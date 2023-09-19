@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: url,
 });
 
-// 인터셉터 요청
+// 인터셉터요청
 api.interceptors.request.use(
   (config) => {
     // 임시 localStorage 저장 -->redis 변경예정
@@ -32,7 +32,7 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.log("토큰이 만료되었거나 유효하지 않습니다. ");
       // 로그인 페이지 리다이렉트
-      window.location.href = `${url}/login`;
+      window.location.href = `/login`;
     }
     // 오류 하위로 전달
     return Promise.reject(error);
