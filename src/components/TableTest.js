@@ -466,8 +466,6 @@ const TableTest = ({
                 let codeHelperData = codeHelper[field];
                 let empFam = tableRows[rowIndex].item;
                 const setRowData = (e, pkValue) => {
-                  console.log("pkValue", pkValue);
-                  console.log("empFam", empFam);
                   actions.updateEditedRow(Object.assign(empFam, pkValue));
                 };
 
