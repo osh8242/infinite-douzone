@@ -65,7 +65,7 @@ const LaborContractLayout = () => {
   const entireState = useSelector((state) => state);
   console.log(entireState);
   console.log("Before useSelector");
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.user);
   console.log("After useSelector:", user);
 
   return (

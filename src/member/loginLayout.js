@@ -5,6 +5,7 @@ import { loginUser } from "./api";
 import TextBoxComponent from "../components/TextBoxComponent";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
+import "./login.css";
 
 const LoginLayout = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,9 @@ const LoginLayout = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loginError, setLoginError] = useState(false); // 로그인 에러 상태 추가
+  const [loginErrorCount, setLoginErrorCount] = useState(0);
+  const [keyframeTrigger, setKeyframeTrigger] = useState(0);
   const handleLogin = async () => {
     try {
       const responseData = await loginUser(username, password);
@@ -24,19 +28,6 @@ const LoginLayout = () => {
       if (responseData.message === "SUCCESS") {
         console.log("(1-1) ---- Message : SUCCESS");
 
-        // localStorage response data : token, loginUser
-        /// localStorage 값으로 redux store 저장
-
-        // localStorage.setItem("token", JSON.stringify(responseData.token));
-        // let TOKEN = localStorage.getItem("token");
-        // if (TOKEN) {
-        //   let TOKEN_KEY = JSON.parse(TOKEN);
-        //   console.log("(1-2) ----- localStorage TOKEN KEY Value: ");
-        //   console.log(TOKEN_KEY);
-        //   // 로컬 set 과 같은 개념?
-        //   dispatch(loginSuccess(TOKEN_KEY));
-        // }
-
         localStorage.setItem("userInfo", JSON.stringify(responseData.user));
         let userInfoString = localStorage.getItem("userInfo");
 
@@ -47,13 +38,37 @@ const LoginLayout = () => {
           //////////
           dispatch(loginSuccess(userInfoObject));
         }
+
         // window.location.href = "/lc"; // 임시 리다이렉트
       } else {
         console.error(responseData.message);
         window.location.href = "/login"; // 임시 리다이렉트
       }
     } catch (error) {
-      console.error("로그인 에러:", error);
+      console.error("ERROR:", error);
+
+      setLoginError(true);
+      setLoginErrorCount((prev) => {
+        if (prev >= 1) {
+          setKeyframeTrigger((k) => k + 1); // 두 번째 에러부터 키 프레임 트리거 업데이트
+        }
+        return prev + 1;
+      });
+      if (error.response) {
+        if (
+          error.response.status === 401 &&
+          error.response.data.message === "CHECK_ID"
+        ) {
+          console.log("아이디를 찾을 수 없습니다.");
+        } else if (
+          error.response.status === 401 &&
+          error.response.data.message === "CHECK_PWD"
+        ) {
+          console.log("비밀번호가 틀렸습니다.");
+        } else {
+          console.log("로그인 처리 중 오류가 발생했습니다.");
+        }
+      }
     }
   };
 
@@ -89,6 +104,8 @@ const LoginLayout = () => {
               height={45}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              className={loginError ? "invalid" : ""} // 로그인 실패시 클래스 추가
+              onFocus={() => setLoginError(false)} // 포커스 시 에러 상태 해제
             />
           </Col>
         </Row>
@@ -105,6 +122,21 @@ const LoginLayout = () => {
             />
           </Col>
         </Row>
+
+        {loginError && ( // 로그인 에러 메시지 출력
+          <Row className="justify-content-center mb-4">
+            <Col md="9">
+              <span
+                key={keyframeTrigger}
+                style={{ color: "red", fontSize: 15 }}
+                className={loginErrorCount >= 2 ? "blink-animation" : ""}
+              >
+                다시 시도해주세요
+              </span>
+            </Col>
+          </Row>
+        )}
+
         <Row className="justify-content-center mb-4">
           <Col md="10" className="d-flex flex-column align-items-center">
             <Button
