@@ -1,12 +1,24 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import ConfirmComponent from "./ConfirmComponent";
 import SelectForm from "./SelectForm";
 import TextBoxComponent from "./TextBoxComponent";
+import ModalComponent from "./ModalComponent";
+import CodeHelperModal from "./CodeHelperModal";
 
 const TableTest = ({
   tableHeaders, // [필수]
@@ -146,6 +158,7 @@ const TableTest = ({
         return { ...row, isEditable: false };
       });
       setTableRows(newTableRows);
+      return newTableRows;
     }
   }, [tableRows]);
 
@@ -180,6 +193,7 @@ const TableTest = ({
   const removeNewRow = useCallback(() => {
     if (tableRows?.[tableRows.length - 1]?.isNew) tableRows.pop();
     setTableRows([...tableRows]);
+    console.log("tableRows in removeNewRow", tableRows);
   }, [tableRows]);
 
   //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
@@ -414,7 +428,6 @@ const TableTest = ({
       const row = tableRows[rowIndex];
       const type = tableHeaders[columnIndex].type;
       const field = tableHeaders[columnIndex].field;
-      const disabled = tableHeaders[columnIndex].field;
       switch (type) {
         case "select":
           return (
@@ -432,7 +445,7 @@ const TableTest = ({
         case "date":
           return (
             <TextBoxComponent
-              type={"date"}
+              type="date"
               id={field}
               value={row.isNew ? "" : row.item[field]}
               onChange={(e, value) => {
@@ -447,8 +460,27 @@ const TableTest = ({
             <TextBoxComponent
               id={field}
               type="text"
+              label={"."}
               value={row.isNew ? "" : row.item[field]}
-              onClickCodeHelper={codeHelper}
+              onClickCodeHelper={() => {
+                let codeHelperData = codeHelper[field];
+                let empFam = tableRows[rowIndex].item;
+                const setRowData = (e, pkValue) => {
+                  console.log("pkValue", pkValue);
+                  console.log("empFam", empFam);
+                  actions.updateEditedRow(Object.assign(empFam, pkValue));
+                };
+
+                setModalState({
+                  show: true,
+                  title: codeHelperData.title,
+                  tableHeaders: codeHelperData.headers,
+                  tableData: codeHelperData.tableData,
+                  searchField: codeHelperData.searchField,
+                  usePk: codeHelperData.usePk,
+                  setRowData: setRowData,
+                });
+              }}
             />
           );
         default: // 타입이 명시되지않으면 일반 text 타입 반환
@@ -468,7 +500,7 @@ const TableTest = ({
 
   const getTdValue = useCallback(
     (rowIndex, columnIndex) => {
-      //console.log("겟TD벨류 tableRows", tableRows);
+      //console.log("getTdValue() > tableRows", tableRows);
       const type = tableHeaders[columnIndex]?.type;
       const field = tableHeaders[columnIndex].field;
       const value = tableRows[rowIndex].item[field];
@@ -515,9 +547,8 @@ const TableTest = ({
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
-              releaseEditable();
               removeNewRow();
-              setTableRows([...tableRows]);
+              releaseEditable();
               break;
             default:
               break;
@@ -545,7 +576,8 @@ const TableTest = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -640,7 +672,9 @@ const TableTest = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -716,7 +750,9 @@ const TableTest = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
+            <tr
+              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
+            >
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
@@ -735,7 +771,9 @@ const TableTest = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (
@@ -752,16 +790,22 @@ const TableTest = ({
         </tbody>
         {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
-      <ConfirmComponent
+      <ModalComponent
+        title={modalState.title}
+        size={modalState.size}
         show={modalState.show}
-        message={modalState.message}
-        onConfirm={
-          modalState.onConfirm
-            ? modalState.onConfirm
-            : () => setModalState({ show: false })
-        }
+        onConfirm={modalState.onConfirm}
         onHide={() => setModalState({ show: false })}
-      />
+      >
+        <CodeHelperModal
+          setRowData={modalState.setRowData}
+          tableHeaders={modalState.tableHeaders}
+          tableData={modalState.tableData}
+          searchField={modalState.searchField}
+          usePk={modalState.usePk}
+          onHide={() => setModalState({ show: false })}
+        />
+      </ModalComponent>
     </>
   );
 };

@@ -87,24 +87,24 @@ export const CODE_HELPER_DATA = {
     searchField: ["cdOffduty", "nmCdOffduty"],
     usePk: "cdOffduty",
   },
-  rankNo: {
+  cdOffpos: {
     title: "직급 조회",
     headers: [
-      { field: "rankNo", text: "직급코드" },
-      { field: "nmRankNo", text: "직급명" },
+      { field: "cdOffpos", text: "직급코드" },
+      { field: "nmCdOffpos", text: "직급명" },
     ],
     tableData: [
-      { item: { rankNo: "R001", nmRankNo: "사원" } },
-      { item: { rankNo: "R002", nmRankNo: "주임" } },
-      { item: { rankNo: "R003", nmRankNo: "대리" } },
-      { item: { rankNo: "R004", nmRankNo: "과장" } },
-      { item: { rankNo: "R005", nmRankNo: "차장" } },
-      { item: { rankNo: "R006", nmRankNo: "부장" } },
-      { item: { rankNo: "R007", nmRankNo: "이사" } },
-      { item: { rankNo: "R008", nmRankNo: "사장" } },
+      { item: { cdOffpos: "R001", nmCdOffpos: "사원" } },
+      { item: { cdOffpos: "R002", nmCdOffpos: "주임" } },
+      { item: { cdOffpos: "R003", nmCdOffpos: "대리" } },
+      { item: { cdOffpos: "R004", nmCdOffpos: "과장" } },
+      { item: { cdOffpos: "R005", nmCdOffpos: "차장" } },
+      { item: { cdOffpos: "R006", nmCdOffpos: "부장" } },
+      { item: { cdOffpos: "R007", nmCdOffpos: "이사" } },
+      { item: { cdOffpos: "R008", nmCdOffpos: "사장" } },
     ],
-    searchField: ["rankNo", "nmRankNo"],
-    usePk: "rankNo",
+    searchField: ["cdOffpos", "nmCdOffpos"],
+    usePk: "cdOffpos",
   },
 };
 
@@ -134,6 +134,6 @@ export const subTableConstant = {
     { field: "daBirth", text: "생년월일", type: "date", width: "114px" },
     { field: "cdJob", text: "직업", width: "65px" },
     { field: "nmKrcom", text: "직장명", width: "65px" },
-    { field: "cdOffpos", text: "직급", width: "65px" },
+    { field: "cdOffpos", text: "직급", width: "65px", type: "textCodeHelper" },
   ],
 };

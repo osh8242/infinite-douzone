@@ -24,6 +24,7 @@ import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
+import TextBoxComponent from "../../components/TextBoxComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -245,6 +246,7 @@ const HrManagementLayout = () => {
                   sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
+                  codeHelper={CODE_HELPER_DATA}
                   pkValue={leftTablePkValue}
                   selectedRows={selectedRows}
                   actions={{
@@ -270,11 +272,7 @@ const HrManagementLayout = () => {
         onHide={() => actions.setModalState({ show: false })}
       >
         <CodeHelperModal
-          setRowData={codeHelperTableData.setRowData}
-          usePk={codeHelperTableData.usePk}
-          tableHeaders={codeHelperTableData.tableHeaders}
-          tableData={codeHelperTableData.tableData}
-          searchField={codeHelperTableData.searchField}
+          codeHelperTableData={modalState.tableData}
           onHide={() => actions.setModalState({ show: false })}
         />
       </ModalComponent>

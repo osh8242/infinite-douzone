@@ -66,7 +66,8 @@ const HrManagementModel = () => {
           );
 
           if (targetIndex !== -1) {
-            empAdd["jobOk"] = newLeftCodeHelperTableData[targetIndex].item["jobOk"];
+            empAdd["jobOk"] =
+              newLeftCodeHelperTableData[targetIndex].item["jobOk"];
             newLeftTableData.push({ item: empAdd, table: "empAdd" });
             newLeftCodeHelperTableData = newLeftCodeHelperTableData.filter(
               (row, index) => index !== targetIndex
@@ -161,9 +162,12 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (leftTablePkValue.cdEmp) {
       axios
-        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
-          responseType: "arraybuffer",
-        })
+        .get(
+          `${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`,
+          {
+            responseType: "arraybuffer",
+          }
+        )
         .then((response) => {
           // ArrayBuffer를 Blob으로 변환하고 URL을 생성
           const blob = new Blob([response.data], { type: "image/jpeg" });
@@ -375,6 +379,7 @@ const HrManagementModel = () => {
 
   //수정된 사원가족 update 요청
   const updateEmpFam = useCallback((empFam) => {
+    console.log("updateEmpFam", "newEmpFam", empFam);
     axios
       .put(url + urlPattern.updateEmpFam, empFam)
       .then((response) => {

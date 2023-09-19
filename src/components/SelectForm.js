@@ -35,7 +35,7 @@ function SelectForm(props) {
 
   const [selectedValue, setSelectedValue] = useState(selectedOption || "");
   useEffect(() => {
-    setSelectedValue(selectedOption);
+    setSelectedValue(selectedOption || "");
   }, [selectedOption]);
 
   const handleSelectChange = (event) => {
@@ -53,7 +53,10 @@ function SelectForm(props) {
           {subLabel ? (
             <div className="widthFull d-flex align-items-center justify-content-between">
               <div className="widthFull d-flex align-items-center">
-                <div style={{ width: "28%" }} className="d-flex justify-content-end">
+                <div
+                  style={{ width: "28%" }}
+                  className="d-flex justify-content-end"
+                >
                   {subLabel}
                 </div>
                 <div
