@@ -1,37 +1,35 @@
 // 작성자: 김진
 // 사원등록 페이지 전용 레이아웃
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
+import MenuTab from "../../components/MenuTab";
+import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/commonComponent.css";
-import EmpRegisterHeader from "./EmpRegisterHeader";
-import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
 import Emp from "../../vo/EmpRegister/Emp";
-import MenuTab from "../../components/MenuTab";
+import EmpRegisterHeader from "./EmpRegisterHeader";
 // import TextBoxComponent from "../../components/TextBoxComponent";
 // import AddressForm from "../../components/AddressForm";
-// import CallNumberForm from "../../components/CallNumberForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 // import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
+import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import FormPanel from "../../components/FormPanel";
 import TableForm from "../../components/TableForm";
-// import { LABELS } from "../../model/CommonConstant";
 import {
   EmpRegisterLeftHeaders,
   codeHelperData_abbNation,
-  codeHelperData_cdNation,
-  codeHelperData_cdDept,
-  codeHelperData_rankNo,
-  codeHelperData_cdSalcls,
-  codeHelperData_cdProject,
-  codeHelperData_cdOccup,
-  codeHelperData_cdField,
-  tabConstant,
   codeHelperData_cdBank,
+  codeHelperData_cdDept,
+  codeHelperData_cdField,
+  codeHelperData_cdNation,
+  codeHelperData_cdOccup,
+  codeHelperData_cdProject,
+  codeHelperData_cdSalcls,
+  codeHelperData_rankNo,
+  tabConstant,
 } from "../../model/EmpRegister/EmpConstant";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
-import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
-import FormPanel from "../../components/FormPanel";
 import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
 
 function EmpRegisterationLayout() {

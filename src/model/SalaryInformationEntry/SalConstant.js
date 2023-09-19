@@ -1,5 +1,7 @@
 import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
 
+export const DELETE_EMPLIST_URL = "/saEmpInfo/deleteSaEmpList";
+
 /* 사원리스트 영역 */
 export const salEmp = {
     headers : [
@@ -14,7 +16,24 @@ export const salEmp = {
 export const salAllow = {
     headers : [
         { field: "nmAllow", text: "급여항목" , readOnly : true},
+        { field: "allowPay", text: "지급금액" }
+    ]
+};
+
+export const salAllowSumData = {
+    headers : [
+        { field: "taxYSum", text: "과세" },
+        { field: "taxNSum", text: "비과세" },
+        { field: "sum", text: "총합계" },
+    ]
+};
+
+/* 급여항목+계산식 영역 */
+export const salAllowWithCalculation = {
+    headers : [
+        { field: "nmAllow", text: "급여항목" , readOnly : true},
         { field: "allowPay", text: "지급금액" },
+        { field: "calculation", text: "산출식 또는 산출방법" },
     ]
 };
 
@@ -26,6 +45,13 @@ export const salDeduct = {
     ]
 }
 
+export const salDeductWithCalculation = {
+    headers : [
+        { field: "nmDeduct", text: "공제항목" },
+        { field: "allowPay", text: "지급금액" },
+        { field: "calculation", text: "산출식 또는 산출방법" },
+    ]
+}
 /* 조회구분 영역 */
 export const salAllowSum =  {
     headers : [
@@ -116,7 +142,7 @@ export const codeHelperData_emplist = {
         { field: "noSocial", text: "주민(외국인)번호" },
         { field: "daRetire", text: "퇴사일자" }
               ]
-    //, params : { ynFor: 'n', refYear: '2023' }
+    , params : { ynFor: 'n', refYear: '2023' }
     , searchField : ['nmKrname','noSocial']
     , usePk : "cdEmp"
   };
@@ -147,28 +173,87 @@ export const codeHelperData_occup = {
     , usePk : "codeId"
 };
 
+
 /* 서브메뉴(모달) */
-// 수당/공제 등록
+// 급여항목 입력
+export const modal_addSalAllow = {
+    subject : '급여항목 입력',
+    size : 'sm',
+    
+};
+
+// 수당/공제 등록 모달제목
 export const modal_insertSalaryData = {
     subject : '수당 및 공제 등록',
+    size: 'xl',
+    url : '/saallowpay/getsalAllowList', // selectList 불러올 url
+    params : { salDivison : 'BONUS' }
+}
+
+// 재계산 
+export const modal_reCalculationList = {
+    subject : '재계산', 
+    size: 'xl'
+}
+
+export const modal_insertSalaryAllowData = {
     url : '/saallowpay/getsalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "수당명" },
         { field: "ynTax", text: "과세여부" },
         { field: "nmSalDivison", text: "근로소득유형" },
+        { field: "commonlyYn", text: "통상" },
+        { field: "monthlyYn", text: "월정" },
+    ],
+    headersWithCalculation :[
+        { field: "cdAllow", text: "Code" },
+        { field: "nmAllow", text: "수당명" },
+        { field: "ynTax", text: "과세여부" },
+        { field: "nmSalDivison", text: "근로소득유형" },
+        { field: "calculation", text : "산출식 또는 산출방법" }
+    ]
+}
+
+export const modal_insertSalaryDeductData = {
+    url : '/sadeductpay/getsalDeductList',
+    headers : [
+        { field: "cdDeduct", text: "Code" },
+        { field: "nmDeduct", text: "공제항목명" },
+        { field: "ynSal", text: "급여" },
+        { field: "ynBonus", text: "상여" },
+    ],
+    headersWithCalculation :[
+        { field: "cdDeduct", text: "Code" },
+        { field: "nmDeduct", text: "공제항목명" },
+        { field: "ynSal", text: "급여" },
+        { field: "ynBonus", text: "상여" },
+        { field: "calculation", text : "산출식 또는 산출방법" }
+    ]
+}
+
+export const modal_nontaxSetup = {
+    url : '/saallowpay/getNonTaxSalAllowList',
+    headers : [
+        { field: "cdAllow", text: "Code" },
+        { field: "nmAllow", text: "비과세 항목" },
+        { field: "nonTaxDivison", text: "구분" },
+        { field: "nonTaxLimit", text: "한도" },
+        // { field: "ynBonus", text: "지급명세" },
     ],
 }
 
-// 재계산 
-export const reCalculationList = {
-    subject : '재계산',
-    reCalculationList : 
-    [{key : '' , value : '과세, 비과세 재계산'}
-     , {key : '' , value : '사원정보 변경'}]    
+// 산출식 또는 산출방법
+export const modal_calculationModal = {
+    subject : "산출식 또는 산출방법",
+    url : '/saallowpay/getsalAllowList',
+    headers : [
+        { field: "cdAllow", text: "Code" },
+        { field: "nmAllow", text: "수당명" },
+        { field: "ynTax", text: "과세여부" },
+        { field: "calculation", text: "산출식 또는 산출방법" },
+    ]
 }
-
-
 
 // 공제항목
 export const NATIONAL_PENSION = 'DEDUCT_NATION';  // 국민연금
@@ -182,7 +267,6 @@ export const RND_EXPENSES = '523';               // 연구개발비
 export const EMPLOYEE_BENEFITS = '511';          // 복리후생비 
 export const MEALS = '597';                      // 식대
 export const BONUS = '505';                      // 상여금
-
 
 
 //국민연금 계산식

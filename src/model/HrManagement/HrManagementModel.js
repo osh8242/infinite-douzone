@@ -8,12 +8,13 @@ import { url } from "../CommonConstant";
 import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
-  const [jobOk, setJobOk] = useState("Y"); //재직여부
-  const [refYear, setRefYear] = useState(new Date().getFullYear()); // 귀속년도
-  const [orderRef, setOrderRef] = useState("cdEmp"); // 정렬기준
+  const jobOkRef = useRef("Y"); //재직여부
+  const yearRef = useRef(new Date().getFullYear()); // 귀속년도
+  const orderRef = useRef("cdEmp"); // 정렬기준
 
   const [leftTableData, setLeftTableData] = useState([]); // 좌측 그리드 데이터
-  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" }); // 좌측 그리드 PK
+  const [leftCodeHelperTableData, setLeftCodeHelperTableData] = useState([]);
+  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "" }); // 좌측 그리드 PK
   const [editedEmp, setEditedEmp] = useState({}); // 좌측 그리드 수정 ROW
 
   const [mainTabData, setMainTabData] = useState({}); // 메인탭 데이터
@@ -24,42 +25,117 @@ const HrManagementModel = () => {
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
+  const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
+  const [codeHelperTableData, setCodeHelperTableData] = useState([]);
+
+  const [tableUpdate, setTableUpdate] = useState(false);
   //검색조건 : 재직구분, 정렬기준
-  const jobOkSelectRef = useRef();
-  const orderSelectRef = useRef();
+  const jobOkSelectRef = useRef("yAndOnThisYear");
+  const orderSelectRef = useRef("cdEmp");
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
-  const onSearch = useCallback((jobOkRef, orderRef) => {
-    setOrderRef(orderRef.current.value);
-    if (jobOkRef.current.value === "yAndOnThisYear") {
-      setRefYear(new Date().getFullYear());
-      setJobOk("Y");
+  const onSearch = (jobOkSelectRef, orderSelectRef) => {
+    orderRef.current = orderSelectRef.current.value;
+    if (jobOkSelectRef.current.value === "yAndOnThisYear") {
+      yearRef.current = new Date().getFullYear();
+      jobOkRef.current = "Y";
     } else {
-      setRefYear();
-      setJobOk(jobOkRef.current.value);
+      yearRef.current = null;
+      jobOkRef.current = jobOkSelectRef.current.value;
     }
-  }, []);
+    console.log("jobOkSelectRef", jobOkSelectRef.current.value);
+    console.log("orderSelectRef", orderSelectRef.current.value);
+    console.log("yearRef", yearRef.current);
+    getEmpList();
+  };
 
-  //leftTableData 가져오는 비동기 GET 요청
-  useEffect(() => {
+  const getLeftTableData = (newLeftCodeHelperTableData) => {
     axios
       .get(
-        `${url}/emp/getEmpListForHrManagement?jobOk=${jobOk}+
-        ${"&orderRef=" + orderRef}
-        +
-        ${refYear ? "&refYear=" + refYear : ""}`
+        `${url}/empAdd/getEmpAddListForHrManagement?jobOk=${jobOkRef.current}+
+      ${"&orderRef=" + orderRef.current}
+      +
+      ${yearRef.current ? "&refYear=" + yearRef.current : ""}`
       )
       .then((response) => {
-        const data = response.data.map((item) => {
-          return Emp(item);
+        let newLeftTableData = [];
+
+        response.data.forEach((empAdd, index) => {
+          const targetIndex = newLeftCodeHelperTableData.findIndex(
+            (row) => row.item["cdEmp"] === empAdd["cdEmp"]
+          );
+
+          if (targetIndex !== -1) {
+            empAdd["jobOk"] = newLeftCodeHelperTableData[targetIndex].item["jobOk"];
+            newLeftTableData.push({ item: empAdd, table: "empAdd" });
+            newLeftCodeHelperTableData = newLeftCodeHelperTableData.filter(
+              (row, index) => index !== targetIndex
+            );
+          }
         });
-        setLeftTableData(data);
+        console.log("newLeftCodeHelperTableData", newLeftCodeHelperTableData);
+        console.log("newLeftTableData", newLeftTableData);
+        setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+        setLeftTableData(newLeftTableData);
       })
       .catch((error) => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [jobOk, refYear, orderRef]);
+  };
+
+  //leftTableData 가져오는 비동기 GET 요청
+  const getEmpList = () => {
+    axios
+      .get(
+        `${url}/emp/getEmpListForHrManagement?jobOk=${jobOkRef.current}+
+      ${"&orderRef=" + orderRef.current}
+      +
+      ${yearRef.current ? "&refYear=" + yearRef.current : ""}`
+      )
+      .then((response) => {
+        const newLeftCodeHelperTableData = response.data.map((emp) => Emp(emp));
+        console.log("newLeftCodeHelperTableData", newLeftCodeHelperTableData);
+
+        getLeftTableData(newLeftCodeHelperTableData);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  };
+
+  //인사관리 insert 요청
+  const insertEmpAdd = useCallback((emp) => {
+    axios
+      .post(url + "/empAdd/insertEmpAdd", emp)
+      .then((response) => {
+        if (response.data === 1) console.log("EmpAdd insert 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  //테이블에 인사관리 등록
+  const registEmpAdd = useCallback(
+    (event, pkValue) => {
+      const targetCdEmp = pkValue.cdEmp;
+      let newLeftCodeHelperTableData = leftCodeHelperTableData.filter((row) => {
+        if (targetCdEmp === row.item.cdEmp) {
+          leftTableData.push(row);
+          insertEmpAdd(row.item);
+          return false;
+        }
+        return true;
+      });
+
+      setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+      setLeftTableData([...leftTableData]);
+    },
+    [insertEmpAdd, leftCodeHelperTableData, leftTableData]
+  );
 
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -141,15 +217,29 @@ const HrManagementModel = () => {
     [leftTablePkValue]
   );
 
+  const deleteEmpPhoto = useCallback(() => {
+    const row = { item: leftTablePkValue, table: "empPhoto" };
+    console.log("row", row);
+    deleteRow(row);
+    setLeftTablePkValue({ ...leftTablePkValue });
+  }, [leftTablePkValue]);
+
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
   const submitMainTabData = useCallback(
     (event, value) => {
+      console.log("서브밋메인탭 데이터", event, value);
       if (event.key === "Enter" || event.type === "change") {
         event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newEmpAdd = { ...mainTabData };
         newEmpAdd[event.target.id] = value;
+        console.log("newEmpAdd", newEmpAdd);
+        updateEmpAdd(newEmpAdd);
+      }
+      if (event.type === "click") {
+        let newEmpAdd = { ...mainTabData };
+        Object.assign(newEmpAdd, value);
         console.log("newEmpAdd", newEmpAdd);
         updateEmpAdd(newEmpAdd);
       }
@@ -165,7 +255,7 @@ const HrManagementModel = () => {
   //       .put(url + "/empAdd/updateEmpAdd", editedEmpAdd)
   //       .then((response) => {
   //         if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-  //         setEditedEmpAdd({});
+  //         setLeftTablePkValue({...leftTablePkValue});
   //       })
   //       .catch((error) => {
   //         console.error("에러발생: ", error);
@@ -175,18 +265,22 @@ const HrManagementModel = () => {
   // }, [editedEmpAdd]);
 
   //update EmpAdd
-  const updateEmpAdd = useCallback((EmpAdd) => {
-    console.log("editedEmpAdd 업데이트 요청", EmpAdd);
-    axios
-      .put(url + "/empAdd/updateEmpAdd", EmpAdd)
-      .then((response) => {
-        if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, []);
+  const updateEmpAdd = useCallback(
+    (EmpAdd) => {
+      console.log("editedEmpAdd 업데이트 요청", EmpAdd);
+      axios
+        .put(url + "/empAdd/updateEmpAdd", EmpAdd)
+        .then((response) => {
+          if (response.data === 1) console.log("EmpAdd 업데이트 성공");
+          setLeftTablePkValue({ ...leftTablePkValue });
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [leftTablePkValue]
+  );
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
@@ -341,12 +435,18 @@ const HrManagementModel = () => {
   //현재행 삭제요청
   const deleteRow = useCallback((row) => {
     let pattern;
-    switch (row.table) {
+    switch (row["table"]) {
       case "empFam":
         pattern = urlPattern.deleteEmpFam;
         break;
       case "emp":
         pattern = urlPattern.deleteEmp;
+        break;
+      case "empAdd":
+        pattern = urlPattern.deleteEmpAdd;
+        break;
+      case "empPhoto":
+        pattern = urlPattern.deleteEmpPhoto;
         break;
       default:
         console.log("설정되지 않은 테이블 행을 삭제요청받음");
@@ -365,7 +465,7 @@ const HrManagementModel = () => {
     let jobOkY = 0;
     let jobOkN = 0;
     leftTableData.forEach((row) => {
-      if (row.item["jobOk"] === "Y") jobOkY++;
+      if (row.item?.["jobOk"] === "Y") jobOkY++;
       else jobOkN++;
     });
     return [
@@ -386,23 +486,23 @@ const HrManagementModel = () => {
 
       leftTableData,
       leftTablePkValue,
+      leftCodeHelperTableData,
       leftStaticsTableData,
 
       mainTabData,
       empImageSrc,
       subTableData,
       selectedRows,
-      jobOk,
-      refYear,
-      orderRef,
+
+      modalState,
+      codeHelperTableData,
     },
     actions: {
-      setJobOk,
-      setRefYear,
-      setOrderRef,
       onSearch,
 
       setLeftTableData,
+      setLeftCodeHelperTableData,
+      registEmpAdd,
       setLeftTablePkValue,
       insertEmp,
       updateEmp,
@@ -420,6 +520,10 @@ const HrManagementModel = () => {
       deleteSelectedRows,
 
       deleteRow,
+      deleteEmpPhoto,
+
+      setModalState,
+      setCodeHelperTableData,
     },
   };
 };

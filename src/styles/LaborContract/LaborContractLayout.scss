@@ -1,20 +1,28 @@
-.hr-leftTable {
+.leftTable {
   padding-left: 0 !important;
   padding-right: 0 !important;
-  height: 60.3vh;
+  height: 70vh;
   overflow: auto;
   border: 1px solid rgb(222, 226, 230);    
 }
 
-.hr-subTable { 
+.subTable { 
   padding-left: 0;
   padding-right: 0;
-  height: 25vh;
+  height: 17vh;
   overflow: auto;
   outline: 1.5px solid rgb(222, 226, 230);
 }
 
-.hr-mainTab{
+.sb {  
+}
+
+.mainTab{
   background-color: #E9ECEF;
 
+}
+
+.menuGrid{
+    padding-top: 500;
+    margin-top: 500;
 }

@@ -33,7 +33,11 @@ export const MAIN_TAB = {
       field: "rankNo",
       disabled: true,
     },
-    { type: INPUT_TYPE.text, field: "cdOffduty", label: LABELS.cdOffduty },
+    {
+      type: INPUT_TYPE.textCodeHelper,
+      field: "cdOffduty",
+      label: LABELS.cdOffduty,
+    },
     {
       type: INPUT_TYPE.radio,
       field: "ynDrawContracts",
@@ -111,7 +115,16 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.callNumber,
       field: "telHome",
       label: LABELS.telHome,
-      span: 1,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "celEmp",
+      label: LABELS.celEmp,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telOffice",
+      label: LABELS.telOffice,
     },
   ],
 };

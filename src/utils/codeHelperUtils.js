@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { objectToQueryString } from "./StringUtils";
+import { url } from "../model/CommonConstant";
 
 export async function fetchData(url, params) {
     try {
@@ -13,10 +14,9 @@ export async function fetchData(url, params) {
     }
   }
 
-  export const apiDataForTable = (url, params) => {
-    const serverUrl = "http://localhost:8888";
-
-    return axios.get(serverUrl + url + objectToQueryString(params))
+  export const apiDataForTable = (urlPattern, params) => {
+    
+    return axios.get(url + urlPattern + objectToQueryString(params))
       .then((response) => {
         const data = response.data;
         const tableDataList = data.map((object) => {

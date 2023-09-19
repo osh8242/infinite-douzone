@@ -35,7 +35,7 @@ function ConfirmComponent(props) {
             취소
           </Button>
         )}
-        <Button variant="primary" onClick={onConfirm}>
+        <Button variant="primary" onClick={()=>onConfirm()}>
           확인
         </Button>
       </Modal.Footer>

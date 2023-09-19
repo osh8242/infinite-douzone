@@ -150,6 +150,7 @@ export const LABELS = {
   cdNation: "국적",
   telHome: "전화번호",
   celEmp: "모바일번호",
+  telOffice: "담당전화",
   emEmp: "이메일",
   idMsn: "메신저ID",
   cdOccup: "직종",
@@ -212,6 +213,8 @@ export const LABELS = {
   endBreakTime: "종료휴게시간",
   bonusAmount: "상여금",
   paymentDate: "작성일자",
+  startEmpContractPeriod: "계약시작기간",
+  endEmpContractPeriod: "계약종료기간",
 };
 
 export const CODE = {
