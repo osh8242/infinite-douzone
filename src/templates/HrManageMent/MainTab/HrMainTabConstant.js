@@ -95,7 +95,7 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.text,
       field: "addHome2",
       label: LABELS.addHome2,
-      span: 3,
+      span: 1,
     },
     {
       type: INPUT_TYPE.address,
@@ -108,7 +108,7 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.text,
       field: "addOrgin2",
       label: LABELS.addOrgin2,
-      span: 3,
+      span: 1,
     },
     {
       type: INPUT_TYPE.text,
