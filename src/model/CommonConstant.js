@@ -254,4 +254,5 @@ export const CODE = {
     OCCUP: "OCCUP", // 직종 ()
   },
 };
+
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";
