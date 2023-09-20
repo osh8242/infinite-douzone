@@ -591,6 +591,7 @@ const TableTest = ({
               event.preventDefault();
               setModalState({
                 show: true,
+                title: "삭제확인",
                 message: "해당 행을 삭제하시겠습니까?",
                 onConfirm: () => {
                   actions.deleteRow(tableRows[rowRef]);
@@ -784,14 +785,18 @@ const TableTest = ({
         onConfirm={modalState.onConfirm}
         onHide={() => setModalState({ show: false })}
       >
-        <CodeHelperModal
-          setRowData={modalState.setRowData}
-          tableHeaders={modalState.tableHeaders}
-          tableData={modalState.tableData}
-          searchField={modalState.searchField}
-          usePk={modalState.usePk}
-          onHide={() => setModalState({ show: false })}
-        />
+        {modalState.message ? (
+          modalState.message
+        ) : (
+          <CodeHelperModal
+            setRowData={modalState.setRowData}
+            tableHeaders={modalState.tableHeaders}
+            tableData={modalState.tableData}
+            searchField={modalState.searchField}
+            usePk={modalState.usePk}
+            onHide={() => setModalState({ show: false })}
+          />
+        )}
       </ModalComponent>
     </>
   );
