@@ -116,31 +116,32 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      <HrManagementHeader
-        deleteButtonHandler={actions.deleteSelectedRows}
-        existSelectedRows={selectedRows.length !== 0}
-      />
-      <button
+      {/* <button
         onClick={() => {
           getToken();
         }}
       >
         JWT 토큰 발급받고 인증해보기
-      </button>
-
-      <Container>
+      </button> */}
+      <HrManagementHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
+      <Container className="hr-container">
         {/* 조회영역 */}
-        <HrSearchPanel
-          onSearch={actions.onSearch}
-          jobOkSelectRef={jobOkSelectRef}
-          orderSelectRef={orderSelectRef}
-          searchOption={searchOption}
-          orderList={orderList}
-        />
+        <Row className="hr-search-row">
+          <HrSearchPanel
+            onSearch={actions.onSearch}
+            jobOkSelectRef={jobOkSelectRef}
+            orderSelectRef={orderSelectRef}
+            searchOption={searchOption}
+            orderList={orderList}
+          />
+        </Row>
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
-          <Col md="3">
+          <Col md="3" className="hr-left-col">
             {/* 좌측 그리드 */}
             <Row>
               <div className="hr-leftTable">

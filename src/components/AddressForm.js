@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Row } from "react-bootstrap";
+import "../styles/addressForm.css";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
-import "../styles/addressForm.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const AddressForm = (props) => {
   /*
@@ -88,7 +88,6 @@ const AddressForm = (props) => {
                   className="zoneCodeArea"
                   disabled
                   size={size}
-                  onChange={handleAddressSelected}
                 />
               )}
 
@@ -101,7 +100,6 @@ const AddressForm = (props) => {
                 name="address"
                 className="addressArea"
                 disabled
-                onChange={handleAddressSelected}
               />
               {/* 버튼 클릭 시 Post 모달 호출 */}
 
