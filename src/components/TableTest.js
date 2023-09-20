@@ -449,8 +449,7 @@ const TableTest = ({
             <TextBoxComponent
               id={field}
               type="text"
-              label={"."}
-              value={row.isNew ? "" : row.item[field]}
+              value={row.isNew ? " " : row.item[field]}
               onClickCodeHelper={() => {
                 let codeHelperData = codeHelper[field];
                 let empFam = tableRows[rowIndex].item;
