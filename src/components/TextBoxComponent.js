@@ -279,10 +279,8 @@ function TextBoxComponent(props) {
   return (
     <Row className="py-1">
       <div className="labelAndContent">
-        {/* input labels */}
         {label && <div className="label">{label}</div>}
 
-        {/* input contents */}
         <div className="widthFull d-flex align-items-center">
           {onClickCodeHelper ? (
             type === "date" ? (
@@ -403,7 +401,7 @@ function TextBoxComponent(props) {
     } else {
       return (
         // inputs
-        <div className="svg-wrapper svg-container">
+        <div>
           {/* <div className="widthFull"> */}
           <Form.Control
             value={inputValue}
