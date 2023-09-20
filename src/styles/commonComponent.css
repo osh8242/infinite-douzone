@@ -31,7 +31,8 @@ input.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(233, 236, 239);
+  /* background-color: rgb(233, 236, 239); */
+  background-color: rgb(203, 229, 255);
 }
 
 .col-md-6 .label {
@@ -41,7 +42,8 @@ input.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(233, 236, 239);
+  background-color: rgb(203, 229, 255);
+  /* background-color: rgb(233, 236, 239); */
 }
 
 .col-md-4 .label {
@@ -51,7 +53,8 @@ input.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(233, 236, 239);
+  background-color: rgb(203, 229, 255);
+  /* background-color: rgb(233, 236, 239); */
 }
 
 .labelAndContent {
