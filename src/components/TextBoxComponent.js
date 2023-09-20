@@ -1,12 +1,16 @@
 // 작성자 : 현소현
-import { faC } from "@fortawesome/free-solid-svg-icons";
+import { faC, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 import SelectForm from "./SelectForm";
 
 function TextBoxComponent(props) {
@@ -262,6 +266,15 @@ function TextBoxComponent(props) {
     );
   }
 
+  // regNum type onClick 이벤트 함수
+  const handleOnClick = () => {
+    switch (type) {
+      case "regNum":
+        break;
+      default:
+    }
+  };
+
   // 화면 render
   return (
     <Row className="py-1">
@@ -394,7 +407,8 @@ function TextBoxComponent(props) {
     } else {
       return (
         // inputs
-        <div className="widthFull">
+        <div className="svg-wrapper svg-container">
+          {/* <div className="widthFull"> */}
           <Form.Control
             value={inputValue}
             type={type}
@@ -412,6 +426,15 @@ function TextBoxComponent(props) {
             style={style}
             className={isValid ? "" : "invalid"}
           />
+          {type === "regNum" && (
+            <FontAwesomeIcon
+              className="hide"
+              style={{ colod: "gray" }}
+              icon={faEyeSlash}
+              onClick={handleOnClick}
+            />
+          )}
+          {/* {type === "regNum" && <FontAwesomeIcon icon={faEye} />} */}
         </div>
       );
     }
