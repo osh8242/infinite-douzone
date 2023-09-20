@@ -151,6 +151,7 @@ const SalaryInformationEntryLayout = () => {
         actions={actions}
         modalShow={modalShow}
         dateId = {state.dateId}
+        cdEmp = {state.cdEmp}
       />
       <Container fluid>
         <Row style={{margin:'10px'}}>

@@ -353,7 +353,7 @@ useEffect(() => {
   /* 급여테이블 수정 + 공제항목테이블 update */
   const salAllowEdit = (updatedData) =>{
     axios
-      .put(url + "/saallowpay/updateSalPay"
+      .put(url + "/sallowpay/updateSalPay"
       , updatedData
       )
       .then((response) => {

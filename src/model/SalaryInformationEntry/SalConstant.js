@@ -192,7 +192,7 @@ export const modal_addSalAllow = {
 export const modal_insertSalaryData = {
     subject : '수당 및 공제 등록',
     size: 'xl',
-    url : '/saallowpay/getsalAllowList', // selectList 불러올 url
+    url : '/sallowpay/getsalAllowList', // selectList 불러올 url
     params : { salDivison : 'BONUS' }
 }
 
@@ -211,7 +211,7 @@ export const modal_reCalculationList = {
 }
 
 export const modal_insertSalaryAllowData = {
-    url : '/saallowpay/getsalAllowList',
+    url : '/sallowpay/getsalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "수당명" },
@@ -250,7 +250,7 @@ export const modal_insertSalaryDeductData = {
 }
 
 export const modal_nontaxSetup = {
-    url : '/saallowpay/getNonTaxSalAllowList',
+    url : '/sallowpay/getNonTaxSalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "비과세 항목" },
@@ -263,7 +263,7 @@ export const modal_nontaxSetup = {
 // 산출식 또는 산출방법
 export const modal_calculationModal = {
     subject : "산출식 또는 산출방법",
-    url : '/saallowpay/getsalAllowList',
+    url : '/sallowpay/getsalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "수당명" },

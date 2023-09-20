@@ -13,7 +13,7 @@ import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
 import { modal_insertSalaryData, modal_reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
 
-const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete, dateId, actions}) => {
+const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete, dateId, cdEmp, actions}) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -28,17 +28,23 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
       message = "선택된 사원이 없습니다";
       setShowModal({ show: true, message: message});
     }else {message = "선택된 사원목록의 지급항목을 모두 삭제하시겠습니까? ";}
-    setShowModal({ show: true, message: message, action : ()=> actions.deleteSelectedRows()});
+    setShowModal({ show: true, message: message, action : ()=> actions.deleteSelectedRows(), onlyConfirm : !existSelectedRows});
   };
   
   // 수당/공제 등록 
   const insertSalaryDataHandler = (event) => {
-    modalShow('insertSalaryData', modal_insertSalaryData);
+    // if (dateId !== "") {
+      modalShow('insertSalaryData', modal_insertSalaryData);
+    // }else{
+    //   setShowModal({ show: true, message: "작성일자를 비우고 진행해주세요", onlyConfirm : true});
+    // }
   }
 
   // 재계산
   const reCalculationHandler = (event) => {
-    modalShow('reCalculation', modal_reCalculationList);
+    if (dateId === "") setShowModal({ show: true, message: "작성일을 선택해주세요", onlyConfirm: true});
+    if (cdEmp === "") setShowModal({ show: true, message: "사원을 선택해주세요", onlyConfirm: true});
+    else modalShow('reCalculation', modal_reCalculationList);
   }
 
   // 완료
@@ -46,13 +52,13 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
     let message = "";
     if (dateId === "") {
       message = "선택된 날짜에 등록된 급여항목이 없습니다.";
-      setShowModal({ show: true, message: message });
+      setShowModal({ show: true, message: message, onlyConfirm: true});
     }
     else {
       if (ynComplete === "Y")
         message = "현재 입력하는 급여등을 완료해제하시겠습니까? ";
       else message = "현재 입력하는 급여등을 완료하시겠습니까?";
-      setShowModal({ show: true, message: message, action: () => actions.updateDate(), });
+      setShowModal({ show: true, message: message, action: () => actions.updateDate(), onlyConfirm: false});
     }
   };
 
@@ -106,18 +112,16 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
           <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
-
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
-        onlyConfirm={!existSelectedRows}
+        onlyConfirm={showModal.onlyConfirm}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
           showModal.action && showModal.action();
           setShowModal(false);
         }}
       />
-
     </div>
   );
 };
