@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import CodeHelperModal from "./CodeHelperModal";
+import ConfirmComponent from "./ConfirmComponent";
 import ModalComponent from "./ModalComponent";
 import SelectForm from "./SelectForm";
 import TextBoxComponent from "./TextBoxComponent";
@@ -40,25 +41,13 @@ const TableTest = ({
   sortable, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
-  defaultSelectedRow, // [선택] 테이블 랜더시 초기 선택행 옵션(숫자, 디폴트는 index = 0)
-  defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온(디폴트 false)
+  defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온 1번째행 셀렉트 디폴트 false)
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    setTableRows([...tableData]);
-    // if (defaultSelectedRow && tableData.length > 0)
-    //   switch (typeof defaultSelectedRow) {
-    //     case "number":
-    //       handleRowClick(null, defaultSelectedRow, 0);
-    //       break;
-    //     case "boolean":
-    //       handleRowClick(null, 0, 0);
-    //       break;
-    //     default:
-    //       break;
-    //   }
+    setTableRows(tableData);
   }, [tableData]);
 
   //테이블 자신을 가르키는 dom ref
@@ -80,6 +69,9 @@ const TableTest = ({
   const [isAsc, setIsAsc] = useState(null);
 
   //모달 경고창(인풋 pk누락)
+  const [confirmModalState, setConfirmModalState] = useState({ show: false });
+
+  //코드헬퍼 모달
   const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
@@ -311,7 +303,7 @@ const TableTest = ({
         const editedRow = getEditedRow(event, rowIndex, columnIndex);
 
         if (!editedRow) {
-          setModalState({ show: true, message: "필수입력값 누락" });
+          setConfirmModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
         if (editedRow.isNew) actions.insertNewRow(editedRow.item);
@@ -588,14 +580,13 @@ const TableTest = ({
 
             case "Delete":
               event.preventDefault();
-              setModalState({
+              setConfirmModalState({
                 show: true,
-                title: "삭제확인",
                 message: "해당 행을 삭제하시겠습니까?",
                 onConfirm: () => {
                   actions.deleteRow(tableRows[rowRef]);
                   deleteRow(rowRef);
-                  setModalState({ show: false });
+                  setConfirmModalState({ show: false });
                 },
               });
               break;
@@ -741,7 +732,10 @@ const TableTest = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
+            <tr
+              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
+              onDoubleClick={() => codeHelper && actions.newRowCodeHelper()}
+            >
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
@@ -758,7 +752,9 @@ const TableTest = ({
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
                   onDoubleClick={(e) =>
-                    handleDoubleClick(e, tableRows.length, columnIndex)
+                    codeHelper
+                      ? actions.newRowCodeHelper()
+                      : handleDoubleClick(e, tableRows.length, columnIndex)
                   }
                   onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
@@ -777,6 +773,11 @@ const TableTest = ({
         </tbody>
         {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
+      <ConfirmComponent
+        show={confirmModalState.show}
+        message={confirmModalState.message}
+        onConfirm={confirmModalState.onConfirm}
+      ></ConfirmComponent>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

@@ -1,3 +1,6 @@
+.card-container {
+  // width: 100%;
+}
 .profile-button-container {
   display: flex;
   justify-content: center;  /* 가로축에서 중앙 정렬 */
@@ -7,4 +10,5 @@
 
 .card img{
   height: 21.5vh;  
+  width: auto !important;
 }
