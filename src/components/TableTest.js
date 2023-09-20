@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
-import ConfirmComponent from "./ConfirmComponent";
+import CodeHelperModal from "./CodeHelperModal";
+import ModalComponent from "./ModalComponent";
 import SelectForm from "./SelectForm";
 import TextBoxComponent from "./TextBoxComponent";
 
@@ -146,6 +147,7 @@ const TableTest = ({
         return { ...row, isEditable: false };
       });
       setTableRows(newTableRows);
+      return newTableRows;
     }
   }, [tableRows]);
 
@@ -180,6 +182,7 @@ const TableTest = ({
   const removeNewRow = useCallback(() => {
     if (tableRows?.[tableRows.length - 1]?.isNew) tableRows.pop();
     setTableRows([...tableRows]);
+    console.log("tableRows in removeNewRow", tableRows);
   }, [tableRows]);
 
   //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
@@ -414,7 +417,6 @@ const TableTest = ({
       const row = tableRows[rowIndex];
       const type = tableHeaders[columnIndex].type;
       const field = tableHeaders[columnIndex].field;
-      const disabled = tableHeaders[columnIndex].field;
       switch (type) {
         case "select":
           return (
@@ -432,7 +434,7 @@ const TableTest = ({
         case "date":
           return (
             <TextBoxComponent
-              type={"date"}
+              type="date"
               id={field}
               value={row.isNew ? "" : row.item[field]}
               onChange={(e, value) => {
@@ -447,8 +449,23 @@ const TableTest = ({
             <TextBoxComponent
               id={field}
               type="text"
-              value={row.isNew ? "" : row.item[field]}
-              onClickCodeHelper={codeHelper}
+              value={row.isNew ? "" : getTdValue(rowIndex, columnIndex)}
+              onClickCodeHelper={() => {
+                let codeHelperData = codeHelper[field];
+                let empFam = tableRows[rowIndex].item;
+
+                setModalState({
+                  show: true,
+                  title: codeHelperData.title,
+                  tableHeaders: codeHelperData.headers,
+                  tableData: codeHelperData.tableData,
+                  searchField: codeHelperData.searchField,
+                  usePk: codeHelperData.usePk,
+                  setRowData: (e, pkValue) => {
+                    actions.updateEditedRow(Object.assign(empFam, pkValue));
+                  },
+                });
+              }}
             />
           );
         default: // 타입이 명시되지않으면 일반 text 타입 반환
@@ -468,7 +485,7 @@ const TableTest = ({
 
   const getTdValue = useCallback(
     (rowIndex, columnIndex) => {
-      //console.log("겟TD벨류 tableRows", tableRows);
+      //console.log("getTdValue() > tableRows", tableRows);
       const type = tableHeaders[columnIndex]?.type;
       const field = tableHeaders[columnIndex].field;
       const value = tableRows[rowIndex].item[field];
@@ -480,6 +497,14 @@ const TableTest = ({
             if (option.key === value) selectFormValue = option.value;
           });
           return selectFormValue;
+        case "textCodeHelper":
+          let codeHelperData = codeHelper[field];
+          let tableData = codeHelperData.tableData;
+          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
+          const newField = field.charAt(0).toUpperCase() + field.slice(1);
+          return targetIndex !== -1
+            ? tableData[targetIndex].item[`nm${newField}`]
+            : "";
         default:
           const row = tableRows[rowIndex];
           return row.isNew ? "" : row.item[field];
@@ -515,9 +540,8 @@ const TableTest = ({
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
-              releaseEditable();
               removeNewRow();
-              setTableRows([...tableRows]);
+              releaseEditable();
               break;
             default:
               break;
@@ -566,6 +590,7 @@ const TableTest = ({
               event.preventDefault();
               setModalState({
                 show: true,
+                title: "삭제확인",
                 message: "해당 행을 삭제하시겠습니까?",
                 onConfirm: () => {
                   actions.deleteRow(tableRows[rowRef]);
@@ -752,16 +777,26 @@ const TableTest = ({
         </tbody>
         {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
-      <ConfirmComponent
+      <ModalComponent
+        title={modalState.title}
+        size={modalState.size}
         show={modalState.show}
-        message={modalState.message}
-        onConfirm={
-          modalState.onConfirm
-            ? modalState.onConfirm
-            : () => setModalState({ show: false })
-        }
+        onConfirm={modalState.onConfirm}
         onHide={() => setModalState({ show: false })}
-      />
+      >
+        {modalState.message ? (
+          modalState.message
+        ) : (
+          <CodeHelperModal
+            setRowData={modalState.setRowData}
+            tableHeaders={modalState.tableHeaders}
+            tableData={modalState.tableData}
+            searchField={modalState.searchField}
+            usePk={modalState.usePk}
+            onHide={() => setModalState({ show: false })}
+          />
+        )}
+      </ModalComponent>
     </>
   );
 };

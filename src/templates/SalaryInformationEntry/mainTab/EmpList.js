@@ -12,14 +12,16 @@ const EmpList = (props) => {
           <div className="leftTable">
             <TableForm
               tableName="SI_EMPLIST"
+              readOnly
               showCheckbox
               sortable
               tableHeaders={salEmp.headers}
               tableData={saInfoListData.saInfoListData}
               onRowClick={(e, row) => {
-                actions.setChangeCdEmp(row["cdEmp"]);
+                actions.changeCdEmp(row["cdEmp"]);
               }}
               actions={{
+                setPkValue : ()=>{},
                 setSelectedRows: actions.setSelectedRows,
               }}
             />

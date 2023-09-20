@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { Col, Row } from "react-bootstrap";
 import AddressForm from "../../src/components/AddressForm.js";
 import {
+  CODE_TYPE,
+  CODE_VALUE,
   INPUT_TYPE,
   LABELS,
   RADIO_LIST,
@@ -12,6 +14,7 @@ import RadioForm from "./RadioForm";
 import SelectForm from "./SelectForm.js";
 import TestAdd from "./TestAdd";
 import TextBoxComponent from "./TextBoxComponent";
+
 const FormPanel = ({
   INPUT_CONSTANT,
   formData,
@@ -50,6 +53,11 @@ const FormPanel = ({
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     const onChangeFn = onChange ? onChange[input.field] : null;
+
+    const getValueFromCode = (field, code) => {
+      if (CODE_TYPE[field]) return CODE_VALUE[CODE_TYPE[field]]?.[code] || "";
+      else return code;
+    };
 
     switch (input.type) {
       case INPUT_TYPE.text:
@@ -176,7 +184,7 @@ const FormPanel = ({
             id={id}
             type="text"
             label={label}
-            value={value}
+            value={getValueFromCode(id, value)}
             onClickCodeHelper={codeHelper}
             onEnter={submitData}
           />

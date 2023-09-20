@@ -237,7 +237,7 @@ const HrManagementModel = () => {
         console.log("newEmpAdd", newEmpAdd);
         updateEmpAdd(newEmpAdd);
       }
-      if (event.type === "click") {
+      if (event.type === "click" || typeof value === "object") {
         let newEmpAdd = { ...mainTabData };
         Object.assign(newEmpAdd, value);
         console.log("newEmpAdd", newEmpAdd);
@@ -375,6 +375,7 @@ const HrManagementModel = () => {
 
   //수정된 사원가족 update 요청
   const updateEmpFam = useCallback((empFam) => {
+    console.log("updateEmpFam", "newEmpFam", empFam);
     axios
       .put(url + urlPattern.updateEmpFam, empFam)
       .then((response) => {

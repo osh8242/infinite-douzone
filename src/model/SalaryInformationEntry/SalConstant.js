@@ -1,6 +1,15 @@
 import { CODE, CODEHELPER_EMPLIST_URL } from "../CommonConstant";
 
+/* url pattern */
+export const GET_SALINFO_BY_DATE_URL = "/sallowpay/getSalaryAllInfoByDate"
 export const DELETE_EMPLIST_URL = "/saEmpInfo/deleteSaEmpList";
+export const UPDATE_SALEMP_DETAIL_URL = "/saEmpInfo/updateSaEmpInfo";
+export const UPDATE_EMPPAYROLL_INFO_URL = "/saEmpInfo/updateSaEmpPayrollInfo";
+export const RECALCULATION_URL = "/sallowpay/recalculation";
+export const GET_SAL_TOTAL_SUM_URL = "/sallowpay/getSalTotalPaySum";
+export const GET_SALINFO_BY_EMP_URL = "/sallowpay/getSaPayByCdEmp";
+export const SAVE_SALDATA_URL = "/sallowpay/mergeSalAllowPay"
+export const UPDATE_DATEINFO_URL = "/sallowpay/updateDate";
 
 /* 사원리스트 영역 */
 export const salEmp = {
@@ -8,7 +17,6 @@ export const salEmp = {
         { field: "cdEmp", text: "사원번호", isPk:true },
         { field: "nmEmp", text: "사원이름" },
         { field: "rankNo", text: "직급" },
-        { field: "mnReduction", text: "감면율" },
     ],
 };
 
@@ -75,8 +83,6 @@ export const salaryDivisionOption = [
     { key: "SAL"        , value: "1.급여" },
     { key: ""           , value: "2.급여+상여" },
     { key: "BONUS"      , value: "3.상여" },
-    { key: "EXTRASAL"   , value: "5.추급" },
-    { key: "EXTRABONUS" , value: "6.추상" },
 ];
 
 // 생산직 여부 검색조건 옵션
@@ -186,23 +192,34 @@ export const modal_addSalAllow = {
 export const modal_insertSalaryData = {
     subject : '수당 및 공제 등록',
     size: 'xl',
-    url : '/saallowpay/getsalAllowList', // selectList 불러올 url
+    url : '/sallowpay/getsalAllowList', // selectList 불러올 url
     params : { salDivison : 'BONUS' }
 }
 
 // 재계산 
 export const modal_reCalculationList = {
-    subject : '재계산', 
-    size: 'xl'
+    subject : '재계산'
+    , size: 'md'
+    , headers: [
+        { field: "nmOption", text: "재계산 목록"},
+    ]
+    , tableData : [
+        { item : { cdOption:'calculateTaxYn', nmOption : '과세, 비과세 계산'}}, 
+        { item : { cdOption:'incomeTax', nmOption : '소득세 재계산'}}, 
+        { item : { cdOption:'editEmpInfo', nmOption : '사원정보 변경'}},
+        { item : { cdOption:'calculateHourlyWage', nmOption : '통상시급 계산'}}]
 }
 
 export const modal_insertSalaryAllowData = {
-    url : '/saallowpay/getsalAllowList',
+    url : '/sallowpay/getsalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "수당명" },
         { field: "ynTax", text: "과세여부" },
-        { field: "nmSalDivison", text: "근로소득유형" },
+        { field: "nmSalDivison"
+          , text: "근로소득유형"
+          , type : "select"
+          , optionList : [{ key: "SAL" , value: "급여" },{ key: "BONUS" , value: "상여" }] },
         { field: "commonlyYn", text: "통상" },
         { field: "monthlyYn", text: "월정" },
     ],
@@ -233,7 +250,7 @@ export const modal_insertSalaryDeductData = {
 }
 
 export const modal_nontaxSetup = {
-    url : '/saallowpay/getNonTaxSalAllowList',
+    url : '/sallowpay/getNonTaxSalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "비과세 항목" },
@@ -246,7 +263,7 @@ export const modal_nontaxSetup = {
 // 산출식 또는 산출방법
 export const modal_calculationModal = {
     subject : "산출식 또는 산출방법",
-    url : '/saallowpay/getsalAllowList',
+    url : '/sallowpay/getsalAllowList',
     headers : [
         { field: "cdAllow", text: "Code" },
         { field: "nmAllow", text: "수당명" },

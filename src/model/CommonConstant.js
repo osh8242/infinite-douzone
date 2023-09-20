@@ -1,5 +1,32 @@
 export const url = "http://localhost:8888";
 
+export const CODE_TYPE = {
+  cdOffduty: "직무",
+  cdOffpos: "직급",
+};
+
+export const CODE_VALUE = {
+  [CODE_TYPE.cdOffduty]: {
+    C001: "경영회계",
+    C003: "금융보험",
+    C004: "교육과학",
+    C005: "법률행정",
+    C006: "보건의료",
+    C007: "문화예술",
+    C008: "농림어업",
+  },
+  [CODE_TYPE.cdOffpos]: {
+    R001: "사원",
+    R002: "주임",
+    R003: "대리",
+    R004: "과장",
+    R005: "차장",
+    R006: "부장",
+    R007: "이사",
+    R008: "사장",
+  },
+};
+
 export const INPUT_TYPE = {
   text: 0,
   date: 1,
@@ -135,9 +162,9 @@ export const LABELS = {
   zipHome: "현주소 우편번호",
   addHome1: "현주소",
   addHome2: "현 상세주소",
-  originHome: "본적주소 우편번호",
-  originHome1: "본적주소",
-  originHome2: "본적 상세주소",
+  zipOrgin: "본적주소 우편번호",
+  addOrgin1: "본적주소",
+  addOrgin2: "본적 상세주소",
   mnKeepgarden: "소유동산",
   mnKeepstate: "소유부동산",
   fgOwnHouse: "자택소유",
@@ -177,8 +204,10 @@ export const LABELS = {
   ynMateDed: "배우자공제",
   ynResident: "거주구분",
   ynOverwork: "연장근로비과세",
-  num2060many: "20세/60세/다자녀",
-  ynUnitForlabor: "생산/국외",
+  num20Family: "20세",
+  num60Family: "60세",
+  numManyFamily: "다자녀",
+  ynForLabor: "국외근무",
 
   allowMonth: "귀속연월",
   paymentDate: "지급일",

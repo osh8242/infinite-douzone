@@ -70,7 +70,7 @@ function CodeHelperModal(props) {
               type="text"
               label={LABELS.searchText}
               value={searchTerm}
-              onChange={setSearchTerm}
+              onChange={(e, value) => setSearchTerm(value)}
             />
           </Form.Group>
         </Row>

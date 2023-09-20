@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import DaumPostcode from "react-daum-postcode";
 
 export default function Post({ onAddressSelected }) {
@@ -16,7 +16,7 @@ export default function Post({ onAddressSelected }) {
         autoClose={true}
         animation={true}
         onComplete={handleAddressSelected}
-      ></DaumPostcode>
+      />
       {/* 닫기 버튼이나 상세정보 입력 버튼 필요시 구현 예정 */}
     </div>
   );

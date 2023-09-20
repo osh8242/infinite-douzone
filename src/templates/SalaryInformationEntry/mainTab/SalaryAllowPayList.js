@@ -9,7 +9,7 @@ import {
 import "../../../styles/HrManagement/HrManagementLayout.scss";
 
 const SalaryAllowPayList = (props) => {
-  const { salAllowData, actions, showCalculation, modalShow } = props;
+  const { salAllowData, actions, showCalculation, modalShow, ynComplete } = props;
   const [showYn, setShowYn] = useState("salaryAllowPay");
 
   const toggleCalculation = () => {
@@ -26,6 +26,7 @@ const SalaryAllowPayList = (props) => {
           <Button onClick={()=>{toggleCalculation()}}>산출식</Button>
           <TableForm
             tableName="SI_SALARY_ALLOWPAY_LIST"
+            readOnly={ynComplete === 'Y'}
             tableHeaders={salAllow.headers}
             tableData={salAllowData.salData}
             rowAddable

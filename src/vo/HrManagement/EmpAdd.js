@@ -23,6 +23,12 @@ const EmpAdd = (empAddData) => {
     (empAddData.telOffice2 || "") +
     "-" +
     (empAddData.telOffice3 || "");
+
+  empAddData["zipHome-addHome1"] =
+    (empAddData.zipHome || "") + "-" + (empAddData.addHome1 || "");
+
+  empAddData["zipOrgin-addOrgin1"] =
+    (empAddData.zipOrgin || "") + "-" + (empAddData.addOrgin1 || "");
   return empAddData;
 };
 

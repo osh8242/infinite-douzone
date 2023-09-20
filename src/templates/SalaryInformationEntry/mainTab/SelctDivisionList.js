@@ -17,7 +17,7 @@ const SelctDivisionList = (props) => {
       <SelectForm
         label={LABELS.inquiryYype}
         optionList={totalSalaryByPeriodOption}
-        onChange={actions.setSelectedOption}
+        onChange={actions.getSalTotalSum}
       />
       <Row>
         <div className="leftTable" style={{height: '32vh'}}>

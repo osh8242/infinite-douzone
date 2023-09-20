@@ -235,10 +235,6 @@ const TableForm = ({
       releaseEditable(rowIndex);
       if (editableRowIndex !== rowIndex) removeNewRow(rowIndex);
       updatePkValue(rowIndex);
-
-      console.log("rowIndex");
-      console.log(rowIndex);
-      console.log(columnIndex);
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

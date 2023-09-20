@@ -83,7 +83,7 @@ const HrManagementLayout = () => {
           break;
       }
     },
-    [modalState, leftCodeHelperTableData]
+    [actions, modalState, leftCodeHelperTableData]
   );
 
   const tokenRef = useRef(null);
@@ -116,31 +116,32 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      <HrManagementHeader
-        deleteButtonHandler={actions.deleteSelectedRows}
-        existSelectedRows={selectedRows.length !== 0}
-      />
-      <button
+      {/* <button
         onClick={() => {
           getToken();
         }}
       >
         JWT 토큰 발급받고 인증해보기
-      </button>
-
-      <Container>
+      </button> */}
+      <HrManagementHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
+      <Container className="hr-container">
         {/* 조회영역 */}
-        <HrSearchPanel
-          onSearch={actions.onSearch}
-          jobOkSelectRef={jobOkSelectRef}
-          orderSelectRef={orderSelectRef}
-          searchOption={searchOption}
-          orderList={orderList}
-        />
+        <Row className="hr-search-row">
+          <HrSearchPanel
+            onSearch={actions.onSearch}
+            jobOkSelectRef={jobOkSelectRef}
+            orderSelectRef={orderSelectRef}
+            searchOption={searchOption}
+            orderList={orderList}
+          />
+        </Row>
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
-          <Col md="3">
+          <Col md="3" className="hr-left-col">
             {/* 좌측 그리드 */}
             <Row>
               <div className="hr-leftTable">
@@ -245,6 +246,7 @@ const HrManagementLayout = () => {
                   sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
+                  codeHelper={CODE_HELPER_DATA}
                   pkValue={leftTablePkValue}
                   selectedRows={selectedRows}
                   actions={{
@@ -270,12 +272,12 @@ const HrManagementLayout = () => {
         onHide={() => actions.setModalState({ show: false })}
       >
         <CodeHelperModal
+          onHide={() => actions.setModalState({ show: false })}
           setRowData={codeHelperTableData.setRowData}
-          usePk={codeHelperTableData.usePk}
           tableHeaders={codeHelperTableData.tableHeaders}
           tableData={codeHelperTableData.tableData}
+          usePk={codeHelperTableData.usePk}
           searchField={codeHelperTableData.searchField}
-          onHide={() => actions.setModalState({ show: false })}
         />
       </ModalComponent>
     </>
