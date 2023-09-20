@@ -6,54 +6,70 @@ export const SI_EMP_DETAIL = [
     field: "daEnter",
     id : "daEnter",
     label: LABELS.daEnter,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "nmDept",
+    id: "nmDept",
+    label: LABELS.cdDept,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "ynMateDed",
     id : "ynMateDed",
     label: LABELS.ynMateDed,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "num20Family",
     id : "num20Family",
     label: LABELS.num20Family,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "num60Family",
     id : "num60Family",
     label: LABELS.num60Family,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "numManyFamily",
     id : "numManyFamily",
     label: LABELS.numManyFamily,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "ynResident",
     id : "ynResident",
     label: LABELS.ynResident,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "ynUnit",
     id : "ynUnit",
     label: LABELS.ynUnit,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "ynForLabor",
     id : "ynForLabor",
     label: LABELS.ynForLabor,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "ynOverwork",
     id : "ynOverwork",
     label: LABELS.ynOverwork,
+    disabled : "disabled"
   },
 
   {
@@ -61,36 +77,22 @@ export const SI_EMP_DETAIL = [
     field: "daRetire",
     id : "daRetire",
     label: LABELS.daRetire,
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "cdOccup",
     id: "cdOccup",
     label: LABELS.cdOccup,
+    disabled : "disabled"
   },
-  {
-    type: INPUT_TYPE.text,
-    field: "cdDept",
-    id: "cdDept",
-    label: LABELS.cdDept,
-  },
-  {
-    type: INPUT_TYPE.text,
-    field: "cdField",
-    id: "cdField",
-    label: LABELS.cdField,
-  },
-  {
-    type: INPUT_TYPE.text,
-    field: "cdProject",
-    id: "cdProject",
-    label: LABELS.cdProject,
-  },
+  
   {
     type: INPUT_TYPE.text,
     field: "noSocial",
     id: "noSocial",
     label: LABELS.noSocial,
+    disabled : "disabled"
   },
 ];
 
@@ -100,6 +102,7 @@ export const SI_EMP_PAYROLL_CRITERIA = [
     field: "workday",
     id: "workday",
     label: "현재 귀속일 근무일수",
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
@@ -112,11 +115,13 @@ export const SI_EMP_PAYROLL_CRITERIA = [
     field: "allowMonthWorktime",
     id: "allowMonthWorktime",
     label: "현재 귀속월 총 근무시간",
+    disabled : "disabled"
   },
   {
     type: INPUT_TYPE.text,
     field: "hourlywage",
     id: "hourlywage",
     label: "통상시급(원)",
+    disabled : "disabled"
   },
 ];
