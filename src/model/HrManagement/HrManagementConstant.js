@@ -1,4 +1,4 @@
-import { SELECT_LIST } from "../CommonConstant";
+import { CODE_TYPE, CODE_VALUE, SELECT_LIST } from "../CommonConstant";
 
 ////////////////////////////// 요청 Mapping Pattern
 export const urlPattern = {
@@ -75,15 +75,14 @@ export const CODE_HELPER_DATA = {
       { field: "cdOffduty", text: "직무코드" },
       { field: "nmCdOffduty", text: "직무명" },
     ],
-    tableData: [
-      { item: { cdOffduty: "C001", nmCdOffduty: "경영회계" } },
-      { item: { cdOffduty: "C003", nmCdOffduty: "금융보험" } },
-      { item: { cdOffduty: "C004", nmCdOffduty: "교육과학" } },
-      { item: { cdOffduty: "C005", nmCdOffduty: "법률행정" } },
-      { item: { cdOffduty: "C006", nmCdOffduty: "보건의료" } },
-      { item: { cdOffduty: "C007", nmCdOffduty: "문화예술" } },
-      { item: { cdOffduty: "C008", nmCdOffduty: "농림어업" } },
-    ],
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdOffduty"]]).map((key) => {
+      return {
+        item: {
+          cdOffduty: key,
+          nmCdOffduty: CODE_VALUE[CODE_TYPE["cdOffduty"]][key],
+        },
+      };
+    }),
     searchField: ["cdOffduty", "nmCdOffduty"],
     usePk: "cdOffduty",
   },
