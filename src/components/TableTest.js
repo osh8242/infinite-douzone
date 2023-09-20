@@ -1,24 +1,13 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
-import ConfirmComponent from "./ConfirmComponent";
+import CodeHelperModal from "./CodeHelperModal";
+import ModalComponent from "./ModalComponent";
 import SelectForm from "./SelectForm";
 import TextBoxComponent from "./TextBoxComponent";
-import ModalComponent from "./ModalComponent";
-import CodeHelperModal from "./CodeHelperModal";
 
 const TableTest = ({
   tableHeaders, // [필수]
@@ -465,9 +454,6 @@ const TableTest = ({
               onClickCodeHelper={() => {
                 let codeHelperData = codeHelper[field];
                 let empFam = tableRows[rowIndex].item;
-                const setRowData = (e, pkValue) => {
-                  actions.updateEditedRow(Object.assign(empFam, pkValue));
-                };
 
                 setModalState({
                   show: true,
@@ -476,7 +462,9 @@ const TableTest = ({
                   tableData: codeHelperData.tableData,
                   searchField: codeHelperData.searchField,
                   usePk: codeHelperData.usePk,
-                  setRowData: setRowData,
+                  setRowData: (e, pkValue) => {
+                    actions.updateEditedRow(Object.assign(empFam, pkValue));
+                  },
                 });
               }}
             />
@@ -510,6 +498,14 @@ const TableTest = ({
             if (option.key === value) selectFormValue = option.value;
           });
           return selectFormValue;
+        case "textCodeHelper":
+          let codeHelperData = codeHelper[field];
+          let tableData = codeHelperData.tableData;
+          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
+          const newField = field.charAt(0).toUpperCase() + field.slice(1);
+          return targetIndex !== -1
+            ? tableData[targetIndex].item[`nm${newField}`]
+            : "";
         default:
           const row = tableRows[rowIndex];
           return row.isNew ? "" : row.item[field];
@@ -574,8 +570,7 @@ const TableTest = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -670,9 +665,7 @@ const TableTest = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -748,9 +741,7 @@ const TableTest = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr
-              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
-            >
+            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
@@ -769,9 +760,7 @@ const TableTest = ({
                   onDoubleClick={(e) =>
                     handleDoubleClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) =>
-                    handleRowClick(e, tableRows.length, columnIndex)
-                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (
