@@ -17,8 +17,7 @@ function ModalComponent(props) {
     show,
     title,
     onHide,
-    onConfirm,
-    size = 'lg',
+    size,  // xs, sm, md, lg, xl, xxl
     backdrop,
     animation,
   } = props;
@@ -33,20 +32,12 @@ function ModalComponent(props) {
     >
       <Modal.Header>
         <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>{children}</Modal.Body>
-
-      <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          닫기
+          X
         </Button>
-        {onConfirm && (
-          <Button variant="primary" onClick={onConfirm}>
-            확인
-          </Button>
-        )}
-      </Modal.Footer>
+      </Modal.Header>
+      <Modal.Body>{children}</Modal.Body>
+      <Modal.Footer/>
     </Modal>
   );
 }
