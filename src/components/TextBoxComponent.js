@@ -1,12 +1,16 @@
 // 작성자 : 현소현
-import { faC } from "@fortawesome/free-solid-svg-icons";
+import { faC, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 import SelectForm from "./SelectForm";
 
 function TextBoxComponent(props) {
@@ -159,7 +163,6 @@ function TextBoxComponent(props) {
       setInputValue(makeProcessedValue(newValue)); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue, id);
-      onChange && onChange(event, newValue, id);
     }
   };
 
@@ -263,85 +266,90 @@ function TextBoxComponent(props) {
     );
   }
 
+  // regNum type onClick 이벤트 함수
+  const handleOnClick = () => {
+    switch (type) {
+      case "regNum":
+        break;
+      default:
+    }
+  };
+
   // 화면 render
   return (
     <Row className="py-1">
-      {label ? (
-        <div className="labelAndContent">
-          {/* input labels */}
-          <div className="label">{label}</div>
-          {/* input contents */}
-          <div className="widthFull d-flex align-items-center">
-            {onClickCodeHelper ? (
-              type === "date" ? (
-                //<div className="">
-                <div className="svg-container2 svg-wrapper">
+      <div className="labelAndContent">
+        {/* input labels */}
+        {label && <div className="label">{label}</div>}
+
+        {/* input contents */}
+        <div className="widthFull d-flex align-items-center">
+          {onClickCodeHelper ? (
+            type === "date" ? (
+              //<div className="">
+              <div className="svg-container2 svg-wrapper">
+                {renderFormControl()}
+                <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+              </div>
+            ) : (
+              //</div>
+              <div className="svg-wrapper">
+                <div className="svg-container">
                   {renderFormControl()}
                   <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
                 </div>
-              ) : (
-                //</div>
-                <div className="svg-wrapper">
-                  <div className="svg-container">
-                    {renderFormControl()}
-                    <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+              </div>
+            )
+          ) : (
+            <>
+              {selectList ? (
+                <div className="widthFull d-flex align-items-center gap-2">
+                  <div style={{ width: "40%" }}>
+                    <SelectForm optionList={selectList}></SelectForm>
                   </div>
+                  <div>{renderFormControl()} </div>
+                  <div> {endLabel}</div>
                 </div>
-              )
-            ) : (
-              <>
-                {selectList ? (
-                  <div className="widthFull d-flex align-items-center gap-2">
-                    <div style={{ width: "40%" }}>
-                      <SelectForm optionList={selectList}></SelectForm>
-                    </div>
-                    <div>{renderFormControl()} </div>
-                    <div> {endLabel}</div>
-                  </div>
-                ) : (
-                  <>
-                    {subLabel ? (
-                      <div className="widthFull d-flex align-items-center justify-content-between">
-                        <div className="widthFull d-flex align-items-center">
-                          <div
-                            style={{ width: "28%" }}
-                            className="d-flex justify-content-end"
-                          >
-                            {subLabel}
-                          </div>
-                          <div
-                            style={{
-                              width: "38%",
-                              paddingLeft: 20,
-                            }}
-                          >
-                            {renderFormControl()}
-                          </div>
-                          <div
-                            className="d-flex justify-content-start"
-                            style={{
-                              width: "30%",
-                              paddingLeft: 10,
-                            }}
-                          >
-                            {endLabel}
-                          </div>
+              ) : (
+                <>
+                  {subLabel ? (
+                    <div className="widthFull d-flex align-items-center justify-content-between">
+                      <div className="widthFull d-flex align-items-center">
+                        <div
+                          style={{ width: "28%" }}
+                          className="d-flex justify-content-end"
+                        >
+                          {subLabel}
+                        </div>
+                        <div
+                          style={{
+                            width: "38%",
+                            paddingLeft: 20,
+                          }}
+                        >
+                          {renderFormControl()}
+                        </div>
+                        <div
+                          className="d-flex justify-content-start"
+                          style={{
+                            width: "30%",
+                            paddingLeft: 10,
+                          }}
+                        >
+                          {endLabel}
                         </div>
                       </div>
-                    ) : (
-                      // 일반 TextBoxContent
-                      <>{renderFormControl()}</>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </div>
+                    </div>
+                  ) : (
+                    // 일반 TextBoxContent
+                    <>{renderFormControl()}</>
+                  )}
+                </>
+              )}
+            </>
+          )}
         </div>
-      ) : (
-        // label 이 없는 경우
-        <div>{renderFormControl()}</div>
-      )}
+      </div>
     </Row>
   );
   function renderFormControl() {
@@ -395,7 +403,8 @@ function TextBoxComponent(props) {
     } else {
       return (
         // inputs
-        <div className="widthFull">
+        <div className="svg-wrapper svg-container">
+          {/* <div className="widthFull"> */}
           <Form.Control
             value={inputValue}
             type={type}
@@ -413,6 +422,15 @@ function TextBoxComponent(props) {
             style={style}
             className={isValid ? "" : "invalid"}
           />
+          {type === "regNum" && (
+            <FontAwesomeIcon
+              className="hide"
+              style={{ colod: "gray" }}
+              icon={faEyeSlash}
+              onClick={handleOnClick}
+            />
+          )}
+          {/* {type === "regNum" && <FontAwesomeIcon icon={faEye} />} */}
         </div>
       );
     }

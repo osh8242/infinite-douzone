@@ -9,7 +9,7 @@ export const urlPattern = {
 
 //메뉴 탭 리스트
 export const tabConstant = {
-  mainTabMenuListForEmpRegister: ["기초정보", "가족사항"],
+  mainTabMenuListForEmpRegister: ["기초정보", "공제등록"],
 };
 
 //왼쪽 테이블 헤더
@@ -101,14 +101,14 @@ export const codeHelperData_cdDept = {
   subject: "부서코드 조회",
   headers: [
     { field: "cdDept", text: "부서코드" },
-    { field: "nmDept", text: "부서이름" },
+    { field: "nmCdDept", text: "부서이름" },
   ],
   tableData: [
-    { item: { cdDept: "D001", nmDept: "인사팀" } },
-    { item: { cdDept: "D002", nmDept: "경영지원팀" } },
-    { item: { cdDept: "D003", nmDept: "개발팀" } },
+    { item: { cdDept: "D001", nmCdDept: "인사팀" } },
+    { item: { cdDept: "D002", nmCdDept: "경영지원팀" } },
+    { item: { cdDept: "D003", nmCdDept: "개발팀" } },
   ],
-  searchField: ["cdDept", "nmDept"],
+  searchField: ["cdDept", "nmCdDept"],
   usePk: "cdDept",
 };
 // 직종
@@ -222,14 +222,14 @@ export const codeHelperData_cdBank = {
 };
 
 // 미삭제 사원 목록 테이블 헤더
-export const EmpRegisterUndeletedEmpHeaders = {
-  subject: "삭제 실패된 사원목록",
-  headers: [
-    { field: "cdEmp", text: "사원코드" },
-    { field: "nmKrname", text: "성명" },
-    { field: "useMenuList", text: "사용중인 메뉴" },
-  ],
-  tableData: [],
-  searchField: ["cdEmp", "nmKrname", "useMenuList"],
-  usePk: "cdEmp",
-};
+// export const EmpRegisterUndeletedEmpHeaders = {
+//   subject: "삭제 실패된 사원목록",
+//   headers: [
+//     { field: "cdEmp", text: "사원코드" },
+//     { field: "nmKrname", text: "성명" },
+//     { field: "useMenuList", text: "사용중인 메뉴" },
+//   ],
+//   tableData: [],
+//   searchField: ["cdEmp", "nmKrname", "useMenuList"],
+//   usePk: "cdEmp",
+// };

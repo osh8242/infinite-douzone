@@ -155,73 +155,85 @@ function EmpRegisterationLayout() {
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (
             <Col id="empRegisterLayoutRight">
-              <MenuTab
-                menuList={tabConstant.mainTabMenuListForEmpRegister}
-                ref={state.mainTabRef}
-              ></MenuTab>
-              <FormPanel
-                INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                formData={state.mainTabData}
-                submitData={actions.submitMainTabData} // update 함수
-                codeHelperFn={{
-                  //코드도움 함수모음
-                  abbNation: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_abbNation,
-                      actions.setEditedEmp
-                    ),
-                  cdNation: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdNation,
-                      actions.setEditedEmp
-                    ),
-                  cdDept: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdDept,
-                      actions.setEditedEmp
-                    ),
-                  cdOccup: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdOccup,
-                      actions.setEditedEmp
-                    ),
-                  rankNo: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_rankNo,
-                      actions.setEditedEmp
-                    ),
-                  cdSalcls: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdSalcls,
-                      actions.setEditedEmp
-                    ),
-                  cdField: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdField,
-                      actions.setEditedEmp
-                    ),
-                  cdProject: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdProject,
-                      actions.setEditedEmp
-                    ),
-                  cdBank: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdBank,
-                      actions.setEditedEmp
-                    ),
-                }}
-              />
-              <Form.Control type="text" style={{ outline: "none" }} />
+              <MenuTab menuList={tabConstant.mainTabMenuListForEmpRegister}>
+                {[
+                  <Row key={"mainTeb1"}>
+                    <Col>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                        formData={state.mainTabData}
+                        submitData={actions.submitMainTabData} // update 함수
+                        codeHelperFn={{
+                          //코드도움 함수모음
+                          abbNation: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_abbNation,
+                              actions.submitMainTabData
+                            ),
+                          cdNation: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdNation,
+                              actions.submitMainTabData
+                            ),
+                          cdDept: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdDept,
+                              actions.submitMainTabData
+                            ),
+                          cdOccup: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdOccup,
+                              actions.submitMainTabData
+                            ),
+                          rankNo: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_rankNo,
+                              actions.submitMainTabData
+                            ),
+                          cdSalcls: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdSalcls,
+                              actions.submitMainTabData
+                            ),
+                          cdField: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdField,
+                              actions.submitMainTabData
+                            ),
+                          cdProject: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdProject,
+                              actions.submitMainTabData
+                            ),
+                          cdBank: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdBank,
+                              actions.submitMainTabData
+                            ),
+                        }}
+                      />
+                    </Col>
+                  </Row>,
+                  <Row key={"mainTeb2"}>
+                    <Col>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                        formData={state.mainTabData}
+                        submitData={actions.submitMainTabData} // update 함수
+                      />
+                    </Col>
+                  </Row>,
+                ]}
+              </MenuTab>
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />
@@ -238,7 +250,9 @@ function EmpRegisterationLayout() {
       >
         {modalType === "default" ? (
           <CodeHelperModal
-            setRowData={state.codeHelperTableData.setRowData}
+            setRowData={state.codeHelperTableData.setRowData} // 우측 메인 탭에서 가져온 row 데이터를 반환받을 함수
+            // => 여기서 onChange 이벤트를 발생시켜서 값을 update 할 수 있도록 해야한다.
+
             usePk={state.codeHelperTableData.usePk}
             tableHeaders={state.codeHelperTableData.tableHeaders}
             tableData={state.codeHelperTableData.tableData}

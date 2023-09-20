@@ -4,7 +4,17 @@ import Emp from "../../vo/EmpRegister/Emp";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 import { urlPattern } from "./EmpConstant";
-import { id } from "date-fns/locale";
+import {
+  codeHelperData_abbNation,
+  codeHelperData_cdNation,
+  codeHelperData_cdDept,
+  codeHelperData_cdOccup,
+  codeHelperData_rankNo,
+  codeHelperData_cdSalcls,
+  codeHelperData_cdField,
+  codeHelperData_cdProject,
+  codeHelperData_cdBank,
+} from "./EmpConstant";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -29,15 +39,73 @@ function EmpRegisterationModel() {
     { data: "", code: "", setData: setAddRow },
   ]);
 
+  // 코드도움 데이터 객체 배열
+  const codeHelperDataList = [
+    codeHelperData_abbNation,
+    codeHelperData_cdNation,
+    codeHelperData_cdDept,
+    codeHelperData_cdOccup,
+    codeHelperData_rankNo,
+    codeHelperData_cdSalcls,
+    codeHelperData_cdField,
+    codeHelperData_cdProject,
+    codeHelperData_cdBank,
+  ];
+
+  // 코드도움 데이터 한글변환 함수 ( value 반환 )
+  const convertToName = useCallback((fieldName, value) => {
+    // fieldName에 해당하는 코드도움 데이터 객체 찾기
+    const codeHelperData = codeHelperDataList.find((data) =>
+      data.headers.some((header) => header.field === fieldName)
+    );
+    // 코드도움 데이터가 존재하는 경우
+    if (codeHelperData) {
+      // 코드도움 데이터에서 value와 매칭되는 항목 찾기
+      const matchedItem = codeHelperData.tableData.find(
+        (item) => item.item[fieldName] === value
+      );
+      return matchedItem
+        ? matchedItem.item[
+            `nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`
+          ]
+        : value;
+    } else {
+      // console.error(`Code helper data not found for field: ${fieldName}`);
+      return value;
+    }
+  });
+
+  // 코드도움 데이터 코드변환 함수
+  const convertToCode = useCallback((fieldName, value) => {
+    // fieldName에 해당하는 코드도움 데이터 객체 찾기
+    const codeHelperData = codeHelperDataList.find((data) =>
+      data.headers.some((header) => header.field === fieldName)
+    );
+    if (codeHelperData) {
+      // 코드 도움 데이터를 활용하여 변환
+      for (const code in codeHelperData) {
+        if (codeHelperData[code] === value) {
+          return code;
+        }
+      }
+    } else {
+      return value;
+    }
+  });
+
   // Main Tab 에서 Enter 입력시 Emp 업데이트
   const submitMainTabData = useCallback(
     (event, value, id) => {
       if (event.key === "Enter" || event.type === "change") {
         event.target.blur();
-
-        console.log("value", value);
-
         let newEmp = { ...mainTabData.item };
+        //한글변환~~~~~~~~~~~~~
+        for (const key in mainTabData.item) {
+          if (mainTabData.item[key]) {
+            newEmp[key] = convertToCode(key, mainTabData.item[key]);
+          }
+        }
+        console.log("newEmp", newEmp);
         if (typeof value === "object" && !Array.isArray(value)) {
           // 넘어온 값이 JSON 객체인 경우
           Object.keys(value).forEach((key) => {
@@ -52,7 +120,13 @@ function EmpRegisterationModel() {
       } else {
         // 이벤트가 없는 경우
         let newEmp = { ...mainTabData.item };
-
+        console.log("newEmp", newEmp);
+        //한글변환~~~~~~~~~~~~~
+        for (const key in mainTabData.item) {
+          if (mainTabData.item[key]) {
+            newEmp[key] = convertToCode(key, mainTabData.item[key]);
+          }
+        }
         if (typeof value === "object" && !Array.isArray(value)) {
           // 넘어온 값이 JSON 객체인 경우
           Object.keys(value).forEach((key) => {
@@ -93,7 +167,7 @@ function EmpRegisterationModel() {
       });
   }, [editedEmp, reloadSubTableData]);
 
-  //mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
+  // SELECT mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
       axios
@@ -105,7 +179,15 @@ function EmpRegisterationModel() {
             "EmpRegisterationModel > /emp/getEmpByCdEmp",
             response.data
           );
-          setMainTabData(Emp(response.data));
+
+          // 코드 한글변환
+          let newResponseData = { ...response.data };
+          for (const key in response.data) {
+            if (response.data[key]) {
+              newResponseData[key] = convertToName(key, response.data[key]);
+            }
+          }
+          setMainTabData(Emp(newResponseData));
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -114,6 +196,36 @@ function EmpRegisterationModel() {
       setMainTabData({});
     }
   }, [mainTablePkValue]);
+
+  // useEffect(() => {
+  //   if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
+  //     axios
+  //       .post(url + "/emp/getEmpByCdEmp", mainTablePkValue, {
+  //         ContentType: "application/json",
+  //       })
+  //       .then((response) => {
+  //         console.log(
+  //           "EmpRegisterationModel > /emp/getEmpByCdEmp",
+  //           response.data
+  //         );
+
+  //         // 데이터를 받은 후 필드를 한글로 변환
+  //         const convertedData = { ...response.data };
+
+  //         for (const key in response.data) {
+  //           convertedData[key] = convertFieldData(key, response.data[key]);
+  //           console.log("key", key, "response.data[key]", response.data[key]);
+  //         }
+
+  //         setMainTabData(Emp(convertedData));
+  //       })
+  //       .catch((error) => {
+  //         console.error("에러발생: ", error);
+  //       });
+  //   } else {
+  //     setMainTabData({});
+  //   }
+  // }, [mainTablePkValue]);
 
   //사원 정보 INSERT POST 요청 (사원의 기초자료)
   useEffect(() => {
