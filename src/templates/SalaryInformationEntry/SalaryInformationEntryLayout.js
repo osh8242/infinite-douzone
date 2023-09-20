@@ -1,6 +1,6 @@
 // 작성자 : 현소현
 import React, { useCallback, useState } from "react";
-import { Alert, Col, Container, Row } from "react-bootstrap";
+import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import { fetchData } from "../../utils/codeHelperUtils";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
@@ -23,6 +23,7 @@ import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
 import AddSalAllowPay from "./modalMenu/AddSalAllowPay";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
+import TextBoxComponent from "../../components/TextBoxComponent";
 
 const SalaryInformationEntryLayout = () => {
 
@@ -64,7 +65,7 @@ const SalaryInformationEntryLayout = () => {
         break;
 
       case 'addSalAllowPay' :   
-      actions.setModalState((prevState) => ({  
+      actions.setModalState((prevState) => ({
           ...prevState,   
           onConfirm : actions.addAllowPay,
           size : data.size,
@@ -99,6 +100,9 @@ const SalaryInformationEntryLayout = () => {
 
   return (
     <>
+      
+    <TextBoxComponent 
+    />
       <ModalComponent
         title={state.modalState.subject}
         size={state.modalState.size}
@@ -123,7 +127,8 @@ const SalaryInformationEntryLayout = () => {
               />
           : modalType === 'reCalculation'?
               <ReCalculation
-                data = {state.modalContentData.data}
+                actions ={actions}
+                state = {state}
               />
           : modalType === 'calculationInsert'?
               <CalculationInsert
@@ -134,11 +139,6 @@ const SalaryInformationEntryLayout = () => {
               <AddSalAllowPay
                 actions = {actions}
               />
-          : modalType === 'alert'?
-              <Alert
-                actions = {actions}
-                message = {state.modalContentData.message}
-              />
           : //default
             <></>
           }
@@ -147,8 +147,11 @@ const SalaryInformationEntryLayout = () => {
       <SalaryInformationEntryHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={state.selectedRows.length !== 0}
+        ynComplete={state.ynComplete}
         actions={actions}
         modalShow={modalShow}
+        dateId = {state.dateId}
+        cdEmp = {state.cdEmp}
       />
       <Container fluid>
         <Row style={{margin:'10px'}}>
@@ -184,7 +187,7 @@ const SalaryInformationEntryLayout = () => {
                             actions={actions} 
                             deductData={state.deductData} 
                             salAllowData={state.salAllowData}
-                            modalShow = {modalShow} 
+                            modalShow = {modalShow}
                             showCalculation = {showCalculation}
                           />
                         </Col>
@@ -193,7 +196,12 @@ const SalaryInformationEntryLayout = () => {
                     {selectedComponent === null && (
                       <>
                         <Col md={3}>
-                          <SalaryAllowPayList actions={actions} salAllowData={state.salAllowData} showCalculation = {showCalculation} modalShow={modalShow}/>
+                          <SalaryAllowPayList 
+                            actions={actions} 
+                            salAllowData={state.salAllowData} 
+                            showCalculation = {showCalculation} 
+                            modalShow={modalShow}
+                            ynComplete = {state.ynComplete}/>
                         </Col>
                         <Col md={3}>
                           <SalaryDeductPayList actions={actions} salDeductData={state.deductData} showCalculation = {showCalculation}/>

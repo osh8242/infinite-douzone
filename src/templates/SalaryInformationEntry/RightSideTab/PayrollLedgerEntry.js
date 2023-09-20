@@ -5,9 +5,11 @@ import FormPanel from "../../../components/FormPanel";
 
 const PayrollLedgerEntry = (props) => {
   const {
-    siEmpDetailData
+    siEmpDetailData,
+    actions
   }=props;
 
+  console.log(siEmpDetailData);
   return (
     <div className="siEmpDetail-container">
       <Container className="siEmpDetail-container">
@@ -16,6 +18,7 @@ const PayrollLedgerEntry = (props) => {
             INPUT_CONSTANT={SI_EMP_PAYROLL_CRITERIA}
             columnNumber={1}
             formData = {siEmpDetailData}
+            //submitData={actions.submitEmpPayrollLedgerEntryData} //update 함수
           />
         </div>
       </Container>

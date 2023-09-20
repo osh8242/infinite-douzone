@@ -204,8 +204,10 @@ export const LABELS = {
   ynMateDed: "배우자공제",
   ynResident: "거주구분",
   ynOverwork: "연장근로비과세",
-  num2060many: "20세/60세/다자녀",
-  ynUnitForlabor: "생산/국외",
+  num20Family: "20세",
+  num60Family: "60세",
+  numManyFamily: "다자녀",
+  ynForLabor: "국외근무",
 
   allowMonth: "귀속연월",
   paymentDate: "지급일",
