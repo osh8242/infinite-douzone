@@ -29,6 +29,7 @@ const LoginLayout = () => {
       if (responseData.message === "SUCCESS") {
         console.log("(1-1) ---- Message : SUCCESS");
 
+        localStorage.setItem("token", JSON.stringify(responseData.token));
         localStorage.setItem("userInfo", JSON.stringify(responseData.user));
         let userInfoString = localStorage.getItem("userInfo");
 
