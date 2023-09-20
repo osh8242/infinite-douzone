@@ -27,12 +27,17 @@ input.form-control {
   width: 25%;
   max-width: 120px;
   height: 120%;
-  /* padding-right: 12px; */
   display: flex;
+  border-radius: 2px;
   align-items: center;
   justify-content: center;
   /* background-color: rgb(233, 236, 239); */
   background-color: rgb(203, 229, 255);
+}
+
+.siEmpDetail-container .col-md-12 .label {
+  width: 60%;
+  text-align: center;
 }
 
 .col-md-6 .label {
@@ -40,6 +45,7 @@ input.form-control {
   max-width: 120px;
   height: 150%;
   display: flex;
+  border-radius: 2px;
   align-items: center;
   justify-content: center;
   background-color: rgb(203, 229, 255);
@@ -51,6 +57,7 @@ input.form-control {
   max-width: 120px;
   height: 160%;
   display: flex;
+  border-radius: 2px;
   align-items: center;
   justify-content: center;
   background-color: rgb(203, 229, 255);
