@@ -351,86 +351,86 @@ function TextBoxComponent(props) {
     </Row>
   );
   function renderFormControl() {
-    if (type === "textarea") {
-      return (
-        <div className="widthFull">
-          <Form.Control
-            as="textarea"
-            id={id}
-            name={name}
-            rows={rows}
-            value={inputValue}
-            onChange={handleInputChange}
-            onClick={onClick}
-          />
-        </div>
-      );
-    } else if (type === "callNumber") {
-      // 전화번호
-      return (
-        <div className="widthFull d-flex align-items-center gap-2">
-          {callNumberComponents}
-        </div>
-      );
-    } else if (type === "email") {
-      // 이메일
-      return (
-        <div className="widthFull d-flex align-items-center gap-2">
-          <Form.Control
-            type="text"
-            id={`${id}Id`}
-            value={inputValue.split("@")[0] || ""}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            // undefined={undefined}
-          />
-          <span>@</span>
-          <Form.Select
-            id={`${id}Domain`}
-            value={inputValue.split("@")[1] || EMAIL_LIST[0].value}
-            onChange={handleInputChange}
-          >
-            {EMAIL_LIST.map((option, index) => (
-              <option value={option.value} key={index}>
-                {option.value}
-              </option>
-            ))}
-          </Form.Select>
-        </div>
-      );
-    } else {
-      return (
-        // inputs
-        <div>
-          {/* <div className="widthFull"> */}
-          <Form.Control
-            value={inputValue}
-            type={type}
-            id={id}
-            name={name}
-            size={size}
-            disabled={disabled}
-            readOnly={readOnly}
-            plaintext={plaintext}
-            onChange={handleInputChange}
-            onFocus={handleInputFocus}
-            onClick={onClick}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholder ? placeholder : undefined}
-            style={style}
-            className={isValid ? "" : "invalid"}
-          />
-          {type === "regNum" && (
-            <FontAwesomeIcon
-              className="hide"
-              style={{ colod: "gray" }}
-              icon={faEyeSlash}
-              onClick={handleOnClick}
+    switch (type) {
+      case "textarea":
+        return (
+          <div className="widthFull">
+            <Form.Control
+              as="textarea"
+              id={id}
+              name={name}
+              rows={rows}
+              value={inputValue}
+              onChange={handleInputChange}
+              onClick={onClick}
             />
-          )}
-          {/* {type === "regNum" && <FontAwesomeIcon icon={faEye} />} */}
-        </div>
-      );
+          </div>
+        );
+      case "callNumber":
+        // 전화번호
+        return (
+          <div className="widthFull d-flex align-items-center gap-2">
+            {callNumberComponents}
+          </div>
+        );
+      case "email":
+        // 이메일
+        return (
+          <div className="widthFull d-flex align-items-center gap-2">
+            <Form.Control
+              type="text"
+              id={`${id}Id`}
+              value={inputValue.split("@")[0] || ""}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              // undefined={undefined}
+            />
+            <span>@</span>
+            <Form.Select
+              id={`${id}Domain`}
+              value={inputValue.split("@")[1] || EMAIL_LIST[0].value}
+              onChange={handleInputChange}
+            >
+              {EMAIL_LIST.map((option, index) => (
+                <option value={option.value} key={index}>
+                  {option.value}
+                </option>
+              ))}
+            </Form.Select>
+          </div>
+        );
+      default:
+        return (
+          // inputs
+          <div className="widthFull">
+            <Form.Control
+              value={inputValue}
+              type={type}
+              id={id}
+              name={name}
+              size={size}
+              disabled={disabled}
+              readOnly={readOnly}
+              plaintext={plaintext}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
+              onClick={onClick}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder ? placeholder : undefined}
+              style={style}
+              className={isValid ? "" : "invalid"}
+            />
+            {/* {type === "regNum" && (
+              <FontAwesomeIcon
+                className="hide"
+                style={{ colod: "gray" }}
+                icon={faEyeSlash}
+                onClick={handleOnClick}
+              />
+            )} */}
+            {/* {type === "regNum" && <FontAwesomeIcon icon={faEye} />} */}
+          </div>
+        );
     }
   }
 }
