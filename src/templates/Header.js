@@ -8,7 +8,7 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
 import SearchForm from "../components/SearchForm";
@@ -22,8 +22,23 @@ const logoUrl = {
 
 const Header = (props) => {
   const [showSidebar, setShowSidebar] = useState(false);
+  let userInfoString = localStorage.getItem("userInfo");
+  let userInfoObject = JSON.parse(userInfoString);
+  const [userName, setUserName] = useState(userInfoObject.userName);
+  console.log("------HEADER--------------");
+  console.log(userInfoObject);
+  console.log(userInfoObject.userName);
+  console.log("------HEADER--------------");
 
-  const { contextActions } = useContext(ContextModel);
+  Header.defaultProps = {
+    userName: userInfoObject.userName,
+  };
+
+  // function localStorageListener(event) {
+  //   console.log("event.... localStorage : ");
+  //   console.log(event);
+  // }
+  // window.addEventListener("storage", localStorageListener);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -33,10 +48,6 @@ const Header = (props) => {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
-
-  const optionList2 = [
-    { key: "김회계 주임연구원", value: "김회계 주임연구원" },
-  ];
 
   return (
     <div>
@@ -86,7 +97,7 @@ const Header = (props) => {
             className="backgroundBorderNone"
             onClick={toggleProfileDropdown}
           >
-            김회계 주임연구원 <FontAwesomeIcon icon={faChevronDown} />
+            {userName} 주임연구원 <FontAwesomeIcon icon={faChevronDown} />
           </button>
           {showProfileDropdown && <DropDownMenu />}
           <a
@@ -105,7 +116,7 @@ const Header = (props) => {
             회원가입
           </a>
           <a
-            href="/login"
+            href="/"
             style={{
               backgroundColor: "white",
               border: "1px solid gray",

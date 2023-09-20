@@ -3,7 +3,9 @@ import imgLogo from "../../src/styles/img/defaultProfile.jpg";
 
 const DropDownMenu = (props) => {
   const [imgSrc, setImgSrc] = useState(imgLogo);
-
+  let userInfoString = localStorage.getItem("userInfo");
+  let userInfoObject = JSON.parse(userInfoString);
+  const [userName, setUserName] = useState(userInfoObject.userName);
   useEffect(() => {
     let userInfoString = localStorage.getItem("userInfo");
 
@@ -24,7 +26,7 @@ const DropDownMenu = (props) => {
     <div className="profileDropdown">
       <img src={process.env.PUBLIC_URL + imgSrc} alt="Profile" />
       {/* process.env.PUBLIC_URL은 public 폴더의 경로를 가리킵니다. */}
-      <p>김회계 주임연구원</p>
+      <p>{userName} 주임연구원</p>
       <a href="/mypage">프로필 보기</a>
     </div>
   );

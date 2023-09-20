@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 function ConditionalHeader() {
   const location = useLocation();
 
-  if (location.pathname === "/login") {
+  if (location.pathname === "/") {
     return <LoginLayout />;
   }
 
@@ -34,7 +34,7 @@ function App() {
         <BrowserRouter>
           <ConditionalHeader />
           <Routes>
-            <Route path="/" element={<MainHome />} />
+            <Route path="/main" element={<MainHome />} /> {/* 임시 링크 */}
             <Route path="/signup" element={<SignUp />} />
             <Route path="/er" element={<EmpRegisterationLayout />} />
             <Route path="/hr" element={<HrManagementLayout />} />

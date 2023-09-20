@@ -36,15 +36,16 @@ const LoginLayout = () => {
           let userInfoObject = JSON.parse(userInfoString);
           console.log("     ----- localStorage Value: ");
           console.log(userInfoObject);
+          console.log(userInfoObject.userName);
           //////////
           dispatch(loginSuccess(userInfoObject));
-          window.location.href = "/"; // 임시 리다이렉트
+          window.location.href = "/main"; // 임시 리다이렉트
         }
 
         // window.location.href = "/lc"; // 임시 리다이렉트
       } else {
         console.error(responseData.message);
-        window.location.href = "/login"; // 임시 리다이렉트
+        window.location.href = "/main"; // 임시 리다이렉트
       }
     } catch (error) {
       console.error("ERROR:", error);
