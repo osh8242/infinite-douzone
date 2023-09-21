@@ -89,13 +89,16 @@ const HrManagementLayout = () => {
   const tokenRef = useRef(null);
   const getToken = () => {
     axios
-      .get("http://localhost:8888/jwt/getToken?username=hong")
+      .post("http://localhost:8888/auth/login", {
+        userId: "kosa",
+        userPwd: "1004",
+      })
       .then((response) => {
         const token = response.headers["authorization"];
         console.log("리스폰스 헤더", response.headers);
         console.log("발급받은 토큰", token);
         tokenRef.current = token;
-        validateToken();
+        // validateToken();
       })
       .catch((e) => {
         console.log("겟토큰 에러", e);
@@ -103,7 +106,7 @@ const HrManagementLayout = () => {
   };
   const validateToken = () => {
     axios
-      .get("http://localhost:8888/jwt/validateToken", {
+      .post("http://localhost:8888/emp/validateToken", {
         headers: { Authorization: tokenRef.current },
       })
       .then((response) => {
@@ -116,13 +119,13 @@ const HrManagementLayout = () => {
 
   return (
     <>
-      {/* <button
+      <button
         onClick={() => {
           getToken();
         }}
       >
         JWT 토큰 발급받고 인증해보기
-      </button> */}
+      </button>
       <HrManagementHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
