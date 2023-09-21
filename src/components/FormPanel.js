@@ -53,7 +53,8 @@ const FormPanel = ({
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     const onChangeFn = onChange ? onChange[input.field] : null;
-
+    
+    
     switch (input.type) {
       case INPUT_TYPE.text:
         component = (
@@ -106,7 +107,8 @@ const FormPanel = ({
             disabled={disabled}
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
-            onChange={submitData}
+            // onChange={submitData}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
             // laborContract
             subLabel={input.subLabel}
             endLabel={input.endLabel}
