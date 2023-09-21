@@ -96,8 +96,8 @@ export const CODE_HELPER_DATA = {
     tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdOffpos"]]).map((key) => {
       return {
         item: {
-          cdOffduty: key,
-          nmCdOffduty: CODE_VALUE[CODE_TYPE["cdOffpos"]][key],
+          cdOffpos: key,
+          nmCdOffpos: CODE_VALUE[CODE_TYPE["cdOffpos"]][key],
         },
       };
     }),
