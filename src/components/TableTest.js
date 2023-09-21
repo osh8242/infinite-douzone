@@ -749,7 +749,11 @@ const TableTest = ({
           {rowAddable && (
             <tr
               className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
-              onDoubleClick={() => codeHelper && actions.newRowCodeHelper()}
+              onDoubleClick={(e) => {
+                actions.newRowCodeHelper
+                  ? actions.newRowCodeHelper()
+                  : handleDoubleClick(e, tableRows.length);
+              }}
             >
               {showCheckbox && (
                 <td
@@ -757,7 +761,12 @@ const TableTest = ({
                   onClick={() => codeHelper && actions.newRowCodeHelper()}
                 >
                   <div>
-                    <FontAwesomeIcon icon={faPlus} />
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      onClick={() =>
+                        actions.newRowCodeHelper && actions.newRowCodeHelper()
+                      }
+                    />
                   </div>
                 </td>
               )}
@@ -766,11 +775,6 @@ const TableTest = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onDoubleClick={(e) =>
-                    codeHelper
-                      ? actions.newRowCodeHelper()
-                      : handleDoubleClick(e, tableRows.length, columnIndex)
-                  }
                   onClick={(e) =>
                     handleRowClick(e, tableRows.length, columnIndex)
                   }
@@ -779,7 +783,9 @@ const TableTest = ({
                     {!showCheckbox && columnIndex === 0 && (
                       <FontAwesomeIcon
                         icon={faPlus}
-                        onClick={() => codeHelper && actions.setCodeHelper()}
+                        onClick={() =>
+                          actions.newRowCodeHelper && actions.setCodeHelper()
+                        }
                       />
                     )}
                   </div>
