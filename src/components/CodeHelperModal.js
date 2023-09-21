@@ -47,7 +47,9 @@ function CodeHelperModal(props) {
   const handleRowClick = (event, row) => {
     setSearchTerm("");
     if (setRowData)
-      usePk ? setRowData(event, { [usePk]: row[usePk] }) : setRowData(event, row);
+      usePk
+        ? setRowData(event, { [usePk]: row[usePk] })
+        : setRowData(event, row);
     setFilteredData([]);
     setOriData([]);
     onHide();
@@ -57,14 +59,16 @@ function CodeHelperModal(props) {
     <>
       <div>
         <Row className="table-wrapper">
-          <TableForm
-            readOnly
-            tableHeaders={tableHeaders}
-            tableData={filteredData}
-            onRowClick={handleRowClick}
-          />
+          <div className="table-wrapper-content">
+            <TableForm
+              readOnly
+              tableHeaders={tableHeaders}
+              tableData={filteredData}
+              onRowClick={handleRowClick}
+            />
+          </div>
         </Row>
-        <Row>
+        <Row className="table-footer">
           <Form.Group>
             <TextBoxComponent
               type="text"

@@ -1,10 +1,5 @@
 /* component들의 공통된 css를 관리하는 파일 (ex) 유효성검사 */
-
-/* 
-[ COLOR ]
-형광빨강 : rgb(255, 20, 52)
-*/
-
+/* [ COLOR ] 형광빨강 : rgb(255, 20, 52) */
 input.form-control {
   margin: 2px 0px;
 }
@@ -12,8 +7,8 @@ input.form-control {
 /* input.form-control:focus {
   outline: none;
   border: 0;
-} */
-
+}
+*/
 .invalid {
   outline-style: solid !important;
   outline-width: 1px !important;
@@ -31,7 +26,8 @@ input.form-control {
   border-radius: 2px;
   align-items: center;
   justify-content: center;
-  /* background-color: rgb(233, 236, 239); */
+  /* background-color: rgb(233, 236, 239);
+  */
   background-color: rgb(203, 229, 255);
 }
 
@@ -49,7 +45,8 @@ input.form-control {
   align-items: center;
   justify-content: center;
   background-color: rgb(203, 229, 255);
-  /* background-color: rgb(233, 236, 239); */
+  /* background-color: rgb(233, 236, 239);
+  */
 }
 
 .col-md-4 .label {
@@ -61,7 +58,8 @@ input.form-control {
   align-items: center;
   justify-content: center;
   background-color: rgb(203, 229, 255);
-  /* background-color: rgb(233, 236, 239); */
+  /* background-color: rgb(233, 236, 239);
+  */
 }
 
 .labelAndContent {
@@ -72,4 +70,50 @@ input.form-control {
 
 .widthFull {
   width: 100%;
+}
+
+.modal-body {
+  position: relative;
+  max-height: 60vh;
+}
+
+.modal-body thead {
+  position: sticky;
+  top: 0;
+}
+
+.modal-body .table-wrapper-content {
+  min-height: 20vh;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.modal-body .table-footer {
+  width: 100%;
+  position: static;
+  bottom: 0;
+}
+
+.modal-closeBtn {
+  /* 모달 닫기 버튼 */
+  font-size: 24pt;
+  color: rgb(57, 63, 80);
+  cursor: pointer;
+}
+
+.modal-body .table-wrapper-content::-webkit-scrollbar {
+  /* 스크롤바 너비 */
+  width: 10px;
+}
+
+.modal-body .table-wrapper-content::-webkit-scrollbar-thumb {
+  /* 스크롤바 */
+  height: 30%;
+  background: rgb(48, 150, 255);
+  border-radius: 10px;
+}
+
+.modal-body .table-wrapper::-webkit-scrollbar-track {
+  background: rgba(48, 150, 255, 0.1);
+  /*스크롤바 뒷 배경*/
 }
