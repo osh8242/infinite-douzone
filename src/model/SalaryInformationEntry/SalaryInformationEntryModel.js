@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import axios from 'axios';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
-import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_SALDATA_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
+import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
 
 const SalaryInformationEntryModel = () => {
@@ -217,7 +217,8 @@ const SalaryInformationEntryModel = () => {
               nmAllow: item.nmAllow,
               allowPay: item.allowPay,
               ynTax : item.ynTax,
-              salDivision : item.salDivision
+              salDivision : item.salDivision,
+              calculation : item.calculation
             },
           }));
           setSalData(saAllowPayList);
@@ -228,7 +229,7 @@ const SalaryInformationEntryModel = () => {
               cdDeduct : item.cdDeduct,
               nmDeduct: item.nmDeduct,
               allowPay: item.allowPay,
-              calculation : ''
+              calculation : item.calculation
             },
           }));
           setDeductData(saDeductPayList);
@@ -388,6 +389,23 @@ const updateEmp = useCallback((emp) => {
     });
 }, []);
 
+/* 전월데이터 복사 */
+const setCopyLastMonthData = useCallback(()=>{
+  axios
+    .post(url + SET_COPYSALDATA_LASTMONTH_URL, {allowYear : allowYear , allowMonth : allowMonth})
+    .then((response) => {
+      if (response.data.dateId) {
+        console.log("전월데이터 복사 성공");
+        response.data.dateId && setDateId(response.data.dateId);
+        //리로드
+        onSearch();
+      }
+    })
+    .catch((error) => {
+      console.log("에러발생 -> ", error);
+    });
+},[]);
+
   return {
     state : {
       saInfoListData: { saInfoListData : saInfoListData , salEmpListStaticsTableData : salEmpListStaticsTableData}  // 왼쪽 사원테이블
@@ -454,6 +472,7 @@ const updateEmp = useCallback((emp) => {
       , changeCdEmp
       , getSalTotalSum
       , updateDate
+      , setCopyLastMonthData 
     }
 
   };

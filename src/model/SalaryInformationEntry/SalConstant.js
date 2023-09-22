@@ -10,6 +10,7 @@ export const GET_SAL_TOTAL_SUM_URL = "/sallowpay/getSalTotalPaySum";
 export const GET_SALINFO_BY_EMP_URL = "/sallowpay/getSaPayByCdEmp";
 export const SAVE_SALDATA_URL = "/sallowpay/mergeSalAllowPay"
 export const UPDATE_DATEINFO_URL = "/sallowpay/updateDate";
+export const SET_COPYSALDATA_LASTMONTH_URL = "/sallowpay/setCopyLastMonthData";
 
 /* 사원리스트 영역 */
 export const salEmp = {

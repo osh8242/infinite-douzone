@@ -12,18 +12,16 @@ const SalaryAllowPayList = (props) => {
   const { salAllowData, actions, showCalculation, modalShow, ynComplete } = props;
   const [showYn, setShowYn] = useState("salaryAllowPay");
 
-  const toggleCalculation = () => {
-    const newShowYn = showYn === "salaryAllowPay" ? null : "salaryAllowPay";
-    setShowYn(newShowYn);
-    showCalculation(newShowYn);
-  };
-
+  // const toggleCalculation = () => {
+  //   const newShowYn = showYn === "salaryAllowPay" ? null : "salaryAllowPay";
+  //   setShowYn(newShowYn);
+  //   showCalculation(newShowYn);
+  // };
 
   return (
     <div>
       <Row>
         <div className="leftTable">
-          <Button onClick={()=>{toggleCalculation()}}>산출식</Button>
           <TableForm
             tableName="SI_SALARY_ALLOWPAY_LIST"
             readOnly={ynComplete === 'Y'}

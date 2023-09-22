@@ -162,24 +162,21 @@ const SalaryInformationEntryLayout = () => {
               modalShow = {modalShow}
               actions = {actions}
               state = {state}
+              setCopyLastMonthData = {actions.setCopyLastMonthData}
             />
             {/* 메인영역 */}
               <Row>
                 <Col md={3}>
                   <EmpList actions={actions} saInfoListData={state.saInfoListData} />
                 </Col>
-                    {selectedComponent === 'SalaryAllowPayCalculation' && (
-                      <>
-                        <Col>
-                          <SalaryAllowPayListWithCalculation 
-                            actions={actions} 
-                            salAllowData={state.salAllowData} 
-                            modalShow = {modalShow} 
-                            showCalculation = {showCalculation}
-                          />
-                        </Col>
-                      </>
-                    )}
+                <Col md={3}>
+                  <SalaryAllowPayList 
+                    actions={actions} 
+                    salAllowData={state.salAllowData} 
+                    showCalculation = {showCalculation} 
+                    modalShow={modalShow}
+                    ynComplete = {state.ynComplete}/>
+                </Col>
                     {selectedComponent === 'SalaryDeductPayCalculation' && (
                       <>
                         <Col>
@@ -195,14 +192,6 @@ const SalaryInformationEntryLayout = () => {
                     )}
                     {selectedComponent === null && (
                       <>
-                        <Col md={3}>
-                          <SalaryAllowPayList 
-                            actions={actions} 
-                            salAllowData={state.salAllowData} 
-                            showCalculation = {showCalculation} 
-                            modalShow={modalShow}
-                            ynComplete = {state.ynComplete}/>
-                        </Col>
                         <Col md={3}>
                           <SalaryDeductPayList actions={actions} salDeductData={state.deductData} showCalculation = {showCalculation}/>
                         </Col>
