@@ -1,10 +1,9 @@
-import axios from "axios";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
-import { url } from "../CommonConstant";
+import api from "../Api";
 import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
@@ -50,9 +49,9 @@ const HrManagementModel = () => {
   };
 
   const getLeftTableData = (newLeftCodeHelperTableData) => {
-    axios
+    api
       .get(
-        `${url}/empAdd/getEmpAddListForHrManagement?jobOk=${jobOkRef.current}+
+        `/empAdd/getEmpAddListForHrManagement?jobOk=${jobOkRef.current}+
       ${"&orderRef=" + orderRef.current}
       +
       ${yearRef.current ? "&refYear=" + yearRef.current : ""}`
@@ -86,9 +85,9 @@ const HrManagementModel = () => {
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
-    axios
+    api
       .get(
-        `${url}/emp/getEmpListForHrManagement?jobOk=${jobOkRef.current}+
+        `/emp/getEmpListForHrManagement?jobOk=${jobOkRef.current}+
       ${"&orderRef=" + orderRef.current}
       +
       ${yearRef.current ? "&refYear=" + yearRef.current : ""}`
@@ -107,8 +106,8 @@ const HrManagementModel = () => {
 
   //인사관리 insert 요청
   const insertEmpAdd = useCallback((emp) => {
-    axios
-      .post(url + "/empAdd/insertEmpAdd", emp)
+    api
+      .post(urlPattern.insertEmpAdd, emp)
       .then((response) => {
         if (response.data === 1) console.log("EmpAdd insert 성공");
       })
@@ -141,8 +140,8 @@ const HrManagementModel = () => {
   useEffect(() => {
     console.log("leftTablePkValue", leftTablePkValue);
     if (leftTablePkValue?.cdEmp && Object.keys(leftTablePkValue).length !== 0) {
-      axios
-        .post(url + "/empAdd/getEmpAddByCdEmp", leftTablePkValue)
+      api
+        .post(urlPattern.getEmpAddByCdEmp, leftTablePkValue)
         .then((response) => {
           let data = response.data;
           console.log("mainTabData", data);
@@ -160,8 +159,8 @@ const HrManagementModel = () => {
   //초기 랜더링시 이미지 불러오기
   useEffect(() => {
     if (leftTablePkValue.cdEmp) {
-      axios
-        .get(`${url + urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
+      api
+        .get(`${urlPattern.getEmpPhoto}?cdEmp=${leftTablePkValue.cdEmp}`, {
           responseType: "arraybuffer",
         })
         .then((response) => {
@@ -200,9 +199,10 @@ const HrManagementModel = () => {
       formData.append("fileExtension", fileExtension);
       formData.append("pkValue", JSON.stringify(leftTablePkValue));
 
-      axios
-        .put(url + urlPattern.updateEmpPhoto, formData, {
+      api
+        .put(urlPattern.updateEmpPhoto, formData, {
           headers: {
+            Authorization: localStorage.getItem("authToken"),
             "Content-Type": "multipart/form-data",
           },
         })
@@ -268,8 +268,8 @@ const HrManagementModel = () => {
   const updateEmpAdd = useCallback(
     (EmpAdd) => {
       console.log("editedEmpAdd 업데이트 요청", EmpAdd);
-      axios
-        .put(url + "/empAdd/updateEmpAdd", EmpAdd)
+      api
+        .put(urlPattern.updateEmpAdd, EmpAdd)
         .then((response) => {
           if (response.data === 1) console.log("EmpAdd 업데이트 성공");
           setLeftTablePkValue({ ...leftTablePkValue });
@@ -286,8 +286,8 @@ const HrManagementModel = () => {
   useEffect(() => {
     setSubTableData([]);
     if (leftTablePkValue?.cdEmp) {
-      axios
-        .post(url + "/empFam/getEmpFamListByCdEmp", leftTablePkValue)
+      api
+        .post(urlPattern.getEmpFamListByCdEmp, leftTablePkValue)
         .then((response) => {
           console.log("EmpFam Loaded", response.data);
           const data = response.data.map((item) => {
@@ -305,8 +305,8 @@ const HrManagementModel = () => {
   //추가된 사원 insert 요청
   useEffect(() => {
     if (editedEmp?.isNew && Object.keys(editedEmp).length !== 0)
-      axios
-        .post(url + urlPattern.insertEmp, editedEmp.item)
+      api
+        .post(urlPattern.insertEmp, editedEmp.item)
         .then((response) => {
           if (response.data === 1) console.log("Emp 업데이트 성공");
           setEditedEmp({});
@@ -319,8 +319,8 @@ const HrManagementModel = () => {
 
   //추가된 사원 insert 요청
   const insertEmp = useCallback((emp) => {
-    axios
-      .post(url + "/emp/insertEmp", emp)
+    api
+      .post(urlPattern.insertEmp, emp)
       .then((response) => {
         if (response.data === 1) console.log("Emp insert 성공");
         setEditedEmp({});
@@ -335,8 +335,8 @@ const HrManagementModel = () => {
   useEffect(() => {
     if (editedEmp)
       if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
-        axios
-          .put(url + "/emp/updateEmp", editedEmp.item)
+        api
+          .put(urlPattern.updateEmp, editedEmp.item)
           .then((response) => {
             if (response.data === 1) console.log("Emp update 성공");
             setEditedEmp();
@@ -348,8 +348,8 @@ const HrManagementModel = () => {
   }, [editedEmp]);
 
   const updateEmp = useCallback((emp) => {
-    axios
-      .put(url + "/emp/updateEmp", emp)
+    api
+      .put(urlPattern.updateEmp, emp)
       .then((response) => {
         if (response.data === 1) console.log("Emp update 성공");
         setEditedEmp();
@@ -362,8 +362,8 @@ const HrManagementModel = () => {
 
   //추가된 사원가족 insert 요청
   const insertEmpFam = useCallback((empFam) => {
-    axios
-      .post(url + urlPattern.insertEmpFam, empFam)
+    api
+      .post(urlPattern.insertEmpFam, empFam)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam insert 성공");
       })
@@ -376,8 +376,8 @@ const HrManagementModel = () => {
   //수정된 사원가족 update 요청
   const updateEmpFam = useCallback((empFam) => {
     console.log("updateEmpFam", "newEmpFam", empFam);
-    axios
-      .put(url + urlPattern.updateEmpFam, empFam)
+    api
+      .put(urlPattern.updateEmpFam, empFam)
       .then((response) => {
         if (response.data === 1) console.log("EmpFam 업데이트 성공");
       })
@@ -406,7 +406,7 @@ const HrManagementModel = () => {
           return Promise.resolve();
       }
       if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-      return axios.delete(url + pattern, { data: row.item });
+      return api.delete(pattern, { data: row.item });
     });
 
     Promise.all(deletePromises)
@@ -453,8 +453,8 @@ const HrManagementModel = () => {
         console.log("설정되지 않은 테이블 행을 삭제요청받음");
         return;
     }
-    axios
-      .delete(url + pattern, { data: row.item })
+    api
+      .delete(pattern, { data: row.item })
       .then(console.log("삭제완료"))
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);

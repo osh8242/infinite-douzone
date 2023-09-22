@@ -1,17 +1,7 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import CodeHelperModal from "./CodeHelperModal";
@@ -54,11 +44,20 @@ const TableTest = ({
   defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온 1번째행 셀렉트 디폴트 false)
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
+  const [refresh, setRefresh] = useState(false);
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
     setTableRows(tableData);
+    defaultFocus && setRefresh(!refresh);
   }, [tableData]);
+
+  useEffect(() => {
+    if (defaultFocus) {
+      setRowRef(1);
+      updatePkValue(getPkValue(0));
+    }
+  }, [refresh]);
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(false);
@@ -502,9 +501,7 @@ const TableTest = ({
         case "textCodeHelper":
           let codeHelperData = codeHelper[field];
           let tableData = codeHelperData.tableData;
-          let targetIndex = tableData.findIndex(
-            (row) => row.item[field] === value
-          );
+          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
           const newField = field.charAt(0).toUpperCase() + field.slice(1);
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
@@ -573,8 +570,7 @@ const TableTest = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -669,9 +665,7 @@ const TableTest = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -775,9 +769,7 @@ const TableTest = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onClick={(e) =>
-                    handleRowClick(e, tableRows.length, columnIndex)
-                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (

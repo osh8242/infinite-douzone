@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import axios from "axios";
-import Emp from "../../vo/EmpRegister/Emp";
 import { currentDateStr } from "../../utils/DateUtils.js";
+import Emp from "../../vo/EmpRegister/Emp";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
-import { urlPattern } from "./EmpConstant";
+import api from "../Api";
 import {
   codeHelperData_abbNation,
-  codeHelperData_cdNation,
-  codeHelperData_cdDept,
-  codeHelperData_cdOccup,
-  codeHelperData_rankNo,
-  codeHelperData_cdSalcls,
-  codeHelperData_cdField,
-  codeHelperData_cdProject,
   codeHelperData_cdBank,
+  codeHelperData_cdDept,
+  codeHelperData_cdField,
+  codeHelperData_cdNation,
+  codeHelperData_cdOccup,
+  codeHelperData_cdProject,
+  codeHelperData_cdSalcls,
+  codeHelperData_rankNo,
+  urlPattern,
 } from "./EmpConstant";
 
 function EmpRegisterationModel() {
@@ -65,9 +65,7 @@ function EmpRegisterationModel() {
         (item) => item.item[fieldName] === value
       );
       return matchedItem
-        ? matchedItem.item[
-            `nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`
-          ]
+        ? matchedItem.item[`nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`]
         : value;
     } else {
       // console.error(`Code helper data not found for field: ${fieldName}`);
@@ -146,8 +144,8 @@ function EmpRegisterationModel() {
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
     setLeftTableData();
-    axios
-      .get(url + "/emp/getAllEmp")
+    api
+      .get("/emp/getAllEmp")
       .then((response) => {
         const data = response.data.map((item) => {
           const empData = {
@@ -170,15 +168,12 @@ function EmpRegisterationModel() {
   // SELECT mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
     if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
-      axios
-        .post(url + "/emp/getEmpByCdEmp", mainTablePkValue, {
+      api
+        .post("/emp/getEmpByCdEmp", mainTablePkValue, {
           ContentType: "application/json",
         })
         .then((response) => {
-          console.log(
-            "EmpRegisterationModel > /emp/getEmpByCdEmp",
-            response.data
-          );
+          console.log("EmpRegisterationModel > /emp/getEmpByCdEmp", response.data);
 
           // 코드 한글변환
           let newResponseData = { ...response.data };
@@ -237,8 +232,8 @@ function EmpRegisterationModel() {
         daEnter: currentDateStr(),
       };
       console.log("여기를 보십시오 => 모델 insert 데이터", newEditedEmp.item);
-      axios
-        .post(url + "/emp/insertEmp", newEditedEmp.item, {
+      api
+        .post("/emp/insertEmp", newEditedEmp.item, {
           "Content-Type": "qpplication/json",
         })
         .then((response) => {
@@ -253,8 +248,8 @@ function EmpRegisterationModel() {
 
   // 사원 insert 함수
   const insertEmp = useCallback((emp) => {
-    axios
-      .post(url + urlPattern.insertEmp, emp, {
+    api
+      .post(urlPattern.insertEmp, emp, {
         "Content-Type": "qpplication/json",
       })
       .then((response) => {
@@ -287,8 +282,8 @@ function EmpRegisterationModel() {
   //사원 update 함수
   const updateEmp = useCallback((emp) => {
     console.log("emp 함수 update요청: ", emp);
-    axios
-      .put(url + "/emp/updateEmp", emp)
+    api
+      .put("/emp/updateEmp", emp)
       .then((response) => {
         if (response.data !== 0) console.log("Emp 업데이트 성공");
         setEditedEmp({});
@@ -311,7 +306,7 @@ function EmpRegisterationModel() {
         default:
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }
-      return axios.delete(url + pattern, { data: row.item });
+      return api.delete(pattern, { data: row.item });
     }, []);
 
     Promise.all(deletePromises)
@@ -357,7 +352,7 @@ function EmpRegisterationModel() {
         default:
           return Promise.resolve();
       }
-      return axios.delete(url + pattern, { data: row.item });
+      return api.delete(pattern, { data: row.item });
     });
 
     Promise.all(deletePromises)
