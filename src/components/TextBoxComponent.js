@@ -83,9 +83,6 @@ function TextBoxComponent(props) {
   const [isDisable, setDisable] = useState(
     disabled || selectedOption === "F" ? true : false
   );
-  const [isReadOnly, setReadOnly] = useState(
-    selectedOption === "F" ? true : false
-  );
   // const style = height ? { height: `${height}px` } : {}; // 스타일 값
   const style = {
     ...(isDisable ? { color: "transparent" } : {}),
@@ -94,6 +91,8 @@ function TextBoxComponent(props) {
 
   useEffect(() => {
     if (selectedOption === "F") {
+      console.log("selectedOption is");
+      console.log(selectedOption);
       setDisable(true);
     } else setDisable(false);
     setSelectedValue(selectedOption || "");
@@ -106,12 +105,15 @@ function TextBoxComponent(props) {
   const handleSelectChange = (event) => {
     console.log("subField");
     console.log(subField);
-    if (event.target.value === "F" || "T") {
+    if (event.target.value === "F" || event.target.value === "T") {
+      console.log("isssssssd");
+      console.log(event.target.value);
       setDisable(!isDisable);
     } // disable true 변경
     console.log("value" + event.target.value);
     event.target.id = subField;
     console.log("id" + event.target.id);
+
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
     console.log(newValue);
