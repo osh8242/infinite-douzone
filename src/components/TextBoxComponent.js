@@ -91,29 +91,16 @@ function TextBoxComponent(props) {
 
   useEffect(() => {
     if (selectedOption === "F") {
-      console.log("selectedOption is");
-      console.log(selectedOption);
       setDisable(true);
     } else setDisable(false);
     setSelectedValue(selectedOption || "");
   }, [selectedOption]);
 
-  useEffect(() => {
-    // setDisable(!isDisable);
-  }, [isDisable]);
-
   const handleSelectChange = (event) => {
-    console.log("subField");
-    console.log(subField);
     if (event.target.value === "F" || event.target.value === "T") {
-      console.log("isssssssd");
-      console.log(event.target.value);
       setDisable(!isDisable);
-    } // disable true 변경
-    console.log("value" + event.target.value);
+    }
     event.target.id = subField;
-    console.log("id" + event.target.id);
-
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
     console.log(newValue);
@@ -122,7 +109,6 @@ function TextBoxComponent(props) {
 
   useEffect(() => {
     setInputValue(value || "");
-    // setInputSubValue(subValue || "");
     if (type === "callNumber") {
       let callNumber = value.split("-");
       setInputCallValue(callNumber);
