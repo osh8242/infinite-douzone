@@ -1,23 +1,25 @@
-import React, { useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import React from "react";
+import { Row } from "react-bootstrap";
 import TableForm from "../../../components/TableForm";
 import {
   modal_addSalAllow,
   salAllow,
   salAllowSumData,
+  sumAllowPay,
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import "../../../styles/HrManagement/HrManagementLayout.scss";
 
 const SalaryAllowPayList = (props) => {
   const { salAllowData, actions, showCalculation, modalShow, ynComplete } = props;
-  const [showYn, setShowYn] = useState("salaryAllowPay");
-
+  //const [showYn, setShowYn] = useState("salaryAllowPay");
   // const toggleCalculation = () => {
   //   const newShowYn = showYn === "salaryAllowPay" ? null : "salaryAllowPay";
   //   setShowYn(newShowYn);
   //   showCalculation(newShowYn);
   // };
 
+  console.log(salAllowData.salData);
+  console.log(salAllowData.sumAllowPayByYnTax);
   return (
     <div>
       <Row>
@@ -31,7 +33,7 @@ const SalaryAllowPayList = (props) => {
             codeHelper
             actions={{
               setTableData: actions.setSalData,
-              updateEditedRow: actions.setAddSalAllowPayRow,
+              updateEditedRow: actions.updateSalaryAllowPay,
               setCodeHelper : ()=> modalShow('addSalAllowPay', modal_addSalAllow, actions.setAddSalAllowPay)
             }}
           />
@@ -39,12 +41,12 @@ const SalaryAllowPayList = (props) => {
       </Row>
       {/* 통계 테이블 */}
        <Row className="mt-3">
-        {/* <TableForm
+        <TableForm
           tableName="EMPSTATICS"
-          tableHeaders={salAllowSumData.headers}
-          tableData={salAllowData.salAllowPayTotalTableData}
+          tableHeaders={sumAllowPay.headers}
+          tableData={salAllowData.sumAllowPayByYnTax}
           readOnly
-        /> */}
+        /> 
       </Row>
     </div>
   );

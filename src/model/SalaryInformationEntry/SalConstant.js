@@ -29,11 +29,17 @@ export const salAllow = {
     ]
 };
 
-export const salAllowSumData = {
+export const sumAllowPay = {
     headers : [
-        { field: "taxYSum", text: "과세" },
-        { field: "taxNSum", text: "비과세" },
-        { field: "sum", text: "총합계" },
+        { field: "sumByY", text: "과세" },
+        { field: "sumByN", text: "비과세" },
+        { field: "sumAllowPay", text: "합계" }
+    ]
+};
+
+export const sumDeductPay = {
+    headers : [
+        { field: "sumDeductPay", text: "합계" },
     ]
 };
 
