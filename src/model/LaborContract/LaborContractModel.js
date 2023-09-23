@@ -18,20 +18,8 @@ const LaborContractModel = () => {
   const [mainTabData, setMainTabData] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
   const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "" });
-  const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
+
   const mainTabRef = useRef();
-
-  //search
-  const salRef = useRef("empAll"); // 소득구분
-  const dateRef = useRef(new Date()); // 작성일자
-  // const yearRef = useRef(new Date().getFullYear()); // 귀속년도
-
-  ////////////////////////
-  // 임시 테이블 코드헬퍼 insert 요청중
-  ///////////////////////////////////////
-
-  // 조회 기준 getEmp
-
   useEffect(() => {
     api
       .get(swsmUrlPattern.getAllEmp)
@@ -49,7 +37,6 @@ const LaborContractModel = () => {
   }, []);
 
   useEffect(() => {
-    console.log("mainpk-----------swsm :" + mainTablePkValue.cdEmp);
     if (mainTablePkValue) {
       api
         .post(swsmUrlPattern.getSwsm, mainTablePkValue, {
@@ -64,7 +51,7 @@ const LaborContractModel = () => {
         });
 
       api
-        .post(swsmUrlPattern.x, mainTablePkValue)
+        .post(swsmUrlPattern.getSwsmOther, mainTablePkValue)
         .then((response) => {
           const data = response.data.map((item) =>
             SwsmOther({
@@ -80,9 +67,6 @@ const LaborContractModel = () => {
           console.log("ERRRRRROOORRRRRR:");
           console.error("에러발생: ", error);
         });
-    } else {
-      ///////testing
-      setSubTableData({});
     }
   }, [mainTablePkValue, editedSwsmOther]);
 
@@ -158,25 +142,6 @@ const LaborContractModel = () => {
       })
       .catch(console.error);
   }, [editedSwsm, mainTabData]);
-
-  // useEffect(() => {
-  //   if (Object.keys(editedSwsm).length === 0 || editedSwsm.isNew) return;
-
-  //   console.log(editedSwsm);
-
-  //   const updatedSwsm = {
-  //     ...editedSwsm,
-  //     cdEmp: mainTabData.cdEmp,
-  //   };
-
-  //   api
-  //     .put(swsmUrlPattern.updateSwsm, updatedSwsm)
-  //     .then((response) => {
-  //       if (response.data === 1) console.log("Swsm 업데이트 성공");
-  //       setEditedSwsm({});
-  //     })
-  //     .catch(console.error);
-  // }, [editedSwsm, mainTabData]);
 
   const insertSwsmOther = useCallback(
     (swsmOther) => {
@@ -277,10 +242,8 @@ const LaborContractModel = () => {
       mainTabRef,
       subTableData,
       selectedRows,
-      modalState,
     },
     actions: {
-      insertEmp,
       setLeftTableData,
       setLeftTablePkValue,
       setMainTablePkValue,
