@@ -15,9 +15,12 @@ const LoginLayout = () => {
   const [password, setPassword] = useState("");
 
   const [loginError, setLoginError] = useState(""); // 로그인 에러 상태 추가
-  const [loginErrorCount, setLoginErrorCount] = useState(0);
+  const [loginErrorCount] = useState(0);
   const [keyframeTrigger, setKeyframeTrigger] = useState(0);
+
+  console.log("loginLayout test-----------------");
   const handleLogin = async () => {
+    console.log("--------------click login----------------");
     try {
       const responseData = await loginUser(username, password);
 
@@ -25,39 +28,50 @@ const LoginLayout = () => {
       console.log("login Layout response: ");
       console.log(responseData);
       console.log(responseData.user);
+      console.log("headerrrrr");
+      console.log(responseData.headers);
 
       if (responseData.message === "SUCCESS") {
         console.log("(1-1) ---- Message : SUCCESS");
 
-        localStorage.setItem("token", JSON.stringify(responseData.token));
+        const token = responseData.headers["authorization"];
+
+        localStorage.setItem(
+          "token",
+          "Bearer " + responseData.headers["authorization"]
+        );
+        // const token = responseData.headers.get("Authorization");
+        if (token) {
+          localStorage.setItem("token", token);
+        }
+
+        console.log("======================++");
+
+        // localStorage.setItem("token", JSON.stringify(responseData.token));
         localStorage.setItem("userInfo", JSON.stringify(responseData.user));
         let userInfoString = localStorage.getItem("userInfo");
 
         if (userInfoString) {
           let userInfoObject = JSON.parse(userInfoString);
           console.log("     ----- localStorage Value: ");
-          console.log(userInfoObject);
           console.log(userInfoObject.userName);
-          //////////
           dispatch(loginSuccess(userInfoObject));
-          window.location.href = "/main"; // 임시 리다이렉트
+          // window.location.href = "/"; // 임시 리다이렉트
         }
-
-        // window.location.href = "/lc"; // 임시 리다이렉트
       } else {
         console.error(responseData.message);
-        window.location.href = "/main"; // 임시 리다이렉트
+        // window.location.href = "/login"; // 임시 리다이렉트
       }
     } catch (error) {
       console.error("ERROR:", error);
 
       setLoginError(true);
-      setLoginErrorCount((prev) => {
-        if (prev >= 1) {
-          setKeyframeTrigger((k) => k + 1); // 두 번째 에러부터 키 프레임 트리거 업데이트
-        }
-        return prev + 1;
-      });
+      // setLoginErrorCount((prev) => {
+      //   if (prev >= 1) {
+      //     setKeyframeTrigger((k) => k + 1); // 두 번째 에러부터 키 프레임 트리거 업데이트
+      //   }
+      //   return prev + 1;
+      // });
       if (error.response) {
         if (
           error.response.status === 401 &&

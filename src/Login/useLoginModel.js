@@ -30,7 +30,7 @@ const useLoginModel = () => {
         console.log("login user info ..");
         console.log(localStorage.getItem("userInfo"));
         console.log(response.data);
-        window.location.href = `/mypage`; // 임시 리다이렉트
+        // window.location.href = `/mypage`; // 임시 리다이렉트
       } else {
         console.log(response.data.message || "로그인에 실패하였습니다.");
       }

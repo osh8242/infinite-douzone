@@ -1,0 +1,11 @@
+#SignUp .subLabel{
+    font-weight: bold;
+    padding-bottom : 15px ; 
+    text-align:center;
+    padding-bottom: 15px;
+}
+
+#SignUp .d-flex{
+row-gap: 150;
+column-gap: 100;
+}

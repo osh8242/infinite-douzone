@@ -37,6 +37,11 @@ export const incomeClassficationList = [
   { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
 ];
 
+export const mainTabMenuList = {
+  WorkInformation: "계약서 작성",
+  otherBenefit: "계약서 조회",
+};
+
 // 추가 구분 목록
 export const subTabMenuList = {
   WorkInformation: "근로정보",

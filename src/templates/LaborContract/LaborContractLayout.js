@@ -14,7 +14,11 @@ import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
 // import useLoginModel from "../../Login/useLoginModel";
-import { MAIN_TAB, HEAD_TAB } from "./MainTab/LaborContractTabConstant";
+import {
+  MAIN_TAB,
+  HEAD_TAB,
+  TAB_MENU_LIST,
+} from "./MainTab/LaborContractTabConstant";
 
 import { useSelector } from "react-redux";
 
@@ -32,9 +36,6 @@ const LaborContractLayout = () => {
   const authData = useSelector((states) => states.auth);
   console.log("login success:");
   console.log(authData);
-  // const { LoginUser } = useLoginModel();
-  // console.log("Login Test");
-  // console.log(LoginUser);
 
   console.log("Redux info....");
   // const user = useSelector((state) => state.auth.user);
@@ -72,7 +73,7 @@ const LaborContractLayout = () => {
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
-        {/* 조회영역 */}
+        {/* 조회 영역 */}
         <SearchPanel showAccordion>
           <Row>
             {mainTabData ? (
@@ -85,42 +86,62 @@ const LaborContractLayout = () => {
               <Spinner animation="border" variant="primary" />
             )}
           </Row>
-
+          {/* 에러 방지 빈태그  */}
           <div></div>
         </SearchPanel>
-        {/* 메인영역 */}
         <Row>
-          {/* 좌측 영역 */}
           <Col md="3">
-            {/* 좌측 그리드 */}
             <Row>
-              <div className="leftTable">
-                <TableForm
-                  tableName="EMP"
-                  showHeaderArrow
-                  sortable
-                  tableHeaders={LeftTableHeaders}
-                  tableData={leftTableData}
-                  selectedRows={selectedRows}
-                  rowAddable
-                  defaultSelectedRow
-                  defaultFocus
-                  actions={{
-                    setTableData: actions.setLeftTableData,
-                    setPkValue: actions.setMainTablePkValue,
-                    setEditedRow: actions.setEditedEmp,
-                    setSelectedRows: actions.setSelectedRows,
-                    deleteCurrentRow: actions.deleteCurrentRow,
-                    getRowObject: Swsm,
-                  }}
-                />
-              </div>
+              <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
+                {[
+                  <div className="leftTable">
+                    <TableForm
+                      tableName="EMP"
+                      showHeaderArrow
+                      sortable
+                      tableHeaders={LeftTableHeaders}
+                      // tableData={leftTableData}
+                      selectedRows={selectedRows}
+                      rowAddable
+                      defaultSelectedRow
+                      defaultFocus
+                      actions={{
+                        setTableData: actions.setLeftTableData,
+                        setPkValue: actions.setMainTablePkValue,
+                        setEditedRow: actions.setEditedEmp,
+                        setSelectedRows: actions.setSelectedRows,
+                        deleteCurrentRow: actions.deleteCurrentRow,
+                        getRowObject: Swsm,
+                      }}
+                    />
+                  </div>,
+                  <div>
+                    <TableForm
+                      tableName="EMP"
+                      showHeaderArrow
+                      sortable
+                      tableHeaders={LeftTableHeaders}
+                      tableData={leftTableData}
+                      selectedRows={selectedRows}
+                      rowAddable
+                      defaultSelectedRow
+                      defaultFocus
+                      actions={{
+                        setTableData: actions.setLeftTableData,
+                        setPkValue: actions.setMainTablePkValue,
+                        setEditedRow: actions.setEditedEmp,
+                        setSelectedRows: actions.setSelectedRows,
+                        deleteCurrentRow: actions.deleteCurrentRow,
+                        getRowObject: Swsm,
+                      }}
+                    />
+                  </div>,
+                ]}
+              </MenuTab>
             </Row>
           </Col>
-          {/* 우측 영역 */}
           {mainTabData ? (
             <Col md="9" className="px-5">
-              {/* 우측 메인탭 */}
               <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                 {[
                   // <Scrollbars style={{ height: 400, overflow: "hidden" }}>
@@ -135,8 +156,6 @@ const LaborContractLayout = () => {
                   // </Scrollbars>,
                 ]}
               </MenuTab>
-              {/* 우측 메인폼 */}
-              {/* 우측 서브탭 */}
               <MenuTab menuList={[subTabMenuList.otherBenefit]}>
                 {[
                   <Row key="key" className="mt-4 mb-4 justify-content-center">

@@ -5,10 +5,19 @@
 
 import React from "react";
 import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+// import cursor from "../styles/img/cursor-remov.png";
+// import "../styles/cursor.css";
 
 function MainHome() {
   return (
     <>
+      {/* <div
+        style={{
+          cursor: `url(${cursor}), auto`,
+          width: "32px",
+          height: "32px",
+        }}
+      > */}
       <div
         style={{
           height: "64vh",
