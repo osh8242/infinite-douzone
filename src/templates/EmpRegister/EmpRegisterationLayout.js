@@ -1,37 +1,35 @@
 // 작성자: 김진
 // 사원등록 페이지 전용 레이아웃
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
+import MenuTab from "../../components/MenuTab";
+import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/commonComponent.css";
-import EmpRegisterHeader from "./EmpRegisterHeader";
-import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
 import Emp from "../../vo/EmpRegister/Emp";
-import MenuTab from "../../components/MenuTab";
+import EmpRegisterHeader from "./EmpRegisterHeader";
 // import TextBoxComponent from "../../components/TextBoxComponent";
 // import AddressForm from "../../components/AddressForm";
-import CallNumberForm from "../../components/CallNumberForm";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 // import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
+import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import FormPanel from "../../components/FormPanel";
 import TableForm from "../../components/TableForm";
-import { LABELS } from "../../model/CommonConstant";
 import {
   EmpRegisterLeftHeaders,
   codeHelperData_abbNation,
-  codeHelperData_cdNation,
-  codeHelperData_cdDept,
-  codeHelperData_rankNo,
-  codeHelperData_cdSalcls,
-  codeHelperData_cdProject,
-  codeHelperData_cdOccup,
-  codeHelperData_cdField,
-  tabConstant,
   codeHelperData_cdBank,
+  codeHelperData_cdDept,
+  codeHelperData_cdField,
+  codeHelperData_cdNation,
+  codeHelperData_cdOccup,
+  codeHelperData_cdProject,
+  codeHelperData_cdSalcls,
+  codeHelperData_rankNo,
+  tabConstant,
 } from "../../model/EmpRegister/EmpConstant";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
-import FormPanel from "../../components/FormPanel";
 import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
 
 function EmpRegisterationLayout() {
@@ -86,22 +84,22 @@ function EmpRegisterationLayout() {
   );
 
   //mainTab Enter 이벤트 발생시 Emp 업데이트
-  const submitMainTabData = (value, id) => {
-    console.log("value: ", value);
-    console.log("id: ", id);
-    let data = {
-      [id]: value,
-    };
-    //item 포장
-    data = {
-      item: {
-        ...data,
-        cdEmp: state.mainTablePkValue.cdEmp,
-      },
-    };
-    console.log(data);
-    actions.setEditedEmp(data);
-  };
+  // const submitMainTabData = (value, id) => {
+  //   console.log("value: ", value);
+  //   console.log("id: ", id);
+  //   let data = {
+  //     [id]: value,
+  //   };
+  //   //item 포장
+  //   data = {
+  //     item: {
+  //       ...data,
+  //       cdEmp: state.mainTablePkValue.cdEmp,
+  //     },
+  //   };
+  //   console.log(data);
+  //   actions.setEditedEmp(data);
+  // };
 
   // 코드도움 값 update 로직
   // const submitValue = (data) => {
@@ -157,348 +155,85 @@ function EmpRegisterationLayout() {
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (
             <Col id="empRegisterLayoutRight">
-              <MenuTab
-                menuList={tabConstant.mainTabMenuListForEmpRegister}
-                ref={state.mainTabRef}
-              ></MenuTab>
-              <FormPanel
-                INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                formData={state.mainTabData}
-                submitData={actions.submitMainTabData} // update 함수
-                codeHelperFn={{
-                  //코드도움 함수모음
-                  abbNation: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_abbNation,
-                      actions.setEditedEmp
-                    ),
-                  cdNation: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdNation,
-                      actions.setEditedEmp
-                    ),
-                  cdDept: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdDept,
-                      actions.setEditedEmp
-                    ),
-                  cdOccup: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdOccup,
-                      actions.setEditedEmp
-                    ),
-                  rankNo: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_rankNo,
-                      actions.setEditedEmp
-                    ),
-                  cdSalcls: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdSalcls,
-                      actions.setEditedEmp
-                    ),
-                  cdField: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdField,
-                      actions.setEditedEmp
-                    ),
-                  cdProject: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdProject,
-                      actions.setEditedEmp
-                    ),
-                  cdBank: () =>
-                    modalShow(
-                      "default",
-                      codeHelperData_cdBank,
-                      actions.setEditedEmp
-                    ),
-                }}
-              />
-              {/* 급여이체은행 -> 추후 분리 예정 */}
-              {/* <CallNumberForm
-                label={LABELS.cdBank}
-                val1={state.mainTabData.cdBank}
-                val2={state.mainTabData.noBnkacct}
-                val3={state.mainTabData.nmBnkowner}
-                pkValue={state.mainTablePkValue}
-                actions={{
-                  setNewEmp: actions.setEditedEmp,
-                }}
-              /> */}
-              {/* 여기가 영역... 여기에 구현... */}
-
-              {/* <Row id="empDataSortedMenuArea"> */}
-              {/* <MenuTab menuList={tabConstant.mainTabMenuListForEmpRegister} /> */}
-              {/* </Row> */}
-              {/* 사원정보 편집 */}
-              {/* <Row id="baseData" ref={state.mainTabRef}>
-                {state.mainTabData ? (
-                  <div id="baseDataContents">
-                    <div id="baseDataContentsBackground"></div> 
-                    <TextBoxComponent
-                      label={LABELS.daEnter}
-                      id="daEnter"
-                      type="date"
-                      value={state.mainTabData.daEnter}
-                      actions={{
-                        setEdited: actions.setEditedEmp,
-                      }}
-                    />
-                    <NoSocialFormForEmpRegister
-                      label={LABELS.noSocial}
-                      ynFor={state.mainTabData.ynFor}
-                      fgSex={state.mainTabData.fgSex}
-                      noSocial={state.mainTabData.noSocial}
-                      pkValue={state.mainTablePkValue}
-                      actions={{
-                        setNoSocialForm: actions.setEditedEmp,
-                      }}
-                    />
-                    <TextBoxComponent
-                      id="abbNation"
-                      label={LABELS.abbNation}
-                      // onKeyDown={submitMainTabData}
-                      value={state.mainTabData.abbNation}
-                      // onChange={actions.setSearchAbbNation}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.abbNation,
-                          "",
-                          actions.setSearchAbbNation,
-                          "nmAbbNation"
-                        )
-                      }
-                    />
-                    <TextBoxComponent
-                      id="cdNation"
-                      label={LABELS.cdNation}
-                      value={state.mainTabData.cdNation}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          "default",
-                          codeHelperData.cdNation,
-                          "nmCdNation"
-                        )
-                      }
-                    />
-                    <AddressForm
-                      isZonecode={true}
-                      zipHome={
-                        state.mainTabData.zipHome
-                          ? state.mainTabData.zipHome
-                          : null
-                      }
-                      addHome1={
-                        state.mainTabData.addHome1
-                          ? state.mainTabData.addHome1
-                          : null
-                      }
-                      addHome2={
-                        state.mainTabData.addHome2
-                          ? state.mainTabData.addHome2
-                          : null
-                      }
-                      pkValue={state.mainTablePkValue}
-                      actions={{
-                        setAddress: actions.setEditedEmp,
-                      }}
-                    />
-                    <TextBoxComponent
-                      id="telHome1"
-                      label={LABELS.telHome}
-                      type="callNumber"
-                      value={state.mainTabData.telHome1}
-                    />
-                    <TextBoxComponent
-                      id="celEmp1"
-                      label={LABELS.celEmp}
-                      type="callNumber"
-                      value={state.mainTabData.celEmp1}
-                    />
-                    <TextBoxComponent
-                      id="emEmp"
-                      label={LABELS.emEmp}
-                      type="email"
-                      value={state.mainTabData.emEmp}
-                    />
-                    <TextBoxComponent
-                      id="idMsn"
-                      label={LABELS.idMsn}
-                      value={state.mainTabData.idMsn}
-                      onEnter={submitMainTabData}
-                      // onKeyDown={(event) => {}}
-                    />
-                    <TextBoxComponent
-                      id="cdDept"
-                      label={LABELS.cdDept}
-                      value={state.mainTabData.cdDept}
-                      // onKeyDown={submitMainTabData}
-                      // onChange={(e) => {
-                      //   actions.setSearchCdDept(e);
-                      //   submitMainTabData(e);
-                      // }}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.cdDept,
-                          "",
-                          actions.setSearchCdDept,
-                          "nmCdDept"
-                        )
-                      }
-                    />
-                    <TextBoxComponent
-                      id="cdOccup"
-                      label={LABELS.cdOccup}
-                      value={state.mainTabData.cdOccup}
-                      // onChange={actions.setSearchCdOccup}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.cdOccup,
-                          "",
-                          actions.setSearchCdOccup,
-                          "nmCdOccup"
-                        )
-                      }
-                    />
-                    <TextBoxComponent
-                      id="rankNo"
-                      label={LABELS.rankNo}
-                      value={state.mainTabData.rankNo}
-                      // onChange={actions.setSearchRankNo}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.rankNo,
-                          "",
-                          actions.setSearchRankNo,
-                          "nmRankNo"
-                        )
-                      }
-                    />
-                    <TextBoxComponent
-                      id="cdSalcls"
-                      label={LABELS.cdSalcls}
-                      value={state.mainTabData.cdSalcls}
-                      // onChange={actions.setSearchCdSalcls}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.cdSalcls,
-                          "",
-                          actions.setSearchCdSalcls,
-                          "nmCdSalcls"
-                        )
-                      }
-                    />
-                    <TextBoxComponent
-                      id="cdField"
-                      label={LABELS.cdField}
-                      value={state.mainTabData.cdField}
-                      // onChange={actions.setSearchCdField}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.cdField,
-                          "",
-                          actions.setSearchCdField,
-                          "nmCdField"
-                        )
-                      }
-                    />
-                    <TextBoxComponent
-                      id="cdProject"
-                      label={LABELS.cdProject}
-                      value={state.mainTabData.cdProject}
-                      // onChange={actions.setSearchCdProject}
-                      setRowData={actions.setAddRow}
-                      codeHelper
-                      onClickCodeHelper={() =>
-                        modalShow(
-                          false,
-                          codeHelperData.cdProject,
-                          "",
-                          actions.setSearchCdProject,
-                          "nmCdProject"
-                        )
-                      }
-                    />
-                     퇴사년월일 
-                    {state.mainTabData.jobOk === "N" ||
-                    state.mainTabData.daRetire ? (
-                      <TextBoxComponent
-                        label={LABELS.daRetire}
-                        id="daRetire"
-                        type="date"
-                        value={state.mainTabData.daRetire}
-                        // onChange={submitMainTabData}
-                        actions={{
-                          setEdited: actions.setEditedEmp,
+              <MenuTab menuList={tabConstant.mainTabMenuListForEmpRegister}>
+                {[
+                  <Row key={"mainTeb1"}>
+                    <Col>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                        formData={state.mainTabData}
+                        submitData={actions.submitMainTabData} // update 함수
+                        codeHelperFn={{
+                          //코드도움 함수모음
+                          abbNation: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_abbNation,
+                              actions.submitMainTabData
+                            ),
+                          cdNation: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdNation,
+                              actions.submitMainTabData
+                            ),
+                          cdDept: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdDept,
+                              actions.submitMainTabData
+                            ),
+                          cdOccup: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdOccup,
+                              actions.submitMainTabData
+                            ),
+                          rankNo: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_rankNo,
+                              actions.submitMainTabData
+                            ),
+                          cdSalcls: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdSalcls,
+                              actions.submitMainTabData
+                            ),
+                          cdField: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdField,
+                              actions.submitMainTabData
+                            ),
+                          cdProject: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdProject,
+                              actions.submitMainTabData
+                            ),
+                          cdBank: () =>
+                            modalShow(
+                              "default",
+                              codeHelperData_cdBank,
+                              actions.submitMainTabData
+                            ),
                         }}
                       />
-                    ) : (
-                      <TextBoxComponent
-                        label={LABELS.daRetire}
-                        placeholder={"----년 --월 --일"}
-                        disabled={"disabled"}
+                    </Col>
+                  </Row>,
+                  <Row key={"mainTeb2"}>
+                    <Col>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                        formData={state.mainTabData}
+                        submitData={actions.submitMainTabData} // update 함수
                       />
-                      // <DateTest
-                      //   id="daRetire"
-                      //   label={LABELS.daRetire}
-                      //   value={state.mainTabData.daRetire}
-                      //   onChange={submitMainTabData}
-                      // />
-                    )}
-
-                    <CallNumberForm
-                      label={LABELS.cdBank}
-                      val1={state.mainTabData.cdBank}
-                      val2={state.mainTabData.noBnkacct}
-                      val3={state.mainTabData.nmBnkowner}
-                      pkValue={state.mainTablePkValue}
-                      actions={{
-                        setNewEmp: actions.setEditedEmp,
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div>Loading...</div>
-                )}
-              </Row> */}
-              {/* <div style={{ display: 'none' }}>
-            <Row id="familyData">
-            {subTableData ? (
-              <TableForm showCheckbox={true} tableData={subTableData} />
-              ) : (
-                <div>Loading...</div>
-                )}
-                </Row>
-              </div> */}
+                    </Col>
+                  </Row>,
+                ]}
+              </MenuTab>
             </Col>
           ) : (
             <Spinner animation="border" variant="primary" />
@@ -515,7 +250,9 @@ function EmpRegisterationLayout() {
       >
         {modalType === "default" ? (
           <CodeHelperModal
-            setRowData={state.codeHelperTableData.setRowData}
+            setRowData={state.codeHelperTableData.setRowData} // 우측 메인 탭에서 가져온 row 데이터를 반환받을 함수
+            // => 여기서 onChange 이벤트를 발생시켜서 값을 update 할 수 있도록 해야한다.
+
             usePk={state.codeHelperTableData.usePk}
             tableHeaders={state.codeHelperTableData.tableHeaders}
             tableData={state.codeHelperTableData.tableData}
@@ -535,17 +272,6 @@ function EmpRegisterationLayout() {
           <></>
         )}
       </ModalComponent>
-
-      {/* 삭제실패 사원목록 모달영역 */}
-      {/* <ModalComponent
-        title={"삭제 실패 사원목록"}
-        show={state.modalState.show}
-        onHide={() =>
-          actions.setModalState({ ...state.modalState, show: false })
-        }
-        size="md"
-        centered
-      ></ModalComponent> */}
     </>
   );
 }

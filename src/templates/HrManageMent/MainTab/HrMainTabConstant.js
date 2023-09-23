@@ -33,7 +33,11 @@ export const MAIN_TAB = {
       field: "rankNo",
       disabled: true,
     },
-    { type: INPUT_TYPE.text, field: "cdOffduty", label: LABELS.cdOffduty },
+    {
+      type: INPUT_TYPE.textCodeHelper,
+      field: "cdOffduty",
+      label: LABELS.cdOffduty,
+    },
     {
       type: INPUT_TYPE.radio,
       field: "ynDrawContracts",
@@ -81,16 +85,30 @@ export const MAIN_TAB = {
       label: LABELS.tyReligion,
     },
     {
-      type: INPUT_TYPE.text,
-      field: "addHome1",
-      label: LABELS.add_home1,
-      span: 3,
+      type: INPUT_TYPE.address,
+      field: "zipHome-addHome1",
+      isZonecode: true,
+      label: LABELS.addHome1,
+      span: 2,
     },
     {
       type: INPUT_TYPE.text,
-      field: "originHome1",
-      label: LABELS.origin_home1,
-      span: 3,
+      field: "addHome2",
+      label: LABELS.addHome2,
+      span: 1,
+    },
+    {
+      type: INPUT_TYPE.address,
+      field: "zipOrgin-addOrgin1",
+      isZonecode: true,
+      label: LABELS.addOrgin1,
+      span: 2,
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "addOrgin2",
+      label: LABELS.addOrgin2,
+      span: 1,
     },
     {
       type: INPUT_TYPE.text,
@@ -111,7 +129,16 @@ export const MAIN_TAB = {
       type: INPUT_TYPE.callNumber,
       field: "telHome",
       label: LABELS.telHome,
-      span: 1,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "celEmp",
+      label: LABELS.celEmp,
+    },
+    {
+      type: INPUT_TYPE.callNumber,
+      field: "telOffice",
+      label: LABELS.telOffice,
     },
   ],
 };

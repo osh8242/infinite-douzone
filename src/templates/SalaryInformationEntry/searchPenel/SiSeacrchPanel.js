@@ -17,7 +17,7 @@ const SiSeacrchPanel = (props) => {
         actions
     } = props;
 
-    const [formPanelData, setFormPanelData] =useState();
+    const [formPanelData, setFormPanelData] = useState();
     
     useEffect(()=>{
       setFormPanelData(
@@ -32,7 +32,7 @@ const SiSeacrchPanel = (props) => {
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
               formData={formPanelData}
-              codeHelperFn = {{paymentDate : () => modalShow('default', codeHelperData_paymentDate, actions.setPaymentDate)}}
+              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, actions.setPaymentDate)}}
               onChange={{
                 allowMonth: (newValue)=> actions.setAllowMonth(newValue),
                 salDivision: (newValue)=> actions.setSalDivision(newValue),
@@ -48,10 +48,10 @@ const SiSeacrchPanel = (props) => {
                 { item: { searchCdEmp: state.searchVo.searchCdEmp, searchCdDept: state.searchVo.searchCdDept, searchRankNo : state.searchVo.searchRankNo,searchCdOccup : state.searchVo.searchCdOccup }}
               }
               codeHelperFn={{
-                searchCdEmp: () => modalShow('default', codeHelperData_emplist, actions.setSearchCdEmp),
-                searchCdDept: () => modalShow('default', codeHelperData_cdDept, actions.setSearchCdDept),
-                searchRankNo: () => modalShow('default', codeHelperData_rankNo, actions.setSearchRankNo),
-                searchCdOccup: () => modalShow('default', codeHelperData_occup, actions.setSearchCdOccup)
+                searchCdEmp: () => modalShow('codeHelper', codeHelperData_emplist, actions.setSearchCdEmp),
+                searchCdDept: () => modalShow('codeHelper', codeHelperData_cdDept, actions.setSearchCdDept),
+                searchRankNo: () => modalShow('codeHelper', codeHelperData_rankNo, actions.setSearchRankNo),
+                searchCdOccup: () => modalShow('codeHelper', codeHelperData_occup, actions.setSearchCdOccup)
               }}
             /> 
           </div> 

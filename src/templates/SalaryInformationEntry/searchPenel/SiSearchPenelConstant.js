@@ -35,19 +35,9 @@ export const SI_SUB_SEARCHFIELD = [
     field: "searchRankNo",
     label: LABELS.rankNo,
   },{
-    type: INPUT_TYPE.textCodeHelper,
-    field: "searchCdOccup",
-    label: LABELS.cdOccup,
-  },{
     type: INPUT_TYPE.select,
     field: "searchYnUnit",
     label: LABELS.ynUnit,
     optionList: unitOption
-  },{
-    type: INPUT_TYPE.select,
-    field: "searchYnForlabor",
-    label: LABELS.ynForlabor,
-    optionList : forLaborOption
-  },
-
+  }
 ]

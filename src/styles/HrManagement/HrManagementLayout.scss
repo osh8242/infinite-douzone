@@ -1,20 +1,33 @@
-.leftTable {
+.hr-container{
+  
+}
+
+.hr-search-row {
+  padding-left: 25px !important;
+  padding-right: 23px !important;
+}
+
+.hr-left-col {
+  padding-left: 39px !important;
+}
+
+.hr-leftTable {
   padding-left: 0 !important;
   padding-right: 0 !important;
-  height: 60vh;
+  height: 60.3vh;
   overflow: auto;
   border: 1px solid rgb(222, 226, 230);    
 }
 
-.subTable { 
+.hr-subTable { 
   padding-left: 0;
   padding-right: 0;
-  height: 23.4vh;
+  height: 25vh;
   overflow: auto;
   outline: 1.5px solid rgb(222, 226, 230);
 }
 
-.mainTab{
+.hr-mainTab{
   background-color: #E9ECEF;
 
 }

@@ -1,69 +1,127 @@
-import { INPUT_TYPE , LABELS } from "../../../model/CommonConstant";
+import { INPUT_TYPE, LABELS } from "../../../model/CommonConstant";
 
-export const SI_EMP_DETAIL = {
-    empDetailInputs: [
-      {
-        type: INPUT_TYPE.text,
-        field: "daEnter",
-        label: LABELS.daEnter,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "ynMateDed",
-        label: LABELS.ynMateDed,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "num2060many",
-        label: LABELS.num2060many,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "ynResident",
-        label: LABELS.ynResident,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "ynUnit",
-        label: LABELS.ynUnitForlabor,
-      },
+export const SI_EMP_DETAIL = [
+  {
+    type: INPUT_TYPE.text,
+    field: "daEnter",
+    id : "daEnter",
+    label: LABELS.daEnter,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "nmDept",
+    id: "nmDept",
+    label: LABELS.cdDept,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "ynMateDed",
+    id : "ynMateDed",
+    label: LABELS.ynMateDed,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "num20Family",
+    id : "num20Family",
+    label: LABELS.num20Family,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "num60Family",
+    id : "num60Family",
+    label: LABELS.num60Family,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "numManyFamily",
+    id : "numManyFamily",
+    label: LABELS.numManyFamily,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "ynResident",
+    id : "ynResident",
+    label: LABELS.ynResident,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "ynUnit",
+    id : "ynUnit",
+    label: LABELS.ynUnit,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "ynForLabor",
+    id : "ynForLabor",
+    label: LABELS.ynForLabor,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "ynOverwork",
+    id : "ynOverwork",
+    label: LABELS.ynOverwork,
+    disabled : "disabled"
+  },
 
-      {
-        type: INPUT_TYPE.text,
-        field: "ynOverwork",
-        label: LABELS.ynOverwork,
-      },
+  {
+    type: INPUT_TYPE.text,
+    field: "daRetire",
+    id : "daRetire",
+    label: LABELS.daRetire,
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "cdOccup",
+    id: "cdOccup",
+    label: LABELS.cdOccup,
+    disabled : "disabled"
+  },
+  
+  {
+    type: INPUT_TYPE.text,
+    field: "noSocial",
+    id: "noSocial",
+    label: LABELS.noSocial,
+    disabled : "disabled"
+  },
+];
 
-      {
-        type: INPUT_TYPE.text,
-        field: "daRetire",
-        label: LABELS.daRetire,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "cdOccup",
-        label: LABELS.cdOccup,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "cdDept",
-        label: LABELS.cdDept,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "cdField",
-        label: LABELS.cdField,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "cdProject",
-        label: LABELS.cdProject,
-      },
-      {
-        type: INPUT_TYPE.text,
-        field: "noSocial",
-        label: LABELS.noSocial,
-      },
-
-    ],
-}
+export const SI_EMP_PAYROLL_CRITERIA = [
+  {
+    type: INPUT_TYPE.text,
+    field: "workday",
+    id: "workday",
+    label: "현재 귀속일 근무일수",
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "overTime",
+    id: "overTime",
+    label: "현재 귀속월 추가 근무시간",
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "allowMonthWorktime",
+    id: "allowMonthWorktime",
+    label: "현재 귀속월 총 근무시간",
+    disabled : "disabled"
+  },
+  {
+    type: INPUT_TYPE.text,
+    field: "hourlywage",
+    id: "hourlywage",
+    label: "통상시급(원)",
+    disabled : "disabled"
+  },
+];

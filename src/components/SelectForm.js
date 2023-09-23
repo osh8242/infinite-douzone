@@ -11,8 +11,9 @@
 //    ];
 //    <SelectForm label="구분" optionList={optionList}/>
 import { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import "../styles/commonComponent.css";
 
 SelectForm.defaultProps = {
   optionList: [],
@@ -30,10 +31,9 @@ function SelectForm(props) {
     endLabel,
   } = props;
 
-  const [selectedValue, setSelectedValue] = useState(selectedOption);
+  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
   useEffect(() => {
-    setSelectedValue(selectedOption);
-    console.log(selectedOption);
+    setSelectedValue(selectedOption || "");
   }, [selectedOption]);
 
   const handleSelectChange = (event) => {
@@ -44,13 +44,9 @@ function SelectForm(props) {
   };
 
   return (
-    <Row>
-      <div className="py-1 widthFull labelAndContent">
-        {label && (
-          // <div className="d-flex align-items-center justify-content-center">
-          <div className="label">{label}</div>
-        )}
-        {/* <div className="d-flex align-items-center justify-content-center"> */}
+    <Row className="py-1">
+      <div className="labelAndContent">
+        {label && <div className="label">{label}</div>}
         <div className="widthFull d-flex align-items-center justify-content-center">
           {subLabel ? (
             <div className="widthFull d-flex align-items-center justify-content-between">

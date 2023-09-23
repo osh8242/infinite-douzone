@@ -22,24 +22,46 @@ input.form-control {
   box-shadow: 0 0px 4px 2px rgba(255, 20, 52, 0.5) !important;
 }
 
-.col-md-12 .label {
-  width: 126px !important;
-  height: 120% !important;
-  /* padding-right: 12px; */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: rgb(233, 236, 239) !important;
+.col-md-12 .label,
+.label {
+  width: 25%;
+  max-width: 120px;
+  height: 120%;
+  display: flex;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  /* background-color: rgb(233, 236, 239); */
+  background-color: rgb(203, 229, 255);
+}
+
+.siEmpDetail-container .col-md-12 .label {
+  width: 60%;
+  text-align: center;
 }
 
 .col-md-6 .label {
-  width: 160px !important;
-  height: 150% !important;
-  /* padding-right: 12px; */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: rgb(233, 236, 239) !important;
+  width: 72%;
+  max-width: 120px;
+  height: 150%;
+  display: flex;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(203, 229, 255);
+  /* background-color: rgb(233, 236, 239); */
+}
+
+.col-md-4 .label {
+  width: 74%;
+  max-width: 120px;
+  height: 160%;
+  display: flex;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(203, 229, 255);
+  /* background-color: rgb(233, 236, 239); */
 }
 
 .labelAndContent {

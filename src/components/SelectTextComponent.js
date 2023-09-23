@@ -13,7 +13,7 @@ import {
 } from "../utils/NumberUtils";
 import SelectForm from "./SelectForm";
 
-function TextBoxComponent(props) {
+function SelectTextComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
@@ -69,54 +69,24 @@ function TextBoxComponent(props) {
     selectRef,
     subField,
   } = props;
+
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
   const [inputCallValue, setInputCallValue] = useState(["", "", ""]); // 보여줄 값 (전화번호)
   // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
   // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
+  const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   const [isValid, setIsValid] = useState(true); // 기본 유효성 검사 상태 값
   const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
 
-  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
-  const [isDisable, setDisable] = useState(
-    disabled || selectedOption === "F" ? true : false
-  );
-  const [isReadOnly, setReadOnly] = useState(
-    selectedOption === "F" ? true : false
-  );
-  // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-  const style = {
-    ...(isDisable ? { color: "transparent" } : {}),
-    ...(height ? { height: `${height}px` } : {}),
-  };
+  const [selectedValue, setSelectedValue] = useState(selectedOption);
 
   useEffect(() => {
-    if (selectedOption === "F") {
-      setDisable(true);
-    } else setDisable(false);
-    setSelectedValue(selectedOption || "");
+    setSelectedValue(selectedOption);
+    console.log(selectedOption);
   }, [selectedOption]);
-
-  useEffect(() => {
-    // setDisable(!isDisable);
-  }, [isDisable]);
-
-  const handleSelectChange = (event) => {
-    console.log("subField");
-    console.log(subField);
-    if (event.target.value === "F" || "T") {
-      setDisable(!isDisable);
-    } // disable true 변경
-    console.log("value" + event.target.value);
-    event.target.id = subField;
-    console.log("id" + event.target.id);
-    const newValue = selectRef ? selectRef.current.value : event.target.value;
-    if (onChangeSelect) onChangeSelect(event, newValue);
-    console.log(newValue);
-    setSelectedValue(newValue);
-  };
 
   useEffect(() => {
     setInputValue(value || "");
@@ -320,6 +290,20 @@ function TextBoxComponent(props) {
     }
   };
 
+  const handleSelectChange = (event) => {
+    console.log("subField");
+    console.log(subField);
+    // if (event.target.value === "F")
+    // disable true 변경
+    console.log("value" + event.target.value);
+    event.target.id = subField;
+    console.log("id" + event.target.id);
+    const newValue = selectRef ? selectRef.current.value : event.target.value;
+    if (onChangeSelect) onChangeSelect(event, newValue);
+    console.log(newValue);
+    setSelectedValue(newValue);
+  };
+
   // 화면 render
   return (
     <Row className="py-1">
@@ -348,18 +332,10 @@ function TextBoxComponent(props) {
               {selectList ? (
                 <div className="widthFull d-flex align-items-center gap-2">
                   <div style={{ width: "40%" }}>
-                    <Form.Select
-                      id={id}
-                      ref={selectRef}
-                      value={selectedValue}
-                      onChange={(e) => handleSelectChange(e)}
-                    >
-                      {selectList.map((option, index) => (
-                        <option value={option.key} key={index}>
-                          {option.value}
-                        </option>
-                      ))}
-                    </Form.Select>
+                    <SelectForm
+                      optionList={selectList}
+                      onChange={handleSelectChange}
+                    ></SelectForm>
                   </div>
                   <div>{renderFormControl()} </div>
                   <div> {endLabel}</div>
@@ -465,7 +441,7 @@ function TextBoxComponent(props) {
               id={id}
               name={name}
               size={size}
-              disabled={isDisable}
+              disabled={disabled}
               readOnly={readOnly}
               plaintext={plaintext}
               onChange={handleInputChange}
@@ -491,4 +467,4 @@ function TextBoxComponent(props) {
   }
 }
 
-export default TextBoxComponent;
+export default SelectTextComponent;

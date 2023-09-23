@@ -3,7 +3,10 @@ import { Col, Container, Row } from "react-bootstrap";
 import LaborContractModel from "../../model/LaborContract/LaborContractModel";
 import LaborContractHeader from "./LaborContractHeader";
 import SearchPanel from "../../components/SearchPanel";
-import { LeftTableHeaders } from "../../model/LaborContract/LaborContractConstant";
+import {
+  LeftTableHeaders,
+  searchSelectList,
+} from "../../model/LaborContract/LaborContractConstant";
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
 import { subTabMenuList } from "../../model/LaborContract/LaborContractConstant";
 import TableForm from "../../components/TableForm";
@@ -21,60 +24,29 @@ import {
 } from "./MainTab/LaborContractTabConstant";
 
 import { useSelector } from "react-redux";
-
-// import MainTab from "./MainTab/LaborContractMainTab";
-
-//grid : 좌측 그리드의 테이블 데이터 grid.data
-//mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
-//subTab : 서브탭의 입력폼 데이터 subTab.menuList subTab.data
+import LcSearchPanel from "./SearchPanel/LcSearchPanel";
 
 const LaborContractLayout = () => {
   const { state, actions, mainTablePkValue } = LaborContractModel();
-  const { mainTabRef, leftTableData, mainTabData, subTableData, selectedRows } =
-    state;
+  const {
+    mainTabRef,
+    leftTableData,
+    mainTabData,
+    subTableData,
+    selectedRows,
 
-  const authData = useSelector((states) => states.auth);
-  console.log("login success:");
-  console.log(authData);
-
-  console.log("Redux info....");
-  // const user = useSelector((state) => state.auth.user);
-  // console.log(user);
-  // console.log(user?.message);
-
-  // setTimeout(() => {
-  //   console.log(
-  //     "Delayed fetch from localStorage:",
-  //     localStorage.getItem("userInfo2")
-  //   );
-  // }, 2000);
-
-  console.log("localstore get");
-  // console.log(JSON.stringify(localStorage.getItem("userInfo")));
-
-  let userInfoString = localStorage.getItem("userInfo");
-
-  if (userInfoString) {
-    let userInfoObject = JSON.parse(userInfoString);
-    console.log("user value return");
-    console.log(userInfoObject);
-    console.log(userInfoObject.empImg);
-  } else {
-    console.log("userInfo 없음");
-  }
-
-  const entireState = useSelector((state) => state);
-  console.log(entireState);
-  console.log("Before useSelector");
-  const user = useSelector((state) => state.user);
-  console.log("After useSelector:", user);
+    //serarchPanel
+    dateSelectRef,
+    salSelectRef,
+    dateOption,
+  } = state;
 
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
       <Container>
         {/* 조회 영역 */}
-        <SearchPanel showAccordion>
+        {/* <SearchPanel>
           <Row>
             {mainTabData ? (
               <FormPanel
@@ -86,14 +58,24 @@ const LaborContractLayout = () => {
               <Spinner animation="border" variant="primary" />
             )}
           </Row>
-          {/* 에러 방지 빈태그  */}
           <div></div>
-        </SearchPanel>
+        </SearchPanel> */}
+        <Row className="hr-search-row">
+          <LcSearchPanel
+            onSearch={actions.onSearch}
+            // dateSelectRef={dateSelectRef}
+            // dateOption={dateOption}
+            salSelectRef={salSelectRef}
+            selectList={searchSelectList}
+          />
+        </Row>
+
         <Row>
           <Col md="3">
             <Row>
               <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
                 {[
+                  // 계약서 작성
                   <div className="leftTable">
                     <TableForm
                       tableName="EMP"
@@ -115,6 +97,8 @@ const LaborContractLayout = () => {
                       }}
                     />
                   </div>,
+
+                  // 계약서 조회
                   <div>
                     <TableForm
                       tableName="EMP"
@@ -124,7 +108,6 @@ const LaborContractLayout = () => {
                       tableData={leftTableData}
                       selectedRows={selectedRows}
                       rowAddable
-                      defaultSelectedRow
                       defaultFocus
                       actions={{
                         setTableData: actions.setLeftTableData,

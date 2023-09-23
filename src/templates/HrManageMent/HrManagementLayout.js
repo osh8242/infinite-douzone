@@ -1,12 +1,15 @@
 // 작성자 : 오승환
 import axios from "axios";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
+import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
+import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import TableForm from "../../components/TableForm";
+import TableTest from "../../components/TableTest";
 import {
+  CODE_HELPER_DATA,
   leftStaticsTableConstant,
   leftTableConstant,
   orderList,
@@ -33,23 +36,68 @@ const HrManagementLayout = () => {
     jobOkSelectRef,
     orderSelectRef,
     leftTableData,
+    leftCodeHelperTableData,
     leftTablePkValue,
     leftStaticsTableData,
     mainTabData,
     empImageSrc,
     subTableData,
     selectedRows,
+    modalState,
+    codeHelperTableData,
   } = state;
+
+  //코드도움 아이콘 클릭이벤트
+  const modalShow = useCallback(
+    async (type, data, setRowData) => {
+      actions.setModalState({ ...modalState, show: true });
+
+      switch (type) {
+        case "default":
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: data.tableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+
+        case "leftTable":
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            title: data.title,
+          }));
+
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: leftCodeHelperTableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+
+        default:
+          break;
+      }
+    },
+    [actions, modalState, leftCodeHelperTableData]
+  );
+
   const tokenRef = useRef(null);
   const getToken = () => {
     axios
-      .get("http://localhost:8888/jwt/getToken?username=hong")
+      .post("http://localhost:8888/auth/login", {
+        userId: "kosa",
+        userPwd: "1004",
+      })
       .then((response) => {
         const token = response.headers["authorization"];
         console.log("리스폰스 헤더", response.headers);
         console.log("발급받은 토큰", token);
         tokenRef.current = token;
-        validateToken();
+        // validateToken();
       })
       .catch((e) => {
         console.log("겟토큰 에러", e);
@@ -57,7 +105,7 @@ const HrManagementLayout = () => {
   };
   const validateToken = () => {
     axios
-      .get("http://localhost:8888/jwt/validateToken", {
+      .post("http://localhost:8888/emp/validateToken", {
         headers: { Authorization: tokenRef.current },
       })
       .then((response) => {
@@ -67,20 +115,9 @@ const HrManagementLayout = () => {
         console.log("토큰인증 에러", e);
       });
   };
+
   return (
     <>
-      {/* <CodeHelperModal
-        show={empCodeHelper.show}
-        apiFlag={empCodeHelper.apiFlag}
-        onHide={() =>
-          actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
-        }
-        codeHelperCode={empCodeHelper.codeHelperCode}
-      /> */}
-      <HrManagementHeader
-        deleteButtonHandler={actions.deleteSelectedRows}
-        existSelectedRows={selectedRows.length !== 0}
-      />
       <button
         onClick={() => {
           getToken();
@@ -88,40 +125,53 @@ const HrManagementLayout = () => {
       >
         JWT 토큰 발급받고 인증해보기
       </button>
-
-      <Container>
+      <HrManagementHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
+      <Container className="hr-container">
         {/* 조회영역 */}
-        <HrSearchPanel
-          onSearch={actions.onSearch}
-          jobOkSelectRef={jobOkSelectRef}
-          orderSelectRef={orderSelectRef}
-          searchOption={searchOption}
-          orderList={orderList}
-        />
+        <Row className="hr-search-row">
+          <HrSearchPanel
+            onSearch={actions.onSearch}
+            jobOkSelectRef={jobOkSelectRef}
+            orderSelectRef={orderSelectRef}
+            searchOption={searchOption}
+            orderList={orderList}
+          />
+        </Row>
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
-          <Col md="3">
+          <Col md="3" className="hr-left-col">
             {/* 좌측 그리드 */}
             <Row>
-              <div className="leftTable">
-                <TableForm
+              <div className="hr-leftTable">
+                <TableTest
                   tableName="EMP"
                   //showCheckbox
                   sortable
                   rowAddable
+                  showCheckbox
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
-                  onRowClick={(e, row) => {
-                    actions.setLeftTablePkValue(row);
-                  }}
+                  codeHelper
                   defaultSelectedRow
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
+                    newRowCodeHelper: () =>
+                      modalShow(
+                        "leftTable",
+                        CODE_HELPER_DATA.leftTableCodeHelper,
+                        actions.registEmpAdd
+                      ),
                     setPkValue: actions.setLeftTablePkValue,
-                    insertNewRow: actions.insertEmp,
+                    insertNewRow: (row) => {
+                      actions.insertEmp(row);
+                      actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
+                    },
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
                     deleteRow: actions.deleteRow,
@@ -132,7 +182,7 @@ const HrManagementLayout = () => {
             </Row>
             {/* 통계 테이블 */}
             <Row className="mt-3">
-              <TableForm
+              <TableTest
                 tableName="EMPSTATICS"
                 tableHeaders={leftStaticsTableConstant.headers}
                 tableData={leftStaticsTableData}
@@ -155,6 +205,7 @@ const HrManagementLayout = () => {
                       <ProfileImageForm
                         src={empImageSrc}
                         handleUpload={actions.updateEmpPhoto}
+                        handleDelete={actions.deleteEmpPhoto}
                       />
                     </Col>
                     <Col xs md="9">
@@ -163,6 +214,14 @@ const HrManagementLayout = () => {
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
                         columnNumber={2}
+                        codeHelperFn={{
+                          cdOffduty: () =>
+                            modalShow(
+                              "default",
+                              CODE_HELPER_DATA.cdOffduty,
+                              actions.submitMainTabData
+                            ),
+                        }}
                       />
                     </Col>
                   </Row>,
@@ -172,7 +231,7 @@ const HrManagementLayout = () => {
                         INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
                         formData={mainTabData}
                         submitData={actions.submitMainTabData}
-                        columnNumber={2}
+                        columnNumber={3}
                       />
                     </Col>
                   </Row>,
@@ -182,14 +241,14 @@ const HrManagementLayout = () => {
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
-              <div className="subTable">
-                <TableForm
+              <div className="hr-subTable">
+                <TableTest
                   tableName="EMPFAM"
-                  showCheckbox
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
+                  codeHelper={CODE_HELPER_DATA}
                   pkValue={leftTablePkValue}
                   selectedRows={selectedRows}
                   actions={{
@@ -208,6 +267,21 @@ const HrManagementLayout = () => {
           )}
         </Row>
       </Container>
+      <ModalComponent
+        title={modalState.title}
+        size={modalState.size}
+        show={modalState.show}
+        onHide={() => actions.setModalState({ show: false })}
+      >
+        <CodeHelperModal
+          onHide={() => actions.setModalState({ show: false })}
+          setRowData={codeHelperTableData.setRowData}
+          tableHeaders={codeHelperTableData.tableHeaders}
+          tableData={codeHelperTableData.tableData}
+          usePk={codeHelperTableData.usePk}
+          searchField={codeHelperTableData.searchField}
+        />
+      </ModalComponent>
     </>
   );
 };

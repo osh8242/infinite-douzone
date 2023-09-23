@@ -148,6 +148,7 @@ export const MAIN_TAB = {
       selectId: "salaryType",
       selectList: salaryTypeList,
       field: "salaryAmount",
+      selectValue: "salaryType",
     },
 
     {
@@ -162,8 +163,9 @@ export const MAIN_TAB = {
       label: LABELS.bonusAmount,
       endLabel: "원 ",
       selectList: bonusPaymentStatusList,
-      selectId: "bonusPaymentStatus",
+      selectValue: "bonusPaymentStatus",
       field: "bonusAmount",
+      selectId: "bonusPaymentStatus",
       disabled: true,
     },
 
