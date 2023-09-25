@@ -3,6 +3,7 @@ import axios from 'axios';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
+import { setDate } from 'date-fns';
 
 const SalaryInformationEntryModel = () => {
   /* 영역 테이블 Data */
@@ -66,7 +67,7 @@ const SalaryInformationEntryModel = () => {
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
-  }, [cdEmp]);
+  }, [cdEmp, dateId, salDivision]);
 
   const changeCdEmp = useCallback(
     (cdEmp) => {
@@ -151,6 +152,14 @@ const SalaryInformationEntryModel = () => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /* 검색 */
   const onSearch = () => {
+
+    // 비우기
+    setSaInfoListData([]);
+    setSalData([]);
+    setSumAllowPayByYnTax([ { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }}]);
+    setDeductData([]);
+    setSaInfoDetailData([]);
+    
     let searchParams = {
       allowYear: allowYear,
       allowMonth: allowMonth,
@@ -167,6 +176,7 @@ const SalaryInformationEntryModel = () => {
       .post(url + GET_SALINFO_BY_DATE_URL, searchParams)
       .then((response) => {
         if (response.data) {
+
           /* dateId set */
           if (response.data.dateInfo) {
             const getDateId = response.data.dateInfo.dateId;
@@ -187,8 +197,8 @@ const SalaryInformationEntryModel = () => {
             });
           setSaInfoListData(getEmplist);
 
-          /* 조회구분 영역 set */
-          /* select box 영역  합계 */
+          
+          /* select box 지급액 통계 합계 */
           const totalSalPaydata = response.data.totalSalPaydata;
 
           const totalSalAllowPaydata =
@@ -223,12 +233,13 @@ const SalaryInformationEntryModel = () => {
       });
   };
 
-  /* 급여정보_급여 항목 리스트 */
+  /* 사원별 지급액 리스트 조회  */
   const getSaPayByCdEmp = () => {
     if (cdEmp !== "") {
       axios
-        .post(url + GET_SALINFO_BY_EMP_URL, { cdEmp: cdEmp, dateId: dateId })
+        .post(url + GET_SALINFO_BY_EMP_URL, { cdEmp: cdEmp, dateId: dateId, salDivision: salDivision })
         .then((response) => {
+
           /* 급여 항목 */
           const saAllowPayList = response.data.saAllowPayList.map((item) => ({
             item: {
@@ -237,8 +248,6 @@ const SalaryInformationEntryModel = () => {
               nmAllow: item.nmAllow,
               allowPay: item.allowPay,
               ynTax: item.ynTax,
-              salDivision: item.salDivision,
-              calculation: item.calculation,
             },
           }));
           setSalData(saAllowPayList);
@@ -275,33 +284,7 @@ const SalaryInformationEntryModel = () => {
           /* 사원정보 + 임금대장기재사항  */
           const saEmpDetail = response.data.saEmpDetail;
           setSaInfoDetailData(saEmpDetail);
-
-          /* select box 영역  합계 */
-          const totalSalAllowPaydata =
-            response.data.totalSalPaydata.salAllow &&
-            response.data.totalSalPaydata.salAllow.map((item) => ({
-              item: {
-                cdAllow: item.cdAllow,
-                nmAllow: item.nmAllow,
-                ynTax: item.ynTax === "N" ? "비과" : "과세",
-                sumAllowPay: item.sumAllowPay,
-              },
-            }));
-
-          const totalSalDeductPaydata =
-            response.data.totalSalPaydata.salDeduct &&
-            response.data.totalSalPaydata.salDeduct.map((item) => ({
-              item: {
-                cdDeduct: item.cdDeduct,
-                nmDeduct: item.nmDeduct,
-                sumDeductPay: item.sumDeductPay,
-              },
-            }));
-
-          setSalPaySumData({
-            allowPay: totalSalAllowPaydata,
-            deductPay: totalSalDeductPaydata,
-          });
+          
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -347,70 +330,25 @@ const SalaryInformationEntryModel = () => {
       },
     ];
   }, [saInfoListData]);
-
-  /* 급여자료 입력or수정 */
-  // useEffect(() => {
-  //   const data = { ...addSalAllowPayRow, dateId: dateId, cdEmp: cdEmp };
-  //   data.dateId !== "" &&
-  //     data.cdEmp !== "" &&
-  //     data.cdEmp.cdEmp !== "" &&
-  //     axios
-  //       .post(url + SAVE_SALDATA_URL, data)
-  //       .then((response) => {
-  //         // 리로드
-  //         getSaPayByCdEmp();
-  //       })
-  //       .catch((error) => {
-  //         setModalState({ message: "입력 실패" });
-  //         console.error("에러발생: ", error);
-  //       });
-  // }, [addSalAllowPayRow]);
-
-  /* 급여항목 수정 */
+  
+  /* 급여 지급액 수정 */
   const updateSalaryAllowPay = useCallback((salaryAllowPay) => {
-
-    const updatedData = {
-      updateAllowData: { ...salaryAllowPay, dateId: dateId , cdEmp: cdEmp},
-    };
-
+    const updatedData = {...salaryAllowPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate};
     saveSalAllowPay(updatedData); // 저장
-  }, []);
+  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate]);
 
   /* 급여테이블 수정 + 공제항목테이블 update */
   const saveSalAllowPay = (updatedData) => {
     axios
-      .put(url + SAVE_SALDATA_URL, updatedData)
-      .then((response) => {
-        if (response.data === 1) console.log("급여지급금액 수정 완료");
-        getSaPayByCdEmp(); //급여테이블 리로드
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-      });
+    .post(url + SAVE_SALDATA_URL, updatedData)
+    .then(async (response) => {
+      setDateId(response.data);
+      await getSaPayByCdEmp();
+    })
+    .catch((error) => {
+      console.error("에러발생: ", error);
+    });
   };
-
-  // 사원 상세정보 update
-  const submitEmpDetailData = useCallback(
-    (event, value) => {
-      if (event.key === "Enter") {
-        let newEmp = { [event.target.id]: value, cdEmp: cdEmp };
-        updateEmp(newEmp);
-      }
-    },
-    [cdEmp]
-  );
-
-  const updateEmp = useCallback((emp) => {
-    axios
-      .put(url + UPDATE_SALEMP_DETAIL_URL, emp)
-      .then((response) => {
-        if (response.data !== 0) console.log("EmpList 업데이트 성공");
-        //setEditedEmp();
-      })
-      .catch((error) => {
-        console.log("에러발생 -> ", error);
-      });
-  }, []);
 
   /* 전월데이터 복사 */
   const setCopyLastMonthData = useCallback(() => {
@@ -500,7 +438,6 @@ const SalaryInformationEntryModel = () => {
       setSelectedRows,
       deleteSelectedRows,
 
-      submitEmpDetailData,
       setYnComplete,
       changeCdEmp,
       getSalTotalSum,

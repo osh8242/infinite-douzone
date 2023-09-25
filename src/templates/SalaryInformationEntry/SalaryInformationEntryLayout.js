@@ -14,16 +14,13 @@ import EmpList from "./mainTab/EmpList";
 import SalaryAllowPayList from "./mainTab/SalaryAllowPayList";
 import SalaryDeductPayList from "./mainTab/SalaryDeductPayList";
 import SelctDivisionList from "./mainTab/SelctDivisionList";
-import SalaryAllowPayListWithCalculation from "./mainTab/SalaryAllowPayListWithCalculation";
 import SalaryDeductPayListWithCalculation from "./mainTab/SalaryDeductPayListWithCalculation";
 
 import CalculationInsert from "./modalMenu/CalculationInsert";
 import ReCalculation from "./modalMenu/ReCalculation";
 import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
-import AddSalAllowPay from "./modalMenu/AddSalAllowPay";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
-import TextBoxComponent from "../../components/TextBoxComponent";
 
 const SalaryInformationEntryLayout = () => {
 
@@ -64,14 +61,14 @@ const SalaryInformationEntryLayout = () => {
         }));
         break;
 
-      case 'addSalAllowPay' :   
-      actions.setModalState((prevState) => ({
-          ...prevState,   
-          onConfirm : actions.addAllowPay,
-          size : data.size,
-          subject: data.subject
-        }));
-        break;
+      // case 'addSalAllowPay' :   
+      // actions.setModalState((prevState) => ({
+      //     ...prevState,   
+      //     onConfirm : actions.addAllowPay,
+      //     size : data.size,
+      //     subject: data.subject
+      //   }));
+      //   break;
 
       default: 
         actions.setModalState((prevState) => ({ 
@@ -100,9 +97,6 @@ const SalaryInformationEntryLayout = () => {
 
   return (
     <>
-      
-    <TextBoxComponent 
-    />
       <ModalComponent
         title={state.modalState.subject}
         size={state.modalState.size}
@@ -133,10 +127,6 @@ const SalaryInformationEntryLayout = () => {
           : modalType === 'calculationInsert'?
               <CalculationInsert
                 insertSalaryTableData = {state.modalContentData.tableData}
-                actions = {actions}
-              />
-          : modalType === 'addSalAllowPay'?
-              <AddSalAllowPay
                 actions = {actions}
               />
           : //default
@@ -173,9 +163,8 @@ const SalaryInformationEntryLayout = () => {
                   <SalaryAllowPayList 
                     actions={actions} 
                     salAllowData={state.salAllowData} 
-                    showCalculation = {showCalculation} 
-                    modalShow={modalShow}
-                    ynComplete = {state.ynComplete}/>
+                    ynComplete = {state.ynComplete}
+                  />
                 </Col>
                     {selectedComponent === 'SalaryDeductPayCalculation' && (
                       <>

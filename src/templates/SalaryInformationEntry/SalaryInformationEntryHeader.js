@@ -82,9 +82,9 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
+        {/* <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
             지급일자
-        </Button>
+        </Button> */}
         <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
             수당/공제 등록
         </Button>

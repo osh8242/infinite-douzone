@@ -39,10 +39,10 @@ const SiSeacrchPanel = (props) => {
           <ConfirmComponent
             show={showModal.show}
             message={showModal.message}
-            onHide={() => {
+            onHide={() => {     // 취소
               setShowModal(false);
             }}
-            onConfirm={() => {
+            onConfirm={() => {  // 확인
               setCopyLastMonthData();
               setShowModal(false);
             }}

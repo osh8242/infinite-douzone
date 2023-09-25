@@ -10,16 +10,8 @@ import {
 import "../../../styles/HrManagement/HrManagementLayout.scss";
 
 const SalaryAllowPayList = (props) => {
-  const { salAllowData, actions, showCalculation, modalShow, ynComplete } = props;
-  //const [showYn, setShowYn] = useState("salaryAllowPay");
-  // const toggleCalculation = () => {
-  //   const newShowYn = showYn === "salaryAllowPay" ? null : "salaryAllowPay";
-  //   setShowYn(newShowYn);
-  //   showCalculation(newShowYn);
-  // };
-
-  console.log(salAllowData.salData);
-  console.log(salAllowData.sumAllowPayByYnTax);
+  const { salAllowData, actions, ynComplete } = props;
+  
   return (
     <div>
       <Row>
@@ -29,12 +21,9 @@ const SalaryAllowPayList = (props) => {
             readOnly={ynComplete === 'Y'}
             tableHeaders={salAllow.headers}
             tableData={salAllowData.salData}
-            rowAddable
-            codeHelper
             actions={{
               setTableData: actions.setSalData,
               updateEditedRow: actions.updateSalaryAllowPay,
-              setCodeHelper : ()=> modalShow('addSalAllowPay', modal_addSalAllow, actions.setAddSalAllowPay)
             }}
           />
         </div>

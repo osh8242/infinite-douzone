@@ -11,6 +11,7 @@ export const GET_SALINFO_BY_EMP_URL = "/sallowpay/getSaPayByCdEmp";
 export const SAVE_SALDATA_URL = "/sallowpay/mergeSalAllowPay"
 export const UPDATE_DATEINFO_URL = "/sallowpay/updateDate";
 export const SET_COPYSALDATA_LASTMONTH_URL = "/sallowpay/setCopyLastMonthData";
+export const GET_PAYMENTDATE_CODEHELPER_URL = "/sallowpay/getPaymentDateList";
 
 /* 사원리스트 영역 */
 export const salEmp = {
@@ -83,7 +84,6 @@ export const salDeductSum = {
     ]
 };
 
-
 /* 검색옵션 */
 // 구분
 export const salaryDivisionOption = [ 
@@ -120,7 +120,7 @@ export const totalSalaryByPeriodOption = [
 // 지급일 조회
 export const codeHelperData_paymentDate = {
     subject : '지급일 조회'
-    , url : "/saallowpay/getPaymentDateList"
+    , url : GET_PAYMENTDATE_CODEHELPER_URL
     , headers : [
         //{ field: "dateId", text: "날짜ID" },
         { field: "paymentDate", text: "지급일" },
