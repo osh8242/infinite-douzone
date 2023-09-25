@@ -179,6 +179,7 @@ const HrManagementModel = () => {
   //uploadEmpPhoto
   const updateEmpPhoto = useCallback(
     (event) => {
+      console.log("모델 - 이미지 업로드 함수");
       const file = event.target.files[0];
 
       if (!file) {
@@ -221,7 +222,6 @@ const HrManagementModel = () => {
     const row = { item: leftTablePkValue, table: "empPhoto" };
     console.log("row", row);
     deleteRow(row);
-    setLeftTablePkValue({ ...leftTablePkValue });
   }, [leftTablePkValue]);
 
   //mainTab에서 Enter 입력시 EmpAdd 업데이트
