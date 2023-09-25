@@ -25,6 +25,7 @@ import {
 
 import { useSelector } from "react-redux";
 import LcSearchPanel from "./SearchPanel/LcSearchPanel";
+import LcSearchSearchPanel from "./SearchPanel/LcSearchSearchPanel";
 
 const LaborContractLayout = () => {
   const { state, actions, mainTablePkValue } = LaborContractModel();
@@ -60,122 +61,185 @@ const LaborContractLayout = () => {
           </Row>
           <div></div>
         </SearchPanel> */}
-        <Row className="mt-3">
-          <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
-            {[
-              <LcSearchPanel
-                onSearch={actions.onSearch}
-                // dateSelectRef={dateSelectRef}
-                // dateOption={dateOption}
-                salSelectRef={salSelectRef}
-                selectList={searchSelectList}
-              />,
-            ]}
-          </MenuTab>
-        </Row>
-        <Row>
-          <Col md="3">
-            <Row>
-              {/* <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
-                {[
-                  // 계약서 작성 */}
-              <div className="leftTable">
-                <TableForm
-                  tableName="EMP"
-                  showHeaderArrow
-                  sortable
-                  tableHeaders={LeftTableHeaders}
-                  // tableData={leftTableData}
-                  selectedRows={selectedRows}
-                  rowAddable
-                  defaultSelectedRow
-                  defaultFocus
-                  actions={{
-                    setTableData: actions.setLeftTableData,
-                    setPkValue: actions.setMainTablePkValue,
-                    setEditedRow: actions.setEditedEmp,
-                    setSelectedRows: actions.setSelectedRows,
-                    deleteCurrentRow: actions.deleteCurrentRow,
-                    getRowObject: Swsm,
-                  }}
-                />
-              </div>
-              {/* ,
+        {/* 상단메뉴탭 적용 */}
+        {mainTabData ? (
+          <Row className="mt-3">
+            <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
+              {[
+                <>
+                  {/* 계약서 작성 */}
+                  <LcSearchPanel
+                    onSearch={actions.onSearch}
+                    // dateSelectRef={dateSelectRef}
+                    // dateOption={dateOption}
+                    salSelectRef={salSelectRef}
+                    selectList={searchSelectList}
+                  />
+                  <Row>
+                    <Col md="3">
+                      <Row>
+                        <div className="leftTable">
+                          <TableForm
+                            tableName="EMP"
+                            showHeaderArrow
+                            sortable
+                            tableHeaders={LeftTableHeaders}
+                            // tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            rowAddable
+                            defaultSelectedRow
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              setPkValue: actions.setMainTablePkValue,
+                              setEditedRow: actions.setEditedEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteCurrentRow: actions.deleteCurrentRow,
+                              getRowObject: Swsm,
+                            }}
+                          />
+                        </div>
+                      </Row>
+                    </Col>
 
-                  // 계약서 조회 */}
-              {/* <div>
-                <TableForm
-                  tableName="EMP"
-                  showHeaderArrow
-                  sortable
-                  tableHeaders={LeftTableHeaders}
-                  tableData={leftTableData}
-                  selectedRows={selectedRows}
-                  rowAddable
-                  defaultFocus
-                  actions={{
-                    setTableData: actions.setLeftTableData,
-                    setPkValue: actions.setMainTablePkValue,
-                    setEditedRow: actions.setEditedEmp,
-                    setSelectedRows: actions.setSelectedRows,
-                    deleteCurrentRow: actions.deleteCurrentRow,
-                    getRowObject: Swsm,
-                  }}
-                />
-              </div> */}
-              {/* ,
-                ]}
-              </MenuTab> */}
-            </Row>
-          </Col>
-          {mainTabData ? (
-            <Col md="9" className="px-5">
-              <MenuTab menuList={[subTabMenuList.WorkInformation]}>
-                {[
-                  // <Scrollbars style={{ height: 400, overflow: "hidden" }}>
-                  <Row key="key" className="mt-4 mb-5 justify-content-center">
-                    <FormPanel
-                      INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                      formData={mainTabData}
-                      submitData={actions.submitMainTabData}
-                      actions={actions}
-                    />
-                  </Row>,
-                  // </Scrollbars>,
-                ]}
-              </MenuTab>
-              <MenuTab menuList={[subTabMenuList.otherBenefit]}>
-                {[
-                  <Row key="key" className="mt-4 mb-4 justify-content-center">
-                    <TableForm
-                      tableName="SwsmOther"
-                      showCheckbox
-                      rowAddable
-                      sortable
-                      tableHeaders={SubTabHeaders}
-                      tableData={subTableData}
-                      pkValue={mainTablePkValue}
-                      selectedRows={selectedRows}
-                      actions={{
-                        setTableData: actions.setSubTableData,
-                        setEditedRow: actions.setEditedSwsmOther,
-                        setSelectedRows: actions.setSelectedRows,
-                        getRowObject: SwsmOther,
-                        insertNewRow: actions.insertSwsmOther,
-                        updateEditedRow: actions.updateSwsmOther,
-                        deleteRow: actions.deleteSelectedRows,
-                      }}
-                    />
-                  </Row>,
-                  // </Scrollbars>,
-                ]}
-              </MenuTab>
-            </Col>
-          ) : (
-            <Spinner animation="border" variant="primary" />
-          )}
-        </Row>
-        {/* </MenuTab> */}
+                    <Col md="9" className="px-5">
+                      <MenuTab menuList={[subTabMenuList.WorkInformation]}>
+                        {[
+                          // <Scrollbars style={{ height: 400, overflow: "hidden" }}>
+                          <Row
+                            key="key"
+                            className="mt-4 mb-5 justify-content-center"
+                          >
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>,
+                          // </Scrollbars>,
+                        ]}
+                      </MenuTab>
+                      <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                        {[
+                          <Row
+                            key="key"
+                            className="mt-4 mb-4 justify-content-center"
+                          >
+                            <TableForm
+                              tableName="SwsmOther"
+                              showCheckbox
+                              rowAddable
+                              sortable
+                              tableHeaders={SubTabHeaders}
+                              tableData={subTableData}
+                              pkValue={mainTablePkValue}
+                              selectedRows={selectedRows}
+                              actions={{
+                                setTableData: actions.setSubTableData,
+                                setEditedRow: actions.setEditedSwsmOther,
+                                setSelectedRows: actions.setSelectedRows,
+                                getRowObject: SwsmOther,
+                                insertNewRow: actions.insertSwsmOther,
+                                updateEditedRow: actions.updateSwsmOther,
+                                deleteRow: actions.deleteSelectedRows,
+                              }}
+                            />
+                          </Row>,
+                          // </Scrollbars>,
+                        ]}
+                      </MenuTab>
+                    </Col>
+                  </Row>
+                </>,
+                <>
+                  {/*  계약서 조회 */}
+                  <LcSearchSearchPanel
+                    onSearch={actions.onSearch}
+                    // dateSelectRef={dateSelectRef}
+                    // dateOption={dateOption}
+                    salSelectRef={salSelectRef}
+                    selectList={searchSelectList}
+                  />
+                  <Row>
+                    <Col md="3">
+                      <Row>
+                        <div className="leftTable">
+                          <TableForm
+                            tableName="EMP"
+                            showHeaderArrow
+                            sortable
+                            tableHeaders={LeftTableHeaders}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            rowAddable
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              setPkValue: actions.setMainTablePkValue,
+                              setEditedRow: actions.setEditedEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteCurrentRow: actions.deleteCurrentRow,
+                              getRowObject: Swsm,
+                            }}
+                          />
+                        </div>
+                      </Row>
+                    </Col>
+
+                    <Col md="9" className="px-5">
+                      <MenuTab menuList={[subTabMenuList.WorkInformation]}>
+                        {[
+                          <Row
+                            key="key"
+                            className="mt-4 mb-5 justify-content-center"
+                          >
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>,
+                        ]}
+                      </MenuTab>
+                      <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                        {[
+                          <Row
+                            key="key"
+                            className="mt-4 mb-4 justify-content-center"
+                          >
+                            <TableForm
+                              tableName="SwsmOther"
+                              showCheckbox
+                              rowAddable
+                              sortable
+                              tableHeaders={SubTabHeaders}
+                              tableData={subTableData}
+                              pkValue={mainTablePkValue}
+                              selectedRows={selectedRows}
+                              actions={{
+                                setTableData: actions.setSubTableData,
+                                setEditedRow: actions.setEditedSwsmOther,
+                                setSelectedRows: actions.setSelectedRows,
+                                getRowObject: SwsmOther,
+                                insertNewRow: actions.insertSwsmOther,
+                                updateEditedRow: actions.updateSwsmOther,
+                                deleteRow: actions.deleteSelectedRows,
+                              }}
+                            />
+                          </Row>,
+                        ]}
+                      </MenuTab>
+                    </Col>
+                  </Row>
+                </>,
+              ]}
+            </MenuTab>
+          </Row>
+        ) : (
+          <Spinner animation="border" variant="primary" />
+        )}
       </Container>
     </>
   );

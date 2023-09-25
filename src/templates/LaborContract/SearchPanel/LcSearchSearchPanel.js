@@ -3,8 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import SearchPanel from "../../../components/SearchPanel";
 import SelectForm from "../../../components/SelectForm";
 import DateForm from "../../../components/DateForm";
-
-const LcSearchPanel = (props) => {
+import "../../../styles/DateForm.css";
+const LcSearchSearchPanel = (props) => {
   const {
     onSearch,
     dateSelectRef,
@@ -15,9 +15,12 @@ const LcSearchPanel = (props) => {
   return (
     <SearchPanel onSearch={() => onSearch(salSelectRef)}>
       <Row className="searchPanel">
-        <Col md="4">
-          <DateForm label={"작성일자"} dateType="month" />
+        <Col className="mx-1 col-md-6">
+          <DateForm label={"작성일자"} sub="true" dateType="month" />
         </Col>
+        {/* <Col className="mx-0 col-md-3">
+          <DateForm label={"~"} dateType="month" />
+        </Col> */}
         <Col md="4">
           <SelectForm
             label={"소득구분"}
@@ -30,4 +33,4 @@ const LcSearchPanel = (props) => {
   );
 };
 
-export default LcSearchPanel;
+export default LcSearchSearchPanel;

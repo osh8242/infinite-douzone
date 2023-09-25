@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import "../../src/styles/DateForm.css";
 function DateForm(props) {
-  const { label, type, value, subValue, onChange, id, dateType } = props;
+  const { label, type, value, subValue, onChange, id, dateType, sub } = props;
 
   // const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(value || "");
@@ -26,14 +26,27 @@ function DateForm(props) {
   return (
     <Row>
       <div className="labelAndContent">
-        <div className="label">{label}</div>
-        <div className="widthFull d-flex align-items-center DateInput">
+        {label && <div className="label">{label}</div>}
+        <div className="widthFull d-flex align-items-center gap-3">
           <Form.Control
             id={id}
             type={dateType ? "month" : "date"}
             value={startDate}
             onChange={onChangeHandeler}
           />
+          {sub ? (
+            <>
+              {" ~ "}
+              <Form.Control
+                id={id}
+                type={dateType ? "month" : "date"}
+                value={startDate}
+                onChange={onChangeHandeler}
+              />
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </Row>
