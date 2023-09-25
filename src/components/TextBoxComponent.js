@@ -68,6 +68,7 @@ function TextBoxComponent(props) {
     selectedOption,
     selectRef,
     subField,
+    disabledSelect,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -81,11 +82,16 @@ function TextBoxComponent(props) {
 
   const [selectedValue, setSelectedValue] = useState(selectedOption || "");
   const [isDisable, setDisable] = useState(
-    disabled || selectedOption === "F" ? true : false
+    disabled || disabledSelect || selectedOption === "F" ? true : false
   );
+
+  useEffect(() => {
+    if (disabled) setDisable(true);
+    else setDisable(false);
+  }, [isDisable]);
   // const style = height ? { height: `${height}px` } : {}; // 스타일 값
   const style = {
-    ...(isDisable ? { color: "transparent" } : {}),
+    // ...(isDisable ? { color: "transparent" } : {}),
     ...(height ? { height: `${height}px` } : {}),
   };
 
@@ -341,6 +347,7 @@ function TextBoxComponent(props) {
                       ref={selectRef}
                       value={selectedValue}
                       onChange={(e) => handleSelectChange(e)}
+                      disabled={isDisable}
                     >
                       {selectList.map((option, index) => (
                         <option value={option.key} key={index}>

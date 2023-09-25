@@ -66,6 +66,7 @@ const FormPanel = ({
             id={id}
             label={label}
             disabled={disabled}
+            disabledSelect={input.disabledSelect}
             value={value}
             onEnter={submitData}
             onChange={(e, value) => onChangeFn && onChangeFn(value)}

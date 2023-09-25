@@ -21,6 +21,7 @@ import {
   MAIN_TAB,
   HEAD_TAB,
   TAB_MENU_LIST,
+  MAIN_TAB_SEARCH,
 } from "./MainTab/LaborContractTabConstant";
 
 import { useSelector } from "react-redux";
@@ -195,7 +196,7 @@ const LaborContractLayout = () => {
                             className="mt-4 mb-5 justify-content-center"
                           >
                             <FormPanel
-                              INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                              INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
                               formData={mainTabData}
                               submitData={actions.submitMainTabData}
                               actions={actions}

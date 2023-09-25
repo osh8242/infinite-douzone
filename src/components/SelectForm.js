@@ -29,9 +29,17 @@ function SelectForm(props) {
     onChange,
     subLabel,
     endLabel,
+    disabled,
   } = props;
 
   const [selectedValue, setSelectedValue] = useState(selectedOption || "");
+  const [isDisabled, setDisabled] = useState();
+
+  useEffect(() => {
+    if (disabled) setDisabled(true);
+    else setDisabled(false);
+  }, [isDisabled]);
+
   useEffect(() => {
     setSelectedValue(selectedOption || "");
   }, [selectedOption]);
@@ -68,6 +76,7 @@ function SelectForm(props) {
                     ref={selectRef}
                     value={selectedValue}
                     onChange={(e) => handleSelectChange(e)}
+                    disabled={isDisabled}
                   >
                     {optionList.map((option, index) => (
                       <option value={option.key} key={index}>
@@ -94,6 +103,7 @@ function SelectForm(props) {
               ref={selectRef}
               value={selectedValue}
               onChange={(e) => handleSelectChange(e)}
+              disabled={isDisabled}
             >
               {optionList.map((option, index) => (
                 <option value={option.key} key={index}>

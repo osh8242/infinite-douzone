@@ -2,11 +2,27 @@
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import "../../src/styles/DateForm.css";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 function DateForm(props) {
-  const { label, type, value, subValue, onChange, id, dateType, sub } = props;
+  const {
+    label,
+    type,
+    value,
+    subValue,
+    onChange,
+    id,
+    dateType,
+    sub,
+    disabled,
+  } = props;
 
   // const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(value || "");
+  const [isDisabled, setDisabled] = useState();
+  useEffect(() => {
+    if (disabled) setDisabled(true);
+    else setDisabled(false);
+  }, [isDisabled]);
 
   DateForm.defaultProps = {
     label: "",
@@ -33,6 +49,7 @@ function DateForm(props) {
             type={dateType ? "month" : "date"}
             value={startDate}
             onChange={onChangeHandeler}
+            disabled={isDisabled}
           />
           {sub ? (
             <>

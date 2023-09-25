@@ -7,9 +7,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const TestAdd = (props) => {
-  const { label, isZonecode, value, size, mb, md = 4, actions } = props;
+  const {
+    label,
+    isZonecode,
+    value,
+    size,
+    mb,
+    md = 4,
+    actions,
+    disabled,
+  } = props;
   const [zonecode, setZonecode] = useState(value || "");
   const [address, setAddress] = useState(value || "");
+  const [isDisabled, setDisabled] = useState();
+
+  useEffect(() => {
+    if (disabled) setDisabled(true);
+    else setDisabled(false);
+  }, [isDisabled]);
 
   useEffect(() => {
     setAddress(value || "");
@@ -42,6 +57,7 @@ const TestAdd = (props) => {
                 value={address}
                 size={size}
                 onChange={(e) => setAddress(e.target.value)}
+                disabled={isDisabled}
               />
             </div>
             <div>
@@ -49,6 +65,7 @@ const TestAdd = (props) => {
                 id="addressSearchBtn"
                 variant="secondary"
                 onClick={() => setModalState({ ...modalState, show: true })}
+                disabled={isDisabled}
               >
                 <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
               </Button>
