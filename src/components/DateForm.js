@@ -1,7 +1,7 @@
 // 작성자 : 이서연
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-
+import "../../src/styles/DateForm.css";
 function DateForm(props) {
   const { label, type, value, subValue, onChange, id, dateType } = props;
 
@@ -24,22 +24,18 @@ function DateForm(props) {
   };
 
   return (
-    <Row className="py-1">
-      {label ? (
-        <div className="labelAndContent">
-          <div className="label">{label}</div>
-          <div className="widthFull d-flex align-items-center">
-            <Form.Control
-              id={id}
-              type={dateType ? "month" : "date"}
-              value={startDate}
-              onChange={onChangeHandeler}
-            />
-          </div>
+    <Row>
+      <div className="labelAndContent">
+        <div className="label">{label}</div>
+        <div className="widthFull d-flex align-items-center DateInput">
+          <Form.Control
+            id={id}
+            type={dateType ? "month" : "date"}
+            value={startDate}
+            onChange={onChangeHandeler}
+          />
         </div>
-      ) : (
-        ""
-      )}
+      </div>
     </Row>
   );
 }

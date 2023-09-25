@@ -17,6 +17,7 @@ import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
 // import useLoginModel from "../../Login/useLoginModel";
+
 import {
   MAIN_TAB,
   HEAD_TAB,

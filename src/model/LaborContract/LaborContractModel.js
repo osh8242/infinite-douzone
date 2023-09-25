@@ -169,22 +169,26 @@ const LaborContractModel = () => {
     [mainTabData]
   );
 
-  const updateSwsmOther = useCallback((swsmOther) => {
-    const newData = {
-      otherType: swsmOther.otherType,
-      otherMoney: swsmOther.otherMoney,
-      seqVal: swsmOther.seqVal,
-      cdEmp: mainTablePkValue.cdEmp,
-    };
-    api
-      .put(swsmUrlPattern.updateSwsmOther, newData)
-      .then((response) => {
-        if (response.data === 1) console.log("swsmOther 업데이트 성공");
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-      });
-  }, []);
+  const updateSwsmOther = useCallback(
+    (swsmOther) => {
+      console.log("updateddddWwiwwddd");
+      const newData = {
+        otherType: swsmOther.otherType,
+        otherMoney: swsmOther.otherMoney,
+        seqVal: swsmOther.seqVal,
+        cdEmp: mainTablePkValue.cdEmp,
+      };
+      api
+        .put(swsmUrlPattern.updateSwsmOther, newData)
+        .then((response) => {
+          if (response.data === 1) console.log("swsmOther 업데이트 성공");
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+        });
+    },
+    [editedSwsmOther]
+  );
 
   const deleteSelectedRows = useCallback(() => {
     const editedTableNames = {};
