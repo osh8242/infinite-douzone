@@ -17,7 +17,6 @@ import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
 // import useLoginModel from "../../Login/useLoginModel";
-
 import {
   MAIN_TAB,
   HEAD_TAB,
@@ -61,67 +60,72 @@ const LaborContractLayout = () => {
           </Row>
           <div></div>
         </SearchPanel> */}
-        <Row className="hr-search-row">
-          <LcSearchPanel
-            onSearch={actions.onSearch}
-            // dateSelectRef={dateSelectRef}
-            // dateOption={dateOption}
-            salSelectRef={salSelectRef}
-            selectList={searchSelectList}
-          />
+        <Row className="mt-3">
+          <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
+            {[
+              <LcSearchPanel
+                onSearch={actions.onSearch}
+                // dateSelectRef={dateSelectRef}
+                // dateOption={dateOption}
+                salSelectRef={salSelectRef}
+                selectList={searchSelectList}
+              />,
+            ]}
+          </MenuTab>
         </Row>
-
         <Row>
           <Col md="3">
             <Row>
-              <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
+              {/* <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
                 {[
-                  // 계약서 작성
-                  <div className="leftTable">
-                    <TableForm
-                      tableName="EMP"
-                      showHeaderArrow
-                      sortable
-                      tableHeaders={LeftTableHeaders}
-                      // tableData={leftTableData}
-                      selectedRows={selectedRows}
-                      rowAddable
-                      defaultSelectedRow
-                      defaultFocus
-                      actions={{
-                        setTableData: actions.setLeftTableData,
-                        setPkValue: actions.setMainTablePkValue,
-                        setEditedRow: actions.setEditedEmp,
-                        setSelectedRows: actions.setSelectedRows,
-                        deleteCurrentRow: actions.deleteCurrentRow,
-                        getRowObject: Swsm,
-                      }}
-                    />
-                  </div>,
+                  // 계약서 작성 */}
+              <div className="leftTable">
+                <TableForm
+                  tableName="EMP"
+                  showHeaderArrow
+                  sortable
+                  tableHeaders={LeftTableHeaders}
+                  // tableData={leftTableData}
+                  selectedRows={selectedRows}
+                  rowAddable
+                  defaultSelectedRow
+                  defaultFocus
+                  actions={{
+                    setTableData: actions.setLeftTableData,
+                    setPkValue: actions.setMainTablePkValue,
+                    setEditedRow: actions.setEditedEmp,
+                    setSelectedRows: actions.setSelectedRows,
+                    deleteCurrentRow: actions.deleteCurrentRow,
+                    getRowObject: Swsm,
+                  }}
+                />
+              </div>
+              {/* ,
 
-                  // 계약서 조회
-                  <div>
-                    <TableForm
-                      tableName="EMP"
-                      showHeaderArrow
-                      sortable
-                      tableHeaders={LeftTableHeaders}
-                      tableData={leftTableData}
-                      selectedRows={selectedRows}
-                      rowAddable
-                      defaultFocus
-                      actions={{
-                        setTableData: actions.setLeftTableData,
-                        setPkValue: actions.setMainTablePkValue,
-                        setEditedRow: actions.setEditedEmp,
-                        setSelectedRows: actions.setSelectedRows,
-                        deleteCurrentRow: actions.deleteCurrentRow,
-                        getRowObject: Swsm,
-                      }}
-                    />
-                  </div>,
+                  // 계약서 조회 */}
+              {/* <div>
+                <TableForm
+                  tableName="EMP"
+                  showHeaderArrow
+                  sortable
+                  tableHeaders={LeftTableHeaders}
+                  tableData={leftTableData}
+                  selectedRows={selectedRows}
+                  rowAddable
+                  defaultFocus
+                  actions={{
+                    setTableData: actions.setLeftTableData,
+                    setPkValue: actions.setMainTablePkValue,
+                    setEditedRow: actions.setEditedEmp,
+                    setSelectedRows: actions.setSelectedRows,
+                    deleteCurrentRow: actions.deleteCurrentRow,
+                    getRowObject: Swsm,
+                  }}
+                />
+              </div> */}
+              {/* ,
                 ]}
-              </MenuTab>
+              </MenuTab> */}
             </Row>
           </Col>
           {mainTabData ? (
