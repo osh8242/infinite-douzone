@@ -48,7 +48,7 @@ function EmpRegisterationLayout() {
         case "default":
           actions.setModalState((prevState) => ({
             ...prevState,
-            size: "lg",
+            size: "md",
             subject: data.subject,
           }));
 

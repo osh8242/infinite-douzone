@@ -10,6 +10,9 @@ const [modalState, setModalState] = useState({ show: false , modalData: null });
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import "../styles/commonComponent.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 
 function ModalComponent(props) {
   const {
@@ -17,7 +20,7 @@ function ModalComponent(props) {
     show,
     title,
     onHide,
-    size,  // xs, sm, md, lg, xl, xxl
+    size, // xs, sm, md, lg, xl, xxl
     backdrop,
     animation,
   } = props;
@@ -32,12 +35,14 @@ function ModalComponent(props) {
     >
       <Modal.Header>
         <Modal.Title>{title}</Modal.Title>
-        <Button variant="secondary" onClick={onHide}>
-          X
-        </Button>
+        <FontAwesomeIcon
+          className="modal-closeBtn"
+          icon={faRectangleXmark}
+          onClick={onHide}
+        />
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
-      <Modal.Footer/>
+      <Modal.Footer />
     </Modal>
   );
 }
