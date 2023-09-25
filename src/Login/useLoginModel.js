@@ -1,20 +1,26 @@
 import axios from "axios";
-import { useLogin } from "./LoginProvider";
+import { useNavigate } from "react-router-dom";
 import { url } from "../model/CommonConstant";
+import { useLogin } from "./LoginProvider";
 
 const useLoginModel = () => {
   const { loginInfo, updateToken } = useLogin();
+  const navigate = useNavigate();
 
   const LoginUser = async () => {
+    console.log("loginInfo", loginInfo);
     try {
       const response = await axios.post(`${url}/auth/login`, loginInfo);
       console.log(response.data);
-
+      const token = response.headers["authorization"];
       // 토큰이 반환된 경우
-      if (response.data.token) {
-        updateToken(response.data.token);
-        localStorage.setItem("authToken", response.data.token);
+      if (token) {
+        updateToken(token);
+        localStorage.setItem("authToken", token);
         console.log("로그인에 성공하였습니다.");
+        console.log("response.data", response.data);
+        console.log("response.headers", response.headers);
+        navigate("/");
       } else {
         console.log(response.data.message || "로그인에 실패하였습니다.");
       }

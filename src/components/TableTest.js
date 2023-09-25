@@ -1,10 +1,21 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import CodeHelperModal from "./CodeHelperModal";
+import ConfirmComponent from "./ConfirmComponent";
 import ModalComponent from "./ModalComponent";
 import SelectForm from "./SelectForm";
 import TextBoxComponent from "./TextBoxComponent";
@@ -40,26 +51,26 @@ const TableTest = ({
   sortable, //
   readOnly, // [선택] 테이블을 읽기전용으로
   rowAddable, // [선택] 행 추가 가능여부
-  defaultSelectedRow, // [선택] 테이블 랜더시 초기 선택행 옵션(숫자, 디폴트는 index = 0)
-  defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온(디폴트 false)
+  defaultFocus, // [선택] 테이블 랜더시 최초 포커스 온 1번째행 셀렉트 디폴트 false)
 }) => {
   const [tableRows, setTableRows] = useState(tableData || []);
+  const [refresh, setRefresh] = useState(false);
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    setTableRows([...tableData]);
-    // if (defaultSelectedRow && tableData.length > 0)
-    //   switch (typeof defaultSelectedRow) {
-    //     case "number":
-    //       handleRowClick(null, defaultSelectedRow, 0);
-    //       break;
-    //     case "boolean":
-    //       handleRowClick(null, 0, 0);
-    //       break;
-    //     default:
-    //       break;
-    //   }
+    setTableRows(tableData);
+    defaultFocus && setRefresh(!refresh);
   }, [tableData]);
+
+  useEffect(() => {
+    if (defaultFocus) {
+      setRowRef(0);
+      setColumnRef(0);
+      tableFocus.current = true;
+      actions.setPkValue(getPkValue(0));
+      console.log("테이블 리프레쉬");
+    }
+  }, [refresh]);
 
   //테이블 자신을 가르키는 dom ref
   const myRef = useRef(false);
@@ -80,6 +91,9 @@ const TableTest = ({
   const [isAsc, setIsAsc] = useState(null);
 
   //모달 경고창(인풋 pk누락)
+  const [confirmModalState, setConfirmModalState] = useState({ show: false });
+
+  //코드헬퍼 모달
   const [modalState, setModalState] = useState({ show: false });
 
   //테이블 포커스 여부 boolean ref
@@ -311,7 +325,7 @@ const TableTest = ({
         const editedRow = getEditedRow(event, rowIndex, columnIndex);
 
         if (!editedRow) {
-          setModalState({ show: true, message: "필수입력값 누락" });
+          setConfirmModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
         if (editedRow.isNew) actions.insertNewRow(editedRow.item);
@@ -500,7 +514,9 @@ const TableTest = ({
         case "textCodeHelper":
           let codeHelperData = codeHelper[field];
           let tableData = codeHelperData.tableData;
-          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
+          let targetIndex = tableData.findIndex(
+            (row) => row.item[field] === value
+          );
           const newField = field.charAt(0).toUpperCase() + field.slice(1);
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
@@ -569,7 +585,8 @@ const TableTest = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Enter":
@@ -588,14 +605,13 @@ const TableTest = ({
 
             case "Delete":
               event.preventDefault();
-              setModalState({
+              setConfirmModalState({
                 show: true,
-                title: "삭제확인",
                 message: "해당 행을 삭제하시겠습니까?",
                 onConfirm: () => {
                   actions.deleteRow(tableRows[rowRef]);
                   deleteRow(rowRef);
-                  setModalState({ show: false });
+                  setConfirmModalState({ show: false });
                 },
               });
               break;
@@ -665,7 +681,9 @@ const TableTest = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -741,14 +759,26 @@ const TableTest = ({
           })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
-            <tr className={`sticky-row ${getRowClassName({}, tableRows.length)}`}>
+            <tr
+              className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
+              onDoubleClick={(e) => {
+                actions.newRowCodeHelper
+                  ? actions.newRowCodeHelper()
+                  : handleDoubleClick(e, tableRows.length);
+              }}
+            >
               {showCheckbox && (
                 <td
                   className="d-flex justify-content-center"
                   onClick={() => codeHelper && actions.newRowCodeHelper()}
                 >
                   <div>
-                    <FontAwesomeIcon icon={faPlus} />
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      onClick={() =>
+                        actions.newRowCodeHelper && actions.newRowCodeHelper()
+                      }
+                    />
                   </div>
                 </td>
               )}
@@ -757,16 +787,17 @@ const TableTest = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onDoubleClick={(e) =>
-                    handleDoubleClick(e, tableRows.length, columnIndex)
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
                   }
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (
                       <FontAwesomeIcon
                         icon={faPlus}
-                        onClick={() => codeHelper && actions.setCodeHelper()}
+                        onClick={() =>
+                          actions.newRowCodeHelper && actions.setCodeHelper()
+                        }
                       />
                     )}
                   </div>
@@ -777,6 +808,11 @@ const TableTest = ({
         </tbody>
         {tableFooter && <tfoot>{tableFooter}</tfoot>}
       </Table>
+      <ConfirmComponent
+        show={confirmModalState.show}
+        message={confirmModalState.message}
+        onConfirm={confirmModalState.onConfirm}
+      ></ConfirmComponent>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

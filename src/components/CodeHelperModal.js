@@ -55,6 +55,8 @@ function CodeHelperModal(props) {
     onHide();
   };
 
+  console.log(setRowData, tableHeaders, tableData, usePk, searchField);
+
   return (
     <>
       <div>

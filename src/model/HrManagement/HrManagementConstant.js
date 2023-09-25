@@ -5,11 +5,15 @@ export const urlPattern = {
   insertEmp: "/emp/insertEmp",
   updateEmp: "",
   deleteEmp: "/emp/deleteEmp",
+  getEmpAddByCdEmp: "/empAdd/getEmpAddByCdEmp",
+  insertEmpAdd: "/empAdd/insertEmpAdd",
+  updateEmpAdd: "/empAdd/updateEmpAdd",
   deleteEmpAdd: "/empAdd/deleteEmpAdd",
   getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",
   insertEmpPhoto: "/empPhoto/insertEmpPhoto",
   updateEmpPhoto: "/empPhoto/updateEmpPhoto",
   deleteEmpPhoto: "/empPhoto/deleteEmpPhoto",
+  getEmpFamListByCdEmp: "/empFam/getEmpFamListByCdEmp",
   insertEmpFam: "/empFam/insertEmpFam",
   updateEmpFam: "/empFam/updateEmpFamBySeqValAndCdEmp",
   deleteEmpFam: "/empFam/deleteEmpFam",
@@ -87,21 +91,20 @@ export const CODE_HELPER_DATA = {
     usePk: "cdOffduty",
   },
   cdOffpos: {
+    field: "cdOffpos",
     title: "직급 조회",
     headers: [
       { field: "cdOffpos", text: "직급코드" },
       { field: "nmCdOffpos", text: "직급명" },
     ],
-    tableData: [
-      { item: { cdOffpos: "R001", nmCdOffpos: "사원" } },
-      { item: { cdOffpos: "R002", nmCdOffpos: "주임" } },
-      { item: { cdOffpos: "R003", nmCdOffpos: "대리" } },
-      { item: { cdOffpos: "R004", nmCdOffpos: "과장" } },
-      { item: { cdOffpos: "R005", nmCdOffpos: "차장" } },
-      { item: { cdOffpos: "R006", nmCdOffpos: "부장" } },
-      { item: { cdOffpos: "R007", nmCdOffpos: "이사" } },
-      { item: { cdOffpos: "R008", nmCdOffpos: "사장" } },
-    ],
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdOffpos"]]).map((key) => {
+      return {
+        item: {
+          cdOffpos: key,
+          nmCdOffpos: CODE_VALUE[CODE_TYPE["cdOffpos"]][key],
+        },
+      };
+    }),
     searchField: ["cdOffpos", "nmCdOffpos"],
     usePk: "cdOffpos",
   },
