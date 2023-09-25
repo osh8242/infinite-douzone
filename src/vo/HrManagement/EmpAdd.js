@@ -9,9 +9,26 @@ const EmpAdd = (empAddData) => {
     (empAddData.telHome2 || "") +
     "-" +
     (empAddData.telHome3 || "");
-  console.log("텔홈", empAddData["telHome"]);
+
   empAddData["celEmp"] =
-    empAddData.celEmp1 + "-" + empAddData.celEmp2 + "-" + empAddData.celEmp3;
+    (empAddData.celEmp1 || "") +
+    "-" +
+    (empAddData.celEmp2 || "") +
+    "-" +
+    (empAddData.celEmp3 || "");
+
+  empAddData["telOffice"] =
+    (empAddData.telOffice1 || "") +
+    "-" +
+    (empAddData.telOffice2 || "") +
+    "-" +
+    (empAddData.telOffice3 || "");
+
+  empAddData["zipHome-addHome1"] =
+    (empAddData.zipHome || "") + "-" + (empAddData.addHome1 || "");
+
+  empAddData["zipOrgin-addOrgin1"] =
+    (empAddData.zipOrgin || "") + "-" + (empAddData.addOrgin1 || "");
   return empAddData;
 };
 

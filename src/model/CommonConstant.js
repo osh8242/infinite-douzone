@@ -1,5 +1,32 @@
 export const url = "http://localhost:8888";
 
+export const CODE_TYPE = {
+  cdOffduty: "직무",
+  cdOffpos: "직급",
+};
+
+export const CODE_VALUE = {
+  [CODE_TYPE.cdOffduty]: {
+    C001: "경영회계",
+    C003: "금융보험",
+    C004: "교육과학",
+    C005: "법률행정",
+    C006: "보건의료",
+    C007: "문화예술",
+    C008: "농림어업",
+  },
+  [CODE_TYPE.cdOffpos]: {
+    R001: "사원",
+    R002: "주임",
+    R003: "대리",
+    R004: "과장",
+    R005: "차장",
+    R006: "부장",
+    R007: "이사",
+    R008: "사장",
+  },
+};
+
 export const INPUT_TYPE = {
   text: 0,
   date: 1,
@@ -10,7 +37,6 @@ export const INPUT_TYPE = {
   regNum: 6,
   callNumber: 100,
   email: 101,
-  noSocial: 102,
   dateCustom: 300,
   addressCustom: 301,
   month: 401,
@@ -27,16 +53,41 @@ export const SELECT_LIST = {
     { key: "islam", value: "이슬람교" },
   ],
   jobOk: [
-    { key: "Y", value: "재직" },
-    { key: "N", value: "퇴직" },
+    { key: "재직", value: "재직" },
+    { key: "퇴직", value: "퇴직" },
   ],
   ynFor: [
-    { key: "0", value: "내국인" },
-    { key: "1", value: "외국인" },
+    { key: "내국인", value: "내국인" },
+    { key: "외국인", value: "외국인" },
+    { key: "외계인", value: "외계인" },
   ],
   fgSex: [
-    { key: "M", value: "남자" },
-    { key: "F", value: "여자" },
+    { key: "남자", value: "남자" },
+    { key: "여자", value: "여자" },
+  ],
+  ynEmploy: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynSanjae: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynLonginsur: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynForlabor: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynUnit: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
+  ],
+  ynOverwork: [
+    { key: "Y", value: "0.여" },
+    { key: "N", value: "1.부" },
   ],
 };
 
@@ -68,15 +119,15 @@ export const RADIO_LIST = {
 };
 
 export const EMAIL_LIST = [
-  { key: "daum.net", value: "daum.net" },
-  { key: "gmail.com", value: "gmail.com" },
-  { key: "hanmail.net", value: "hanmail.net" },
-  { key: "kakao.com", value: "kakao.com" },
-  { key: "msn.com", value: "msn.com" },
-  { key: "mail.com", value: "mail.com" },
-  { key: "nate.com", value: "nate.com" },
-  { key: "naver.com", value: "naver.com" },
-  { key: "tistory.com", value: "tistory.com" },
+  { key: "daum", value: "daum.net" },
+  { key: "gmail", value: "gmail.com" },
+  { key: "hanmail", value: "hanmail.net" },
+  { key: "kakao", value: "kakao.com" },
+  { key: "msn", value: "msn.com" },
+  { key: "mail", value: "mail.com" },
+  { key: "nate", value: "nate.com" },
+  { key: "naver", value: "naver.com" },
+  { key: "tistory", value: "tistory.com" },
 ];
 export const LABELS = {
   cdEmp: "사원코드",
@@ -111,17 +162,22 @@ export const LABELS = {
   zipHome: "현주소 우편번호",
   addHome1: "현주소",
   addHome2: "현 상세주소",
-  originHome: "본적주소 우편번호",
-  originHome1: "본적주소",
-  originHome2: "본적 상세주소",
+  zipOrgin: "본적주소 우편번호",
+  addOrgin1: "본적주소",
+  addOrgin2: "본적 상세주소",
   mnKeepgarden: "소유동산",
   mnKeepstate: "소유부동산",
   fgOwnHouse: "자택소유",
+  mnMmaverage: "월평균임금",
+  ynEmploy: "고용보험적용",
+  ynSanjae: "산재보험적용",
+  ynLonginsur: "장기요양보험적용",
 
   abbNation: "거주지국",
   cdNation: "국적",
   telHome: "전화번호",
   celEmp: "모바일번호",
+  telOffice: "담당전화",
   emEmp: "이메일",
   idMsn: "메신저ID",
   cdOccup: "직종",
@@ -186,6 +242,8 @@ export const LABELS = {
   endBreakTime: "종료휴게시간",
   bonusAmount: "상여금",
   paymentDate: "작성일자",
+  startEmpContractPeriod: "계약시작기간",
+  endEmpContractPeriod: "계약종료기간",
 };
 
 export const CODE = {
@@ -196,4 +254,5 @@ export const CODE = {
     OCCUP: "OCCUP", // 직종 ()
   },
 };
+
 export const CODEHELPER_EMPLIST_URL = "/emp/getEmpListForCodeHelper";

@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import "../styles/ProfileImageForm.scss";
 
 function ProfileImageForm(props) {
-  const { src, title, text, handleUpload } = props;
+  const { src, title, text, handleUpload, handleDelete } = props;
   const fileInput = useRef(null);
   return (
     <Card className="card-container">
@@ -21,7 +21,10 @@ function ProfileImageForm(props) {
             ref={fileInput}
           />
           <Button variant="secondary" onClick={(e) => fileInput.current.click(e)}>
-            이미지 업로드
+            업로드
+          </Button>
+          <Button variant="secondary" onClick={(e) => handleDelete()}>
+            삭제
           </Button>
         </div>
       </Card.Body>

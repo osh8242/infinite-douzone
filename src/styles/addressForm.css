@@ -1,17 +1,19 @@
 .fullAddressArea {
   display: flex;
   justify-content: space-evenly;
-  gap: 4px;
+  gap: 6px;
 }
 
 .fullAddressArea .zoneCodeArea {
   width: 18%;
   text-justify: center;
+  border: 4px solid white;
 }
 
 .fullAddressArea .addressArea {
   width: 64%;
   flex: 1 1 0%;
+  border: 4px solid white;
 }
 
 .addressSearchBtn {

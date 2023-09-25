@@ -26,8 +26,10 @@ function EmpRegisterHeader(props) {
   };
 
   const clickTrashCanHandler = (e) => {
+    // 정말로 삭제하시겠습니까?? => YES => 삭제요청 보내기
+    // modalShow();
     actions.deleteSelectedRows();
-    modalShow("undeletedEmp", EmpRegisterUndeletedEmpHeaders);
+    // modalShow("undeletedEmp", EmpRegisterUndeletedEmpHeaders);
   };
 
   return (

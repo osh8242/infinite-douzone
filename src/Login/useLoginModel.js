@@ -1,20 +1,59 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { url } from "../model/CommonConstant";
 import { useLogin } from "./LoginProvider";
 
 const useLoginModel = () => {
-  const url = "http://localhost:8888";
-  const { loginInfo } = useLogin();
+  const { loginInfo, updateToken } = useLogin();
+  const navigate = useNavigate();
 
   const LoginUser = async () => {
-    console.log(loginInfo);
+    console.log("loginInfo", loginInfo);
     try {
-      const response = await axios.post(url + "/auth/login", loginInfo);
-      return response.data;
+      const response = await axios.post(`${url}/auth/login`, loginInfo);
+      console.log(response.data);
+      const token = response.headers["authorization"];
+      // 토큰이 반환된 경우
+      if (token) {
+        updateToken(token);
+        localStorage.setItem("authToken", token);
+        console.log("로그인에 성공하였습니다.");
+        console.log("response.data", response.data);
+        console.log("response.headers", response.headers);
+        navigate("/");
+      } else {
+        console.log(response.data.message || "로그인에 실패하였습니다.");
+      }
     } catch (error) {
-      console.error("ERROR:", error);
+      console.error("ERROR: " + error);
+      if (error.response) {
+        if (
+          error.response.status === 401 &&
+          error.response.data.message === "CHECK_ID"
+        ) {
+          console.log("아이디를 찾을 수 없습니다.");
+        } else if (
+          error.response.status === 401 &&
+          error.response.data.message === "CHECK_PWD"
+        ) {
+          console.log("비밀번호가 틀렸습니다.");
+        } else {
+          console.log("로그인 처리 중 오류가 발생했습니다.");
+        }
+      }
     }
   };
-
+  // function fetchData() {
+  //   return axios
+  //     .post(`${url}/auth/login`)
+  //／／／／ const response = await axios.post(`${url}/login?userId=${loginInfo.userId}&userPwd=${loginInfo.userPwd}` );
+  //     .then((response) => {
+  //       return response.data;
+  //     })
+  //     .catch((error) => {
+  //       console.error("ERROR:", error);
+  //     });
+  // }
   return {
     LoginUser,
   };

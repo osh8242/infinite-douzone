@@ -34,6 +34,7 @@ export const HEAD_TAB = {
       type: INPUT_TYPE.dateCustom,
       label: "paymentDate",
       field: "paymentDate",
+      dateType: "month",
     },
     {
       type: INPUT_TYPE.select,
@@ -48,14 +49,14 @@ export const MAIN_TAB = {
   primaryTabInputs: [
     {
       type: INPUT_TYPE.dateCustom,
-      label: "empContractPeriod",
+      label: "startEmpContractPeriod",
       labelKey: "startEmpContractPeriod",
       labelKey2: "endEmpContractPeriod",
       field: "startEmpContractPeriod",
     },
     {
       type: INPUT_TYPE.dateCustom,
-      label: "empContractPeriod",
+      label: "endEmpContractPeriod",
       labelKey: "endEmpContractPeriod",
       field: "endEmpContractPeriod",
     },
@@ -160,7 +161,9 @@ export const MAIN_TAB = {
       label: LABELS.bonusAmount,
       endLabel: "원 ",
       selectList: bonusPaymentStatusList,
+      selectId: "bonusPaymentStatus",
       field: "bonusAmount",
+      disabled: true,
     },
 
     {
