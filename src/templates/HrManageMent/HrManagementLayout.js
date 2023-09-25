@@ -7,7 +7,7 @@ import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
 import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import TableTest from "../../components/TableTest";
+import TableForm from "../../components/TableForm";
 import {
   CODE_HELPER_DATA,
   leftStaticsTableConstant,
@@ -148,7 +148,7 @@ const HrManagementLayout = () => {
             {/* 좌측 그리드 */}
             <Row>
               <div className="hr-leftTable">
-                <TableTest
+                <TableForm
                   tableName="EMP"
                   //showCheckbox
                   sortable
@@ -182,7 +182,7 @@ const HrManagementLayout = () => {
             </Row>
             {/* 통계 테이블 */}
             <Row className="mt-3">
-              <TableTest
+              <TableForm
                 tableName="EMPSTATICS"
                 tableHeaders={leftStaticsTableConstant.headers}
                 tableData={leftStaticsTableData}
@@ -242,7 +242,7 @@ const HrManagementLayout = () => {
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
               <div className="hr-subTable">
-                <TableTest
+                <TableForm
                   tableName="EMPFAM"
                   rowAddable
                   sortable
