@@ -1,5 +1,17 @@
+/* 
+RGB-COLOR-CODE ============================
+100% rgb(48,150,255) - 더존 블루
+25% rgb(151,202,255) - 더존 연한 블루
+15% rgb(224,239,255) - 하늘색
+10% rgb(233,244,255) - 밝은 하늘색
+
+rgb(57, 63, 80)   - 어두운 회색
+
+rgb(255, 20, 52)  - 형광빨강
+===========================================
+*/
 /* component들의 공통된 css를 관리하는 파일 (ex) 유효성검사 */
-/* [ COLOR ] 형광빨강 : rgb(255, 20, 52) */
+
 input.form-control {
   margin: 2px 0px;
 }
@@ -28,7 +40,7 @@ input.form-control {
   justify-content: center;
   /* background-color: rgb(233, 236, 239);
   */
-  background-color: rgb(203, 229, 255);
+  background-color: rgb(233, 244, 255);
 }
 
 .siEmpDetail-container .col-md-12 .label {
@@ -44,7 +56,7 @@ input.form-control {
   border-radius: 2px;
   align-items: center;
   justify-content: center;
-  background-color: rgb(203, 229, 255);
+  background-color: rgb(233, 244, 255);
   /* background-color: rgb(233, 236, 239);
   */
 }
@@ -57,7 +69,7 @@ input.form-control {
   border-radius: 2px;
   align-items: center;
   justify-content: center;
-  background-color: rgb(203, 229, 255);
+  background-color: rgb(233, 244, 255);
   /* background-color: rgb(233, 236, 239);
   */
 }
@@ -101,19 +113,25 @@ input.form-control {
   cursor: pointer;
 }
 
-.modal-body .table-wrapper-content::-webkit-scrollbar {
+.modal-body .table-wrapper-content::-webkit-scrollbar,
+#empRegisterLayoutLeft::-webkit-scrollbar,
+.leftTable::-webkit-scrollbar {
   /* 스크롤바 너비 */
-  width: 10px;
+  width: 8px;
 }
 
-.modal-body .table-wrapper-content::-webkit-scrollbar-thumb {
+.modal-body .table-wrapper-content::-webkit-scrollbar-thumb,
+#empRegisterLayoutLeft::-webkit-scrollbar-thumb,
+.leftTable::-webkit-scrollbar-thumb {
   /* 스크롤바 */
-  height: 30%;
-  background: rgb(48, 150, 255);
+  height: 10%;
+  background: rgb(151, 202, 255);
   border-radius: 10px;
 }
 
-.modal-body .table-wrapper::-webkit-scrollbar-track {
-  background: rgba(48, 150, 255, 0.1);
+.modal-body .table-wrapper::-webkit-scrollbar-track,
+#empRegisterLayoutLeft::-webkit-scrollbar-track,
+.leftTable::-webkit-scrollbar-track {
+  background: rgb(233, 244, 255);
   /*스크롤바 뒷 배경*/
 }
