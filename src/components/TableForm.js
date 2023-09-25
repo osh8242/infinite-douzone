@@ -562,8 +562,10 @@ const TableForm = ({
 
             case "ArrowUp":
               event.preventDefault();
-              if (rowRef > 0) setRowRef(rowRef - 1);
-              updatePkValue(rowRef - 1);
+              if (rowRef > 0) {
+                setRowRef(rowRef - 1);
+                updatePkValue(rowRef - 1);
+              }
               break;
 
             case "ArrowLeft":
@@ -580,8 +582,14 @@ const TableForm = ({
               event.preventDefault();
               if (editableRowIndex === -1 && rowRef > -1) {
                 handleRowClick(event, rowRef, columnRef);
-                if (rowRef === tableRows.length) pushNewRow();
-                setEditableRow(rowRef);
+                if (rowRef === tableRows.length) {
+                  if (actions.newRowCodeHelper) {
+                    actions.newRowCodeHelper();
+                    return;
+                  }
+                  pushNewRow();
+                  setEditableRow(rowRef);
+                }
               }
               break;
 

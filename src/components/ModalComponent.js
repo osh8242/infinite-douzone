@@ -7,12 +7,11 @@ const [modalState, setModalState] = useState({ show: false , modalData: null });
 
  */
 
-import React from "react";
-import Button from "react-bootstrap/Button";
+import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 import "../styles/commonComponent.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 
 function ModalComponent(props) {
   const {
@@ -23,7 +22,45 @@ function ModalComponent(props) {
     size, // xs, sm, md, lg, xl, xxl
     backdrop,
     animation,
+    parentRef,
   } = props;
+  const modalFocus = useRef(show);
+  useEffect(() => {
+    modalFocus.current = show;
+  }, [modalFocus]);
+
+  const tableKeyDownHandler = useCallback(
+    (event) => {
+      if (tableFocus.current) {
+        event.preventDefault();
+          switch (event.key) {
+            case "Escape":
+  
+              break;
+            case "Enter":
+
+              break;
+
+            default:
+              break;
+          }
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+
+    ]
+  );
+
+    //componentDidMount
+    useEffect(() => {
+      document.addEventListener("keydown", tableKeyDownHandler);
+  
+      return () => {
+        document.removeEventListener("keydown", tableKeyDownHandler);
+      };
+    }, [tableKeyDownHandler]);
 
   return (
     <Modal

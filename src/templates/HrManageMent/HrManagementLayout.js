@@ -1,6 +1,5 @@
 // 작성자 : 오승환
-import axios from "axios";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
@@ -86,46 +85,8 @@ const HrManagementLayout = () => {
     [actions, modalState, leftCodeHelperTableData]
   );
 
-  const tokenRef = useRef(null);
-  const getToken = () => {
-    axios
-      .post("http://localhost:8888/auth/login", {
-        userId: "kosa",
-        userPwd: "1004",
-      })
-      .then((response) => {
-        const token = response.headers["authorization"];
-        console.log("리스폰스 헤더", response.headers);
-        console.log("발급받은 토큰", token);
-        tokenRef.current = token;
-        // validateToken();
-      })
-      .catch((e) => {
-        console.log("겟토큰 에러", e);
-      });
-  };
-  const validateToken = () => {
-    axios
-      .post("http://localhost:8888/emp/validateToken", {
-        headers: { Authorization: tokenRef.current },
-      })
-      .then((response) => {
-        console.log("응답", response.data);
-      })
-      .catch((e) => {
-        console.log("토큰인증 에러", e);
-      });
-  };
-
   return (
     <>
-      <button
-        onClick={() => {
-          getToken();
-        }}
-      >
-        JWT 토큰 발급받고 인증해보기
-      </button>
       <HrManagementHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
@@ -169,7 +130,7 @@ const HrManagementLayout = () => {
                       ),
                     setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: (row) => {
-                      actions.insertEmp(row);
+                      actions.insertEmpAdd(row);
                       actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
                     },
                     updateEditedRow: actions.updateEmp,
