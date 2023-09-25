@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import TableForm from "../../../components/TableForm";
-import { salDeduct } from "../../../model/SalaryInformationEntry/SalConstant";
+import { salDeduct, sumDeductPay } from "../../../model/SalaryInformationEntry/SalConstant";
 
 const SalaryDeductPayList = (props) => {
   const { salDeductData, showCalculation } = props;
@@ -30,20 +30,12 @@ const SalaryDeductPayList = (props) => {
         </Row>
 
         <Row className="mt-3">
-          {/* <TableForm
-            tableFooter={
-              <>
-                <tr>
-                  <th>공제액 계</th>
-                  <td>{salDeductData.sumData.sum}</td>
-                </tr>
-                <tr>
-                  <th>차인지급액</th>
-                  <td>{salDeductData.sumData.sum}</td>
-                </tr>
-              </>
-            }
-          /> */}
+          <TableForm
+            tableName="EMPSTATICS"
+            tableHeaders={sumDeductPay.headers}
+            tableData={salDeductData.sumDeductPay}
+            readOnly
+          /> 
         </Row>
         
       </div>

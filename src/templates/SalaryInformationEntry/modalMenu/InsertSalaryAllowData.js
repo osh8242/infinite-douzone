@@ -6,11 +6,11 @@ import { fetchData } from "../../../utils/codeHelperUtils";
 
 const InsertSalaryAllowData = (props) => {
   const { actions } = props;
-  const [isCalculationbVisible, setIsCalculationbVisible] = useState(true);
+  // const [isCalculationbVisible, setIsCalculationbVisible] = useState(true);
 
-  const calculationbVisibility = () => {
-    setIsCalculationbVisible(!isCalculationbVisible);
-  };
+  // const calculationbVisibility = () => {
+  //   setIsCalculationbVisible(!isCalculationbVisible);
+  // };
 
   const insertSalaryTableDataRef = useRef([]);
 
@@ -31,12 +31,13 @@ const InsertSalaryAllowData = (props) => {
   return (
     <div className="insertSalaryAllowData_container">
       <div>
-        <Button onClick={calculationbVisibility}>산출식 보기</Button>
+        {/* <Button onClick={calculationbVisibility}>산출식 보기</Button> */}
         <div className="tableData_container">
           <TableForm
             tableName="SI_INSERT_SALARY_ALLOW_DATA"
             readOnly
-            tableHeaders={isCalculationbVisible?(modal_insertSalaryAllowData.headers):(modal_insertSalaryAllowData.headersWithCalculation)}
+            tableHeaders={modal_insertSalaryAllowData.headers}
+            //tableHeaders={isCalculationbVisible?(modal_insertSalaryAllowData.headers):(modal_insertSalaryAllowData.headersWithCalculation)}
             tableData={insertSalaryTableDataRef.current}
           />
         </div>
