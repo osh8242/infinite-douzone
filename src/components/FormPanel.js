@@ -86,7 +86,8 @@ const FormPanel = ({
             label={label}
             disabled={disabled}
             value={value}
-            onChange={submitData}
+            // onChange={submitData}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
           />
         );
 
@@ -99,7 +100,8 @@ const FormPanel = ({
             label={label}
             disabled={disabled}
             value={value}
-            onChange={submitData}
+            // onChange={submitData}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
           />
         );
 
