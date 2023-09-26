@@ -214,7 +214,7 @@ const HrManagementLayout = () => {
               {/* 우측 서브 그리드 */}
               <div className="hr-subTable">
                 <TableForm
-                  tableName="EMPFAM"
+                  tableName="empFam"
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}
@@ -250,7 +250,7 @@ const HrManagementLayout = () => {
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}
