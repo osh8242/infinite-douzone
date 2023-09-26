@@ -38,14 +38,6 @@ function SignUpLayout() {
 
   const RegisterUser = () => {
     console.log("Register GO!");
-    console.log(tempId);
-    console.log(tempPwd);
-    console.log(tempName);
-    console.log(tempDate);
-    console.log(tempGender);
-    // console.log(tempPhone);
-    // console.log(tempEmail);
-    // console.log(tempPhone); ... 필요
 
     const RegisterVo = {
       userId: tempId,
@@ -68,10 +60,12 @@ function SignUpLayout() {
     async function fetchData() {
       let result = await axios.post(`${url}/auth/register`, RegisterVo);
       console.log(result.data);
+      if (result.data === "SUCCESS") window.location.href = "/successSignup";
+      else if (result.data === "FAIL") {
+        // window.location.href = "/signup";
+        console.log("TODO: 회원 가입 실패 처리");
+      }
     }
-
-    // navigator("/successSignup");
-    window.location.href = "/successSignup";
     fetchData();
   };
 
