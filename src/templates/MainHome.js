@@ -4,75 +4,50 @@
 // 상단의 Header는 로그인 여부에 따라 바뀌도록 수정
 
 import React from "react";
-import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+// import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+import imageLogoWhite from "../styles/img/wehago_logo-white.png";
+import "../styles/mainHome.css";
 
 function MainHome() {
   return (
     <>
-      <div
-        style={{
-          height: "64vh",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "rgb(57, 63, 80)",
-          position: "relative",
-        }}
-      >
-        <img
+      <div className="background">
+        <div id="mainPageTopHeader-BackGround">
+          <div id="mainPageTopHeader">
+            <a href="/" id="logo">
+              <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
+            </a>
+            <div id="mainPageTopHeaderContents">
+              <a href="/" className="colorWhite">
+                HOME
+              </a>
+              <a href="/" className="colorWhite">
+                서비스소개
+              </a>
+              <div id="signUpSignInBtn">
+                <a href="/signIn">회원가입</a>
+                <a href="/signUp">로그인</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <img
+          id="mainHome-backgroundImage"
           src={wehago_backImg}
           alt="Wehago Background"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            color: "white",
-          }}
-        >
-          <h2
-            style={{
-              color: "white",
-              fontSize: "30px",
-            }}
-          >
+        /> */}
+        <div className="textBox">
+          <p className="NIXGONFONTS p-24">
             기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
-          </h2>
-          <h1
-            style={{
-              fontWeight: "bold",
-              color: "white",
-              fontSize: "70px",
-              marginBottom: "20px",
-            }}
-          >
-            WEHAGO
-          </h1>
-          <h3
-            style={{
-              color: "white",
-              fontSize: "17px",
-            }}
-          >
+          </p>
+          <p className="Jost p-48">WEHAGO</p>
+          <p className="NIXGONFONTS p-16">
             업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
             전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
-          </h3>
+          </p>
         </div>
       </div>
+      {/* 하단 4가지 메뉴 이동 버튼 */}
       <div
         style={{
           marginTop: "80px",
