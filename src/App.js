@@ -50,7 +50,7 @@ function App() {
         <BrowserRouter>
           <ConditionalHeader />
           <Routes>
-            {/* <Route path="/mypageTest" element={<MainTestPage />} /> */}
+            <Route path="/mypageTest" element={<MainTestPage />} />
             <Route path="/" element={<MainHome />} />
             {/* 임시 링크 */}
             {/* <Route path="/signup" element={<SignUp />} /> */}

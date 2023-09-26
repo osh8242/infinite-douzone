@@ -33,12 +33,6 @@ const Header = (props) => {
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("userInfo") != null) setBtnByState("로그아웃");
-  //   else setBtnByState("로그인");
-  // }, [btnByState]);
-
   const [hrefState, setHrefState] = useState(
     userInfoString != null ? "/" : "/login"
   );
@@ -57,34 +51,6 @@ const Header = (props) => {
   console.log("showUserState: ");
   console.log(showUserState);
 
-  // function onClickLoginHandler(e) {
-  //   console.log("click handler ....");
-  //   // if (localStorage.getItem("userInfo")) {
-  //   //   console.log("로컬값잇슴 유저인포");
-  //   // }
-  //   if (localStorage.getItem("userInfo") != null) {
-  //     console.log("chnagedddddgo!");
-  //     setBtnByState("로그인");
-  //     setHrefState("/");
-  //     localStorage.removeItem("userInfo");
-  //     localStorage.removeItem("authToken");
-  //     localStorage.clear();
-  //   } else {
-  //     setBtnByState("로그아웃");
-  //     setShowUserState(false);
-  //   }
-  //   // setHrefState("/login");
-  //   // e.preventDefault(); // 기본 동작(링크 이동) 중지
-
-  //   // if (showUserState) {
-  //   // 로그아웃 처리
-
-  //   // } else {
-  //   // 로그인 페이지로 리디렉션 (실제로는 로그인 로직 수행 가능)
-  //   // window.location.href = "/";
-  //   // }
-  // }
-
   const [showSidebar, setShowSidebar] = useState(false);
 
   /// localStorage 의 userName이 null 이 아니라면
@@ -94,24 +60,11 @@ const Header = (props) => {
   let userToken = localStorage.getItem("token");
   let userTokenObject = JSON.parse(userToken);
 
-  // console.log("userInfo:");
-
-  // useEffect(() => {
-  //   setBtnByState("로그인");
-  //   setHrefState("");
-  // }, [userInfoObject]);
-
-  // const toggleUserState = () => {
-  //   setShowUserState(!showUserState);
-  // };
-
   useEffect(() => {
     console.log("showUserState .........chaenge????");
   }, showUserState);
 
-  const toggleBtn = () => {
-    // if( )
-  };
+  const toggleState = () => {};
 
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
@@ -134,20 +87,6 @@ const Header = (props) => {
   console.log(userInfoObject);
   console.log("TOKEN: " + userTokenObject);
   console.log("------HEADER--------------");
-
-  // Header.defaultProps = {
-  //   userName: userInfoObject.userName,
-  // };
-
-  // function localStorageListener(event) {
-  //   console.log("event.... localStorage : ");
-  //   console.log(event);
-  // }
-  // window.addEventListener("storage", localStorageListener);
-
-  // const toggleSidebar = () => {
-  //   setShowSidebar(!showSidebar);
-  // };
 
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
