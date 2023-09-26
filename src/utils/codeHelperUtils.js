@@ -1,8 +1,9 @@
 // get TableData
 
-import axios from "axios";
+
 import { objectToQueryString } from "./StringUtils";
 import { url } from "../model/CommonConstant";
+import api from "../model/Api";
 
 export async function fetchData(url, params) {
     try {
@@ -16,7 +17,7 @@ export async function fetchData(url, params) {
 
   export const apiDataForTable = (urlPattern, params) => {
     
-    return axios.get(url + urlPattern + objectToQueryString(params))
+    return api.get(url + urlPattern + objectToQueryString(params))
       .then((response) => {
         const data = response.data;
         const tableDataList = data.map((object) => {

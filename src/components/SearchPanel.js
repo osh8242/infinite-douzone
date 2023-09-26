@@ -52,11 +52,11 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 />
               </Col>
             </div>
-            <div>
+            <div className="px-5">
               {isBodyOpen && (
                 <Row>
                   {children[1]}
-                  <div className="d-flex justify-content-md-center">
+                  <div className="d-flex justify-content-md-center" style={{marginTop : "12px"}}>
                     <Button variant="secondary" onClick={onSearch}>
                       조회
                     </Button>

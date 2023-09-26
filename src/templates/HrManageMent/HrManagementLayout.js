@@ -1,13 +1,12 @@
 // 작성자 : 오승환
-import axios from "axios";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
 import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import TableTest from "../../components/TableTest";
+import TableForm from "../../components/TableForm";
 import {
   CODE_HELPER_DATA,
   leftStaticsTableConstant,
@@ -19,7 +18,7 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
-import Emp from "../../vo/HrManagement/Emp";
+import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
@@ -50,8 +49,12 @@ const HrManagementLayout = () => {
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
-    async (type, data, setRowData) => {
-      actions.setModalState({ ...modalState, show: true });
+    async (type, data, setRowData, parentFocusRef) => {
+      actions.setModalState({
+        ...modalState,
+        show: true,
+        parentFocusRef: parentFocusRef,
+      });
 
       switch (type) {
         case "default":
@@ -86,46 +89,8 @@ const HrManagementLayout = () => {
     [actions, modalState, leftCodeHelperTableData]
   );
 
-  const tokenRef = useRef(null);
-  const getToken = () => {
-    axios
-      .post("http://localhost:8888/auth/login", {
-        userId: "kosa",
-        userPwd: "1004",
-      })
-      .then((response) => {
-        const token = response.headers["authorization"];
-        console.log("리스폰스 헤더", response.headers);
-        console.log("발급받은 토큰", token);
-        tokenRef.current = token;
-        // validateToken();
-      })
-      .catch((e) => {
-        console.log("겟토큰 에러", e);
-      });
-  };
-  const validateToken = () => {
-    axios
-      .post("http://localhost:8888/emp/validateToken", {
-        headers: { Authorization: tokenRef.current },
-      })
-      .then((response) => {
-        console.log("응답", response.data);
-      })
-      .catch((e) => {
-        console.log("토큰인증 에러", e);
-      });
-  };
-
   return (
     <>
-      <button
-        onClick={() => {
-          getToken();
-        }}
-      >
-        JWT 토큰 발급받고 인증해보기
-      </button>
       <HrManagementHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
@@ -148,8 +113,9 @@ const HrManagementLayout = () => {
             {/* 좌측 그리드 */}
             <Row>
               <div className="hr-leftTable">
-                <TableTest
-                  tableName="EMP"
+                <TableForm
+                  readOnly
+                  tableName="empAdd"
                   //showCheckbox
                   sortable
                   rowAddable
@@ -161,28 +127,33 @@ const HrManagementLayout = () => {
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
-                    newRowCodeHelper: () =>
+                    newRowCodeHelper: (parentFocusRef) => {
+                      parentFocusRef.current = false;
                       modalShow(
                         "leftTable",
                         CODE_HELPER_DATA.leftTableCodeHelper,
-                        actions.registEmpAdd
-                      ),
+                        actions.registEmpAdd,
+                        parentFocusRef
+                      );
+                    },
                     setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: (row) => {
-                      actions.insertEmp(row);
+                      actions.insertEmpAdd(row);
                       actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
                     },
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
                     deleteRow: actions.deleteRow,
-                    getRowObject: Emp,
+                    getRowObject: (data) => {
+                      return { item: EmpAdd(data), table: "empAdd" };
+                    },
                   }}
                 />
               </div>
             </Row>
             {/* 통계 테이블 */}
             <Row className="mt-3">
-              <TableTest
+              <TableForm
                 tableName="EMPSTATICS"
                 tableHeaders={leftStaticsTableConstant.headers}
                 tableData={leftStaticsTableData}
@@ -242,8 +213,8 @@ const HrManagementLayout = () => {
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
               <div className="hr-subTable">
-                <TableTest
-                  tableName="EMPFAM"
+                <TableForm
+                  tableName="empFam"
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}
@@ -271,10 +242,16 @@ const HrManagementLayout = () => {
         title={modalState.title}
         size={modalState.size}
         show={modalState.show}
-        onHide={() => actions.setModalState({ show: false })}
+        onHide={() => {
+          actions.setModalState({ show: false });
+          modalState.parentFocusRef.current = true;
+        }}
       >
         <CodeHelperModal
-          onHide={() => actions.setModalState({ show: false })}
+          onHide={() => {
+            actions.setModalState({ show: false });
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+          }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}
           tableData={codeHelperTableData.tableData}

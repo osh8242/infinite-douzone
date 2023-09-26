@@ -1,4 +1,5 @@
 .tableCheckBoxHeader {
+  position: sticky;
   width: 28px;
   cursor: pointer;
   text-align: center;

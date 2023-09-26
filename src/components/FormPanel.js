@@ -86,7 +86,8 @@ const FormPanel = ({
             label={label}
             disabled={disabled}
             value={value}
-            onChange={submitData}
+            // onChange={submitData}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
           />
         );
 
@@ -99,7 +100,8 @@ const FormPanel = ({
             label={label}
             disabled={disabled}
             value={value}
-            onChange={submitData}
+            // onChange={submitData}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
           />
         );
 
@@ -112,7 +114,8 @@ const FormPanel = ({
             disabled={disabled}
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
-            onChange={submitData}
+            // onChange={submitData}
+            onChange={(e, value) => onChangeFn && onChangeFn(value)}
             // laborContract
             subLabel={input.subLabel}
             endLabel={input.endLabel}

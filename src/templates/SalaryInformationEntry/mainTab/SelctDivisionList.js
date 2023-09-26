@@ -5,6 +5,8 @@ import { LABELS } from "../../../model/CommonConstant";
 import {
   salAllowSum,
   salDeductSum,
+  sumAllowPay,
+  sumDeductPay,
   totalSalaryByPeriodOption,
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import TableForm from "../../../components/TableForm";
@@ -20,17 +22,24 @@ const SelctDivisionList = (props) => {
         onChange={actions.getSalTotalSum}
       />
       <Row>
-        <div className="leftTable" style={{height: '32vh'}}>
-          <TableForm
-            tableHeaders={salAllowSum.headers}
-            tableData={state.salPaySumData.allowPay}
-            actions={{}}
-            readOnly
-          />
-        </div>
+          <div className="hr-leftTable" style={{height: '25vh'}}>
+            <TableForm
+              tableHeaders={salAllowSum.headers}
+              tableData={state.salPaySumData.allowPay}
+              actions={{}}
+              readOnly
+            />
+          </div>
+          <div className="hr-leftTable" style={{height: '7vh'}}>
+            <TableForm
+              tableHeaders={sumAllowPay.headers}
+              tableData={[]}
+              readOnly
+            />
+          </div>
       </Row>
       <Row>
-        <div className="leftTable" style={{height: '32vh'}}>
+        <div className="hr-leftTable" style={{height: '25vh'}}>
           <TableForm
             tableHeaders={salDeductSum.headers}
             tableData={state.salPaySumData.deductPay}
@@ -38,6 +47,13 @@ const SelctDivisionList = (props) => {
             readOnly
           />
         </div>
+        <div className="hr-leftTable" style={{height: '7vh'}}>
+            <TableForm
+              tableHeaders={sumDeductPay.headers}
+              tableData={[]}
+              readOnly
+            />
+          </div>
       </Row> 
     </div>
   );

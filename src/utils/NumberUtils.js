@@ -5,7 +5,7 @@ export const isNumber = (value) => /^\d+$/.test(value);
 export const makePureNumber = (numValue) => numValue.replace(/[^0-9]/g, '');
 
 // 3자리 콤마 만들기 함수 
-export const makeCommaNumber = (numValue) => numValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+export const makeCommaNumber = (numValue) => numValue ? numValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : numValue;
 
 // nvl함수 
 export const nvl = (value, defaultValue) => {

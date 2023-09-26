@@ -9,7 +9,7 @@ const EmpList = (props) => {
   return (
     <div>
         <Row>
-          <div className="leftTable">
+          <div className="hr-leftTable">
             <TableForm
               tableName="SI_EMPLIST"
               readOnly

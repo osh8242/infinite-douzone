@@ -6,7 +6,7 @@ import FormPanel from "../../../components/FormPanel";
 
 // 사원 상세정보 영역
 const SiEmpDetail = (props) => {
-  const { actions, siEmpDetailData } = props;
+  const { siEmpDetailData } = props;
 
   return (
     <div>
@@ -15,7 +15,6 @@ const SiEmpDetail = (props) => {
           INPUT_CONSTANT={SI_EMP_DETAIL}
           columnNumber={1}
           formData={siEmpDetailData}
-          submitData={actions.submitEmpDetailData} //update 함수
         />
       </Container>
     </div>
