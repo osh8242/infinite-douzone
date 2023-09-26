@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
 import { url } from "../../../model/CommonConstant";
+import api from "../../../model/Api";
 
 const ReCalculation = (props) => {
   const { actions, state } = props;
@@ -28,7 +29,7 @@ const ReCalculation = (props) => {
 
     if (selectedRows.length !== 0) {
       try {
-        axios.post(url + RECALCULATION_URL, submitReCalculationInfo);
+        api.post(url + RECALCULATION_URL, submitReCalculationInfo);
         setSelectedRows([]);
         //리로드()
       } catch (error) {
@@ -51,8 +52,7 @@ const ReCalculation = (props) => {
           setSelectedRows: setSelectedRows,
         }}
       />
-      <Button onClick={() => confirmButtonHandler()}>확인</Button>
-      <Button>취소</Button>
+      <div><Button onClick={() => confirmButtonHandler()}>확인</Button></div>
     </div>
   );
 };

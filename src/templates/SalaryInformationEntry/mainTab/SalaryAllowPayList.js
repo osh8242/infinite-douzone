@@ -15,7 +15,7 @@ const SalaryAllowPayList = (props) => {
   return (
     <div>
       <Row>
-        <div className="leftTable">
+        <div className="hr-leftTable">
           <TableForm
             tableName="SI_SALARY_ALLOWPAY_LIST"
             readOnly={ynComplete === 'Y'}

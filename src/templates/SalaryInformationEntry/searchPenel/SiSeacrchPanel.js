@@ -53,7 +53,7 @@ const SiSeacrchPanel = (props) => {
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
               formData={formPanelData}
-              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, actions.setPaymentDate)}}
+              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, (e,row) => actions.setPaymentDate(row.paymentDate), {allowYear : state.allowYear, allowMonth : state.allowMonth})}}
               onChange={{
                 allowMonth: (newValue)=> actions.setAllowMonth(newValue),
                 salDivision: (newValue) => selectOptionHandler(newValue),

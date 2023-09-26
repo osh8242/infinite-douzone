@@ -11,9 +11,9 @@ import { Button } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
-import { modal_insertSalaryData, modal_reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
+import { codeHelperData_paymentDate, modal_insertSalaryData, modal_reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
 
-const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete, dateId, cdEmp, actions}) => {
+const SalaryInformationEntryHeader = ({ existSelectedRows, allowYear, modalShow, ynComplete, dateId, cdEmp, actions}) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -35,6 +35,7 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
   const insertSalaryDataHandler = (event) => {
     // if (dateId !== "") {
       modalShow('insertSalaryData', modal_insertSalaryData);
+      
     // }else{
     //   setShowModal({ show: true, message: "작성일자를 비우고 진행해주세요", onlyConfirm : true});
     // }
@@ -47,6 +48,18 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
     else modalShow('reCalculation', modal_reCalculationList);
   }
 
+  // 지급일자
+  const getDateListHandler = (event) => {
+    modalShow('codeHelper', codeHelperData_paymentDate, setSearchDate, {allowYear : allowYear});
+  }
+
+  const setSearchDate = (e,row) => {
+    // console.log(row);
+    actions.setPaymentDate(row.paymentDate);
+    actions.setAllowMonth(row.allowMonth);
+    // actions.setDateId(row.dateId);
+    actions.onSearch();
+  }
   // 완료
   const ynCompleteButtonHandler = (event) => {
     let message = "";
@@ -82,9 +95,9 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, modalShow, ynComplete
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        {/* <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
+        <Button id="extraDeductBtn" onClick={(e) => getDateListHandler(e)} >
             지급일자
-        </Button> */}
+        </Button> 
         <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
             수당/공제 등록
         </Button>
