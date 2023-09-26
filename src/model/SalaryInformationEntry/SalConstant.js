@@ -18,7 +18,7 @@ export const salEmp = {
     headers : [
         { field: "cdEmp", text: "사원번호", isPk:true },
         { field: "nmEmp", text: "사원이름" },
-        { field: "rankNo", text: "직급" },
+        { field: "rankNoName", text: "직급" },
     ],
 };
 
@@ -40,7 +40,8 @@ export const sumAllowPay = {
 
 export const sumDeductPay = {
     headers : [
-        { field: "sumDeductPay", text: "합계" },
+        { field: "sumDeductPay", text: "공제액 계" },
+        { field: "excessAmount", text: "차인 지급액" },
     ]
 };
 
@@ -122,12 +123,12 @@ export const codeHelperData_paymentDate = {
     subject : '지급일 조회'
     , url : GET_PAYMENTDATE_CODEHELPER_URL
     , headers : [
-        //{ field: "dateId", text: "날짜ID" },
+        { field: "allowMonth", text: "귀속연월" },
         { field: "paymentDate", text: "지급일" },
+        { field: "salDivisionName", text: "급여구분" },
     ]
-    , params : { allowYear : '2023' , allowMonth : '2023-09'}
     , searchField : ['paymentDate']
-    , usePk : "paymentDate"
+    // , usePk : "paymentDate"
 };
 
 // 부서코드 조회
@@ -155,7 +156,7 @@ export const codeHelperData_emplist = {
         { field: "noSocial", text: "주민(외국인)번호" },
         { field: "daRetire", text: "퇴사일자" }
               ]
-    , params : { ynFor: 'n', refYear: '2023' }
+    // , params : { ynFor: 'n', refYear: '2023' }
     , searchField : ['nmKrname','noSocial']
     , usePk : "cdEmp"
   };
@@ -214,7 +215,8 @@ export const modal_reCalculationList = {
         { item : { cdOption:'calculateTaxYn', nmOption : '과세, 비과세 계산'}}, 
         { item : { cdOption:'incomeTax', nmOption : '소득세 재계산'}}, 
         { item : { cdOption:'editEmpInfo', nmOption : '사원정보 변경'}},
-        { item : { cdOption:'calculateHourlyWage', nmOption : '통상시급 계산'}}]
+        // { item : { cdOption:'calculateHourlyWage', nmOption : '통상시급 계산'}}
+    ]
 }
 
 export const modal_insertSalaryAllowData = {

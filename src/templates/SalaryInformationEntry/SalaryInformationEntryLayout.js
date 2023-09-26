@@ -14,7 +14,6 @@ import EmpList from "./mainTab/EmpList";
 import SalaryAllowPayList from "./mainTab/SalaryAllowPayList";
 import SalaryDeductPayList from "./mainTab/SalaryDeductPayList";
 import SelctDivisionList from "./mainTab/SelctDivisionList";
-import SalaryDeductPayListWithCalculation from "./mainTab/SalaryDeductPayListWithCalculation";
 
 import CalculationInsert from "./modalMenu/CalculationInsert";
 import ReCalculation from "./modalMenu/ReCalculation";
@@ -27,7 +26,6 @@ const SalaryInformationEntryLayout = () => {
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
   const [modalType, setModalType] = useState("");
   
   const toggleRightTabVisibility = () => {
@@ -35,17 +33,16 @@ const SalaryInformationEntryLayout = () => {
   };
 
   // 코드도움 아이콘 클릭이벤트
-  const modalShow = useCallback(async (type, data, setRowData) => {
+  const modalShow = useCallback(async (type, data, setRowData, setParams) => {
     actions.setModalState({ ...state.modalState, show: true });
     setModalType(type);
 
     switch (type) {
       case "codeHelper":
       let codeDataList = data.tableData;
-
-        if (data.url) {
-          codeDataList = await fetchData(data.url, data.params);
-        }
+        let url = data.url? data.url : '';
+        let params = data.params? data.params : setParams;
+        codeDataList = await fetchData(url, params);
 
         actions.setModalState((prevState) => ({
           ...prevState,
@@ -78,22 +75,8 @@ const SalaryInformationEntryLayout = () => {
         }))
         break;
     }
-  }, []);
+  }, [state.allowMonth]);
 
-  /* 급여 항목/ 공제항목 산출식 버튼 */
-  const showCalculation = (type) => {
-    switch (type) {
-      case 'salaryAllowPay':
-        setSelectedComponent('SalaryAllowPayCalculation');
-        break;
-      case 'salaryDeductPay':
-        setSelectedComponent('SalaryDeductPayCalculation');
-        break;
-      default:
-        setSelectedComponent(null);
-        break;
-    }
-  };
 
   return (
     <>
@@ -117,7 +100,6 @@ const SalaryInformationEntryLayout = () => {
           : modalType === 'insertSalaryData'?
               <InsertSalaryDataLayout
                 actions = {actions}
-                showCalculation = {showCalculation}
               />
           : modalType === 'reCalculation'?
               <ReCalculation
@@ -142,8 +124,10 @@ const SalaryInformationEntryLayout = () => {
         modalShow={modalShow}
         dateId = {state.dateId}
         cdEmp = {state.cdEmp}
+        allowYear = {state.allowYear}
       />
-      <Container fluid>
+      {/* <Container fluid> */}
+      <Container>
         <Row style={{margin:'10px'}}>
           <Col>
             {/* 조회영역 */}
@@ -166,29 +150,12 @@ const SalaryInformationEntryLayout = () => {
                     ynComplete = {state.ynComplete}
                   />
                 </Col>
-                    {selectedComponent === 'SalaryDeductPayCalculation' && (
-                      <>
-                        <Col>
-                          <SalaryDeductPayListWithCalculation 
-                            actions={actions} 
-                            deductData={state.deductData} 
-                            salAllowData={state.salAllowData}
-                            modalShow = {modalShow}
-                            showCalculation = {showCalculation}
-                          />
-                        </Col>
-                      </>
-                    )}
-                    {selectedComponent === null && (
-                      <>
-                        <Col md={3}>
-                          <SalaryDeductPayList actions={actions} salDeductData={state.deductData} showCalculation = {showCalculation}/>
-                        </Col>
-                        <Col className="selectDivision">
-                          <SelctDivisionList actions={actions} state={state} />
-                        </Col>
-                      </>
-                    )}
+                <Col md={3}>
+                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} />
+                </Col>
+                <Col className="selectDivision">
+                  <SelctDivisionList actions={actions} state={state} />
+                </Col>
               </Row>
           </Col>
 

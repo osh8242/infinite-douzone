@@ -96,32 +96,32 @@ export const SI_EMP_DETAIL = [
   },
 ];
 
-export const SI_EMP_PAYROLL_CRITERIA = [
-  {
-    type: INPUT_TYPE.text,
-    field: "workday",
-    id: "workday",
-    label: "현재 귀속일 근무일수",
-    disabled : "disabled"
-  },
-  {
-    type: INPUT_TYPE.text,
-    field: "overTime",
-    id: "overTime",
-    label: "현재 귀속월 추가 근무시간",
-  },
-  {
-    type: INPUT_TYPE.text,
-    field: "allowMonthWorktime",
-    id: "allowMonthWorktime",
-    label: "현재 귀속월 총 근무시간",
-    disabled : "disabled"
-  },
-  {
-    type: INPUT_TYPE.text,
-    field: "hourlywage",
-    id: "hourlywage",
-    label: "통상시급(원)",
-    disabled : "disabled"
-  },
-];
+// export const SI_EMP_PAYROLL_CRITERIA = [
+//   {
+//     type: INPUT_TYPE.text,
+//     field: "workday",
+//     id: "workday",
+//     label: "현재 귀속일 근무일수",
+//     disabled : "disabled"
+//   },
+//   {
+//     type: INPUT_TYPE.text,
+//     field: "overTime",
+//     id: "overTime",
+//     label: "현재 귀속월 추가 근무시간",
+//   },
+//   {
+//     type: INPUT_TYPE.text,
+//     field: "allowMonthWorktime",
+//     id: "allowMonthWorktime",
+//     label: "현재 귀속월 총 근무시간",
+//     disabled : "disabled"
+//   },
+//   {
+//     type: INPUT_TYPE.text,
+//     field: "hourlywage",
+//     id: "hourlywage",
+//     label: "통상시급(원)",
+//     disabled : "disabled"
+//   },
+// ];

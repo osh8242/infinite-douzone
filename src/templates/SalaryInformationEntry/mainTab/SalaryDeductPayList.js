@@ -1,24 +1,16 @@
 import React, { useState } from "react";
-import { Button, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import TableForm from "../../../components/TableForm";
 import { salDeduct, sumDeductPay } from "../../../model/SalaryInformationEntry/SalConstant";
 
 const SalaryDeductPayList = (props) => {
-  const { salDeductData, showCalculation } = props;
-  const [showYn, setShowYn] = useState('salaryDeductPay');
+  const { salDeductData } = props;
   
-  const toggleCalculation = () => {
-    const newShowYn = showYn === 'salaryDeductPay' ? null : 'salaryDeductPay';
-    setShowYn(newShowYn);
-    showCalculation(newShowYn);
-  };
-
   return (
     <div>
       <div>
         <Row>
-          <div className="leftTable">
-          <Button onClick={toggleCalculation}>산출식</Button>
+          <div className="hr-leftTable">
           <TableForm
               tableName="SI_SALARY_DEDUCTPAY_LIST"
               readOnly

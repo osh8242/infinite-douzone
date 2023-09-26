@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import axios from 'axios';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
-import { setDate } from 'date-fns';
+import api from '../Api';
 
 const SalaryInformationEntryModel = () => {
   /* 영역 테이블 Data */
@@ -13,11 +12,10 @@ const SalaryInformationEntryModel = () => {
     { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 } },
   ]);
 
-  const [deductData, setDeductData] = useState([]);               // 공제항목 테이블
-  const [sumDeductPay, setSumDeductPay] = useState([              // 공제항목 총 합계
-    { item : { sumDeductPay: 0 } },
-  ]); 
-
+  const [sumDeductPay, setSumDeductPay] = useState([
+    { item: { sumDeductPay: 0 , excessAmount : 0}}
+  ]);
+  const [deductData, setDeductData] = useState([]);               // 공제항목 테이블 
   const [salPaySumData, setSalPaySumData] = useState({            // 공제항목 합계테이블 데이터(selectbox 조회)
     allowPay: [],
     deductPay: [],
@@ -32,7 +30,6 @@ const SalaryInformationEntryModel = () => {
   });
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
-  //const [addSalAllowPayRow, setAddSalAllowPayRow] = useState({}); // 급여항목 테이블_ table row 추가 or 수정된 객체
   const [addRow, setAddRow] = useState(); // 사원 코드도움창에서 선택한 로우 객체
   const [codeHelperTableData, setCodeHelperTableData] = useState({
     // 코드도움 테이블 data
@@ -80,8 +77,8 @@ const SalaryInformationEntryModel = () => {
     let newYnComplete = ynComplete;
     if (ynComplete === "Y") newYnComplete = "N";
     else newYnComplete = "Y";
-
-    axios
+    
+    api
       .post(url + UPDATE_DATEINFO_URL, {
         dateId: dateId,
         ynComplete: newYnComplete,
@@ -93,7 +90,7 @@ const SalaryInformationEntryModel = () => {
 
   const getSalTotalSum = useCallback(
     (event, value) => {
-      let params = { allowMonth: allowMonth, paymentDate: paymentDate };
+      let params = { allowYear:allowYear ,allowMonth: allowMonth, paymentDate: paymentDate, salDivision : salDivision };
       switch (value) {
         case "EmpAllThisMonth":
           params = { ...params, allowMonthFlag: "true" };
@@ -117,14 +114,14 @@ const SalaryInformationEntryModel = () => {
           break;
       }
 
-      axios
+      api
         .post(url + GET_SAL_TOTAL_SUM_URL, params)
         .then((response) => {
           const totalSalAllowPaydata = response.data.salAllow.map((item) => ({
             item: {
               cdAllow: item.cdAllow,
-              nmAllow: item.nmAllow,
-              ynTax: (item.ynTax = "N" ? "비과" : "과세"),
+              nmAllow: item.nmAllow,              
+              ynTax: item.ynTax == "N"? "비과" : "과세",
               sumAllowPay: item.sumAllowPay,
             },
           }));
@@ -146,13 +143,13 @@ const SalaryInformationEntryModel = () => {
           console.error("에러발생: ", error);
         });
     },
-    [allowMonth, paymentDate]
+    [allowMonth, paymentDate, salDivision]
   );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /* 검색 */
-  const onSearch = () => {
-
+  const onSearch = useCallback(() => {
+    
     // 비우기
     setSaInfoListData([]);
     setSalData([]);
@@ -170,9 +167,10 @@ const SalaryInformationEntryModel = () => {
       searchCdDept: searchCdDept,
       searchCdOccup: searchCdOccup,
       searchYnUnit: searchYnUnit,
+      paymentDateFlag: 'true'
     };
 
-    axios
+    api
       .post(url + GET_SALINFO_BY_DATE_URL, searchParams)
       .then((response) => {
         if (response.data) {
@@ -207,7 +205,7 @@ const SalaryInformationEntryModel = () => {
               item: {
                 cdAllow: item.cdAllow,
                 nmAllow: item.nmAllow,
-                ynTax: item.ynTax === "N" ? "비과" : "과세",
+                ynTax: item.ynTax == "N"? "비과" : "과세",
                 sumAllowPay: item.sumAllowPay,
               },
             }));
@@ -231,12 +229,12 @@ const SalaryInformationEntryModel = () => {
       .catch((error) => {
         console.error("에러발생: ", error);
       });
-  };
+    }, [allowMonth, paymentDate, salDivision]);
 
   /* 사원별 지급액 리스트 조회  */
   const getSaPayByCdEmp = () => {
     if (cdEmp !== "") {
-      axios
+      api
         .post(url + GET_SALINFO_BY_EMP_URL, { cdEmp: cdEmp, dateId: dateId, salDivision: salDivision })
         .then((response) => {
 
@@ -271,17 +269,29 @@ const SalaryInformationEntryModel = () => {
           }
 
           /* 공제 항목 */
-          const saDeductPayList = response.data.saDeductPayList.map((item) => ({
-            item: {
-              cdDeduct: item.cdDeduct,
-              nmDeduct: item.nmDeduct,
-              allowPay: item.allowPay,
-              calculation: item.calculation,
-            },
-          }));
-          setDeductData(saDeductPayList);
+          const saDeductPayList = [];
+          let deductSum = 0;
 
-          /* 사원정보 + 임금대장기재사항  */
+          response.data.saDeductPayList.forEach((item) => {
+            deductSum += Number(item.allowPay);
+            saDeductPayList.push({
+              item: {
+                cdDeduct: item.cdDeduct,
+                nmDeduct: item.nmDeduct,
+                allowPay: item.allowPay,
+              },
+            });
+          });
+
+          setDeductData(saDeductPayList);
+          response.data.sumAllowPayByYnTax.sumAllowPay && setSumDeductPay([
+            {item: {
+              sumDeductPay: deductSum,
+              excessAmount: Number(response.data.sumAllowPayByYnTax.sumAllowPay) - deductSum
+            }},
+          ]);
+
+          /* 사원정보 */
           const saEmpDetail = response.data.saEmpDetail;
           setSaInfoDetailData(saEmpDetail);
           
@@ -299,7 +309,7 @@ const SalaryInformationEntryModel = () => {
       deleteEmpList.push({ dateId: dateId, cdEmp: item.item.cdEmp });
     });
     try {
-      axios.delete(url + DELETE_EMPLIST_URL, {
+      api.delete(url + DELETE_EMPLIST_URL, {
         data: deleteEmpList,
       });
       setSelectedRows([]);
@@ -330,6 +340,9 @@ const SalaryInformationEntryModel = () => {
       },
     ];
   }, [saInfoListData]);
+
+  /* 공제항목 통계 계산 */
+  
   
   /* 급여 지급액 수정 */
   const updateSalaryAllowPay = useCallback((salaryAllowPay) => {
@@ -339,7 +352,7 @@ const SalaryInformationEntryModel = () => {
 
   /* 급여테이블 수정 + 공제항목테이블 update */
   const saveSalAllowPay = (updatedData) => {
-    axios
+    api
     .post(url + SAVE_SALDATA_URL, updatedData)
     .then(async (response) => {
       setDateId(response.data);
@@ -352,10 +365,11 @@ const SalaryInformationEntryModel = () => {
 
   /* 전월데이터 복사 */
   const setCopyLastMonthData = useCallback(() => {
-    axios
+    api
       .post(url + SET_COPYSALDATA_LASTMONTH_URL, {
         allowYear: allowYear,
         allowMonth: allowMonth,
+        salDivision : salDivision
       })
       .then((response) => {
         if (response.data.dateId) {
@@ -411,6 +425,7 @@ const SalaryInformationEntryModel = () => {
       cdEmp,
       dateId,
       ynComplete,
+      
     },
     actions: {
       setSaInfoListData,
