@@ -115,12 +115,12 @@ const Header = () => {
             </button>
             {showProfileDropdown && <DropDownMenu />}
             {/* 로그인 시 아래의 두 버튼은 가리기!! */}
-            <a href="/signup" className="signUpSignInBtn-dark">
+            {/* <a href="/signup" className="signUpSignInBtn-dark">
               회원가입
             </a>
             <a href="/login" className="signUpSignInBtn-dark">
               로그인
-            </a>
+            </a> */}
           </div>
         </div>
       )}

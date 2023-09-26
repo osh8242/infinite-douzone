@@ -7,6 +7,17 @@ import React from "react";
 // import wehago_backImg from "../styles/img/wehago_backImg.jpg";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faAddressBook,
+  faAddressCard,
+} from "@fortawesome/free-regular-svg-icons";
+import {
+  faCircleArrowLeft,
+  faFileInvoice,
+  faSackDollar,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 function MainHome() {
   return (
@@ -14,7 +25,7 @@ function MainHome() {
       <div className="background">
         <div id="mainPageTopHeader-BackGround">
           <div id="mainPageTopHeader">
-            <a href="/" id="logo">
+            <a href="/">
               <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
             </a>
             <div id="mainPageTopHeaderContents">
@@ -24,9 +35,11 @@ function MainHome() {
               <a href="/" className="colorWhite">
                 서비스소개
               </a>
+              {/* 로그인 시 로그아웃만 보이게 */}
               <div id="signUpSignInBtn">
-                <a href="/signIn">회원가입</a>
-                <a href="/signUp">로그인</a>
+                <a href="/signUn">회원가입</a>
+                <a href="/login">로그인</a>
+                {/* <a href="/">로그아웃</a> */}
               </div>
             </div>
           </div>
@@ -48,92 +61,38 @@ function MainHome() {
         </div>
       </div>
       {/* 하단 4가지 메뉴 이동 버튼 */}
-      <div
-        style={{
-          marginTop: "80px",
-          display: "flex",
-          flexDirection: "row",
-          gap: "16px",
-          justifyContent: "center",
-        }}
-      >
-        <a
-          href="/er"
-          style={{
-            width: "16vw",
-            minWidth: "100px",
-            height: "10vh",
-            display: "flex",
-            textDecoration: "none",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "solid 1px lightgray",
-            borderRadius: "2px",
-            background: "rgba(240,240,240,0.5)",
-            color: "gray",
-            fontSize: "1.2em",
-          }}
-        >
-          사원등록
-        </a>
-        <a
-          href="/hr"
-          style={{
-            width: "16vw",
-            minWidth: "100px",
-            height: "10vh",
-            display: "flex",
-            textDecoration: "none",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "solid 1px lightgray",
-            borderRadius: "2px",
-            background: "rgba(240,240,240,0.5)",
-            color: "gray",
-            fontSize: "1.2em",
-          }}
-        >
-          인사관리등록
-        </a>
-        <a
-          href="/lc"
-          style={{
-            width: "16vw",
-            minWidth: "100px",
-            height: "10vh",
-            display: "flex",
-            textDecoration: "none",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "solid 1px lightgray",
-            borderRadius: "2px",
-            background: "rgba(240,240,240,0.5)",
-            color: "gray",
-            fontSize: "1.2em",
-          }}
-        >
-          표준근로계약서
-        </a>
-        <a
-          href="/si"
-          style={{
-            width: "16vw",
-            minWidth: "100px",
-            height: "10vh",
-            display: "flex",
-            textDecoration: "none",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "solid 1px lightgray",
-            borderRadius: "2px",
-            background: "rgba(240,240,240,0.5)",
-            color: "gray",
-            fontSize: "1.2em",
-          }}
-        >
-          급여관리
-        </a>
+      <div className="menuBtnList">
+        <div>
+          <a href="/er" className="menuBtn er">
+            <FontAwesomeIcon icon={faUserPlus} />
+          </a>
+          <p>사원등록</p>
+        </div>
+        <div>
+          <a href="/hr" className="menuBtn hr">
+            <FontAwesomeIcon icon={faAddressCard} />
+          </a>
+          <p>인사관리등록</p>
+        </div>
+        <div>
+          <a href="/lc" className="menuBtn lc">
+            <FontAwesomeIcon icon={faFileInvoice} />
+          </a>
+          <p>표준근로계약서</p>
+        </div>
+        <div>
+          <a href="/si" className="menuBtn si">
+            <FontAwesomeIcon icon={faSackDollar} />
+          </a>
+          <p>급여관리</p>
+        </div>
       </div>
+      <a href="#!" id="leftArrowBtn">
+        <FontAwesomeIcon icon={faCircleArrowLeft} />
+      </a>
+      <a href="#!" id="leftArrowBtn-animation">
+        <FontAwesomeIcon icon={faCircleArrowLeft} />
+      </a>
     </>
   );
 }
