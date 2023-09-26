@@ -63,6 +63,7 @@ function CodeHelperModal(props) {
               tableHeaders={tableHeaders}
               tableData={filteredData}
               onRowClick={handleRowClick}
+              defaultFocus
             />
           </div>
         </Row>

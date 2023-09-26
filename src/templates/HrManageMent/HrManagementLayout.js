@@ -114,7 +114,8 @@ const HrManagementLayout = () => {
             <Row>
               <div className="hr-leftTable">
                 <TableForm
-                  tableName="EMP"
+                  readOnly
+                  tableName="empAdd"
                   //showCheckbox
                   sortable
                   rowAddable
@@ -144,7 +145,7 @@ const HrManagementLayout = () => {
                     setSelectedRows: actions.setSelectedRows,
                     deleteRow: actions.deleteRow,
                     getRowObject: (data) => {
-                      return { item: EmpAdd(data) };
+                      return { item: EmpAdd(data), table: "empAdd" };
                     },
                   }}
                 />

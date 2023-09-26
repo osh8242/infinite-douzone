@@ -49,16 +49,24 @@ const TableForm = ({
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
     setTableRows(tableData);
-    defaultFocus && setRefresh(!refresh);
-  }, [tableData]);
+    if (JSON.stringify(tableRows) !== JSON.stringify(tableData)) {
+      setTableRows(tableData);
+      defaultFocus && setRefresh(!refresh);
+    }
+  }, [tableRows, tableData]);
 
   useEffect(() => {
     if (defaultFocus) {
-      setRowRef(0);
-      setColumnRef(0);
       tableFocus.current = true;
       if (tableData.length !== 0) {
-        handleRowClick(null, 0, 0);
+        let defaultRow = 0;
+        if (tableData[tableData.length - 1]?.insertedRow) {
+          defaultRow = tableData.length - 1;
+        }
+        setRowRef(defaultRow);
+        setColumnRef(0);
+        handleRowClick(null, defaultRow, 0);
+        actions.setPkValue && actions.setPkValue(getPkValue(defaultRow));
       }
     }
   }, [refresh]);
@@ -91,9 +99,8 @@ const TableForm = ({
   const tableFocus = useRef(defaultFocus);
 
   //해당 테이블만 콘솔로그 찍어보고 싶을때..
-  if (tableName === "EMP") {
-    // console.log(tableName, tableData, "Render");
-    // console.log("inputRef", inputRef);
+  if (tableName === "empAdd") {
+    // console.log("tableData", tableData);
   }
 
   //정렬값이 바뀌면 테이블 정렬하기 useEffect
@@ -107,7 +114,6 @@ const TableForm = ({
       else return 0;
     });
     setTableRows(newTableRows);
-    console.log("정렬 useEffect", newTableRows);
   }, [orderRef, isAsc]);
 
   //로우와 컬럼 ref 해제 함수
@@ -307,6 +313,7 @@ const TableForm = ({
   // 수정한 행에서 엔터키 입력 이벤트 처리
   const TdKeyDownHandler = useCallback(
     (event, rowIndex, columnIndex) => {
+      event.preventDefault();
       console.log("키다운 tableRows", tableRows);
       if (readOnly) return;
       if (event.key === "Enter") {
@@ -326,6 +333,7 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
+        console.log(" TdKeyDownHandler > newTableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
@@ -542,10 +550,10 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        // event.preventDefault();
-        if (tableName === "EMP") {
-          console.log("이벤트키 누름");
-        }
+        event.preventDefault();
+
+        console.log("이벤트키 누름", event.key);
+
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -560,13 +568,15 @@ const TableForm = ({
         if (editableRowIndex === -1) {
           switch (event.key) {
             case "ArrowDown":
-              event.preventDefault();
-              if (rowRef < tableRows.length) setRowRef(rowRef + 1);
+              if (rowRef < tableRows.length) {
+                setRowRef(rowRef + 1);
+                if (!rowAddable && rowRef === tableRows.length - 1)
+                  setRowRef(rowRef);
+              }
               updatePkValue(rowRef + 1);
               break;
 
             case "ArrowUp":
-              event.preventDefault();
               if (rowRef > 0) {
                 setRowRef(rowRef - 1);
                 updatePkValue(rowRef - 1);
@@ -574,20 +584,25 @@ const TableForm = ({
               break;
 
             case "ArrowLeft":
-              event.preventDefault();
               if (columnRef > 0) setColumnRef(columnRef - 1);
               break;
 
             case "ArrowRight":
-              event.preventDefault();
               if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
+            case "Home":
+              setRowRef(0);
+              break;
+
+            case "End":
+              setRowRef(rowAddable ? tableRows.length : tableRows.length - 1);
+              break;
+
             case "Enter":
-              event.preventDefault();
               console.log("엔터키");
+              onRowClick && onRowClick(event, tableRows[rowRef].item);
               if (editableRowIndex === -1 && rowRef > -1) {
-                handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) {
                   if (actions.newRowCodeHelper) {
                     tableFocus.current = false;
@@ -596,17 +611,15 @@ const TableForm = ({
                   }
                   pushNewRow();
                 }
-                setEditableRow(rowRef);
+                if (!readOnly) setEditableRow(rowRef);
               }
               break;
 
             case " ":
-              event.preventDefault();
               showCheckbox && checkboxHandler(rowRef);
               break;
 
             case "Delete":
-              event.preventDefault();
               tableFocus.current = false;
               setConfirmModalState({
                 show: true,
@@ -800,7 +813,6 @@ const TableForm = ({
         show={modalState.show}
         onHide={() => {
           setModalState({ show: false });
-          console.log("온하이드2");
           tableFocus.current = true;
         }}
       >

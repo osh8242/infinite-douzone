@@ -13,7 +13,6 @@ api.interceptors.request.use(
   (config) => {
     // 임시 localStorage 저장 -->redis 변경예정
     const token = localStorage.getItem("authToken");
-    console.log("getAuthToken", token);
     if (token) {
       config.headers["authorization"] = "Bearer " + token;
     }

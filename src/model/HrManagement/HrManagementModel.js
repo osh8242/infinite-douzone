@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
-import Emp from "../../vo/HrManagement/Emp";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import api from "../Api";
@@ -27,14 +26,9 @@ const HrManagementModel = () => {
   const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
-  const [tableUpdate, setTableUpdate] = useState(false);
   //검색조건 : 재직구분, 정렬기준
   const jobOkSelectRef = useRef("yAndOnThisYear");
   const orderSelectRef = useRef("cdEmp");
-
-  useEffect(() => {
-    console.log("leftCodeHelperTableData", leftCodeHelperTableData);
-  });
 
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = (jobOkSelectRef, orderSelectRef) => {
@@ -59,6 +53,7 @@ const HrManagementModel = () => {
       )
       .then((response) => {
         let newLeftTableData = [];
+        console.log("세팅전 emp 리스트", newLeftCodeHelperTableData);
 
         response.data.forEach((empAdd, index) => {
           const targetIndex = newLeftCodeHelperTableData.findIndex(
@@ -66,15 +61,15 @@ const HrManagementModel = () => {
           );
 
           if (targetIndex !== -1) {
-            empAdd["jobOk"] = newLeftCodeHelperTableData[targetIndex].item["jobOk"];
+            Object.assign(empAdd, newLeftCodeHelperTableData[targetIndex].item);
             newLeftTableData.push({ item: empAdd, table: "empAdd" });
             newLeftCodeHelperTableData = newLeftCodeHelperTableData.filter(
               (row, index) => index !== targetIndex
             );
           }
         });
-        console.log("newLeftCodeHelperTableData", newLeftCodeHelperTableData);
-        console.log("newLeftTableData", newLeftTableData);
+        console.log("세팅된 newLeftTableData", newLeftTableData);
+        console.log("세팅된 newLeftCodeHelperTableData", newLeftCodeHelperTableData);
         setLeftCodeHelperTableData(newLeftCodeHelperTableData);
         setLeftTableData(newLeftTableData);
       })
@@ -94,8 +89,9 @@ const HrManagementModel = () => {
       ${yearRef.current ? "&refYear=" + yearRef.current : ""}`
       )
       .then((response) => {
-        const newLeftCodeHelperTableData = response.data.map((emp) => Emp(emp));
-        console.log("newLeftCodeHelperTableData", newLeftCodeHelperTableData);
+        const newLeftCodeHelperTableData = response.data.map((emp) => {
+          return { item: emp, table: "empAdd" };
+        });
 
         getLeftTableData(newLeftCodeHelperTableData);
       })
@@ -121,25 +117,28 @@ const HrManagementModel = () => {
   //테이블에 인사관리 등록
   const registEmpAdd = useCallback(
     (event, pkValue) => {
+      console.log("인사관리 등록전", leftTableData);
       const targetCdEmp = pkValue.cdEmp;
+      let newLeftTableData = [...leftTableData];
       let newLeftCodeHelperTableData = leftCodeHelperTableData.filter((row) => {
         if (targetCdEmp === row.item.cdEmp) {
-          leftTableData.push(row);
-          insertEmpAdd(row.item);
+          const newRow = JSON.parse(JSON.stringify(row));
+          newRow["insertedRow"] = true;
+          newLeftTableData.push(newRow);
+          insertEmpAdd(newRow.item);
           return false;
         }
         return true;
       });
-
+      console.log("인사관리 등록후", newLeftTableData);
       setLeftCodeHelperTableData(newLeftCodeHelperTableData);
-      setLeftTableData([...leftTableData]);
+      setLeftTableData(newLeftTableData);
     },
     [insertEmpAdd, leftCodeHelperTableData, leftTableData]
   );
 
   //leftTablePkValue에 따라서 mainTabData 가져오는 비동기 post 요청
   useEffect(() => {
-    console.log("leftTablePkValue", leftTablePkValue);
     if (leftTablePkValue?.cdEmp && Object.keys(leftTablePkValue).length !== 0) {
       api
         .post(urlPattern.getEmpAddByCdEmp, leftTablePkValue)
@@ -435,39 +434,42 @@ const HrManagementModel = () => {
   // }, [selectedRows]);
 
   //현재행 삭제요청
-  const deleteRow = useCallback((row) => {
-    console.log("삭제요청 해당 테이블", row["table"]);
-    let pattern;
-    switch (row["table"]) {
-      case "empFam":
-        pattern = urlPattern.deleteEmpFam;
-        break;
-      case "emp":
-        pattern = urlPattern.deleteEmp;
-        break;
-      case "empAdd":
-        pattern = urlPattern.deleteEmpAdd;
-        console.log("지우려는 row", row);
-        console.log("딜리트 empadd");
-        const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
-        newLeftCodeHelperTableData.push(row);
-        setLeftCodeHelperTableData(newLeftCodeHelperTableData);
-        console.log("newLeftCodeHelperTableData", newLeftCodeHelperTableData);
-        break;
-      case "empPhoto":
-        pattern = urlPattern.deleteEmpPhoto;
-        break;
-      default:
-        console.log("설정되지 않은 테이블 행을 삭제요청받음");
-        return;
-    }
-    api
-      .delete(pattern, { data: row.item })
-      .then(console.log("삭제완료"))
-      .catch((error) => {
-        console.error("하나 이상의 요청에서 에러 발생: ", error);
-      });
-  }, []);
+  const deleteRow = useCallback(
+    (row) => {
+      console.log("삭제요청 해당 테이블", row["table"]);
+      let pattern;
+      switch (row["table"]) {
+        case "empFam":
+          pattern = urlPattern.deleteEmpFam;
+          break;
+        case "empAdd":
+          pattern = urlPattern.deleteEmpAdd;
+          console.log("지우려는 row", row);
+          const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
+          newLeftCodeHelperTableData.push(row);
+          setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+          const newLeftTableData = leftTableData.filter((data) => {
+            if (data.item.cdEmp === row.item.cdEmp) return false;
+            else return true;
+          });
+          setLeftTableData(newLeftTableData);
+          break;
+        case "empPhoto":
+          pattern = urlPattern.deleteEmpPhoto;
+          break;
+        default:
+          console.log("설정되지 않은 테이블 행을 삭제요청받음");
+          return;
+      }
+      api
+        .delete(pattern, { data: row.item })
+        .then(console.log("삭제완료"))
+        .catch((error) => {
+          console.error("하나 이상의 요청에서 에러 발생: ", error);
+        });
+    },
+    [leftCodeHelperTableData]
+  );
 
   ////사원 테이블 재직 통계 계산
   const leftStaticsTableData = useMemo(() => {
@@ -510,7 +512,7 @@ const HrManagementModel = () => {
       onSearch,
 
       setLeftTableData,
-      setLeftCodeHelperTableData,
+
       registEmpAdd,
       setLeftTablePkValue,
       insertEmp,
