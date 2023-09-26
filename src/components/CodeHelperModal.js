@@ -47,15 +47,11 @@ function CodeHelperModal(props) {
   const handleRowClick = (event, row) => {
     setSearchTerm("");
     if (setRowData)
-      usePk
-        ? setRowData(event, { [usePk]: row[usePk] })
-        : setRowData(event, row);
+      usePk ? setRowData(event, { [usePk]: row[usePk] }) : setRowData(event, row);
     setFilteredData([]);
     setOriData([]);
     onHide();
   };
-
-  console.log(setRowData, tableHeaders, tableData, usePk, searchField);
 
   return (
     <>

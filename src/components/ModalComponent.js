@@ -9,7 +9,7 @@ const [modalState, setModalState] = useState({ show: false , modalData: null });
 
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 import "../styles/commonComponent.css";
 
@@ -22,45 +22,40 @@ function ModalComponent(props) {
     size, // xs, sm, md, lg, xl, xxl
     backdrop,
     animation,
-    parentRef,
   } = props;
-  const modalFocus = useRef(show);
-  useEffect(() => {
-    modalFocus.current = show;
-  }, [modalFocus]);
 
+  // 현재 모달창의 포커스
+  const focus = useRef(false);
+
+  // 포커스 전환
+  useEffect(() => {
+    focus.current = show ? true : false;
+  }, [show]);
+
+  //키다운 핸들러
   const tableKeyDownHandler = useCallback(
     (event) => {
-      if (tableFocus.current) {
-        event.preventDefault();
-          switch (event.key) {
-            case "Escape":
-  
-              break;
-            case "Enter":
-
-              break;
-
-            default:
-              break;
-          }
+      if (focus.current) {
+        switch (event.key) {
+          case "Escape":
+            onHide();
+            break;
+          default:
+            break;
         }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-
-    ]
+    [onHide]
   );
 
-    //componentDidMount
-    useEffect(() => {
-      document.addEventListener("keydown", tableKeyDownHandler);
-  
-      return () => {
-        document.removeEventListener("keydown", tableKeyDownHandler);
-      };
-    }, [tableKeyDownHandler]);
+  // 이벤트 핸들러 등록 (componentDidMount 역할)
+  useEffect(() => {
+    document.addEventListener("keydown", tableKeyDownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", tableKeyDownHandler);
+    };
+  }, [tableKeyDownHandler]);
 
   return (
     <Modal

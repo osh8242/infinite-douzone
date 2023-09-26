@@ -8,11 +8,11 @@ function ProfileImageForm(props) {
   const { src, title, text, handleUpload, handleDelete } = props;
   const fileInput = useRef(null);
   const [imgSrc, setImgSrc] = useState(defaultImg);
-  console.log("imgSrc", imgSrc);
-  console.log("fileInput", fileInput);
+
   useEffect(() => {
     setImgSrc(src);
   }, [src]);
+
   return (
     <Card className="card-container">
       <Card.Img variant="top" src={imgSrc} />

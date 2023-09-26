@@ -32,6 +32,10 @@ const HrManagementModel = () => {
   const jobOkSelectRef = useRef("yAndOnThisYear");
   const orderSelectRef = useRef("cdEmp");
 
+  useEffect(() => {
+    console.log("leftCodeHelperTableData", leftCodeHelperTableData);
+  });
+
   //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
   const onSearch = (jobOkSelectRef, orderSelectRef) => {
     orderRef.current = orderSelectRef.current.value;
@@ -42,9 +46,6 @@ const HrManagementModel = () => {
       yearRef.current = null;
       jobOkRef.current = jobOkSelectRef.current.value;
     }
-    console.log("jobOkSelectRef", jobOkSelectRef.current.value);
-    console.log("orderSelectRef", orderSelectRef.current.value);
-    console.log("yearRef", yearRef.current);
     getEmpList();
   };
 
@@ -388,53 +389,54 @@ const HrManagementModel = () => {
   }, []);
 
   //선택된 행 delete 요청
-  const deleteSelectedRows = useCallback(() => {
-    const editedTableNames = {};
-    console.log("삭제요청된 행들", selectedRows);
+  // const deleteSelectedRows = useCallback(() => {
+  //   const editedTableNames = {};
+  //   console.log("삭제요청된 행들", selectedRows);
 
-    // 각 row에 대한 delete 요청을 생성
-    const deletePromises = selectedRows.map((row) => {
-      let pattern;
-      switch (row.table) {
-        case "empFam":
-          pattern = urlPattern.deleteEmpFam;
-          break;
-        case "emp":
-          pattern = urlPattern.deleteEmp;
-          break;
-        default:
-          return Promise.resolve();
-      }
-      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-      return api.delete(pattern, { data: row.item });
-    });
+  //   // 각 row에 대한 delete 요청을 생성
+  //   const deletePromises = selectedRows.map((row) => {
+  //     let pattern;
+  //     switch (row.table) {
+  //       case "empFam":
+  //         pattern = urlPattern.deleteEmpFam;
+  //         break;
+  //       case "emp":
+  //         pattern = urlPattern.deleteEmp;
+  //         break;
+  //       default:
+  //         return Promise.resolve();
+  //     }
+  //     if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+  //     return api.delete(pattern, { data: row.item });
+  //   });
 
-    Promise.all(deletePromises)
-      .then((responses) => {
-        console.log("선택된 모든 행의 삭제 완료");
-        console.log("selectedRows", selectedRows);
-        setSelectedRows([]); // 선택행 배열 비우기
-        Object.keys(editedTableNames).forEach((tableName) => {
-          switch (tableName) {
-            case "empFam":
-              //setEditedEmpFam({}); // 사원가족 리로드
-              break;
-            case "emp":
-              setEditedEmp({}); // 사원가족 리로드
-              break;
-            default:
-              break;
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("하나 이상의 요청에서 에러 발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, [selectedRows]);
+  //   Promise.all(deletePromises)
+  //     .then((responses) => {
+  //       console.log("선택된 모든 행의 삭제 완료");
+  //       console.log("selectedRows", selectedRows);
+  //       setSelectedRows([]); // 선택행 배열 비우기
+  //       Object.keys(editedTableNames).forEach((tableName) => {
+  //         switch (tableName) {
+  //           case "empFam":
+  //             //setEditedEmpFam({}); // 사원가족 리로드
+  //             break;
+  //           case "emp":
+  //             setEditedEmp({}); // 사원가족 리로드
+  //             break;
+  //           default:
+  //             break;
+  //         }
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error("하나 이상의 요청에서 에러 발생: ", error);
+  //       // 필요에 따라 다른 오류 처리 로직 추가
+  //     });
+  // }, [selectedRows]);
 
   //현재행 삭제요청
   const deleteRow = useCallback((row) => {
+    console.log("삭제요청 해당 테이블", row["table"]);
     let pattern;
     switch (row["table"]) {
       case "empFam":
@@ -445,6 +447,12 @@ const HrManagementModel = () => {
         break;
       case "empAdd":
         pattern = urlPattern.deleteEmpAdd;
+        console.log("지우려는 row", row);
+        console.log("딜리트 empadd");
+        const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
+        newLeftCodeHelperTableData.push(row);
+        setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+        console.log("newLeftCodeHelperTableData", newLeftCodeHelperTableData);
         break;
       case "empPhoto":
         pattern = urlPattern.deleteEmpPhoto;
@@ -518,7 +526,6 @@ const HrManagementModel = () => {
       updateEmpFam,
 
       setSelectedRows,
-      deleteSelectedRows,
 
       deleteRow,
       deleteEmpPhoto,

@@ -57,8 +57,9 @@ const TableForm = ({
       setRowRef(0);
       setColumnRef(0);
       tableFocus.current = true;
-      actions.setPkValue(getPkValue(0));
-      console.log("테이블 리프레쉬");
+      if (tableData.length !== 0) {
+        handleRowClick(null, 0, 0);
+      }
     }
   }, [refresh]);
 
@@ -315,6 +316,7 @@ const TableForm = ({
         const editedRow = getEditedRow(event, rowIndex, columnIndex);
 
         if (!editedRow) {
+          tableFocus.current = false;
           setConfirmModalState({ show: true, message: "필수입력값 누락" });
           return;
         }
@@ -541,6 +543,9 @@ const TableForm = ({
     (event) => {
       if (tableFocus.current) {
         // event.preventDefault();
+        if (tableName === "EMP") {
+          console.log("이벤트키 누름");
+        }
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -580,16 +585,18 @@ const TableForm = ({
 
             case "Enter":
               event.preventDefault();
+              console.log("엔터키");
               if (editableRowIndex === -1 && rowRef > -1) {
                 handleRowClick(event, rowRef, columnRef);
                 if (rowRef === tableRows.length) {
                   if (actions.newRowCodeHelper) {
-                    actions.newRowCodeHelper();
+                    tableFocus.current = false;
+                    actions.newRowCodeHelper(tableFocus);
                     return;
                   }
                   pushNewRow();
-                  setEditableRow(rowRef);
                 }
+                setEditableRow(rowRef);
               }
               break;
 
@@ -600,6 +607,7 @@ const TableForm = ({
 
             case "Delete":
               event.preventDefault();
+              tableFocus.current = false;
               setConfirmModalState({
                 show: true,
                 message: "해당 행을 삭제하시겠습니까?",
@@ -647,16 +655,6 @@ const TableForm = ({
       document.removeEventListener("keydown", tableKeyDownHandler);
     };
   }, [tableMouseDownHandler, tableKeyDownHandler]);
-
-  // 입력커서 맨 뒤로 이동시키는 함수
-  const focusAtEnd = (element) => {
-    let range = document.createRange();
-    let selection = window.getSelection();
-    range.selectNodeContents(element);
-    range.collapse(false);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  };
 
   return (
     <>
@@ -731,23 +729,6 @@ const TableForm = ({
                         {getTdValue(rowIndex, columnIndex)}
                       </div>
                     )}
-
-                    {/* <div
-                      className="tableContents"
-                      contentEditable={row.isEditable && !thead.readOnly}
-                      suppressContentEditableWarning={true}
-                      data-field={thead.field}
-                      data-column-index={columnIndex}
-                      onFocus={(e) => {
-                        setRowRef(rowIndex);
-                        setColumnRef(columnIndex);
-                        focusAtEnd(e.target);
-                      }}
-                      onKeyDown={(e) => TdKeyDownHandler(e, rowIndex)}
-                      ref={(div) => setInputRef(div, rowIndex, columnIndex)}
-                    >
-                      {row.isNew ? "" : row.item[thead.field]}
-                    </div> */}
                   </td>
                 ))}
               </tr>
@@ -759,20 +740,18 @@ const TableForm = ({
               className={`sticky-row ${getRowClassName({}, tableRows.length)}`}
               onDoubleClick={(e) => {
                 actions.newRowCodeHelper
-                  ? actions.newRowCodeHelper()
+                  ? actions.newRowCodeHelper(tableFocus)
                   : handleDoubleClick(e, tableRows.length);
               }}
             >
               {showCheckbox && (
-                <td
-                  className="d-flex justify-content-center"
-                  onClick={() => codeHelper && actions.newRowCodeHelper()}
-                >
+                <td className="d-flex justify-content-center">
                   <div>
                     <FontAwesomeIcon
                       icon={faPlus}
                       onClick={() =>
-                        actions.newRowCodeHelper && actions.newRowCodeHelper()
+                        actions.newRowCodeHelper &&
+                        actions.newRowCodeHelper(tableFocus)
                       }
                     />
                   </div>
@@ -790,7 +769,8 @@ const TableForm = ({
                       <FontAwesomeIcon
                         icon={faPlus}
                         onClick={() =>
-                          actions.newRowCodeHelper && actions.setCodeHelper()
+                          actions.newRowCodeHelper &&
+                          actions.setCodeHelper(tableFocus)
                         }
                       />
                     )}
@@ -805,15 +785,24 @@ const TableForm = ({
       <ConfirmComponent
         show={confirmModalState.show}
         message={confirmModalState.message}
-        onConfirm={confirmModalState.onConfirm}
-        onHide={confirmModalState.onHide}
+        onConfirm={() => {
+          confirmModalState.onConfirm();
+          tableFocus.current = true;
+        }}
+        onHide={() => {
+          confirmModalState.onHide();
+          tableFocus.current = true;
+        }}
       ></ConfirmComponent>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}
         show={modalState.show}
-        onConfirm={modalState.onConfirm}
-        onHide={() => setModalState({ show: false })}
+        onHide={() => {
+          setModalState({ show: false });
+          console.log("온하이드2");
+          tableFocus.current = true;
+        }}
       >
         {modalState.message ? (
           modalState.message

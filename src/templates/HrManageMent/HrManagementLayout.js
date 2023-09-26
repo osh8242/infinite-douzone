@@ -18,7 +18,7 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
-import Emp from "../../vo/HrManagement/Emp";
+import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
@@ -49,8 +49,12 @@ const HrManagementLayout = () => {
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
-    async (type, data, setRowData) => {
-      actions.setModalState({ ...modalState, show: true });
+    async (type, data, setRowData, parentFocusRef) => {
+      actions.setModalState({
+        ...modalState,
+        show: true,
+        parentFocusRef: parentFocusRef,
+      });
 
       switch (type) {
         case "default":
@@ -122,12 +126,15 @@ const HrManagementLayout = () => {
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
-                    newRowCodeHelper: () =>
+                    newRowCodeHelper: (parentFocusRef) => {
+                      parentFocusRef.current = false;
                       modalShow(
                         "leftTable",
                         CODE_HELPER_DATA.leftTableCodeHelper,
-                        actions.registEmpAdd
-                      ),
+                        actions.registEmpAdd,
+                        parentFocusRef
+                      );
+                    },
                     setPkValue: actions.setLeftTablePkValue,
                     insertNewRow: (row) => {
                       actions.insertEmpAdd(row);
@@ -136,7 +143,9 @@ const HrManagementLayout = () => {
                     updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
                     deleteRow: actions.deleteRow,
-                    getRowObject: Emp,
+                    getRowObject: (data) => {
+                      return { item: EmpAdd(data) };
+                    },
                   }}
                 />
               </div>
@@ -232,10 +241,16 @@ const HrManagementLayout = () => {
         title={modalState.title}
         size={modalState.size}
         show={modalState.show}
-        onHide={() => actions.setModalState({ show: false })}
+        onHide={() => {
+          actions.setModalState({ show: false });
+          modalState.parentFocusRef.current = true;
+        }}
       >
         <CodeHelperModal
-          onHide={() => actions.setModalState({ show: false })}
+          onHide={() => {
+            actions.setModalState({ show: false });
+            modalState.parentFocusRef.current = true;
+          }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}
           tableData={codeHelperTableData.tableData}
