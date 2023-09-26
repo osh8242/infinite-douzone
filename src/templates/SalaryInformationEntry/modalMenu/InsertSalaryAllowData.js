@@ -32,7 +32,7 @@ const InsertSalaryAllowData = (props) => {
     <div className="insertSalaryAllowData_container">
       <div>
         {/* <Button onClick={calculationbVisibility}>산출식 보기</Button> */}
-        <div className="tableData_container">
+        <div className="tableData_container" style={{overflow:"auto", height:"300px"}}>
           <TableForm
             tableName="SI_INSERT_SALARY_ALLOW_DATA"
             readOnly

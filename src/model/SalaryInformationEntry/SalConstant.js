@@ -126,6 +126,7 @@ export const codeHelperData_paymentDate = {
         { field: "allowMonth", text: "귀속연월" },
         { field: "paymentDate", text: "지급일" },
         { field: "salDivisionName", text: "급여구분" },
+        { field: "ynComplete", text: "완료여부" }
     ]
     , searchField : ['paymentDate']
     // , usePk : "paymentDate"

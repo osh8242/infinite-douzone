@@ -24,7 +24,6 @@ const SiSeacrchPanel = (props) => {
       )
     },[state.searchVo]);
 
-    
     const selectOptionHandler = (value) => {
       // set data
       actions.setSalDivision(value); 
@@ -32,6 +31,12 @@ const SiSeacrchPanel = (props) => {
       // 전월데이터 복사 모달
       let message = "전월데이터를 복사하시겠습니까?"
       setShowModal({show: true, message : message});      
+    }
+
+    // 작성일자 코드헬퍼 클릭 이벤트
+    const clickPaymentDateCodeHelper = (e,row) =>{
+      actions.setPaymentDate(row.paymentDate);
+      actions.onSearch();
     }
 
     return (
@@ -53,7 +58,7 @@ const SiSeacrchPanel = (props) => {
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
               formData={formPanelData}
-              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, (e,row) => actions.setPaymentDate(row.paymentDate), {allowYear : state.allowYear, allowMonth : state.allowMonth})}}
+              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, clickPaymentDateCodeHelper , {allowYear : state.allowYear, allowMonth : state.allowMonth})}}
               onChange={{
                 allowMonth: (newValue)=> actions.setAllowMonth(newValue),
                 salDivision: (newValue) => selectOptionHandler(newValue),
