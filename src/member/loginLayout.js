@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
 import "./login.css";
 
+//redux loginUser
 const LoginLayout = () => {
   const dispatch = useDispatch();
 
@@ -18,7 +19,6 @@ const LoginLayout = () => {
   const [loginErrorCount] = useState(0);
   const [keyframeTrigger, setKeyframeTrigger] = useState(0);
 
-  console.log("loginLayout test-----------------");
   const handleLogin = async () => {
     console.log("--------------click login----------------");
     try {
@@ -36,10 +36,11 @@ const LoginLayout = () => {
 
         const token = responseData.headers["authorization"];
 
-        localStorage.setItem(
-          "token",
-          "Bearer " + responseData.headers["authorization"]
-        );
+        // localStorage.setItem(
+        //   "token",
+        //   "Bearer " + responseData.headers["authorization"]
+        // );
+
         // const token = responseData.headers.get("Authorization");
         if (token) {
           localStorage.setItem("token", token);

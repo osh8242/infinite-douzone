@@ -9,10 +9,15 @@ const LoginContext = createContext();
 export const LoginProvider = ({ children }) => {
   // id와 pwd의 상태를 관리하는 state
   const [loginInfo, setLoginInfo] = useState({
+    companyCode: "",
     userId: "",
     userPwd: "",
-    companyCode: "",
-    userImg: "",
+    userName: "",
+    empImg: "",
+    master: "",
+    birth: "",
+    gender: "",
+    email: "",
   });
 
   // JWT 토큰 상태 관리

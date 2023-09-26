@@ -1,5 +1,4 @@
 // 작성자 : 오승환
-
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import {
   faBell,
@@ -9,9 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
-import SearchForm from "../components/SearchForm";
+import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
@@ -21,7 +21,7 @@ const logoUrl = {
 };
 
 const Header = (props) => {
-  // 초기 상태 설정
+  const navigate = useNavigate();
   console.log("+++++++++++++++++++++++++++");
   const userInfoString = localStorage.getItem("userInfo");
   const userInfoObject = JSON.parse(userInfoString);
@@ -30,41 +30,60 @@ const Header = (props) => {
   console.log(userInfoString);
   console.log("===================================");
 
-  // 로그인 상태에 따라 버튼 텍스트 및 링크 상태 초기화
   const [btnByState, setBtnByState] = useState(
-    userInfoString ? "로그아웃" : "로그인"
+    localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
-  const [hrefState, setHrefState] = useState(userInfoObject ? "" : "/");
+
+  // useEffect(() => {
+  //   if (localStorage.getItem("userInfo") != null) setBtnByState("로그아웃");
+  //   else setBtnByState("로그인");
+  // }, [btnByState]);
+
+  const [hrefState, setHrefState] = useState(
+    userInfoString != null ? "/" : "/login"
+  );
   const [showUserState, setShowUserState] = useState(
     userInfoString ? true : false
   );
+  const [userName, setUserName] = useState(
+    userInfoObject ? userInfoObject.userName : "비회원"
+  );
 
-  console.log("TRUE / FALSE State ...");
+  console.log("TRUE / FALSE State ...cccccc");
   console.log(userInfoObject);
   console.log(userInfoString);
   console.log("btnByState: ");
   console.log(btnByState);
   console.log("showUserState: ");
   console.log(showUserState);
-  console.log();
-  console.log();
 
-  function onClickLoginHandler(e) {
-    console.log("click handler ....");
-    // setHrefState("/login");
-    // e.preventDefault(); // 기본 동작(링크 이동) 중지
+  // function onClickLoginHandler(e) {
+  //   console.log("click handler ....");
+  //   // if (localStorage.getItem("userInfo")) {
+  //   //   console.log("로컬값잇슴 유저인포");
+  //   // }
+  //   if (localStorage.getItem("userInfo") != null) {
+  //     console.log("chnagedddddgo!");
+  //     setBtnByState("로그인");
+  //     setHrefState("/");
+  //     localStorage.removeItem("userInfo");
+  //     localStorage.removeItem("authToken");
+  //     localStorage.clear();
+  //   } else {
+  //     setBtnByState("로그아웃");
+  //     setShowUserState(false);
+  //   }
+  //   // setHrefState("/login");
+  //   // e.preventDefault(); // 기본 동작(링크 이동) 중지
 
-    // if (showUserState) {
-    // 로그아웃 처리
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("token");
-    setBtnByState("로그인");
-    setShowUserState(false);
-    // } else {
-    // 로그인 페이지로 리디렉션 (실제로는 로그인 로직 수행 가능)
-    // window.location.href = "/";
-    // }
-  }
+  //   // if (showUserState) {
+  //   // 로그아웃 처리
+
+  //   // } else {
+  //   // 로그인 페이지로 리디렉션 (실제로는 로그인 로직 수행 가능)
+  //   // window.location.href = "/";
+  //   // }
+  // }
 
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -88,31 +107,28 @@ const Header = (props) => {
 
   useEffect(() => {
     console.log("showUserState .........chaenge????");
-    // if (showUserState) {
-    //   console.log("Login 상태 ...");
-    //   setBtnByState("로그아웃");
-    // } else {
-    //   console.log("Logout 상태");
-    //   setBtnByState("로그인");
-    // }
   }, showUserState);
+
+  const toggleBtn = () => {
+    // if( )
+  };
 
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
-    // setShowUserState(!showUserState);
-    // if (userInfoObject) {
-    //   // 로그아웃 처리
-    //   localStorage.removeItem("userInfo");
-    //   localStorage.removeItem("token");
-    //   setUserName(null); // 상태 업데이트
-    // } else {
-    //   // 로그인 페이지로 리디렉션
-    //   // (여기서는 간단하게 처리, 실제로는 로그인 로직을 수행)
-    //   window.location.href = "/";
-    // }
+    if (localStorage.getItem("userInfo") != null) {
+      console.log("local 값 잇서?");
+      setBtnByState("로그인");
+      setHrefState("/login");
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("authToken");
+      setUserName("비회원");
+    } else {
+      console.log("nope");
+      setHrefState("/login");
+      setBtnByState("로그아웃");
+      navigate("/login");
+    }
   }
-
-  const [userName, setUserName] = useState(userInfoObject.userName);
 
   console.log("------HEADER--------------");
   console.log(userInfoObject);
@@ -207,7 +223,7 @@ const Header = (props) => {
           )}
 
           <a
-            href="/"
+            href={hrefState}
             style={{
               backgroundColor: "white",
               border: "1px solid gray",

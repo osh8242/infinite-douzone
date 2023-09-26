@@ -33,8 +33,9 @@ import ErrorPage from "./templates/ErrorPage";
 function ConditionalHeader() {
   const location = useLocation();
 
-  if (location.pathname === "/") {
-    return <LoginLayout />;
+  if (location.pathname === "/login") {
+    // return <LoginLayout />;
+    return <LoginGrid />;
   } else if (location.pathname === "/loginFindId") {
     return <LoginFindId />;
   } else if (location.pathname === "/loginFindPwd") {
@@ -51,12 +52,13 @@ function ConditionalHeader() {
 function App() {
   return (
     <div>
-      <Provider store={store}>
+      {/* <Provider store={store}> */}
+      <LoginProvider>
         <BrowserRouter>
           <ConditionalHeader />
           <Routes>
-            <Route path="/mypageTest" element={<MainTestPage />} />
-            <Route path="/main" element={<MainHome />} />
+            {/* <Route path="/mypageTest" element={<MainTestPage />} /> */}
+            <Route path="/" element={<MainHome />} />
             {/* 임시 링크 */}
             {/* <Route path="/signup" element={<SignUp />} /> */}
             <Route path="/er" element={<EmpRegisterationLayout />} />
@@ -69,7 +71,8 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </BrowserRouter>
-      </Provider>
+        {/* </Provider> */}
+      </LoginProvider>
     </div>
   );
 }

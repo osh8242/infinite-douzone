@@ -73,6 +73,7 @@ const LaborContractLayout = () => {
                     onSearch={actions.onSearch}
                     // dateSelectRef={dateSelectRef}
                     // dateOption={dateOption}
+                    // searchOption={searchOption}
                     salSelectRef={salSelectRef}
                     selectList={searchSelectList}
                   />

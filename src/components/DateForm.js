@@ -19,6 +19,7 @@ function DateForm(props) {
   // const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(value || "");
   const [isDisabled, setDisabled] = useState();
+
   useEffect(() => {
     if (disabled) setDisabled(true);
     else setDisabled(false);

@@ -11,6 +11,7 @@ const api = axios.create({
 // 인터셉터요청
 api.interceptors.request.use(
   (config) => {
+    console.log("0.");
     const token = localStorage.getItem("authToken");
     console.log("getAuthToken", token);
     if (token) {

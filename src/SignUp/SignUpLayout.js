@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Container } from "react-bootstrap";
+import { Row, Col, Button, Container, Form } from "react-bootstrap";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
 import TextBoxComponent from "../../src/components/TextBoxComponent";
 import CommonConstant from "../../src/model/CommonConstant";
@@ -12,12 +12,96 @@ import DateForm from "../components/DateForm";
 import "./signUpLayout.css";
 import { Radio } from "@mui/material";
 import { RADIO_LIST } from "../model/CommonConstant";
-// import userModel from "../model/userModel";
+import useRegisterModel from "./useRegisterModel";
+import { url } from "../model/CommonConstant";
 
 function SignUpLayout() {
-  // const { state, actions, mainTablePkValue } = userModel();
-  // const { mainTabRef, leftTableData, mainTabData, subTableData, selectedRows } =
-  //   state;
+  const [id, setId] = useState("");
+  const [tempId, setTempId] = useState("");
+  const [tempPwd, setTempPwd] = useState("");
+  const [tempEmail, setTempEmail] = useState("");
+  const [tempName, setTempName] = useState("");
+  const [tempDate, setTempDate] = useState("");
+  const [tempGender, setTempGender] = useState("");
+  const [tempPhone, setTempPhone] = useState("");
+  // const { RegisterUser } = useRegisterModel();
+
+  // const { id, setId } = useState();
+  // const { tempId, setTempId } = useState();
+
+  // useEffect(() => {
+  //   setId(tempId);
+  // }, [tempId]);
+
+  const RegisterUser = () => {
+    console.log("Register GO!");
+    console.log(tempId);
+    console.log(tempPwd);
+    console.log(tempName);
+    console.log(tempDate);
+    console.log(tempGender);
+    // console.log(tempPhone);
+    // console.log(tempEmail);
+    // console.log(tempPhone); ... 필요
+
+    const RegisterVo = {
+      userId: tempId,
+      userPwd: tempPwd,
+      userName: tempName,
+      // email: tempEmail,
+      birth: tempDate,
+      gender: tempGender,
+      // phone: tempPhone,
+    };
+
+    // try {
+    //   const response = axios.post(`${url}/auth/register`, RegisterVo);
+    //   console.log(response);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.error("ERROR: " + error);
+    // }
+
+    async function fetchData() {
+      let result = await axios.post(`${url}/auth/register`, RegisterVo);
+      console.log(result.data);
+    }
+
+    fetchData();
+  };
+
+  const handleTemporaryId = (e) => {
+    setTempId(e.target.value);
+    // setIdValid(false);
+  };
+
+  const handleTemporaryPwd = (e) => {
+    setTempPwd(e.target.value);
+  };
+  const handleTempName = (e) => {
+    setTempName(e.target.value);
+  };
+  const handleTempDate = (e) => {
+    setTempDate(e.target.value);
+  };
+  const handleTempGender = (e) => {
+    setTempGender(e.target.value);
+  };
+  const handleTempPhone = (e) => {
+    setTempPhone(e.target.value);
+  };
+
+  const handleTemporaryEmail = (e) => {
+    // console.log(e);
+    // console.log(e.target.value);
+    // console.log(tempEmail);
+    setTempEmail(e.target.value);
+  };
+
+  const handleIdCheck = () => {
+    setId(tempId);
+  };
+
   return (
     <Container
       id="SignUp"
@@ -33,7 +117,6 @@ function SignUpLayout() {
           />
           <h2 className="subLabel">로그인</h2>
         </Row>
-
         <Col md="15">
           <Row className="d-flex justify-content-center align-items-center">
             <Col
@@ -43,12 +126,13 @@ function SignUpLayout() {
               아이디
             </Col>
             <Col md="5">
-              <TextBoxComponent
+              <Form.Control
                 name="userId"
+                value={tempId}
+                onChange={handleTemporaryId}
                 type={"textbox"}
                 placeholder=""
                 height={40}
-                // onChange={submitData}
               />
             </Col>
           </Row>
@@ -60,9 +144,11 @@ function SignUpLayout() {
               비밀번호
             </Col>
             <Col md="5">
-              <TextBoxComponent
+              <Form.Control
                 name="userId"
                 type={"password"}
+                value={tempPwd}
+                onChange={handleTemporaryPwd}
                 placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
                 height={40}
               />
@@ -76,10 +162,11 @@ function SignUpLayout() {
               이메일
             </Col>
             <Col md="5">
-              <TextBoxComponent
+              <Form.Control
                 name="userId"
                 type={"email"}
-                placeholder="ID"
+                value={tempEmail}
+                onChange={handleTemporaryEmail}
                 height={40}
               />
             </Col>
@@ -92,8 +179,10 @@ function SignUpLayout() {
               이름
             </Col>
             <Col md="5">
-              <TextBoxComponent
+              <Form.Control
                 name="userId"
+                value={tempName}
+                onChange={handleTempName}
                 type={"textbox"}
                 placeholder="이름"
                 height={40}
@@ -108,18 +197,11 @@ function SignUpLayout() {
               생년월일
             </Col>
             <Col md="5">
-              <TextBoxComponent type={"date"} />
-            </Col>
-          </Row>
-          <Row className="d-flex justify-content-center align-items-center">
-            <Col
-              className="d-flex justify-content-center align-items-right"
-              md="2"
-            >
-              성별
-            </Col>
-            <Col md="5">
-              <RadioForm optionList={RADIO_LIST.fgSex} />
+              <Form.Control
+                type={"date"}
+                value={tempDate}
+                onChange={handleTempDate}
+              />
             </Col>
           </Row>
           <Row className="d-flex justify-content-center align-items-center">
@@ -130,12 +212,32 @@ function SignUpLayout() {
               연락처
             </Col>
             <Col md="5">
-              <TextBoxComponent name="userId" type={"textbox"} height={40} />
+              <Form.Control
+                name="userId"
+                type={"textbox"}
+                value={tempPhone}
+                onChange={handleTempPhone}
+                height={40}
+              />
             </Col>
           </Row>
         </Col>
+        <Col md="6" className="d-flex flex-column align-items-center">
+          <Button
+            className="btn-custom"
+            style={{
+              marginTop: "50px",
+              padding: "10px 40px",
+              fontSize: "16px",
+              width: "85%",
+              borderRadius: "15px",
+            }}
+            onClick={RegisterUser}
+          >
+            로그인
+          </Button>
+        </Col>
       </Row>
-
       {/* <Col md="7" className="px-5">
         <Row className="justify-content-center mb-4">
           <img
