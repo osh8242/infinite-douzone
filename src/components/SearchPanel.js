@@ -52,7 +52,7 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 />
               </Col>
             </div>
-            <div class="px-5">
+            <div className="px-5">
               {isBodyOpen && (
                 <Row>
                   {children[1]}
