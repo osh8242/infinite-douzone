@@ -26,7 +26,7 @@ export const salEmp = {
 export const salAllow = {
     headers : [
         { field: "nmAllow", text: "급여항목" , readOnly : true},
-        { field: "allowPay", text: "지급금액" }
+        { field: "allowPay", text: "지급금액" , type:"number" }
     ]
 };
 
