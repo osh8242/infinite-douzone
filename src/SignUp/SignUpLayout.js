@@ -101,6 +101,24 @@ function SignUpLayout() {
     setId(tempId);
   };
 
+  const checkVaildId = () => {
+    console.log("아이디 중복 검사 실시");
+    //    const response = axios.post(`${url}/auth/checkVaildId`, data);
+    axios
+      .post(`${url}/auth/checkVaildId`, { userId: tempId })
+      .then((response) => {
+        console.log("reesult::" + response.data);
+        if (response.data === "SUCCESS") {
+          console.log("Check ID SUDSSCCEESS");
+          // 그대로 두거나 지우거나
+        } else if (response.data === "FAIL") {
+          console.log("already exist id///");
+          // TODO : 아이디 재입력 요청 처리
+        }
+      })
+      .catch(console.errors);
+  };
+
   return (
     <Container
       id="SignUp"
@@ -134,6 +152,7 @@ function SignUpLayout() {
                 height={40}
               />
             </Col>
+            <Button onClick={checkVaildId}>중복검사중</Button>
           </Row>
           <Row className="d-flex justify-content-center align-items-center">
             <Col
