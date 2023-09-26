@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
+import { makeCommaNumber } from "../utils/NumberUtils";
 import CodeHelperModal from "./CodeHelperModal";
 import ConfirmComponent from "./ConfirmComponent";
 import ModalComponent from "./ModalComponent";
@@ -502,6 +503,8 @@ const TableForm = ({
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
             : "";
+        case "number":
+          return makeCommaNumber(value);
         default:
           const row = tableRows[rowIndex];
           return row.isNew ? "" : row.item[field];
