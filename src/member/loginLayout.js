@@ -7,7 +7,6 @@ import { Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
 import "./login.css";
-
 //redux loginUser
 const LoginLayout = () => {
   const dispatch = useDispatch();

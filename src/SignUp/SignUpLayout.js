@@ -14,8 +14,11 @@ import { Radio } from "@mui/material";
 import { RADIO_LIST } from "../model/CommonConstant";
 import useRegisterModel from "./useRegisterModel";
 import { url } from "../model/CommonConstant";
+import { useNavigate } from "react-router-dom";
 
 function SignUpLayout() {
+  const navigate = useNavigate();
+
   const [id, setId] = useState("");
   const [tempId, setTempId] = useState("");
   const [tempPwd, setTempPwd] = useState("");
@@ -67,6 +70,8 @@ function SignUpLayout() {
       console.log(result.data);
     }
 
+    // navigator("/successSignup");
+    window.location.href = "/successSignup";
     fetchData();
   };
 
@@ -234,7 +239,7 @@ function SignUpLayout() {
             }}
             onClick={RegisterUser}
           >
-            로그인
+            회원가입
           </Button>
         </Col>
       </Row>

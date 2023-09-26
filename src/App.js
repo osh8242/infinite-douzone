@@ -19,22 +19,13 @@ import LoginFindPwd from "./member/loginFindPwd";
 import { useLocation } from "react-router-dom";
 import MainTestPage from "./templates/MainTestPage";
 import ErrorPage from "./templates/ErrorPage";
-
-//   if (location.pathname === "/") return <LoginLayout />;
-//   else if (location.pathname === "/loginFindId") {
-//     return <LoginFindId />;
-//   } else if (location.pathname === "/loginFindPwd") {
-//     return <LoginFindPwd />;
-//   } else if (location.pathname === "/signup") {
-//     return <SignUpLayout />;
-//   } else return <Header />;
-// }
+import SuccessSignUp from "./templates/SuccessSignUp";
 
 function ConditionalHeader() {
   const location = useLocation();
 
   if (location.pathname === "/login") {
-    // return <LoginLayout />;
+    // return <LoginLayout />; //redux login page
     return <LoginGrid />;
   } else if (location.pathname === "/loginFindId") {
     return <LoginFindId />;
@@ -44,6 +35,8 @@ function ConditionalHeader() {
     return <SignUpLayout />;
   } else if (location.pathname === "/error") {
     return <ErrorPage />;
+  } else if (location.pathname === "/successSignup") {
+    return <SuccessSignUp />;
   } else {
     return <Header />;
   }
@@ -76,33 +69,5 @@ function App() {
     </div>
   );
 }
-
-// return (
-//   <div>
-//     {/* <LoginProvider> */}
-//     <Provider store={store}>
-//       <BrowserRouter>
-//         {/* <Routes>
-//           <Route path="/login" element={<LoginLayout />} />
-//         </Routes> */}
-//         {/* {location.pathname !== "/login" && <Header />} */}
-//         <Routes>
-//           <Route path="/" element={<MainHome />} />
-//           <Route path="/signup" element={<SignUp />} />
-//           <Route path="/er" element={<EmpRegisterationLayout />} />
-//           <Route path="/hr" element={<HrManagementLayout />} />
-//           <Route path="/lc/*" element={<LaborContractLayout />} />
-//           <Route path="/si" element={<SalaryInformationEntryLayout />} />
-//           {/* <Route path="/login" element={<LoginLayout />} /> */}
-//           <Route path="/loginFindId" element={<LoginFindId />} />
-//           <Route path="/loginFindPwd" element={<LoginFindPwd />} />
-//           <Route path="/mypage" element={<MyPage />} />
-//         </Routes>
-//       </BrowserRouter>
-//       {/* </LoginProvider> */}
-//     </Provider>
-//   </div>
-// );
-// }
 
 export default App;

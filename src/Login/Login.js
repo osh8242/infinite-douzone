@@ -2,6 +2,7 @@ import React from "react";
 import TextComponent from "./TextComponents";
 import useLoginModel from "./useLoginModel";
 import { Row, Col, Button, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
 
 const Login = () => {
@@ -63,21 +64,48 @@ const Login = () => {
             >
               로그인
             </Button>
-            <Button
-              className="btn-custom"
+            <div
               style={{
                 marginTop: "10px",
-                padding: "0px 40px",
-                fontSize: "16px",
+                fontSize: "20px",
                 width: "85%",
-                borderRadius: "15px",
-                color: "darkblue",
-                backgroundColor: "white",
-                border: "none",
+                textAlign: "center",
               }}
             >
-              회원가입
-            </Button>
+              <Link
+                to="/loginFindId"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginRight: "20px",
+                }}
+              >
+                아이디 찾기
+              </Link>
+              <span style={{ marginRight: "10px" }}>|</span>
+              <Link
+                to="/loginFindPwd"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginLeft: "20px",
+                  marginRight: "20px",
+                }}
+              >
+                비밀번호 찾기
+              </Link>
+              <span style={{ marginLeft: "10px", marginRight: "10px" }}>|</span>
+              <Link
+                to="/signup"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginLeft: "20px",
+                }}
+              >
+                회원가입
+              </Link>
+            </div>
           </Col>
         </Row>
       </Col>
