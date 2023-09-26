@@ -9,3 +9,11 @@
 row-gap: 150;
 column-gap: 100;
 }
+
+.inVaild{
+  outline-style: solid !important;
+  outline-width: 1px !important;
+  outline-offset: -1px !important;
+  outline-color: rgb(255, 20, 52) !important;
+  box-shadow: 0 0px 4px 2px rgba(255, 20, 52, 0.5) !important;
+}

@@ -15,10 +15,12 @@ import { RADIO_LIST } from "../model/CommonConstant";
 import useRegisterModel from "./useRegisterModel";
 import { url } from "../model/CommonConstant";
 import { useNavigate } from "react-router-dom";
+import { invalid } from "moment/moment";
 
 function SignUpLayout() {
   const navigate = useNavigate();
 
+  const [invalid, setInvalid] = useState("");
   const [id, setId] = useState("");
   const [tempId, setTempId] = useState("");
   const [tempPwd, setTempPwd] = useState("");
@@ -110,10 +112,12 @@ function SignUpLayout() {
         console.log("reesult::" + response.data);
         if (response.data === "SUCCESS") {
           console.log("Check ID SUDSSCCEESS");
+          setInvalid(" ");
           // 그대로 두거나 지우거나
         } else if (response.data === "FAIL") {
           console.log("already exist id///");
-          // TODO : 아이디 재입력 요청 처리
+          setInvalid("invalid");
+          // TODO : 아이디 재입력 요청 문구 처리 필요
         }
       })
       .catch(console.errors);
@@ -150,9 +154,15 @@ function SignUpLayout() {
                 type={"textbox"}
                 placeholder=""
                 height={40}
+                onBlur={checkVaildId}
+                className={invalid}
               />
             </Col>
-            <Button onClick={checkVaildId}>중복검사중</Button>
+            {/* <Button
+            // onClick={checkVaildId}
+            >
+              중복검사중
+            </Button> */}
           </Row>
           <Row className="d-flex justify-content-center align-items-center">
             <Col
