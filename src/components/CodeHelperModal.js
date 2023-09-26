@@ -61,14 +61,16 @@ function CodeHelperModal(props) {
     <>
       <div>
         <Row className="table-wrapper">
-          <TableForm
-            readOnly
-            tableHeaders={tableHeaders}
-            tableData={filteredData}
-            onRowClick={handleRowClick}
-          />
+          <div className="table-wrapper-content">
+            <TableForm
+              readOnly
+              tableHeaders={tableHeaders}
+              tableData={filteredData}
+              onRowClick={handleRowClick}
+            />
+          </div>
         </Row>
-        <Row>
+        <Row className="table-footer">
           <Form.Group>
             <TextBoxComponent
               type="text"

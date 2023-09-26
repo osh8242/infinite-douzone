@@ -157,7 +157,6 @@ const HrManagementLayout = () => {
                   tableData={leftTableData}
                   selectedRows={selectedRows}
                   codeHelper
-                  defaultSelectedRow
                   defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,

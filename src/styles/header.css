@@ -1,11 +1,17 @@
-* {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  font-size: small;
+@font-face {
+  font-family: "Esamanru-Light";
+  /* src: url("./fonts/esamanru_Light.ttf") format("truetype"); */
+  src: url("./fonts/esamanru_Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Sintony-Bold";
+  src: url("./fonts/Sintony-Bold.ttf") format("truetype");
+  font-weight: normal;
 }
 
 #topNotificationHeader {
-  height: 52px;
+  height: 56px;
   display: flex;
   margin-right: 10px;
   justify-content: space-between;
@@ -28,7 +34,7 @@
 
 #secondTopHeader {
   width: 100vw;
-  height: 45px;
+  height: 48px;
   display: flex;
   justify-content: space-between;
   background-color: rgb(48, 150, 255);
@@ -79,7 +85,7 @@
   transition: border 0.3s;
   width: 256px;
   height: fit-content;
-  padding: 2px 10px; 
+  padding: 2px 10px;
   border-color: rgb(230, 230, 230);
   /* font-family: 'Noto Sans', sans-serif; */
 }
@@ -99,6 +105,15 @@
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+.signUpSignInBtn-dark {
+  background-color: white;
+  border: 1px solid gray;
+  color: dimgray;
+  padding: 4px 16px;
+  border-radius: 5px;
+  text-decoration: none;
 }
 
 .colorWhite {
@@ -121,18 +136,16 @@
 #extraDeductBtn {
   width: 120px;
   height: 32px;
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid white;
 }
 
-#reCalculateBtn{
+#reCalculateBtn {
   width: 60px;
   height: 32px;
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid white;
 }
-
-
 
 /* DropDowm/////// */
 .miniMap {
@@ -162,52 +175,51 @@
   background-color: #f7f7f7;
 }
 .profileDropdown::after {
-    content: '';
-    position: absolute;
-    top: -10px;  
-    right: 10px;  
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid white;  
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid white;
 }
 
 .profileDropdown {
   position: absolute;
   right: 180px;
-  top:  50px;
+  top: 50px;
   background-color: white;
   border: 1px solid #e1e1e1;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;  
-  height: 300px;  
+  width: 300px;
+  height: 300px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 20px;
-
 }
 
 .profileDropdown img {
   margin-top: 15px;
   margin-bottom: 10px;
   /* padding-top: 10px; */
-  width: 100px;   
+  width: 100px;
   height: 100px;
-  border-radius: 50%;   
+  border-radius: 50%;
 }
 
 .profileDropdown p {
-  font-size: 16px;   
+  font-size: 16px;
   font-weight: bold;
 }
 
 .profileDropdown a {
-  font-size: 16px;  
+  font-size: 16px;
   text-decoration: none;
   color: dimgray;
   padding: 10px;
@@ -220,36 +232,39 @@
   background-color: #e1e1e1;
 }
 
-
 #topRightNotificationHeader {
-    position: relative;  
+  position: relative;
 }
 
-.profileDropdown, .miniMap {
-    background-color: #f8f8f8;
-    border-radius: 8px;
-    padding: 15px;
-    transition: background-color 0.2s ease;
+.profileDropdown,
+.miniMap {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 15px;
+  transition: background-color 0.2s ease;
 }
 
-.profileDropdown:hover, .miniMap:hover {
-    background-color: #f2f2f2;
+.profileDropdown:hover,
+.miniMap:hover {
+  background-color: #f2f2f2;
 }
 
 /*  선택  */
 .profileDropdown img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.profileDropdown a, .miniMap a {
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
+.profileDropdown a,
+.miniMap a {
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
 }
 
-.profileDropdown a:hover, .miniMap a:hover {
-    background-color: #e6e6e6;
+.profileDropdown a:hover,
+.miniMap a:hover {
+  background-color: #e6e6e6;
 }

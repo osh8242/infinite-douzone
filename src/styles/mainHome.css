@@ -1,0 +1,241 @@
+@font-face {
+  font-family: "Esamanru-Light";
+  src: url("./fonts/esamanru_Light.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Esamanru-Bold";
+  src: url("./fonts/esamanru_Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Sintony-Bold";
+  src: url("./fonts/Sintony-Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "SUITE-Variable";
+  src: url("./fonts/SUITE-Variable.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "NIXGONFONTS";
+  src: url("./fonts/NIXGONFONTS%20L%202.0.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("./fonts/Jost-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+}
+
+#mainPageTopHeader-BackGround {
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  height: 64px;
+}
+
+#mainPageTopHeader {
+  top: 0;
+  margin: 0px 16%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "SUITE-Variable";
+  text-decoration: none;
+}
+
+#mainPageTopHeaderContents {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+#mainPageTopHeaderContents a {
+  text-decoration: none;
+  font-size: 12pt;
+}
+
+#signUpSignInBtn {
+  display: flex;
+  gap: 12px;
+}
+
+#signUpSignInBtn a {
+  color: white;
+  border: solid 1px white;
+  border-radius: 2px;
+  padding: 4px 16px;
+  background-color: transparent;
+}
+
+#signUpSignInBtn a:hover {
+  /* transform: scale(1.1); */
+  transition-duration: 200ms;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.background {
+  width: 100vw;
+  height: 72vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background: rgb(57, 63, 80);
+  position: relative;
+  background-image: url("./img/wehago_backImg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: scaleBackground 16s infinite;
+}
+
+.textBox {
+  width: 100vw;
+  text-align: center;
+  color: white;
+}
+
+.menuBtnList {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  justify-content: center;
+  text-align: center;
+  font-family: "Esamanru-Light";
+  color: dimgray;
+}
+
+.menuBtn {
+  margin: 16px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-size: 1.2em;
+  font-size: 48px;
+  border: solid 0px rgb(224, 91, 58);
+  border-radius: 16px;
+  color: white;
+}
+
+.er {
+  background: linear-gradient(120deg, rgb(162, 255, 252), rgb(48, 150, 255));
+}
+.er:hover {
+  background: linear-gradient(
+    120deg,
+    rgba(162, 255, 252, 0.7),
+    rgba(48, 150, 255, 0.7)
+  );
+}
+.hr {
+  background: linear-gradient(120deg, rgb(239, 255, 168), rgb(48, 150, 255));
+}
+.hr:hover {
+  background: linear-gradient(
+    120deg,
+    rgba(239, 255, 168, 0.7),
+    rgba(48, 150, 255, 0.7)
+  );
+}
+.lc {
+  background: linear-gradient(120deg, rgb(162, 255, 252), rgb(48, 150, 255));
+}
+.lc:hover {
+  background: linear-gradient(
+    120deg,
+    rgba(162, 255, 252, 0.7),
+    rgba(48, 150, 255, 0.7)
+  );
+}
+.si {
+  background: linear-gradient(120deg, rgb(254, 212, 255), rgb(48, 150, 255));
+}
+.si:hover {
+  background: linear-gradient(
+    120deg,
+    rgba(254, 212, 255, 0.7),
+    rgba(48, 150, 255, 0.7)
+  );
+}
+
+#leftArrowBtn {
+  color: white;
+  position: absolute;
+  top: 45%;
+  left: 32px;
+  font-size: 48px;
+}
+#leftArrowBtn-animation {
+  color: white;
+  position: absolute;
+  top: 45%;
+  left: 32px;
+  font-size: 48px;
+  animation: pulseAnimation 1s infinite;
+}
+
+/* fonts */
+.NIXGONFONTS {
+  font-family: "NIXGONFONTS";
+}
+
+.Sintony-Bold {
+  font-family: "Sintony-Bold";
+}
+
+.Esamanru-Light {
+  font-family: "Esamanru-Light";
+}
+
+.Jost {
+  font-family: "Jost";
+}
+
+.p-48 {
+  font-size: 48pt;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.p-24 {
+  font-size: 24pt;
+}
+
+.p-16 {
+  font-size: 16pt;
+}
+
+@keyframes scaleBackground {
+  0% {
+    background-size: 100%;
+  }
+  50% {
+    background-size: 105%;
+  }
+  100% {
+    background-size: 100%;
+  }
+}
+
+@keyframes pulseAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0.1;
+  }
+}
