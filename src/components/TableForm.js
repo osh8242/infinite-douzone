@@ -49,26 +49,27 @@ const TableForm = ({
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
     setTableRows(tableData);
-    if (JSON.stringify(tableRows) !== JSON.stringify(tableData)) {
-      setTableRows(tableData);
-      defaultFocus && setRefresh(!refresh);
-    }
-  }, [tableRows, tableData]);
+    // if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
+    // if (JSON.stringify(tableRows) !== JSON.stringify(tableData)) {
+    //   setTableRows(tableData);
+    //   defaultFocus && setRefresh(!refresh);
+    // }
+  }, [tableData]);
 
   useEffect(() => {
-    if (defaultFocus) {
-      tableFocus.current = true;
-      if (tableData.length !== 0) {
-        let defaultRow = 0;
-        if (tableData[tableData.length - 1]?.insertedRow) {
-          defaultRow = tableData.length - 1;
-        }
-        setRowRef(defaultRow);
-        setColumnRef(0);
-        handleRowClick(null, defaultRow, 0);
-        actions.setPkValue && actions.setPkValue(getPkValue(defaultRow));
-      }
-    }
+    // if (defaultFocus) {
+    //   tableFocus.current = true;
+    //   if (tableData.length !== 0) {
+    //     let defaultRow = 0;
+    //     if (tableData[tableData.length - 1]?.insertedRow) {
+    //       defaultRow = tableData.length - 1;
+    //     }
+    //     setRowRef(defaultRow);
+    //     setColumnRef(0);
+    //     handleRowClick(null, defaultRow, 0);
+    //     actions.setPkValue && actions.setPkValue(getPkValue(defaultRow));
+    //   }
+    // }
   }, [refresh]);
 
   //테이블 자신을 가르키는 dom ref
@@ -193,7 +194,6 @@ const TableForm = ({
   const removeNewRow = useCallback(() => {
     if (tableRows?.[tableRows.length - 1]?.isNew) tableRows.pop();
     setTableRows([...tableRows]);
-    console.log("tableRows in removeNewRow", tableRows);
   }, [tableRows]);
 
   //현재 행번호를 받아서 pkValue (객체)를 가져오는 함수
@@ -217,8 +217,6 @@ const TableForm = ({
           let newPkValue = {};
           newPkValue = getPkValue(rowIndex);
           actions.setPkValue(newPkValue);
-        } else {
-          actions.setPkValue({});
         }
       }
     },
@@ -228,6 +226,7 @@ const TableForm = ({
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
+      console.log("핸들로우클릭", e, rowIndex, columnIndex);
       if (rowRef === rowIndex && columnRef === columnIndex) return;
       setRowRef(rowIndex);
       setColumnRef(columnIndex);
@@ -265,7 +264,6 @@ const TableForm = ({
       if (rowIndex === tableRows.length) pushNewRow();
       tableRows[rowIndex].isEditable = true;
       setTableRows([...tableRows]);
-      console.log("더블클릭 tableRows", tableRows);
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -287,7 +285,6 @@ const TableForm = ({
   // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
   const getEditedRow = useCallback(
     (event, rowIndex, columnIndex) => {
-      console.log("getEditedRow의 tableRows", tableRows);
       let editedRow = {
         ...tableRows[rowIndex],
         isEditable: false,
@@ -314,12 +311,9 @@ const TableForm = ({
   const TdKeyDownHandler = useCallback(
     (event, rowIndex, columnIndex) => {
       event.preventDefault();
-      console.log("키다운 tableRows", tableRows);
+      event.stopPropagation();
       if (readOnly) return;
-      if (event.key === "Enter") {
-        event.preventDefault();
-        event.stopPropagation();
-
+      if (event.key === "Enter" && editableRowIndex !== -1) {
         const editedRow = getEditedRow(event, rowIndex, columnIndex);
 
         if (!editedRow) {
@@ -333,7 +327,7 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
-        console.log(" TdKeyDownHandler > newTableRows", newTableRows);
+        console.log("엔터키처리 newtableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
@@ -358,15 +352,6 @@ const TableForm = ({
     );
     return checkedBoxCount;
   }, [tableRows]);
-
-  // 체크박스 전체해제
-  const releaseAllCheckbox = useCallback(() => {
-    tableRows.forEach((row, index) => {
-      tableRows[index].checked = false;
-    });
-    setTableRows([...tableRows]);
-    if (actions.setSelectedRows) actions.setSelectedRows([]);
-  }, [actions, tableRows]);
 
   // 전체체크 or 전체해제 함수
   const allCheckboxChangeHandler = useCallback(() => {
@@ -427,7 +412,6 @@ const TableForm = ({
   //수정행에 대한 TextBoxComponent 반환함수
   const getInputTd = useCallback(
     (rowIndex, columnIndex) => {
-      //console.log("겟인풋TD tableRows", tableRows);
       const row = tableRows[rowIndex];
       const type = tableHeaders[columnIndex].type;
       const field = tableHeaders[columnIndex].field;
@@ -499,7 +483,6 @@ const TableForm = ({
 
   const getTdValue = useCallback(
     (rowIndex, columnIndex) => {
-      //console.log("getTdValue() > tableRows", tableRows);
       const type = tableHeaders[columnIndex]?.type;
       const field = tableHeaders[columnIndex].field;
       const value = tableRows[rowIndex].item[field];
@@ -530,7 +513,6 @@ const TableForm = ({
   //테이블 바깥 영역 클릭 핸들러 함수
   const tableMouseDownHandler = useCallback(
     (event) => {
-      //console.log("마우스 이벤트", event);
       if (myRef.current && !myRef.current.contains(event.target)) {
         if (tableFocus.current) {
           setColumnRef(-1);
@@ -550,10 +532,7 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        event.preventDefault();
-
-        console.log("이벤트키 누름", event.key);
-
+        // event.preventDefault();
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -568,6 +547,7 @@ const TableForm = ({
         if (editableRowIndex === -1) {
           switch (event.key) {
             case "ArrowDown":
+              event.preventDefault();
               if (rowRef < tableRows.length) {
                 setRowRef(rowRef + 1);
                 if (!rowAddable && rowRef === tableRows.length - 1)
@@ -577,6 +557,7 @@ const TableForm = ({
               break;
 
             case "ArrowUp":
+              event.preventDefault();
               if (rowRef > 0) {
                 setRowRef(rowRef - 1);
                 updatePkValue(rowRef - 1);
@@ -584,24 +565,29 @@ const TableForm = ({
               break;
 
             case "ArrowLeft":
+              event.preventDefault();
               if (columnRef > 0) setColumnRef(columnRef - 1);
               break;
 
             case "ArrowRight":
+              event.preventDefault();
               if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Home":
+              event.preventDefault();
               setRowRef(0);
               break;
 
             case "End":
+              event.preventDefault();
               setRowRef(rowAddable ? tableRows.length : tableRows.length - 1);
               break;
 
             case "Enter":
-              console.log("엔터키");
               onRowClick && onRowClick(event, tableRows[rowRef].item);
+              event.preventDefault();
+              event.stopPropagation();
               if (editableRowIndex === -1 && rowRef > -1) {
                 if (rowRef === tableRows.length) {
                   if (actions.newRowCodeHelper) {
@@ -616,10 +602,12 @@ const TableForm = ({
               break;
 
             case " ":
+              event.preventDefault();
               showCheckbox && checkboxHandler(rowRef);
               break;
 
             case "Delete":
+              event.preventDefault();
               tableFocus.current = false;
               setConfirmModalState({
                 show: true,
@@ -735,7 +723,7 @@ const TableForm = ({
                       handleDoubleClick(e, rowIndex, columnIndex)
                     }
                   >
-                    {row.isEditable ? (
+                    {row.isEditable && !thead.readOnly ? (
                       getInputTd(rowIndex, columnIndex)
                     ) : (
                       <div className="tableContents">
