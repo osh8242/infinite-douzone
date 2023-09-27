@@ -2,9 +2,7 @@ import React from "react";
 import { Row } from "react-bootstrap";
 import TableForm from "../../../components/TableForm";
 import {
-  modal_addSalAllow,
   salAllow,
-  salAllowSumData,
   sumAllowPay,
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import "../../../styles/HrManagement/HrManagementLayout.scss";

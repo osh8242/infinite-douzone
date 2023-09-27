@@ -12,6 +12,7 @@ export const SAVE_SALDATA_URL = "/sallowpay/mergeSalAllowPay"
 export const UPDATE_DATEINFO_URL = "/sallowpay/updateDate";
 export const SET_COPYSALDATA_LASTMONTH_URL = "/sallowpay/setCopyLastMonthData";
 export const GET_PAYMENTDATE_CODEHELPER_URL = "/sallowpay/getPaymentDateList";
+export const SAVE_DEDUCTDATA_URL = "/sadeductpay/mergeSalDeductPay";
 
 /* 사원리스트 영역 */
 export const salEmp = {
@@ -57,7 +58,7 @@ export const salAllowWithCalculation = {
 /* 공제항목 영역 */
 export const salDeduct = {
     headers : [
-        { field: "nmDeduct", text: "공제항목" },
+        { field: "nmDeduct", text: "공제항목" , readOnly : true},
         { field: "allowPay", text: "지급금액" , type:"number"},
     ]
 }

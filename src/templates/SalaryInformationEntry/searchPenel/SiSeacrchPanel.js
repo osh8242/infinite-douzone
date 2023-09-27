@@ -5,6 +5,7 @@ import { SI_MAIN_SEARCHFIELD, SI_SUB_SEARCHFIELD } from "./SiSearchPenelConstant
 import { codeHelperData_cdDept, codeHelperData_emplist, codeHelperData_occup, codeHelperData_paymentDate, codeHelperData_rankNo, forLaborOption, salaryDivisionOption, unitOption } from '../../../model/SalaryInformationEntry/SalConstant';
 import FormPanel from '../../../components/FormPanel';
 import ConfirmComponent from '../../../components/ConfirmComponent';
+import { currentDateStr } from '../../../utils/DateUtils';
 
 const SiSeacrchPanel = (props) => {
     const {
@@ -39,6 +40,22 @@ const SiSeacrchPanel = (props) => {
       actions.onSearch();
     }
 
+    // 지급일 설정 날짜비교 유효성
+    const validationPaymentDate = (newValue) =>{
+      const allowMonth = new Date(state.searchVo.allowMonth);
+      const paymentDate = new Date(newValue);
+      console.log("validationPaymentDate",validationPaymentDate);
+      if(allowMonth > paymentDate){
+        alert("귀속년월보다 지급일이 앞섭니다.");
+        actions.setPaymentDate(currentDateStr());
+        return false;
+      }
+
+      // 지급일 setting 해주기
+      actions.setPaymentDate(newValue);
+      return true;
+    }
+
     return (
         <div>
           <ConfirmComponent
@@ -58,11 +75,12 @@ const SiSeacrchPanel = (props) => {
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
               formData={formPanelData}
-              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, clickPaymentDateCodeHelper , {allowYear : state.allowYear, allowMonth : state.allowMonth})}}
+              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, clickPaymentDateCodeHelper , {allowYear : state.allowYear, allowMonth : state.allowMonth, paymentDate : state.paymentDate })}}
               onChange={{
                 allowMonth: (newValue)=> actions.setAllowMonth(newValue),
                 salDivision: (newValue) => selectOptionHandler(newValue),
-                paymentDate: (newValue)=> actions.setPaymentDate(newValue)
+                // paymentDate: (newValue) => {if(!validationPaymentDate(newValue)) 원래대로 돌려놓는 함수}
+                paymentDate: (newValue) => validationPaymentDate(newValue)
               }}
               columnNumber={3}
             /> 

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
-import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
+import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_DEDUCTDATA_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
 import api from '../Api';
 
@@ -63,10 +63,7 @@ const SalaryInformationEntryModel = () => {
   const [searchCdDept, setSearchCdDept] = useState(""); // 부서코드 검색
   const [searchCdOccup, setSearchCdOccup] = useState(""); // 직책코드 검색
   const [searchYnUnit, setSearchYnUnit] = useState(""); // 생산직여부 검색
-  
-  console.log('searchCdEmp');
-  console.log(searchCdEmp);
-  
+   
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
@@ -90,7 +87,7 @@ const SalaryInformationEntryModel = () => {
         ynComplete: newYnComplete,
       })
       .then((response) => {
-        setYnComplete(newYnComplete);
+        if(response.data > 0) setYnComplete(newYnComplete);
       });
   }, [ynComplete, dateId]);
 
@@ -185,6 +182,11 @@ const SalaryInformationEntryModel = () => {
   const onSearch = useCallback(() => {
     
     // 비우기
+    setSalPaySumData({...salPaySumData
+      , totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}]      // 공제항목 합계테이블 데이터(selectbox 조회)
+      , totalDeductPay : [{item: {}}]
+    });
+    setCdEmp('');
     setSaInfoListData([]);
     setSalData([]);
     setSumAllowPayByYnTax([ { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }}]);
@@ -237,10 +239,15 @@ const SalaryInformationEntryModel = () => {
       .catch((error) => {
         console.error("에러발생: ", error);
       });
-    }, [allowMonth, paymentDate, salDivision]);
+    }, [allowMonth, paymentDate, salDivision, ynComplete]);
 
   /* 사원별 지급액 리스트 조회  */
   const getSaPayByCdEmp = () => {
+    
+    // 데이터 비우기
+    setSumDeductPay([{ item: { sumDeductPay: 0 , excessAmount : 0}}]);
+    setSumAllowPayByYnTax([{ item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }}]);
+
     if (cdEmp !== "") {
       api
         .post(url + GET_SALINFO_BY_EMP_URL, { cdEmp: cdEmp, dateId: dateId, salDivision: salDivision })
@@ -269,7 +276,9 @@ const SalaryInformationEntryModel = () => {
                 },
               },
             ];
+
             setSumAllowPayByYnTax(sumAllowPayByYnTax);
+
           } else {
             setSumAllowPayByYnTax([
               { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 } },
@@ -305,6 +314,7 @@ const SalaryInformationEntryModel = () => {
           
           /* 조회구분 */
            getSalTotalSum('EmpAllThisMonth');
+           
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -371,6 +381,22 @@ const SalaryInformationEntryModel = () => {
     });
   };
 
+  /* 공제 지급액 수정 */
+  const updateSalaryDeductPay = useCallback((salaryDeductPay) => {
+    const updatedData = {...salaryDeductPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate};
+    saveSalDeductPay(updatedData); // 저장
+  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate]);
+
+/* 급여테이블 수정 + 공제항목테이블 update */
+const saveSalDeductPay = (updatedData) => {
+  api
+  .post(url + SAVE_DEDUCTDATA_URL, updatedData)
+  .then((response) => { getSaPayByCdEmp(); })
+  .catch((error) => {
+    console.error("에러발생: ", error);
+  });
+};
+
   /* 전월데이터 복사 */
   const setCopyLastMonthData = useCallback(() => {
     api
@@ -434,6 +460,7 @@ const SalaryInformationEntryModel = () => {
       dateId,
       ynComplete,
       
+      
     },
     actions: {
       setSaInfoListData,
@@ -466,6 +493,7 @@ const SalaryInformationEntryModel = () => {
       getSalTotalSum,
       updateDate,
       setCopyLastMonthData,
+      updateSalaryDeductPay
     },
   };
 };

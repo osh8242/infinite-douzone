@@ -104,7 +104,7 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, allowYear, modalShow,
         </Button>
 
         <Button id="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >
-          {ynComplete === 'N'? '완료 ': '해제'}
+          {ynComplete === 'Y'? '해제': '완료'}
         </Button>        
 
         <button className="backgroundBorderNone">
