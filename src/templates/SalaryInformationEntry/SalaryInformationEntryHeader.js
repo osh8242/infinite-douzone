@@ -54,10 +54,8 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, allowYear, modalShow,
   }
 
   const setSearchDate = (e,row) => {
-    // console.log(row);
     actions.setPaymentDate(row.paymentDate);
     actions.setAllowMonth(row.allowMonth);
-    // actions.setDateId(row.dateId);
     actions.onSearch();
   }
   // 완료

@@ -15,10 +15,13 @@ const SalaryInformationEntryModel = () => {
   const [sumDeductPay, setSumDeductPay] = useState([
     { item: { sumDeductPay: 0 , excessAmount : 0}}
   ]);
+
   const [deductData, setDeductData] = useState([]);               // 공제항목 테이블 
   const [salPaySumData, setSalPaySumData] = useState({            // 공제항목 합계테이블 데이터(selectbox 조회)
     allowPay: [],
+    totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}], 
     deductPay: [],
+    totalDeductPay : [{item: {}}]
   });
   const [saInfoDetailData, setSaInfoDetailData] = useState([]); // 사원상세조회
 
@@ -60,7 +63,10 @@ const SalaryInformationEntryModel = () => {
   const [searchCdDept, setSearchCdDept] = useState(""); // 부서코드 검색
   const [searchCdOccup, setSearchCdOccup] = useState(""); // 직책코드 검색
   const [searchYnUnit, setSearchYnUnit] = useState(""); // 생산직여부 검색
-
+  
+  console.log('searchCdEmp');
+  console.log(searchCdEmp);
+  
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
@@ -89,8 +95,8 @@ const SalaryInformationEntryModel = () => {
   }, [ynComplete, dateId]);
 
   const getSalTotalSum = useCallback(
-    (event, value) => {
-      let params = { allowYear:allowYear ,allowMonth: allowMonth, paymentDate: paymentDate, salDivision : salDivision };
+    (value) => {
+      let params = { allowYear : allowYear, allowMonth : allowMonth, paymentDate : paymentDate, salDivision : salDivision };
       switch (value) {
         case "EmpAllThisMonth":
           params = { ...params, allowMonthFlag: "true" };
@@ -117,27 +123,55 @@ const SalaryInformationEntryModel = () => {
       api
         .post(url + GET_SAL_TOTAL_SUM_URL, params)
         .then((response) => {
-          const totalSalAllowPaydata = response.data.salAllow.map((item) => ({
-            item: {
-              cdAllow: item.cdAllow,
-              nmAllow: item.nmAllow,              
-              ynTax: item.ynTax == "N"? "비과" : "과세",
-              sumAllowPay: item.sumAllowPay,
-            },
-          }));
+          
+          const totalSalAllowPaydata = [];
+          let totalSalAllowPaySumTaxY = 0; // 과세
+          let totalSalAllowPaySumTaxN = 0; // 비과세
 
-          //console.log( '공제항목 합계데이터 >> ', response.data.salDeduct);
-          const totalSalDeductPaydata = response.data.salDeduct.map((item) => ({
-            item: {
-              cdDeduct: item.cdDeduct,
-              nmDeduct: item.nmDeduct,
-              sumDeductPay: item.sumDeductPay,
-            },
-          }));
+          response.data.salAllow.forEach((item) => {
+            item.ynTax==='N'? totalSalAllowPaySumTaxN += Number(item.sumAllowPay) : totalSalAllowPaySumTaxY += Number(item.sumAllowPay);
+            totalSalAllowPaydata.push({
+              item: {
+                cdAllow: item.cdAllow,
+                nmAllow: item.nmAllow,              
+                ynTax: item.ynTax == "N" ? "비과" : "과세",
+                sumAllowPay: item.sumAllowPay,
+              }
+            });
+          });
+          
+          const totalSalDeductPaydata = [];
+          let totalSalDeductPaySum = 0;
+
+          response.data.salDeduct.forEach((item) => {
+            totalSalDeductPaySum += Number(item.sumDeductPay);
+            totalSalDeductPaydata.push({
+              item: {
+                cdDeduct: item.cdDeduct,
+                nmDeduct: item.nmDeduct,
+                sumDeductPay: item.sumDeductPay,
+              },
+            });
+          });
+
           setSalPaySumData({
             allowPay: totalSalAllowPaydata,
+            totalAllowPay : [
+              {item : { 
+                sumByY : totalSalAllowPaySumTaxY
+                , sumByN : totalSalAllowPaySumTaxN
+                , sumAllowPay : totalSalAllowPaySumTaxY + totalSalAllowPaySumTaxN }}
+              ], 
             deductPay: totalSalDeductPaydata,
+            totalDeductPay : [
+              {item: {
+                sumDeductPay : totalSalDeductPaySum,
+                excessAmount : totalSalAllowPaySumTaxY + totalSalAllowPaySumTaxN - totalSalDeductPaySum
+              }
+            }]
           });
+
+          
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -197,33 +231,7 @@ const SalaryInformationEntryModel = () => {
 
           
           /* select box 지급액 통계 합계 */
-          const totalSalPaydata = response.data.totalSalPaydata;
-
-          const totalSalAllowPaydata =
-            totalSalPaydata &&
-            totalSalPaydata.salAllow.map((item) => ({
-              item: {
-                cdAllow: item.cdAllow,
-                nmAllow: item.nmAllow,
-                ynTax: item.ynTax == "N"? "비과" : "과세",
-                sumAllowPay: item.sumAllowPay,
-              },
-            }));
-
-          const totalSalDeductPaydata =
-            totalSalPaydata &&
-            totalSalPaydata.salDeduct.map((item) => ({
-              item: {
-                cdDeduct: item.cdDeduct,
-                nmDeduct: item.nmDeduct,
-                sumDeductPay: item.sumDeductPay,
-              },
-            }));
-
-          setSalPaySumData({
-            allowPay: totalSalAllowPaydata,
-            deductPay: totalSalDeductPaydata,
-          });
+          getSalTotalSum('EmpAllThisMonth');
         }
       })
       .catch((error) => {
@@ -295,6 +303,8 @@ const SalaryInformationEntryModel = () => {
           const saEmpDetail = response.data.saEmpDetail;
           setSaInfoDetailData(saEmpDetail);
           
+          /* 조회구분 */
+           getSalTotalSum('EmpAllThisMonth');
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -341,8 +351,6 @@ const SalaryInformationEntryModel = () => {
     ];
   }, [saInfoListData]);
 
-  /* 공제항목 통계 계산 */
-  
   
   /* 급여 지급액 수정 */
   const updateSalaryAllowPay = useCallback((salaryAllowPay) => {

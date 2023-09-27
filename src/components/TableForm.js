@@ -227,7 +227,7 @@ const TableForm = ({
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
-      console.log("핸들로우클릭", e, rowIndex, columnIndex);
+      
       if (rowRef === rowIndex && columnRef === columnIndex) return;
       setRowRef(rowIndex);
       setColumnRef(columnIndex);

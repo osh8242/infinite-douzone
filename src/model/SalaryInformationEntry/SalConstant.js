@@ -45,11 +45,11 @@ export const sumDeductPay = {
     ]
 };
 
-/* 급여항목+계산식 영역 */
+/* 급여항목 + 계산식 영역 */
 export const salAllowWithCalculation = {
     headers : [
         { field: "nmAllow", text: "급여항목" , readOnly : true},
-        { field: "allowPay", text: "지급금액" },
+        { field: "allowPay", text: "지급금액" , type:"number"},
         { field: "calculation", text: "산출식 또는 산출방법" },
     ]
 };
@@ -58,14 +58,14 @@ export const salAllowWithCalculation = {
 export const salDeduct = {
     headers : [
         { field: "nmDeduct", text: "공제항목" },
-        { field: "allowPay", text: "지급금액" },
+        { field: "allowPay", text: "지급금액" , type:"number"},
     ]
 }
 
 export const salDeductWithCalculation = {
     headers : [
         { field: "nmDeduct", text: "공제항목" },
-        { field: "allowPay", text: "지급금액" },
+        { field: "allowPay", text: "지급금액" , type:"number"},
         { field: "calculation", text: "산출식 또는 산출방법" },
     ]
 }
@@ -74,14 +74,14 @@ export const salAllowSum =  {
     headers : [
         { field: "nmAllow", text: "항목" },
         { field: "ynTax", text: "TX" },
-        { field: "sumAllowPay", text: "금액" }
+        { field: "sumAllowPay", text: "금액" , type:"number"}
     ]
 };
 
 export const salDeductSum = {
     headers : [
         { field: "nmDeduct", text: "공제항목" },
-        { field: "sumDeductPay", text: "지급금액" },
+        { field: "sumDeductPay", text: "지급금액" , type:"number"},
     ]
 };
 
@@ -159,7 +159,6 @@ export const codeHelperData_emplist = {
               ]
     // , params : { ynFor: 'n', refYear: '2023' }
     , searchField : ['nmKrname','noSocial']
-    , usePk : "cdEmp"
   };
 
 // 직급조회
