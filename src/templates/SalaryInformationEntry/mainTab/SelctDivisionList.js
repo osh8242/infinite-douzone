@@ -47,7 +47,7 @@ const SelctDivisionList = (props) => {
             readOnly
           />
         </div>
-        <div className="hr-leftTable" style={{height: '7vh'}}>
+        <div className="hr-leftTable" style={{height: '7vh',overflow:'hidden'}}>
             <TableForm
               tableHeaders={sumDeductPay.headers}
               tableData={state.salPaySumData.totalDeductPay}

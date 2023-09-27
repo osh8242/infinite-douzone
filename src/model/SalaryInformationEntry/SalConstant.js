@@ -32,16 +32,16 @@ export const salAllow = {
 
 export const sumAllowPay = {
     headers : [
-        { field: "sumByY", text: "과세" },
-        { field: "sumByN", text: "비과세" },
-        { field: "sumAllowPay", text: "합계" }
+        { field: "sumByY", text: "과세" , type:"number"},
+        { field: "sumByN", text: "비과세" , type:"number"},
+        { field: "sumAllowPay", text: "합계" ,type:"number"}
     ]
 };
 
 export const sumDeductPay = {
     headers : [
-        { field: "sumDeductPay", text: "공제액 계" },
-        { field: "excessAmount", text: "차인 지급액" },
+        { field: "sumDeductPay", text: "공제액 계"  , type:"number"},
+        { field: "excessAmount", text: "차인 지급액" , type:"number"},
     ]
 };
 
