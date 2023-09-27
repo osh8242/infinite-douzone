@@ -1,5 +1,5 @@
 // 작성자 : 현소현
-import { faC, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faC } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Form, Row } from "react-bootstrap";
@@ -8,6 +8,7 @@ import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import {
   isNumber,
+  isValidNoSocial,
   makeCommaNumber,
   makePureNumber,
 } from "../utils/NumberUtils";
@@ -70,6 +71,7 @@ function TextBoxComponent(props) {
   // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
   const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
+  const [securityValue, setSecurityValue] = useState("");
   const [isValid, setIsValid] = useState(true); // 기본 유효성 검사 상태 값
   const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
 
@@ -151,7 +153,7 @@ function TextBoxComponent(props) {
       //주민등록번호 유효값 검사
       setInputValue(newValue);
       makeProcessedValue(newValue);
-      if (!/^\d{6}-\d{1,7}$/.test(newValue)) {
+      if (!isValidNoSocial(newValue)) {
         setIsValid(false);
       } else {
         setIsValid(true);

@@ -440,6 +440,7 @@ const HrManagementModel = () => {
       let pattern;
       switch (row["table"]) {
         case "empFam":
+          console.log("가족 딜리트 요청", row);
           pattern = urlPattern.deleteEmpFam;
           break;
         case "empAdd":
@@ -455,6 +456,7 @@ const HrManagementModel = () => {
           setLeftTableData(newLeftTableData);
           break;
         case "empPhoto":
+          console.log("포토 딜리트 요청", row);
           pattern = urlPattern.deleteEmpPhoto;
           break;
         default:
