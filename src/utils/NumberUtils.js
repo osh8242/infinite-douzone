@@ -21,5 +21,5 @@ export const isValidNoSocial = (input) => {
   }
 
   const juminPattern = /^\d{1,6}-?\d{0,7}$/;
-  return juminPattern.test(input);
+  return input === "" || juminPattern.test(input);
 };
