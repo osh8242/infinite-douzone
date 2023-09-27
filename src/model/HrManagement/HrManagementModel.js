@@ -302,6 +302,22 @@ const HrManagementModel = () => {
     }
   }, [leftTablePkValue]);
 
+  const getSubTableData = useCallback(() => {
+    api
+      .post(urlPattern.getEmpFamListByCdEmp, leftTablePkValue)
+      .then((response) => {
+        console.log("EmpFam Loaded", response.data);
+        const data = response.data.map((item) => {
+          return EmpFam(item);
+        });
+        setSubTableData(data);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [leftTablePkValue]);
+
   //추가된 사원 insert 요청
   useEffect(() => {
     if (editedEmp?.isNew && Object.keys(editedEmp).length !== 0)
@@ -361,31 +377,39 @@ const HrManagementModel = () => {
   }, []);
 
   //추가된 사원가족 insert 요청
-  const insertEmpFam = useCallback((empFam) => {
-    api
-      .post(urlPattern.insertEmpFam, empFam)
-      .then((response) => {
-        if (response.data === 1) console.log("EmpFam insert 성공");
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, []);
+  const insertEmpFam = useCallback(
+    (empFam) => {
+      api
+        .post(urlPattern.insertEmpFam, empFam)
+        .then((response) => {
+          if (response.data === 1) console.log("EmpFam insert 성공");
+          setLeftTablePkValue({ ...leftTablePkValue });
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [leftTablePkValue]
+  );
 
   //수정된 사원가족 update 요청
-  const updateEmpFam = useCallback((empFam) => {
-    console.log("updateEmpFam", "newEmpFam", empFam);
-    api
-      .put(urlPattern.updateEmpFam, empFam)
-      .then((response) => {
-        if (response.data === 1) console.log("EmpFam 업데이트 성공");
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, []);
+  const updateEmpFam = useCallback(
+    (empFam) => {
+      console.log("updateEmpFam", "newEmpFam", empFam);
+      api
+        .put(urlPattern.updateEmpFam, empFam)
+        .then((response) => {
+          if (response.data === 1) console.log("EmpFam 업데이트 성공");
+          setLeftTablePkValue({ ...leftTablePkValue });
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [leftTablePkValue]
+  );
 
   //선택된 행 delete 요청
   // const deleteSelectedRows = useCallback(() => {
