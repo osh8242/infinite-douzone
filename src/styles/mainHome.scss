@@ -1,36 +1,21 @@
-@font-face {
-  font-family: "Esamanru-Light";
-  src: url("./fonts/esamanru_Light.ttf") format("truetype");
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Esamanru-Bold";
-  src: url("./fonts/esamanru_Bold.ttf") format("truetype");
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Sintony-Bold";
-  src: url("./fonts/Sintony-Bold.ttf") format("truetype");
-  font-weight: normal;
-}
-@font-face {
-  font-family: "SUITE-Variable";
-  src: url("./fonts/SUITE-Variable.ttf") format("truetype");
-  font-weight: normal;
-}
-@font-face {
-  font-family: "NIXGONFONTS";
-  src: url("./fonts/NIXGONFONTS%20L%202.0.ttf") format("truetype");
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Jost";
-  src: url("./fonts/Jost-VariableFont_wght.ttf") format("truetype");
-  font-weight: normal;
-}
+@import url("context.css");
 
+// 모든 페이지의 스크롤바
 body {
-  overflow: hidden;
+  &::-webkit-scrollbar {
+    width: 10px; /* 세로 스크롤바의 너비 */
+    height: 0px; /* 가로 스크롤바의 높이 */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--blue); /* 스크롤바의 색상 */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(
+      --darkBlue
+    ); /* 스크롤바 위에 마우스를 올렸을 때의 색상 */
+  }
 }
 
 #page1,
@@ -58,7 +43,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "SUITE-Variable";
   text-decoration: none;
   z-index: 2;
 }
@@ -73,6 +57,10 @@ body {
 #mainPageTopHeaderContents a {
   text-decoration: none;
   font-size: 12pt;
+  color: rgba(255, 255, 255, 0.8);
+}
+#mainPageTopHeaderContents a:hover {
+  color: rgb(255, 255, 255);
 }
 
 #signUpSignInBtn {
@@ -81,7 +69,7 @@ body {
 }
 
 #signUpSignInBtn a {
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
   border: solid 1px white;
   border-radius: 2px;
   padding: 4px 16px;
@@ -90,6 +78,7 @@ body {
 
 #signUpSignInBtn a:hover {
   /* transform: scale(1.1); */
+  color: rgb(255, 255, 255);
   transition-duration: 200ms;
   background-color: rgba(255, 255, 255, 0.2);
 }
@@ -115,6 +104,7 @@ body {
   width: 100vw;
   text-align: center;
   color: white;
+  animation: fadeInUp 1s ease-in-out, moveUp 1s ease-in-out;
 }
 
 .menuBtnList {
@@ -124,7 +114,7 @@ body {
   gap: 48px;
   justify-content: center;
   text-align: center;
-  font-family: "Esamanru-Light";
+  /* font-family: "Esamanru-Light"; */
   color: dimgray;
 }
 
@@ -134,15 +124,13 @@ body {
   height: 100px;
   display: flex;
   flex-direction: column;
-  text-decoration: none;
   justify-content: center;
-  text-align: center;
   align-items: center;
-  font-size: 1.2em;
+  text-decoration: none;
+  text-align: center;
   font-size: 48px;
-  border: solid 0px rgb(224, 91, 58);
   border-radius: 16px;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .er {
@@ -201,36 +189,20 @@ body {
   font-size: 48px;
   animation: pulseAnimation 1s infinite;
 }
-
-/* fonts */
-.NIXGONFONTS {
-  font-family: "NIXGONFONTS";
+#rightArrowBtn {
+  color: white;
+  position: absolute;
+  top: 45%;
+  right: 32px;
+  font-size: 48px;
 }
-
-.Sintony-Bold {
-  font-family: "Sintony-Bold";
-}
-
-.Esamanru-Light {
-  font-family: "Esamanru-Light";
-}
-
-.Jost {
-  font-family: "Jost";
-}
-
-.p-48 {
-  font-size: 48pt;
-  font-weight: 400;
-  letter-spacing: 2px;
-}
-
-.p-24 {
-  font-size: 24pt;
-}
-
-.p-16 {
-  font-size: 16pt;
+#rightArrowBtn-animation {
+  color: white;
+  position: absolute;
+  top: 45%;
+  right: 32px;
+  font-size: 48px;
+  animation: pulseAnimation 1s infinite;
 }
 
 @keyframes scaleBackground {
@@ -253,5 +225,25 @@ body {
   100% {
     transform: scale(1.25);
     opacity: 0.1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }

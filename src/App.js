@@ -24,6 +24,7 @@ function App() {
           <Route path="/login" element={<LoginGrid />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
+        {/* <Footer /> */}
       </BrowserRouter>
     </div>
   );
