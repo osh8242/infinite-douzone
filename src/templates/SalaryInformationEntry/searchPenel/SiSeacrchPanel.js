@@ -6,22 +6,6 @@ import { codeHelperData_cdDept, codeHelperData_emplist, codeHelperData_occup, co
 import FormPanel from '../../../components/FormPanel';
 import ConfirmComponent from '../../../components/ConfirmComponent';
 import { currentDateStr } from '../../../utils/DateUtils';
-import {
-  SI_MAIN_SEARCHFIELD,
-  SI_SUB_SEARCHFIELD,
-} from "./SiSearchPenelConstant";
-import {
-  codeHelperData_cdDept,
-  codeHelperData_emplist,
-  codeHelperData_occup,
-  codeHelperData_paymentDate,
-  codeHelperData_rankNo,
-  forLaborOption,
-  salaryDivisionOption,
-  unitOption,
-} from "../../../model/SalaryInformationEntry/SalConstant";
-import FormPanel from "../../../components/FormPanel";
-import ConfirmComponent from "../../../components/ConfirmComponent";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 
 const SiSeacrchPanel = (props) => {
@@ -73,7 +57,7 @@ const SiSeacrchPanel = (props) => {
 
     return (
         <div>
-          <FormPanel
+          {/* <FormPanel
             INPUT_CONSTANT={SI_SUB_SEARCHFIELD}
             formData={{
               item: {
@@ -109,10 +93,11 @@ const SiSeacrchPanel = (props) => {
                   actions.setSearchCdOccup
                 ),
             }}
-          />
+          /> */}
 
           {/* 기본 검색조건 */}
-          <SearchPanel onSearch={()=> onSearch()} showAccordion>
+          {/* <SearchPanel onSearch={()=> onSearch()} showAccordion>  */}
+          <SearchPanel onSearch={()=> onSearch()}>
             <FormPanel
               INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
               formData={formPanelData}
@@ -126,7 +111,7 @@ const SiSeacrchPanel = (props) => {
               columnNumber={3}
             /> 
           {/* 상세 검색조건 */}
-           <div>
+           {/* <div>
            <FormPanel
               INPUT_CONSTANT = {SI_SUB_SEARCHFIELD}
               formData={
@@ -139,7 +124,7 @@ const SiSeacrchPanel = (props) => {
                 searchCdOccup: () => modalShow('codeHelper', codeHelperData_occup, actions.setSearchCdOccup)
               }}
             /> 
-          </div> 
+          </div>  */}
         </SearchPanel>
         </div>
   );
