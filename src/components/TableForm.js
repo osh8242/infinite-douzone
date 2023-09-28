@@ -479,7 +479,7 @@ const TableForm = ({
           );
       }
     },
-    [tableRows]
+    [codeHelper, tableHeaders, tableRows]
   );
 
   const getTdValue = useCallback(
@@ -510,7 +510,7 @@ const TableForm = ({
           return row.isNew ? "" : row.item[field];
       }
     },
-    [tableRows]
+    [tableRows, tableHeaders]
   );
 
   //테이블 바깥 영역 클릭 핸들러 함수
