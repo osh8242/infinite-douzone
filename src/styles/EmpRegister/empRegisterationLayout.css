@@ -1,6 +1,38 @@
+@font-face {
+  font-family: "Esamanru-Light";
+  src: url("../fonts/esamanru_Light.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Esamanru-Bold";
+  src: url("../fonts/esamanru_Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Sintony-Bold";
+  src: url("../fonts/Sintony-Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "SUITE-Variable";
+  src: url("../fonts/SUITE-Variable.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "NIXGONFONTS";
+  src: url("../fonts/NIXGONFONTS%20L%202.0.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("../fonts/Jost-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+}
+
 #empRegisterLayout {
   margin-top: 40px;
-  margin-left: 4px;
+  /* margin-left: 4px; */
+  font-family: "SUITE-Variable";
 }
 
 #empRegisterLayoutLeft {
@@ -18,4 +50,7 @@
   position: relative;
   height: 50px;
   overflow-y: hidden;
+}
+
+#mnMaverage.form-control {
 }

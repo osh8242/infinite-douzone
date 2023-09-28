@@ -13,16 +13,13 @@ import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
 import SearchForm from "../components/SearchForm";
 import DropDownMenu from "./DropDown";
+import { useLocation } from "react-router-dom";
 
-// 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
-const logoUrl = {
-  emp: "../styles/img/empRegisterLogo.png",
-  empAdd: "../styles/img/empAddLogo.png",
-};
+const Header = () => {
+  const location = useLocation();
+  const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
 
-const Header = (props) => {
   const [showSidebar, setShowSidebar] = useState(false);
-
   const { contextActions } = useContext(ContextModel);
 
   const toggleSidebar = () => {
@@ -34,98 +31,103 @@ const Header = (props) => {
     setShowProfileDropdown(!showProfileDropdown);
   };
 
-  const optionList2 = [
-    { key: "김회계 주임연구원", value: "김회계 주임연구원" },
-  ];
-
   return (
     <div>
-      <div id="topNotificationHeader">
-        <div id="topLeftNotificationHeader">
-          <select id="companySelectForm" defaultValue={"douzone"}>
-            <option id="douzone">더존비즈온</option>
-          </select>
-          <select id="periodSelectForm" defaultValue={"5"}>
-            <option id="5">5기 2023.03.13~2023.10.17 (2023년도)</option>
-            <option id="4">4기 2023.03.13~2023.10.17 (2023년도)</option>
+      {/* 메인 페이지 용 헤더 */}
+      {/* {isMainPage && (
+        <div id="mainPageTopHeader-BackGround">
+          <div id="mainPageTopHeader">
+            <a href="/" id="logo">
+              <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
+            </a>
+            <div id="mainPageTopHeaderContents">
+              <a href="/" className="colorWhite">
+                HOME
+              </a>
+              <a href="/" className="colorWhite">
+                서비스소개
+              </a>
+              <div id="signUpSignInBtn">
+                <a href="/signIn">회원가입</a>
+                <a href="/signUp">로그인</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
+      {/* 사원등록/인사관리/급여자료입력/표준근로계약서 4개 메뉴에서 쓰이는 헤더 */}
+      {!isMainPage && (
+        <div id="topNotificationHeader">
+          <div id="topLeftNotificationHeader">
+            <select id="companySelectForm" defaultValue={"douzone"}>
+              <option id="douzone">더존비즈온</option>
+            </select>
+            <select id="periodSelectForm" defaultValue={"5"}>
+              <option id="5">5기 2023.03.13~2023.10.17 (2023년도)</option>
+              {/* <option id="4">4기 2023.03.13~2023.10.17 (2023년도)</option>
             <option id="3">3기 2023.03.13~2023.10.17 (2023년도)</option>
             <option id="2">2기 2023.03.13~2023.10.17 (2023년도)</option>
-            <option id="1">1기 2023.03.13~2023.10.17 (2023년도)</option>
-          </select>
-        </div>
-        <div id="topRightNotificationHeader">
-          <SearchForm
-            type="text"
-            id="findMenuBar"
-            placeholder={"찾고싶은 메뉴를 검색하세요"}
-          />
-
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faPlus} size={"2xl"} className="colorDark" />
-          </button>
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faBell} size={"xl"} className="colorDark" />
-          </button>
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon
-              icon={faQuestionCircle}
-              size={"xl"}
-              className="colorDark"
+          <option id="1">1기 2023.03.13~2023.10.17 (2023년도)</option> */}
+            </select>
+          </div>
+          <div id="topRightNotificationHeader">
+            <SearchForm
+              type="text"
+              id="findMenuBar"
+              placeholder={"찾고싶은 메뉴를 검색하세요"}
             />
-          </button>
-          <button className="backgroundBorderNone">
-            <a href="/">
+
+            <button className="backgroundBorderNone">
               <FontAwesomeIcon
-                icon={faHome}
-                size={"xl"}
+                icon={faPlus}
+                size={"lg"}
                 className="colorDark"
               />
+            </button>
+            <button className="backgroundBorderNone">
+              <FontAwesomeIcon
+                icon={faBell}
+                size={"lg"}
+                className="colorDark"
+              />
+            </button>
+            <button className="backgroundBorderNone">
+              <FontAwesomeIcon
+                icon={faQuestionCircle}
+                size={"lg"}
+                className="colorDark"
+              />
+            </button>
+            <button className="backgroundBorderNone">
+              <a href="/">
+                <FontAwesomeIcon
+                  icon={faHome}
+                  size={"lg"}
+                  className="colorDark"
+                />
+              </a>
+            </button>
+            <button
+              className="backgroundBorderNone"
+              onClick={toggleProfileDropdown}
+            >
+              김회계 주임연구원 <FontAwesomeIcon icon={faChevronDown} />
+            </button>
+            {showProfileDropdown && <DropDownMenu />}
+            {/* 로그인 시 아래의 두 버튼은 가리기!! */}
+            {/* <a href="/signup" className="signUpSignInBtn-dark">
+              회원가입
             </a>
-          </button>
-          <button
-            className="backgroundBorderNone"
-            onClick={toggleProfileDropdown}
-          >
-            김회계 주임연구원 <FontAwesomeIcon icon={faChevronDown} />
-          </button>
-          {showProfileDropdown && <DropDownMenu />}
-          <a
-            href="/signup"
-            style={{
-              backgroundColor: "white",
-              border: "1px solid gray",
-              color: "dimgray",
-              padding: "4px 10px 4px 10px",
-              marginRight: "0px",
-              marginLeft: "7px",
-              borderRadius: "5px",
-              textDecoration: "none",
-            }}
-          >
-            회원가입
-          </a>
-          <a
-            href="/login"
-            style={{
-              backgroundColor: "white",
-              border: "1px solid gray",
-              color: "dimgray",
-              fontSize: "13px",
-              padding: "4px 14px 4px 14px",
-              marginRight: "7px",
-
-              borderRadius: "5px",
-              textDecoration: "none",
-            }}
-          >
-            로그인
-          </a>
+            <a href="/login" className="signUpSignInBtn-dark">
+              로그인
+            </a> */}
+          </div>
         </div>
-      </div>
+      )}
       {/* <div id="secondTopHeader">
       {/* <div id="secondTopHeader">
-        <div id="secondTopHeaderContents">
-          <Button
+      <div id="secondTopHeaderContents">
+      <Button
             id="toggleSidebarBtn"
             onClick={toggleSidebar}
             variant="outline-secondary"

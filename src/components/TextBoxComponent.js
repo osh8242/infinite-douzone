@@ -158,7 +158,9 @@ function TextBoxComponent(props) {
       } else {
         setIsValid(true);
       }
-    } else {
+    } else if(type==='date' && onClickCodeHelper){      
+      if(!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    }else {
       // setSendValue(inputValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
