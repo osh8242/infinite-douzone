@@ -9,11 +9,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
-import "../../styles/header.css";
+import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
-import { codeHelperData_paymentDate, modal_insertSalaryData, modal_reCalculationList } from "../../model/SalaryInformationEntry/SalConstant";
+import {
+  codeHelperData_paymentDate,
+  modal_insertSalaryData,
+  modal_reCalculationList,
+} from "../../model/SalaryInformationEntry/SalConstant";
 
-const SalaryInformationEntryHeader = ({ existSelectedRows, allowYear, modalShow, ynComplete, dateId, cdEmp, actions}) => {
+const SalaryInformationEntryHeader = ({
+  existSelectedRows,
+  allowYear,
+  modalShow,
+  ynComplete,
+  dateId,
+  cdEmp,
+  actions,
+}) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -26,50 +38,73 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, allowYear, modalShow,
     let message = "";
     if (!existSelectedRows) {
       message = "선택된 사원이 없습니다";
-      setShowModal({ show: true, message: message});
-    }else {message = "선택된 사원목록의 지급항목을 모두 삭제하시겠습니까? ";}
-    setShowModal({ show: true, message: message, action : ()=> actions.deleteSelectedRows(), onlyConfirm : !existSelectedRows});
+      setShowModal({ show: true, message: message });
+    } else {
+      message = "선택된 사원목록의 지급항목을 모두 삭제하시겠습니까? ";
+    }
+    setShowModal({
+      show: true,
+      message: message,
+      action: () => actions.deleteSelectedRows(),
+      onlyConfirm: !existSelectedRows,
+    });
   };
-  
-  // 수당/공제 등록 
+
+  // 수당/공제 등록
   const insertSalaryDataHandler = (event) => {
     // if (dateId !== "") {
-      modalShow('insertSalaryData', modal_insertSalaryData);
-      
+    modalShow("insertSalaryData", modal_insertSalaryData);
+
     // }else{
     //   setShowModal({ show: true, message: "작성일자를 비우고 진행해주세요", onlyConfirm : true});
     // }
-  }
+  };
 
   // 재계산
   const reCalculationHandler = (event) => {
-    if (dateId === "") setShowModal({ show: true, message: "작성일을 선택해주세요", onlyConfirm: true});
-    if (cdEmp === "") setShowModal({ show: true, message: "사원을 선택해주세요", onlyConfirm: true});
-    else modalShow('reCalculation', modal_reCalculationList);
-  }
+    if (dateId === "")
+      setShowModal({
+        show: true,
+        message: "작성일을 선택해주세요",
+        onlyConfirm: true,
+      });
+    if (cdEmp === "")
+      setShowModal({
+        show: true,
+        message: "사원을 선택해주세요",
+        onlyConfirm: true,
+      });
+    else modalShow("reCalculation", modal_reCalculationList);
+  };
 
   // 지급일자
   const getDateListHandler = (event) => {
-    modalShow('codeHelper', codeHelperData_paymentDate, setSearchDate, {allowYear : allowYear});
-  }
+    modalShow("codeHelper", codeHelperData_paymentDate, setSearchDate, {
+      allowYear: allowYear,
+    });
+  };
 
   const setSearchDate = (e,row) => {
     actions.setPaymentDate(row.paymentDate);
     actions.setAllowMonth(row.allowMonth);
     actions.onSearch();
-  }
+  };
   // 완료
   const ynCompleteButtonHandler = (event) => {
     let message = "";
     if (dateId === "") {
       message = "선택된 날짜에 등록된 급여항목이 없습니다.";
-      setShowModal({ show: true, message: message, onlyConfirm: true});
-    }
-    else {
+      setShowModal({ show: true, message: message, onlyConfirm: true });
+    } else {
       if (ynComplete === "Y")
         message = "현재 입력하는 급여등을 완료해제하시겠습니까? ";
       else message = "현재 입력하는 급여등을 완료하시겠습니까?";
-      setShowModal({ show: true, message: message, action: () => actions.updateDate(), onlyConfirm: false});
+      setShowModal({
+        show: true,
+        message: message,
+        action: () => actions.updateDate(),
+        onlyConfirm: false,
+      });
     }
   };
 
@@ -93,14 +128,24 @@ const SalaryInformationEntryHeader = ({ existSelectedRows, allowYear, modalShow,
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
-        <Button id="extraDeductBtn" onClick={(e) => getDateListHandler(e)} >
-            지급일자
-        </Button> 
-        <Button id="extraDeductBtn" onClick={(e) => insertSalaryDataHandler(e)} >
-            수당/공제 등록
+        <Button
+          className="extraDeductBtn"
+          onClick={(e) => getDateListHandler(e)}
+        >
+          지급일자
         </Button>
-        <Button id="reCalculateBtn" onClick={(e) => reCalculationHandler(e)}>
-            재계산
+        <Button
+          className="extraDeductBtn"
+          onClick={(e) => insertSalaryDataHandler(e)}
+        >
+          수당/공제 등록
+        </Button>
+        <Button
+          id="reCalculateBtn"
+          className="extraDeductBtn"
+          onClick={(e) => reCalculationHandler(e)}
+        >
+          재계산
         </Button>
 
         <Button id="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >

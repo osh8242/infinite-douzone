@@ -65,6 +65,7 @@ function TextBoxComponent(props) {
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
   const [inputCallValue, setInputCallValue] = useState(["", "", ""]); // 보여줄 값 (전화번호)
+  const [maskedRegNum, setMaskedRegNum] = useState(""); // 마스킹 처리 값 (주민등록번호)
   // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
   // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
@@ -117,43 +118,41 @@ function TextBoxComponent(props) {
   const handleInputChange = (event, index) => {
     const newValue = event.target.value;
 
-    if (type === "callNumber") {
-      //전화번호
-      setIsValid(true); // 스타일 초기화
+    switch (type) {
+      case "callNumber":
+        //전화번호
+        setIsValid(true); // 스타일 초기화
 
-      // 입력 값 update
-      let updatedCallNumber = [...inputCallValue];
-      updatedCallNumber[index] = newValue;
-      setInputCallValue(updatedCallNumber);
+        // 입력 값 update
+        let updatedCallNumber = [...inputCallValue];
+        updatedCallNumber[index] = newValue;
+        setInputCallValue(updatedCallNumber);
 
-      // 유효성 검사 후 유효상태 update
-      let updatedCallNumberValid = [...isCallValid];
-      updatedCallNumberValid[index] = validation(newValue);
-      setIsCallValid(updatedCallNumberValid);
+        // 유효성 검사 후 유효상태 update
+        let updatedCallNumberValid = [...isCallValid];
+        updatedCallNumberValid[index] = validation(newValue);
+        setIsCallValid(updatedCallNumberValid);
 
-      // 전체 배열의 유효값 검사 후 스타일 변경
-      hasFalseValid(updatedCallNumberValid);
-    } else if (type === "email") {
-      //이메일 값 변경 로직
-      let updatedEmail = "";
-      if (event.target.id === `${id}Id`) {
-        //바뀐 값이 이메일 아이디라면
-        updatedEmail = newValue + "@" + (inputValue.split("@")[1] || "");
-        setInputValue(updatedEmail);
-      } else if (event.target.id === `${id}Domain`) {
-        //바뀐 값이 도메인이라면
-        updatedEmail = (inputValue.split("@")[0] || "") + "@" + newValue;
-        setInputValue(updatedEmail);
+        // 전체 배열의 유효값 검사 후 스타일 변경
+        hasFalseValid(updatedCallNumberValid);
+        break;
+      case "email":
+        //이메일 값 변경 로직
+        let updatedEmail = "";
+        if (event.target.id === `${id}Id`) {
+          //바뀐 값이 이메일 아이디라면
+          updatedEmail = newValue + "@" + (inputValue.split("@")[1] || "");
+          setInputValue(updatedEmail);
+        } else if (event.target.id === `${id}Domain`) {
+          //바뀐 값이 도메인이라면
+          updatedEmail = (inputValue.split("@")[0] || "") + "@" + newValue;
+          setInputValue(updatedEmail);
 
-        onChange && onChange("", updatedEmail, id);
-      }
-    } else if (type === "regNum") {
-      //주민등록번호 유효값 검사
-      setInputValue(newValue);
-      makeProcessedValue(newValue);
-      if (!/^\d{6}-\d{1,7}$/.test(newValue)) {
-        setIsValid(false);
-      } else {
+          onChange && onChange("", updatedEmail, id);
+        }
+        break;
+      case "regNum":
+        //주민등록번호 유효값 검사
         setIsValid(true);
       }
     } else if(type==='date' && onClickCodeHelper){      
@@ -165,6 +164,20 @@ function TextBoxComponent(props) {
       setInputValue(makeProcessedValue(newValue)); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue, id);
+        setInputValue(makeProcessedValue(newValue));
+        if (/^\d{0,6}$/.test(newValue) || /^\d{6}-\d{1,7}$/.test(newValue)) {
+          setIsValid(true);
+        } else {
+          setIsValid(false);
+        }
+        break;
+      default:
+        // setSendValue(inputValue);
+        //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
+        //if (event.target.id === id)
+        setInputValue(makeProcessedValue(newValue)); // data 가공
+        // else setInputSubValue(makeProcessedValue(newValue));
+        onChange && onChange(event, newValue, id);
     }
   };
 

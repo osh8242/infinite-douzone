@@ -58,6 +58,15 @@ const SalaryInformationEntryLayout = () => {
         }));
         break;
 
+      // case 'addSalAllowPay' :   
+      // actions.setModalState((prevState) => ({
+      //     ...prevState,   
+      //     onConfirm : actions.addAllowPay,
+      //     size : data.size,
+      //     subject: data.subject
+      //   }));
+      //   break;
+
       default: 
         actions.setModalState((prevState) => ({ 
           ...prevState, 
