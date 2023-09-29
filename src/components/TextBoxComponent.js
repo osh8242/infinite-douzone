@@ -12,6 +12,7 @@ import {
   makePureNumber,
 } from "../utils/NumberUtils";
 import SelectForm from "./SelectForm";
+import { faCopy, faCopyright } from "@fortawesome/free-regular-svg-icons";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -292,14 +293,20 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  onClick={onClickCodeHelper}
+                />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                  <FontAwesomeIcon
+                    icon={faCopyright}
+                    onClick={onClickCodeHelper}
+                  />
                 </div>
               </div>
             )
