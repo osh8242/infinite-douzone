@@ -32,3 +32,49 @@ column-gap: 100;
     text-align: left;
 }
 
+.color-option {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  margin-right: 15px;
+  cursor: pointer;
+  border-radius: 50%; 
+}
+
+.color-option input[type="radio"] {
+  display: none;
+}
+
+.color-option span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.color-option input[type="radio"]:checked + span {
+  transform: scale(1.2); 
+}
+
+
+.color-option {
+  margin-right: 30px; /* 간격 추가 */
+}
+
+.color-option span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: all 0.3s;
+  opacity: 0.5;
+  transform: scale(0.8); /* 크기를 기본적으로 80%로 설정합니다. */
+}
+
+.color-option input[type="radio"]:checked + span {
+  transform: scale(1.2);
+  opacity: 1;
+}
+

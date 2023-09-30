@@ -69,6 +69,7 @@ function MainHome() {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
+
   return (
     <>
       <div className="background">

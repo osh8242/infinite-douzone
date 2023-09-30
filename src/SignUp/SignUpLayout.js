@@ -39,6 +39,7 @@ function SignUpLayout() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [phoneErrorValid, setPhoneErrorValid] = useState(null);
   const [existEmail, setExistEmail] = useState();
+  const [themeColor, setThemeColor] = useState("");
 
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
@@ -282,7 +283,7 @@ function SignUpLayout() {
                 type={"password"}
                 onChange={handlePasswordConfirm}
                 onBlur={handlePasswordConfirm}
-                placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
+                placeholder="비밀번호를 다시 입력해 주세요."
                 height={40}
                 className={pwdCheckVaild}
                 value={passwordConfirm}
@@ -337,6 +338,9 @@ function SignUpLayout() {
                 placeholder="이름"
                 height={40}
               />
+              <Row className="d-flex justify-content-center align-items-center">
+                <p> </p>
+              </Row>
             </Col>
           </Row>
 
@@ -353,11 +357,55 @@ function SignUpLayout() {
                 className={phoneValid}
               />
               <Row className="d-flex justify-content-center align-items-center">
-                {tempPhone.length > 0 && phoneValid === "invalid" && (
+                {tempPhone.length > 0 && phoneValid === "invalid" ? (
                   <p className={"errorMessageWrap"}>
                     올바른 전화번호 형식이 아닙니다.
                   </p>
+                ) : (
+                  <Row className="d-flex justify-content-center align-items-center">
+                    <p> </p>
+                  </Row>
                 )}
+              </Row>
+            </Col>
+          </Row>
+
+          <Row className="d-flex justify-content-center align-items-center">
+            <Col md="5">
+              테마 색상
+              <Col md="9" style={{ display: "flex", alignItems: "center" }}>
+                <label className="color-option">
+                  <input
+                    type="radio"
+                    value="rgb(48,150,255)"
+                    checked={themeColor === "rgb(48,150,255)"}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                  />
+                  <span style={{ backgroundColor: "rgb(48,150,255)" }}></span>
+                </label>
+
+                <label className="color-option">
+                  <input
+                    type="radio"
+                    value="#FFFF33"
+                    checked={themeColor === "#FFFF33"}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                  />
+                  <span style={{ backgroundColor: "#FFFF33" }}></span>
+                </label>
+
+                <label className="color-option">
+                  <input
+                    type="radio"
+                    value="#FF9933"
+                    checked={themeColor === "#FF9933"}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                  />
+                  <span style={{ backgroundColor: "#FF9933" }}></span>
+                </label>
+              </Col>
+              <Row className="d-flex justify-content-center align-items-center">
+                <p> </p>
               </Row>
             </Col>
           </Row>
@@ -378,86 +426,6 @@ function SignUpLayout() {
           </Button>
         </Col>
       </Row>
-      {/* <Col md="7" className="px-5">
-        <Row className="justify-content-center mb-4">
-          <img
-            src={imgLogo}
-            alt="Logo"
-            style={{ width: "500px", padding: "70px 0px 15px 0px" }}
-          />
-          <h2
-            style={{
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            로그인
-          </h2>
-        </Row>
-        <Row className="justify-content-center mb-4">
-           <Col md="8">아이디</Col>  
-          <Col md="9">
-            <TextBoxComponent
-              name="userId"
-              type={field}
-              placeholder="ID"
-              height={45}
-              label={"test"}
-            />
-          </Col>
-        </Row>
-        <Row className="justify-content-center mb-4">
-          <Col md="8">비밀번호 </Col>
-          <Col md="9">
-            <TextBoxComponent
-              name="userPwd"
-              type="password"
-              placeholder="영문, 숫자를 포함하여 8자 이상 입력하세요."
-              height={45}
-              //   value={password}
-              //   onChange={(e) => setPassword(e.target.value)}
-            />
-          </Col>
-        </Row>
-
-        <Row className="justify-content-center mb-4">
-          <Col md="9">
-            <span
-              // key={keyframeTrigger}
-              style={{ color: "red", fontSize: 15 }}
-              // className={loginErrorCount >= 2 ? "blink-animation" : ""}
-            >
-              다시 시도해주세요
-            </span>
-          </Col>
-        </Row>
-
-        <Row className="justify-content-center mb-4">
-          <Col md="10" className="d-flex flex-column align-items-center">
-            <Button
-              className="btn-custom"
-              style={{
-                marginTop: "40px",
-                padding: "10px 40px",
-                fontSize: "16px",
-                width: "85%",
-                borderRadius: "15px",
-              }}
-              //   onClick={handleLogin}
-            >
-              로그인
-            </Button>
-            <div
-              style={{
-                marginTop: "10px",
-                fontSize: "20px",
-                width: "85%",
-                textAlign: "center",
-              }}
-            ></div>
-          </Col> 
-        </Row>
-      </Col > */}
     </Container>
   );
 }
