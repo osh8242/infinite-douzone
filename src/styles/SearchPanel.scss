@@ -1,12 +1,21 @@
 // SearchPanel.scss
 // @import '~@fortawesome/fontawesome-free/css/all.min.css'; // Font Awesome 아이콘 스타일 불러오기
+@import url("context.css");
 
-.search-panel {
+.search-bar {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 16px;
-  margin: 1px;
-  margin-bottom: 20px;
+  padding: 2px 16px;
+  position: relative;
+
+  .searchFormIcon {
+    position: absolute;
+    left: 8px;
+  }
+
+  .search-bar__input {
+    width: 100%;
+  }
 }
 
 .header {

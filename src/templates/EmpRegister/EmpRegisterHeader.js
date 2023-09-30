@@ -47,13 +47,13 @@ function EmpRegisterHeader(props) {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            className="colorWhite backgroundBorderNone"
+            className="colorWhite backgroundBorderNone forbid"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
         </button>
         <button
           className="backgroundBorderNone"
@@ -62,10 +62,10 @@ function EmpRegisterHeader(props) {
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite forbid" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
         </button>
       </div>
     </div>
