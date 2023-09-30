@@ -122,9 +122,8 @@ function EmpRegisterationLayout() {
     <>
       {/* 사원등록 전용 헤더 */}
       <EmpRegisterHeader
-        selectedRows={state.selectedRows}
-        actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
-        modalShow={modalShow}
+        deleteButtonHandler={actions.deleteEmp}
+        existSelectedRows={state.selectedRows.length !== 0}
       />
       <Container>
         <Row id="empRegisterLayout">

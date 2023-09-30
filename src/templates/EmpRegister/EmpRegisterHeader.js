@@ -11,6 +11,8 @@ import "../../styles/header.css";
 import emp from "../..//styles/img/empRegisterLogo.png";
 import { useState } from "react";
 import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConstant";
+import ModalComponent from "../../components/ModalComponent";
+import ConfirmComponent from "../../components/ConfirmComponent";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 // const logoUrl = {
@@ -18,18 +20,20 @@ import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConst
 //   empAdd: "../styles/img/empAddLogo.png",
 // };
 
-function EmpRegisterHeader(props) {
-  const { actions, modalShow } = props;
+function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  const clickTrashCanHandler = (e) => {
-    // 정말로 삭제하시겠습니까?? => YES => 삭제요청 보내기
-    // modalShow();
-    actions.deleteSelectedRows();
-    // modalShow("undeletedEmp", EmpRegisterUndeletedEmpHeaders);
+  const clickTrashCanHandler = (event) => {
+    if (existSelectedRows) {
+      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+    } else {
+      setShowModal({ show: true, message: "삭제할 행이 없습니다" });
+    }
   };
 
   return (
@@ -68,6 +72,16 @@ function EmpRegisterHeader(props) {
           <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
         </button>
       </div>
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={!existSelectedRows}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          deleteButtonHandler();
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 }

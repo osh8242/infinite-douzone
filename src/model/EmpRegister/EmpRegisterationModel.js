@@ -65,7 +65,9 @@ function EmpRegisterationModel() {
         (item) => item.item[fieldName] === value
       );
       return matchedItem
-        ? matchedItem.item[`nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`]
+        ? matchedItem.item[
+            `nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`
+          ]
         : value;
     } else {
       // console.error(`Code helper data not found for field: ${fieldName}`);
@@ -173,7 +175,10 @@ function EmpRegisterationModel() {
           ContentType: "application/json",
         })
         .then((response) => {
-          console.log("EmpRegisterationModel > /emp/getEmpByCdEmp", response.data);
+          console.log(
+            "EmpRegisterationModel > /emp/getEmpByCdEmp",
+            response.data
+          );
 
           // 코드 한글변환
           let newResponseData = { ...response.data };
@@ -317,20 +322,20 @@ function EmpRegisterationModel() {
         setEditedEmp([]);
         // console.log("선택한 모든 행 =>", responses);
         //삭제된 데이터 필터링
-        const undeletedEmpData = responses.filter((response) => {
-          return response.data != "";
-        });
+        // const undeletedEmpData = responses.filter((response) => {
+        //   return response.data != "";
+        // });
         //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
-        console.log("undeletedEmpData !!!!!", undeletedEmpData);
-        const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
-          const undeletedEmp = {
-            cdEmp: item.data.cdEmp,
-            nmKrname: item.data.nmKrname,
-            useMenuList: item.data.useMenuList,
-          };
-          return EmpMenuUsage(undeletedEmp);
-        });
-        setUndeletedEmpTableData(undeletedEmpTableDataContent);
+        // console.log("undeletedEmpData !!!!!", undeletedEmpData);
+        // const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
+        //   const undeletedEmp = {
+        //     cdEmp: item.data.cdEmp,
+        //     nmKrname: item.data.nmKrname,
+        //     useMenuList: item.data.useMenuList,
+        //   };
+        //   return EmpMenuUsage(undeletedEmp);
+        // });
+        // setUndeletedEmpTableData(undeletedEmpTableDataContent);
         setModalState({ show: true });
       })
       .catch((error) => {
@@ -362,26 +367,26 @@ function EmpRegisterationModel() {
         setReloadSubTableData(!reloadSubTableData);
         setEditedEmp([]);
         // console.log("선택한 모든 행 =>", responses);
-        //삭제된 데이터 필터링
-        const undeletedEmpData = responses.filter((response) => {
-          return response.data != "";
-        });
-        //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
-        console.log("undeletedEmpData !!!!!", undeletedEmpData);
-        const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
-          const undeletedEmp = {
-            cdEmp: item.data.cdEmp,
-            nmKrname: item.data.nmKrname,
-            useMenuList: item.data.useMenuList,
-          };
-          return EmpMenuUsage(undeletedEmp);
-        });
-        const itemUndeletedEmpTableDataContent = {
-          item: undeletedEmpTableDataContent,
-        };
-        setUndeletedEmpTableData(itemUndeletedEmpTableDataContent);
+        // //삭제된 데이터 필터링
+        // const undeletedEmpData = responses.filter((response) => {
+        //   return response.data != "";
+        // });
+        // //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
+        // console.log("undeletedEmpData !!!!!", undeletedEmpData);
+        // const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
+        //   const undeletedEmp = {
+        //     cdEmp: item.data.cdEmp,
+        //     nmKrname: item.data.nmKrname,
+        //     useMenuList: item.data.useMenuList,
+        //   };
+        //   return EmpMenuUsage(undeletedEmp);
+        // });
+        // const itemUndeletedEmpTableDataContent = {
+        //   item: undeletedEmpTableDataContent,
+        // };
+        // setUndeletedEmpTableData(itemUndeletedEmpTableDataContent);
 
-        // setModalState({ show: true });
+        // // setModalState({ show: true });
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
