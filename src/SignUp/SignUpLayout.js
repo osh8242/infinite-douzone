@@ -21,6 +21,7 @@ import ConfirmComponent from "../components/ConfirmComponent";
 function SignUpLayout() {
   const navigate = useNavigate();
 
+  const [stateModal, setStateModal] = useState("");
   const [invalid, setInvalid] = useState("");
   const [pwdCheckVaild, setPwdCheckVaild] = useState("");
   const [id, setId] = useState("");
@@ -42,11 +43,21 @@ function SignUpLayout() {
   const [existEmail, setExistEmail] = useState();
   const [themeColor, setThemeColor] = useState("");
   const [registerOk, setRegisterOk] = useState(false);
-
+  const [location, setLocation] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  // useEffect = () => {
-  // }
+  const [modalState, setModalState] = useState({ show: false });
+
+  const [confirmState, setConfirmState] = useState({
+    show: false,
+  });
+
+  const onHide = () => {
+    if (location) {
+      window.location.href = location;
+    }
+    setConfirmState({ ...confirmState, show: false });
+  };
 
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
@@ -144,14 +155,32 @@ function SignUpLayout() {
     async function fetchData() {
       let result = await axios.post(`${url}/auth/register`, RegisterVo);
       console.log(result.data);
-      if (result.data === "SUCCESS") window.location.href = "/successSignup";
-      else if (result.data === "FAIL" || checkRegister) {
-        window.location.href = "/signup";
-        console.log("TODO: 회원 가입 실패 처리");
-        alert("회원가입 처리 실패");
+      if (result.data === "SUCCESS") {
+        setLocation("/SUCCESS");
+        setShowModal({
+          show: true,
+          message: "회원가입이 완료되었습니다.",
+        });
+      } else if (result.data === "FAIL" || checkRegister) {
+        setLocation("/FAIL");
+        setShowModal({
+          show: true,
+          message: "회원가입 실패. 다시 시도해 주세요",
+        });
       }
     }
     fetchData();
+  };
+
+  const onMove = () => {
+    if (location === "/SUCCESS") window.location.href = "/login";
+    else window.location.href = "/signup";
+  };
+
+  const onHideHandler = (e) => {
+    setShowModal(false);
+    console.log("hides");
+    window.location.href = { stateModal };
   };
 
   const handleTemporaryId = (e) => {
@@ -162,9 +191,11 @@ function SignUpLayout() {
   const handleTemporaryPwd = (e) => {
     setTempPwd(e.target.value);
   };
+
   const handleTempName = (e) => {
     setTempName(e.target.value);
   };
+
   const handleTempPhone = (e) => {
     setTempPhone(e.target.value);
   };
@@ -456,8 +487,9 @@ function SignUpLayout() {
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
-        onHide={() => setShowModal(false)}
+        onHide={() => setModalState({ show: false })}
         onConfirm={() => {
+          onMove();
           setShowModal(false);
         }}
       />

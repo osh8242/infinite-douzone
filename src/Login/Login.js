@@ -72,7 +72,9 @@ const Login = () => {
         console.log("response.data", response.data);
         console.log("response.headers", response.headers);
         // console.log("response.headerss", response.headers["authorization"]);
-        if (event.type !== "blur") navigate("/");
+        if (event.type !== "blur") {
+          navigate("/");
+        }
       } else {
         console.log("로그인에 실패하였습니다.");
       }
