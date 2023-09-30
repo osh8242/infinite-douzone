@@ -1,8 +1,8 @@
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useRef } from 'react';
-import { Accordion, Button, Col, Row } from 'react-bootstrap';
-import '../styles/SearchPanel.scss'; // SCSS 파일 불러오기
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useRef } from "react";
+import { Accordion, Button, Col, Row } from "react-bootstrap";
+import "../styles/SearchPanel.scss"; // SCSS 파일 불러오기
 
 const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
   const [isBodyOpen, setIsBodyOpen] = useState(false);
@@ -19,14 +19,17 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
 
   return (
     <>
-      <Row>
+      <Row className="mt-3">
         {showAccordion ? (
           <div className="search-panel border rounded px-5">
             <div className="header d-flex flex-row px-5">
               <Col className="my-1" md="8">
                 {children[0]}
               </Col>
-              <Col className="d-flex align-items-center justify-content-center" md={{ span: 2, offset: 2 }}>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                md={{ span: 2, offset: 2 }}
+              >
                 {isBodyOpen ? (
                   <Button variant="secondary" onClick={toggleArrowIcon}>
                     <FontAwesomeIcon icon={faCaretUp} />
@@ -45,40 +48,41 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                   ref={toggleButtonRef} // ref 할당
                   variant="secondary"
                   onClick={handleToggleBody}
-                  style={{ display: 'none' }} // 숨겨진 버튼
+                  style={{ display: "none" }} // 숨겨진 버튼
                 />
               </Col>
             </div>
-            <div>
-              {isBodyOpen && (
-                <Row>
-                  {children[1]}
-                  <div className="d-flex justify-content-md-center">
-                    <Button variant="secondary" onClick={onSearch}>
-                      조회
-                    </Button>
-                  </div>
-                </Row>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="search-panel">
-            <div className="header d-flex flex-row">
+            <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
+              {/* {isBodyOpen && ( */}
               <Row>
-                <Col className="my-1" md="8">
-                  {children}
-                </Col>
-                <Col
-                  className="d-flex align-items-center justify-content-center"
-                  md={{ span: 2, offset: 2 }}
+                {children[1]}
+                <div
+                  className="d-flex justify-content-md-center"
+                  style={{ marginTop: "12px" }}
                 >
                   <Button variant="secondary" onClick={onSearch}>
                     조회
                   </Button>
-                </Col>
+                </div>
               </Row>
+              {/* )} */}
             </div>
+          </div>
+        ) : (
+          <div className="search-panel">
+            <Row>
+              <Col className="my-1" md="8">
+                {children}
+              </Col>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                md={{ span: 2, offset: 2 }}
+              >
+                <Button variant="secondary" onClick={onSearch}>
+                  조회
+                </Button>
+              </Col>
+            </Row>
           </div>
         )}
       </Row>

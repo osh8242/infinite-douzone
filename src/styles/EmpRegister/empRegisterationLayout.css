@@ -1,41 +1,50 @@
-/* * {
-  font-size: small;
-  overflow-x: hidden;
-} */
-
-/* #empRegisterArea {
-  width: 100vw;
-  height: 100vh;
-  background-color: aqua;
-} */
-
-/* #empRegisterHeader {
-  position: absolute;
-  width: 100%;
-  top: 52px;
-  left: 0;
-} */
+@font-face {
+  font-family: "Esamanru-Light";
+  src: url("../fonts/esamanru_Light.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Esamanru-Bold";
+  src: url("../fonts/esamanru_Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Sintony-Bold";
+  src: url("../fonts/Sintony-Bold.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "SUITE-Variable";
+  src: url("../fonts/SUITE-Variable.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "NIXGONFONTS";
+  src: url("../fonts/NIXGONFONTS%20L%202.0.ttf") format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("../fonts/Jost-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+}
 
 #empRegisterLayout {
-  /* position: absolute; */
-  /* top: 92px; */
-  /* right: 0; */
-  /* width: 100%; */
   margin-top: 40px;
-  margin-left: 4px;
-  /* overflow-x: hidden; */
+  /* margin-left: 4px; */
+  font-family: "SUITE-Variable";
 }
 
+#empRegisterLayoutLeft {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  height: 66vh;
+  overflow: auto;
+  border: 1px solid rgb(222, 226, 230);
+}
 #empRegisterLayoutRight {
-  margin-left: 12px;
-  margin-bottom: 120px;
+  margin-left: 20px;
 }
-
-/* #empDataSortedLine {
-  position: absolute;
-  bottom: 13px;
-  border-top: solid 2px rgb(230, 230, 230);
-} */
 
 #empDataSortedMenuArea {
   position: relative;
@@ -43,25 +52,5 @@
   overflow-y: hidden;
 }
 
-#baseData {
-  margin-right: 16%;
-}
-
-#baseDataContents {
-  position: relative;
-}
-
-#baseDataContents > div {
-  justify-content: right;
-}
-
-#baseDataContentsBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 32%;
-  height: 100%;
-  z-index: -1;
-  background-color: rgb(233, 236, 239);
-  border-radius: 2px;
+#mnMaverage.form-control {
 }
