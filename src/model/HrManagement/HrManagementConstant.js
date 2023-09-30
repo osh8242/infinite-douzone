@@ -3,7 +3,7 @@ import { CODE_TYPE, CODE_VALUE, SELECT_LIST } from "../CommonConstant";
 ////////////////////////////// 요청 Mapping Pattern
 export const urlPattern = {
   insertEmp: "/emp/insertEmp",
-  updateEmp: "",
+  updateEmp: "/emp/updateEmp",
   deleteEmp: "/emp/deleteEmp",
   getEmpAddByCdEmp: "/empAdd/getEmpAddByCdEmp",
   insertEmpAdd: "/empAdd/insertEmpAdd",

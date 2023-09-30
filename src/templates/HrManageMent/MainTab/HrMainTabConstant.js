@@ -10,7 +10,7 @@ export const MAIN_TAB = {
     { type: INPUT_TYPE.text, field: "nmEnName", label: LABELS.nmEnName },
     { type: INPUT_TYPE.text, field: "nmChName", label: LABELS.nmChName },
     {
-      type: INPUT_TYPE.text,
+      type: INPUT_TYPE.regNum,
       field: "noSocial",
       label: LABELS.noSocial,
       disabled: true,

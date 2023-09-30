@@ -16,7 +16,7 @@ const LcSearchSearchPanel = (props) => {
     // select 만 확인하고 추가필요
     <SearchPanel onSearch={() => onSearch(salSelectRef)}>
       <Row className="searchPanel">
-        <Col className="mx-1 col-md-6">
+        <Col className="mx-1 col-md-7">
           <DateForm label={"작성일자"} sub="true" dateType="month" />
         </Col>
         {/* <Col className="mx-0 col-md-3">

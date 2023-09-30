@@ -14,23 +14,18 @@ import EmpList from "./mainTab/EmpList";
 import SalaryAllowPayList from "./mainTab/SalaryAllowPayList";
 import SalaryDeductPayList from "./mainTab/SalaryDeductPayList";
 import SelctDivisionList from "./mainTab/SelctDivisionList";
-import SalaryAllowPayListWithCalculation from "./mainTab/SalaryAllowPayListWithCalculation";
-import SalaryDeductPayListWithCalculation from "./mainTab/SalaryDeductPayListWithCalculation";
 
 import CalculationInsert from "./modalMenu/CalculationInsert";
 import ReCalculation from "./modalMenu/ReCalculation";
 import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
-import AddSalAllowPay from "./modalMenu/AddSalAllowPay";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
-import TextBoxComponent from "../../components/TextBoxComponent";
 
 const SalaryInformationEntryLayout = () => {
 
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
   const [modalType, setModalType] = useState("");
   
   const toggleRightTabVisibility = () => {
@@ -38,17 +33,16 @@ const SalaryInformationEntryLayout = () => {
   };
 
   // 코드도움 아이콘 클릭이벤트
-  const modalShow = useCallback(async (type, data, setRowData) => {
+  const modalShow = useCallback(async (type, data, setRowData, setParams) => {
     actions.setModalState({ ...state.modalState, show: true });
     setModalType(type);
 
     switch (type) {
       case "codeHelper":
       let codeDataList = data.tableData;
-
-        if (data.url) {
-          codeDataList = await fetchData(data.url, data.params);
-        }
+        let url = data.url? data.url : '';
+        let params = data.params? data.params : setParams;
+        codeDataList = await fetchData(url, params);
 
         actions.setModalState((prevState) => ({
           ...prevState,
@@ -64,14 +58,14 @@ const SalaryInformationEntryLayout = () => {
         }));
         break;
 
-      case 'addSalAllowPay' :   
-      actions.setModalState((prevState) => ({
-          ...prevState,   
-          onConfirm : actions.addAllowPay,
-          size : data.size,
-          subject: data.subject
-        }));
-        break;
+      // case 'addSalAllowPay' :   
+      // actions.setModalState((prevState) => ({
+      //     ...prevState,   
+      //     onConfirm : actions.addAllowPay,
+      //     size : data.size,
+      //     subject: data.subject
+      //   }));
+      //   break;
 
       default: 
         actions.setModalState((prevState) => ({ 
@@ -81,28 +75,11 @@ const SalaryInformationEntryLayout = () => {
         }))
         break;
     }
-  }, []);
+  }, [state.allowMonth]);
 
-  /* 급여 항목/ 공제항목 산출식 버튼 */
-  const showCalculation = (type) => {
-    switch (type) {
-      case 'salaryAllowPay':
-        setSelectedComponent('SalaryAllowPayCalculation');
-        break;
-      case 'salaryDeductPay':
-        setSelectedComponent('SalaryDeductPayCalculation');
-        break;
-      default:
-        setSelectedComponent(null);
-        break;
-    }
-  };
 
   return (
     <>
-      
-    <TextBoxComponent 
-    />
       <ModalComponent
         title={state.modalState.subject}
         size={state.modalState.size}
@@ -123,7 +100,6 @@ const SalaryInformationEntryLayout = () => {
           : modalType === 'insertSalaryData'?
               <InsertSalaryDataLayout
                 actions = {actions}
-                showCalculation = {showCalculation}
               />
           : modalType === 'reCalculation'?
               <ReCalculation
@@ -133,10 +109,6 @@ const SalaryInformationEntryLayout = () => {
           : modalType === 'calculationInsert'?
               <CalculationInsert
                 insertSalaryTableData = {state.modalContentData.tableData}
-                actions = {actions}
-              />
-          : modalType === 'addSalAllowPay'?
-              <AddSalAllowPay
                 actions = {actions}
               />
           : //default
@@ -152,8 +124,10 @@ const SalaryInformationEntryLayout = () => {
         modalShow={modalShow}
         dateId = {state.dateId}
         cdEmp = {state.cdEmp}
+        allowYear = {state.allowYear}
       />
-      <Container fluid>
+      {/* <Container fluid> */}
+      <Container>
         <Row style={{margin:'10px'}}>
           <Col>
             {/* 조회영역 */}
@@ -162,55 +136,26 @@ const SalaryInformationEntryLayout = () => {
               modalShow = {modalShow}
               actions = {actions}
               state = {state}
+              setCopyLastMonthData = {actions.setCopyLastMonthData}
             />
             {/* 메인영역 */}
               <Row>
                 <Col md={3}>
                   <EmpList actions={actions} saInfoListData={state.saInfoListData} />
                 </Col>
-                    {selectedComponent === 'SalaryAllowPayCalculation' && (
-                      <>
-                        <Col>
-                          <SalaryAllowPayListWithCalculation 
-                            actions={actions} 
-                            salAllowData={state.salAllowData} 
-                            modalShow = {modalShow} 
-                            showCalculation = {showCalculation}
-                          />
-                        </Col>
-                      </>
-                    )}
-                    {selectedComponent === 'SalaryDeductPayCalculation' && (
-                      <>
-                        <Col>
-                          <SalaryDeductPayListWithCalculation 
-                            actions={actions} 
-                            deductData={state.deductData} 
-                            salAllowData={state.salAllowData}
-                            modalShow = {modalShow}
-                            showCalculation = {showCalculation}
-                          />
-                        </Col>
-                      </>
-                    )}
-                    {selectedComponent === null && (
-                      <>
-                        <Col md={3}>
-                          <SalaryAllowPayList 
-                            actions={actions} 
-                            salAllowData={state.salAllowData} 
-                            showCalculation = {showCalculation} 
-                            modalShow={modalShow}
-                            ynComplete = {state.ynComplete}/>
-                        </Col>
-                        <Col md={3}>
-                          <SalaryDeductPayList actions={actions} salDeductData={state.deductData} showCalculation = {showCalculation}/>
-                        </Col>
-                        <Col className="selectDivision">
-                          <SelctDivisionList actions={actions} state={state} />
-                        </Col>
-                      </>
-                    )}
+                <Col md={3}>
+                  <SalaryAllowPayList 
+                    actions={actions} 
+                    salAllowData={state.salAllowData} 
+                    ynComplete = {state.ynComplete}
+                  />
+                </Col>
+                <Col md={3}>
+                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} />
+                </Col>
+                <Col className="selectDivision">
+                  <SelctDivisionList actions={actions} state={state} />
+                </Col>
               </Row>
           </Col>
 

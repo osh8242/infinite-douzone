@@ -9,7 +9,7 @@ import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import api from "../Api";
 
 const LaborContractModel = () => {
-  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "A101" });
+  const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "" });
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});
   const [editedSwsmOther, setEditedSwsmOther] = useState({});

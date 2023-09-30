@@ -7,12 +7,11 @@ const [modalState, setModalState] = useState({ show: false , modalData: null });
 
  */
 
-import React from "react";
-import Button from "react-bootstrap/Button";
+import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useEffect, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 import "../styles/commonComponent.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 
 function ModalComponent(props) {
   const {
@@ -24,6 +23,39 @@ function ModalComponent(props) {
     backdrop,
     animation,
   } = props;
+
+  // 현재 모달창의 포커스
+  const focus = useRef(false);
+
+  // 포커스 전환
+  useEffect(() => {
+    focus.current = show ? true : false;
+  }, [show]);
+
+  //키다운 핸들러
+  const tableKeyDownHandler = useCallback(
+    (event) => {
+      if (focus.current) {
+        switch (event.key) {
+          case "Escape":
+            onHide();
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    [onHide]
+  );
+
+  // 이벤트 핸들러 등록 (componentDidMount 역할)
+  useEffect(() => {
+    document.addEventListener("keydown", tableKeyDownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", tableKeyDownHandler);
+    };
+  }, [tableKeyDownHandler]);
 
   return (
     <Modal

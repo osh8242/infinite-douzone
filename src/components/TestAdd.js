@@ -50,7 +50,7 @@ const TestAdd = (props) => {
         <div className="labelAndContent">
           <div className="label">{label}</div>
           <div className="widthFull d-flex align-items-center gap-2">
-            <div className="widthFull ">
+            <div className="widthFull">
               <Form.Control
                 id="address"
                 type="text"
