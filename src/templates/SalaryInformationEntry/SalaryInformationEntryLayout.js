@@ -126,6 +126,7 @@ const SalaryInformationEntryLayout = () => {
         cdEmp = {state.cdEmp}
         allowYear = {state.allowYear}
       />
+      
       {/* <Container fluid> */}
       <Container>
         <Row style={{margin:'10px'}}>
@@ -151,7 +152,7 @@ const SalaryInformationEntryLayout = () => {
                   />
                 </Col>
                 <Col md={3}>
-                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} />
+                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} ynComplete={state.ynComplete} />
                 </Col>
                 <Col className="selectDivision">
                   <SelctDivisionList actions={actions} state={state} />
