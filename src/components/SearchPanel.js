@@ -52,17 +52,20 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 />
               </Col>
             </div>
-            <div>
-              {isBodyOpen && (
-                <Row>
-                  {children[1]}
-                  <div className="d-flex justify-content-md-center">
-                    <Button variant="secondary" onClick={onSearch}>
-                      조회
-                    </Button>
-                  </div>
-                </Row>
-              )}
+            <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
+              {/* {isBodyOpen && ( */}
+              <Row>
+                {children[1]}
+                <div
+                  className="d-flex justify-content-md-center"
+                  style={{ marginTop: "12px" }}
+                >
+                  <Button variant="secondary" onClick={onSearch}>
+                    조회
+                  </Button>
+                </div>
+              </Row>
+              {/* )} */}
             </div>
           </div>
         ) : (

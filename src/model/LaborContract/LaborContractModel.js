@@ -6,9 +6,10 @@ import { urlPattern } from "../HrManagement/HrManagementConstant";
 import Swsm from "../../vo/SwsmGrid/Swsm";
 import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 // import Emp from "../../vo/HrManagement/Emp";
-import api from "../Api";
+import { useApi } from "../Api";
 
 const LaborContractModel = () => {
+  const api = useApi();
   const [leftTablePkValue, setLeftTablePkValue] = useState({ cdEmp: "" });
   const [editedEmp, setEditedEmp] = useState({});
   const [editedSwsm, setEditedSwsm] = useState({});

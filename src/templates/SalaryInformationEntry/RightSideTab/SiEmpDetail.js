@@ -9,7 +9,7 @@ const SiEmpDetail = (props) => {
   const { siEmpDetailData } = props;
 
   return (
-    <div>
+    <>
       <Container className="siEmpDetail-container">
         <FormPanel
           INPUT_CONSTANT={SI_EMP_DETAIL}
@@ -17,7 +17,7 @@ const SiEmpDetail = (props) => {
           formData={siEmpDetailData}
         />
       </Container>
-    </div>
+    </>
   );
 };
 

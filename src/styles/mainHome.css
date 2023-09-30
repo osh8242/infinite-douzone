@@ -29,15 +29,29 @@
   font-weight: normal;
 }
 
+body {
+  overflow: hidden;
+}
+
+#page1,
+#page2 {
+  width: 100vw;
+  height: 100vh;
+}
+
 #mainPageTopHeader-BackGround {
   width: 100vw;
-  position: absolute;
+  position: fixed;
   top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.2);
   height: 64px;
+  z-index: 2;
 }
 
 #mainPageTopHeader {
+  width: 70%;
+  position: absolute;
   top: 0;
   margin: 0px 16%;
   height: 100%;
@@ -46,9 +60,11 @@
   align-items: center;
   font-family: "SUITE-Variable";
   text-decoration: none;
+  z-index: 2;
 }
 
 #mainPageTopHeaderContents {
+  width: fit-content;
   display: flex;
   align-items: center;
   gap: 40px;

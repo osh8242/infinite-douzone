@@ -4,7 +4,7 @@ import TableForm from "../../../components/TableForm";
 import { salDeduct, sumDeductPay } from "../../../model/SalaryInformationEntry/SalConstant";
 
 const SalaryDeductPayList = (props) => {
-  const { salDeductData } = props;
+  const { salDeductData, ynComplete, actions } = props;
   
   return (
     <div>
@@ -13,14 +13,17 @@ const SalaryDeductPayList = (props) => {
           <div className="hr-leftTable">
           <TableForm
               tableName="SI_SALARY_DEDUCTPAY_LIST"
-              readOnly
+              readOnly={ynComplete === 'Y'}
               tableHeaders={salDeduct.headers}
               tableData={salDeductData.deductData}
-              actions={{}}
+              actions={{
+                setTableData: actions.setDeductData,
+                updateEditedRow: actions.updateSalaryDeductPay,
+              }}
             />
           </div>
         </Row>
-
+        {/* 통계 테이블 */}
         <Row className="mt-3">
           <TableForm
             tableName="EMPSTATICS"

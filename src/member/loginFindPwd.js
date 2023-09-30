@@ -7,8 +7,21 @@ import { Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import imgLogo from "../../src/styles/img/wehago_logo.png";
 import "./login.css";
+import axios from "axios";
+import { url } from "../model/CommonConstant";
 
 const loginFindPwd = () => {
+  const sendMail = () => {
+    axios
+      .post(`${url}/auth/findEmail`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log("error:" + error);
+      });
+  };
+
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
@@ -52,6 +65,7 @@ const loginFindPwd = () => {
                 width: "85%",
                 borderRadius: "15px",
               }}
+              onClick={sendMail}
             >
               다음
             </Button>

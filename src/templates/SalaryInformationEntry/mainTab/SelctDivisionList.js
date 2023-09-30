@@ -19,7 +19,7 @@ const SelctDivisionList = (props) => {
       <SelectForm
         label={LABELS.inquiryYype}
         optionList={totalSalaryByPeriodOption}
-        onChange={actions.getSalTotalSum}
+        onChange={(e,value) => actions.getSalTotalSum(value)}
       />
       <Row>
           <div className="hr-leftTable" style={{height: '25vh'}}>
@@ -30,10 +30,10 @@ const SelctDivisionList = (props) => {
               readOnly
             />
           </div>
-          <div className="hr-leftTable" style={{height: '7vh'}}>
+          <div className="hr-leftTable" style={{height: '7vh', overflow:'hidden'}}>
             <TableForm
               tableHeaders={sumAllowPay.headers}
-              tableData={[]}
+              tableData={state.salPaySumData.totalAllowPay}
               readOnly
             />
           </div>
@@ -47,10 +47,10 @@ const SelctDivisionList = (props) => {
             readOnly
           />
         </div>
-        <div className="hr-leftTable" style={{height: '7vh'}}>
+        <div className="hr-leftTable" style={{height: '7vh',overflow:'hidden'}}>
             <TableForm
               tableHeaders={sumDeductPay.headers}
-              tableData={[]}
+              tableData={state.salPaySumData.totalDeductPay}
               readOnly
             />
           </div>

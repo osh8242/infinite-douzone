@@ -7,8 +7,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter } from "react-router-dom";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "font-awesome/css/font-awesome.min.css";
+import LoadingProvider from "./Loading/LoadingProvider";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(
+  //<React.StrictMode>
+  <LoadingProvider>
+    <App />
+  </LoadingProvider>
+  //</React.StrictMode>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

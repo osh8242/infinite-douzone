@@ -74,11 +74,14 @@ function MainHome() {
 
   return (
     <>
-      <div className="background">
-        <div id="mainPageTopHeader-BackGround">
-          <div id="mainPageTopHeader">
-            <a href="/">
-              <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
+      <div id="mainPageTopHeader-BackGround">
+        <div id="mainPageTopHeader">
+          <a href="/">
+            <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
+          </a>
+          <div id="mainPageTopHeaderContents">
+            <a href="#page1" className="colorWhite">
+              HOME
             </a>
             <div id="mainPageTopHeaderContents">
               <a href="/" className="colorWhite">
@@ -98,55 +101,60 @@ function MainHome() {
             </div>
           </div>
         </div>
-        {/* <img
+      </div>
+      <div id="page1">
+        <div className="background">
+          {/* <img
           id="mainHome-backgroundImage"
           src={wehago_backImg}
           alt="Wehago Background"
         /> */}
-        <div className="textBox">
-          <p className="NIXGONFONTS p-24">
-            기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
-          </p>
-          <p className="Jost p-48">WEHAGO</p>
-          <p className="NIXGONFONTS p-16">
-            업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
-            전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
-          </p>
+          <div className="textBox">
+            <p className="NIXGONFONTS p-24">
+              기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
+            </p>
+            <p className="Jost p-48">WEHAGO</p>
+            <p className="NIXGONFONTS p-16">
+              업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
+              전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
+            </p>
+          </div>
         </div>
+        {/* 하단 4가지 메뉴 이동 버튼 */}
+        <div className="menuBtnList">
+          <div>
+            <a href="/er" className="menuBtn er">
+              <FontAwesomeIcon icon={faUserPlus} />
+            </a>
+            <p>사원등록</p>
+          </div>
+          <div>
+            <a href="/hr" className="menuBtn hr">
+              <FontAwesomeIcon icon={faAddressCard} />
+            </a>
+            <p>인사관리등록</p>
+          </div>
+          <div>
+            <a href="/lc" className="menuBtn lc">
+              <FontAwesomeIcon icon={faFileInvoice} />
+            </a>
+            <p>표준근로계약서</p>
+          </div>
+          <div>
+            <a href="/si" className="menuBtn si">
+              <FontAwesomeIcon icon={faSackDollar} />
+            </a>
+            <p>급여관리</p>
+          </div>
+        </div>
+        <a href="#!" id="leftArrowBtn">
+          <FontAwesomeIcon icon={faCircleArrowLeft} />
+        </a>
+        <a href="#!" id="leftArrowBtn-animation">
+          <FontAwesomeIcon icon={faCircleArrowLeft} />
+        </a>
       </div>
-      {/* 하단 4가지 메뉴 이동 버튼 */}
-      <div className="menuBtnList">
-        <div>
-          <a href="/er" className="menuBtn er">
-            <FontAwesomeIcon icon={faUserPlus} />
-          </a>
-          <p>사원등록</p>
-        </div>
-        <div>
-          <a href="/hr" className="menuBtn hr">
-            <FontAwesomeIcon icon={faAddressCard} />
-          </a>
-          <p>인사관리등록</p>
-        </div>
-        <div>
-          <a href="/lc" className="menuBtn lc">
-            <FontAwesomeIcon icon={faFileInvoice} />
-          </a>
-          <p>표준근로계약서</p>
-        </div>
-        <div>
-          <a href="/si" className="menuBtn si">
-            <FontAwesomeIcon icon={faSackDollar} />
-          </a>
-          <p>급여관리</p>
-        </div>
-      </div>
-      <a href="#!" id="leftArrowBtn">
-        <FontAwesomeIcon icon={faCircleArrowLeft} />
-      </a>
-      <a href="#!" id="leftArrowBtn-animation">
-        <FontAwesomeIcon icon={faCircleArrowLeft} />
-      </a>
+      <div id="page2"></div>
     </>
   );
 }
