@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
-import { fetchData } from "../../utils/codeHelperUtils";
+// import { fetchData } from "../../utils/codeHelperUtils";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
@@ -21,8 +21,13 @@ import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
 
-const SalaryInformationEntryLayout = () => {
 
+import fetchData from "../../utils/codeHelperUtils";
+import useApi from "../../model/Api";
+
+
+const SalaryInformationEntryLayout = () => {
+  const api = useApi();
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
@@ -42,7 +47,7 @@ const SalaryInformationEntryLayout = () => {
       let codeDataList = data.tableData;
         let url = data.url? data.url : '';
         let params = data.params? data.params : setParams;
-        codeDataList = await fetchData(url, params);
+        codeDataList = await fetchData(api, url, params);
 
         actions.setModalState((prevState) => ({
           ...prevState,

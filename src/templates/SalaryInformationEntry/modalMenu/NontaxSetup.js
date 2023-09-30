@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { fetchData } from "../../../utils/codeHelperUtils";
+
 import { modal_nontaxSetup } from "../../../model/SalaryInformationEntry/SalConstant";
 import TableForm from "../../../components/TableForm";
-import { useApi } from "../../../model/Api";
+
+import fetchData from "../../../utils/codeHelperUtils";
+import useApi from "../../../model/Api";
 
 const NontaxSetup = (props) => {
+  const api = useApi();
   const { actions } = props;
   const nontaxSetupDataRef = useRef([]);
-  const api = useApi();
   
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       if (modal_nontaxSetup.url) {
-        nontaxSetupDataRef.current = await fetchData(modal_nontaxSetup.url);
+        nontaxSetupDataRef.current = await fetchData(api,modal_nontaxSetup.url);
         actions.setModalContentData(() => ({
           tableData: nontaxSetupDataRef.current,
         }));

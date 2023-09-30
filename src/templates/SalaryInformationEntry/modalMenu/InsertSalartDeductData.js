@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryDeductData } from "../../../model/SalaryInformationEntry/SalConstant";
-import { fetchData } from "../../../utils/codeHelperUtils";
+
 import { Button } from "react-bootstrap";
 import { useApi } from "../../../model/Api";
+import fetchData from "../../../utils/codeHelperUtils";
 
 const InsertSalartDeductData = (props) => {
+    const api = useApi();  
     const { actions } = props;
     const [isCalculationbVisible, setIsCalculationbVisible] = useState(false);
-    const api = useApi();
     const calculationbVisibility = () => {
       setIsCalculationbVisible(!isCalculationbVisible);
     };
@@ -18,7 +19,7 @@ const InsertSalartDeductData = (props) => {
     useEffect(() => {
         const fetchDataAndUpdateState = async () => {
             if (modal_insertSalaryDeductData.url) {
-                insertSalaryDeducteDataRef.current = await fetchData(modal_insertSalaryDeductData.url); // useRef의 current 속성에 저장
+                insertSalaryDeducteDataRef.current = await fetchData(api,modal_insertSalaryDeductData.url); // useRef의 current 속성에 저장
                 actions.setModalContentData(() => ({
                     tableData: insertSalaryDeducteDataRef.current
                 }));

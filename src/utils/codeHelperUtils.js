@@ -3,36 +3,26 @@
 
 import { objectToQueryString } from "./StringUtils";
 import { url } from "../model/CommonConstant";
-import api from "../model/Api";
+import { useApi } from "../model/Api";
 
-export async function fetchData(url, params) {
-    try {
-      const tableDataList = await apiDataForTable(url, params);
-      // console.log(tableDataList);
-      return tableDataList;
-    } catch (error) {
-      console.error("API 호출 중 오류 발생:", error);
-    }
+const fetchData = async (api, urlPattern, params) => {
+  try {
+    const response = await api.get(url + urlPattern + objectToQueryString(params));
+    const data = response.data;
+    const tableDataList = data.map((object) => {
+      const dynamicProperties = { item: {} };
+      for (const key in object) {
+        dynamicProperties.item[key] = object[key];
+      }
+      return dynamicProperties;
+    });
+    return tableDataList;
+  } catch (error) {
+    console.error("API 호출 중 오류 발생:", error);
+    throw error;
   }
+};
 
-  export const apiDataForTable = (urlPattern, params) => {
-    
-    return api.get(url + urlPattern + objectToQueryString(params))
-      .then((response) => {
-        const data = response.data;
-        const tableDataList = data.map((object) => {
-          const dynamicProperties = { item: {} };
-            for (const key in object) {
-              dynamicProperties.item[key] = object[key];
-            }
-          return dynamicProperties;
-        });
-        return tableDataList;
-      })
-      .catch((error) => {
-        console.error("API 호출 중 오류 발생:", error);
-        throw error;
-      });
-  };
+export default fetchData;
 
   

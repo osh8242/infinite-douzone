@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryAllowData } from "../../../model/SalaryInformationEntry/SalConstant";
-import { fetchData } from "../../../utils/codeHelperUtils";
+
 import { useApi } from "../../../model/Api";
 import { useCallback } from "react";
+import fetchData from "../../../utils/codeHelperUtils";
 
 const InsertSalaryAllowData = (props) => {
+  const api = useApi();
   const { actions } = props;
   const insertSalaryTableDataRef = useRef([]);
-  const api = useApi();
+
   
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       if (modal_insertSalaryAllowData.url) {
-        insertSalaryTableDataRef.current = await fetchData(
+        insertSalaryTableDataRef.current = await fetchData(api,
           modal_insertSalaryAllowData.url
         );
         actions.setModalContentData(() => ({
