@@ -1,0 +1,29 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - main  # 또는 사용하는 브랜치 이름
+      
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies and build
+      run: |
+        sudo yarn install
+        sudo yarn build
+    - name: Copy build directory to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.REACT_SERVER_HOST }}
+        username: ${{ secrets.REACT_SERVER_USER }}
+        password: ${{ secrets.REACT_SERVER_PASSWORD }}
+        port: ${{ secrets.REACT_SERVER_PORT }}
+        source: "./build/*"
+        target: "/home/user/myapp/"
+        script: sudo systemctl restart nginx   
