@@ -16,6 +16,7 @@ import useRegisterModel from "./useRegisterModel";
 import { url } from "../model/CommonConstant";
 import { useNavigate } from "react-router-dom";
 import { invalid } from "moment/moment";
+import ConfirmComponent from "../components/ConfirmComponent";
 
 function SignUpLayout() {
   const navigate = useNavigate();
@@ -40,6 +41,12 @@ function SignUpLayout() {
   const [phoneErrorValid, setPhoneErrorValid] = useState(null);
   const [existEmail, setExistEmail] = useState();
   const [themeColor, setThemeColor] = useState("");
+  const [registerOk, setRegisterOk] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+
+  // useEffect = () => {
+  // }
 
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
@@ -104,6 +111,24 @@ function SignUpLayout() {
 
   const RegisterUser = () => {
     console.log("Register GO!");
+    const checkRegister = false;
+
+    if (
+      phoneValid === "invalid" ||
+      emailValid === "invalid" ||
+      pwdCheckVaild === "invalid" ||
+      pwdValid === "invalid"
+    ) {
+      console.log("회원가입 실패");
+
+      setShowModal({
+        show: true,
+        message: "유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.",
+      });
+
+      // alert("유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.");
+      return;
+    }
 
     const RegisterVo = {
       userId: tempId,
@@ -113,15 +138,17 @@ function SignUpLayout() {
       // birth: tempDate,
       // gender: tempGender,
       phone: tempPhone,
+      theme: themeColor,
     };
 
     async function fetchData() {
       let result = await axios.post(`${url}/auth/register`, RegisterVo);
       console.log(result.data);
       if (result.data === "SUCCESS") window.location.href = "/successSignup";
-      else if (result.data === "FAIL") {
-        // window.location.href = "/signup";
+      else if (result.data === "FAIL" || checkRegister) {
+        window.location.href = "/signup";
         console.log("TODO: 회원 가입 실패 처리");
+        alert("회원가입 처리 실패");
       }
     }
     fetchData();
@@ -426,6 +453,14 @@ function SignUpLayout() {
           </Button>
         </Col>
       </Row>
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          setShowModal(false);
+        }}
+      />
     </Container>
   );
 }

@@ -131,7 +131,7 @@ const Header = () => {
               className="backgroundBorderNone"
               onClick={toggleProfileDropdown}
             >
-              {userName} 주임연구원 <FontAwesomeIcon icon={faChevronDown} />
+              {userName} 관리자님 <FontAwesomeIcon icon={faChevronDown} />
             </button>
             {showProfileDropdown && <DropDownMenu />}
             {/* 로그인 시 아래의 두 버튼은 가리기!! */}

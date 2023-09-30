@@ -14,9 +14,9 @@ export const LoginProvider = ({ children }) => {
     userPwd: "",
     userName: "",
     empImg: "",
-    master: "",
-    birth: "",
-    gender: "",
+    // master: "",
+    theme: "",
+    // gender: "",
     email: "",
   });
 
