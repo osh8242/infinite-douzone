@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+src/components/Test.js
+src/templates/TestGrid.js
 
 # production
 /build
@@ -21,3 +23,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+mintty.exe.stackdump
+bash.exe.stackdump
+.idea/infinite-douzone.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/Project_Default.xml
+
+.vscode/launch.json

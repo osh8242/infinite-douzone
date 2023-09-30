@@ -1,0 +1,63 @@
+#tableCheckBoxHeader {
+  width: 28px;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgba(233, 236, 239, 0.5);
+}
+
+#tableHeader {
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(233, 236, 239, 0.5);
+}
+
+#tableHeader-arrow svg {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.tableContents {
+  margin: 1px 0px;
+}
+
+.tableCheckBoxArea {
+  height: 100%;
+  margin-top: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  table-layout: auto;
+}
+
+td div {
+  text-align: center;
+}
+
+td input {
+  text-align: center;
+}
+
+.styleNone {
+  color: transparent;
+}
+
+.selectedTr td {
+  background-color: rgb(200, 223, 255) !important;
+}
+
+.selectedTr .selectedTd {
+  background-color: rgb(150, 175, 200) !important;
+}
+
+div[contentEditable="true"] {
+  border-radius: 3px;
+  outline: none;
+  background-color: white !important;
+}
