@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { fetchData } from "../../../utils/codeHelperUtils";
 import { modal_nontaxSetup } from "../../../model/SalaryInformationEntry/SalConstant";
 import TableForm from "../../../components/TableForm";
-import api from "../../../model/Api";
+import { useApi } from "../../../model/Api";
 
 const NontaxSetup = (props) => {
   const { actions } = props;
   const nontaxSetupDataRef = useRef([]);
-
+  const api = useApi();
+  
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       if (modal_nontaxSetup.url) {

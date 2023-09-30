@@ -3,12 +3,12 @@ import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryDeductData } from "../../../model/SalaryInformationEntry/SalConstant";
 import { fetchData } from "../../../utils/codeHelperUtils";
 import { Button } from "react-bootstrap";
-import api from "../../../model/Api";
+import { useApi } from "../../../model/Api";
 
 const InsertSalartDeductData = (props) => {
     const { actions } = props;
     const [isCalculationbVisible, setIsCalculationbVisible] = useState(false);
-
+    const api = useApi();
     const calculationbVisibility = () => {
       setIsCalculationbVisible(!isCalculationbVisible);
     };

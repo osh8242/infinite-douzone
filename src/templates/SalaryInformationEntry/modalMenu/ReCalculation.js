@@ -8,12 +8,12 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
 import { url } from "../../../model/CommonConstant";
-import api from "../../../model/Api";
+import { useApi } from "../../../model/Api";
 
 const ReCalculation = (props) => {
   const { actions, state } = props;
   const [selectedRows, setSelectedRows] = useState([]);
-
+  const api = useApi();
   const confirmButtonHandler = () => {
     let selectOption = [];
     selectedRows.forEach((element) => {

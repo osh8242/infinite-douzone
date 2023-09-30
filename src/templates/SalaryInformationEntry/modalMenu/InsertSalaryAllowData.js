@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryAllowData } from "../../../model/SalaryInformationEntry/SalConstant";
 import { fetchData } from "../../../utils/codeHelperUtils";
-import api from "../../../model/Api";
+import { useApi } from "../../../model/Api";
 import { useCallback } from "react";
 
 const InsertSalaryAllowData = (props) => {
   const { actions } = props;
   const insertSalaryTableDataRef = useRef([]);
-
+  const api = useApi();
+  
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       if (modal_insertSalaryAllowData.url) {
