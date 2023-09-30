@@ -2,9 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_DEDUCTDATA_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
-import api from '../Api';
-import { useLoading } from '../../Loading/LoadingProvider';
-
+import { useApi } from '../Api';
 
 const SalaryInformationEntryModel = () => {
 
@@ -30,7 +28,7 @@ const SalaryInformationEntryModel = () => {
   const [saInfoDetailData, setSaInfoDetailData] = useState([]); // 사원상세조회
 
   /* 상태 Data */
-  const { setLoading } = useLoading();
+  const api = useApi();
   const [modalState, setModalState] = useState({
     show: false,
     size: "lg",
@@ -185,7 +183,6 @@ const SalaryInformationEntryModel = () => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /* 검색 */
   const onSearch = useCallback(() => {
-    setLoading(true);
     // 비우기
     setSalPaySumData({...salPaySumData
       , totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}]      // 공제항목 합계테이블 데이터(selectbox 조회)
@@ -240,7 +237,6 @@ const SalaryInformationEntryModel = () => {
 
           /* select box 지급액 통계 합계 */
           getSalTotalSum('EmpAllThisMonth');
-          setLoading(false);
         }
       })
       .catch((error) => {
@@ -337,7 +333,7 @@ const deleteSelectedRows = () => {
   selectedRows.forEach((item) => {
     deleteEmpList.push({ dateId: dateId, cdEmp: item.item.cdEmp });
   });
-  setLoading(true);
+  
   api
     .delete(url + DELETE_EMPLIST_URL, {
       data: deleteEmpList,
@@ -345,10 +341,10 @@ const deleteSelectedRows = () => {
     .then(() => {
       setSelectedRows([]);
       getSaPayByCdEmp();
-      setLoading(false);
+  
     })
     .catch((error) => {
-      setLoading(false);
+  
       console.error("사원 삭제실패: ", error);
     });
 };
