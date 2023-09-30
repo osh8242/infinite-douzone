@@ -8,13 +8,23 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: var(--blue); /* 스크롤바의 색상 */
+    height: 10%;
+    border-radius: 10px;
+    background-color: var(--blue);
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: var(
-      --darkBlue
-    ); /* 스크롤바 위에 마우스를 올렸을 때의 색상 */
+    background-color: var(--darkBlue);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--lightSkyblue);
+  }
+
+  &::-webkit-scrollbar-button:vertical:start:decrement,
+  &::-webkit-scrollbar-button:vertical:start:increment {
+    display: block;
+    height: 56px;
   }
 }
 

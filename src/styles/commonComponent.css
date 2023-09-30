@@ -1,3 +1,5 @@
+@import url("context.css");
+
 .invalid {
   outline-style: solid !important;
   outline-width: 1px !important;
@@ -17,7 +19,7 @@
   justify-content: center;
   /* background-color: rgb(233, 236, 239);
   */
-  background-color: rgb(233, 244, 255);
+  background-color: var(--lightSkyblue);
 }
 
 .siEmpDetail-container .col-md-12 .label {
@@ -33,7 +35,7 @@
   border-radius: 2px;
   align-items: center;
   justify-content: center;
-  background-color: rgb(233, 244, 255);
+  background-color: var(--lightSkyblue);
   /* background-color: rgb(233, 236, 239);
   */
 }
@@ -46,7 +48,7 @@
   border-radius: 2px;
   align-items: center;
   justify-content: center;
-  background-color: rgb(233, 244, 255);
+  background-color: var(--lightSkyblue);
   /* background-color: rgb(233, 236, 239);
   */
 }
@@ -69,7 +71,7 @@
   position: absolute;
   top: 20%;
   right: 6px;
-  color: rgb(57, 63, 80);
+  color: var(--dark);
   border: none;
   background-color: transparent;
 }
@@ -99,7 +101,7 @@
 .modal-closeBtn {
   /* 모달 닫기 버튼 */
   font-size: 24pt;
-  color: rgb(57, 63, 80);
+  color: var(--dark);
   cursor: pointer;
 }
 
@@ -115,13 +117,13 @@
 .leftTable::-webkit-scrollbar-thumb {
   /* 스크롤바 */
   height: 10%;
-  background: rgb(151, 202, 255);
+  background: var(--lightBlue);
   border-radius: 10px;
 }
 
 .modal-body .table-wrapper::-webkit-scrollbar-track,
 #empRegisterLayoutLeft::-webkit-scrollbar-track,
 .leftTable::-webkit-scrollbar-track {
-  background: rgb(233, 244, 255);
+  background: var(--lightSkyblue);
   /*스크롤바 뒷 배경*/
 }
