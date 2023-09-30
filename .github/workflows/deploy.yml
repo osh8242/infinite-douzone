@@ -1,0 +1,33 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - osh  # osh 브랜치에 푸쉬가 일어나면 실행되도록 설정
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 작업환경 : Ubuntu 최신버전
+
+    steps:
+    # Build 전 pre-code-check (코드 검사)
+    - name: Checkout code
+      uses: actions/checkout@v2 
+
+	# 필요한 package를 설치하고 build
+    - name: Install dependencies and build 
+      run: |
+        sudo yarn install
+        sudo yarn build
+     
+    # ubuntu 서버에 접속하여 빌드파일을 전송하고 배포된 파일을 교체
+    - name: Copy build directory to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.REACT_SERVER_HOST }}
+        username: ${{ secrets.REACT_SERVER_USER }}
+        password: ${{ secrets.REACT_SERVER_PASSWORD }}
+        port: ${{ secrets.REACT_SERVER_PORT }}
+        source: "./build/*"
+        target: "/home/user/myapp/"
+        script: sudo systemctl restart nginx   
