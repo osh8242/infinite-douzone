@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
+import "../styles/commonComponent.css";
 
 function RadioForm({
   id,
@@ -29,35 +30,28 @@ function RadioForm({
 
   return (
     <Row className="py-1">
-      {label && (
-        <Col
-          md={md}
-          className="d-flex align-items-center justify-content-center mt-1"
-        >
-          {label}
-        </Col>
-      )}
-      <Col
-        md="8"
-        className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"
-      >
-        {optionList.map((option) => (
-          <div className="form-check form-check-inline" key={option.key}>
-            <label className="form-check-label">
-              <input
-                className="form-check-input"
-                id={id}
-                type="radio"
-                disabled={disabled}
-                value={option.key}
-                checked={selectedOption === option.key}
-                onChange={handleOptionChange}
-              />
-              {option.value}
-            </label>
-          </div>
-        ))}
-      </Col>
+      <div className="labelAndContent d-flex align-items-center justify-content-center mt-2">
+        {/* <div className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"> */}
+        {label && <div className="label pb-3">{label}</div>}
+        <div className="widthFull d-flex align-items-center justify-content-center">
+          {optionList.map((option) => (
+            <div className="form-check form-check-inline" key={option.key}>
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  id={id}
+                  type="radio"
+                  disabled={disabled}
+                  value={option.key}
+                  checked={selectedOption === option.key}
+                  onChange={handleOptionChange}
+                />
+                {option.value}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
     </Row>
   );
 }

@@ -1,18 +1,14 @@
 // 작성자 : 오승환
-import { Col, Container, Row } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
+import { useCallback } from "react";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+import CodeHelperModal from "../../components/CodeHelperModal";
+import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
+import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
-import RadioForm from "../../components/RadioForm";
 import TableForm from "../../components/TableForm";
-import TextBoxComponent from "../../components/TextBoxComponent";
 import {
-  contractRadioList,
-  genderRadioList,
-  labels,
-  marryRadioList,
-} from "../../model/CommonConstant";
-import {
+  CODE_HELPER_DATA,
   leftStaticsTableConstant,
   leftTableConstant,
   orderList,
@@ -22,9 +18,10 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
-import Emp from "../../vo/HrManagement/Emp";
+import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
+import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
@@ -38,65 +35,123 @@ const HrManagementLayout = () => {
     jobOkSelectRef,
     orderSelectRef,
     leftTableData,
+    leftCodeHelperTableData,
     leftTablePkValue,
     leftStaticsTableData,
-    mainTabRef,
     mainTabData,
     empImageSrc,
     subTableData,
     selectedRows,
+
+    modalState,
+    codeHelperTableData,
   } = state;
+
+  //코드도움 아이콘 클릭이벤트
+  const modalShow = useCallback(
+    async (type, data, setRowData, parentFocusRef) => {
+      actions.setModalState({
+        ...modalState,
+        show: true,
+        parentFocusRef: parentFocusRef,
+      });
+
+      switch (type) {
+        case "default":
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: data.tableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+
+        case "leftTable":
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            title: data.title,
+          }));
+
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: leftCodeHelperTableData,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
+
+        default:
+          break;
+      }
+    },
+    [actions, modalState, leftCodeHelperTableData]
+  );
 
   return (
     <>
-      {/* <CodeHelperModal
-        show={empCodeHelper.show}
-        apiFlag={empCodeHelper.apiFlag}
-        onHide={() =>
-          actions.setEmpCodeHelper({ ...empCodeHelper, show: false })
-        }
-        codeHelperCode={empCodeHelper.codeHelperCode}
-      /> */}
       <HrManagementHeader
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container>
+      <Container className="hr-container">
         {/* 조회영역 */}
-        <HrSearchPanel
-          onSearch={actions.onSearch}
-          jobOkSelectRef={jobOkSelectRef}
-          orderSelectRef={orderSelectRef}
-          searchOption={searchOption}
-          orderList={orderList}
-        />
+        <Row className="hr-search-row">
+          <HrSearchPanel
+            onSearch={actions.onSearch}
+            jobOkSelectRef={jobOkSelectRef}
+            orderSelectRef={orderSelectRef}
+            searchOption={searchOption}
+            orderList={orderList}
+          />
+        </Row>
         {/* 메인영역 */}
         <Row>
           {/* 좌측 영역 */}
-          <Col md="3">
+          <Col md="3" className="hr-left-col">
             {/* 좌측 그리드 */}
             <Row>
-              <div className="leftTable">
+              <div className="hr-leftTable">
                 <TableForm
-                  tableName="EMP"
-                  showCheckbox
-                  showHeaderArrow
+                  readOnly
+                  tableName="empAdd"
+                  //showCheckbox
                   sortable
                   rowAddable
+                  showCheckbox
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  codeHelper
+                  defaultFocus
                   actions={{
                     setTableData: actions.setLeftTableData,
+                    newRowCodeHelper: (parentFocusRef) => {
+                      parentFocusRef.current = false;
+                      modalShow(
+                        "leftTable",
+                        CODE_HELPER_DATA.leftTableCodeHelper,
+                        actions.registEmpAdd,
+                        parentFocusRef
+                      );
+                    },
                     setPkValue: actions.setLeftTablePkValue,
-                    setEditedRow: actions.setEditedEmp,
+                    insertNewRow: (row) => {
+                      actions.insertEmpAdd(row);
+                      actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
+                    },
+                    updateEditedRow: actions.updateEmp,
                     setSelectedRows: actions.setSelectedRows,
-                    deleteCurrentRow: actions.deleteCurrentRow,
-                    getRowObject: Emp,
+                    deleteRow: actions.deleteRow,
+                    getRowObject: (data) => {
+                      return { item: EmpAdd(data), table: "empAdd" };
+                    },
                   }}
                 />
               </div>
             </Row>
+            {/* 통계 테이블 */}
             <Row className="mt-3">
               <TableForm
                 tableName="EMPSTATICS"
@@ -111,150 +166,60 @@ const HrManagementLayout = () => {
             <Col md="9" className="px-5">
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList}>
-                <div>하나하나</div>
+                {[
+                  <Row className="mb-5 justify-content-center" key={"mainTab1"}>
+                    <Col
+                      className="d-flex align-items-center justify-content-center"
+                      xs
+                      md="3"
+                    >
+                      <ProfileImageForm
+                        src={empImageSrc}
+                        handleUpload={actions.updateEmpPhoto}
+                        handleDelete={actions.deleteEmpPhoto}
+                      />
+                    </Col>
+                    <Col xs md="9">
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                        formData={mainTabData}
+                        submitData={actions.submitMainTabData}
+                        columnNumber={2}
+                        codeHelperFn={{
+                          cdOffduty: () =>
+                            modalShow(
+                              "default",
+                              CODE_HELPER_DATA.cdOffduty,
+                              actions.submitMainTabData
+                            ),
+                        }}
+                      />
+                    </Col>
+                  </Row>,
+                  <Row className="mb-5 justify-content-center" key={"mainTab2"}>
+                    <Col xs>
+                      <FormPanel
+                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                        formData={mainTabData}
+                        submitData={actions.submitMainTabData}
+                        columnNumber={3}
+                      />
+                    </Col>
+                  </Row>,
+                ]}
               </MenuTab>
-              {/* 우측 메인폼 */}
-              <Row className="mb-5 justify-content-center" ref={mainTabRef}>
-                <Row>
-                  <Col
-                    className="d-flex align-items-center justify-content-center"
-                    xs
-                    md="4"
-                  >
-                    <ProfileImageForm
-                      src={empImageSrc}
-                      handleUpload={actions.updateEmpPhoto}
-                    />
-                  </Col>
-                  <Col xs md="8">
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="nmEnName"
-                          label={labels.nmEnName}
-                          value={mainTabData.item?.nmEnName}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="nmChName"
-                          label={labels.nmChName}
-                          value={mainTabData.item?.nmChName}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="noSocial"
-                          label={labels.noSocial}
-                          disabled
-                          value={mainTabData.item?.noSocial}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="fgSex"
-                          label={labels.fgSex}
-                          disabled
-                          optionList={genderRadioList}
-                          checked={mainTabData.item?.fgSex}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daBirth"
-                          type="date"
-                          label={labels.daBirth}
-                          value={mainTabData.item?.daBirth}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <RadioForm
-                          id="fgWedding"
-                          label={labels.fgWedding}
-                          optionList={marryRadioList}
-                          checked={mainTabData.item?.fgWedding}
-                          onChange={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="cdDept"
-                          label={labels.cdDept}
-                          disabled
-                          value={mainTabData.item?.cdDept}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="rankNo"
-                          label={labels.rankNo}
-                          disabled
-                          value={mainTabData.item?.ankNo}
-                          onEnter={actions.submitMainTabData}
-                        />
-                      </Col>
-                    </Row>
-                    <Col xs md="6">
-                      <TextBoxComponent
-                        id="cdOffduty"
-                        label={labels.cdOffduty}
-                        value={mainTabData.item?.cdOffduty}
-                        onEnter={actions.submitMainTabData}
-                      />
-                    </Col>
-                    <Col xs md="6">
-                      <RadioForm
-                        id="ynDrawContracts"
-                        label={labels.ynDrawContracts}
-                        optionList={contractRadioList}
-                        checked={mainTabData.item?.ynDrawContracts}
-                        onChange={actions.submitMainTabData}
-                      />
-                    </Col>
-                    <Row>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daEnter"
-                          label={labels.daEnter}
-                          disabled
-                          value={mainTabData.item?.daEnter}
-                        />
-                      </Col>
-                      <Col xs md="6">
-                        <TextBoxComponent
-                          id="daRetire"
-                          label={labels.daRetire}
-                          disabled
-                          value={mainTabData.item?.daRetire}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Row>
+
               {/* 우측 서브탭 */}
               <MenuTab menuList={tabConstant.subTabMenuList} />
               {/* 우측 서브 그리드 */}
-              <div className="subTable">
+              <div className="hr-subTable">
                 <TableForm
-                  tableName="EMPFAM"
-                  showCheckbox
-                  showHeaderArrow
+                  tableName="empFam"
                   rowAddable
                   sortable
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
+                  codeHelper={CODE_HELPER_DATA}
                   pkValue={leftTablePkValue}
                   selectedRows={selectedRows}
                   actions={{
@@ -273,6 +238,27 @@ const HrManagementLayout = () => {
           )}
         </Row>
       </Container>
+      <ModalComponent
+        title={modalState.title}
+        size={modalState.size}
+        show={modalState.show}
+        onHide={() => {
+          actions.setModalState({ show: false });
+          modalState.parentFocusRef.current = true;
+        }}
+      >
+        <CodeHelperModal
+          onHide={() => {
+            actions.setModalState({ show: false });
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+          }}
+          setRowData={codeHelperTableData.setRowData}
+          tableHeaders={codeHelperTableData.tableHeaders}
+          tableData={codeHelperTableData.tableData}
+          usePk={codeHelperTableData.usePk}
+          searchField={codeHelperTableData.searchField}
+        />
+      </ModalComponent>
     </>
   );
 };

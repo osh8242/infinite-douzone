@@ -1,11 +1,19 @@
+import { CODE_TYPE, CODE_VALUE, SELECT_LIST } from "../CommonConstant";
+
 ////////////////////////////// 요청 Mapping Pattern
 export const urlPattern = {
-  insertEmp: "",
-  updateEmp: "",
+  insertEmp: "/emp/insertEmp",
+  updateEmp: "/emp/updateEmp",
   deleteEmp: "/emp/deleteEmp",
+  getEmpAddByCdEmp: "/empAdd/getEmpAddByCdEmp",
+  insertEmpAdd: "/empAdd/insertEmpAdd",
+  updateEmpAdd: "/empAdd/updateEmpAdd",
+  deleteEmpAdd: "/empAdd/deleteEmpAdd",
   getEmpPhoto: "/empPhoto/getEmpPhotoByCdEmp",
   insertEmpPhoto: "/empPhoto/insertEmpPhoto",
   updateEmpPhoto: "/empPhoto/updateEmpPhoto",
+  deleteEmpPhoto: "/empPhoto/deleteEmpPhoto",
+  getEmpFamListByCdEmp: "/empFam/getEmpFamListByCdEmp",
   insertEmpFam: "/empFam/insertEmpFam",
   updateEmpFam: "/empFam/updateEmpFamBySeqValAndCdEmp",
   deleteEmpFam: "/empFam/deleteEmpFam",
@@ -55,16 +63,50 @@ export const leftStaticsTableConstant = {
   ],
 };
 
-export const codeHelperParams = {
-  emp: {
-    title: "사원조회",
-    url: "/emp/getEmpListForHrManagement",
+export const CODE_HELPER_DATA = {
+  leftTableCodeHelper: {
+    title: "사원 조회",
     headers: [
       { field: "cdEmp", text: "사원코드" },
       { field: "nmKrname", text: "사원명" },
     ],
-    params: { jobOk: "Y", refYear: "2023", orderRef: "cdEmp" },
+    tableData: [],
     searchField: ["cdEmp", "nmKrname"],
+  },
+  cdOffduty: {
+    title: "직무 조회",
+    headers: [
+      { field: "cdOffduty", text: "직무코드" },
+      { field: "nmCdOffduty", text: "직무명" },
+    ],
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdOffduty"]]).map((key) => {
+      return {
+        item: {
+          cdOffduty: key,
+          nmCdOffduty: CODE_VALUE[CODE_TYPE["cdOffduty"]][key],
+        },
+      };
+    }),
+    searchField: ["cdOffduty", "nmCdOffduty"],
+    usePk: "cdOffduty",
+  },
+  cdOffpos: {
+    field: "cdOffpos",
+    title: "직급 조회",
+    headers: [
+      { field: "cdOffpos", text: "직급코드" },
+      { field: "nmCdOffpos", text: "직급명" },
+    ],
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdOffpos"]]).map((key) => {
+      return {
+        item: {
+          cdOffpos: key,
+          nmCdOffpos: CODE_VALUE[CODE_TYPE["cdOffpos"]][key],
+        },
+      };
+    }),
+    searchField: ["cdOffpos", "nmCdOffpos"],
+    usePk: "cdOffpos",
   },
 };
 
@@ -77,17 +119,23 @@ export const tabConstant = {
 ////////////////////////////////// 우측 서브그리드
 export const subTableConstant = {
   headers: [
-    { field: "cdFamrel", text: "관계" },
-    { field: "nmKrname", text: "성명" },
-    { field: "ynFor", text: "외국인" },
-    { field: "noSocial", text: "주민등록번호" },
-    { field: "fgSchool", text: "학력" },
-    { field: "fgGraduation", text: "졸업구분" },
-    { field: "ynTogether", text: "동거" },
-    { field: "ynLunarbir", text: "양음" },
-    { field: "daBirth", text: "생년월일" },
-    { field: "cdJob", text: "직업" },
-    { field: "nmKrcom", text: "직장명" },
-    { field: "cdOffpos", text: "직급" },
+    { field: "cdFamrel", text: "관계", width: "70px" },
+    { field: "nmKrname", text: "성명", width: "70px" },
+    {
+      field: "ynFor",
+      text: "외국인",
+      width: "90px",
+      type: "select",
+      optionList: SELECT_LIST.ynFor,
+    },
+    { field: "noSocial", text: "주민등록번호", width: "150px" },
+    { field: "fgSchool", text: "학력", width: "70px" },
+    { field: "fgGraduation", text: "졸업구분", width: "70px" },
+    { field: "ynTogether", text: "동거", width: "40px" },
+    { field: "ynLunarbir", text: "양음", width: "40px" },
+    { field: "daBirth", text: "생년월일", type: "date", width: "114px" },
+    { field: "cdJob", text: "직업", width: "65px" },
+    { field: "nmKrcom", text: "직장명", width: "65px" },
+    { field: "cdOffpos", text: "직급", width: "65px", type: "textCodeHelper" },
   ],
 };

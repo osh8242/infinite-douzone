@@ -11,15 +11,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Col, Row, Form } from "react-bootstrap";
 import "../styles/commonComponent.css";
+import { RADIO_LIST } from "../model/CommonConstant";
 
 function NoSocialFormForEmpRegister(props) {
   //props 속성들
   const {
     label,
     noSocial,
-    ynForList,
+    // ynForList,
     ynFor,
-    genderList,
+    // genderList,
     fgSex,
     pkValue,
     actions,
@@ -144,52 +145,54 @@ function NoSocialFormForEmpRegister(props) {
   };
 
   return (
-    <>
-      <Row className="py-1">
-        <Col
-          md="4"
-          className="d-flex align-items-center justify-content-center"
+    <Row>
+      <div className="widthFull py-1 labelAndContent">
+        <div
+          // md="4"
+          className="label"
         >
           {label}
-        </Col>
-        {/* 내외국민 구분 */}
-        <Col className="d-flex align-items-center justify-content-center">
+        </div>
+        <div className="widthFull labelAndContent">
+          {/* 내외국민 구분 */}
+          {/* <Col className="d-flex align-items-center justify-content-center"> */}
           <Form.Select
             ref={ynForListRef}
             onChange={handleYnFor}
             defaultValue={ynFor}
           >
-            {ynForList?.map((option, index) => (
+            {RADIO_LIST.ynForList?.map((option, index) => (
               <option value={option.value} key={option.key}>
                 {option.value}
               </option>
             ))}
           </Form.Select>
-        </Col>
-        {/* 주민등록번호 */}
-        <Col className="d-flex align-items-center justify-content-center">
+          {/* </Col> */}
+          {/* 주민등록번호 */}
+          {/* <div className="d-flex align-items-center justify-content-center"> */}
           <Form.Control
             ref={noSocialRef}
             onKeyDown={handleKeyDown}
             onChange={handleNoSocialChange}
           ></Form.Control>
-        </Col>
-        {/* 성별 구분 */}
-        <Col className="d-flex align-items-center justify-content-center">
+          {/* </div> */}
+          {/* 성별 구분 */}
+          {/* <div className="d-flex align-items-center justify-content-center"> */}
           <Form.Select
             ref={genderListRef}
             onChange={handleFgSex}
             defaultValue={fgSex}
           >
-            {genderList?.map((option, index) => (
+            {RADIO_LIST.fgSex?.map((option, index) => (
               <option key={option.key} value={option.value}>
                 {option.value}
               </option>
             ))}
           </Form.Select>
-        </Col>
-      </Row>
-    </>
+          {/* </div> */}
+        </div>
+      </div>
+    </Row>
   );
 }
 export default NoSocialFormForEmpRegister;

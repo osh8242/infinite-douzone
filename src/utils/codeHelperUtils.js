@@ -1,31 +1,33 @@
-// codeHelper
+// get TableData
 
-import axios from "axios";
+
 import { objectToQueryString } from "./StringUtils";
+import { url } from "../model/CommonConstant";
+import api from "../model/Api";
 
 export async function fetchData(url, params) {
     try {
-      const codeDataList = await apiCodeHelperData(url, params);
-      return codeDataList;
+      const tableDataList = await apiDataForTable(url, params);
+      // console.log(tableDataList);
+      return tableDataList;
     } catch (error) {
       console.error("API 호출 중 오류 발생:", error);
     }
   }
 
-  export const apiCodeHelperData = (url, params) => {
-    const serverUrl = "http://localhost:8888";
-
-    return axios.get(serverUrl + url + objectToQueryString(params))
+  export const apiDataForTable = (urlPattern, params) => {
+    
+    return api.get(url + urlPattern + objectToQueryString(params))
       .then((response) => {
         const data = response.data;
-        const codeDataList = data.map((object) => {
+        const tableDataList = data.map((object) => {
           const dynamicProperties = { item: {} };
             for (const key in object) {
               dynamicProperties.item[key] = object[key];
             }
-          return dynamicProperties;       
+          return dynamicProperties;
         });
-        return codeDataList;
+        return tableDataList;
       })
       .catch((error) => {
         console.error("API 호출 중 오류 발생:", error);

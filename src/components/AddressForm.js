@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Row } from "react-bootstrap";
+import "../styles/addressForm.css";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
-import "../styles/addressForm.css";
 
 const AddressForm = (props) => {
   /*
@@ -10,40 +12,57 @@ const AddressForm = (props) => {
     isZonecode: 우편번호 여부(boolean)
     zipHome: 우편번호
     addHome1: 주소
-    addHome2: 상세주소
     pkValue: pk값(사원코드, cdEmp)
+    actions: update 함수
   */
-  const { isZonecode, zipHome, addHome1, addHome2, pkValue, actions } = props;
+  const {
+    isZonecode,
+    id,
+    label,
+    value,
+    // zipHome,
+    // addHome1,
+    // pkValue,
+    // actions,
+    // md = 4,
+    // mdValue = 8,
+    size,
+    iconBtn,
+    onChange,
+  } = props;
 
-  const zipHomeRef = useRef();
-  const addHome1Ref = useRef();
-  const addHome2Ref = useRef();
+  //입력값
+  const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
+  const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
 
   //비동기 데이터 load
   useEffect(() => {
-    zipHomeRef.current.value = zipHome;
-    addHome1Ref.current.value = addHome1;
-    addHome2Ref.current.value = addHome2;
-  });
+    setInputValue(value || "");
+  }, [value]);
 
-  // 선택된 주소를 주소 필드에 업데이트 및 update 요청(우편번호와 주소)
+  // 선택된 주소를 주소 필드에 업데이트 (우편번호와 주소)
+  // parameter로 받는 address와 zonecode는 Post 컴포넌트로부터 받는다
   const handleAddressSelected = ({ zonecode, address }) => {
-    //입력 필드 update
-    zipHomeRef.current.value = zonecode;
-    addHome1Ref.current.value = address;
-    //각 입력 필드의 값을 editedData에 저장 (update 요청)
-    const newAddress = {
-      zipHome: zipHomeRef.current.value,
-      addHome1: addHome1Ref.current.value,
-      cdEmp: pkValue.cdEmp,
-    };
-    setModalState({ ...modalState, show: false });
+    const newValue = `${zonecode}-${address}`;
+    setInputValue(newValue);
 
-    //update api를 통일하기 위해 item으로 포장
-    let item = {
-      item: newAddress,
+    // 값 update
+    const zonecodeId = id.split("-")[0];
+    const addressId = id.split("-")[1];
+
+    const JSONValue = {
+      [zonecodeId]: zonecode,
+      [addressId]: address,
     };
-    actions.setAddress(item);
+
+    if (isZonecode) {
+      onChange && onChange("", JSONValue, "");
+      // onChange("", address, addressId);
+    } else {
+      onChange && onChange("", address, addressId);
+    }
+
+    setModalState({ ...modalState, show: false });
   };
 
   const [modalState, setModalState] = useState({
@@ -51,82 +70,54 @@ const AddressForm = (props) => {
     props: {},
   });
 
-  //상세주소 업데이트 요청(update)
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-
-      //update POST 요청
-      const newDetailAddress = {
-        addHome2: addHome2Ref.current.value,
-        cdEmp: pkValue.cdEmp,
-      };
-      //update api를 통일하기 위해 item으로 포장
-      let item = {
-        item: newDetailAddress,
-      };
-      actions.setAddress(item);
-    }
-  };
-
   return (
     props && (
       <>
-        <Row className="py-1">
-          <Col
-            md="4"
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>주소</div>
-          </Col>
-          <Col md="8" className="fullAddressArea">
-            {/* 우편번호 */}
-            {isZonecode && (
+        <Row>
+          <div className="widthFull py-1 labelAndContent">
+            <div className="label">{label}</div>
+            <div className="fullAddressArea labelAndContent widthFull">
+              {/* 우편번호 */}
+              {isZonecode && (
+                <Form.Control
+                  id={id.split("-")[0]}
+                  key={id.split("-")[0]}
+                  type="text"
+                  value={inputValue?.split("-")[0] || ""}
+                  name="zonecode"
+                  className="zoneCodeArea"
+                  disabled
+                  size={size}
+                />
+              )}
+
+              {/* 주소 */}
               <Form.Control
-                className="zoneCodeArea"
+                id={id.split("-")[1]}
+                key={id.split("-")[1]}
                 type="text"
-                name="zonecode"
-                ref={zipHomeRef}
+                value={inputValue?.split("-")[1] || ""}
+                name="address"
+                className="addressArea"
                 disabled
               />
-            )}
+              {/* 버튼 클릭 시 Post 모달 호출 */}
 
-            {/* 주소 */}
-            <Form.Control
-              className="addressArea"
-              type="text"
-              name="address"
-              ref={addHome1Ref}
-              disabled
-            />
+              <Button
+                className="addressSearchBtn"
+                variant="secondary"
+                onClick={() => setModalState({ ...modalState, show: true })}
+              >
+                {iconBtn ? (
+                  <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
+                ) : (
+                  "검색"
+                )}
+              </Button>
+            </div>
+          </div>
+        </Row>
 
-            {/* 버튼 클릭 시 Post 모달 호출 */}
-            <Button
-              className="addressSearchBtn"
-              variant="secondary"
-              onClick={() => setModalState({ ...modalState, show: true })}
-            >
-              검색
-            </Button>
-          </Col>
-        </Row>
-        {/* 상세주소 */}
-        <Row className="py-1">
-          <Col
-            md="4"
-            className="d-flex align-items-center justify-content-center"
-          >
-            <div>상세주소</div>
-          </Col>
-          <Col md="8">
-            <Form.Control
-              ref={addHome2Ref}
-              type="text"
-              name="address-detail"
-              onKeyDown={handleKeyDown}
-            />
-          </Col>
-        </Row>
         <ModalComponent
           size="lg"
           show={modalState.show}

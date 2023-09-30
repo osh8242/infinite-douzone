@@ -4,9 +4,10 @@ import imgLogo from "../../src/styles/img/wehago_logo.png";
 import TextBoxComponent from "../../src/components/TextBoxComponent";
 import CommonConstant from "../../src/model/CommonConstant";
 import RadioForm from "../../src/components/RadioForm";
-import TempAdd from "../../src/components/TempAdd";
+import TempAdd from "../../src/components/TestAdd";
 import axios from "axios";
 import { SignUpField } from "./SignUpField";
+import AddressForm from "../components/AddressForm";
 
 function SignUp() {
   const [formState, setFormState] = useState({});
@@ -40,11 +41,12 @@ function SignUp() {
             }
           />
         );
-      case "TempAdd":
+      case "AddressForm":
         return (
-          <TempAdd
+          <AddressForm
             label={field.label}
             md={field.md}
+            mdValue={field.mdValue}
             value={formState[field.stateName] || ""}
             onChange={(e) => handleInputChange(field.stateName, e.target.value)}
           />
@@ -76,7 +78,7 @@ function SignUp() {
 
         {SignUpField.map((field, idx) => (
           <Row key={idx} className="justify-content-center mb-4">
-            <Col md="9">{renderComponent(field)}</Col>
+            <Col md="8">{renderComponent(field)}</Col>
           </Row>
         ))}
 

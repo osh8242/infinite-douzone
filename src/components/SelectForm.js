@@ -12,61 +12,100 @@
 //    <SelectForm label="구분" optionList={optionList}/>
 //
 
-import { Col, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import "../styles/commonComponent.css";
 
 SelectForm.defaultProps = {
   optionList: [],
 };
 
 function SelectForm(props) {
-  const { label, optionList, selectRef, onChange, subLabel, endLabel } = props;
+  const {
+    id,
+    label,
+    optionList,
+    selectedOption,
+    selectRef,
+    onChange,
+    subLabel,
+    endLabel,
+  } = props;
+
+  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
+  useEffect(() => {
+    setSelectedValue(selectedOption || "");
+  }, [selectedOption]);
 
   const handleSelectChange = (event) => {
-    const selectedValue = selectRef
-      ? selectRef.current.value
-      : event.target.value;
-    if (onChange) onChange(selectedValue);
+    const newValue = selectRef ? selectRef.current.value : event.target.value;
+    if (onChange) onChange(event, newValue);
+    console.log(newValue);
+    setSelectedValue(newValue);
   };
 
   return (
     <Row className="py-1">
-      {label && (
-        <Col
-          md="4"
-          className="d-flex align-items-center justify-content-center"
-        >
-          <div>{label}</div>
-        </Col>
-      )}
-      <Col className="d-flex align-items-center justify-content-center">
-        {subLabel ? (
-          <Col
-            md={2}
-            className="d-flex align-items-center justify-content-center"
-            style={{ marginLeft: 15, marginRight: 15 }}
-          >
-            {subLabel}
-          </Col>
-        ) : (
-          ""
-        )}
-
-        <Form.Select ref={selectRef} onChange={(e) => handleSelectChange(e)}>
-          {optionList.map((option, index) => (
-            <option value={option.key} key={index}>
-              {option.value}
-            </option>
-          ))}
-        </Form.Select>
-        {endLabel ? (
-          <Col md={2} style={{ marginLeft: 15, marginRight: 15 }}>
-            {endLabel}
-          </Col>
-        ) : (
-          ""
-        )}
-      </Col>
+      <div className="labelAndContent">
+        {label && <div className="label">{label}</div>}
+        <div className="widthFull d-flex align-items-center justify-content-center">
+          {subLabel ? (
+            <div className="widthFull d-flex align-items-center justify-content-between">
+              <div className="widthFull d-flex align-items-center">
+                <div
+                  style={{ width: "28%" }}
+                  className="d-flex justify-content-end"
+                >
+                  {subLabel}
+                </div>
+                <div
+                  style={{
+                    width: "38%",
+                    paddingLeft: 20,
+                  }}
+                >
+                  <Form.Select
+                    id={id}
+                    ref={selectRef}
+                    value={selectedValue}
+                    onChange={(e) => handleSelectChange(e)}
+                  >
+                    {optionList.map((option, index) => (
+                      <option value={option.key} key={index}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+                <div
+                  className="d-flex justify-content-start"
+                  style={{
+                    width: "30%",
+                    paddingLeft: 10,
+                  }}
+                >
+                  {endLabel}
+                </div>
+              </div>
+            </div>
+          ) : (
+            // 일반 Select
+            <Form.Select
+              id={id}
+              ref={selectRef}
+              value={selectedValue}
+              onChange={(e) => handleSelectChange(e)}
+            >
+              {optionList.map((option, index) => (
+                <option value={option.key} key={index}>
+                  {option.value}
+                </option>
+              ))}
+            </Form.Select>
+          )}
+        </div>
+      </div>
     </Row>
   );
 }

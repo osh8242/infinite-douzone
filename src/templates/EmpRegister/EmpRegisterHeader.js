@@ -10,6 +10,7 @@ import { Button } from "react-bootstrap";
 import "../../styles/header.css";
 import emp from "../..//styles/img/empRegisterLogo.png";
 import { useState } from "react";
+import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConstant";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 // const logoUrl = {
@@ -18,10 +19,17 @@ import { useState } from "react";
 // };
 
 function EmpRegisterHeader(props) {
-  const { actions } = props;
+  const { actions, modalShow } = props;
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
+  };
+
+  const clickTrashCanHandler = (e) => {
+    // 정말로 삭제하시겠습니까?? => YES => 삭제요청 보내기
+    // modalShow();
+    actions.deleteSelectedRows();
+    // modalShow("undeletedEmp", EmpRegisterUndeletedEmpHeaders);
   };
 
   return (
@@ -39,25 +47,25 @@ function EmpRegisterHeader(props) {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            className="colorWhite backgroundBorderNone"
+            className="colorWhite backgroundBorderNone forbid"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
         </button>
         <button
           className="backgroundBorderNone"
-          onClick={(e) => actions.deleteSelectedRows()}
+          onClick={(e) => clickTrashCanHandler(e)}
         >
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite forbid" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
         </button>
       </div>
     </div>

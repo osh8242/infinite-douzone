@@ -1,18 +1,20 @@
-#tableCheckBoxHeader {
+.tableCheckBoxHeader {
+  position: sticky;
   width: 28px;
   cursor: pointer;
   text-align: center;
-  background-color: rgba(233, 236, 239, 0.5);
+  background-color: rgba(233, 236, 239) !important;
 }
 
-#tableHeader {
-  position: relative;
+.tableHeader {
+  position: sticky;
   text-align: center;
   cursor: pointer;
-  background-color: rgba(233, 236, 239, 0.5);
+  top: 0;
+  background-color: rgba(233, 236, 239) !important;
 }
 
-#tableHeader-arrow svg {
+.tableHeader-arrow svg {
   position: absolute;
   top: 50%;
   right: 2px;
@@ -32,16 +34,41 @@
   align-items: center;
 }
 
+.sticky-row {
+  position: sticky;
+  bottom: 0;
+  border: 1px solid rgba(233, 236, 239) !important;
+}
+
 table {
   table-layout: auto;
 }
 
 td div {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
   text-align: center;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 td input {
   text-align: center;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 2rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+td input[type="checkbox"] {
+  height: 1rem;
+}
+
+td select {
+  height: 2rem;
 }
 
 .styleNone {

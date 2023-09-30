@@ -11,16 +11,32 @@ export const LoginProvider = ({ children }) => {
   const [loginInfo, setLoginInfo] = useState({
     userId: "",
     userPwd: "",
+    companyCode: "",
   });
+
+  // JWT 토큰 상태 관리
+  const [token, setToken] = useState(null);
 
   const updateLoginInfo = (key, value) => {
     setLoginInfo((prev) => ({ ...prev, [key]: value }));
   };
 
+  // JWT 토큰 업데이트 함수
+  const updateToken = (newToken) => {
+    setToken(newToken);
+  };
+
+  const contextValue = {
+    loginInfo,
+    updateLoginInfo,
+    token,
+    updateToken,
+  };
+
   return (
     // useLogin 의 loginInfo, updateValue 함수 반환하여 사용
     // 자식 영역에서는 모두 사용 가능하게 함
-    <LoginContext.Provider value={{ loginInfo, updateLoginInfo }}>
+    <LoginContext.Provider value={contextValue}>
       {children}
     </LoginContext.Provider>
   );

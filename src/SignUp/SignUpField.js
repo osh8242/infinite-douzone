@@ -1,5 +1,4 @@
-// import CommonConstant from "../../src/model/CommonConstant";
-// const { genderRadioList } = CommonConstant();
+import { RADIO_LIST } from "../../src/model/CommonConstant";
 
 export const SignUpField = [
   {
@@ -49,12 +48,14 @@ export const SignUpField = [
     component: "RadioForm",
     label: "성별",
     md: 3,
-    //options: genderRadioList,
+    options: RADIO_LIST.fgSex,
     stateName: "selectedGender",
   },
   {
     component: "TempAdd",
     md: 3,
+    mdValue: 9,
     stateName: "address",
+    iconBtn: "true",
   },
 ];
