@@ -25,6 +25,7 @@ function SignUpLayout() {
   const [invalid, setInvalid] = useState("");
   const [pwdCheckVaild, setPwdCheckVaild] = useState("");
   const [id, setId] = useState("");
+  const [companyCode, setCompanyCode] = useState("");
   const [tempId, setTempId] = useState("");
   const [tempPwd, setTempPwd] = useState("");
   const [tempEmail, setTempEmail] = useState("");
@@ -146,6 +147,7 @@ function SignUpLayout() {
       userPwd: tempPwd,
       userName: tempName,
       email: tempEmail,
+      companyCode: companyCode,
       // birth: tempDate,
       // gender: tempGender,
       phone: tempPhone,
@@ -183,9 +185,12 @@ function SignUpLayout() {
     window.location.href = { stateModal };
   };
 
+  const handleTemporaryCd = (e) => {
+    setCompanyCode(e.target.value);
+  };
+
   const handleTemporaryId = (e) => {
     setTempId(e.target.value);
-    // setIdValid(false);
   };
 
   const handleTemporaryPwd = (e) => {
@@ -274,6 +279,36 @@ function SignUpLayout() {
           <h2 className="subLabel">회원가입</h2>
         </Row>
         <Col md="15">
+          <Row className="d-flex justify-content-center align-items-center">
+            <Col md="5">
+              회사 코드
+              <Form.Control
+                name="companyCode"
+                value={companyCode}
+                onChange={handleTemporaryCd}
+                type={"textbox"}
+                placeholder="아이디를 입력해 주세요."
+                height={40}
+                // onBlur={checkVaildId}
+                // className={invalid}
+              />
+              <Row className="d-flex justify-content-center align-items-center">
+                {idCheck === "SUCCESS" && tempId.length > 0 ? (
+                  <p className={"successMessageWrap"}>
+                    사용 가능한 아이디입니다.
+                  </p>
+                ) : idCheck === "FAIL" && tempId.length > 0 ? (
+                  <p className={"errorMessageWrap"}>
+                    사용 불가능한 아이디입니다.
+                  </p>
+                ) : tempId.length === 0 ? (
+                  <p> </p>
+                ) : (
+                  <p> </p>
+                )}
+              </Row>
+            </Col>
+          </Row>
           <Row className="d-flex justify-content-center align-items-center">
             <Col md="5">
               아이디

@@ -126,53 +126,62 @@ const Login = () => {
             </h2>
           </Row>
           <Row className="justify-content-center mb-4">
-            <Col md="8">아이디</Col>
-            <Form.Control
-              className={invalid}
-              onChange={handleId}
-              id="id"
-              value={id}
-              name="userId"
-              type="text"
-              label="ID"
-              placeholder="ID"
-              height={45}
-            />
+            <Col md="7">
+              <Col md="8">아이디</Col>
+              <Form.Control
+                className={invalid}
+                onChange={handleId}
+                id="id"
+                value={id}
+                name="userId"
+                type="text"
+                label="ID"
+                placeholder="ID"
+                height={50}
+              />
+            </Col>
           </Row>
           <Row className="justify-content-center mb-4">
-            <Col md="8">비밀번호 </Col>
-            <Form.Control
-              className={invalid}
-              onChange={handlePwd}
-              id="pwd"
-              value={pwd}
-              name="userPwd"
-              type="password"
-              label="Password"
-              placeholder="PASSWORD"
-              height={45}
-              onBlur={LoginUser}
-            />
+            <Col md="7">
+              <Col md="8">비밀번호 </Col>
+              <Form.Control
+                className={invalid}
+                onChange={handlePwd}
+                id="pwd"
+                value={pwd}
+                name="userPwd"
+                type="password"
+                label="Password"
+                placeholder="PASSWORD"
+                height={45}
+                onBlur={LoginUser}
+              />
+            </Col>
           </Row>
           <Row>
             <p className={"errorMessageWrap"}>{errorMessage}</p>
           </Row>
           <Row className="justify-content-center mb-4">
             <Col md="10" className="d-flex flex-column align-items-center">
-              <Button
-                className="btn-custom"
-                type="submit"
-                style={{
-                  marginTop: "40px",
-                  padding: "10px 40px",
-                  fontSize: "16px",
-                  width: "85%",
-                  borderRadius: "15px",
-                }}
-                onClick={LoginUser}
-              >
-                로그인
-              </Button>
+              <Col md="10">
+                <Button
+                  className="btn-custom"
+                  type="submit"
+                  style={{
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    padding: "10px 40px",
+                    marginLeft: "35px",
+                    fontSize: "16px",
+                    width: "85%",
+                    alignItems: "center",
+                    borderRadius: "15px",
+                  }}
+                  onClick={LoginUser}
+                >
+                  로그인
+                </Button>
+              </Col>
               <div
                 style={{
                   marginTop: "10px",

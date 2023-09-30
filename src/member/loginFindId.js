@@ -17,7 +17,7 @@ const LoginFindId = () => {
     console.log("click");
     try {
       const response = await axios.post(url + "/auth/findEmail", {
-        userEmail: "seoyeonev@gmail.com",
+        email: email,
       });
 
       console.log("OK");

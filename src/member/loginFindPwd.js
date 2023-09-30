@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "./actions";
 import { loginUser } from "./api";
@@ -11,6 +12,9 @@ import axios from "axios";
 import { url } from "../model/CommonConstant";
 
 const loginFindPwd = () => {
+  // const [id, setId] = useState("");
+  // const [email, setEmail] = useState("");
+
   const sendMail = () => {
     axios
       .post(`${url}/auth/findEmail`)
@@ -21,6 +25,13 @@ const loginFindPwd = () => {
         console.log("error:" + error);
       });
   };
+
+  // const handleEmail = (e) => {
+  //   setEmail(e.target.vlaue);
+  // };
+  // const handleId = (e) => {
+  //   setId(e.target.vlaue);
+  // };
 
   return (
     <Container
@@ -45,10 +56,26 @@ const loginFindPwd = () => {
         </Row>
         <Row className="justify-content-center mb-4">
           <Col md="9">
+            아이디
             <TextBoxComponent
               name="userId"
               type="text"
-              placeholder=" 아이디를 입력하세요."
+              // value={id}
+              // onChange={handleId}
+              placeholder="요청하실 아이디를 입력하세요."
+              height={45}
+            />
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-4">
+          <Col md="9">
+            이메일
+            <TextBoxComponent
+              name="userEmail"
+              type="text"
+              // value={email}
+              // onChange={handleEmail}
+              placeholder="요청하실 이메일을 입력하세요."
               height={45}
             />
           </Col>
@@ -67,7 +94,7 @@ const loginFindPwd = () => {
               }}
               onClick={sendMail}
             >
-              다음
+              이메일 전송
             </Button>
           </Col>
         </Row>
