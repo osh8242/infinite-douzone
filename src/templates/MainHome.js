@@ -7,18 +7,72 @@ import React from "react";
 // import wehago_backImg from "../styles/img/wehago_backImg.jpg";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
+  faAddressBook,
+  faAddressCard,
+} from "@fortawesome/free-regular-svg-icons";
+
+import {
+  faCircleArrowLeft,
   faChevronCircleLeft,
   faChevronCircleRight,
   faFileInvoice,
   faSackDollar,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import "../styles/mainHome.scss";
-import "../styles/fonts.css";
+
+import { useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function MainHome() {
+  const navigate = useNavigate();
+  // const userInfoString = localStorage.getItem("userInfo");
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+
+  const [btnByState, setBtnByState] = useState(
+    localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
+  );
+  const [hrefState, setHrefState] = useState(
+    userInfoObject != null ? "/" : "/login"
+  );
+
+  const [userName, setUserName] = useState(
+    userInfoObject ? userInfoObject.userName : "비회원"
+  );
+
+  const location = useLocation();
+  const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
+
+  let userToken = localStorage.getItem("token");
+  let userTokenObject = JSON.parse(userToken);
+
+  function onClickLoginHandler(e) {
+    console.log("click hanglder!");
+    if (localStorage.getItem("userInfo") != null) {
+      console.log("local 값 잇서?");
+      setBtnByState("로그인");
+      setHrefState("/login");
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("authToken");
+      setUserName("비회원");
+    } else {
+      setHrefState("/login");
+      setBtnByState("로그아웃");
+      navigate("/login");
+    }
+  }
+
+  console.log("------HEADER--------------");
+  console.log(userInfoObject);
+  console.log("TOKEN: " + userTokenObject);
+  console.log("------HEADER--------------");
+
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const toggleProfileDropdown = () => {
+    setShowProfileDropdown(!showProfileDropdown);
+  };
+
   return (
     <div id="mainHomePage">
       <div id="mainPageTopHeader-BackGround">
@@ -30,14 +84,21 @@ function MainHome() {
             <a href="#page1" className="colorWhite">
               HOME
             </a>
-            <a href="#page2" className="colorWhite">
-              서비스소개
-            </a>
-            {/* 로그인 시 로그아웃만 보이게 */}
-            <div id="signUpSignInBtn">
-              <a href="/signUn">회원가입</a>
-              <a href="/login">로그인</a>
-              <a href="/">로그아웃</a>
+            <div id="mainPageTopHeaderContents">
+              <a href="/" className="colorWhite">
+                HOME
+              </a>
+              <a href="/" className="colorWhite">
+                서비스소개
+              </a>
+
+              {/* 로그인 여부에 따라 버튼 토글 */}
+              <div id="signUpSignInBtn">
+                {!userInfoObject && <a href="/signup">회원가입</a>}
+                <a href={hrefState} onClick={onClickLoginHandler}>
+                  {btnByState}
+                </a>
+              </div>
             </div>
           </div>
         </div>

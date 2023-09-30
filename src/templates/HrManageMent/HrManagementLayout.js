@@ -42,7 +42,6 @@ const HrManagementLayout = () => {
     empImageSrc,
     subTableData,
     selectedRows,
-
     modalState,
     codeHelperTableData,
   } = state;
