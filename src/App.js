@@ -20,8 +20,8 @@ import { useLocation } from "react-router-dom";
 import MainTestPage from "./templates/MainTestPage";
 import ErrorPage from "./templates/ErrorPage";
 import SuccessSignUp from "./templates/SuccessSignUp";
-import { LoadingContext } from "./Loading/LoadingProvider";
 import { useContext } from "react";
+import { LoadingContext } from "./Loading/LoadingProvider";
 import Loading from "./components/Loading";
 
 function ConditionalHeader() {
@@ -47,13 +47,13 @@ function ConditionalHeader() {
 
 function App() {
   const { loading } = useContext(LoadingContext);
-
   return (
     <div>
       {/* <Provider store={store}> */}
       <LoginProvider>
         <BrowserRouter>
           <ConditionalHeader />
+          {loading && <Loading />}{" "}
           <Routes>
             <Route path="/mypageTest" element={<MainTestPage />} />
             <Route path="/" element={<MainHome />} />
@@ -71,21 +71,6 @@ function App() {
         </BrowserRouter>
         {/* </Provider> */}
       </LoginProvider>
-      <BrowserRouter>
-        <Header />
-        {loading && <Loading />}{" "}
-        {/* 로딩 상태에 따라 로딩 화면을 조건부로 렌더링 */}
-        <Routes>
-          <Route path="/" element={<MainHome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/er" element={<EmpRegisterationLayout />} />
-          <Route path="/hr" element={<HrManagementLayout />} />
-          <Route path="/lc/*" element={<LaborContractLayout />} />
-          <Route path="/si" element={<SalaryInformationEntryLayout />} />
-          <Route path="/login" element={<LoginGrid />} />
-          <Route path="/mypage" element={<MyPage />} />
-        </Routes>
-      </BrowserRouter>
     </div>
   );
 }
