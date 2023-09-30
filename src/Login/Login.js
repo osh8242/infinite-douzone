@@ -33,7 +33,12 @@ const Login = () => {
     LoginUser();
   };
 
-  const LoginUser = async () => {
+  const handleOnBlur = (event) => {
+    console.log(event);
+    console.log(event.type);
+  };
+
+  const LoginUser = async (event) => {
     // console.log("loginInfo", loginInfo);
 
     const loginUser = {
@@ -63,10 +68,11 @@ const Login = () => {
         console.log("로그인에 성공하였습니다.");
         setInvalidPwd("");
         setInvalid("");
+        setErrorMessage("");
         console.log("response.data", response.data);
         console.log("response.headers", response.headers);
         // console.log("response.headerss", response.headers["authorization"]);
-        navigate("/");
+        if (event.type !== "blur") navigate("/");
       } else {
         console.log("로그인에 실패하였습니다.");
       }
@@ -143,6 +149,7 @@ const Login = () => {
               label="Password"
               placeholder="PASSWORD"
               height={45}
+              onBlur={LoginUser}
             />
           </Row>
           <Row>
