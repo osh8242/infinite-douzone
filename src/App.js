@@ -9,11 +9,18 @@ import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/Sal
 import SignUp from "./SignUp/SignUp";
 import MainHome from "./templates/MainHome";
 import MyPage from "./templates/myPage";
+import { LoadingContext } from "./Loading/LoadingProvider";
+import { useContext } from "react";
+import Loading from "./components/Loading";
+
 function App() {
+  const { loading } = useContext(LoadingContext);
+
   return (
     <div>
       <BrowserRouter>
         <Header />
+        {loading && <Loading />} {/* 로딩 상태에 따라 로딩 화면을 조건부로 렌더링 */}
         <Routes>
           <Route path="/" element={<MainHome />} />
           <Route path="/signup" element={<SignUp />} />

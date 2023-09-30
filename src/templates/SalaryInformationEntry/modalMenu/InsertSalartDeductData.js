@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryDeductData } from "../../../model/SalaryInformationEntry/SalConstant";
 import { fetchData } from "../../../utils/codeHelperUtils";
 import { Button } from "react-bootstrap";
+import api from "../../../model/Api";
 
 const InsertSalartDeductData = (props) => {
     const { actions } = props;
-    const [isCalculationbVisible, setIsCalculationbVisible] = useState(true);
+    const [isCalculationbVisible, setIsCalculationbVisible] = useState(false);
 
     const calculationbVisibility = () => {
       setIsCalculationbVisible(!isCalculationbVisible);
@@ -26,16 +27,70 @@ const InsertSalartDeductData = (props) => {
         fetchDataAndUpdateState();
     }, []);
 
+    
+  const insertSalDeduct = useCallback((salAllow) => {
+    api
+      .post("/sallowpay/insertSalAllow", salAllow, {
+        "Content-Type": "qpplication/json",
+      })
+      .then((response) => {
+        if (response.data !== 0){
+          alert ("공제 등록에 성공하였습니다!");
+        }
+      })
+      .catch((error) => {
+        console.log("에러발생: ", error);
+      });
+  }, []);
+
+  const updateSalDeduct = useCallback((salDeduct) => {
+    //salDeduct.calculation
+    api
+      .put("/sallowpay/updateSalAllow", salDeduct)
+      .then((response) => {
+        if (response.data !== 0) {
+          alert("수정되었습니다!");
+        }
+      })
+      .catch((error) => {
+        console.log("에러발생 -> ", error);
+      });
+  }, []);
+
+  const deleteDeduct = useCallback((row) => {
+    const salAllow = row.item;
+
+    api
+      .delete("/sallowpay/deleteSalAllow", {
+        data: salAllow
+      })
+      .then((response) => {
+        if (response.data !== 0)  {
+          alert("삭제되었습니다!");
+        }
+      })
+      .catch((error) => {
+        console.log("에러발생 -> ", error);
+      });
+  }, []);
+
   return (
     <div>
       <div>
         <div className="tableData_container">
-          <Button onClick={calculationbVisibility}>산출식보기</Button>
+          <Button onClick={calculationbVisibility}>{!isCalculationbVisible? '산출식보기' : '산출식 숨기기' }</Button>
           <TableForm
             tableName="SI_INSERT_SALARY_DEDUCT_DATA"
-            readOnly
-            tableHeaders={isCalculationbVisible?(modal_insertSalaryDeductData.headers):(modal_insertSalaryDeductData.headersWithCalculation)}
+            sortable
+            rowAddable
+            tableHeaders={!isCalculationbVisible?(modal_insertSalaryDeductData.headers):(modal_insertSalaryDeductData.headersWithCalculation)}
             tableData={insertSalaryDeducteDataRef.current}
+            actions={{
+              getRowObject : (data)=>{ return {item:data}},
+              insertNewRow: insertSalDeduct,
+              updateEditedRow: updateSalDeduct,
+              deleteRow: deleteDeduct
+            }}
           />
           
         </div>

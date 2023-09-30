@@ -274,10 +274,13 @@ const TableForm = ({
   const isValidRow = useCallback(
     (inputs, columnIndex) => {
       for (let input of inputs) {
-        if (tableHeaders[columnIndex].isPk)
-          if (input.value === "" || !input.value) return false;
-        return true;
+        let inputIndex = tableHeaders.findIndex((header)=>
+          header.field === input.id
+        );
+        if (tableHeaders[inputIndex].isPk)
+          if (input.value === "" || !input.value) return false;        
       }
+      return true;
     },
     [tableHeaders]
   );
@@ -318,7 +321,10 @@ const TableForm = ({
 
         if (!editedRow) {
           tableFocus.current = false;
-          setConfirmModalState({ show: true, message: "필수입력값 누락" });
+          setConfirmModalState({ show: true, 
+            message: "필수입력값 누락", 
+            onlyConfirm : true , 
+            onConfirm : ()=>setConfirmModalState({show:false}) });
           return;
         }
         if (editedRow.isNew) actions.insertNewRow(editedRow.item);
@@ -327,7 +333,7 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
-        console.log("엔터키처리 newtableRows", newTableRows);
+        //console.log("엔터키처리 newtableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
@@ -788,6 +794,7 @@ const TableForm = ({
       <ConfirmComponent
         show={confirmModalState.show}
         message={confirmModalState.message}
+        onlyConfirm={confirmModalState.onlyConfirm}
         onConfirm={() => {
           confirmModalState.onConfirm();
           tableFocus.current = true;
