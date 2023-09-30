@@ -18,6 +18,7 @@ import {
 import FormPanel from "../../../components/FormPanel";
 import ConfirmComponent from "../../../components/ConfirmComponent";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../../styles/SearchPanel.scss";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -92,7 +93,7 @@ const SiSeacrchPanel = (props) => {
           columnNumber={3}
         />
         {/* 상세 검색조건 */}
-        <div>
+        <div className="px-5">
           <FormPanel
             INPUT_CONSTANT={SI_SUB_SEARCHFIELD}
             formData={{
