@@ -49,28 +49,27 @@ const TableForm = ({
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    setTableRows(tableData);
-    // if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
-    // if (JSON.stringify(tableRows) !== JSON.stringify(tableData)) {
-    //   setTableRows(tableData);
-    //   defaultFocus && setRefresh(!refresh);
-    // }
+    if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
+    if (JSON.stringify(tableRows) !== JSON.stringify(tableData)) {
+      setTableRows(tableData);
+      defaultFocus && setRefresh(!refresh);
+    }
   }, [tableData]);
 
   useEffect(() => {
-    // if (defaultFocus) {
-    //   tableFocus.current = true;
-    //   if (tableData.length !== 0) {
-    //     let defaultRow = 0;
-    //     if (tableData[tableData.length - 1]?.insertedRow) {
-    //       defaultRow = tableData.length - 1;
-    //     }
-    //     setRowRef(defaultRow);
-    //     setColumnRef(0);
-    //     handleRowClick(null, defaultRow, 0);
-    //     actions.setPkValue && actions.setPkValue(getPkValue(defaultRow));
-    //   }
-    // }
+    if (defaultFocus) {
+      tableFocus.current = true;
+      if (tableData.length !== 0) {
+        let defaultRow = 0;
+        if (tableData[tableData.length - 1]?.insertedRow) {
+          defaultRow = tableData.length - 1;
+        }
+        setRowRef(defaultRow);
+        setColumnRef(0);
+        handleRowClick(null, defaultRow, 0);
+        actions.setPkValue && actions.setPkValue(getPkValue(defaultRow));
+      }
+    }
   }, [refresh]);
 
   //테이블 자신을 가르키는 dom ref

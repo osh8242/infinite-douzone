@@ -1,0 +1,59 @@
+
+.label {
+  width: 60%;
+  text-align: center;
+}  
+ 
+.DateInput{
+  /* max-width:54% */
+}
+.searchPanel .col-md-12 .label,
+.searchPanel .label {
+  width: 25%;
+  max-width: 120px;
+  height: 120%;
+  display: flex;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  /* background-color: rgb(233, 236, 239); */
+  background-color: white;
+}
+
+.siEmpDetail-container .col-md-12 .label {
+  width: 60%;
+  text-align: center;
+}
+
+.searchPanel .col-md-6 .label {
+  width: 72%;
+  max-width: 120px;
+  height: 150%;
+  display: flex;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  /* background-color: rgb(233, 236, 239); */
+}
+
+.searchPanel .col-md-4 .label {
+  width: 74%;
+  max-width: 120px;
+  height: 160%;
+  display: flex;
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+ background-color: white;  /* background-color: rgb(233, 236, 239); */
+}
+
+.labelAndContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.widthFull {
+  width: 100%;
+}

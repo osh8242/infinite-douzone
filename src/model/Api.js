@@ -1,8 +1,7 @@
 import axios from "axios";
 import { url } from "./CommonConstant";
-import { useContext } from 'react';
+import { useContext } from "react";
 import { LoadingContext } from "../Loading/LoadingProvider";
-
 
 export const useApi = () => {
   const { setLoading } = useContext(LoadingContext);
@@ -14,7 +13,7 @@ export const useApi = () => {
   // 인터셉터 요청
   api.interceptors.request.use(
     (config) => {
-      setLoading(true);  // 요청 시작 시 loading 상태를 true로 설정
+      setLoading(true); // 요청 시작 시 loading 상태를 true로 설정
       const token = localStorage.getItem("authToken");
       if (token) {
         config.headers["authorization"] = "Bearer " + token;
@@ -22,7 +21,7 @@ export const useApi = () => {
       return config;
     },
     (error) => {
-      setLoading(false);  // 요청 실패 시 loading 상태를 false로 설정
+      setLoading(false); // 요청 실패 시 loading 상태를 false로 설정
       return Promise.reject(error);
     }
   );
@@ -30,11 +29,11 @@ export const useApi = () => {
   // 응답 인터셉터
   api.interceptors.response.use(
     (response) => {
-      setLoading(false);  // 응답 시 loading 상태를 false로 설정
+      setLoading(false); // 응답 시 loading 상태를 false로 설정
       return response;
     },
     (error) => {
-      setLoading(false);  // 응답 실패 시 loading 상태를 false로 설정
+      setLoading(false); // 응답 실패 시 loading 상태를 false로 설정
       if (error.response && error.response.status === 401) {
         console.log("토큰이 만료되었거나 유효하지 않습니다. ");
         window.location.href = `${url}/login`;
@@ -45,6 +44,5 @@ export const useApi = () => {
 
   return api;
 };
-
 
 export default useApi;
