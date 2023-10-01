@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
@@ -112,6 +112,17 @@ const SalaryInformationEntryHeader = ({
 
   return (
     <div id="secondTopHeader">
+      {showSidebar && (
+        <div className="sidebar SUITE p-12">
+          <Nav defaultActiveKey="/home" className="flex-column">
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/er">사원등록</Nav.Link>
+            <Nav.Link href="/hr">인사관리등록</Nav.Link>
+            <Nav.Link href="/lc">표준근로계약서</Nav.Link>
+            <Nav.Link href="/si">급여관리</Nav.Link>
+          </Nav>
+        </div>
+      )}
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"

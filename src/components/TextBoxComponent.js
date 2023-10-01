@@ -6,6 +6,7 @@ import { Form, Row } from "react-bootstrap";
 import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
+import "../styles/fonts.css";
 import {
   isNumber,
   makeCommaNumber,
@@ -283,7 +284,7 @@ function TextBoxComponent(props) {
 
   // 화면 render
   return (
-    <Row className="py-1">
+    <Row className="py-1 SUITE">
       <div className="labelAndContent">
         {label && <div className="label">{label}</div>}
 

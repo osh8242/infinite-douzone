@@ -6,13 +6,14 @@ import {
   faPrint,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "react-bootstrap";
-import "../../styles/header.css";
+import { Button, Col, Nav } from "react-bootstrap";
 import emp from "../..//styles/img/empRegisterLogo.png";
 import { useState } from "react";
 import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConstant";
 import ModalComponent from "../../components/ModalComponent";
 import ConfirmComponent from "../../components/ConfirmComponent";
+import "../../styles/header.css";
+import "../../styles/fonts.css";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 // const logoUrl = {
@@ -38,6 +39,17 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
 
   return (
     <div id="secondTopHeader">
+      {showSidebar && (
+        <div className="sidebar SUITE p-12">
+          <Nav defaultActiveKey="/home" className="flex-column">
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/er">사원등록</Nav.Link>
+            <Nav.Link href="/hr">인사관리등록</Nav.Link>
+            <Nav.Link href="/lc">표준근로계약서</Nav.Link>
+            <Nav.Link href="/si">급여관리</Nav.Link>
+          </Nav>
+        </div>
+      )}
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"
