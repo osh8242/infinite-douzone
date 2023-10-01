@@ -163,7 +163,7 @@ const SalaryInformationEntryLayout = () => {
                     salDeductData={state.deductData}
                   />
                 </Col>
-                <Col className="selectDivision">
+                <Col className="selectDivision deleteLabelBackground">
                   <SelctDivisionList actions={actions} state={state} />
                 </Col>
               </Row>

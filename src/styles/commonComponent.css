@@ -19,12 +19,14 @@
   justify-content: center;
   /* background-color: rgb(233, 236, 239);
   */
+  font-weight: 700;
   background-color: var(--lightSkyblue);
 }
 
 .siEmpDetail-container .col-md-12 .label {
   width: 60%;
   text-align: center;
+  font-weight: 700;
 }
 
 .col-md-6 .label {
@@ -36,6 +38,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--lightSkyblue);
+  font-weight: 700;
   /* background-color: rgb(233, 236, 239);
   */
 }
@@ -49,8 +52,14 @@
   align-items: center;
   justify-content: center;
   background-color: var(--lightSkyblue);
+  font-weight: 700;
   /* background-color: rgb(233, 236, 239);
   */
+}
+
+.deleteLabelBackground .label {
+  background-color: transparent;
+  font-weight: 700;
 }
 
 .labelAndContent {

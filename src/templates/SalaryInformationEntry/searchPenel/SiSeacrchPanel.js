@@ -52,7 +52,7 @@ const SiSeacrchPanel = (props) => {
   };
 
   return (
-    <div>
+    <div className="deleteLabelBackground">
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}

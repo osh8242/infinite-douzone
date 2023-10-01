@@ -98,7 +98,7 @@ const HrManagementLayout = () => {
       />
       <Container className="hr-container SUITE p-12">
         {/* 조회영역 */}
-        <Row className="hr-search-row">
+        <Row className="hr-search-row deleteLabelBackground">
           <HrSearchPanel
             onSearch={actions.onSearch}
             jobOkSelectRef={jobOkSelectRef}

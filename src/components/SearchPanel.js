@@ -23,12 +23,12 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
         {showAccordion ? (
           <div className="search-panel border rounded px-5">
             <div className="header d-flex flex-row px-5">
-              <Col className="my-1" md="8">
-                {children[0]}
-              </Col>
+              {/* 귀속연월/조회구분/작성일자 */}
+              <Col className="my-1">{children[0]}</Col>
+              {/* 조회버튼 */}
               <Col
                 className="d-flex align-items-center justify-content-center"
-                md={{ span: 2, offset: 2 }}
+                md={{ span: 1, offset: 1 }}
               >
                 {isBodyOpen ? (
                   <Button variant="secondary" onClick={toggleArrowIcon}>
@@ -52,21 +52,23 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 />
               </Col>
             </div>
-            <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
-              {/* {isBodyOpen && ( */}
-              <Row>
-                {children[1]}
-                <div
-                  className="d-flex justify-content-md-center"
-                  style={{ marginTop: "12px" }}
-                >
-                  <Button variant="secondary" onClick={onSearch}>
-                    조회
-                  </Button>
-                </div>
-              </Row>
-              {/* )} */}
-            </div>
+            {isBodyOpen && (
+              <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
+                {/* {isBodyOpen && ( */}
+                <Row>
+                  {children[1]}
+                  <div
+                    className="d-flex justify-content-md-center"
+                    style={{ marginTop: "12px" }}
+                  >
+                    <Button variant="secondary" onClick={onSearch}>
+                      조회
+                    </Button>
+                  </div>
+                </Row>
+                {/* )} */}
+              </div>
+            )}
           </div>
         ) : (
           <div className="search-panel">

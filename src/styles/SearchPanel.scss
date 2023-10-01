@@ -46,22 +46,22 @@
 }
 
 // Animation
-.visible {
-  opacity: 1;
-  transform: translateY(100%), translateX(0);
-  transition: opacity 0.75s, transform 0.75s;
-}
-.visible.active {
-  opacity: 1;
-  transform: translateY(0), translateX(0);
-}
+// .visible {
+//   opacity: 1;
+//   transform: translateY(100%), translateX(0);
+//   transition: opacity 0.75s, transform 0.75s;
+// }
+// .visible.active {
+//   opacity: 1;
+//   transform: translateY(0), translateX(0);
+// }
 
-.hidden {
-  opacity: 0;
-  transform: translateY(100%), translateX(0);
-  transition: opacity 0.75s, transform 0.75s;
-}
-.hidden.active {
-  opacity: 1;
-  transform: translateY(0), translateX(0);
-}
+// .hidden {
+//   opacity: 0;
+//   transform: translateY(100%), translateX(0);
+//   transition: opacity 0.75s, transform 0.75s;
+// }
+// .hidden.active {
+//   opacity: 1;
+//   transform: translateY(0), translateX(0);
+// }

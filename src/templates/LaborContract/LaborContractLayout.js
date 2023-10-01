@@ -34,7 +34,7 @@ const LaborContractLayout = () => {
       <Container className="SUITE p-12">
         {/* 조회영역 */}
         <SearchPanel showAccordion>
-          <Row>
+          <Row className="deleteLabelBackground">
             {mainTabData ? (
               <FormPanel
                 INPUT_CONSTANT={HEAD_TAB.primaryTabInputs}
