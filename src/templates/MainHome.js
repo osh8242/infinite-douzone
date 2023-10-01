@@ -84,7 +84,7 @@ function MainHome() {
             <a href="/si" className="menuBtn si">
               <FontAwesomeIcon icon={faSackDollar} />
             </a>
-            <p>급여관리</p>
+            <p>급여자료입력</p>
           </div>
         </div>
         <a href="#!" id="leftArrowBtn">

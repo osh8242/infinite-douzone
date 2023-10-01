@@ -2,6 +2,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../styles/fonts.css";
 import { fetchData } from "../../utils/codeHelperUtils";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import ModalComponent from "../../components/ModalComponent";
@@ -129,7 +130,7 @@ const SalaryInformationEntryLayout = () => {
         allowYear={state.allowYear}
       />
       {/* <Container fluid> */}
-      <div id="salaryInformationEntryLayout">
+      <div id="salaryInformationEntryLayout" className="SUITE p-12">
         <Container>
           <Row>
             <Col>

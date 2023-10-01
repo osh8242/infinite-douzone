@@ -1,9 +1,14 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import {
+  faAddressCard,
   faArrowUpRightFromSquare,
   faBorderAll,
   faCalculator,
+  faFileInvoice,
+  faHome,
   faPrint,
+  faSackDollar,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Nav } from "react-bootstrap";
@@ -42,11 +47,22 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
       {showSidebar && (
         <div className="sidebar SUITE p-12">
           <Nav defaultActiveKey="/home" className="flex-column">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/er">사원등록</Nav.Link>
-            <Nav.Link href="/hr">인사관리등록</Nav.Link>
-            <Nav.Link href="/lc">표준근로계약서</Nav.Link>
-            <Nav.Link href="/si">급여관리</Nav.Link>
+            <Nav.Link href="/">
+              <FontAwesomeIcon icon={faHome} /> &nbsp;Home
+            </Nav.Link>
+            <Nav.Link href="/er">
+              <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
+            </Nav.Link>
+            <Nav.Link href="/hr">
+              <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
+            </Nav.Link>
+            <Nav.Link href="/lc">
+              <FontAwesomeIcon icon={faFileInvoice} />
+              &nbsp;&nbsp;&nbsp;표준근로계약서
+            </Nav.Link>
+            <Nav.Link href="/si">
+              <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여관리
+            </Nav.Link>
           </Nav>
         </div>
       )}

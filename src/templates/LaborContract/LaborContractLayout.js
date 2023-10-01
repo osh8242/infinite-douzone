@@ -13,6 +13,7 @@ import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
+import "../../styles/fonts.css";
 
 import { MAIN_TAB, HEAD_TAB } from "./MainTab/LaborContractTabConstant";
 // import MainTab from "./MainTab/LaborContractMainTab";
@@ -30,7 +31,7 @@ const LaborContractLayout = () => {
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
 
-      <Container>
+      <Container className="SUITE p-12">
         {/* 조회영역 */}
         <SearchPanel showAccordion>
           <Row>
