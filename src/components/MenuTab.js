@@ -15,7 +15,7 @@ function MenuTab(props) {
     <Tabs
       id="menuTab"
       activeKey={key}
-      onSelect={onselect && handleSelect}
+      onSelect={onSelect && handleSelect}
       className="mb-3"
     >
       {menuList.map((menu, index) => (

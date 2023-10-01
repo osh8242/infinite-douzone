@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import { makeCommaNumber } from "../utils/NumberUtils";
@@ -117,6 +127,12 @@ const TableForm = ({
     setTableRows(newTableRows);
   }, [orderRef, isAsc]);
 
+  //rowRef에 따라서 updatePkValue하기
+  useEffect(() => {
+    console.log("업데이트 pkValue");
+    actions.setPkValue && actions.setPkValue(getPkValue(rowRef));
+  }, [tableRows, rowRef]);
+
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
     setRowRef(-1);
@@ -226,7 +242,6 @@ const TableForm = ({
   // row Click 이벤트 : 수정중인 row 이외 row 클릭 시 해당 row 비활성화
   const handleRowClick = useCallback(
     (e, rowIndex, columnIndex) => {
-      
       if (rowRef === rowIndex && columnRef === columnIndex) return;
       setRowRef(rowIndex);
       setColumnRef(columnIndex);
@@ -274,11 +289,11 @@ const TableForm = ({
   const isValidRow = useCallback(
     (inputs, columnIndex) => {
       for (let input of inputs) {
-        let inputIndex = tableHeaders.findIndex((header)=>
-          header.field === input.id
+        let inputIndex = tableHeaders.findIndex(
+          (header) => header.field === input.id
         );
         if (tableHeaders[inputIndex].isPk)
-          if (input.value === "" || !input.value) return false;        
+          if (input.value === "" || !input.value) return false;
       }
       return true;
     },
@@ -321,10 +336,12 @@ const TableForm = ({
 
         if (!editedRow) {
           tableFocus.current = false;
-          setConfirmModalState({ show: true, 
-            message: "필수입력값 누락", 
-            onlyConfirm : true , 
-            onConfirm : ()=>setConfirmModalState({show:false}) });
+          setConfirmModalState({
+            show: true,
+            message: "필수입력값 누락",
+            onlyConfirm: true,
+            onConfirm: () => setConfirmModalState({ show: false }),
+          });
           return;
         }
         if (editedRow.isNew) actions.insertNewRow(editedRow.item);
@@ -503,7 +520,9 @@ const TableForm = ({
         case "textCodeHelper":
           let codeHelperData = codeHelper[field];
           let tableData = codeHelperData.tableData;
-          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
+          let targetIndex = tableData.findIndex(
+            (row) => row.item[field] === value
+          );
           const newField = field.charAt(0).toUpperCase() + field.slice(1);
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
@@ -561,14 +580,12 @@ const TableForm = ({
                 if (!rowAddable && rowRef === tableRows.length - 1)
                   setRowRef(rowRef);
               }
-              updatePkValue(rowRef + 1);
               break;
 
             case "ArrowUp":
               event.preventDefault();
               if (rowRef > 0) {
                 setRowRef(rowRef - 1);
-                updatePkValue(rowRef - 1);
               }
               break;
 
@@ -579,7 +596,8 @@ const TableForm = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Home":
@@ -686,7 +704,9 @@ const TableForm = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -771,7 +791,9 @@ const TableForm = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (

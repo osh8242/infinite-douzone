@@ -197,13 +197,13 @@ function TextBoxComponent(props) {
       } else {
         setIsValid(true);
       }
-    } else if(type==='date' && onClickCodeHelper){      
-      if(!(onChange && onChange(event, newValue, id))) setInputValue(value);
-    }else {
+    } else if (type === "date" && onClickCodeHelper) {
+      if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    } else {
       // setSendValue(inputValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
-      setInputValue(makeProcessedValue(newValue)); // data 가공
+      setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue, id);
     }
