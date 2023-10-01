@@ -35,6 +35,7 @@ const TestLayout = () => {
   const { state, actions } = LaborContractModel();
   const {
     jobSelectRef,
+    jobSetSelectRef,
     leftTableData,
     selectedRows,
     modalState,
@@ -45,6 +46,7 @@ const TestLayout = () => {
 
   useEffect(() => {
     actions.onLoadCodeHelper();
+    // actions.setMainTabData({});
   }, []);
 
   //코드도움 아이콘 클릭이벤트
@@ -99,9 +101,11 @@ const TestLayout = () => {
               <>
                 {/* 계약서 작성 */}
                 <LcSearchPanel
+                  // <LcSearchSearchPanel
                   onSearch={actions.onSearch}
-                  jobSelectRef={jobSelectRef}
+                  jobSetSelectRef={jobSetSelectRef}
                   searchOption={searchOption}
+                  onSelect={actions.submitMainTabData}
                 />
                 <Row>
                   <Col md="3">
@@ -181,7 +185,7 @@ const TestLayout = () => {
                           tableName="swsm"
                           //showCheckbox
                           sortable
-                          rowAddable
+                          // rowAddable
                           showCheckbox
                           tableHeaders={leftTableConstant.headers}
                           tableData={leftTableData}

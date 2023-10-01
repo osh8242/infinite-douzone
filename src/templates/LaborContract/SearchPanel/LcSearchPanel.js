@@ -5,15 +5,9 @@ import SelectForm from "../../../components/SelectForm";
 import DateForm from "../../../components/DateForm";
 
 const LcSearchPanel = (props) => {
-  const {
-    onSearch,
-    dateSelectRef,
-    salSelectRef,
-    searchSelectList,
-    selectList,
-  } = props;
+  const { onSearch, jobSetSelectRef, searchOption, onSelect } = props;
   return (
-    <SearchPanel onSearch={() => onSearch(salSelectRef)}>
+    <SearchPanel onSearch={() => onSearch(searchOption)}>
       <Row className="searchPanel">
         <Col md="4">
           <DateForm label={"작성일자"} dateType="month" />
@@ -21,8 +15,10 @@ const LcSearchPanel = (props) => {
         <Col md="4">
           <SelectForm
             label={"소득구분"}
-            optionList={selectList}
-            selectRef={salSelectRef}
+            optionList={searchOption}
+            selectRef={jobSetSelectRef}
+            id={"incomeClassfication"}
+            onChange={onSelect}
           />
         </Col>
       </Row>

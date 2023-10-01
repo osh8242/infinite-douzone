@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { url } from "../CommonConstant";
 import Swsm from "../../vo/LaborContract/Swsm";
+import Emp from "../../vo/EmpRegister/Emp";
 import SwsmOther from "../../vo/LaborContract/SwsmOther";
 import { swsmUrlPattern } from "./LaborContractConstant";
 import { urlPattern } from "../HrManagement/HrManagementConstant";
@@ -29,6 +30,10 @@ const TestModel = () => {
   //search
   const jobRef = useRef(""); // 소득구분
   const jobSelectRef = useRef("empAll");
+
+  // settingSearch
+  const jobSetRef = useRef(""); // 소득구분
+  const jobSetSelectRef = useRef("empAll");
 
   // 코드모달 업데이트
   function onLoadCodeHelper() {
@@ -72,7 +77,6 @@ const TestModel = () => {
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
-    setLeftTableData();
     api
       .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
       .then((response) => {
@@ -91,7 +95,6 @@ const TestModel = () => {
   };
 
   const getLeftTableData = (newLeftCodeHelperTableData) => {
-    setLeftTableData();
     api
       .get(`/swsm/getSwsmListForSwsm?job=${jobRef.current}`)
       .then((response) => {
@@ -171,6 +174,7 @@ const TestModel = () => {
           newRow["insertedRow"] = true;
           newLeftTableData.push(newRow);
           insertSwsm(newRow.item);
+          updateEmp(newRow.item);
           return false;
         }
         return true;
@@ -245,6 +249,8 @@ const TestModel = () => {
   }, [editedEmp]);
 
   const updateEmp = useCallback((emp) => {
+    console.log("updateEmp 업데이트 요청", emp);
+
     api
       .put(urlPattern.updateEmp, emp)
       .then((response) => {
@@ -257,10 +263,20 @@ const TestModel = () => {
       });
   }, []);
 
+  // const submitMi = useCallback();
+
   //mainTab에서 Enter 입력시 swsm 업데이트
   const submitMainTabData = useCallback(
     (event, value) => {
       console.log("서브밋메인탭 데이터", event, value);
+      if (event.target.id === "incomeClassfication") {
+        console.log("tttessetste");
+        let newEmp = { ...mainTabData };
+        newEmp[event.target.id] = value;
+        newEmp["cdEmp"] = leftTablePkValue.cdEmp;
+        updateEmp(newEmp);
+        // setMainTabData(Emp(newEmp));
+      }
       if (event.key === "Enter" || event.type === "change") {
         event.target.blur();
         console.log("event.target.id", event.target.id);
@@ -279,7 +295,7 @@ const TestModel = () => {
         updateSwsm(newSwsm);
       }
     },
-    [leftTablePkValue, mainTabData]
+    [leftTablePkValue, mainTabData, jobSetSelectRef]
   );
 
   //현재행 삭제요청
@@ -325,6 +341,7 @@ const TestModel = () => {
   return {
     state: {
       jobSelectRef,
+      jobSetSelectRef,
 
       leftTableData,
       leftTablePkValue,
