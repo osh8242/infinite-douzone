@@ -61,7 +61,7 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
               &nbsp;&nbsp;&nbsp;표준근로계약서
             </Nav.Link>
             <Nav.Link href="/si">
-              <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여관리
+              <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
             </Nav.Link>
           </Nav>
         </div>

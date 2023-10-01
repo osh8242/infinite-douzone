@@ -1,9 +1,14 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import {
+  faAddressCard,
   faArrowUpRightFromSquare,
   faBorderAll,
   faCalculator,
+  faFileInvoice,
+  faHome,
   faPrint,
+  faSackDollar,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
@@ -25,15 +30,26 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
   };
 
   return (
-    <div id="secondTopHeader">
+    <div id="secondTopHeader" className="p-12">
       {showSidebar && (
         <div className="sidebar SUITE p-12">
           <Nav defaultActiveKey="/home" className="flex-column">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/er">사원등록</Nav.Link>
-            <Nav.Link href="/hr">인사관리등록</Nav.Link>
-            <Nav.Link href="/lc">표준근로계약서</Nav.Link>
-            <Nav.Link href="/si">급여관리</Nav.Link>
+            <Nav.Link href="/">
+              <FontAwesomeIcon icon={faHome} /> &nbsp;Home
+            </Nav.Link>
+            <Nav.Link href="/er">
+              <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
+            </Nav.Link>
+            <Nav.Link href="/hr">
+              <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
+            </Nav.Link>
+            <Nav.Link href="/lc">
+              <FontAwesomeIcon icon={faFileInvoice} />
+              &nbsp;&nbsp;&nbsp;표준근로계약서
+            </Nav.Link>
+            <Nav.Link href="/si">
+              <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
+            </Nav.Link>
           </Nav>
         </div>
       )}
@@ -50,38 +66,25 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            size={"xl"}
             className="colorWhite backgroundBorderNone"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} size={"xl"} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
         </button>
         <button
           className="backgroundBorderNone"
           onClick={(e) => faTrashCanClickHandler(e)}
         >
-          <FontAwesomeIcon
-            icon={faTrashCan}
-            size={"xl"}
-            className="colorWhite"
-          />
+          <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon
-            icon={faCalculator}
-            size={"xl"}
-            className="colorWhite"
-          />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon
-            icon={faBorderAll}
-            size={"xl"}
-            className="colorWhite"
-          />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
       <ModalComponent
