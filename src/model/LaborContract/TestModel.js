@@ -72,6 +72,7 @@ const TestModel = () => {
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
+    setLeftTableData();
     api
       .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
       .then((response) => {
@@ -90,6 +91,7 @@ const TestModel = () => {
   };
 
   const getLeftTableData = (newLeftCodeHelperTableData) => {
+    setLeftTableData();
     api
       .get(`/swsm/getSwsmListForSwsm?job=${jobRef.current}`)
       .then((response) => {
@@ -144,10 +146,10 @@ const TestModel = () => {
     }
   }, [leftTablePkValue]);
 
-  //인사관리 insert 요청
+  // insert 요청
   const insertSwsm = useCallback((emp) => {
     api
-      .post(swsmUrlPattern.insertSwsm, emp)
+      .post(`/swsm/insertSwsm`, emp)
       .then((response) => {
         if (response.data === 1) console.log("insertSwsm 성공");
       })
@@ -265,6 +267,8 @@ const TestModel = () => {
         console.log("value", value);
         let newSwsm = { ...mainTabData };
         newSwsm[event.target.id] = value;
+
+        newSwsm["cdEmp"] = leftTablePkValue.cdEmp;
         console.log("newSwsm", newSwsm);
         updateSwsm(newSwsm);
       }
