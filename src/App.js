@@ -71,22 +71,6 @@ function App() {
         </BrowserRouter>
         {/* </Provider> */}
       </LoginProvider>
-      <BrowserRouter>
-        <Header />
-        {loading && <Loading />}{" "}
-        {/* 로딩 상태에 따라 로딩 화면을 조건부로 렌더링 */}
-        <Routes>
-          <Route path="/" element={<MainHome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/er" element={<EmpRegisterationLayout />} />
-          <Route path="/hr" element={<HrManagementLayout />} />
-          <Route path="/lc/*" element={<LaborContractLayout />} />
-          <Route path="/si" element={<SalaryInformationEntryLayout />} />
-          <Route path="/login" element={<LoginGrid />} />
-          <Route path="/mypage" element={<MyPage />} />
-        </Routes>
-        {/* <Footer /> */}
-      </BrowserRouter>
     </div>
   );
 }

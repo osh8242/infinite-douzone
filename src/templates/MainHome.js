@@ -8,17 +8,14 @@ import React from "react";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAddressBook,
-  faAddressCard,
-} from "@fortawesome/free-regular-svg-icons";
-
-import {
   faCircleArrowLeft,
   faChevronCircleLeft,
   faChevronCircleRight,
   faFileInvoice,
   faSackDollar,
   faUserPlus,
+  faAddressBook,
+  faAddressCard,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useEffect } from "react";
