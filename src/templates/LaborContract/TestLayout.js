@@ -25,9 +25,11 @@ import "../../styles/LaborContract/LaborContractLayout.scss";
 import {
   TAB_MENU_LIST,
   MAIN_TAB_SEARCH,
+  MAIN_TAB,
 } from "./MainTab/LaborContractTabConstant";
 
 import LcSearchSearchPanel from "./SearchPanel/LcSearchSearchPanel";
+import LcSearchPanel from "./SearchPanel/LcSearchPanel";
 
 const TestLayout = () => {
   const { state, actions } = LaborContractModel();
@@ -91,6 +93,76 @@ const TestLayout = () => {
           <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
             {[
               <>
+                <LcSearchPanel
+                  onSearch={actions.onSearch}
+                  jobSelectRef={jobSelectRef}
+                  searchOption={searchOption}
+                />
+
+                <Row>
+                  <Col md="3">
+                    <Row>
+                      <div className="leftTable">
+                        <TableForm
+                          readOnly
+                          tableName="swsm"
+                          //showCheckbox
+                          sortable
+                          rowAddable
+                          showCheckbox
+                          tableHeaders={leftTableConstant.headers}
+                          tableData={leftTableData}
+                          selectedRows={selectedRows}
+                          codeHelper
+                          defaultFocus
+                          actions={{
+                            setTableData: actions.setLeftTableData,
+                            newRowCodeHelper: (parentFocusRef) => {
+                              parentFocusRef.current = false;
+                              modalShow(
+                                "leftTable",
+                                CODE_HELPER_DATA.leftTableCodeHelper,
+                                actions.registSwsm,
+                                parentFocusRef
+                              );
+                            },
+                            setPkValue: actions.setLeftTablePkValue,
+                            insertNewRow: (row) => {
+                              actions.insertSwsm(row);
+                              actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
+                            },
+                            updateEditedRow: actions.updateEmp,
+                            setSelectedRows: actions.setSelectedRows,
+                            deleteRow: actions.deleteRow,
+                            getRowObject: (data) => {
+                              return { item: Swsm(data), table: "swsm" };
+                            },
+                          }}
+                        />
+                      </div>
+                    </Row>
+                  </Col>
+
+                  <Col md="9" className="px-5">
+                    <MenuTab menuList={[subTabMenuList.WorkInformation]}>
+                      {[
+                        <Row
+                          key="key"
+                          className="mt-4 mb-5 justify-content-center"
+                        >
+                          <FormPanel
+                            INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                            formData={mainTabData}
+                            submitData={actions.submitMainTabData}
+                            actions={actions}
+                          />
+                        </Row>,
+                      ]}
+                    </MenuTab>
+                  </Col>
+                </Row>
+              </>,
+              <>
                 {/*  계약서 조회 */}
                 <LcSearchSearchPanel
                   onSearch={actions.onSearch}
@@ -106,7 +178,7 @@ const TestLayout = () => {
                           tableName="swsm"
                           //showCheckbox
                           sortable
-                          rowAddable
+                          // rowAddable
                           showCheckbox
                           tableHeaders={leftTableConstant.headers}
                           tableData={leftTableData}
@@ -160,7 +232,6 @@ const TestLayout = () => {
                   </Col>
                 </Row>
               </>,
-              <></>,
             ]}
           </MenuTab>
         </Row>

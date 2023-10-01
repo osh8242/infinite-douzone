@@ -47,7 +47,7 @@ const TestModel = () => {
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
     api
-      .get(`/emp/getEmpListForSwsm?job=${jobRef.current}`)
+      .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
       .then((response) => {
         console.log(response);
         console.log(response.data);
@@ -65,8 +65,7 @@ const TestModel = () => {
 
   const getLeftTableData = (newLeftCodeHelperTableData) => {
     api
-      .get(`/emp/getEmpListForSwsm?job=${jobRef.current}`)
-      // .get(`/swsm/getSwsmListForSwsm?job=${jobRef.current}`)
+      .get(`/swsm/getSwsmListForSwsm?job=${jobRef.current}`)
       .then((response) => {
         console.log(response);
         console.log(response.data);
