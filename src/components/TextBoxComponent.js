@@ -97,17 +97,17 @@ function TextBoxComponent(props) {
     ...(height ? { height: `${height}px` } : {}),
   };
 
-  useEffect(() => {
-    if (selectedOption === "F") {
-      setDisable(true);
-    } else setDisable(false);
-    setSelectedValue(selectedOption || "");
-  }, [selectedOption]);
+  // useEffect(() => {
+  //   if (selectedOption === "F") {
+  //     setDisable(true);
+  //   } else setDisable(false);
+  //   setSelectedValue(selectedOption || "");
+  // }, [selectedOption]);
 
   const handleSelectChange = (event) => {
-    if (event.target.value === "F" || event.target.value === "T") {
-      setDisable(!isDisable);
-    }
+    // if (event.target.value === "F" || event.target.value === "T") {
+    //   setDisable(!isDisable);
+    // }
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
@@ -197,9 +197,9 @@ function TextBoxComponent(props) {
       } else {
         setIsValid(true);
       }
-    } else if(type==='date' && onClickCodeHelper){      
-      if(!(onChange && onChange(event, newValue, id))) setInputValue(value);
-    }else {
+    } else if (type === "date" && onClickCodeHelper) {
+      if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    } else {
       // setSendValue(inputValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)

@@ -245,6 +245,22 @@ const FormPanel = ({
           />
         );
         break;
+      case INPUT_TYPE.selectCustom:
+        component = (
+          <SelectForm
+            id={id}
+            label={label}
+            disabled={disabled}
+            optionList={input?.optionList || SELECT_LIST[input.field]}
+            selectedOption={value}
+            onChange={submitData}
+            // onChange={(e, value) => onChangeFn && onChangeFn(value)}
+            // laborContract
+            subLabel={input.subLabel}
+            endLabel={input.endLabel}
+          />
+        );
+        break;
       default:
         break;
     }

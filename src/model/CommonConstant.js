@@ -39,6 +39,7 @@ export const INPUT_TYPE = {
   email: 101,
   dateCustom: 300,
   addressCustom: 301,
+  selectCustom: 302,
   month: 401,
   dateCodeHelper: 402,
 };
