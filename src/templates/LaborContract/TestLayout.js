@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LaborContractModel from "../../model/LaborContract/TestModel";
 import LaborContractHeader from "./LaborContractHeader";
@@ -42,6 +42,10 @@ const TestLayout = () => {
     leftCodeHelperTableData,
     mainTabData,
   } = state;
+
+  useEffect(() => {
+    actions.onLoadCodeHelper();
+  }, []);
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
@@ -93,12 +97,12 @@ const TestLayout = () => {
           <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
             {[
               <>
+                {/* 계약서 작성 */}
                 <LcSearchPanel
                   onSearch={actions.onSearch}
                   jobSelectRef={jobSelectRef}
                   searchOption={searchOption}
                 />
-
                 <Row>
                   <Col md="3">
                     <Row>
@@ -106,7 +110,6 @@ const TestLayout = () => {
                         <TableForm
                           readOnly
                           tableName="swsm"
-                          //showCheckbox
                           sortable
                           rowAddable
                           showCheckbox
@@ -178,7 +181,7 @@ const TestLayout = () => {
                           tableName="swsm"
                           //showCheckbox
                           sortable
-                          // rowAddable
+                          rowAddable
                           showCheckbox
                           tableHeaders={leftTableConstant.headers}
                           tableData={leftTableData}

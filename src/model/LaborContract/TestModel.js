@@ -27,10 +27,36 @@ const TestModel = () => {
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
   //search
-  const jobRef = useRef("Y"); // 소득구분
+  const jobRef = useRef(""); // 소득구분
   const jobSelectRef = useRef("empAll");
 
-  //조회버튼 클릭시 재직구분과 정렬기준을 업데이트
+  // 코드모달 업데이트
+  function onLoadCodeHelper() {
+    if (jobSelectRef.current.value === "empAll") {
+      jobRef.current = "empAll";
+    }
+    getCodeHelperList();
+  }
+
+  const getCodeHelperList = () => {
+    api
+      .get(`/swsm/getCodeHelperList?job=${jobRef.current}`)
+      .then((response) => {
+        console.log(response);
+        console.log(response.data);
+        const newLeftCodeHelperTableData = response.data.map((emp) => {
+          return { item: emp, table: "swsm" };
+        });
+
+        setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  };
+
+  //조회버튼 클릭시  업데이트
   const onSearch = (jobSelectRef, orderSelectRef) => {
     if (jobSelectRef.current.value === "empAll") {
       jobRef.current = "empAll";
@@ -131,7 +157,7 @@ const TestModel = () => {
       });
   }, []);
 
-  //테이블에 인사관리 등록
+  //테이블에 등록
   const registSwsm = useCallback(
     (event, pkValue) => {
       console.log("swsm 등록전", leftTableData);
@@ -147,7 +173,7 @@ const TestModel = () => {
         }
         return true;
       });
-      console.log("인사관리 등록후", newLeftTableData);
+      console.log("swsm 등록후", newLeftTableData);
       setLeftCodeHelperTableData(newLeftCodeHelperTableData);
       setLeftTableData(newLeftTableData);
     },
@@ -309,6 +335,8 @@ const TestModel = () => {
     },
     actions: {
       onSearch,
+      onLoadCodeHelper,
+      getEmpList,
 
       setLeftTableData,
 
