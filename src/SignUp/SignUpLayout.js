@@ -267,14 +267,14 @@ function SignUpLayout() {
     <Container
       id="SignUp"
       className="d-flex justify-content-center align-items-center"
-      style={{ height: "90vh" }}
+      style={{ height: "100vh" }}
     >
       <Row className="justify-content-center mb-4">
         <Row className="justify-content-center mb-4">
           <img
             src={imgLogo}
             alt="Logo"
-            style={{ width: "500px", padding: "70px 0px 15px 0px" }}
+            style={{ width: "500px", padding: "0px 0px 15px 0px" }}
           />
           <h2 className="subLabel">회원가입</h2>
         </Row>
@@ -497,9 +497,6 @@ function SignUpLayout() {
                   <span style={{ backgroundColor: "#FF9933" }}></span>
                 </label>
               </Col>
-              <Row className="d-flex justify-content-center align-items-center">
-                <p> </p>
-              </Row>
             </Col>
           </Row>
         </Col>
