@@ -4,17 +4,12 @@ import SearchPanel from "../../../components/SearchPanel";
 import SelectForm from "../../../components/SelectForm";
 import DateForm from "../../../components/DateForm";
 import "../../../styles/DateForm.css";
+
 const LcSearchSearchPanel = (props) => {
-  const {
-    onSearch,
-    dateSelectRef,
-    salSelectRef,
-    searchSelectList,
-    selectList,
-  } = props;
+  const { onSearch, jobSelectRef, searchOption } = props;
   return (
     // select 만 확인하고 추가필요
-    <SearchPanel onSearch={() => onSearch(salSelectRef)}>
+    <SearchPanel onSearch={() => onSearch(jobSelectRef)}>
       <Row className="searchPanel">
         <Col className="mx-1 col-md-7">
           <DateForm label={"작성일자"} sub="true" dateType="month" />
@@ -25,8 +20,8 @@ const LcSearchSearchPanel = (props) => {
         <Col md="4">
           <SelectForm
             label={"소득구분"}
-            optionList={selectList}
-            selectRef={salSelectRef}
+            optionList={searchOption}
+            selectRef={jobSelectRef}
           />
         </Col>
       </Row>

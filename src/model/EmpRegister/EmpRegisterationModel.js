@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import Emp from "../../vo/EmpRegister/Emp";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
-import api from "../Api";
+// import api from "../Api";
 import {
   codeHelperData_abbNation,
   codeHelperData_cdBank,
@@ -15,8 +15,11 @@ import {
   codeHelperData_rankNo,
   urlPattern,
 } from "./EmpConstant";
+import { useApi } from "../Api";
 
 function EmpRegisterationModel() {
+  const api = useApi();
+
   const url = "http://localhost:8888";
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
@@ -65,7 +68,9 @@ function EmpRegisterationModel() {
         (item) => item.item[fieldName] === value
       );
       return matchedItem
-        ? matchedItem.item[`nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`]
+        ? matchedItem.item[
+            `nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`
+          ]
         : value;
     } else {
       // console.error(`Code helper data not found for field: ${fieldName}`);
@@ -173,7 +178,10 @@ function EmpRegisterationModel() {
           ContentType: "application/json",
         })
         .then((response) => {
-          console.log("EmpRegisterationModel > /emp/getEmpByCdEmp", response.data);
+          console.log(
+            "EmpRegisterationModel > /emp/getEmpByCdEmp",
+            response.data
+          );
 
           // 코드 한글변환
           let newResponseData = { ...response.data };

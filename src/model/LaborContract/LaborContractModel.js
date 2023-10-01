@@ -20,8 +20,11 @@ const LaborContractModel = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "" });
 
+  const [codeHelperTableData, setCodeHelperTableData] = useState([]);
+  const [leftCodeHelperTableData, setLeftCodeHelperTableData] = useState([]);
+  const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
+
   const mainTabRef = useRef();
-  /////////////
   const salSelectRef = useRef("salaryType");
 
   // 조회 업데이트
@@ -244,6 +247,55 @@ const LaborContractModel = () => {
       });
   }, [selectedRows]);
 
+  const updateEmp = useCallback((emp) => {
+    api
+      .put(urlPattern.updateEmp, emp)
+      .then((response) => {
+        if (response.data === 1) console.log("Emp update 성공");
+        setEditedEmp();
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  //swsm insert 요청
+  const insertSwsm = useCallback((emp) => {
+    api
+      .post(swsmUrlPattern.insertSwsm, emp)
+      .then((response) => {
+        if (response.data === 1) console.log("insertSwsm 성공");
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, []);
+
+  //테이블에 swsm 등록
+  const registSwsm = useCallback(
+    (event, pkValue) => {
+      console.log("swsm 등록전", leftTableData);
+      const targetCdEmp = pkValue.cdEmp;
+      let newLeftTableData = [...leftTableData];
+      let newLeftCodeHelperTableData = leftCodeHelperTableData.filter((row) => {
+        if (targetCdEmp === row.item.cdEmp) {
+          const newRow = JSON.parse(JSON.stringify(row));
+          newRow["insertedRow"] = true;
+          newLeftTableData.push(newRow);
+          insertSwsm(newRow.item);
+          return false;
+        }
+        return true;
+      });
+      console.log("swsm 등록후", newLeftTableData);
+      setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+      setLeftTableData(newLeftTableData);
+    },
+    [insertSwsm, leftCodeHelperTableData, leftTableData]
+  );
+
   console.log(mainTabData);
 
   return {
@@ -255,8 +307,14 @@ const LaborContractModel = () => {
       mainTabRef,
       subTableData,
       selectedRows,
+      modalState,
+      leftCodeHelperTableData,
+      codeHelperTableData,
     },
     actions: {
+      registSwsm,
+      setModalState,
+      updateEmp,
       onSearch,
       setLeftTableData,
       setLeftTablePkValue,
@@ -271,6 +329,8 @@ const LaborContractModel = () => {
       deleteSelectedRows,
       insertSwsmOther,
       updateSwsmOther,
+      insertSwsm,
+      setCodeHelperTableData,
     },
   };
 };
