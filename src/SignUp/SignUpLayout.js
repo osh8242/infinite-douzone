@@ -23,6 +23,7 @@ function SignUpLayout() {
 
   const [stateModal, setStateModal] = useState("");
   const [invalid, setInvalid] = useState("");
+  const [invalidCd, setInvalidCd] = useState("");
   const [pwdCheckVaild, setPwdCheckVaild] = useState("");
   const [id, setId] = useState("");
   const [companyCode, setCompanyCode] = useState("");
@@ -34,6 +35,7 @@ function SignUpLayout() {
   const [tempGender, setTempGender] = useState("");
   const [tempPhone, setTempPhone] = useState("");
   const [idCheck, setIdCheck] = useState("");
+  const [cdCheck, setCdCheck] = useState("");
 
   const [phoneValid, setPhoneValid] = useState("");
   const [emailValid, setEmailValid] = useState("");
@@ -62,6 +64,27 @@ function SignUpLayout() {
 
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
+    checkPwdCheck();
+  };
+
+  const checkPwdCheck = (e) => {
+    if (tempPwd.length > 7 && passwordConfirm.length > 7) {
+      if (tempPwd === passwordConfirm) {
+        setPassConfirmValid(true);
+        setPwdCheckVaild("");
+      } else {
+        setPassConfirmValid(false);
+        setPwdCheckVaild("invalid");
+      }
+    } else if (e && e.type && tempPwd.length > 0) {
+      if (tempPwd === passwordConfirm) {
+        setPassConfirmValid(true);
+        setPwdCheckVaild("");
+      } else {
+        setPassConfirmValid(false);
+        setPwdCheckVaild("invalid");
+      }
+    }
   };
 
   // 유효성검사
@@ -85,19 +108,7 @@ function SignUpLayout() {
       setPwdValid("invalid");
     }
 
-    if (tempPwd.length > 7 && passwordConfirm.length > 7) {
-      if (tempPwd === passwordConfirm) {
-        setPassConfirmValid(true);
-        setPwdCheckVaild("");
-      } else {
-        setPassConfirmValid(false);
-        setPwdCheckVaild("invalid");
-      }
-    } else {
-      // setPassConfirmValid(false);
-      // 이거 여뷰에 때라서 초기 가 달라짐
-      // 여기서 invalid 해놓으면 문제생김????
-    }
+    checkPwdCheck();
 
     const emailRegex =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/;
@@ -119,7 +130,7 @@ function SignUpLayout() {
     } else {
       setPhoneValid("invalid");
     }
-  }, [tempPwd, tempEmail, passConfirmValid, tempPhone]);
+  }, [tempPwd, tempEmail, passConfirmValid, tempPhone, passwordConfirm]);
 
   const RegisterUser = () => {
     console.log("Register GO!");
@@ -263,6 +274,28 @@ function SignUpLayout() {
       .catch(console.errors);
   };
 
+  const checkVaildCd = () => {
+    console.log("아이디 중복 검사 실시");
+    //    const response = axios.post(`${url}/auth/checkVaildId`, data);
+    axios
+      .post(`${url}/auth/checkVaildCd`, { companyCode: companyCode })
+      .then((response) => {
+        console.log("reesult::" + response.data);
+        if (response.data === "SUCCESS") {
+          console.log("Check ID SUDSSCCEESS");
+          setCdCheck("SUCCESS");
+          console.log(idCheck);
+          setInvalidCd(""); // neceesssaarrr
+        } else if (response.data === "FAIL") {
+          console.log("already exist Cd///");
+          setCdCheck("FAIL");
+          setInvalidCd("invalid");
+          // TODO : 아이디 재입력 요청 문구 처리 필요
+        }
+      })
+      .catch(console.errors);
+  };
+
   return (
     <Container
       id="SignUp"
@@ -274,7 +307,7 @@ function SignUpLayout() {
           <img
             src={imgLogo}
             alt="Logo"
-            style={{ width: "500px", padding: "0px 0px 15px 0px" }}
+            style={{ width: "400px", padding: "0px 0px 15px 0px" }}
           />
           <h2 className="subLabel">회원가입</h2>
         </Row>
@@ -289,19 +322,19 @@ function SignUpLayout() {
                 type={"textbox"}
                 placeholder="아이디를 입력해 주세요."
                 height={40}
-                // onBlur={checkVaildId}
-                // className={invalid}
+                onBlur={checkVaildCd}
+                className={invalidCd}
               />
               <Row className="d-flex justify-content-center align-items-center">
-                {idCheck === "SUCCESS" && tempId.length > 0 ? (
+                {cdCheck === "SUCCESS" && companyCode.length > 0 ? (
                   <p className={"successMessageWrap"}>
                     사용 가능한 아이디입니다.
                   </p>
-                ) : idCheck === "FAIL" && tempId.length > 0 ? (
+                ) : cdCheck === "FAIL" && companyCode.length > 0 ? (
                   <p className={"errorMessageWrap"}>
                     사용 불가능한 아이디입니다.
                   </p>
-                ) : tempId.length === 0 ? (
+                ) : companyCode.length === 0 ? (
                   <p> </p>
                 ) : (
                   <p> </p>
@@ -375,7 +408,7 @@ function SignUpLayout() {
               <Form.Control
                 type={"password"}
                 onChange={handlePasswordConfirm}
-                onBlur={handlePasswordConfirm}
+                onBlur={checkPwdCheck}
                 placeholder="비밀번호를 다시 입력해 주세요."
                 height={40}
                 className={pwdCheckVaild}
