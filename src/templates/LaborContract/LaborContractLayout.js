@@ -107,7 +107,7 @@ const LaborContractLayout = () => {
     <>
       <LaborContractHeader />
       <Container>
-        <Row className="mt-3">
+        <Row className="mt-4">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
@@ -123,7 +123,7 @@ const LaborContractLayout = () => {
                   searchOption={searchOption}
                   onSelect={actions.submitMainTabData}
                 />
-                <Row>
+                <Row className="mt-4">
                   <Col md="3">
                     <Row>
                       <div className="leftTable">
@@ -232,7 +232,7 @@ const LaborContractLayout = () => {
                   searchOption={searchOption}
                   onSelect={actions.submitMainTabData}
                 />
-                <Row>
+                <Row className="mt-4">
                   <Col md="3">
                     <Row>
                       <div className="leftTable">
@@ -278,15 +278,52 @@ const LaborContractLayout = () => {
                   <Col md="9" className="px-5">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
-                        <Row
-                          key={"menuKeySearchSub"}
-                          className="mt-4 mb-5 justify-content-center"
+                        <Scrollbars
+                          style={{
+                            height: 380,
+                            overflow: "hidden",
+                            marginBottom: 30,
+                          }}
+                          key={"scrollKey"}
                         >
-                          <FormPanel
-                            INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
-                            formData={mainTabData}
-                            submitData={actions.submitMainTabData}
-                            actions={actions}
+                          <Row
+                            key={"menuKeySearchSub"}
+                            className="mt-4 mb-5 justify-content-center"
+                          >
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>
+                          ,
+                        </Scrollbars>,
+                      ]}
+                    </MenuTab>
+                    <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                      {[
+                        <Row
+                          key={"menuKey2"}
+                          className="mt-4 mb-4 justify-content-center"
+                        >
+                          <TableForm
+                            tableName="SwsmOther"
+                            rowAddable
+                            // sortable
+                            showCheckbox
+                            tableHeaders={SubTabHeaders}
+                            tableData={subTableData}
+                            pkValue={leftTablePkValue}
+                            selectedRows={selectedRows}
+                            actions={{
+                              setTableData: actions.setSubTableData,
+                              setSelectedRows: actions.setSelectedRows,
+                              insertNewRow: actions.insertSwsmOther,
+                              updateEditedRow: actions.updateSwsmOther,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: SwsmOther,
+                            }}
                           />
                         </Row>,
                       ]}
