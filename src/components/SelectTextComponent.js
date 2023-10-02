@@ -300,7 +300,7 @@ function SelectTextComponent(props) {
     console.log("id" + event.target.id);
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
-    console.log(newValue);
+    // console.log(newValue);
     setSelectedValue(newValue);
   };
 

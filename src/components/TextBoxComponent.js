@@ -111,7 +111,7 @@ function TextBoxComponent(props) {
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
-    console.log(newValue);
+    // console.log(newValue);
     setSelectedValue(newValue);
   };
 
