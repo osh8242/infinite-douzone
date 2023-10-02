@@ -5,7 +5,7 @@ import Header from "./templates/Header";
 import HrManagementLayout from "./templates/HrManagement/HrManagementLayout";
 import LoginGrid from "./Login/LoginGrid";
 import LoginLayout from "./member/loginLayout";
-import LaborContractLayout from "./templates/LaborContract/TestLayout";
+import LaborContractLayout from "./templates/LaborContract/LaborContractLayout";
 import SalaryInformationEntryLayout from "./templates/SalaryInformationEntry/SalaryInformationEntryLayout";
 import SignUp from "./SignUp/SignUp";
 import SignUpLayout from "./SignUp/SignUpLayout";
