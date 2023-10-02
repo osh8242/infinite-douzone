@@ -23,6 +23,7 @@ import ErrorPage from "./templates/ErrorPage";
 import SuccessSignUp from "./templates/SuccessSignUp";
 import { LoadingContext } from "./Loading/LoadingProvider";
 import Loading from "./components/Loading";
+import SignUpLayout from "./SignUp/SignUpLayout";
 
 function ConditionalHeader() {
   const location = useLocation();
@@ -34,7 +35,7 @@ function ConditionalHeader() {
   } else if (location.pathname === "/loginFindPwd") {
     return <LoginFindPwd />;
   } else if (location.pathname === "/signup") {
-    return null; // SignupLayout 제거함. 필요하다면 반환하세요.
+    return <SignUpLayout />; // SignupLayout 제거함. 필요하다면 반환하세요.
   } else if (location.pathname === "/error") {
     return <ErrorPage />;
   } else if (location.pathname === "/successSignup") {
