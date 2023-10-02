@@ -5,38 +5,55 @@ import { modal_insertSalaryDeductData } from "../../../model/SalaryInformationEn
 import { Button } from "react-bootstrap";
 import { useApi } from "../../../model/Api";
 import fetchData from "../../../utils/codeHelperUtils";
+import ConfirmComponent from "../../../components/ConfirmComponent";
 
 const InsertSalartDeductData = (props) => {
-    const api = useApi();  
-    const { actions } = props;
-    const [isCalculationbVisible, setIsCalculationbVisible] = useState(false);
-    const calculationbVisibility = () => {
-      setIsCalculationbVisible(!isCalculationbVisible);
-    };
-    
-    const insertSalaryDeducteDataRef = useRef([]); // useRef를 사용하여 변수 선언
-    
-    useEffect(() => {
-        const fetchDataAndUpdateState = async () => {
-            if (modal_insertSalaryDeductData.url) {
-                insertSalaryDeducteDataRef.current = await fetchData(api,modal_insertSalaryDeductData.url); // useRef의 current 속성에 저장
-                actions.setModalContentData(() => ({
-                    tableData: insertSalaryDeducteDataRef.current
-                }));
-            }
-        };
-        fetchDataAndUpdateState();
-    }, []);
+  const api = useApi();
+  const [showModal, setShowModal] = useState(false);
+  const { actions, selectedTab } = props;
 
+  const insertSalaryDeducteDataRef = useRef([]); 
+
+  useEffect(() => {
+    fetchDataAndUpdateState();
+  }, []);
+
+  useEffect(() => {
+    if (selectedTab === "2") {
+      fetchDataAndUpdateState();
+    }
+  }, [selectedTab]);
+
+  const fetchDataAndUpdateState = async () => {
+    if (modal_insertSalaryDeductData.url) {
+      insertSalaryDeducteDataRef.current = await fetchData(
+        api,
+        modal_insertSalaryDeductData.url,
+        modal_insertSalaryDeductData.params
+      );
+      actions.setModalContentData(() => ({
+        tableData: insertSalaryDeducteDataRef.current,
+      }));
+    }
+  };
+
+  const insertSalDeduct = useCallback((salDeduct) => {
     
-  const insertSalDeduct = useCallback((salAllow) => {
+    salDeduct.ynSal = salDeduct.ynSal || "Y";
+    salDeduct.ynBonus = salDeduct.ynBonus || "Y";
+    
     api
-      .post("/sallowpay/insertSalAllow", salAllow, {
-        "Content-Type": "qpplication/json",
+      .post("/sadeductpay/insertSaDeduct", salDeduct, {
+        "Content-Type": "application/json",
       })
       .then((response) => {
-        if (response.data !== 0){
-          alert ("공제 등록에 성공하였습니다!");
+        if (response.data !== 0) {
+          setShowModal({
+            show: true,
+            message: "등록되었습니다.",
+            onlyConfirm: true,
+            action :()=> fetchDataAndUpdateState()
+          });
         }
       })
       .catch((error) => {
@@ -45,12 +62,15 @@ const InsertSalartDeductData = (props) => {
   }, []);
 
   const updateSalDeduct = useCallback((salDeduct) => {
-    //salDeduct.calculation
     api
-      .put("/sallowpay/updateSalAllow", salDeduct)
+      .put("/sadeductpay/updateSaDeduct", salDeduct)
       .then((response) => {
         if (response.data !== 0) {
-          alert("수정되었습니다!");
+          setShowModal({
+            show: true,
+            message: "수정되었습니다.",
+            onlyConfirm: true,
+          });
         }
       })
       .catch((error) => {
@@ -59,15 +79,18 @@ const InsertSalartDeductData = (props) => {
   }, []);
 
   const deleteDeduct = useCallback((row) => {
-    const salAllow = row.item;
-
+    const salDeduct = row.item;
     api
-      .delete("/sallowpay/deleteSalAllow", {
-        data: salAllow
+      .delete("/sadeductpay/deleteSaDeduct", {
+        data: salDeduct,
       })
       .then((response) => {
-        if (response.data !== 0)  {
-          alert("삭제되었습니다!");
+        if (response.data !== 0) {
+          setShowModal({
+            show: true,
+            message: "삭제되었습니다.",
+            onlyConfirm: true,
+          });
         }
       })
       .catch((error) => {
@@ -79,23 +102,33 @@ const InsertSalartDeductData = (props) => {
     <div>
       <div>
         <div className="tableData_container">
-          <Button onClick={calculationbVisibility}>{!isCalculationbVisible? '산출식보기' : '산출식 숨기기' }</Button>
           <TableForm
             tableName="SI_INSERT_SALARY_DEDUCT_DATA"
             sortable
             rowAddable
-            tableHeaders={!isCalculationbVisible?(modal_insertSalaryDeductData.headers):(modal_insertSalaryDeductData.headersWithCalculation)}
+            tableHeaders={modal_insertSalaryDeductData.headers}
             tableData={insertSalaryDeducteDataRef.current}
             actions={{
-              getRowObject : (data)=>{ return {item:data}},
+              getRowObject: (data) => {
+                return { item: data };
+              },
               insertNewRow: insertSalDeduct,
               updateEditedRow: updateSalDeduct,
-              deleteRow: deleteDeduct
+              deleteRow: deleteDeduct,
             }}
           />
-          
         </div>
       </div>
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={showModal.onlyConfirm}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          showModal.action && showModal.action();
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };

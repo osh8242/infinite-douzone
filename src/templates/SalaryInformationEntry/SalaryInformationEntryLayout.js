@@ -21,10 +21,9 @@ import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
 
-
 import fetchData from "../../utils/codeHelperUtils";
 import useApi from "../../model/Api";
-
+import ConfirmComponent from "../../components/ConfirmComponent";
 
 const SalaryInformationEntryLayout = () => {
   const api = useApi();
@@ -32,56 +31,49 @@ const SalaryInformationEntryLayout = () => {
   const { state, actions } = SalaryInformationEntryModel();
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
   const [modalType, setModalType] = useState("");
-  
+
   const toggleRightTabVisibility = () => {
     setIsRightTabVisible(!isRightTabVisible);
   };
 
   // 코드도움 아이콘 클릭이벤트
-  const modalShow = useCallback(async (type, data, setRowData, setParams) => {
-    actions.setModalState({ ...state.modalState, show: true });
-    setModalType(type);
+  const modalShow = useCallback(
+    async (type, data, setRowData, setParams) => {
+      actions.setModalState({ ...state.modalState, show: true });
+      setModalType(type);
 
-    switch (type) {
-      case "codeHelper":
-      let codeDataList = data.tableData;
-        let url = data.url? data.url : '';
-        let params = data.params? data.params : setParams;
-        codeDataList = await fetchData(api, url, params);
+      switch (type) {
+        case "codeHelper":
+          let codeDataList = data.tableData;
+          let url = data.url ? data.url : "";
+          let params = data.params ? data.params : setParams;
+          codeDataList = await fetchData(api, url, params);
 
-        actions.setModalState((prevState) => ({
-          ...prevState,
-          subject: data.subject,
-        }));
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            subject: data.subject,
+          }));
 
-        actions.setCodeHelperTableData(() => ({
-          setRowData: setRowData,
-          tableHeaders: data.headers,
-          tableData: codeDataList,
-          usePk: data.usePk ? data.usePk : "",
-          searchField: data.searchField,
-        }));
-        break;
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: codeDataList,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
 
-      // case 'addSalAllowPay' :   
-      // actions.setModalState((prevState) => ({
-      //     ...prevState,   
-      //     onConfirm : actions.addAllowPay,
-      //     size : data.size,
-      //     subject: data.subject
-      //   }));
-      //   break;
-
-      default: 
-        actions.setModalState((prevState) => ({ 
-          ...prevState, 
-          size : data.size,
-          subject: data.subject
-        }))
-        break;
-    }
-  }, [state.allowMonth]);
-
+        default:
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            size: data.size,
+            subject: data.subject,
+          }));
+          break;
+      }
+    },
+    [state.allowMonth]
+  );
 
   return (
     <>
@@ -92,34 +84,40 @@ const SalaryInformationEntryLayout = () => {
         onHide={() => actions.setModalState({ show: false })}
         onConfirm={state.modalState.onConfirm}
       >
-          {modalType === 'codeHelper'?
-            <CodeHelperModal
-              setRowData={state.codeHelperTableData.setRowData}
-              usePk={state.codeHelperTableData.usePk}
-              tableHeaders = {state.codeHelperTableData.tableHeaders}
-              tableData={state.codeHelperTableData.tableData}
-              subject={state.codeHelperTableData.subject}
-              searchField={state.codeHelperTableData.searchField}
-              onHide={() => actions.setModalState({show: false})}
-            />
-          : modalType === 'insertSalaryData'?
-              <InsertSalaryDataLayout
-                actions = {actions}
-              />
-          : modalType === 'reCalculation'?
-              <ReCalculation
-                actions ={actions}
-                state = {state}
-              />
-          : modalType === 'calculationInsert'?
-              <CalculationInsert
-                insertSalaryTableData = {state.modalContentData.tableData}
-                actions = {actions}
-              />
-          : //default
-            <></>
-          }
+        {modalType === "codeHelper" ? (
+          <CodeHelperModal
+            setRowData={state.codeHelperTableData.setRowData}
+            usePk={state.codeHelperTableData.usePk}
+            tableHeaders={state.codeHelperTableData.tableHeaders}
+            tableData={state.codeHelperTableData.tableData}
+            subject={state.codeHelperTableData.subject}
+            searchField={state.codeHelperTableData.searchField}
+            onHide={() => actions.setModalState({ show: false })}
+          />
+        ) : modalType === "insertSalaryData" ? (
+          <InsertSalaryDataLayout actions={actions} />
+        ) : modalType === "reCalculation" ? (
+          <ReCalculation actions={actions} state={state} />
+        ) : modalType === "calculationInsert" ? (
+          <CalculationInsert
+            insertSalaryTableData={state.modalContentData.tableData}
+            actions={actions}
+          />
+        ) : (
+          //default
+          <></>
+        )}
       </ModalComponent>
+      <ConfirmComponent
+        show={state.showConfirm.show}
+        message={state.showConfirm.message}
+        onlyConfirm={state.showConfirm.onlyConfirm}
+        onHide={() => actions.setShowConfirm(false)}
+        onConfirm={() => {
+          state.showConfirm.action && state.showConfirm.action();
+          actions.setShowConfirm(false);
+        }}
+      />
 
       <SalaryInformationEntryHeader
         deleteButtonHandler={actions.deleteSelectedRows}
@@ -127,61 +125,79 @@ const SalaryInformationEntryLayout = () => {
         ynComplete={state.ynComplete}
         actions={actions}
         modalShow={modalShow}
-        dateId = {state.dateId}
-        cdEmp = {state.cdEmp}
-        allowYear = {state.allowYear}
+        dateId={state.dateId}
+        cdEmp={state.cdEmp}
+        allowYear={state.allowYear}
       />
-      
+
       {/* <Container fluid> */}
       <Container>
-        <Row style={{margin:'10px'}}>
+        <Row style={{ margin: "10px" }}>
           <Col>
             {/* 조회영역 */}
             <SiSeacrchPanel
-              onSearch = {actions.onSearch}
-              modalShow = {modalShow}
-              actions = {actions}
-              state = {state}
-              setCopyLastMonthData = {actions.setCopyLastMonthData}
+              onSearch={actions.onSearch}
+              modalShow={modalShow}
+              actions={actions}
+              state={state}
+              setCopyLastMonthData={actions.setCopyLastMonthData}
             />
             {/* 메인영역 */}
-              <Row>
-                <Col md={3}>
-                  <EmpList actions={actions} saInfoListData={state.saInfoListData} />
-                </Col>
-                <Col md={3}>
-                  <SalaryAllowPayList 
-                    actions={actions} 
-                    salAllowData={state.salAllowData} 
-                    ynComplete = {state.ynComplete}
-                  />
-                </Col>
-                <Col md={3}>
-                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} ynComplete={state.ynComplete} />
-                </Col>
-                <Col className="selectDivision">
-                  <SelctDivisionList actions={actions} state={state} />
-                </Col>
-              </Row>
+            <Row>
+              <Col md={3}>
+                <EmpList
+                  actions={actions}
+                  saInfoListData={state.saInfoListData}
+                />
+              </Col>
+              <Col md={3}>
+                <SalaryAllowPayList
+                  actions={actions}
+                  salAllowData={state.salAllowData}
+                  ynComplete={state.ynComplete}
+                />
+              </Col>
+              <Col md={3}>
+                <SalaryDeductPayList
+                  actions={actions}
+                  salDeductData={state.deductData}
+                  ynComplete={state.ynComplete}
+                />
+              </Col>
+              <Col className="selectDivision">
+                <SelctDivisionList actions={actions} state={state} />
+              </Col>
+            </Row>
           </Col>
 
-         {isRightTabVisible ? (
-          <Col md="3" className={`transition ${isRightTabVisible ? "visible" : "hidden"}`}>
-            <div style={{display : 'flex'}} >
-              <div className="rightside-custom-width">
-                <div onClick={toggleRightTabVisibility} className="rightside-icon-wrapper">
-                  <div id="fakeFaArrowRight"></div>
-                  <div id="fakeFaArrowRight-content">▶</div>
+          {isRightTabVisible ? (
+            <Col
+              md="3"
+              className={`transition ${
+                isRightTabVisible ? "visible" : "hidden"
+              }`}
+            >
+              <div style={{ display: "flex" }}>
+                <div className="rightside-custom-width">
+                  <div
+                    onClick={toggleRightTabVisibility}
+                    className="rightside-icon-wrapper"
+                  >
+                    <div id="fakeFaArrowRight"></div>
+                    <div id="fakeFaArrowRight-content">▶</div>
+                  </div>
+                </div>
+                <div>
+                  <RigtSideLayout actions={actions} state={state} />
                 </div>
               </div>
-              <div>
-                <RigtSideLayout actions={actions} state={state}/>
-            </div>
-            </div>
-          </Col>
-           ):( 
+            </Col>
+          ) : (
             <Col xs={1} className="rightside-custom-width">
-              <div onClick={toggleRightTabVisibility} className="rightside-icon-wrapper">
+              <div
+                onClick={toggleRightTabVisibility}
+                className="rightside-icon-wrapper"
+              >
                 <div id="fakeFaArrowLeft"></div>
                 <div id="fakeFaArrowLeft-content">◀</div>
               </div>

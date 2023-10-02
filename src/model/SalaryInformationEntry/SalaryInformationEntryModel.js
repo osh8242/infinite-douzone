@@ -66,6 +66,8 @@ const SalaryInformationEntryModel = () => {
   const [searchCdDept, setSearchCdDept] = useState(""); // 부서코드 검색
   const [searchCdOccup, setSearchCdOccup] = useState(""); // 직책코드 검색
   const [searchYnUnit, setSearchYnUnit] = useState(""); // 생산직여부 검색
+
+  const [showConfirm, setShowConfirm] = useState(false);
    
   /* 사원 선택시 발생함수 */
   useEffect(() => {
@@ -91,6 +93,15 @@ const SalaryInformationEntryModel = () => {
       })
       .then((response) => {
         if(response.data > 0) setYnComplete(newYnComplete);
+        let message = "";
+        if(newYnComplete === 'Y') message = "현재 지급일의 급여등이 완료 처리 되었습니다.";
+        else message = "현재 지급일의 급여등이 완료 해제되었습니다.";
+
+        setShowConfirm({
+          show: true,
+          message: message,
+          onlyConfirm: true
+        });
       });
   }, [ynComplete, dateId]);
 
@@ -201,6 +212,7 @@ const SalaryInformationEntryModel = () => {
       allowMonth: allowMonth,
       salDivision: salDivision,
       paymentDate: paymentDate,
+      dateId : dateId,
 
       searchCdEmp: searchCdEmp,
       searchCdDept: searchCdDept,
@@ -341,10 +353,15 @@ const deleteSelectedRows = () => {
     .then(() => {
       setSelectedRows([]);
       getSaPayByCdEmp();
+
+      setShowConfirm({
+        show: true,
+        message: "선택된 사원의 지급항목이 삭제되었습니다.",
+        onlyConfirm: true
+      });
   
     })
     .catch((error) => {
-  
       console.error("사원 삭제실패: ", error);
     });
 };
@@ -385,6 +402,11 @@ const deleteSelectedRows = () => {
     .then(async (response) => {
       setDateId(response.data);
       await getSaPayByCdEmp();
+      setShowConfirm({
+        show: true,
+        message: "급여 지급액이 수정되었습니다.",
+        onlyConfirm: true
+      });
     })
     .catch((error) => {
       console.error("에러발생: ", error);
@@ -397,15 +419,21 @@ const deleteSelectedRows = () => {
     saveSalDeductPay(updatedData); // 저장
   }, [cdEmp, dateId, allowYear, allowMonth, paymentDate]);
 
-/* 급여테이블 수정 + 공제항목테이블 update */
-const saveSalDeductPay = (updatedData) => {
-  api
-  .post(url + SAVE_DEDUCTDATA_URL, updatedData)
-  .then((response) => { getSaPayByCdEmp(); })
-  .catch((error) => {
-    console.error("에러발생: ", error);
-  });
-};
+  /* 급여테이블 수정 + 공제항목테이블 update */
+  const saveSalDeductPay = (updatedData) => {
+    api
+    .post(url + SAVE_DEDUCTDATA_URL, updatedData)
+    .then((response) => { 
+      getSaPayByCdEmp(); 
+      setShowConfirm({
+        show: true,
+        message: "공제 지급액이 수정되었습니다.",
+        onlyConfirm: true
+      });})
+    .catch((error) => {
+      console.error("에러발생: ", error);
+    });
+  };
 
   /* 전월데이터 복사 */
   const setCopyLastMonthData = useCallback(() => {
@@ -469,7 +497,7 @@ const saveSalDeductPay = (updatedData) => {
       cdEmp,
       dateId,
       ynComplete,    
-      
+      showConfirm
     },
     actions: {
       setSaInfoListData,
@@ -481,6 +509,7 @@ const saveSalDeductPay = (updatedData) => {
       setSalDivision,
       setAllowMonth,
       setPaymentDate,
+      setDateId,
 
       setCodeHelperTableData,
 
@@ -502,7 +531,11 @@ const saveSalDeductPay = (updatedData) => {
       getSalTotalSum,
       updateDate,
       setCopyLastMonthData,
-      updateSalaryDeductPay
+      updateSalaryDeductPay,
+
+      getSaPayByCdEmp,
+      setShowConfirm
+      
     },
   };
 };

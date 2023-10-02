@@ -1,13 +1,14 @@
 // get TableData
 
-
 import { objectToQueryString } from "./StringUtils";
 import { url } from "../model/CommonConstant";
 import { useApi } from "../model/Api";
 
 const fetchData = async (api, urlPattern, params) => {
   try {
-    const response = await api.get(url + urlPattern + objectToQueryString(params));
+    const response = await api.get(
+      url + urlPattern + objectToQueryString(params)
+    );
     const data = response.data;
     const tableDataList = data.map((object) => {
       const dynamicProperties = { item: {} };

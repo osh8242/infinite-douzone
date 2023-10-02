@@ -41,13 +41,18 @@ const SiSeacrchPanel = (props) => {
     actions.setSalDivision(value);
 
     // 전월데이터 복사 모달
-    let message = "전월데이터를 복사하시겠습니까?";
-    setShowModal({ show: true, message: message });
+    let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
+    setShowModal({ 
+      show: true, 
+      message: message,
+      action : () => {
+        setCopyLastMonthData();
+      }
+    });
   };
 
   // 작성일자 코드헬퍼 클릭 이벤트
   const clickPaymentDateCodeHelper = (e, row) => {
-    alert("he");
     let message = "해당 지급일로 검색하시겠습니까?";
     setShowModal({
       show: true,
@@ -65,7 +70,11 @@ const SiSeacrchPanel = (props) => {
     const paymentDate = new Date(newValue);
     console.log("validationPaymentDate", validationPaymentDate);
     if (allowMonth > paymentDate) {
-      alert("귀속년월보다 지급일이 앞섭니다.");
+      setShowModal({
+        show: true,
+        message: "귀속년월보다 지급일이 앞섭니다.",
+        onlyConfirm: true,
+      });
       actions.setPaymentDate(currentDateStr());
       return false;
     }
@@ -132,6 +141,7 @@ const SiSeacrchPanel = (props) => {
           </div>  */}
         </SearchPanel>
       </div>
+     
     </>
   );
 };
