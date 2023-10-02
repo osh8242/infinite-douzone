@@ -20,8 +20,8 @@ import { useLocation } from "react-router-dom";
 import MainTestPage from "./templates/MainTestPage";
 import ErrorPage from "./templates/ErrorPage";
 import SuccessSignUp from "./templates/SuccessSignUp";
-import { LoadingContext } from "./Loading/LoadingProvider";
 import { useContext } from "react";
+import { LoadingContext } from "./Loading/LoadingProvider";
 import Loading from "./components/Loading";
 
 function ConditionalHeader() {
@@ -47,13 +47,13 @@ function ConditionalHeader() {
 
 function App() {
   const { loading } = useContext(LoadingContext);
-
   return (
     <div>
       {/* <Provider store={store}> */}
       <LoginProvider>
         <BrowserRouter>
           <ConditionalHeader />
+          {loading && <Loading />}{" "}
           <Routes>
             <Route path="/mypageTest" element={<MainTestPage />} />
             <Route path="/" element={<MainHome />} />
