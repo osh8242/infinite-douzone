@@ -6,13 +6,7 @@ import { Form, Row } from "react-bootstrap";
 import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
-import {
-  isNumber,
-  isValidNoSocial,
-  makeCommaNumber,
-  makePureNumber,
-} from "../utils/NumberUtils";
-import SelectForm from "./SelectForm";
+import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -200,7 +194,7 @@ function TextBoxComponent(props) {
     } else if (type === "date" && onClickCodeHelper) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
     } else {
-      // setSendValue(inputValue);
+      setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
       setInputValue(newValue); // data 가공
