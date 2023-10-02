@@ -150,7 +150,9 @@ function TextBoxComponent(props) {
     }
     
     if (onClickCodeHelper) {
-      if(event.key === "Backspace"){
+      if (event.key === "Enter") {
+        onEnter && onEnter(event, sendValue, id);
+      }else if(event.key === "Backspace" || event.key === "Delete" || event.key === "Del"){
         setInputValue("");
         onChange && onChange(event, "", id);
       }else{
