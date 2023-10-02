@@ -39,8 +39,11 @@
   position: absolute;
   top: 16px;
   right: 0;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
   background-color: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25),
+    0 4px 6px -4px rgb(0 0 0 / 0.25);
 }
 
 .table-container {
@@ -108,6 +111,10 @@
   height: 32px !important;
   background-color: rgba(255, 255, 255, 0.1) !important;
   border: 1px solid white !important;
+}
+
+.extraDeductBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 /* #reCalculateBtn {

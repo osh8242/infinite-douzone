@@ -16,7 +16,8 @@ import SwsmOther from "../../vo/SwsmGrid/SwsmOther";
 import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
-// import useLoginModel from "../../Login/useLoginModel";
+// import useLoginModel from "../../Login/useLoginModel";import "../../styles/fonts.css";
+
 import {
   MAIN_TAB,
   HEAD_TAB,
@@ -46,10 +47,10 @@ const LaborContractLayout = () => {
   return (
     <>
       <LaborContractHeader deleteButtonHandler={actions.deleteSelectedRows} />
-      <Container>
+      <Container className="SUITE p-12">
         {/* 조회 영역 */}
         {/* <SearchPanel>
-          <Row>
+          <Row className="deleteLabelBackground">
             {mainTabData ? (
               <FormPanel
                 INPUT_CONSTANT={HEAD_TAB.primaryTabInputs}

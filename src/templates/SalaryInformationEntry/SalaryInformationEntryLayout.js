@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
-// import { fetchData } from "../../utils/codeHelperUtils";
+import "../../styles/fonts.css";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
@@ -32,6 +32,7 @@ const SalaryInformationEntryLayout = () => {
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
   const [modalType, setModalType] = useState("");
 
+
   const toggleRightTabVisibility = () => {
     setIsRightTabVisible(!isRightTabVisible);
   };
@@ -53,7 +54,19 @@ const SalaryInformationEntryLayout = () => {
             ...prevState,
             subject: data.subject,
           }));
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            subject: data.subject,
+          }));
 
+          actions.setCodeHelperTableData(() => ({
+            setRowData: setRowData,
+            tableHeaders: data.headers,
+            tableData: codeDataList,
+            usePk: data.usePk ? data.usePk : "",
+            searchField: data.searchField,
+          }));
+          break;
           actions.setCodeHelperTableData(() => ({
             setRowData: setRowData,
             tableHeaders: data.headers,
@@ -107,6 +120,29 @@ const SalaryInformationEntryLayout = () => {
           //default
           <></>
         )}
+        {modalType === "codeHelper" ? (
+          <CodeHelperModal
+            setRowData={state.codeHelperTableData.setRowData}
+            usePk={state.codeHelperTableData.usePk}
+            tableHeaders={state.codeHelperTableData.tableHeaders}
+            tableData={state.codeHelperTableData.tableData}
+            subject={state.codeHelperTableData.subject}
+            searchField={state.codeHelperTableData.searchField}
+            onHide={() => actions.setModalState({ show: false })}
+          />
+        ) : modalType === "insertSalaryData" ? (
+          <InsertSalaryDataLayout actions={actions} />
+        ) : modalType === "reCalculation" ? (
+          <ReCalculation actions={actions} state={state} />
+        ) : modalType === "calculationInsert" ? (
+          <CalculationInsert
+            insertSalaryTableData={state.modalContentData.tableData}
+            actions={actions}
+          />
+        ) : (
+          //default
+          <></>
+        )}
       </ModalComponent>
       <ConfirmComponent
         show={state.showConfirm.show}
@@ -130,44 +166,39 @@ const SalaryInformationEntryLayout = () => {
         allowYear={state.allowYear}
       />
 
+
       {/* <Container fluid> */}
-      <Container>
-        <Row style={{ margin: "10px" }}>
+      <div id="salaryInformationEntryLayout" className="SUITE p-12">
+        <Container>
+        <Row>
           <Col>
             {/* 조회영역 */}
             <SiSeacrchPanel
-              onSearch={actions.onSearch}
-              modalShow={modalShow}
-              actions={actions}
-              state={state}
-              setCopyLastMonthData={actions.setCopyLastMonthData}
+              onSearch = {actions.onSearch}
+              modalShow = {modalShow}
+              actions = {actions}
+              state = {state}
+              setCopyLastMonthData = {actions.setCopyLastMonthData}
             />
             {/* 메인영역 */}
-            <Row>
-              <Col md={3}>
-                <EmpList
-                  actions={actions}
-                  saInfoListData={state.saInfoListData}
-                />
-              </Col>
-              <Col md={3}>
-                <SalaryAllowPayList
-                  actions={actions}
-                  salAllowData={state.salAllowData}
-                  ynComplete={state.ynComplete}
-                />
-              </Col>
-              <Col md={3}>
-                <SalaryDeductPayList
-                  actions={actions}
-                  salDeductData={state.deductData}
-                  ynComplete={state.ynComplete}
-                />
-              </Col>
-              <Col className="selectDivision">
-                <SelctDivisionList actions={actions} state={state} />
-              </Col>
-            </Row>
+              <Row>
+                <Col md={3}>
+                  <EmpList actions={actions} saInfoListData={state.saInfoListData} />
+                </Col>
+                <Col md={3}>
+                  <SalaryAllowPayList 
+                    actions={actions} 
+                    salAllowData={state.salAllowData} 
+                    ynComplete = {state.ynComplete}
+                  />
+                </Col>
+                <Col md={3}>
+                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} ynComplete={state.ynComplete} />
+                </Col>
+                <Col className="selectDivision">
+                  <SelctDivisionList actions={actions} state={state} />
+                </Col>
+              </Row>
           </Col>
 
           {isRightTabVisible ? (
@@ -205,6 +236,7 @@ const SalaryInformationEntryLayout = () => {
           )}
         </Row>
       </Container>
+      </div>
     </>
   );
 };

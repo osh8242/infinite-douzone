@@ -19,6 +19,7 @@ import FormPanel from "../../../components/FormPanel";
 import ConfirmComponent from "../../../components/ConfirmComponent";
 import { currentDateStr } from "../../../utils/DateUtils";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../../styles/SearchPanel.scss";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -85,7 +86,7 @@ const SiSeacrchPanel = (props) => {
   };
 
   return (
-    <>
+    <div className="deleteLabelBackground">
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
@@ -125,24 +126,48 @@ const SiSeacrchPanel = (props) => {
             columnNumber={3}
           />
           {/* 상세 검색조건 */}
-          {/* <div>
-           <FormPanel
-              INPUT_CONSTANT = {SI_SUB_SEARCHFIELD}
-              formData={
-                { item: { searchCdEmp: state.searchVo.searchCdEmp, searchCdDept: state.searchVo.searchCdDept, searchRankNo : state.searchVo.searchRankNo,searchCdOccup : state.searchVo.searchCdOccup }}
-              }
-              codeHelperFn={{
-                searchCdEmp: () => modalShow('codeHelper', codeHelperData_emplist, actions.setSearchCdEmp),
-                searchCdDept: () => modalShow('codeHelper', codeHelperData_cdDept, actions.setSearchCdDept),
-                searchRankNo: () => modalShow('codeHelper', codeHelperData_rankNo, actions.setSearchRankNo),
-                searchCdOccup: () => modalShow('codeHelper', codeHelperData_occup, actions.setSearchCdOccup)
+          <div>
+            <FormPanel
+              INPUT_CONSTANT={SI_SUB_SEARCHFIELD}
+              formData={{
+                item: {
+                  searchCdEmp: state.searchVo.searchCdEmp,
+                  searchCdDept: state.searchVo.searchCdDept,
+                  searchRankNo: state.searchVo.searchRankNo,
+                  searchCdOccup: state.searchVo.searchCdOccup,
+                },
               }}
-            /> 
-          </div>  */}
+              codeHelperFn={{
+                searchCdEmp: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_emplist,
+                    actions.setSearchCdEmp
+                  ),
+                searchCdDept: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_cdDept,
+                    actions.setSearchCdDept
+                  ),
+                searchRankNo: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_rankNo,
+                    actions.setSearchRankNo
+                  ),
+                searchCdOccup: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_occup,
+                    actions.setSearchCdOccup
+                  ),
+              }}
+            />
+          </div>
         </SearchPanel>
       </div>
-     
-    </>
+    </div>
   );
 };
 

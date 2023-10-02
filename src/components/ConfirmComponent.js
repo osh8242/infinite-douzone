@@ -22,6 +22,19 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import "../styles/confirmComponent.css";
+import "../styles/fonts.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheck,
+  faFileCircleCheck,
+  faTrashCan,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleCheck,
+  faCircleXmark,
+} from "@fortawesome/free-regular-svg-icons";
 
 function ConfirmComponent(props) {
   const { show, onHide, message, onConfirm, onlyConfirm } = props;
@@ -64,16 +77,27 @@ function ConfirmComponent(props) {
 
   return (
     <Modal show={show} backdrop="static" centered>
-      <Modal.Body className="grid-example"> {message} </Modal.Body>
+      <Modal.Body className="grid-example SUITE">
+        <FontAwesomeIcon icon={faCircleCheck} className="confirmCheckIcon" />
+        <div className="p-16">{message}</div>
+      </Modal.Body>
       <Modal.Footer>
-        {!onlyConfirm && (
-          <Button variant="secondary" onClick={onHide}>
-            취소
+        <div className="btnGroup">
+          {!onlyConfirm && (
+            <Button variant="secondary" onClick={onHide} className="cancleBtn">
+              <FontAwesomeIcon icon={faXmark} />
+              &nbsp;취소
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            onClick={() => onConfirm()}
+            className="confirmBtn"
+          >
+            <FontAwesomeIcon icon={faCheck} />
+            &nbsp;확인
           </Button>
-        )}
-        <Button variant="primary" onClick={() => onConfirm()}>
-          확인
-        </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   );
