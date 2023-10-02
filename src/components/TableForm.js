@@ -289,6 +289,7 @@ const TableForm = ({
   const isValidRow = useCallback(
     (inputs, columnIndex) => {
       for (let input of inputs) {
+        if (input.type === "checkbox") continue;
         let inputIndex = tableHeaders.findIndex(
           (header) => header.field === input.id
         );
