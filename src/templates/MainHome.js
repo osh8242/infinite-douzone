@@ -2,9 +2,10 @@
 // 메인 홈페이지
 import React, { useEffect } from "react";
 import wehago_backImg from "../styles/img/wehago_backImg.jpg";
-import screenshot16 from "../styles/img/screenshot16.png";
-import screenshot17 from "../styles/img/screenshot17.png";
-import screenshot18 from "../styles/img/screenshot18.png";
+import erIntro from "../styles/img/erIntro.png";
+import hrIntro from "../styles/img/hrIntro.png";
+import lrIntro from "../styles/img/lrIntro.png";
+import siIntro from "../styles/img/siIntro.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
@@ -37,7 +38,7 @@ const slides = [
     ),
   },
   {
-    background: screenshot16, //사원등록
+    background: erIntro, //사원등록
     content: (
       <div>
         <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
@@ -47,7 +48,7 @@ const slides = [
     ),
   },
   {
-    background: screenshot17, //인사관리등록
+    background: hrIntro, //인사관리등록
     content: (
       <div>
         <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
@@ -57,7 +58,7 @@ const slides = [
     ),
   },
   {
-    background: screenshot18, //표준근로계약서
+    background: lrIntro, //표준근로계약서
     content: (
       <div>
         <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
@@ -66,9 +67,16 @@ const slides = [
       </div>
     ),
   },
-  // {
-  //   background: "image4.jpg", //급여자료입력
-  // },
+  {
+    background: siIntro, //급여자료입력
+    content: (
+      <div>
+        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+          급여자료 입력에 대한 정보
+        </p>
+      </div>
+    ),
+  },
 ];
 
 function MainHome() {
