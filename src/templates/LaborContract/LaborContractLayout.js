@@ -282,7 +282,7 @@ const LaborContractLayout = () => {
                           style={{
                             height: 380,
                             overflow: "hidden",
-                            marginBottom: 30,
+                            marginBottom: 20,
                           }}
                           key={"scrollKey"}
                         >
@@ -309,9 +309,9 @@ const LaborContractLayout = () => {
                         >
                           <TableForm
                             tableName="SwsmOther"
-                            rowAddable
+                            // rowAddable
                             // sortable
-                            showCheckbox
+                            // showCheckbox
                             tableHeaders={SubTabHeaders}
                             tableData={subTableData}
                             pkValue={leftTablePkValue}
