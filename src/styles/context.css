@@ -1,0 +1,16 @@
+:root {
+  --darkBlue: rgb(0, 129, 255);
+  --blue: rgb(48, 150, 255);
+  --lightBlue: rgb(151, 202, 255);
+  --skyblue: rgb(224, 239, 255);
+  --lightSkyblue: rgb(233, 244, 255);
+
+  --red: rgb(255, 20, 52);
+
+  --whiteGray: rgba(230, 230, 230, 0.2);
+  --lightGray: rgb(230, 230, 230);
+  --gray: rgb(127, 127, 127);
+  --dark: rgb(57, 63, 80);
+
+  --lightBlueGray: rgb(233, 236, 239); /* input disabled 색상 */
+}

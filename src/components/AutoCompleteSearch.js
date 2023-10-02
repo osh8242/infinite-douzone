@@ -4,6 +4,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import "../styles/SearchForm.css";
+import "../styles/fonts.css";
 
 function AutoCompleteSearch({ placeholder }) {
   const [inputValue, setInputValue] = useState("");
@@ -107,10 +108,14 @@ function AutoCompleteSearch({ placeholder }) {
       tabIndex="0"
       onClick={() => inputRef.current.focus()}
     >
-      <FontAwesomeIcon icon={faSearch} size={"lg"} color={"grey"} />
+      <FontAwesomeIcon
+        icon={faSearch}
+        className="searchFormIcon p-12"
+        color={"grey"}
+      />
       <input
         ref={inputRef}
-        className="search-bar__input"
+        className="search-bar__input p-10"
         type="text"
         placeholder={currentPlaceholder}
         value={inputValue}

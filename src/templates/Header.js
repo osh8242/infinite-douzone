@@ -14,6 +14,8 @@ import "../styles/header.css";
 import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
+import "../styles/header.css";
+import "../styles/fonts.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -75,9 +77,10 @@ const Header = () => {
           </div>
         </div>
       )} */}
+
       {/* 사원등록/인사관리/급여자료입력/표준근로계약서 4개 메뉴에서 쓰이는 헤더 */}
       {!isMainPage && (
-        <div id="topNotificationHeader">
+        <div id="topNotificationHeader" className="SUITE">
           <div id="topLeftNotificationHeader">
             <select id="companySelectForm" defaultValue={"douzone"}>
               <option id="douzone">더존비즈온</option>
@@ -96,38 +99,27 @@ const Header = () => {
               id="findMenuBar"
               placeholder={"찾고싶은 메뉴를 검색하세요"}
             />
-
-            <button className="backgroundBorderNone">
-              <FontAwesomeIcon
-                icon={faPlus}
-                size={"lg"}
-                className="colorDark"
-              />
-            </button>
-            <button className="backgroundBorderNone">
-              <FontAwesomeIcon
-                icon={faBell}
-                size={"lg"}
-                className="colorDark"
-              />
-            </button>
-            <button className="backgroundBorderNone">
-              <FontAwesomeIcon
-                icon={faQuestionCircle}
-                size={"lg"}
-                className="colorDark"
-              />
-            </button>
-            <button className="backgroundBorderNone">
-              <a href="/">
+            <div id="topHeaderButtonGroup" className="p-16">
+              <button disabled className="backgroundBorderNone">
+                <FontAwesomeIcon icon={faPlus} className="colorDark forbid" />
+              </button>
+              <button disabled className="backgroundBorderNone">
+                <FontAwesomeIcon icon={faBell} className="colorDark forbid" />
+              </button>
+              <button disabled className="backgroundBorderNone">
                 <FontAwesomeIcon
-                  icon={faHome}
-                  size={"lg"}
-                  className="colorDark"
+                  icon={faQuestionCircle}
+                  className="colorDark forbid"
                 />
-              </a>
-            </button>
+              </button>
+              <button className="backgroundBorderNone">
+                <a href="/">
+                  <FontAwesomeIcon icon={faHome} className="colorDark" />
+                </a>
+              </button>
+            </div>
             <button
+              id="userInformation"
               className="backgroundBorderNone"
               onClick={toggleProfileDropdown}
             >
@@ -172,43 +164,6 @@ const Header = () => {
           </div>
         </div>
       )}
-      {/* <div id="secondTopHeader">
-      {/* <div id="secondTopHeader">
-      <div id="secondTopHeaderContents">
-      <Button
-            id="toggleSidebarBtn"
-            onClick={toggleSidebar}
-            variant="outline-secondary"
-          >
-            <i className={`fa fa-bars colorWhite`} />
-          </Button>
-          //로고
-          <img id="logo" src={empAdd} alt="" />
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon
-              icon={faArrowUpRightFromSquare}
-              className="colorWhite backgroundBorderNone"
-            />
-          </button>
-        </div>
-        <div id="secondTopHeaderMenuList">
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faPrint} className="colorWhite" />
-          </button>
-          <button
-            className="backgroundBorderNone"
-            onClick={(e) => contextActions.deleteSelectedRows()}
-          >
-            <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
-          </button>
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
-          </button>
-          <button className="backgroundBorderNone">
-            <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
-          </button>
-        </div>
-      </div>       */}
     </div>
   );
 };

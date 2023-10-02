@@ -49,28 +49,20 @@ function App() {
   const { loading } = useContext(LoadingContext);
   return (
     <div>
-      {/* <Provider store={store}> */}
-      <LoginProvider>
-        <BrowserRouter>
-          <ConditionalHeader />
-          {loading && <Loading />}{" "}
-          <Routes>
-            <Route path="/mypageTest" element={<MainTestPage />} />
-            <Route path="/" element={<MainHome />} />
-            {/* 임시 링크 */}
-            {/* <Route path="/signup" element={<SignUp />} /> */}
-            <Route path="/er" element={<EmpRegisterationLayout />} />
-            <Route path="/hr" element={<HrManagementLayout />} />
-            <Route path="/lc/*" element={<LaborContractLayout />} />
-            <Route path="/si" element={<SalaryInformationEntryLayout />} />
-            {/* <Route path="/login" element={<LoginLayout />} /> */}
-            {/* <Route path="/loginFindId" element={<LoginFindId />} /> */}
-            {/* <Route path="/loginFindPwd" element={<LoginFindPwd />} /> */}
-            <Route path="/mypage" element={<MyPage />} />
-          </Routes>
-        </BrowserRouter>
-        {/* </Provider> */}
-      </LoginProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<MainHome />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/er" element={<EmpRegisterationLayout />} />
+          <Route path="/hr" element={<HrManagementLayout />} />
+          <Route path="/lc/*" element={<LaborContractLayout />} />
+          <Route path="/si" element={<SalaryInformationEntryLayout />} />
+          <Route path="/login" element={<LoginGrid />} />
+          <Route path="/mypage" element={<MyPage />} />
+        </Routes>
+        {/* <Footer /> */}
+      </BrowserRouter>
     </div>
   );
 }
