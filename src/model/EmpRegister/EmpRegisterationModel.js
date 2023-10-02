@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import Emp from "../../vo/EmpRegister/Emp";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
-import api from "../Api";
+import { useApi } from "../Api";
 import {
   codeHelperData_abbNation,
   codeHelperData_cdBank,
@@ -18,6 +18,7 @@ import {
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
+  const api = useApi();
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
   // const [cdEmp, setCdEmp] = useState("E001");

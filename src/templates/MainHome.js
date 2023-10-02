@@ -2,52 +2,41 @@
 // 메인 홈페이지
 // 임시로 위치만 잡아두었음 -> 나중에 요소 추가 및 예쁘게 수정할 예정
 // 상단의 Header는 로그인 여부에 따라 바뀌도록 수정
-
 import React from "react";
 // import wehago_backImg from "../styles/img/wehago_backImg.jpg";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
+import "../styles/mainHome.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faAddressBook,
   faAddressCard,
 } from "@fortawesome/free-regular-svg-icons";
-
 import {
   faCircleArrowLeft,
   faFileInvoice,
   faSackDollar,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-
 import { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import "../styles/mainHome.scss";
-import "../styles/fonts.css";
-
 function MainHome() {
   const navigate = useNavigate();
   // const userInfoString = localStorage.getItem("userInfo");
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
-
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
   const [hrefState, setHrefState] = useState(
     userInfoObject != null ? "/" : "/login"
   );
-
   const [userName, setUserName] = useState(
     userInfoObject ? userInfoObject.userName : "비회원"
   );
-
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
-
   let userToken = localStorage.getItem("token");
   let userTokenObject = JSON.parse(userToken);
-
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
     if (localStorage.getItem("userInfo") != null) {
@@ -63,25 +52,22 @@ function MainHome() {
       navigate("/login");
     }
   }
-
   console.log("------HEADER--------------");
   console.log(userInfoObject);
   console.log("TOKEN: " + userTokenObject);
   console.log("------HEADER--------------");
-
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
-
   return (
-    <div id="mainHomePage">
+    <>
       <div id="mainPageTopHeader-BackGround">
         <div id="mainPageTopHeader">
           <a href="/">
             <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
           </a>
-          <div id="mainPageTopHeaderContents" className="SUITE">
+          <div id="mainPageTopHeaderContents">
             <a href="#page1" className="colorWhite">
               HOME
             </a>
@@ -92,7 +78,6 @@ function MainHome() {
               <a href="/" className="colorWhite">
                 서비스소개
               </a>
-
               {/* 로그인 여부에 따라 버튼 토글 */}
               <div id="signUpSignInBtn">
                 {!userInfoObject && <a href="/signup">회원가입</a>}
@@ -112,18 +97,18 @@ function MainHome() {
           alt="Wehago Background"
         /> */}
           <div className="textBox">
-            <p className="NIXGON p-24">
+            <p className="NIXGONFONTS p-24">
               기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
             </p>
             <p className="Jost p-48">WEHAGO</p>
-            <p className="NIXGON p-16">
+            <p className="NIXGONFONTS p-16">
               업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
               전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
             </p>
           </div>
         </div>
         {/* 하단 4가지 메뉴 이동 버튼 */}
-        <div className="menuBtnList SUITE">
+        <div className="menuBtnList">
           <div>
             <a href="/er" className="menuBtn er">
               <FontAwesomeIcon icon={faUserPlus} />
@@ -146,25 +131,18 @@ function MainHome() {
             <a href="/si" className="menuBtn si">
               <FontAwesomeIcon icon={faSackDollar} />
             </a>
-            <p>급여자료입력</p>
+            <p>급여관리</p>
           </div>
         </div>
         <a href="#!" id="leftArrowBtn">
-          <FontAwesomeIcon icon={faChevronCircleLeft} />
+          <FontAwesomeIcon icon={faCircleArrowLeft} />
         </a>
         <a href="#!" id="leftArrowBtn-animation">
-          <FontAwesomeIcon icon={faChevronCircleLeft} />
-        </a>
-        <a href="#!" id="rightArrowBtn">
-          <FontAwesomeIcon icon={faChevronCircleRight} />
-        </a>
-        <a href="#!" id="rightArrowBtn-animation">
-          <FontAwesomeIcon icon={faChevronCircleRight} />
+          <FontAwesomeIcon icon={faCircleArrowLeft} />
         </a>
       </div>
       <div id="page2"></div>
-    </div>
+    </>
   );
 }
-
 export default MainHome;
