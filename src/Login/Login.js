@@ -25,7 +25,7 @@ const Login = () => {
     setPwd(e.target.value);
   };
 
-  const { loginInfo = "", updateToken } = useLogin();
+  const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
   const navigate = useNavigate();
 
   const handleFormSubmit = (e) => {
@@ -61,6 +61,7 @@ const Login = () => {
       // 토큰이 반환된 경우
       if (token) {
         updateToken(response.data.token);
+        updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
         localStorage.setItem("authToken", response.data.token);
         // localStorage.setItem("userInfo", loginInfo);
         localStorage.setItem("userInfo", JSON.stringify(response.data.user));
