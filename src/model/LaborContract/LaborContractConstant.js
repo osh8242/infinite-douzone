@@ -6,6 +6,7 @@ export const swsmUrlPattern = {
   getSwsmOther: "/swsmOther/getSwsmOtherByCdEmp",
   updateSwsm: "/swsm/updateSwsm",
   insertSwsm: "/swsm/insertSwsm",
+  deleteSwsm: "/swsm/deleteSwsm",
   insertSwsmOther: "/swsmOther/insertSwsmOther",
   updateSwsmOther: "/swsmOther/updateSwsmOtherByCdEmp",
   deleteSwsmOther: "/swsmOther/deleteSwsmOther",

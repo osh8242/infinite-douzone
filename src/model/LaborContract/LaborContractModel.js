@@ -93,24 +93,6 @@ const LaborContractModel = () => {
     getEmpList();
   };
 
-  const onSetSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
-    if (jobSelectRef.current.value === "empAll") {
-      jobRef.current = "empAll";
-    } else if (jobSelectRef.current.value === "empRegistration") {
-      jobRef.current = "empRegistration";
-    } else if (jobSelectRef.current.value === "tempEmpRegistration") {
-      jobRef.current = "tempEmpRegistration";
-    } else {
-      jobRef.current = jobSelectRef.current.value;
-    }
-    // console.log("searrdddss");
-    console.log(dateSelectRef.current.value);
-    console.log(dateEndSelectRef.current.value);
-    dateRef.current = dateSelectRef.current.value;
-    dateEndRef.current = dateEndSelectRef.current.value;
-    getEmpList();
-  };
-
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
     api
@@ -288,24 +270,9 @@ const LaborContractModel = () => {
 
   const updateEmp = useCallback((emp) => {
     console.log("updateEmp 업데이트 요청", emp);
-    console.log(jobSetSelectRef.current.value);
-    console.log(dateSetSelectRef.current.value);
-
-    let newEmp = {
-      ...emp,
-    };
-    if (jobSetSelectRef !== "" || dateSetSelectRef !== "") {
-      newEmp = {
-        ...emp,
-        incomeClassfication: jobSetSelectRef.current.value,
-        dateOfcreate: dateSetSelectRef.current.value,
-      };
-    }
-    console.log("newEmp");
-    console.log(newEmp);
 
     api
-      .put(urlPattern.updateEmp, newEmp)
+      .put(urlPattern.updateEmp, emp)
       .then((response) => {
         if (response.data === 1) console.log("Emp update 성공");
         setEditedEmp();

@@ -13,11 +13,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
-import ModalComponent from "../../components/ModalComponent";
+import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import empAdd from "../../styles/img/swsmLogo.png";
 
-const LaborContractHeader = ({ deleteButtonHandler }) => {
+const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -30,7 +30,9 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
   };
 
   const faTrashCanClickHandler = (event) => {
-    setShowModal(true);
+    if (existSelectedRows)
+      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+    else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
   return (
@@ -94,9 +96,10 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
           <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
-      <ModalComponent
-        show={showModal}
-        title={"선택된 행들을 삭제하시겠습니까?"}
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={!existSelectedRows}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
           deleteButtonHandler();
