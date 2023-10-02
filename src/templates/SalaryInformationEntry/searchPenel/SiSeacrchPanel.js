@@ -129,11 +129,11 @@ const SiSeacrchPanel = (props) => {
           <div>
             <FormPanel
               INPUT_CONSTANT={SI_SUB_SEARCHFIELD}
+              submitData={actions.submitMainTabData}
               formData={{
                 item: {
                   searchCdEmp: state.searchVo.searchCdEmp,
                   searchCdDept: state.searchVo.searchCdDept,
-                  // searchRankNo: state.searchVo.searchRankNo,
                   searchCdOccup: state.searchVo.searchCdOccup,
                 },
               }}
@@ -150,18 +150,17 @@ const SiSeacrchPanel = (props) => {
                     codeHelperData_cdDept,
                     (e,row) => actions.setSearchCdDept(row.cdDept)
                   ),
-                // searchRankNo: () =>
-                //   modalShow(
-                //     "codeHelper",
-                //     codeHelperData_rankNo,
-                //     actions.setSearchRankNo
-                //   ),
                 searchCdOccup: () =>
                   modalShow(
                     "codeHelper",
                     codeHelperData_occup,
                     (e,row) => actions.setSearchCdOccup(row.codeId)
                   ),
+              }}
+              onChange={{
+                searchCdEmp: (e, newValue) => actions.setSearchCdEmp(newValue),
+                searchCdDept: (e, newValue) => actions.setSearchCdDept(newValue),
+                searchCdOccup: (e, newValue) => actions.setSearchCdOccup(newValue),
               }}
             />
           </div>

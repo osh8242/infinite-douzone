@@ -198,6 +198,10 @@ const FormPanel = ({
             value={getValueFromCode(id, value)}
             onClickCodeHelper={codeHelper}
             onEnter={submitData}
+            onChange={(e, value) =>{
+              (onChangeFn && onChangeFn(value));
+            }
+            }
           />
         );
         break;

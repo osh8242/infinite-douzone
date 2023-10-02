@@ -152,6 +152,17 @@ function TextBoxComponent(props) {
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
       }
     }
+
+    if (onClickCodeHelper) {
+      if (event.key === "Backspace") {
+        setInputValue("");
+        onChange && onChange(event, "", id);
+      } else {
+        event.preventDefault(); // 키보드 입력 막기
+        onClickCodeHelper();
+      }
+    }
+    onKeyDown && onKeyDown(event);
   };
 
   const handleInputChange = (event, index) => {
@@ -198,8 +209,9 @@ function TextBoxComponent(props) {
       }
     } else if (type === "date" && onClickCodeHelper) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    } else if (onClickCodeHelper) {
+      setInputValue("");
     } else {
-      // setSendValue(inputValue);
       setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)

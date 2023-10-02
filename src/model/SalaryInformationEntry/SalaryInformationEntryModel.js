@@ -20,10 +20,18 @@ const SalaryInformationEntryModel = () => {
   const [deductData, setDeductData] = useState([]);               // 공제항목 테이블 
   const [salPaySumData, setSalPaySumData] = useState({            // 공제항목 합계테이블 데이터(selectbox 조회)
     allowPay: [],
-    totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}], 
+    totalAllowPay : [{item : { sumAllowPay: 0, sumByN: 0, sumByY: 0 }}], 
     deductPay: [],
-    totalDeductPay : [{item: {}}]
+    totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
   });
+
+  const [totalAllowPay, setTotalAllowPay]= useState([
+    {item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }},
+  ]);
+
+  const [totalDeductPay, setTotalDeductPay]= useState([
+    {item : { excessAmount  : 0, sumDeductPay : 0,}},
+  ]);
 
   const [saInfoDetailData, setSaInfoDetailData] = useState([]); // 사원상세조회
 
@@ -68,7 +76,7 @@ const SalaryInformationEntryModel = () => {
   const [searchYnUnit, setSearchYnUnit] = useState(""); // 생산직여부 검색
 
   const [showConfirm, setShowConfirm] = useState(false);
-   
+  
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
@@ -173,6 +181,7 @@ const SalaryInformationEntryModel = () => {
                 , sumByN : totalSalAllowPaySumTaxN
                 , sumAllowPay : totalSalAllowPaySumTaxY + totalSalAllowPaySumTaxN }}
               ], 
+
             deductPay: totalSalDeductPaydata,
             totalDeductPay : [
               {item: {
@@ -194,6 +203,7 @@ const SalaryInformationEntryModel = () => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /* 검색 */
   const onSearch = useCallback(() => {
+  
     // 비우기
     setSalPaySumData({...salPaySumData
       , totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}]      // 공제항목 합계테이블 데이터(selectbox 조회)
@@ -497,7 +507,10 @@ const deleteSelectedRows = () => {
       cdEmp,
       dateId,
       ynComplete,    
-      showConfirm
+      showConfirm,
+      totalAllowPay,
+      totalDeductPay
+
     },
     actions: {
       setSaInfoListData,
