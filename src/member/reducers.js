@@ -11,8 +11,8 @@ const initialStates = {
 const authReducer = (states = initialStates, action) => {
   console.log("authReducer called with action:", action);
 
-  console.log("action");
-  console.log(action.type);
+  // console.log("action");
+  // console.log(action.type);
   switch (action.type) {
     case LOGIN_SUCCESS:
       // 로그인 성공 액션의 경우
