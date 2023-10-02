@@ -158,19 +158,24 @@ export const codeHelperData_emplist = {
     { field: "noSocial", text: "주민(외국인)번호" },
     { field: "daRetire", text: "퇴사일자" },
   ],
-  // , params : { ynFor: 'n', refYear: '2023' }
+  // params : { ynFor: 'n', refYear: '2023' },
   searchField: ["nmKrname", "noSocial"],
 };
 
 // 직급조회
 export const codeHelperData_rankNo = {
   subject: "직급조회",
-  url: CODE.URL,
+  // url: CODE.URL,
   headers: [
     { field: "codeId", text: "직급코드" },
     { field: "codeName", text: "직급명" },
   ],
-  params: { parentId: CODE.PARENT_ID.RANK_NO },
+  tableData: [
+    { item: { codeId: "D001", codeName: "사원" } },
+    { item: { codeId: "D002", codeName: "대리" } },
+    { item: { codeId: "D003", codeName: "기타등등" } },
+  ],
+  // params: { parentId: CODE.PARENT_ID.RANK_NO },
   searchField: ["codeId", "codeName"],
   usePk: "codeId",
 };
@@ -178,12 +183,17 @@ export const codeHelperData_rankNo = {
 // 직책조회
 export const codeHelperData_occup = {
   subject: "직책조회",
-  url: CODE.URL,
+  // url: CODE.URL,
   headers: [
     { field: "codeId", text: "직책코드" },
     { field: "codeName", text: "직책명" },
   ],
-  params: { parentId: CODE.PARENT_ID.OCCUP },
+  // params: { parentId: CODE.PARENT_ID.OCCUP },
+  tableData: [
+    { item: { codeId: "D001", codeName: "사원" } },
+    { item: { codeId: "D002", codeName: "대리" } },
+    { item: { codeId: "D003", codeName: "기타등등" } },
+  ],
   searchField: ["codeId", "codeName"],
   usePk: "codeId",
 };

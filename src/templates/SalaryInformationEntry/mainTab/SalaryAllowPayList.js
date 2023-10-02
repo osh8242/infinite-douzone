@@ -18,7 +18,6 @@ const SalaryAllowPayList = (props) => {
       setShowModal({
         show: true,
         message: "완료 해제후 수정가능합니다.",
-        action: () => actions.deleteSelectedRows(),
         onlyConfirm: true,
       });
     }

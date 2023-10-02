@@ -118,6 +118,12 @@ const InsertSalartDeductData = (props) => {
             }}
           />
         </div>
+        <div>
+          <p>
+            *기타공제 등록 <br></br>
+            1) 산출식은 [지급항목(급여,상여)의 과세항목 지급합계 * 비율]로 계산됩니다.<br></br>
+          </p>
+        </div>
       </div>
       <ConfirmComponent
         show={showModal.show}

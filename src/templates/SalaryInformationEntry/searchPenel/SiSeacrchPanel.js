@@ -42,14 +42,14 @@ const SiSeacrchPanel = (props) => {
     actions.setSalDivision(value);
 
     // 전월데이터 복사 모달
-    let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
-    setShowModal({ 
-      show: true, 
-      message: message,
-      action : () => {
-        setCopyLastMonthData();
-      }
-    });
+    // let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
+    // setShowModal({ 
+    //   show: true, 
+    //   message: message,
+    //   action : () => {
+    //     setCopyLastMonthData();
+    //   }
+    // });
   };
 
   // 작성일자 코드헬퍼 클릭 이벤트
@@ -133,7 +133,7 @@ const SiSeacrchPanel = (props) => {
                 item: {
                   searchCdEmp: state.searchVo.searchCdEmp,
                   searchCdDept: state.searchVo.searchCdDept,
-                  searchRankNo: state.searchVo.searchRankNo,
+                  // searchRankNo: state.searchVo.searchRankNo,
                   searchCdOccup: state.searchVo.searchCdOccup,
                 },
               }}
@@ -142,25 +142,25 @@ const SiSeacrchPanel = (props) => {
                   modalShow(
                     "codeHelper",
                     codeHelperData_emplist,
-                    actions.setSearchCdEmp
+                    (e,row) => actions.setSearchCdEmp(row.cdEmp)
                   ),
                 searchCdDept: () =>
                   modalShow(
                     "codeHelper",
                     codeHelperData_cdDept,
-                    actions.setSearchCdDept
+                    (e,row) => actions.setSearchCdDept(row.cdDept)
                   ),
-                searchRankNo: () =>
-                  modalShow(
-                    "codeHelper",
-                    codeHelperData_rankNo,
-                    actions.setSearchRankNo
-                  ),
+                // searchRankNo: () =>
+                //   modalShow(
+                //     "codeHelper",
+                //     codeHelperData_rankNo,
+                //     actions.setSearchRankNo
+                //   ),
                 searchCdOccup: () =>
                   modalShow(
                     "codeHelper",
                     codeHelperData_occup,
-                    actions.setSearchCdOccup
+                    (e,row) => actions.setSearchCdOccup(row.codeId)
                   ),
               }}
             />

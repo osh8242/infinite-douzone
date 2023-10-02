@@ -48,7 +48,8 @@ const SalaryInformationEntryLayout = () => {
           let codeDataList = data.tableData;
           let url = data.url ? data.url : "";
           let params = data.params ? data.params : setParams;
-          codeDataList = await fetchData(api, url, params);
+
+          if(url!=="") codeDataList = await fetchData(api, url, params);
 
           actions.setModalState((prevState) => ({
             ...prevState,
@@ -59,14 +60,6 @@ const SalaryInformationEntryLayout = () => {
             subject: data.subject,
           }));
 
-          actions.setCodeHelperTableData(() => ({
-            setRowData: setRowData,
-            tableHeaders: data.headers,
-            tableData: codeDataList,
-            usePk: data.usePk ? data.usePk : "",
-            searchField: data.searchField,
-          }));
-          break;
           actions.setCodeHelperTableData(() => ({
             setRowData: setRowData,
             tableHeaders: data.headers,

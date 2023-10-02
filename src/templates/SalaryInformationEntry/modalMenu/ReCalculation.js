@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TableForm from "../../../components/TableForm";
 import {
   RECALCULATION_URL,
@@ -16,6 +16,8 @@ const ReCalculation = (props) => {
   const { actions, state } = props;
   const [selectedRows, setSelectedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
+  let reCalculationTableData = modal_reCalculationList.tableData;
 
   const confirmButtonHandler = () => {
     if (selectedRows.length !== 0) {
@@ -89,7 +91,7 @@ const ReCalculation = (props) => {
         showCheckbox
         showHeaderArrow
         tableHeaders={modal_reCalculationList.headers}
-        tableData={modal_reCalculationList.tableData}
+        tableData={reCalculationTableData}
         actions={{
           setSelectedRows: setSelectedRows,
         }}
@@ -100,8 +102,6 @@ const ReCalculation = (props) => {
         message={showModal.message}
         onlyConfirm={showModal.onlyConfirm}
         onHide={() => {
-          setSelectedRows([]);
-          console.log(selectedRows);
           setShowModal(false)} 
         }
         onConfirm={() => {

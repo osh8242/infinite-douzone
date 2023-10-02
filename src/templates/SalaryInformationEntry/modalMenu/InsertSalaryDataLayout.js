@@ -41,7 +41,7 @@ const InsertSalaryDataLayout = (props) => {
   return (
     <div>
       <MenuTab
-        menuList={["수당등록"," 기본공제항목" ,"공제등록", "비과세감면설정"]}
+        menuList={["수당등록"," 기본공제항목" ,"기타공제등록", "비과세감면설정"]}
         onSelect={handleTabChange} 
       >
         {childComponents.map((child) => (

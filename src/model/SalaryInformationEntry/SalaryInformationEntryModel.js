@@ -200,13 +200,6 @@ const SalaryInformationEntryModel = () => {
       , totalDeductPay : [{item: {}}]
     });
 
-    setCdEmp('');
-    setSaInfoListData([]);
-    setSalData([]);
-    setSumAllowPayByYnTax([ { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }}]);
-    setDeductData([]);
-    setSaInfoDetailData([]);
-    
     let searchParams = {
       allowYear: allowYear,
       allowMonth: allowMonth,
@@ -225,6 +218,13 @@ const SalaryInformationEntryModel = () => {
       .post(url + GET_SALINFO_BY_DATE_URL, searchParams)
       .then((response) => {
         if (response.data) {
+
+          setCdEmp('');
+          setSaInfoListData([]);
+          setSalData([]);
+          setSumAllowPayByYnTax([ { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }}]);
+          setDeductData([]);
+          setSaInfoDetailData([]);
           
           /* dateId set */
           if (response.data.dateInfo) {
@@ -256,7 +256,7 @@ const SalaryInformationEntryModel = () => {
        
       });
        
-    }, [allowMonth, paymentDate, salDivision, ynComplete]);
+    }, [allowMonth, paymentDate, salDivision, ynComplete, searchCdEmp, searchCdDept, searchCdOccup, searchYnUnit]);
 
   /* 사원별 지급액 리스트 조회  */
   const getSaPayByCdEmp = () => {

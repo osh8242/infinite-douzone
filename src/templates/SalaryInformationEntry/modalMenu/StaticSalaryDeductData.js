@@ -1,13 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryDeductData, modal_staticSalaryDeductData } from "../../../model/SalaryInformationEntry/SalConstant";
 
 import { useApi } from "../../../model/Api";
 import fetchData from "../../../utils/codeHelperUtils";
+import ConfirmComponent from "../../../components/ConfirmComponent";
 
 const StaticSalaryDeductData = (props) => {
   const api = useApi();
   const { actions } = props;
+  const [showModal, setShowModal] = useState(false);
 
   const StaticSalaryDeductDataRef = useRef([]);
 
@@ -27,10 +29,18 @@ const StaticSalaryDeductData = (props) => {
       }));
     }
   };
+  const handleDivClick = () =>{
+    setShowModal({
+      show: true,
+      message: "기본 공제항목은 수정 및 삭제가 불가능합니다.",
+      action: () => actions.deleteSelectedRows(),
+      onlyConfirm: true,
+    });
+  }
   return (
     <div>
       <div>
-        <div className="tableData_container">
+        <div className="tableData_container" onClick={handleDivClick}>
           <TableForm
             tableName="SI_INSERT_SALARY_DEDUCT_DATA"
             sortable
@@ -40,6 +50,15 @@ const StaticSalaryDeductData = (props) => {
           />
         </div>
       </div>
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={showModal.onlyConfirm}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };
