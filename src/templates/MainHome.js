@@ -6,9 +6,6 @@ import erIntro from "../styles/img/erIntro.png";
 import hrIntro from "../styles/img/hrIntro.png";
 import lrIntro from "../styles/img/lrIntro.png";
 import siIntro from "../styles/img/siIntro.png";
-import screenshot16 from "../styles/img/screenshot16.png";
-import screenshot17 from "../styles/img/screenshot17.png";
-import screenshot18 from "../styles/img/screenshot18.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
