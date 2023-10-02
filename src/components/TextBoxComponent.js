@@ -150,14 +150,16 @@ function TextBoxComponent(props) {
     }
     
     if (onClickCodeHelper) {
-      if (event.key === "Enter") {
-        onEnter && onEnter(event, sendValue, id);
-      }else if(event.key === "Backspace" || event.key === "Delete" || event.key === "Del"){
-        setInputValue("");
-        onChange && onChange(event, "", id);
-      }else{
-        event.preventDefault(); // 키보드 입력 막기
-        onClickCodeHelper();
+      if(event.key!=='Tab' && event.key!=='F10'){
+        if (event.key === "Enter") {
+          onEnter && onEnter(event, sendValue, id);
+        }else if(event.key === "Backspace" || event.key === "Delete" || event.key === "Del"){
+          setInputValue("");
+          onChange && onChange(event, "", id);
+        }else{
+          event.preventDefault(); // 키보드 입력 막기
+          onClickCodeHelper();
+        }
       }
     }
     onKeyDown && onKeyDown(event);
