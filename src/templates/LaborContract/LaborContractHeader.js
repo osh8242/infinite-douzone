@@ -21,6 +21,10 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -30,7 +34,11 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
   };
 
   return (
-    <div id="secondTopHeader" className="p-12">
+    <div
+      id="secondTopHeader"
+      className="p-12"
+      style={{ background: themeColor }}
+    >
       {/* 사이드바 */}
       <div className={`sidebar SUITE p-12 ${showSidebar ? "right" : "left"}`}>
         <Nav defaultActiveKey="/home" className="flex-column">

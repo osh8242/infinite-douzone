@@ -128,39 +128,41 @@ const Header = () => {
             </button>
             {showProfileDropdown && <DropDownMenu />}
             {/* 로그인 시 아래의 두 버튼은 가리기!! */}
-            {!userInfoObject && (
+            <div id="loginButtonGroup">
+              {!userInfoObject && (
+                <a
+                  href="/signup"
+                  // style={{
+                  //   backgroundColor: "white",
+                  //   border: "1px solid gray",
+                  //   color: "dimgray",
+                  //   padding: "4px 10px 4px 10px",
+                  //   marginRight: "0px",
+                  //   marginLeft: "7px",
+                  //   borderRadius: "5px",
+                  //   textDecoration: "none",
+                  // }}
+                >
+                  회원가입
+                </a>
+              )}
               <a
-                href="/signup"
-                style={{
-                  backgroundColor: "white",
-                  border: "1px solid gray",
-                  color: "dimgray",
-                  padding: "4px 10px 4px 10px",
-                  marginRight: "0px",
-                  marginLeft: "7px",
-                  borderRadius: "5px",
-                  textDecoration: "none",
-                }}
+                href={hrefState}
+                // style={{
+                //   backgroundColor: "white",
+                //   border: "1px solid gray",
+                //   color: "dimgray",
+                //   fontSize: "13px",
+                //   padding: "4px 14px 4px 14px",
+                //   marginRight: "7px",
+                //   borderRadius: "5px",
+                //   textDecoration: "none",
+                // }}
+                onClick={onClickLoginHandler}
               >
-                회원가입
+                {btnByState}
               </a>
-            )}
-            <a
-              href={hrefState}
-              style={{
-                backgroundColor: "white",
-                border: "1px solid gray",
-                color: "dimgray",
-                fontSize: "13px",
-                padding: "4px 14px 4px 14px",
-                marginRight: "7px",
-                borderRadius: "5px",
-                textDecoration: "none",
-              }}
-              onClick={onClickLoginHandler}
-            >
-              {btnByState}
-            </a>
+            </div>
           </div>
         </div>
       )}

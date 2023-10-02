@@ -37,7 +37,10 @@
 }
 
 #loginButtonGroup a {
+  padding: 2px 8px;
   border: solid 1px var(--lightGray);
+  border-radius: 4px;
+  text-decoration: none;
   color: var(--gray);
 }
 
