@@ -8,14 +8,16 @@ function MenuTab(props) {
 
   const handleSelect = (k) => {
     setKey(k);
-    onSelect(k);
+    if (onSelect) {
+      onSelect(k);
+    }
   };
 
   return (
     <Tabs
       id="menuTab"
       activeKey={key}
-      onSelect={onselect && handleSelect}
+      onSelect={onSelect && handleSelect}
       className="mb-3"
     >
       {menuList.map((menu, index) => (

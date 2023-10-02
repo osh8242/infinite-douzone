@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
-import api from "../Api";
+import { useApi } from "../Api";
 import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
+  const api = useApi();
   const jobOkRef = useRef("Y"); //재직여부
   const yearRef = useRef(new Date().getFullYear()); // 귀속년도
   const orderRef = useRef("cdEmp"); // 정렬기준
@@ -69,7 +70,10 @@ const HrManagementModel = () => {
           }
         });
         console.log("세팅된 newLeftTableData", newLeftTableData);
-        console.log("세팅된 newLeftCodeHelperTableData", newLeftCodeHelperTableData);
+        console.log(
+          "세팅된 newLeftCodeHelperTableData",
+          newLeftCodeHelperTableData
+        );
         setLeftCodeHelperTableData(newLeftCodeHelperTableData);
         setLeftTableData(newLeftTableData);
       })
@@ -411,51 +415,51 @@ const HrManagementModel = () => {
     [leftTablePkValue]
   );
 
-  //선택된 행 delete 요청
-  // const deleteSelectedRows = useCallback(() => {
-  //   const editedTableNames = {};
-  //   console.log("삭제요청된 행들", selectedRows);
+  //선택된 행들 delete 요청
+  const deleteSelectedRows = useCallback(() => {
+    const editedTableNames = {};
+    console.log("삭제요청된 행들", selectedRows);
 
-  //   // 각 row에 대한 delete 요청을 생성
-  //   const deletePromises = selectedRows.map((row) => {
-  //     let pattern;
-  //     switch (row.table) {
-  //       case "empFam":
-  //         pattern = urlPattern.deleteEmpFam;
-  //         break;
-  //       case "emp":
-  //         pattern = urlPattern.deleteEmp;
-  //         break;
-  //       default:
-  //         return Promise.resolve();
-  //     }
-  //     if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-  //     return api.delete(pattern, { data: row.item });
-  //   });
+    // 각 row에 대한 delete 요청을 생성
+    const deletePromises = selectedRows.map((row) => {
+      let pattern;
+      switch (row.table) {
+        case "empFam":
+          pattern = urlPattern.deleteEmpFam;
+          break;
+        case "empAdd":
+          pattern = urlPattern.deleteEmpAdd;
+          break;
+        default:
+          return Promise.resolve();
+      }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+      return api.delete(pattern, { data: row.item });
+    });
 
-  //   Promise.all(deletePromises)
-  //     .then((responses) => {
-  //       console.log("선택된 모든 행의 삭제 완료");
-  //       console.log("selectedRows", selectedRows);
-  //       setSelectedRows([]); // 선택행 배열 비우기
-  //       Object.keys(editedTableNames).forEach((tableName) => {
-  //         switch (tableName) {
-  //           case "empFam":
-  //             //setEditedEmpFam({}); // 사원가족 리로드
-  //             break;
-  //           case "emp":
-  //             setEditedEmp({}); // 사원가족 리로드
-  //             break;
-  //           default:
-  //             break;
-  //         }
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.error("하나 이상의 요청에서 에러 발생: ", error);
-  //       // 필요에 따라 다른 오류 처리 로직 추가
-  //     });
-  // }, [selectedRows]);
+    Promise.all(deletePromises)
+      .then((responses) => {
+        console.log("선택된 모든 행의 삭제 완료");
+        console.log("selectedRows", selectedRows);
+        setSelectedRows([]); // 선택행 배열 비우기
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "empFam":
+              //setEditedEmpFam({}); // 사원가족 리로드
+              break;
+            case "empAdd":
+              getEmpList();
+              break;
+            default:
+              break;
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [selectedRows]);
 
   //현재행 삭제요청
   const deleteRow = useCallback(
@@ -554,6 +558,7 @@ const HrManagementModel = () => {
       updateEmpFam,
 
       setSelectedRows,
+      deleteSelectedRows,
 
       deleteRow,
       deleteEmpPhoto,

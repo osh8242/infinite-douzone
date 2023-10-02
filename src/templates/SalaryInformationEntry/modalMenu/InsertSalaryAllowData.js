@@ -1,57 +1,143 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "react-bootstrap";
 import TableForm from "../../../components/TableForm";
 import { modal_insertSalaryAllowData } from "../../../model/SalaryInformationEntry/SalConstant";
-import { fetchData } from "../../../utils/codeHelperUtils";
+
+import { useApi } from "../../../model/Api";
+import { useCallback } from "react";
+import fetchData from "../../../utils/codeHelperUtils";
+import ConfirmComponent from "../../../components/ConfirmComponent";
 
 const InsertSalaryAllowData = (props) => {
-  const { actions } = props;
-  // const [isCalculationbVisible, setIsCalculationbVisible] = useState(true);
-
-  // const calculationbVisibility = () => {
-  //   setIsCalculationbVisible(!isCalculationbVisible);
-  // };
-
+  const api = useApi();
+  const { actions, } = props;
   const insertSalaryTableDataRef = useRef([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const fetchDataAndUpdateState = async () => {
-      if (modal_insertSalaryAllowData.url) {
-        insertSalaryTableDataRef.current = await fetchData(
-          modal_insertSalaryAllowData.url
-        );
-        actions.setModalContentData(() => ({
-          tableData: insertSalaryTableDataRef.current,
-        }));
-      }
-    };
     fetchDataAndUpdateState();
+  }, []);
+  
+  const fetchDataAndUpdateState = async () => {
+    if (modal_insertSalaryAllowData.url) {
+      insertSalaryTableDataRef.current = await fetchData(
+        api,
+        modal_insertSalaryAllowData.url
+      );
+      actions.setModalContentData(() => ({
+        tableData: insertSalaryTableDataRef.current,
+      }));
+    }
+  };
+
+  const insertSalAllow = useCallback((salAllow) => {
+    salAllow.ynTax = salAllow.ynTax || "Y";
+    salAllow.salDivision = salAllow.salDivision || "SAL";
+    salAllow.commonlyYn = salAllow.commonlyYn || "Y";
+    salAllow.monthlyYn = salAllow.monthlyYn || "Y";
+
+    api
+      .post("/sallowpay/insertSalAllow", salAllow, {
+        "Content-Type": "application/json",
+      })
+      .then((response) => {
+        if (response.data !== 0) {
+          setShowModal({
+            show: true,
+            message: "등록되었습니다.",
+            onlyConfirm: true,
+            action :()=> fetchDataAndUpdateState()
+          });
+          
+        }
+      })
+      .catch((error) => {
+        console.log("에러발생: ", error);
+      });
+  }, []);
+
+  const updateSalAllow = useCallback((salAllow) => {
+    api
+      .put("/sallowpay/updateSalAllow", salAllow)
+      .then((response) => {
+        if (response.data !== 0) {
+          setShowModal({
+            show: true,
+            message: "수정되었습니다.",
+            onlyConfirm: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("에러발생 -> ", error);
+      });
+  }, []);
+
+  const deleteSalAllow = useCallback((row) => {
+    const salAllow = row.item;
+
+    api
+      .delete("/sallowpay/deleteSalAllow", {
+        data: salAllow,
+      })
+      .then((response) => {
+        if (response.data !== 0) {
+          setShowModal({
+            show: true,
+            message: "삭제되었습니다.",
+            onlyConfirm: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("에러발생 -> ", error);
+      });
   }, []);
 
   return (
     <div className="insertSalaryAllowData_container">
       <div>
-        {/* <Button onClick={calculationbVisibility}>산출식 보기</Button> */}
-        <div className="tableData_container" style={{overflow:"auto", height:"300px"}}>
+        <div
+          className="tableData_container"
+          style={{ overflow: "auto", height: "300px" }}
+        >
           <TableForm
             tableName="SI_INSERT_SALARY_ALLOW_DATA"
-            readOnly
+            sortable
+            rowAddable
             tableHeaders={modal_insertSalaryAllowData.headers}
-            //tableHeaders={isCalculationbVisible?(modal_insertSalaryAllowData.headers):(modal_insertSalaryAllowData.headersWithCalculation)}
             tableData={insertSalaryTableDataRef.current}
+            actions={{
+              getRowObject: (data) => {
+                return { item: data };
+              },
+              insertNewRow: insertSalAllow,
+              updateEditedRow: updateSalAllow,
+              deleteRow: deleteSalAllow,
+            }}
           />
         </div>
         <div>
           <p>
             *월정액에 따른 수당등록 <br></br>
-            1) (2.식대),[3. 자가운전]등 비과세되는 수당 중 실비변상이 아닌 수당은 월정액 포함됩니다.<br></br>
-            2) 수당에 따라 실비 변상 여부를 확인할 수 없으므로 월정액에 따른 수당 설정은 각각 해주시기 바랍니다.<br></br>
-            3) 단, 연장근로수당은 월정을 '여'로 선택할 수 없습니다.<br></br>
-            석과공유 중소기업 경영성과급감면과 핵심인력 성과보상기금 소득세감면에 대한 소득세는 직접 입력합니다.<br></br>
-            배우자 출산휴가 급여 비과세 수당 : 고용보험법에 따라 빋는 비과세 금액을 입력합니다.<br></br>
+            1) (2.식대),[3. 자가운전]등 비과세되는 수당 중 실비변상이 아닌
+            수당은 월정액 포함됩니다.<br></br>
+            2) 수당에 따라 실비 변상 여부를 확인할 수 없으므로 월정액에 따른
+            수당 설정은 각각 해주시기 바랍니다.<br></br>
+            3) 비과세로 설정한 후 한도가 있는 경우 비과세 감면설정 탭에서 한도를
+            설정해주시기 바랍니다.<br></br>
           </p>
         </div>
       </div>
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={showModal.onlyConfirm}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          showModal.action && showModal.action();
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };
