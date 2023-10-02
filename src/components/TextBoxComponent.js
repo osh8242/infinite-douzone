@@ -1,11 +1,12 @@
 // 작성자 : 현소현
-import { faC } from "@fortawesome/free-solid-svg-icons";
+import { faCopyright } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Form, Row } from "react-bootstrap";
 import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
+import "../styles/fonts.css";
 import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
@@ -314,7 +315,7 @@ function TextBoxComponent(props) {
 
   // 화면 render
   return (
-    <Row className="py-1">
+    <Row className="py-1 SUITE">
       <div className="labelAndContent">
         {label && <div className="label">{label}</div>}
 
@@ -324,14 +325,14 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                  <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
                 </div>
               </div>
             )

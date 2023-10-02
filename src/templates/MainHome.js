@@ -2,50 +2,39 @@
 // 메인 홈페이지
 // 임시로 위치만 잡아두었음 -> 나중에 요소 추가 및 예쁘게 수정할 예정
 // 상단의 Header는 로그인 여부에 따라 바뀌도록 수정
-
 import React from "react";
 // import wehago_backImg from "../styles/img/wehago_backImg.jpg";
-import imageLogoWhite from "../styles/img/wehago_logo-white.png";
-import "../styles/mainHome.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAddressBook,
-  faAddressCard,
-} from "@fortawesome/free-regular-svg-icons";
-
+import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
+  faCircleArrowRight,
   faFileInvoice,
   faSackDollar,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-
-import { useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../styles/fonts.css";
+import imageLogoWhite from "../styles/img/wehago_logo-white.png";
+import "../styles/mainHome.scss";
 function MainHome() {
   const navigate = useNavigate();
   // const userInfoString = localStorage.getItem("userInfo");
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
-
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
   const [hrefState, setHrefState] = useState(
     userInfoObject != null ? "/" : "/login"
   );
-
   const [userName, setUserName] = useState(
     userInfoObject ? userInfoObject.userName : "비회원"
   );
-
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
-
   let userToken = localStorage.getItem("token");
   let userTokenObject = JSON.parse(userToken);
-
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
     if (localStorage.getItem("userInfo") != null) {
@@ -61,20 +50,17 @@ function MainHome() {
       navigate("/login");
     }
   }
-
   console.log("------HEADER--------------");
   console.log(userInfoObject);
   console.log("TOKEN: " + userTokenObject);
   console.log("------HEADER--------------");
-
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
-
   return (
     <>
-      <div id="mainPageTopHeader-BackGround">
+      <div id="mainPageTopHeader-BackGround" className="SUITE p-12">
         <div id="mainPageTopHeader">
           <a href="/">
             <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
@@ -83,21 +69,15 @@ function MainHome() {
             <a href="#page1" className="colorWhite">
               HOME
             </a>
-            <div id="mainPageTopHeaderContents">
-              <a href="/" className="colorWhite">
-                HOME
+            <a href="#page2" className="colorWhite">
+              서비스소개
+            </a>
+            {/* 로그인 여부에 따라 버튼 토글 */}
+            <div id="signUpSignInBtn">
+              {!userInfoObject && <a href="/signup">회원가입</a>}
+              <a href={hrefState} onClick={onClickLoginHandler}>
+                {btnByState}
               </a>
-              <a href="/" className="colorWhite">
-                서비스소개
-              </a>
-
-              {/* 로그인 여부에 따라 버튼 토글 */}
-              <div id="signUpSignInBtn">
-                {!userInfoObject && <a href="/signup">회원가입</a>}
-                <a href={hrefState} onClick={onClickLoginHandler}>
-                  {btnByState}
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -121,7 +101,7 @@ function MainHome() {
           </div>
         </div>
         {/* 하단 4가지 메뉴 이동 버튼 */}
-        <div className="menuBtnList">
+        <div className="menuBtnList SUITE p-12">
           <div>
             <a href="/er" className="menuBtn er">
               <FontAwesomeIcon icon={faUserPlus} />
@@ -153,10 +133,15 @@ function MainHome() {
         <a href="#!" id="leftArrowBtn-animation">
           <FontAwesomeIcon icon={faCircleArrowLeft} />
         </a>
+        <a href="#!" id="rightArrowBtn">
+          <FontAwesomeIcon icon={faCircleArrowRight} />
+        </a>
+        <a href="#!" id="rightArrowBtn-animation">
+          <FontAwesomeIcon icon={faCircleArrowRight} />
+        </a>
       </div>
       <div id="page2"></div>
     </>
   );
 }
-
 export default MainHome;

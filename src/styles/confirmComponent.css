@@ -1,0 +1,46 @@
+.grid-example {
+  min-height: 160px;
+  margin: 36px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
+  /* background-color: rgba(255, 255, 0, 0.341) !important; */
+}
+
+.confirmCheckIcon {
+  font-size: 60px;
+  margin-bottom: 36px;
+  color: var(--lightBlue);
+}
+
+.btnGroup {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.cancleBtn,
+.confirmBtn {
+  width: 132px;
+  height: 48px;
+  padding: 16px;
+  border-radius: 24px !important;
+}
+
+.cancleBtn {
+  background-color: var(--darkGray) !important;
+}
+.cancleBtn:hover {
+  background-color: var(--gray) !important;
+}
+
+.confirmBtn {
+  background-color: var(--darkBlue) !important;
+}
+.confirmBtn:hover {
+  background-color: var(--blue) !important;
+}
