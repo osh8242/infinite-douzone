@@ -48,6 +48,7 @@ const TestLayout = () => {
     leftTablePkValue,
     dateSelectRef,
     dateEndSelectRef,
+    dateSetSelectRef,
   } = state;
 
   useEffect(() => {
@@ -110,6 +111,7 @@ const TestLayout = () => {
                   // <LcSearchSearchPanel
                   onSearch={actions.onSearch}
                   jobSetSelectRef={jobSetSelectRef}
+                  dateSelectRef={dateSetSelectRef}
                   searchOption={searchOption}
                   onSelect={actions.submitMainTabData}
                 />

@@ -317,7 +317,10 @@ const TestModel = () => {
   const submitMainTabData = useCallback(
     (event, value) => {
       console.log("서브밋메인탭 데이터", event, value);
-      if (event.target.id === "incomeClassfication") {
+      if (
+        event.target.id === "incomeClassfication" ||
+        event.target.id === "daEnter"
+      ) {
         console.log("tttessetste");
         let newEmp = { ...mainTabData };
         newEmp[event.target.id] = value;
@@ -460,6 +463,7 @@ const TestModel = () => {
 
   return {
     state: {
+      dateSetSelectRef,
       jobSelectRef,
       jobSetSelectRef,
       dateSelectRef,
