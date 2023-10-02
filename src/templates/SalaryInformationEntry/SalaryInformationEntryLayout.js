@@ -120,29 +120,6 @@ const SalaryInformationEntryLayout = () => {
           //default
           <></>
         )}
-        {modalType === "codeHelper" ? (
-          <CodeHelperModal
-            setRowData={state.codeHelperTableData.setRowData}
-            usePk={state.codeHelperTableData.usePk}
-            tableHeaders={state.codeHelperTableData.tableHeaders}
-            tableData={state.codeHelperTableData.tableData}
-            subject={state.codeHelperTableData.subject}
-            searchField={state.codeHelperTableData.searchField}
-            onHide={() => actions.setModalState({ show: false })}
-          />
-        ) : modalType === "insertSalaryData" ? (
-          <InsertSalaryDataLayout actions={actions} />
-        ) : modalType === "reCalculation" ? (
-          <ReCalculation actions={actions} state={state} />
-        ) : modalType === "calculationInsert" ? (
-          <CalculationInsert
-            insertSalaryTableData={state.modalContentData.tableData}
-            actions={actions}
-          />
-        ) : (
-          //default
-          <></>
-        )}
       </ModalComponent>
       <ConfirmComponent
         show={state.showConfirm.show}
