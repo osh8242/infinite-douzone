@@ -319,11 +319,13 @@ const TestModel = () => {
       console.log("서브밋메인탭 데이터", event, value);
       if (
         event.target.id === "incomeClassfication" ||
-        event.target.id === "daEnter"
+        event.target.id === "dateOfcreate"
       ) {
         console.log("tttessetste");
         let newEmp = { ...mainTabData };
         newEmp[event.target.id] = value;
+        console.log("leftTablePkValue");
+        console.log(leftTablePkValue.cdEmp);
         newEmp["cdEmp"] = leftTablePkValue.cdEmp;
         updateEmp(newEmp);
         // setMainTabData(Emp(newEmp));

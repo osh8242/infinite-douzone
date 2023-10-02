@@ -16,7 +16,7 @@ const LcSearchPanel = (props) => {
             dateType="month"
             selectRef={dateSelectRef}
             onChange={onSelect}
-            id={"daEnter"}
+            id={"dateOfcreate"}
           />
         </Col>
         <Col md="4">
