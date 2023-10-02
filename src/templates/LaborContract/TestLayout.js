@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import LaborContractModel from "../../model/LaborContract/LaborContractModel";
+import LaborContractModel from "../../model/LaborContract/TestModel";
 import LaborContractHeader from "./LaborContractHeader";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
@@ -33,7 +33,7 @@ import {
 import LcSearchSearchPanel from "./SearchPanel/LcSearchSearchPanel";
 import LcSearchPanel from "./SearchPanel/LcSearchPanel";
 
-const LaborContractLayout = () => {
+const TestLayout = () => {
   const { state, actions } = LaborContractModel();
   const {
     jobSelectRef,
@@ -51,17 +51,12 @@ const LaborContractLayout = () => {
     dateSetSelectRef,
   } = state;
 
-  // const tabRef = useRef(null);
-
-  useEffect(() => {
-    actions.onLoad();
-  }, []);
-
   useEffect(() => {
     actions.onLoadCodeHelper();
     // actions.setMainTabData({});
   }, []);
 
+  //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
     async (type, data, setRowData, parentFocusRef) => {
       actions.setModalState({
@@ -108,12 +103,9 @@ const LaborContractLayout = () => {
       <LaborContractHeader />
       <Container>
         <Row className="mt-3">
-          <MenuTab
-            menuList={TAB_MENU_LIST.mainTabMenuList}
-            onSelect={actions.onLoad}
-          >
+          <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
             {[
-              <Row key={"mainTab1"}>
+              <>
                 {/* 계약서 작성 */}
                 <LcSearchPanel
                   // <LcSearchSearchPanel
@@ -175,10 +167,9 @@ const LaborContractLayout = () => {
                             overflow: "hidden",
                             marginBottom: 30,
                           }}
-                          key={"scrollKey"}
                         >
                           <Row
-                            key={"menuKey1"}
+                            key="key"
                             className="mt-4 mb-5 justify-content-center"
                           >
                             <FormPanel
@@ -195,7 +186,7 @@ const LaborContractLayout = () => {
                     <MenuTab menuList={[subTabMenuList.otherBenefit]}>
                       {[
                         <Row
-                          key={"menuKey2"}
+                          key="key"
                           className="mt-4 mb-4 justify-content-center"
                         >
                           <TableForm
@@ -221,8 +212,8 @@ const LaborContractLayout = () => {
                     </MenuTab>
                   </Col>
                 </Row>
-              </Row>,
-              <Row key={"menuKeySearch"}>
+              </>,
+              <>
                 {/*  계약서 조회 */}
                 <LcSearchSearchPanel
                   onSearch={actions.onSearch}
@@ -239,9 +230,10 @@ const LaborContractLayout = () => {
                         <TableForm
                           readOnly
                           tableName="swsm"
-                          // sortable
+                          //showCheckbox
+                          sortable
                           // rowAddable
-                          // showCheckbox
+                          showCheckbox
                           tableHeaders={leftTableConstant.headers}
                           tableData={leftTableData}
                           selectedRows={selectedRows}
@@ -279,7 +271,7 @@ const LaborContractLayout = () => {
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
                         <Row
-                          key={"menuKeySearchSub"}
+                          key="key"
                           className="mt-4 mb-5 justify-content-center"
                         >
                           <FormPanel
@@ -293,7 +285,7 @@ const LaborContractLayout = () => {
                     </MenuTab>
                   </Col>
                 </Row>
-              </Row>,
+              </>,
             ]}
           </MenuTab>
         </Row>
@@ -324,4 +316,4 @@ const LaborContractLayout = () => {
   );
 };
 
-export default LaborContractLayout;
+export default TestLayout;

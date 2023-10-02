@@ -4,6 +4,7 @@ import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import { useApi } from "../Api";
 import { urlPattern } from "./HrManagementConstant";
+import { useApi } from "../Api";
 
 const HrManagementModel = () => {
   const api = useApi();

@@ -7,7 +7,11 @@ import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import "../styles/fonts.css";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -92,17 +96,17 @@ function TextBoxComponent(props) {
     ...(height ? { height: `${height}px` } : {}),
   };
 
-  useEffect(() => {
-    if (selectedOption === "F") {
-      setDisable(true);
-    } else setDisable(false);
-    setSelectedValue(selectedOption || "");
-  }, [selectedOption]);
+  // useEffect(() => {
+  //   if (selectedOption === "F") {
+  //     setDisable(true);
+  //   } else setDisable(false);
+  //   setSelectedValue(selectedOption || "");
+  // }, [selectedOption]);
 
   const handleSelectChange = (event) => {
-    if (event.target.value === "F" || event.target.value === "T") {
-      setDisable(!isDisable);
-    }
+    // if (event.target.value === "F" || event.target.value === "T") {
+    //   setDisable(!isDisable);
+    // }
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
@@ -325,14 +329,20 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  onClick={onClickCodeHelper}
+                />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
+                  <FontAwesomeIcon
+                    icon={faCopyright}
+                    onClick={onClickCodeHelper}
+                  />
                 </div>
               </div>
             )

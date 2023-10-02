@@ -16,6 +16,7 @@ import {
   subTableConstant,
   tabConstant,
 } from "../../model/HrManagement/HrManagementConstant";
+
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import "../../styles/fonts.css";
@@ -250,7 +251,8 @@ const HrManagementLayout = () => {
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef)
+              modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}

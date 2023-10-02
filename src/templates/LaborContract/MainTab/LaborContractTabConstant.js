@@ -127,13 +127,13 @@ export const MAIN_TAB = {
       field: "workingDay",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.salaryPaymentDateType,
       optionList: salaryPaymentDateTypeList,
       field: "salaryPaymentDateType",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.dayOff,
       subLabel: "매 주 ",
       endLabel: "요일 ",
@@ -152,7 +152,7 @@ export const MAIN_TAB = {
     },
 
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.otherBenefits,
       optionList: otherBenefitStatusList,
       field: "otherBenefits",
@@ -169,25 +169,25 @@ export const MAIN_TAB = {
     },
 
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.paymentMethod,
       optionList: paymentMethodList,
       field: "paymentMethod",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.empInsurance,
       optionList: empInsuranceList,
       field: "empInsurance",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.compensationInsurance,
       optionList: compensationInsuranceList,
       field: "compensationInsurance",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.healthInsurance,
       optionList: healthInsuranceList,
       field: "healthInsurance",
@@ -279,14 +279,14 @@ export const MAIN_TAB_SEARCH = {
       disabled: "true",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.salaryPaymentDateType,
       optionList: salaryPaymentDateTypeList,
       field: "salaryPaymentDateType",
       disabled: "true",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.dayOff,
       subLabel: "매 주 ",
       endLabel: "요일 ",
@@ -307,7 +307,7 @@ export const MAIN_TAB_SEARCH = {
     },
 
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.otherBenefits,
       optionList: otherBenefitStatusList,
       field: "otherBenefits",
@@ -326,28 +326,28 @@ export const MAIN_TAB_SEARCH = {
     },
 
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.paymentMethod,
       optionList: paymentMethodList,
       disabled: "true",
       field: "paymentMethod",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.empInsurance,
       optionList: empInsuranceList,
       disabled: "true",
       field: "empInsurance",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.compensationInsurance,
       optionList: compensationInsuranceList,
       disabled: "true",
       field: "compensationInsurance",
     },
     {
-      type: INPUT_TYPE.select,
+      type: INPUT_TYPE.selectCustom,
       label: LABELS.healthInsurance,
       optionList: healthInsuranceList,
       disabled: "true",

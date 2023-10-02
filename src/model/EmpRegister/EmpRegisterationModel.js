@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import Emp from "../../vo/EmpRegister/Emp";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
-import { useApi } from "../Api";
+// import api from "../Api";
 import {
   codeHelperData_abbNation,
   codeHelperData_cdBank,
@@ -15,6 +15,7 @@ import {
   codeHelperData_rankNo,
   urlPattern,
 } from "./EmpConstant";
+import { useApi } from "../Api";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";

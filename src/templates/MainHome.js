@@ -2,9 +2,10 @@
 // 메인 홈페이지
 import React, { useEffect } from "react";
 import wehago_backImg from "../styles/img/wehago_backImg.jpg";
-import screenshot16 from "../styles/img/screenshot16.png";
-import screenshot17 from "../styles/img/screenshot17.png";
-import screenshot18 from "../styles/img/screenshot18.png";
+import erIntro from "../styles/img/erIntro.png";
+import hrIntro from "../styles/img/hrIntro.png";
+import lrIntro from "../styles/img/lrIntro.png";
+import siIntro from "../styles/img/siIntro.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
@@ -19,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
 import "../styles/fonts.css";
+import { useLogin } from "../Login/LoginProvider";
 
 const slides = [
   {
@@ -37,7 +39,7 @@ const slides = [
     ),
   },
   {
-    background: screenshot16, //사원등록
+    background: erIntro, //사원등록
     content: (
       <div>
         <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
@@ -47,7 +49,7 @@ const slides = [
     ),
   },
   {
-    background: screenshot17, //인사관리등록
+    background: hrIntro, //인사관리등록
     content: (
       <div>
         <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
@@ -57,7 +59,7 @@ const slides = [
     ),
   },
   {
-    background: screenshot18, //표준근로계약서
+    background: lrIntro, //표준근로계약서
     content: (
       <div>
         <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
@@ -66,14 +68,24 @@ const slides = [
       </div>
     ),
   },
-  // {
-  //   background: "image4.jpg", //급여자료입력
-  // },
+  {
+    background: siIntro, //급여자료입력
+    content: (
+      <div>
+        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+          급여자료 입력에 대한 정보
+        </p>
+      </div>
+    ),
+  },
 ];
 
 function MainHome() {
+  const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
+
+  console.log(updateToken);
+  console.log(updateLoginInfo);
   const navigate = useNavigate();
-  // const userInfoString = localStorage.getItem("userInfo");
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
@@ -87,8 +99,9 @@ function MainHome() {
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
 
-  let userToken = localStorage.getItem("token");
-  let userTokenObject = JSON.parse(userToken);
+  // let userToken = localStorage.getItem("token");
+  // let userTokenObject = JSON.parse(userToken);
+
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
     if (localStorage.getItem("userInfo") != null) {
@@ -104,14 +117,12 @@ function MainHome() {
       navigate("/login");
     }
   }
-  console.log("------HEADER--------------");
-  console.log(userInfoObject);
-  console.log("TOKEN: " + userTokenObject);
-  console.log("------HEADER--------------");
+
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const toggleProfileDropdown = () => {
-    setShowProfileDropdown(!showProfileDropdown);
-  };
+
+  // const toggleProfileDropdown = () => {
+  //   setShowProfileDropdown(!showProfileDropdown);
+  // };
 
   const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
   const nextSlide = () => {
