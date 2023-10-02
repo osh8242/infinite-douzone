@@ -106,7 +106,7 @@ const LaborContractLayout = () => {
   return (
     <>
       <LaborContractHeader
-        deleteButtonHandler={actions.deleteRow}
+        deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
       <Container>

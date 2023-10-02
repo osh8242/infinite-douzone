@@ -268,11 +268,39 @@ const LaborContractModel = () => {
           });
   }, [editedEmp]);
 
+  const onSetSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
+    if (jobSelectRef.current.value === "empAll") {
+      jobRef.current = "empAll";
+    } else if (jobSelectRef.current.value === "empRegistration") {
+      jobRef.current = "empRegistration";
+    } else if (jobSelectRef.current.value === "tempEmpRegistration") {
+      jobRef.current = "tempEmpRegistration";
+    } else {
+      jobRef.current = jobSelectRef.current.value;
+    }
+    // console.log("searrdddss");
+    console.log(dateSelectRef.current.value);
+    console.log(dateEndSelectRef.current.value);
+    dateRef.current = dateSelectRef.current.value;
+    dateEndRef.current = dateEndSelectRef.current.value;
+    getEmpList();
+  };
+
   const updateEmp = useCallback((emp) => {
     console.log("updateEmp 업데이트 요청", emp);
+    let newEmp = {
+      ...emp,
+    };
+    if (jobSetSelectRef !== "" || dateSetSelectRef !== "") {
+      newEmp = {
+        ...emp,
+        incomeClassfication: jobSetSelectRef.current.value,
+        dateOfcreate: dateSetSelectRef.current.value,
+      };
+    }
 
     api
-      .put(urlPattern.updateEmp, emp)
+      .put(urlPattern.updateEmp, newEmp)
       .then((response) => {
         if (response.data === 1) console.log("Emp update 성공");
         setEditedEmp();
@@ -401,16 +429,8 @@ const LaborContractModel = () => {
       console.log("삭제요청 해당 테이블", row["table"]);
       let pattern;
       switch (row["table"]) {
-        case "empFam":
-          console.log("가족 딜리트 요청", row);
-          pattern = urlPattern.deleteEmpFam;
-          break;
-        case "empPhoto":
-          console.log("포토 딜리트 요청", row);
-          pattern = urlPattern.deleteEmpPhoto;
-          break;
-        case "swsmOther":
-          // pattern = urlPattern.deleteEmpAdd;
+        case "swsm":
+          pattern = urlPattern.deleteEmpAdd;
           console.log("지우려는 row", row);
           const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
           newLeftCodeHelperTableData.push(row);
@@ -421,6 +441,18 @@ const LaborContractModel = () => {
           });
           setLeftTableData(newLeftTableData);
           break;
+        // case "swsmOther":
+        //   // pattern = urlPattern.deleteEmpAdd;
+        //   console.log("지우려는 row", row);
+        //   const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
+        //   newLeftCodeHelperTableData.push(row);
+        //   setLeftCodeHelperTableData(newLeftCodeHelperTableData);
+        //   const newLeftTableData = leftTableData.filter((data) => {
+        //     if (data.item.cdEmp === row.item.cdEmp) return false;
+        //     else return true;
+        //   });
+        //   setLeftTableData(newLeftTableData);
+        //   break;
         default:
           console.log("설정되지 않은 테이블 행을 삭제요청받음");
           return;

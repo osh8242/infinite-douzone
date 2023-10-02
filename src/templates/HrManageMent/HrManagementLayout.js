@@ -7,6 +7,7 @@ import MenuTab from "../../components/MenuTab";
 import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
 import TableForm from "../../components/TableForm";
+
 import {
   CODE_HELPER_DATA,
   leftStaticsTableConstant,
@@ -245,7 +246,8 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef)
+            modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
