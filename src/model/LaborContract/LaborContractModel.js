@@ -41,12 +41,19 @@ const LaborContractModel = () => {
   const dateSetRef = useRef(""); // 소득구분
   const dateSetSelectRef = useRef(""); // 소득구분
 
-  // 코드모달 업데이트
+  // const tabRef = useRef(null);
+
   function onLoadCodeHelper() {
     if (jobSelectRef.current.value === "empAll") {
       jobRef.current = "empAll";
     }
     getCodeHelperList();
+  }
+
+  function onLoad() {
+    console.log("load Test");
+    setLeftTableData([]);
+    setMainTabData({});
   }
 
   const getCodeHelperList = () => {
@@ -78,7 +85,7 @@ const LaborContractModel = () => {
     } else {
       jobRef.current = jobSelectRef.current.value;
     }
-    console.log("searrdddss");
+    // console.log("searrdddss");
     console.log(dateSelectRef.current.value);
     console.log(dateEndSelectRef.current.value);
     dateRef.current = dateSelectRef.current.value;
@@ -106,42 +113,7 @@ const LaborContractModel = () => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-
-    // api
-    //   .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
-    //   .then((response) => {
-    //     console.log(response);
-    //     console.log(response.data);
-    //     const newLeftCodeHelperTableData = response.data.map((emp) => {
-    //       return { item: emp, table: "swsm" };
-    //     });
-
-    //     getLeftTableData(newLeftCodeHelperTableData);
-    //   })
-    //   .catch((error) => {
-    //     console.error("에러발생: ", error);
-    //     // 필요에 따라 다른 오류 처리 로직 추가
-    //   });
   };
-
-  // const getEmpList = () => {
-  //   api
-  //     .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
-  //     .then((response) => {
-  //       console.log(response);
-  //       console.log(response.data);
-  //       const newLeftCodeHelperTableData = response.data.map((emp) => {
-  //         return { item: emp, table: "swsm" };
-  //       });
-
-  //       getLeftTableData(newLeftCodeHelperTableData);
-  //     })
-  //     .catch((error) => {
-  //       console.error("에러발생: ", error);
-  //       // 필요에 따라 다른 오류 처리 로직 추가
-  //     });
-  // };
-
   const getLeftTableData = (newLeftCodeHelperTableData) => {
     api
       .get(`/swsm/getSwsmListForSwsm?job=${jobRef.current}`)
@@ -484,6 +456,7 @@ const LaborContractModel = () => {
       subTableData,
     },
     actions: {
+      onLoad,
       onSearch,
       onLoadCodeHelper,
       getEmpList,
@@ -495,10 +468,6 @@ const LaborContractModel = () => {
 
       insertEmp,
       updateEmp,
-
-      // insertSwsm,
-      // updateSwsm,
-
       submitMainTabData,
       setMainTabData,
       setEditedSwsm,

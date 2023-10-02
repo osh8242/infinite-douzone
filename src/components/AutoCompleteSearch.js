@@ -1,44 +1,52 @@
-// 수정 중
 import React, { useEffect, useState, useRef } from "react";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import "../styles/SearchForm.css";
+import "../styles/fonts.css";
+import { forwardRef, useImperativeHandle } from "react";
 
-function AutoCompleteSearch({ placeholder }) {
+// function AutoCompleteSearch({ placeholder }) {
+const AutoCompleteSearch = forwardRef(({ placeholder }, ref) => {
   const [inputValue, setInputValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
-  const searchRef = useRef(null);
-  const inputRef = useRef(null);
   const navigate = useNavigate();
+  const [isFocused, setIsFocused] = useState(false);
+
+  const mockData = [
+    "사원관리",
+    "인사관리",
+    "표준근로계약관리",
+    "급여관리",
+    "메인페이지",
+    "마이페이지",
+  ];
+
+  const inputRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    focusInput: () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    },
+    blurInput: () => {
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+    },
+  }));
 
   useEffect(() => {
     if (inputValue) {
-      const mockData = [
-        "사원관리",
-        "인사관리",
-        "급여관리",
-        "표준근로계약관리",
-        "메인페이지",
-        "마이페이지",
-      ];
       setSearchResults(mockData.filter((item) => item.includes(inputValue)));
     } else {
       setSearchResults([]);
     }
   }, [inputValue]);
 
-  const onChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const finalizeSearch = (selectedWord) => {
-    console.log(`검색 완료: ${selectedWord}`);
-    setSearchResults([]);
-    setInputValue("");
-
+  const navigateTo = (selectedWord) => {
     const urlMappings = {
       사원관리: "/er",
       인사관리: "/hr",
@@ -46,50 +54,45 @@ function AutoCompleteSearch({ placeholder }) {
       급여관리: "/si",
       메인페이지: "/",
     };
-
-    navigate(urlMappings[selectedWord]);
+    navigate(urlMappings[selectedWord] || "/");
   };
 
-  const handleResultClick = (index) => {
-    finalizeSearch(searchResults[index]);
+  const finalizeSearch = (selectedWord) => {
+    setSearchResults([]);
+    setInputValue("");
+    navigateTo(selectedWord);
   };
 
-  const handleResultMouseOver = (index) => {
-    setSelectedResultIndex(index);
-  };
-
-  const handleKeyDown = (e) => {
-    e.preventDefault();
-    if (e.key === "ArrowDown") {
-      const nextIndex = selectedResultIndex + 1;
-      if (nextIndex < searchResults.length) {
-        setSelectedResultIndex(nextIndex);
-      }
-    } else if (e.key === "ArrowUp") {
-      const prevIndex = selectedResultIndex - 1;
-      if (prevIndex >= 0) {
-        setSelectedResultIndex(prevIndex);
-      }
-    } else if (e.key === "Enter") {
-      if (selectedResultIndex !== -1) {
-        finalizeSearch(searchResults[selectedResultIndex]);
-      }
+  const handleResultSelection = (index) => {
+    if (index >= 0 && index < searchResults.length) {
+      finalizeSearch(searchResults[index]);
     }
   };
 
-  const handleFocus = () => {
-    setCurrentPlaceholder(placeholder);
+  const handleKeyDown = (e) => {
+    switch (e.key) {
+      case "ArrowDown":
+        // e.preventDefault();
+        setSelectedResultIndex((prev) =>
+          prev + 1 < searchResults.length ? prev + 1 : prev
+        );
+        break;
+      case "ArrowUp":
+        setSelectedResultIndex((prev) => (prev - 1 >= 0 ? prev - 1 : prev));
+        break;
+      case "Enter":
+        handleResultSelection(selectedResultIndex);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleBlur = () => {
-    setSearchResults([]);
-    setInputValue("");
-    setCurrentPlaceholder("");
-  };
-
+  const searchRef = useRef(null);
   const handleClickOutsideInput = (e) => {
     if (searchRef.current && !searchRef.current.contains(e.target)) {
-      handleBlur();
+      setSearchResults([]);
+      setInputValue("");
     }
   };
 
@@ -101,22 +104,18 @@ function AutoCompleteSearch({ placeholder }) {
   }, []);
 
   return (
-    <div
-      className="search-bar"
-      ref={searchRef}
-      tabIndex="0"
-      onClick={() => inputRef.current.focus()}
-    >
+    <div className="search-bar" tabIndex="0">
       <FontAwesomeIcon icon={faSearch} size={"lg"} color={"grey"} />
       <input
-        ref={inputRef}
-        className="search-bar__input"
+        className={`search-bar__input ${isFocused ? "expanded" : ""}`}
         type="text"
-        placeholder={currentPlaceholder}
+        placeholder={isFocused ? "" : placeholder}
         value={inputValue}
-        onChange={onChange}
-        onFocus={handleFocus}
+        onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        ref={inputRef}
       />
       {searchResults.length > 0 && (
         <ul className="search-results">
@@ -124,8 +123,8 @@ function AutoCompleteSearch({ placeholder }) {
             <li
               key={index}
               className={index === selectedResultIndex ? "selected" : ""}
-              onClick={() => handleResultClick(index)}
-              onMouseOver={() => handleResultMouseOver(index)}
+              onClick={() => handleResultSelection(index)}
+              onMouseOver={() => setSelectedResultIndex(index)}
             >
               {result}
             </li>
@@ -134,6 +133,6 @@ function AutoCompleteSearch({ placeholder }) {
       )}
     </div>
   );
-}
+});
 
 export default AutoCompleteSearch;

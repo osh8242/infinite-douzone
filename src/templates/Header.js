@@ -7,18 +7,16 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
 import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
-
 const Header = () => {
   const navigate = useNavigate();
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
-
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
@@ -28,9 +26,29 @@ const Header = () => {
   const [userName, setUserName] = useState(
     userInfoObject ? userInfoObject.userName : "비회원"
   );
-
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
+
+  const searchFormRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      console.log("Keydown event triggered");
+      if (e.key === "F10" && searchFormRef.current) {
+        e.preventDefault();
+        searchFormRef.current.focusInput();
+      }
+      if (e.key === "Escape" && searchFormRef.current) {
+        searchFormRef.current.blurInput();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   function onClickLoginHandler(e) {
     if (localStorage.getItem("userInfo") != null) {
@@ -45,12 +63,10 @@ const Header = () => {
       navigate("/login");
     }
   }
-
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
-
   return (
     <div>
       {/* 메인 페이지 용 헤더 */}
@@ -91,10 +107,16 @@ const Header = () => {
             </select>
           </div>
           <div id="topRightNotificationHeader">
-            <SearchForm
+            {/* <SearchForm
               type="text"
               id="findMenuBar"
-              placeholder={"찾고싶은 메뉴를 검색하세요"}
+              placeholder={"메뉴명을 입력해주세요.  [ F10 ]    "}
+            /> */}
+            <SearchForm
+              ref={searchFormRef}
+              type="text"
+              id="findMenuBar"
+              placeholder={"메뉴명을 입력해주세요. [ F10 ]"}
             />
 
             <button className="backgroundBorderNone">
@@ -135,40 +157,41 @@ const Header = () => {
             </button>
             {showProfileDropdown && <DropDownMenu />}
             {/* 로그인 시 아래의 두 버튼은 가리기!! */}
-            {!userInfoObject && (
+            <div id="loginButtonGroup">
+              {!userInfoObject && (
+                <a
+                  href="/signup"
+                  // style={{
+                  //   backgroundColor: "white",
+                  //   border: "1px solid gray",
+                  //   color: "dimgray",
+                  //   padding: "4px 10px 4px 10px",
+                  //   marginRight: "0px",
+                  //   marginLeft: "7px",
+                  //   borderRadius: "5px",
+                  //   textDecoration: "none",
+                  // }}
+                >
+                  회원가입
+                </a>
+              )}
               <a
-                href="/signup"
-                style={{
-                  backgroundColor: "white",
-                  border: "1px solid gray",
-                  color: "dimgray",
-                  padding: "4px 10px 4px 10px",
-                  marginRight: "0px",
-                  marginLeft: "7px",
-                  borderRadius: "5px",
-                  textDecoration: "none",
-                }}
+                href={hrefState}
+                // style={{
+                //   backgroundColor: "white",
+                //   border: "1px solid gray",
+                //   color: "dimgray",
+                //   fontSize: "13px",
+                //   padding: "4px 14px 4px 14px",
+                //   marginRight: "7px",
+                //   borderRadius: "5px",
+                //   textDecoration: "none",
+                // }}
+                onClick={onClickLoginHandler}
               >
-                회원가입
+                {btnByState}
               </a>
-            )}
-
-            <a
-              href={hrefState}
-              style={{
-                backgroundColor: "white",
-                border: "1px solid gray",
-                color: "dimgray",
-                fontSize: "13px",
-                padding: "4px 14px 4px 14px",
-                marginRight: "7px",
-                borderRadius: "5px",
-                textDecoration: "none",
-              }}
-              onClick={onClickLoginHandler}
-            >
-              {btnByState}
-            </a>
+            </div>
           </div>
         </div>
       )}
@@ -212,5 +235,4 @@ const Header = () => {
     </div>
   );
 };
-
 export default Header;

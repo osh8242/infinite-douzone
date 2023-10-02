@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import LaborContractModel from "../../model/LaborContract/TestModel";
+import LaborContractModel from "../../model/LaborContract/LaborContractModel";
 import LaborContractHeader from "./LaborContractHeader";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
@@ -51,12 +51,17 @@ const LaborContractLayout = () => {
     dateSetSelectRef,
   } = state;
 
+  // const tabRef = useRef(null);
+
+  useEffect(() => {
+    actions.onLoad();
+  }, []);
+
   useEffect(() => {
     actions.onLoadCodeHelper();
     // actions.setMainTabData({});
   }, []);
 
-  //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
     async (type, data, setRowData, parentFocusRef) => {
       actions.setModalState({
@@ -103,9 +108,12 @@ const LaborContractLayout = () => {
       <LaborContractHeader />
       <Container>
         <Row className="mt-3">
-          <MenuTab menuList={TAB_MENU_LIST.mainTabMenuList}>
+          <MenuTab
+            menuList={TAB_MENU_LIST.mainTabMenuList}
+            onSelect={actions.onLoad}
+          >
             {[
-              <>
+              <Row key={"mainTab1"}>
                 {/* 계약서 작성 */}
                 <LcSearchPanel
                   // <LcSearchSearchPanel
@@ -167,9 +175,10 @@ const LaborContractLayout = () => {
                             overflow: "hidden",
                             marginBottom: 30,
                           }}
+                          key={"scrollKey"}
                         >
                           <Row
-                            key="key"
+                            key={"menuKey1"}
                             className="mt-4 mb-5 justify-content-center"
                           >
                             <FormPanel
@@ -186,7 +195,7 @@ const LaborContractLayout = () => {
                     <MenuTab menuList={[subTabMenuList.otherBenefit]}>
                       {[
                         <Row
-                          key="key"
+                          key={"menuKey2"}
                           className="mt-4 mb-4 justify-content-center"
                         >
                           <TableForm
@@ -212,8 +221,8 @@ const LaborContractLayout = () => {
                     </MenuTab>
                   </Col>
                 </Row>
-              </>,
-              <>
+              </Row>,
+              <Row key={"menuKeySearch"}>
                 {/*  계약서 조회 */}
                 <LcSearchSearchPanel
                   onSearch={actions.onSearch}
@@ -230,10 +239,9 @@ const LaborContractLayout = () => {
                         <TableForm
                           readOnly
                           tableName="swsm"
-                          //showCheckbox
-                          sortable
+                          // sortable
                           // rowAddable
-                          showCheckbox
+                          // showCheckbox
                           tableHeaders={leftTableConstant.headers}
                           tableData={leftTableData}
                           selectedRows={selectedRows}
@@ -271,7 +279,7 @@ const LaborContractLayout = () => {
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
                         <Row
-                          key="key"
+                          key={"menuKeySearchSub"}
                           className="mt-4 mb-5 justify-content-center"
                         >
                           <FormPanel
@@ -285,7 +293,7 @@ const LaborContractLayout = () => {
                     </MenuTab>
                   </Col>
                 </Row>
-              </>,
+              </Row>,
             ]}
           </MenuTab>
         </Row>

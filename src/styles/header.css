@@ -1,21 +1,11 @@
-@font-face {
-  font-family: "Esamanru-Light";
-  /* src: url("./fonts/esamanru_Light.ttf") format("truetype"); */
-  src: url("./fonts/esamanru_Bold.ttf") format("truetype");
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Sintony-Bold";
-  src: url("./fonts/Sintony-Bold.ttf") format("truetype");
-  font-weight: normal;
-}
+@import url("context.css");
 
 #topNotificationHeader {
   height: 56px;
   display: flex;
   margin-right: 10px;
   justify-content: space-between;
-  background-color: rgba(230, 230, 230, 0.2);
+  background-color: var(--whiteGray);
 }
 
 #topNotificationHeader #topLeftNotificationHeader {
@@ -32,12 +22,89 @@
   gap: 12px;
 }
 
+#topHeaderButtonGroup {
+  display: flex;
+  gap: 8px;
+}
+
+#userInformation {
+  color: dimgray;
+}
+
+#loginButtonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+#loginButtonGroup a {
+  padding: 2px 8px;
+  border: solid 1px var(--lightGray);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--gray);
+}
+
+#loginButtonGroup a:hover {
+  background: var(--whiteGray);
+  color: dimgray;
+}
+
+/* 사이드 바 */
+.sidebar {
+  width: 16%;
+  max-width: 200px;
+  min-width: fit-content;
+  height: 80vh;
+  /* margin: 8px 0px; */
+  padding: 16px 0px 64px;
+  position: absolute;
+  top: 48px;
+  z-index: 99;
+  /* border-top-right-radius: 16px; */
+  border-bottom-right-radius: 16px;
+  background-color: var(--transDark) !important;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25),
+    0 4px 6px -4px rgb(0 0 0 / 0.25);
+  font-weight: 500;
+  transition: left 0.3s ease;
+}
+
+.sidebar:focus {
+  opacity: 0.5;
+  transform: translateX(200px);
+  transition: opacity 0.75s, transform 0.75s;
+}
+
+/* .sidebar-mini {
+  width: 40px;
+  position: absolute;
+  top: 48px;
+  height: calc(100vh - (48px + 56px));
+  background-color: var(--dark) !important;
+} */
+
+.sidebar a {
+  margin: 2px 8px;
+  color: whitesmoke;
+  text-decoration: none;
+  border-top-width: 1px;
+  border-bottom-width: 0px;
+}
+
+.sidebar a:hover {
+  border-radius: 4px;
+  color: var(--lightGray);
+  background-color: var(--transBlack);
+  text-decoration: none;
+}
+
 #secondTopHeader {
   width: 100vw;
   height: 48px;
+  position: relative;
   display: flex;
   justify-content: space-between;
-  background-color: rgb(48, 150, 255);
+  background-color: var(--blue);
 }
 
 #secondTopHeader #secondTopHeaderContents {
@@ -61,16 +128,16 @@
   width: 160px;
   height: fit-content;
   padding: 2px;
-  color: rgb(127, 127, 127);
-  border-color: rgb(230, 230, 230);
+  color: var(--gray);
+  border-color: var(--lightGray);
 }
 
 #periodSelectForm {
   width: 272px;
   height: fit-content;
   padding: 2px;
-  color: rgb(127, 127, 127);
-  border-color: rgb(230, 230, 230);
+  color: var(--gray);
+  border-color: var(--lightGray);
 }
 
 #findMenuBar {
@@ -90,22 +157,22 @@
   /* font-family: 'Noto Sans', sans-serif; */
 }
 
-#findMenuBar:focus {
+/* #findMenuBar:focus {
   outline: none;
   border-color: rgb(48, 150, 255);
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.1);
-}
+} */
 
-#findMenuBar:hover {
-  border: 2px solid rgb(48, 150, 255);
-}
+/* #findMenuBar:hover {
+  border: 2px solid var(--blue);
+} */
 
 .signUpSignInBtn-dark {
   background-color: white;
   border: 1px solid gray;
   color: dimgray;
   padding: 4px 16px;
-  border-radius: 5px;
+  border-radius: 4px;
   text-decoration: none;
 }
 
@@ -114,7 +181,11 @@
 }
 
 .colorDark {
-  color: rgb(57, 63, 80);
+  color: var(--dark);
+}
+
+.forbid {
+  cursor: not-allowed;
 }
 
 .backgroundBorderNone {
