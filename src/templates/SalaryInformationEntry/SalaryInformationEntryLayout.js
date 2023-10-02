@@ -2,6 +2,7 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../styles/commonComponent.css";
 import "../../styles/fonts.css";
 import { fetchData } from "../../utils/codeHelperUtils";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
@@ -168,41 +169,24 @@ const SalaryInformationEntryLayout = () => {
               </Row>
             </Col>
 
-            {/* {isRightTabVisible ? ( */}
+            {/* 우측 상세정보 버튼 */}
             <FontAwesomeIcon
               icon={faChevronRight}
               id="rightsideIcon"
+              className={`${isRightTabVisible ? "left" : "right"}`}
               onClick={toggleRightTabVisibility}
             />
-            <div className={`${isRightTabVisible ? "visible" : "hidden"}`}>
-              {/* <div style={{ display: "flex" }}> */}
-              {/* <div className="rightside-custom-width">
-                  <div
-                    onClick={toggleRightTabVisibility}
-                    className="rightside-icon-wrapper"
-                  >
-                    <div id="fakeFaArrowRight"></div>
-                    <div id="fakeFaArrowRight-content">▶</div>
-                  </div>
-                </div> */}
-              <RigtSideLayout
-                id="salaryInformationEntryRightSide"
-                actions={actions}
-                state={state}
-              />
-              {/* </div> */}
+            {/* 우측 상세정보 */}
+            <div
+              id="salaryInformationEntryRightSide"
+              className={`${
+                isRightTabVisible
+                  ? "visible deleteLabelBackground"
+                  : "hidden deleteLabelBackground"
+              }`}
+            >
+              <RigtSideLayout actions={actions} state={state} />
             </div>
-            {/* ) : (
-              <Col xs={1} className="rightside-custom-width">
-                <div
-                  onClick={toggleRightTabVisibility}
-                  className="rightside-icon-wrapper"
-                >
-                  <div id="fakeFaArrowLeft"></div>
-                  <div id="fakeFaArrowLeft-content">◀</div>
-                </div>
-              </Col>
-            )} */}
           </Row>
         </Container>
       </>

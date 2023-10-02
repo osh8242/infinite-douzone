@@ -83,8 +83,6 @@ const SalaryInformationEntryHeader = ({
       modalShow("reCalculation", modal_reCalculationList);
     }
   };
-  
-  
 
   // 지급일자
   const getDateListHandler = (event) => {
@@ -93,7 +91,7 @@ const SalaryInformationEntryHeader = ({
     });
   };
 
-  const setSearchDate = (e,row) => {
+  const setSearchDate = (e, row) => {
     actions.setPaymentDate(row.paymentDate);
     actions.setSalDivision(row.salDivision);
     actions.setAllowMonth(row.allowMonth);
@@ -181,9 +179,12 @@ const SalaryInformationEntryHeader = ({
           재계산
         </Button>
 
-        <Button id="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >
-          {ynComplete === 'Y'? '해제': '완료'}
-        </Button>        
+        <Button
+          className="extraDeductBtn"
+          onClick={(e) => ynCompleteButtonHandler(e)}
+        >
+          {ynComplete === "Y" ? "해제" : "완료"}
+        </Button>
 
         <button className="backgroundBorderNone">
           <FontAwesomeIcon icon={faPrint} className="colorWhite" />
