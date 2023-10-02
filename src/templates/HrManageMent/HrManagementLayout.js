@@ -19,6 +19,7 @@ import {
 
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
+import "../../styles/fonts.css";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
@@ -95,9 +96,9 @@ const HrManagementLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container className="hr-container">
+      <Container className="hr-container SUITE p-12">
         {/* 조회영역 */}
-        <Row className="hr-search-row">
+        <Row className="hr-search-row deleteLabelBackground pb-3">
           <HrSearchPanel
             onSearch={actions.onSearch}
             jobOkSelectRef={jobOkSelectRef}
@@ -244,7 +245,7 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal

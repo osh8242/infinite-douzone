@@ -1,13 +1,18 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import {
+  faAddressCard,
   faArrowUpRightFromSquare,
   faBorderAll,
   faCalculator,
+  faFileInvoice,
+  faHome,
   faPrint,
+  faSackDollar,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
@@ -39,30 +44,32 @@ const SalaryInformationEntryHeader = ({
     if (!existSelectedRows) {
       message = "선택된 사원이 없습니다";
       setShowModal({ show: true, message: message });
-    } else {
-      message = "선택된 사원목록의 지급항목을 모두 삭제하시겠습니까? ";
-    }
+      return true;
+    } 
+
     setShowModal({
       show: true,
-      message: message,
-      action: () => actions.deleteSelectedRows(),
+      message: "선택된 사원목록의 지급항목을 모두 삭제하시겠습니까? ",
+      action: () => {actions.deleteSelectedRows()},
       onlyConfirm: !existSelectedRows,
     });
+    
   };
 
   // 수당/공제 등록
   const insertSalaryDataHandler = (event) => {
-    // if (dateId !== "") {
     modalShow("insertSalaryData", modal_insertSalaryData);
-
-    // }else{
-    //   setShowModal({ show: true, message: "작성일자를 비우고 진행해주세요", onlyConfirm : true});
-    // }
   };
 
-  // 재계산
+  // 재계산 모달
   const reCalculationHandler = (event) => {
-    if (dateId === "") {
+    if (ynComplete === "Y"){
+      setShowModal({
+        show: true,
+        message: "완료 해제 후 재계산이 가능합니다.",
+        onlyConfirm: true,
+      });
+    }else if (dateId === "") {
       setShowModal({
         show: true,
         message: "선택된 날짜에 등록된 급여항목이 없습니다.",
@@ -79,20 +86,27 @@ const SalaryInformationEntryHeader = ({
     }
   };
   
-  
-
-  // 지급일자
+  // 지급일자 모달
   const getDateListHandler = (event) => {
     modalShow("codeHelper", codeHelperData_paymentDate, setSearchDate, {
       allowYear: allowYear,
     });
   };
 
+  // 지급일자 모달_지급일자 선택시 함수
   const setSearchDate = (e,row) => {
-    actions.setPaymentDate(row.paymentDate);
-    actions.setSalDivision(row.salDivision);
-    actions.setAllowMonth(row.allowMonth);
-    actions.onSearch();
+    setShowModal({
+        show: true,
+        message: "해당 지급일자로 조회하시겠습니까?",
+        action: () => {
+          actions.setPaymentDate(row.paymentDate);
+          actions.setSalDivision(row.salDivision);
+          actions.setAllowMonth(row.allowMonth);
+          actions.setDateId(row.dateId);
+          actions.onSearch();
+        },
+        onlyConfirm: false,
+      });
   };
 
   // 완료
@@ -103,7 +117,7 @@ const SalaryInformationEntryHeader = ({
       setShowModal({ show: true, message: message, onlyConfirm: true });
     } else {
       if (ynComplete === "Y")
-        message = "현재 입력하는 급여등을 완료해제하시겠습니까? ";
+        message = "현재 입력하는 급여등을 완료 해제하시겠습니까? ";
       else message = "현재 입력하는 급여등을 완료하시겠습니까?";
       setShowModal({
         show: true,
@@ -116,6 +130,27 @@ const SalaryInformationEntryHeader = ({
 
   return (
     <div id="secondTopHeader">
+      {/* 사이드바 */}
+      <div className={`sidebar SUITE p-12 ${showSidebar ? "right" : "left"}`}>
+        <Nav defaultActiveKey="/home" className="flex-column">
+          <Nav.Link href="/">
+            <FontAwesomeIcon icon={faHome} /> &nbsp;Home
+          </Nav.Link>
+          <Nav.Link href="/er">
+            <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
+          </Nav.Link>
+          <Nav.Link href="/hr">
+            <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
+          </Nav.Link>
+          <Nav.Link href="/lc">
+            <FontAwesomeIcon icon={faFileInvoice} />
+            &nbsp;&nbsp;&nbsp;표준근로계약서
+          </Nav.Link>
+          <Nav.Link href="/si">
+            <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
+          </Nav.Link>
+        </Nav>
+      </div>
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"
@@ -133,7 +168,7 @@ const SalaryInformationEntryHeader = ({
           />
         </button>
       </div>
-      <div id="secondTopHeaderMenuList">
+      <div id="secondTopHeaderMenuList" className="SUITE p-12">
         <Button
           className="extraDeductBtn"
           onClick={(e) => getDateListHandler(e)}
@@ -154,7 +189,7 @@ const SalaryInformationEntryHeader = ({
           재계산
         </Button>
 
-        <Button id="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >
+        <Button id="extraDeductBtn" className="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >
           {ynComplete === 'Y'? '해제': '완료'}
         </Button>        
 

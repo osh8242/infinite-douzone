@@ -1,16 +1,24 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import {
+  faAddressCard,
   faArrowUpRightFromSquare,
   faBorderAll,
   faCalculator,
+  faFileInvoice,
+  faHome,
   faPrint,
+  faSackDollar,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "react-bootstrap";
-import "../../styles/header.css";
+import { Button, Col, Nav } from "react-bootstrap";
 import emp from "../..//styles/img/empRegisterLogo.png";
 import { useState } from "react";
 import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConstant";
+import ModalComponent from "../../components/ModalComponent";
+import ConfirmComponent from "../../components/ConfirmComponent";
+import "../../styles/header.css";
+import "../../styles/fonts.css";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 // const logoUrl = {
@@ -18,22 +26,46 @@ import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConst
 //   empAdd: "../styles/img/empAddLogo.png",
 // };
 
-function EmpRegisterHeader(props) {
-  const { actions, modalShow } = props;
+function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  const clickTrashCanHandler = (e) => {
-    // 정말로 삭제하시겠습니까?? => YES => 삭제요청 보내기
-    // modalShow();
-    actions.deleteSelectedRows();
-    // modalShow("undeletedEmp", EmpRegisterUndeletedEmpHeaders);
+  const clickTrashCanHandler = (event) => {
+    if (existSelectedRows) {
+      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+    } else {
+      setShowModal({ show: true, message: "삭제할 행이 없습니다" });
+    }
   };
 
   return (
     <div id="secondTopHeader">
+      {/* 사이드바 */}
+      <div className={`sidebar SUITE p-12 ${showSidebar ? "right" : "left"}`}>
+        <Nav defaultActiveKey="/home" className="flex-column">
+          <Nav.Link href="/">
+            <FontAwesomeIcon icon={faHome} /> &nbsp;Home
+          </Nav.Link>
+          <Nav.Link href="/er">
+            <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
+          </Nav.Link>
+          <Nav.Link href="/hr">
+            <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
+          </Nav.Link>
+          <Nav.Link href="/lc">
+            <FontAwesomeIcon icon={faFileInvoice} />
+            &nbsp;&nbsp;&nbsp;표준근로계약서
+          </Nav.Link>
+          <Nav.Link href="/si">
+            <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
+          </Nav.Link>
+        </Nav>
+      </div>
+      {/* 헤더 콘텐츠 */}
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"
@@ -47,13 +79,13 @@ function EmpRegisterHeader(props) {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            className="colorWhite backgroundBorderNone"
+            className="colorWhite backgroundBorderNone forbid"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
         </button>
         <button
           className="backgroundBorderNone"
@@ -62,12 +94,22 @@ function EmpRegisterHeader(props) {
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite forbid" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
         </button>
       </div>
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={!existSelectedRows}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          deleteButtonHandler();
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 }

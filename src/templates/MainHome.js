@@ -6,6 +6,9 @@ import erIntro from "../styles/img/erIntro.png";
 import hrIntro from "../styles/img/hrIntro.png";
 import lrIntro from "../styles/img/lrIntro.png";
 import siIntro from "../styles/img/siIntro.png";
+import screenshot16 from "../styles/img/screenshot16.png";
+import screenshot17 from "../styles/img/screenshot17.png";
+import screenshot18 from "../styles/img/screenshot18.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
@@ -87,7 +90,6 @@ function MainHome() {
   console.log(updateLoginInfo);
   const navigate = useNavigate();
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
-
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
@@ -102,6 +104,24 @@ function MainHome() {
 
   // let userToken = localStorage.getItem("token");
   // let userTokenObject = JSON.parse(userToken);
+
+  const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  };
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, 10000); // 10초마다 슬라이드 변경
+
+    return () => clearInterval(interval);
+  }, []);
 
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
@@ -118,22 +138,11 @@ function MainHome() {
       navigate("/login");
     }
   }
-
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   // const toggleProfileDropdown = () => {
   //   setShowProfileDropdown(!showProfileDropdown);
   // };
-
-  const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  };
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
-    );
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {

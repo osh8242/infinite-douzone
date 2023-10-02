@@ -1,13 +1,18 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import {
+  faAddressCard,
   faArrowUpRightFromSquare,
   faBorderAll,
   faCalculator,
+  faFileInvoice,
+  faHome,
   faPrint,
+  faSackDollar,
+  faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import empAdd from "../../styles/img/empAddLogo.png";
@@ -28,6 +33,27 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
 
   return (
     <div id="secondTopHeader">
+      {/* 사이드바 */}
+      <div className={`sidebar SUITE p-12 ${showSidebar ? "right" : "left"}`}>
+        <Nav defaultActiveKey="/home" className="flex-column">
+          <Nav.Link href="/">
+            <FontAwesomeIcon icon={faHome} /> &nbsp;Home
+          </Nav.Link>
+          <Nav.Link href="/er">
+            <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
+          </Nav.Link>
+          <Nav.Link href="/hr">
+            <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
+          </Nav.Link>
+          <Nav.Link href="/lc">
+            <FontAwesomeIcon icon={faFileInvoice} />
+            &nbsp;&nbsp;&nbsp;표준근로계약서
+          </Nav.Link>
+          <Nav.Link href="/si">
+            <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
+          </Nav.Link>
+        </Nav>
+      </div>
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"

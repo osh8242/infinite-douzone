@@ -21,7 +21,7 @@ function CodeHelperModal(props) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [oriData, setOriData] = useState(tableData);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(tableData || []);
 
   useEffect(() => {
     setOriData(tableData);
@@ -47,7 +47,9 @@ function CodeHelperModal(props) {
   const handleRowClick = (event, row) => {
     setSearchTerm("");
     if (setRowData)
-      usePk ? setRowData(event, { [usePk]: row[usePk] }) : setRowData(event, row);
+      usePk
+        ? setRowData(event, { [usePk]: row[usePk] })
+        : setRowData(event, row);
     setFilteredData([]);
     setOriData([]);
     onHide();

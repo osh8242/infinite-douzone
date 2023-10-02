@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 import "../styles/commonComponent.css";
+import "../styles/fonts.css";
 
 function ModalComponent(props) {
   const {
@@ -64,6 +65,7 @@ function ModalComponent(props) {
       backdrop={backdrop}
       animation={animation}
       centered
+      className="SUITE p-12"
     >
       <Modal.Header>
         <Modal.Title>{title}</Modal.Title>

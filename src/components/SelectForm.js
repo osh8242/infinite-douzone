@@ -47,7 +47,7 @@ function SelectForm(props) {
   const handleSelectChange = (event) => {
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChange) onChange(event, newValue);
-    console.log(newValue);
+    // console.log(newValue);
     setSelectedValue(newValue);
   };
 

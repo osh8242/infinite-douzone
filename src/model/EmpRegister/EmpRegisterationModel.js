@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { currentDateStr } from "../../utils/DateUtils.js";
 import Emp from "../../vo/EmpRegister/Emp";
 import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
-// import api from "../Api";
+import { useApi } from "../Api";
 import {
   codeHelperData_abbNation,
   codeHelperData_cdBank,
@@ -15,12 +15,10 @@ import {
   codeHelperData_rankNo,
   urlPattern,
 } from "./EmpConstant";
-import { useApi } from "../Api";
 
 function EmpRegisterationModel() {
-  const api = useApi();
-
   const url = "http://localhost:8888";
+  const api = useApi();
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
   // const [cdEmp, setCdEmp] = useState("E001");
@@ -325,20 +323,20 @@ function EmpRegisterationModel() {
         setEditedEmp([]);
         // console.log("선택한 모든 행 =>", responses);
         //삭제된 데이터 필터링
-        const undeletedEmpData = responses.filter((response) => {
-          return response.data != "";
-        });
+        // const undeletedEmpData = responses.filter((response) => {
+        //   return response.data != "";
+        // });
         //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
-        console.log("undeletedEmpData !!!!!", undeletedEmpData);
-        const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
-          const undeletedEmp = {
-            cdEmp: item.data.cdEmp,
-            nmKrname: item.data.nmKrname,
-            useMenuList: item.data.useMenuList,
-          };
-          return EmpMenuUsage(undeletedEmp);
-        });
-        setUndeletedEmpTableData(undeletedEmpTableDataContent);
+        // console.log("undeletedEmpData !!!!!", undeletedEmpData);
+        // const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
+        //   const undeletedEmp = {
+        //     cdEmp: item.data.cdEmp,
+        //     nmKrname: item.data.nmKrname,
+        //     useMenuList: item.data.useMenuList,
+        //   };
+        //   return EmpMenuUsage(undeletedEmp);
+        // });
+        // setUndeletedEmpTableData(undeletedEmpTableDataContent);
         setModalState({ show: true });
       })
       .catch((error) => {
@@ -370,26 +368,26 @@ function EmpRegisterationModel() {
         setReloadSubTableData(!reloadSubTableData);
         setEditedEmp([]);
         // console.log("선택한 모든 행 =>", responses);
-        //삭제된 데이터 필터링
-        const undeletedEmpData = responses.filter((response) => {
-          return response.data != "";
-        });
-        //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
-        console.log("undeletedEmpData !!!!!", undeletedEmpData);
-        const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
-          const undeletedEmp = {
-            cdEmp: item.data.cdEmp,
-            nmKrname: item.data.nmKrname,
-            useMenuList: item.data.useMenuList,
-          };
-          return EmpMenuUsage(undeletedEmp);
-        });
-        const itemUndeletedEmpTableDataContent = {
-          item: undeletedEmpTableDataContent,
-        };
-        setUndeletedEmpTableData(itemUndeletedEmpTableDataContent);
+        // //삭제된 데이터 필터링
+        // const undeletedEmpData = responses.filter((response) => {
+        //   return response.data != "";
+        // });
+        // //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
+        // console.log("undeletedEmpData !!!!!", undeletedEmpData);
+        // const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
+        //   const undeletedEmp = {
+        //     cdEmp: item.data.cdEmp,
+        //     nmKrname: item.data.nmKrname,
+        //     useMenuList: item.data.useMenuList,
+        //   };
+        //   return EmpMenuUsage(undeletedEmp);
+        // });
+        // const itemUndeletedEmpTableDataContent = {
+        //   item: undeletedEmpTableDataContent,
+        // };
+        // setUndeletedEmpTableData(itemUndeletedEmpTableDataContent);
 
-        // setModalState({ show: true });
+        // // setModalState({ show: true });
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);

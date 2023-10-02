@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
-import api from "../Api";
+import { useApi } from "../Api";
 import { urlPattern } from "./HrManagementConstant";
 import { useApi } from "../Api";
 
