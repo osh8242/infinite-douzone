@@ -7,7 +7,7 @@ import DateForm from "../../../components/DateForm";
 const LcSearchPanel = (props) => {
   const { onSearch, jobSetSelectRef, searchOption, onSelect } = props;
   return (
-    <SearchPanel onSearch={() => onSearch(searchOption)}>
+    <SearchPanel onSearch={() => onSearch(searchOption)} hideButton>
       <Row className="searchPanel">
         <Col md="4">
           <DateForm label={"작성일자"} dateType="month" />

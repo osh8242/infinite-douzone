@@ -6,13 +6,29 @@ import DateForm from "../../../components/DateForm";
 import "../../../styles/DateForm.css";
 
 const LcSearchSearchPanel = (props) => {
-  const { onSearch, jobSelectRef, searchOption } = props;
+  const {
+    onSearch,
+    jobSelectRef,
+    searchOption,
+    dateSelectRef,
+    dateEndSelectRef,
+    onSelect,
+  } = props;
+
   return (
-    // select 만 확인하고 추가필요
-    <SearchPanel onSearch={() => onSearch(jobSelectRef)}>
+    <SearchPanel
+      onSearch={() => onSearch(jobSelectRef, dateSelectRef, dateEndSelectRef)}
+    >
       <Row className="searchPanel">
         <Col className="mx-1 col-md-7">
-          <DateForm label={"작성일자"} sub="true" dateType="month" />
+          <DateForm
+            label={"작성일자"}
+            sub="true"
+            dateType="month"
+            selectRef={dateSelectRef}
+            selectEndRef={dateEndSelectRef}
+            onChange={onSelect}
+          />
         </Col>
         {/* <Col className="mx-0 col-md-3">
           <DateForm label={"~"} dateType="month" />

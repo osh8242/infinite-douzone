@@ -14,10 +14,13 @@ function DateForm(props) {
     dateType,
     sub,
     disabled,
+    selectRef,
+    selectEndRef,
   } = props;
 
   // const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(value || "");
+  const [endDate, setEndDate] = useState(value || "");
   const [isDisabled, setDisabled] = useState();
 
   useEffect(() => {
@@ -40,6 +43,12 @@ function DateForm(props) {
     if (e.target.type !== "month") onChange && onChange(e, value);
   };
 
+  const onChangeEndHandeler = (e) => {
+    const value = e.target.value;
+    setEndDate(value);
+    if (e.target.type !== "month") onChange && onChange(e, value);
+  };
+
   return (
     <Row>
       <div className="labelAndContent">
@@ -47,6 +56,7 @@ function DateForm(props) {
         <div className="widthFull d-flex align-items-center gap-3">
           <Form.Control
             id={id}
+            ref={selectRef}
             type={dateType ? "month" : "date"}
             value={startDate}
             onChange={onChangeHandeler}
@@ -57,9 +67,10 @@ function DateForm(props) {
               {" ~ "}
               <Form.Control
                 id={id}
+                ref={selectEndRef}
                 type={dateType ? "month" : "date"}
-                value={startDate}
-                onChange={onChangeHandeler}
+                value={endDate}
+                onChange={onChangeEndHandeler}
               />
             </>
           ) : (

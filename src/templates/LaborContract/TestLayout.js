@@ -5,6 +5,8 @@ import LaborContractHeader from "./LaborContractHeader";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 import Swsm from "../../vo/LaborContract/Swsm";
+import SwsmOther from "../../vo/LaborContract/SwsmOther";
+import Scrollbars from "react-custom-scrollbars";
 
 import {
   LeftTableHeaders,
@@ -42,6 +44,10 @@ const TestLayout = () => {
     codeHelperTableData,
     leftCodeHelperTableData,
     mainTabData,
+    subTableData,
+    leftTablePkValue,
+    dateSelectRef,
+    dateEndSelectRef,
   } = state;
 
   useEffect(() => {
@@ -153,15 +159,51 @@ const TestLayout = () => {
                   <Col md="9" className="px-5">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
+                        <Scrollbars
+                          style={{
+                            height: 380,
+                            overflow: "hidden",
+                            marginBottom: 30,
+                          }}
+                        >
+                          <Row
+                            key="key"
+                            className="mt-4 mb-5 justify-content-center"
+                          >
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>
+                          ,
+                        </Scrollbars>,
+                      ]}
+                    </MenuTab>
+                    <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                      {[
                         <Row
                           key="key"
-                          className="mt-4 mb-5 justify-content-center"
+                          className="mt-4 mb-4 justify-content-center"
                         >
-                          <FormPanel
-                            INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                            formData={mainTabData}
-                            submitData={actions.submitMainTabData}
-                            actions={actions}
+                          <TableForm
+                            tableName="SwsmOther"
+                            rowAddable
+                            // sortable
+                            showCheckbox
+                            tableHeaders={SubTabHeaders}
+                            tableData={subTableData}
+                            pkValue={leftTablePkValue}
+                            selectedRows={selectedRows}
+                            actions={{
+                              setTableData: actions.setSubTableData,
+                              setSelectedRows: actions.setSelectedRows,
+                              insertNewRow: actions.insertSwsmOther,
+                              updateEditedRow: actions.updateSwsmOther,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: SwsmOther,
+                            }}
                           />
                         </Row>,
                       ]}
@@ -174,7 +216,10 @@ const TestLayout = () => {
                 <LcSearchSearchPanel
                   onSearch={actions.onSearch}
                   jobSelectRef={jobSelectRef}
+                  dateSelectRef={dateSelectRef}
+                  dateEndSelectRef={dateEndSelectRef}
                   searchOption={searchOption}
+                  onSelect={actions.submitMainTabData}
                 />
                 <Row>
                   <Col md="3">

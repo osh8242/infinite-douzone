@@ -28,12 +28,18 @@ const TestModel = () => {
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
   //search
-  const jobRef = useRef(""); // 소득구분
+  const jobRef = useRef("empAll"); // 소득구분
   const jobSelectRef = useRef("empAll");
+  const dateRef = useRef("");
+  const dateEndRef = useRef("");
+  const dateSelectRef = useRef(null);
+  const dateEndSelectRef = useRef(null);
 
   // settingSearch
   const jobSetRef = useRef(""); // 소득구분
   const jobSetSelectRef = useRef("empAll");
+  const dateSetRef = useRef(""); // 소득구분
+  const dateSetSelectRef = useRef(""); // 소득구분
 
   // 코드모달 업데이트
   function onLoadCodeHelper() {
@@ -62,7 +68,7 @@ const TestModel = () => {
   };
 
   //조회버튼 클릭시  업데이트
-  const onSearch = (jobSelectRef, orderSelectRef) => {
+  const onSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
     if (jobSelectRef.current.value === "empAll") {
       jobRef.current = "empAll";
     } else if (jobSelectRef.current.value === "empRegistration") {
@@ -72,27 +78,69 @@ const TestModel = () => {
     } else {
       jobRef.current = jobSelectRef.current.value;
     }
+    console.log("searrdddss");
+    console.log(dateSelectRef.current.value);
+    console.log(dateEndSelectRef.current.value);
+    dateRef.current = dateSelectRef.current.value;
+    dateEndRef.current = dateEndSelectRef.current.value;
     getEmpList();
   };
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
     api
-      .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=${jobRef.current}&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
       .then((response) => {
+        console.log("===================date=================");
         console.log(response);
         console.log(response.data);
+        console.log("===================date=================");
         const newLeftCodeHelperTableData = response.data.map((emp) => {
           return { item: emp, table: "swsm" };
         });
-
         getLeftTableData(newLeftCodeHelperTableData);
       })
       .catch((error) => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
+
+    // api
+    //   .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
+    //   .then((response) => {
+    //     console.log(response);
+    //     console.log(response.data);
+    //     const newLeftCodeHelperTableData = response.data.map((emp) => {
+    //       return { item: emp, table: "swsm" };
+    //     });
+
+    //     getLeftTableData(newLeftCodeHelperTableData);
+    //   })
+    //   .catch((error) => {
+    //     console.error("에러발생: ", error);
+    //     // 필요에 따라 다른 오류 처리 로직 추가
+    //   });
   };
+
+  // const getEmpList = () => {
+  //   api
+  //     .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
+  //     .then((response) => {
+  //       console.log(response);
+  //       console.log(response.data);
+  //       const newLeftCodeHelperTableData = response.data.map((emp) => {
+  //         return { item: emp, table: "swsm" };
+  //       });
+
+  //       getLeftTableData(newLeftCodeHelperTableData);
+  //     })
+  //     .catch((error) => {
+  //       console.error("에러발생: ", error);
+  //       // 필요에 따라 다른 오류 처리 로직 추가
+  //     });
+  // };
 
   const getLeftTableData = (newLeftCodeHelperTableData) => {
     api
@@ -298,6 +346,78 @@ const TestModel = () => {
     [leftTablePkValue, mainTabData, jobSetSelectRef]
   );
 
+  //subTableData 가져오는 비동기 post 요청
+  useEffect(() => {
+    setSubTableData([]);
+    if (leftTablePkValue?.cdEmp) {
+      api
+        .post(swsmUrlPattern.getSwsmOther, leftTablePkValue)
+        .then((response) => {
+          console.log("SwsmOther Loaded", response.data);
+          const data = response.data.map((item) => {
+            return SwsmOther(item);
+          });
+          setSubTableData(data);
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    }
+  }, [leftTablePkValue]);
+
+  const getSubTableData = useCallback(() => {
+    api
+      .post(swsmUrlPattern.getSwsmOther, leftTablePkValue)
+      .then((response) => {
+        console.log("SwsmOther Loaded", response.data);
+        const data = response.data.map((item) => {
+          return SwsmOther(item);
+        });
+        setSubTableData(data);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [leftTablePkValue]);
+
+  //추가된 insert 요청
+  const insertSwsmOther = useCallback(
+    (swsmOther) => {
+      console.log(swsmOther);
+      api
+        .post(swsmUrlPattern.insertSwsmOther, swsmOther)
+        .then((response) => {
+          if (response.data === 1) console.log("swsmOther insert 성공");
+          setLeftTablePkValue({ ...leftTablePkValue });
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [leftTablePkValue]
+  );
+
+  //수정된 update 요청
+  const updateSwsmOther = useCallback(
+    (swsmOther) => {
+      console.log("updateSwsmOther", "newSwsmOther", swsmOther);
+      api
+        .put(swsmUrlPattern.updateSwsmOther, swsmOther)
+        .then((response) => {
+          if (response.data === 1) console.log("updateSwsmOther 업데이트 성공");
+          setLeftTablePkValue({ ...leftTablePkValue });
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    },
+    [leftTablePkValue]
+  );
+
   //현재행 삭제요청
   const deleteRow = useCallback(
     (row) => {
@@ -312,7 +432,7 @@ const TestModel = () => {
           console.log("포토 딜리트 요청", row);
           pattern = urlPattern.deleteEmpPhoto;
           break;
-        case "swsm":
+        case "swsmOther":
           // pattern = urlPattern.deleteEmpAdd;
           console.log("지우려는 row", row);
           const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
@@ -342,6 +462,8 @@ const TestModel = () => {
     state: {
       jobSelectRef,
       jobSetSelectRef,
+      dateSelectRef,
+      dateEndSelectRef,
 
       leftTableData,
       leftTablePkValue,
@@ -353,6 +475,7 @@ const TestModel = () => {
 
       modalState,
       codeHelperTableData,
+      subTableData,
     },
     actions: {
       onSearch,
@@ -375,8 +498,8 @@ const TestModel = () => {
       setEditedSwsm,
 
       setSubTableData,
-      // insertSwsmOther,
-      // updateSwsmOther,
+      insertSwsmOther,
+      updateSwsmOther,
 
       setSelectedRows,
 
