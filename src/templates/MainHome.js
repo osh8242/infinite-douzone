@@ -4,10 +4,6 @@
 // 상단의 Header는 로그인 여부에 따라 바뀌도록 수정
 import React from "react";
 // import wehago_backImg from "../styles/img/wehago_backImg.jpg";
-import imageLogoWhite from "../styles/img/wehago_logo-white.png";
-import "../styles/mainHome.scss";
-import "../styles/fonts.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
@@ -16,9 +12,12 @@ import {
   faSackDollar,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../styles/fonts.css";
+import imageLogoWhite from "../styles/img/wehago_logo-white.png";
+import "../styles/mainHome.scss";
 function MainHome() {
   const navigate = useNavigate();
   // const userInfoString = localStorage.getItem("userInfo");
@@ -91,11 +90,11 @@ function MainHome() {
           alt="Wehago Background"
         /> */}
           <div className="textBox">
-            <p className="NIXGON p-24">
+            <p className="NIXGONFONTS p-24">
               기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
             </p>
             <p className="Jost p-48">WEHAGO</p>
-            <p className="NIXGON p-16">
+            <p className="NIXGONFONTS p-16">
               업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
               전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
             </p>

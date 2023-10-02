@@ -7391,6 +7391,11 @@ jiti@^1.18.2:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.19.3.tgz#ef554f76465b3c2b222dc077834a71f0d4a37569"
   integrity sha512-5eEbBDQT/jF1xg6l36P+mWGGoH9Spuy0PCdSr2dtWRDGC6ph/w9ZCL4lmESW8f8F7MwT3XKescfP0wnZWAKL9w==
 
+jquerry@^0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://registry.yarnpkg.com/jquerry/-/jquerry-0.0.1-security.tgz#79cd20163981275f7de6984f6f5ce7b79b107264"
+  integrity sha512-6/x0OFGLte1tqTnInZ0foNjR/hCsNnfkNg7T1vxiCKSLObPbSF4EoswifsUdHiXBvQ/F60uILQGlfvjT0x3NSg==
+
 jquery@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
@@ -9439,10 +9444,10 @@ react-popper@^2.3.0:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-redux@^8.1.2:
-  version "8.1.2"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.1.2.tgz#9076bbc6b60f746659ad6d51cb05de9c5e1e9188"
-  integrity sha512-xJKYI189VwfsFc4CJvHqHlDrzyFTY/3vZACbE+rr/zQ34Xx1wQfB4OTOSeOSNrF6BDVe8OOdxIrAnMGXA3ggfw==
+react-redux@^8.1.3:
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.1.3.tgz#4fdc0462d0acb59af29a13c27ffef6f49ab4df46"
+  integrity sha512-n0ZrutD7DaX/j9VscF+uTALI3oUPa/pO4Z3soOBIjuRn/FzVu6aehhysxZCLi6y7duMf52WNZGMl7CtuK5EnRw==
   dependencies:
     "@babel/runtime" "^7.12.1"
     "@types/hoist-non-react-statics" "^3.3.1"

@@ -1,5 +1,5 @@
 // 작성자 : 현소현
-import { faC } from "@fortawesome/free-solid-svg-icons";
+import { faCopyright } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Form, Row } from "react-bootstrap";
@@ -7,14 +7,7 @@ import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import "../styles/fonts.css";
-import {
-  isNumber,
-  isValidNoSocial,
-  makeCommaNumber,
-  makePureNumber,
-} from "../utils/NumberUtils";
-import SelectForm from "./SelectForm";
-import { faCopy, faCopyright } from "@fortawesome/free-regular-svg-icons";
+import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -199,13 +192,13 @@ function TextBoxComponent(props) {
       } else {
         setIsValid(true);
       }
-    } else if(type==='date' && onClickCodeHelper){      
-      if(!(onChange && onChange(event, newValue, id))) setInputValue(value);
-    }else {
-      // setSendValue(inputValue);
+    } else if (type === "date" && onClickCodeHelper) {
+      if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    } else {
+      setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
-      setInputValue(makeProcessedValue(newValue)); // data 가공
+      setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue, id);
     }
@@ -332,20 +325,14 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon
-                  icon={faCopyright}
-                  onClick={onClickCodeHelper}
-                />
+                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon
-                    icon={faCopyright}
-                    onClick={onClickCodeHelper}
-                  />
+                  <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
                 </div>
               </div>
             )

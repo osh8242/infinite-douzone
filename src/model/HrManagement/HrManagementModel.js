@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfile from "../../styles/img/defaultProfile.jpg";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
 import EmpFam from "../../vo/HrManagement/EmpFam";
-import api from "../Api";
+import { useApi } from "../Api";
 import { urlPattern } from "./HrManagementConstant";
 
 const HrManagementModel = () => {
+  const api = useApi();
   const jobOkRef = useRef("Y"); //재직여부
   const yearRef = useRef(new Date().getFullYear()); // 귀속년도
   const orderRef = useRef("cdEmp"); // 정렬기준

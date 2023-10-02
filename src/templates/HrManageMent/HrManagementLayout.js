@@ -244,7 +244,7 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
