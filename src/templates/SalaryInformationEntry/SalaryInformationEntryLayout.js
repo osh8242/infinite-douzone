@@ -21,6 +21,8 @@ import ReCalculation from "./modalMenu/ReCalculation";
 import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 const SalaryInformationEntryLayout = () => {
   //Model 관리되는 값
@@ -126,9 +128,9 @@ const SalaryInformationEntryLayout = () => {
       />
 
       {/* <Container fluid> */}
-      <div id="salaryInformationEntryLayout" className="SUITE p-12">
+      <>
         <Container>
-          <Row>
+          <Row id="salaryInformationEntryLayout" className="SUITE p-12">
             <Col>
               {/* 조회영역 */}
               <SiSeacrchPanel
@@ -166,29 +168,31 @@ const SalaryInformationEntryLayout = () => {
               </Row>
             </Col>
 
-            {isRightTabVisible ? (
-              <Col
-                md="3"
-                className={`transition ${
-                  isRightTabVisible ? "visible" : "hidden"
-                }`}
-              >
-                <div style={{ display: "flex" }}>
-                  <div className="rightside-custom-width">
-                    <div
-                      onClick={toggleRightTabVisibility}
-                      className="rightside-icon-wrapper"
-                    >
-                      <div id="fakeFaArrowRight"></div>
-                      <div id="fakeFaArrowRight-content">▶</div>
-                    </div>
+            {/* {isRightTabVisible ? ( */}
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              id="rightsideIcon"
+              onClick={toggleRightTabVisibility}
+            />
+            <div className={`${isRightTabVisible ? "visible" : "hidden"}`}>
+              {/* <div style={{ display: "flex" }}> */}
+              {/* <div className="rightside-custom-width">
+                  <div
+                    onClick={toggleRightTabVisibility}
+                    className="rightside-icon-wrapper"
+                  >
+                    <div id="fakeFaArrowRight"></div>
+                    <div id="fakeFaArrowRight-content">▶</div>
                   </div>
-                  <div>
-                    <RigtSideLayout actions={actions} state={state} />
-                  </div>
-                </div>
-              </Col>
-            ) : (
+                </div> */}
+              <RigtSideLayout
+                id="salaryInformationEntryRightSide"
+                actions={actions}
+                state={state}
+              />
+              {/* </div> */}
+            </div>
+            {/* ) : (
               <Col xs={1} className="rightside-custom-width">
                 <div
                   onClick={toggleRightTabVisibility}
@@ -198,10 +202,10 @@ const SalaryInformationEntryLayout = () => {
                   <div id="fakeFaArrowLeft-content">◀</div>
                 </div>
               </Col>
-            )}
+            )} */}
           </Row>
         </Container>
-      </div>
+      </>
     </>
   );
 };
