@@ -1,5 +1,4 @@
 // 작성자 : 오승환
-
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import {
   faBell,
@@ -8,24 +7,46 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ContextModel from "../model/ContextModel";
-import SearchForm from "../components/SearchForm";
+import "../styles/header.css";
+import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
 import "../styles/header.css";
 import "../styles/fonts.css";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+
+  const [btnByState, setBtnByState] = useState(
+    localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
+  );
+  const [hrefState, setHrefState] = useState(
+    userInfoObject != null ? "/" : "/login"
+  );
+  const [userName, setUserName] = useState(
+    userInfoObject ? userInfoObject.userName : "비회원"
+  );
+
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
 
-  const [showSidebar, setShowSidebar] = useState(false);
-  const { contextActions } = useContext(ContextModel);
-
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+  function onClickLoginHandler(e) {
+    if (localStorage.getItem("userInfo") != null) {
+      setBtnByState("로그인");
+      setHrefState("/login");
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("authToken");
+      setUserName("비회원");
+    } else {
+      setHrefState("/login");
+      setBtnByState("로그아웃");
+      navigate("/login");
+    }
+  }
 
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
@@ -102,15 +123,16 @@ const Header = () => {
               className="backgroundBorderNone"
               onClick={toggleProfileDropdown}
             >
-              김회계 관리자 님
-              <FontAwesomeIcon icon={faChevronDown} className="p-10" />
+              {userName} 관리자님 <FontAwesomeIcon icon={faChevronDown} />
             </button>
             {showProfileDropdown && <DropDownMenu />}
             {/* 로그인 시 아래의 두 버튼은 가리기!! */}
             <div id="loginButtonGroup" className="p-10">
-              <a href="/signup" className="signUpSignInBtn-dark">
-                회원가입
-              </a>
+              {!userInfoObject && (
+                <a href="/signup" className="signUpSignInBtn-dark">
+                  회원가입
+                </a>
+              )}
               <a href="/login" className="signUpSignInBtn-dark">
                 로그인
               </a>

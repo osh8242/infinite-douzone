@@ -37,7 +37,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 function ConfirmComponent(props) {
-  const { show, onHide, message, onConfirm, onlyConfirm = false } = props;
+  const { show, onHide, message, onConfirm, onlyConfirm } = props;
 
   // 현재 모달창의 포커스
   const focus = useRef(false);

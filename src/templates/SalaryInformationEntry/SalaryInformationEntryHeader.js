@@ -67,20 +67,24 @@ const SalaryInformationEntryHeader = ({
 
   // 재계산
   const reCalculationHandler = (event) => {
-    if (dateId === "")
+    if (dateId === "") {
       setShowModal({
         show: true,
-        message: "작성일을 선택해주세요",
+        message: "선택된 날짜에 등록된 급여항목이 없습니다.",
         onlyConfirm: true,
       });
-    if (cdEmp === "")
+    } else if (cdEmp === "") {
       setShowModal({
         show: true,
         message: "사원을 선택해주세요",
         onlyConfirm: true,
       });
-    else modalShow("reCalculation", modal_reCalculationList);
+    } else {
+      modalShow("reCalculation", modal_reCalculationList);
+    }
   };
+  
+  
 
   // 지급일자
   const getDateListHandler = (event) => {
@@ -89,13 +93,13 @@ const SalaryInformationEntryHeader = ({
     });
   };
 
-  const setSearchDate = (e, row) => {
-    // console.log(row);
+  const setSearchDate = (e,row) => {
     actions.setPaymentDate(row.paymentDate);
+    actions.setSalDivision(row.salDivision);
     actions.setAllowMonth(row.allowMonth);
-    // actions.setDateId(row.dateId);
     actions.onSearch();
   };
+
   // 완료
   const ynCompleteButtonHandler = (event) => {
     let message = "";
@@ -177,12 +181,9 @@ const SalaryInformationEntryHeader = ({
           재계산
         </Button>
 
-        <Button
-          className="extraDeductBtn"
-          onClick={(e) => ynCompleteButtonHandler(e)}
-        >
-          {ynComplete === "N" ? "완료 " : "해제"}
-        </Button>
+        <Button id="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >
+          {ynComplete === 'Y'? '해제': '완료'}
+        </Button>        
 
         <button className="backgroundBorderNone">
           <FontAwesomeIcon icon={faPrint} className="colorWhite" />

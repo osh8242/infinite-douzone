@@ -66,6 +66,7 @@ const FormPanel = ({
             id={id}
             label={label}
             disabled={disabled}
+            disabledSelect={input.disabledSelect}
             value={value}
             onEnter={submitData}
             onChange={(e, value) => onChangeFn && onChangeFn(value)}
@@ -75,6 +76,9 @@ const FormPanel = ({
             endLabel={input.endLabel}
             selectList={input.selectList}
             selectId={{ formData }.formData[input.selectId]}
+            subField={input.selectId}
+            onChangeSelect={submitData}
+            selectedOption={{ formData }.formData[input.selectValue]}
           />
         );
         break;
@@ -251,7 +255,9 @@ const FormPanel = ({
     let mdSum = 0;
     let tempRow = [];
     for (let j = i; j < columns.length; j++) {
-      mdSum += inputs[j].span ? Math.min(defaultMd * inputs[j].span, 12) : defaultMd;
+      mdSum += inputs[j].span
+        ? Math.min(defaultMd * inputs[j].span, 12)
+        : defaultMd;
       if (mdSum <= 12) {
         tempRow.push(columns[j]);
         i++;

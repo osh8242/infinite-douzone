@@ -1,41 +1,48 @@
 import axios from "axios";
 import { url } from "./CommonConstant";
+import { useContext } from "react";
+import { LoadingContext } from "../Loading/LoadingProvider";
 
-// 공통 ㅁpi 모듈
+export const useApi = () => {
+  const { setLoading } = useContext(LoadingContext);
 
-// axios 인스턴스 생성
-const api = axios.create({
-  baseURL: url,
-});
+  const api = axios.create({
+    baseURL: url,
+  });
 
-// 인터셉터 요청
-api.interceptors.request.use(
-  (config) => {
-    // 임시 localStorage 저장 -->redis 변경예정
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      config.headers["authorization"] = "Bearer " + token;
+  // 인터셉터 요청
+  api.interceptors.request.use(
+    (config) => {
+      setLoading(true); // 요청 시작 시 loading 상태를 true로 설정
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        config.headers["authorization"] = "Bearer " + token;
+      }
+      return config;
+    },
+    (error) => {
+      setLoading(false); // 요청 실패 시 loading 상태를 false로 설정
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  );
 
-// 응답
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      console.log("토큰이 만료되었거나 유효하지 않습니다. ");
-      // 로그인 페이지 리다이렉트
-      window.location.href = `${url}/login`;
+  // 응답 인터셉터
+  api.interceptors.response.use(
+    (response) => {
+      setLoading(false); // 응답 시 loading 상태를 false로 설정
+      return response;
+    },
+    (error) => {
+      setLoading(false); // 응답 실패 시 loading 상태를 false로 설정
+      if (error.response && error.response.status === 401) {
+        console.log("토큰이 만료되었거나 유효하지 않습니다. ");
+        window.location.href = `${url}/login`;
+      }
+      return Promise.reject(error);
     }
-    // 오류 하위로 전달
-    return Promise.reject(error);
-  }
-);
-export default api;
+  );
+
+  return api;
+};
+
+export default useApi;

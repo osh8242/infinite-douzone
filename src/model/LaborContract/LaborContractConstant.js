@@ -31,11 +31,25 @@ export const labels = {
 };
 
 // 상단 조회 - 소득구분 목록
+export const searchSelectList = [
+  { key: "empAll", value: "0. 전체" },
+  { key: "empRegistration", value: "1. 사원등록" },
+  { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
+];
+
+///search 정리후 삭제 예정
+// 상단 조회 - 소득구분 목록
 export const incomeClassficationList = [
   { key: "empAll", value: "0. 전체" },
   { key: "empRegistration", value: "1. 사원등록" },
   { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
 ];
+///////
+
+export const mainTabMenuList = {
+  WorkInformation: "계약서 작성",
+  otherBenefit: "계약서 조회",
+};
 
 // 추가 구분 목록
 export const subTabMenuList = {
