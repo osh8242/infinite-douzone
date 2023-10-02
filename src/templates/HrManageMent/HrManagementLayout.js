@@ -97,7 +97,7 @@ const HrManagementLayout = () => {
       />
       <Container className="hr-container SUITE p-12">
         {/* 조회영역 */}
-        <Row className="hr-search-row deleteLabelBackground">
+        <Row className="hr-search-row deleteLabelBackground pb-3">
           <HrSearchPanel
             onSearch={actions.onSearch}
             jobOkSelectRef={jobOkSelectRef}
@@ -250,8 +250,7 @@ const HrManagementLayout = () => {
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef)
-              modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}
