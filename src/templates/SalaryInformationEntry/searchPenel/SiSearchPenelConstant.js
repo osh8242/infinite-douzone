@@ -32,7 +32,7 @@ export const SI_SUB_SEARCHFIELD = [
     
   },{
     type: INPUT_TYPE.textCodeHelper,
-    field: "searchRankNo",
+    field: "searchCdOccup",
     label: LABELS.rankNo,
   },{
     type: INPUT_TYPE.select,

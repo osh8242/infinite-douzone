@@ -1,9 +1,10 @@
 // 김진 서연
 // 메인 홈페이지
-// 임시로 위치만 잡아두었음 -> 나중에 요소 추가 및 예쁘게 수정할 예정
-// 상단의 Header는 로그인 여부에 따라 바뀌도록 수정
-import React from "react";
-// import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+import React, { useEffect } from "react";
+import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+import screenshot16 from "../styles/img/screenshot16.png";
+import screenshot17 from "../styles/img/screenshot17.png";
+import screenshot18 from "../styles/img/screenshot18.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircleArrowLeft,
@@ -15,9 +16,61 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/fonts.css";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
+import "../styles/fonts.css";
+
+const slides = [
+  {
+    background: wehago_backImg, //main
+    content: (
+      <div>
+        <p className="NIXGONFONTS p-24">
+          기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
+        </p>
+        <p className="Jost p-48">WEHAGO</p>
+        <p className="NIXGONFONTS p-16">
+          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
+          전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
+        </p>
+      </div>
+    ),
+  },
+  {
+    background: screenshot16, //사원등록
+    content: (
+      <div>
+        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+          사원등록 페이지에 대한 정보 넣으면 됨
+        </p>
+      </div>
+    ),
+  },
+  {
+    background: screenshot17, //인사관리등록
+    content: (
+      <div>
+        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+          인사관리등록 정보 넣으면 됨
+        </p>
+      </div>
+    ),
+  },
+  {
+    background: screenshot18, //표준근로계약서
+    content: (
+      <div>
+        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+          표준근로계약서 정보 넣으면 됩니다
+        </p>
+      </div>
+    ),
+  },
+  // {
+  //   background: "image4.jpg", //급여자료입력
+  // },
+];
+
 function MainHome() {
   const navigate = useNavigate();
   // const userInfoString = localStorage.getItem("userInfo");
@@ -33,6 +86,7 @@ function MainHome() {
   );
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
+
   let userToken = localStorage.getItem("token");
   let userTokenObject = JSON.parse(userToken);
   function onClickLoginHandler(e) {
@@ -58,6 +112,25 @@ function MainHome() {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
+
+  const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  };
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, 10000); // 10초마다 슬라이드 변경
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <div id="mainPageTopHeader-BackGround" className="SUITE p-12">
@@ -83,22 +156,20 @@ function MainHome() {
         </div>
       </div>
       <div id="page1">
-        <div className="background">
-          {/* <img
-          id="mainHome-backgroundImage"
-          src={wehago_backImg}
-          alt="Wehago Background"
-        /> */}
-          <div className="textBox">
-            <p className="NIXGONFONTS p-24">
-              기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
-            </p>
-            <p className="Jost p-48">WEHAGO</p>
-            <p className="NIXGONFONTS p-16">
-              업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
-              전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
-            </p>
+        {/* 슬라이드 효과 div 나열 */}
+        <div>
+          <div
+            className="background"
+            style={{
+              backgroundImage: `url(${slides[currentSlide].background})`,
+            }}
+          >
+            <div className="textBox">{slides[currentSlide].content}</div>
           </div>
+          {/* <div>사원등록을 손쉽게</div>
+          <div>인사관리를 한눈에</div>
+          <div>표준근로계약서 작성도 꼼꼼하게</div>
+          <div>급여자료 입력도 간편하게</div> */}
         </div>
         {/* 하단 4가지 메뉴 이동 버튼 */}
         <div className="menuBtnList SUITE p-12">
@@ -128,16 +199,16 @@ function MainHome() {
           </div>
         </div>
         <a href="#!" id="leftArrowBtn">
-          <FontAwesomeIcon icon={faCircleArrowLeft} />
+          <FontAwesomeIcon icon={faCircleArrowLeft} onClick={prevSlide} />
         </a>
         <a href="#!" id="leftArrowBtn-animation">
-          <FontAwesomeIcon icon={faCircleArrowLeft} />
+          <FontAwesomeIcon icon={faCircleArrowLeft} onClick={prevSlide} />
         </a>
         <a href="#!" id="rightArrowBtn">
-          <FontAwesomeIcon icon={faCircleArrowRight} />
+          <FontAwesomeIcon icon={faCircleArrowRight} onClick={nextSlide} />
         </a>
         <a href="#!" id="rightArrowBtn-animation">
-          <FontAwesomeIcon icon={faCircleArrowRight} />
+          <FontAwesomeIcon icon={faCircleArrowRight} onClick={nextSlide} />
         </a>
       </div>
       <div id="page2"></div>

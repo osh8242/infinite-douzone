@@ -36,8 +36,10 @@
 }
 
 #salaryInformationEntryRightSide {
-  position: absolute;
-  top: 16px;
+  max-width: 360px;
+  height: 600px;
+  position: fixed;
+  top: 120px;
   right: 0;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
@@ -78,9 +80,10 @@
 
 /* 오른쪽 사원 상세정보 영역 */
 #rightsideIcon {
-  position: absolute;
+  position: fixed;
+  width: fit-content;
   top: 45%;
-  right: 36px;
+  right: 12px;
   font-size: 48px;
   color: rgb(57, 63, 80);
   cursor: pointer;
@@ -146,6 +149,7 @@
 ///siEnDetail css
 ///
 .siEmpDetail-container {
+  height: 500px;
   font-family: "SUITE-Variable";
   padding-top: 10px;
 }
@@ -171,7 +175,7 @@
 }
 
 .hidden {
-  opacity: 0;
+  opacity: 0.25;
   transform: translateX(100%);
   transition: opacity 0.75s, transform 0.75s;
 }

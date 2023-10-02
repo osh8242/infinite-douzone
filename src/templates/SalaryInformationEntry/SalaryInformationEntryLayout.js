@@ -2,8 +2,8 @@
 import React, { useCallback, useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../styles/commonComponent.css";
 import "../../styles/fonts.css";
-import { fetchData } from "../../utils/codeHelperUtils";
 import SalaryInformationEntryModel from "../../model/SalaryInformationEntry/SalaryInformationEntryModel";
 import ModalComponent from "../../components/ModalComponent";
 import CodeHelperModal from "../../components/CodeHelperModal";
@@ -22,11 +22,19 @@ import InsertSalaryDataLayout from "./modalMenu/InsertSalaryDataLayout";
 
 import RigtSideLayout from "./RightSideTab/RigtSideLayout";
 
+import fetchData from "../../utils/codeHelperUtils";
+import useApi from "../../model/Api";
+import ConfirmComponent from "../../components/ConfirmComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
 const SalaryInformationEntryLayout = () => {
+  const api = useApi();
   //Model 관리되는 값
   const { state, actions } = SalaryInformationEntryModel();
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
   const [modalType, setModalType] = useState("");
+
 
   const toggleRightTabVisibility = () => {
     setIsRightTabVisible(!isRightTabVisible);
@@ -43,8 +51,13 @@ const SalaryInformationEntryLayout = () => {
           let codeDataList = data.tableData;
           let url = data.url ? data.url : "";
           let params = data.params ? data.params : setParams;
-          codeDataList = await fetchData(url, params);
 
+          if(url!=="") codeDataList = await fetchData(api, url, params);
+
+          actions.setModalState((prevState) => ({
+            ...prevState,
+            subject: data.subject,
+          }));
           actions.setModalState((prevState) => ({
             ...prevState,
             subject: data.subject,
@@ -58,15 +71,6 @@ const SalaryInformationEntryLayout = () => {
             searchField: data.searchField,
           }));
           break;
-
-        // case 'addSalAllowPay' :
-        // actions.setModalState((prevState) => ({
-        //     ...prevState,
-        //     onConfirm : actions.addAllowPay,
-        //     size : data.size,
-        //     subject: data.subject
-        //   }));
-        //   break;
 
         default:
           actions.setModalState((prevState) => ({
@@ -113,6 +117,16 @@ const SalaryInformationEntryLayout = () => {
           <></>
         )}
       </ModalComponent>
+      <ConfirmComponent
+        show={state.showConfirm.show}
+        message={state.showConfirm.message}
+        onlyConfirm={state.showConfirm.onlyConfirm}
+        onHide={() => actions.setShowConfirm(false)}
+        onConfirm={() => {
+          state.showConfirm.action && state.showConfirm.action();
+          actions.setShowConfirm(false);
+        }}
+      />
 
       <SalaryInformationEntryHeader
         deleteButtonHandler={actions.deleteSelectedRows}
@@ -125,10 +139,11 @@ const SalaryInformationEntryLayout = () => {
         allowYear={state.allowYear}
       />
 
+
       {/* <Container fluid> */}
-      <div id="salaryInformationEntryLayout" className="SUITE p-12">
+      <>
         <Container>
-          <Row>
+          <Row id="salaryInformationEntryLayout" className="SUITE p-12">
             <Col>
               {/* 조회영역 */}
               <SiSeacrchPanel
@@ -141,67 +156,45 @@ const SalaryInformationEntryLayout = () => {
               {/* 메인영역 */}
               <Row>
                 <Col md={3}>
-                  <EmpList
-                    actions={actions}
-                    saInfoListData={state.saInfoListData}
+                  <EmpList actions={actions} saInfoListData={state.saInfoListData} />
+                </Col>
+                <Col md={3}>
+                  <SalaryAllowPayList 
+                    actions={actions} 
+                    salAllowData={state.salAllowData} 
+                    ynComplete = {state.ynComplete}
                   />
                 </Col>
                 <Col md={3}>
-                  <SalaryAllowPayList
-                    actions={actions}
-                    salAllowData={state.salAllowData}
-                    ynComplete={state.ynComplete}
-                  />
+                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} ynComplete={state.ynComplete} />
                 </Col>
-                <Col md={3}>
-                  <SalaryDeductPayList
-                    actions={actions}
-                    salDeductData={state.deductData}
-                    ynComplete={state.ynComplete}
-                  />
-                </Col>
-                <Col className="selectDivision deleteLabelBackground">
+                <Col className="selectDivision">
                   <SelctDivisionList actions={actions} state={state} />
                 </Col>
               </Row>
-            </Col>
+          </Col>
 
-            {isRightTabVisible ? (
-              <Col
-                md="3"
-                className={`transition ${
-                  isRightTabVisible ? "visible" : "hidden"
-                }`}
-              >
-                <div style={{ display: "flex" }}>
-                  <div className="rightside-custom-width">
-                    <div
-                      onClick={toggleRightTabVisibility}
-                      className="rightside-icon-wrapper"
-                    >
-                      <div id="fakeFaArrowRight"></div>
-                      <div id="fakeFaArrowRight-content">▶</div>
-                    </div>
-                  </div>
-                  <div>
-                    <RigtSideLayout actions={actions} state={state} />
-                  </div>
-                </div>
-              </Col>
-            ) : (
-              <Col xs={1} className="rightside-custom-width">
-                <div
-                  onClick={toggleRightTabVisibility}
-                  className="rightside-icon-wrapper"
-                >
-                  <div id="fakeFaArrowLeft"></div>
-                  <div id="fakeFaArrowLeft-content">◀</div>
-                </div>
-              </Col>
-            )}
+            {/* 우측 상세정보 버튼 */}
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              id="rightsideIcon"
+              className={`${isRightTabVisible ? "left" : "right"}`}
+              onClick={toggleRightTabVisibility}
+            />
+            {/* 우측 상세정보 */}
+            <div
+              id="salaryInformationEntryRightSide"
+              className={`${
+                isRightTabVisible
+                  ? "visible deleteLabelBackground"
+                  : "hidden deleteLabelBackground"
+              }`}
+            >
+              <RigtSideLayout actions={actions} state={state} />
+            </div>
           </Row>
         </Container>
-      </div>
+      </>
     </>
   );
 };

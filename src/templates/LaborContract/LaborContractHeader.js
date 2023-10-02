@@ -31,28 +31,27 @@ const LaborContractHeader = ({ deleteButtonHandler }) => {
 
   return (
     <div id="secondTopHeader" className="p-12">
-      {showSidebar && (
-        <div className="sidebar SUITE p-12">
-          <Nav defaultActiveKey="/home" className="flex-column">
-            <Nav.Link href="/">
-              <FontAwesomeIcon icon={faHome} /> &nbsp;Home
-            </Nav.Link>
-            <Nav.Link href="/er">
-              <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
-            </Nav.Link>
-            <Nav.Link href="/hr">
-              <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
-            </Nav.Link>
-            <Nav.Link href="/lc">
-              <FontAwesomeIcon icon={faFileInvoice} />
-              &nbsp;&nbsp;&nbsp;표준근로계약서
-            </Nav.Link>
-            <Nav.Link href="/si">
-              <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
-            </Nav.Link>
-          </Nav>
-        </div>
-      )}
+      {/* 사이드바 */}
+      <div className={`sidebar SUITE p-12 ${showSidebar ? "right" : "left"}`}>
+        <Nav defaultActiveKey="/home" className="flex-column">
+          <Nav.Link href="/">
+            <FontAwesomeIcon icon={faHome} /> &nbsp;Home
+          </Nav.Link>
+          <Nav.Link href="/er">
+            <FontAwesomeIcon icon={faUserPlus} /> &nbsp;사원등록
+          </Nav.Link>
+          <Nav.Link href="/hr">
+            <FontAwesomeIcon icon={faAddressCard} /> &nbsp;인사관리등록
+          </Nav.Link>
+          <Nav.Link href="/lc">
+            <FontAwesomeIcon icon={faFileInvoice} />
+            &nbsp;&nbsp;&nbsp;표준근로계약서
+          </Nav.Link>
+          <Nav.Link href="/si">
+            <FontAwesomeIcon icon={faSackDollar} /> &nbsp;급여자료입력
+          </Nav.Link>
+        </Nav>
+      </div>
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"

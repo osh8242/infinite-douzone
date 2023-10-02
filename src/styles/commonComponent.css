@@ -24,13 +24,14 @@
 }
 
 .siEmpDetail-container .col-md-12 .label {
-  width: 60%;
+  min-width: 120px;
+  max-width: 120px;
   text-align: center;
   font-weight: 700;
 }
 
 .col-md-6 .label {
-  width: 72%;
+  min-width: 120px;
   max-width: 120px;
   height: 150%;
   display: flex;
@@ -44,7 +45,7 @@
 }
 
 .col-md-4 .label {
-  width: 74%;
+  min-width: 120px;
   max-width: 120px;
   height: 160%;
   display: flex;

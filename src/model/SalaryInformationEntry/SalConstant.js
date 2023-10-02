@@ -158,19 +158,24 @@ export const codeHelperData_emplist = {
     { field: "noSocial", text: "주민(외국인)번호" },
     { field: "daRetire", text: "퇴사일자" },
   ],
-  // , params : { ynFor: 'n', refYear: '2023' }
+  // params : { ynFor: 'n', refYear: '2023' },
   searchField: ["nmKrname", "noSocial"],
 };
 
 // 직급조회
 export const codeHelperData_rankNo = {
   subject: "직급조회",
-  url: CODE.URL,
+  // url: CODE.URL,
   headers: [
     { field: "codeId", text: "직급코드" },
     { field: "codeName", text: "직급명" },
   ],
-  params: { parentId: CODE.PARENT_ID.RANK_NO },
+  tableData: [
+    { item: { codeId: "D001", codeName: "사원" } },
+    { item: { codeId: "D002", codeName: "대리" } },
+    { item: { codeId: "D003", codeName: "기타등등" } },
+  ],
+  // params: { parentId: CODE.PARENT_ID.RANK_NO },
   searchField: ["codeId", "codeName"],
   usePk: "codeId",
 };
@@ -178,12 +183,17 @@ export const codeHelperData_rankNo = {
 // 직책조회
 export const codeHelperData_occup = {
   subject: "직책조회",
-  url: CODE.URL,
+  // url: CODE.URL,
   headers: [
     { field: "codeId", text: "직책코드" },
     { field: "codeName", text: "직책명" },
   ],
-  params: { parentId: CODE.PARENT_ID.OCCUP },
+  // params: { parentId: CODE.PARENT_ID.OCCUP },
+  tableData: [
+    { item: { codeId: "D001", codeName: "사원" } },
+    { item: { codeId: "D002", codeName: "대리" } },
+    { item: { codeId: "D003", codeName: "기타등등" } },
+  ],
   searchField: ["codeId", "codeName"],
   usePk: "codeId",
 };
@@ -209,8 +219,8 @@ export const modal_reCalculationList = {
   size: "md",
   headers: [{ field: "nmOption", text: "재계산 목록" }],
   tableData: [
-    { item: { cdOption: "calculateTaxYn", nmOption: "과세, 비과세 재계산" } },
-    { item: { cdOption: "incomeTax", nmOption: "소득세 재계산" } },
+    { item: { cdOption: "recalculateTaxYn", nmOption: "과세, 비과세 재계산" } },
+    { item: { cdOption: "recalculateDeductInfo", nmOption: "공제항목 재계산" } },
     { item: { cdOption: "editEmpInfo", nmOption: "사원정보 변경" } },
   ],
 };
@@ -218,7 +228,7 @@ export const modal_reCalculationList = {
 export const modal_insertSalaryAllowData = {
   url: "/sallowpay/getsalAllowList",
   headers: [
-    { field: "cdAllow", text: "Code" },
+    { field: "cdAllow", text: "Code" , readOnly : true},
     { field: "nmAllow", text: "수당명" , isPk:true},
     {
       field: "ynTax",
@@ -269,29 +279,35 @@ export const modal_insertSalaryAllowData = {
 export const modal_insertSalaryDeductData = {
   url: "/sadeductpay/getsalDeductList",
   headers: [
-    { field: "cdDeduct", text: "Code" },
-    { field: "nmDeduct", text: "공제항목명" },
-    {
-      field: "ynSal",
-      text: "급여",
-      type: "select",
+    { field: "cdDeduct", text: "Code", readOnly:true },
+    { field: "nmDeduct", text: "공제항목명", isPk: true },
+    { field: "ynSal", text: "급여" 
+    , type: "select",
       optionList: [
         { key: "Y", value: "O" },
         { key: "N", value: "X" },
       ],
-    },
-    {
-      field: "ynBonus",
-      text: "상여",
-      type: "select",
-      optionList: [
-        { key: "Y", value: "O" },
-        { key: "N", value: "X" },
-      ],
-    },
+  },
+    { field: "ynBonus", text: "상여" ,
+    type: "select",
+    optionList: [
+      { key: "Y", value: "O" },
+      { key: "N", value: "X" },
+    ],},
+    { field: "rate"
+    , text: "비율(%)" 
+    , type : "number"
+    , isPk: true
+  },
   ],
-  headersWithCalculation: [
-    { field: "cdDeduct", text: "Code" },
+  params : {static: 'N'}
+};
+
+
+export const modal_staticSalaryDeductData = {
+  url: "/sadeductpay/getsalDeductList",
+  headers: [
+    { field: "cdDeduct", text: "Code", readOnly:true },
     { field: "nmDeduct", text: "공제항목명" },
     { field: "ynSal", text: "급여" 
     , type: "select",
@@ -311,6 +327,7 @@ export const modal_insertSalaryDeductData = {
     , type : "codeHelper"
     , readOnly: true},
   ],
+  params : { static: 'Y'}
 };
 
 export const modal_nontaxSetup = {
