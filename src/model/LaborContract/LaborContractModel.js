@@ -33,6 +33,10 @@ const LaborContractModel = () => {
   const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
+  const [lengthEmpAll, setLengthEmpAll] = useState("0");
+  const [lengthEmp, setLengthEmp] = useState("0");
+  const [lengthTempEmp, setLengthTempEmp] = useState("0");
+
   //search
   const jobRef = useRef("empAll"); // 소득구분
   const jobSelectRef = useRef("empAll");
@@ -97,47 +101,57 @@ const LaborContractModel = () => {
     dateRef.current = dateSelectRef.current.value;
     dateEndRef.current = dateEndSelectRef.current.value;
     getEmpList();
+    setLength();
   };
 
-  //사원 테이블 재직 통계 계산
-  const leftStaticsTableData = useMemo(() => {
-    let empAll = 0;
-    let empRegistration = 0;
-    let tempEmpRegistration = 0;
+  const setLength = () => {
     api
       .get(
         `/swsm/getEmpListForSwsmDate?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
       )
       .then((response) => {
-        empAll = response.data.length;
-        console.log("EMPALL");
-        console.log(empAll);
-        console.log(jobRef.current);
-        console.log(leftTableData);
-        console.log(leftTableData.length);
-
-        if (jobRef.current === "empRegistration") {
-          empRegistration = leftTableData.length;
-          tempEmpRegistration = empAll - empRegistration;
-        } else if (jobRef.current === "tempEmpRegistration") {
-          tempEmpRegistration = leftTableData.length;
-          empRegistration = empAll - empRegistration;
-        }
+        setLengthEmpAll(response.data.length);
       })
       .catch((error) => {
         console.error("에러발생: ", error);
       });
-    console.log("result");
-    console.log(empAll);
-    console.log(empRegistration);
-    console.log(tempEmpRegistration);
 
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=empRegistration&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthEmp(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=tempEmpRegistration&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthTempEmp(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+
+    if (jobRef.current === "empRegistration") {
+      console.log("jobRef.");
+      console.log(jobRef.current);
+      setLengthTempEmp(0);
+    }
+  };
+
+  //사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
     return [
       {
         item: {
-          empAll: empAll,
-          empRegistration: empRegistration,
-          tempEmpRegistration: tempEmpRegistration,
+          empAll: lengthEmpAll,
+          empRegistration: lengthEmp,
+          tempEmpRegistration: lengthTempEmp,
         },
       },
     ];
