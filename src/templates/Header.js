@@ -1,5 +1,4 @@
 // 작성자 : 오승환
-
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import {
   faBell,
@@ -8,30 +7,66 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import ContextModel from "../model/ContextModel";
-import SearchForm from "../components/SearchForm";
+import "../styles/header.css";
+import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
-import "../styles/header.css";
-import "../styles/fonts.css";
-
 const Header = () => {
+  const navigate = useNavigate();
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const [btnByState, setBtnByState] = useState(
+    localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
+  );
+  const [hrefState, setHrefState] = useState(
+    userInfoObject != null ? "/" : "/login"
+  );
+  const [userName, setUserName] = useState(
+    userInfoObject ? userInfoObject.userName : "비회원"
+  );
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
 
-  const [showSidebar, setShowSidebar] = useState(false);
-  const { contextActions } = useContext(ContextModel);
+  const searchFormRef = useRef(null);
 
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      console.log("Keydown event triggered");
+      if (e.key === "F10" && searchFormRef.current) {
+        e.preventDefault();
+        searchFormRef.current.focusInput();
+      }
+      if (e.key === "Escape" && searchFormRef.current) {
+        searchFormRef.current.blurInput();
+      }
+    };
 
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  function onClickLoginHandler(e) {
+    if (localStorage.getItem("userInfo") != null) {
+      setBtnByState("로그인");
+      setHrefState("/login");
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("authToken");
+      setUserName("비회원");
+    } else {
+      setHrefState("/login");
+      setBtnByState("로그아웃");
+      navigate("/login");
+    }
+  }
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
-
   return (
     <div>
       {/* 메인 페이지 용 헤더 */}
@@ -56,10 +91,9 @@ const Header = () => {
           </div>
         </div>
       )} */}
-
       {/* 사원등록/인사관리/급여자료입력/표준근로계약서 4개 메뉴에서 쓰이는 헤더 */}
       {!isMainPage && (
-        <div id="topNotificationHeader" className="SUITE">
+        <div id="topNotificationHeader">
           <div id="topLeftNotificationHeader">
             <select id="companySelectForm" defaultValue={"douzone"}>
               <option id="douzone">더존비즈온</option>
@@ -73,56 +107,131 @@ const Header = () => {
             </select>
           </div>
           <div id="topRightNotificationHeader">
-            <SearchForm
+            {/* <SearchForm
               type="text"
               id="findMenuBar"
-              placeholder={"찾고싶은 메뉴를 검색하세요"}
+              placeholder={"메뉴명을 입력해주세요.  [ F10 ]    "}
+            /> */}
+            <SearchForm
+              ref={searchFormRef}
+              type="text"
+              id="findMenuBar"
+              placeholder={"메뉴명을 입력해주세요. [ F10 ]"}
             />
-            <div id="topHeaderButtonGroup" className="p-16">
-              <button disabled className="backgroundBorderNone">
-                <FontAwesomeIcon icon={faPlus} className="colorDark forbid" />
-              </button>
-              <button disabled className="backgroundBorderNone">
-                <FontAwesomeIcon icon={faBell} className="colorDark forbid" />
-              </button>
-              <button disabled className="backgroundBorderNone">
+            <button className="backgroundBorderNone">
+              <FontAwesomeIcon
+                icon={faPlus}
+                size={"lg"}
+                className="colorDark"
+              />
+            </button>
+            <button className="backgroundBorderNone">
+              <FontAwesomeIcon
+                icon={faBell}
+                size={"lg"}
+                className="colorDark"
+              />
+            </button>
+            <button className="backgroundBorderNone">
+              <FontAwesomeIcon
+                icon={faQuestionCircle}
+                size={"lg"}
+                className="colorDark"
+              />
+            </button>
+            <button className="backgroundBorderNone">
+              <a href="/">
                 <FontAwesomeIcon
-                  icon={faQuestionCircle}
-                  className="colorDark forbid"
+                  icon={faHome}
+                  size={"lg"}
+                  className="colorDark"
                 />
-              </button>
-              <button className="backgroundBorderNone">
-                <a href="/">
-                  <FontAwesomeIcon icon={faHome} className="colorDark" />
-                </a>
-              </button>
-            </div>
+              </a>
+            </button>
             <button
-              id="userInformation"
               className="backgroundBorderNone"
               onClick={toggleProfileDropdown}
             >
-              김회계 관리자 님
-              <FontAwesomeIcon icon={faChevronDown} className="p-10" />
+              {userName} 관리자님 <FontAwesomeIcon icon={faChevronDown} />
             </button>
             {showProfileDropdown && <DropDownMenu />}
             {/* 로그인 시 아래의 두 버튼은 가리기!! */}
-            <div id="loginButtonGroup" className="p-10">
-              <a href="/signup" className="signUpSignInBtn-dark">
-                회원가입
-              </a>
-              <a href="/login" className="signUpSignInBtn-dark">
-                로그인
-              </a>
-              <a href="/" className="signUpSignInBtn-dark">
-                로그아웃
+            <div id="loginButtonGroup">
+              {!userInfoObject && (
+                <a
+                  href="/signup"
+                  // style={{
+                  //   backgroundColor: "white",
+                  //   border: "1px solid gray",
+                  //   color: "dimgray",
+                  //   padding: "4px 10px 4px 10px",
+                  //   marginRight: "0px",
+                  //   marginLeft: "7px",
+                  //   borderRadius: "5px",
+                  //   textDecoration: "none",
+                  // }}
+                >
+                  회원가입
+                </a>
+              )}
+              <a
+                href={hrefState}
+                // style={{
+                //   backgroundColor: "white",
+                //   border: "1px solid gray",
+                //   color: "dimgray",
+                //   fontSize: "13px",
+                //   padding: "4px 14px 4px 14px",
+                //   marginRight: "7px",
+                //   borderRadius: "5px",
+                //   textDecoration: "none",
+                // }}
+                onClick={onClickLoginHandler}
+              >
+                {btnByState}
               </a>
             </div>
           </div>
         </div>
       )}
+      {/* <div id="secondTopHeader">
+      {/* <div id="secondTopHeader">
+      <div id="secondTopHeaderContents">
+      <Button
+            id="toggleSidebarBtn"
+            onClick={toggleSidebar}
+            variant="outline-secondary"
+          >
+            <i className={`fa fa-bars colorWhite`} />
+          </Button>
+          //로고
+          <img id="logo" src={empAdd} alt="" />
+          <button className="backgroundBorderNone">
+            <FontAwesomeIcon
+              icon={faArrowUpRightFromSquare}
+              className="colorWhite backgroundBorderNone"
+            />
+          </button>
+        </div>
+        <div id="secondTopHeaderMenuList">
+          <button className="backgroundBorderNone">
+            <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          </button>
+          <button
+            className="backgroundBorderNone"
+            onClick={(e) => contextActions.deleteSelectedRows()}
+          >
+            <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
+          </button>
+          <button className="backgroundBorderNone">
+            <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          </button>
+          <button className="backgroundBorderNone">
+            <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          </button>
+        </div>
+      </div>       */}
     </div>
   );
 };
-
 export default Header;

@@ -7,9 +7,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const TestAdd = (props) => {
-  const { label, isZonecode, value, size, mb, md = 4, actions } = props;
+  const {
+    label,
+    isZonecode,
+    value,
+    size,
+    mb,
+    md = 4,
+    actions,
+    disabled,
+    onChange,
+  } = props;
+
   const [zonecode, setZonecode] = useState(value || "");
   const [address, setAddress] = useState(value || "");
+  const [isDisabled, setDisabled] = useState();
+
+  useEffect(() => {
+    if (disabled) setDisabled(true);
+    else setDisabled(false);
+  }, [isDisabled]);
 
   useEffect(() => {
     setAddress(value || "");
@@ -23,6 +40,11 @@ const TestAdd = (props) => {
     setModalState({ ...modalState, show: false });
   };
 
+  const onChangeHandeler = (e) => {
+    setAddress(address);
+    onChange && onChange(e, value);
+  };
+
   const [modalState, setModalState] = useState({
     show: false,
     props: {},
@@ -34,14 +56,15 @@ const TestAdd = (props) => {
         <div className="labelAndContent">
           <div className="label">{label}</div>
           <div className="widthFull d-flex align-items-center gap-2">
-            <div className="widthFull ">
+            <div className="widthFull">
               <Form.Control
                 id="address"
                 type="text"
                 name="address"
                 value={address}
                 size={size}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={onChangeHandeler}
+                disabled={isDisabled}
               />
             </div>
             <div>
@@ -49,6 +72,7 @@ const TestAdd = (props) => {
                 id="addressSearchBtn"
                 variant="secondary"
                 onClick={() => setModalState({ ...modalState, show: true })}
+                disabled={isDisabled}
               >
                 <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
               </Button>

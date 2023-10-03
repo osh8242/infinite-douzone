@@ -4,7 +4,12 @@ import { useState, useRef } from "react";
 import { Accordion, Button, Col, Row } from "react-bootstrap";
 import "../styles/SearchPanel.scss"; // SCSS 파일 불러오기
 
-const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
+const SearchPanel = ({
+  children,
+  onSearch,
+  showAccordion = false,
+  hideButton = false,
+}) => {
   const [isBodyOpen, setIsBodyOpen] = useState(false);
   const toggleButtonRef = useRef(null); // ref 생성
 
@@ -23,12 +28,12 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
         {showAccordion ? (
           <div className="search-panel border rounded px-5">
             <div className="header d-flex flex-row px-5">
-              <Col className="my-1" md="8">
-                {children[0]}
-              </Col>
+              {/* 귀속연월/조회구분/작성일자 */}
+              <Col className="my-1">{children[0]}</Col>
+              {/* 조회버튼 */}
               <Col
                 className="d-flex align-items-center justify-content-center"
-                md={{ span: 2, offset: 2 }}
+                md={{ span: 1, offset: 1 }}
               >
                 {isBodyOpen ? (
                   <Button variant="secondary" onClick={toggleArrowIcon}>
@@ -52,21 +57,23 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 />
               </Col>
             </div>
-            <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
-              {/* {isBodyOpen && ( */}
-              <Row>
-                {children[1]}
-                <div
-                  className="d-flex justify-content-md-center"
-                  style={{ marginTop: "12px" }}
-                >
-                  <Button variant="secondary" onClick={onSearch}>
-                    조회
-                  </Button>
-                </div>
-              </Row>
-              {/* )} */}
-            </div>
+            {isBodyOpen && (
+              <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
+                {/* {isBodyOpen && ( */}
+                <Row>
+                  {children[1]}
+                  <div
+                    className="d-flex justify-content-md-center"
+                    style={{ marginTop: "12px" }}
+                  >
+                    <Button variant="secondary" onClick={onSearch}>
+                      조회
+                    </Button>
+                  </div>
+                </Row>
+                {/* )} */}
+              </div>
+            )}
           </div>
         ) : (
           <div className="search-panel">
@@ -78,9 +85,11 @@ const SearchPanel = ({ children, onSearch, showAccordion = false }) => {
                 className="d-flex align-items-center justify-content-center"
                 md={{ span: 2, offset: 2 }}
               >
-                <Button variant="secondary" onClick={onSearch}>
-                  조회
-                </Button>
+                {!hideButton && (
+                  <Button variant="secondary" onClick={onSearch}>
+                    조회
+                  </Button>
+                )}
               </Col>
             </Row>
           </div>
