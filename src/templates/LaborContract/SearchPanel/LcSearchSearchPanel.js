@@ -16,32 +16,39 @@ const LcSearchSearchPanel = (props) => {
   } = props;
 
   return (
-    <SearchPanel
-      onSearch={() => onSearch(jobSelectRef, dateSelectRef, dateEndSelectRef)}
-    >
-      <Row className="searchPanel deleteLabelBackground">
-        <Col className="mx-1 col-md-7">
-          <DateForm
-            label={"작성기간"}
-            sub="true"
-            dateType="month"
-            selectRef={dateSelectRef}
-            selectEndRef={dateEndSelectRef}
-            onChange={onSelect}
-          />
-        </Col>
-        {/* <Col className="mx-0 col-md-3">
+    <Col className="border light-grey-border p-3">
+      {" "}
+      <div style={{ marginTop: "-12px" }}>
+        <SearchPanel
+          onSearch={() =>
+            onSearch(jobSelectRef, dateSelectRef, dateEndSelectRef)
+          }
+        >
+          <Row className="searchPanel deleteLabelBackground">
+            <Col className="mx-1 col-md-7">
+              <DateForm
+                label={"작성기간"}
+                sub="true"
+                dateType="month"
+                selectRef={dateSelectRef}
+                selectEndRef={dateEndSelectRef}
+                onChange={onSelect}
+              />
+            </Col>
+            {/* <Col className="mx-0 col-md-3">
           <DateForm label={"~"} dateType="month" />
         </Col> */}
-        <Col md="4">
-          <SelectForm
-            label={"소득구분"}
-            optionList={searchOption}
-            selectRef={jobSelectRef}
-          />
-        </Col>
-      </Row>
-    </SearchPanel>
+            <Col style={{ marginLeft: "35px" }}>
+              <SelectForm
+                label={"소득구분"}
+                optionList={searchOption}
+                selectRef={jobSelectRef}
+              />
+            </Col>
+          </Row>
+        </SearchPanel>
+      </div>
+    </Col>
   );
 };
 
