@@ -32,12 +32,22 @@ import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
 import "../../styles/commonComponent.css";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/fonts.css";
+import increaseBrightness from "../../model/increaseBrightness";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
   const { state, actions } = EmpRegisterationModel();
-
   const [modalType, setModalType] = useState("");
+
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 75);
+  const labels = document.querySelectorAll(".label");
+
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
@@ -130,28 +140,28 @@ function EmpRegisterationLayout() {
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
-            {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링
-              <TableForm
-                tableHeaders={EmpRegisterLeftHeaders}
-                tableData={state.leftTableData}
-                selectedRows={state.selectedRows}
-                showCheckbox
-                sortable
-                rowAddable
-                defaultFocus
-                actions={{
-                  setTableData: actions.setLeftTableData,
-                  setPkValue: actions.setMainTablePkValue,
-                  setSelectedRows: actions.setSelectedRows,
-                  insertNewRow: actions.insertEmp,
-                  updateEditedRow: actions.updateEmp,
-                  deleteRow: actions.deleteRow,
-                  getRowObject: Emp,
-                }}
-              />
-            ) : (
+            {/* {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링 */}
+            <TableForm
+              tableHeaders={EmpRegisterLeftHeaders}
+              tableData={state.leftTableData}
+              selectedRows={state.selectedRows}
+              showCheckbox
+              sortable
+              rowAddable
+              defaultFocus
+              actions={{
+                setTableData: actions.setLeftTableData,
+                setPkValue: actions.setMainTablePkValue,
+                setSelectedRows: actions.setSelectedRows,
+                insertNewRow: actions.insertEmp,
+                updateEditedRow: actions.updateEmp,
+                deleteRow: actions.deleteRow,
+                getRowObject: Emp,
+              }}
+            />
+            {/* ) : (
               <div>Loading...</div> //로딩중 화면 표시 내용
-            )}
+            )} */}
           </Col>
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (

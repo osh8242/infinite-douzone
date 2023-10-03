@@ -27,6 +27,7 @@ import useApi from "../../model/Api";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import increaseBrightness from "../../model/increaseBrightness";
 
 const SalaryInformationEntryLayout = () => {
   const api = useApi();
@@ -38,6 +39,17 @@ const SalaryInformationEntryLayout = () => {
   const toggleRightTabVisibility = () => {
     setIsRightTabVisible(!isRightTabVisible);
   };
+
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 75);
+  const labels = document.querySelectorAll(
+    ".label:not(.deleteLabelBackground)"
+  );
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   // 코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
@@ -153,27 +165,27 @@ const SalaryInformationEntryLayout = () => {
               />
               {/* 메인영역 */}
               <Row>
-                <Col md={3}>
+                <Col md={3} className="hr-left-col">
                   <EmpList
                     actions={actions}
                     saInfoListData={state.saInfoListData}
                   />
                 </Col>
-                <Col md={3}>
+                <Col md={3} className="hr-left-col">
                   <SalaryAllowPayList
                     actions={actions}
                     salAllowData={state.salAllowData}
                     ynComplete={state.ynComplete}
                   />
                 </Col>
-                <Col md={3}>
+                <Col md={3} className="hr-left-col">
                   <SalaryDeductPayList
                     actions={actions}
                     salDeductData={state.deductData}
                     ynComplete={state.ynComplete}
                   />
                 </Col>
-                <Col className="selectDivision deleteLabelBackground">
+                <Col className="hr-left-col deleteLabelBackground">
                   <SelctDivisionList actions={actions} state={state} />
                 </Col>
               </Row>
