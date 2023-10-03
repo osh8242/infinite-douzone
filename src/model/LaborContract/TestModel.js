@@ -8,7 +8,7 @@ import { swsmUrlPattern } from "./LaborContractConstant";
 import { urlPattern } from "../HrManagement/HrManagementConstant";
 import { useApi } from "../Api";
 
-const LaborContractModel = () => {
+const TestModel = () => {
   const api = useApi();
 
   const [leftTableData, setLeftTableData] = useState([]); // 좌측 그리드 데이터
@@ -41,19 +41,12 @@ const LaborContractModel = () => {
   const dateSetRef = useRef(""); // 소득구분
   const dateSetSelectRef = useRef(""); // 소득구분
 
-  // const tabRef = useRef(null);
-
+  // 코드모달 업데이트
   function onLoadCodeHelper() {
     if (jobSelectRef.current.value === "empAll") {
       jobRef.current = "empAll";
     }
     getCodeHelperList();
-  }
-
-  function onLoad() {
-    console.log("load Test");
-    setLeftTableData([]);
-    setMainTabData({});
   }
 
   const getCodeHelperList = () => {
@@ -85,7 +78,7 @@ const LaborContractModel = () => {
     } else {
       jobRef.current = jobSelectRef.current.value;
     }
-    // console.log("searrdddss");
+    console.log("searrdddss");
     console.log(dateSelectRef.current.value);
     console.log(dateEndSelectRef.current.value);
     dateRef.current = dateSelectRef.current.value;
@@ -113,7 +106,41 @@ const LaborContractModel = () => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
+
+    // api
+    //   .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
+    //   .then((response) => {
+    //     console.log(response);
+    //     console.log(response.data);
+    //     const newLeftCodeHelperTableData = response.data.map((emp) => {
+    //       return { item: emp, table: "swsm" };
+    //     });
+
+    //     getLeftTableData(newLeftCodeHelperTableData);
+    //   })
+    //   .catch((error) => {
+    //     console.error("에러발생: ", error);
+    //     // 필요에 따라 다른 오류 처리 로직 추가
+    //   });
   };
+
+  // const getEmpList = () => {
+  //   api
+  //     .get(`/swsm/getEmpListForSwsm?job=${jobRef.current}`)
+  //     .then((response) => {
+  //       console.log(response);
+  //       console.log(response.data);
+  //       const newLeftCodeHelperTableData = response.data.map((emp) => {
+  //         return { item: emp, table: "swsm" };
+  //       });
+
+  //       getLeftTableData(newLeftCodeHelperTableData);
+  //     })
+  //     .catch((error) => {
+  //       console.error("에러발생: ", error);
+  //       // 필요에 따라 다른 오류 처리 로직 추가
+  //     });
+  // };
 
   const getLeftTableData = (newLeftCodeHelperTableData) => {
     api
@@ -269,39 +296,11 @@ const LaborContractModel = () => {
           });
   }, [editedEmp]);
 
-  const onSetSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
-    if (jobSelectRef.current.value === "empAll") {
-      jobRef.current = "empAll";
-    } else if (jobSelectRef.current.value === "empRegistration") {
-      jobRef.current = "empRegistration";
-    } else if (jobSelectRef.current.value === "tempEmpRegistration") {
-      jobRef.current = "tempEmpRegistration";
-    } else {
-      jobRef.current = jobSelectRef.current.value;
-    }
-    // console.log("searrdddss");
-    console.log(dateSelectRef.current.value);
-    console.log(dateEndSelectRef.current.value);
-    dateRef.current = dateSelectRef.current.value;
-    dateEndRef.current = dateEndSelectRef.current.value;
-    getEmpList();
-  };
-
   const updateEmp = useCallback((emp) => {
     console.log("updateEmp 업데이트 요청", emp);
-    let newEmp = {
-      ...emp,
-    };
-    if (jobSetSelectRef !== "" || dateSetSelectRef !== "") {
-      newEmp = {
-        ...emp,
-        incomeClassfication: jobSetSelectRef.current.value,
-        dateOfcreate: dateSetSelectRef.current.value,
-      };
-    }
 
     api
-      .put(urlPattern.updateEmp, newEmp)
+      .put(urlPattern.updateEmp, emp)
       .then((response) => {
         if (response.data === 1) console.log("Emp update 성공");
         setEditedEmp();
@@ -424,54 +423,22 @@ const LaborContractModel = () => {
     [leftTablePkValue]
   );
 
-  //선택된 행들 delete 요청
-  const deleteSelectedRows = useCallback(() => {
-    const editedTableNames = {};
-    console.log("삭제요청된 행들", selectedRows);
-
-    // 각 row에 대한 delete 요청을 생성
-    const deletePromises = selectedRows.map((row) => {
-      let pattern;
-      switch (row.table) {
-        case "swsm":
-          pattern = swsmUrlPattern.deleteSwsm;
-          break;
-        default:
-          return Promise.resolve();
-      }
-      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
-      return api.delete(pattern, { data: row.item });
-    });
-
-    Promise.all(deletePromises)
-      .then((responses) => {
-        console.log("선택된 모든 행의 삭제 완료");
-        console.log("selectedRows", selectedRows);
-        setSelectedRows([]); // 선택행 배열 비우기
-        Object.keys(editedTableNames).forEach((tableName) => {
-          switch (tableName) {
-            case "swsm":
-              getEmpList();
-              break;
-            default:
-              break;
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("하나 이상의 요청에서 에러 발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
-  }, [selectedRows]);
-
   //현재행 삭제요청
   const deleteRow = useCallback(
     (row) => {
       console.log("삭제요청 해당 테이블", row["table"]);
       let pattern;
       switch (row["table"]) {
-        case "swsm":
-          pattern = swsmUrlPattern.deleteSwsm;
+        case "empFam":
+          console.log("가족 딜리트 요청", row);
+          pattern = urlPattern.deleteEmpFam;
+          break;
+        case "empPhoto":
+          console.log("포토 딜리트 요청", row);
+          pattern = urlPattern.deleteEmpPhoto;
+          break;
+        case "swsmOther":
+          // pattern = urlPattern.deleteEmpAdd;
           console.log("지우려는 row", row);
           const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
           newLeftCodeHelperTableData.push(row);
@@ -482,18 +449,6 @@ const LaborContractModel = () => {
           });
           setLeftTableData(newLeftTableData);
           break;
-        // case "swsmOther":
-        //   // pattern = urlPattern.deleteEmpAdd;
-        //   console.log("지우려는 row", row);
-        //   const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
-        //   newLeftCodeHelperTableData.push(row);
-        //   setLeftCodeHelperTableData(newLeftCodeHelperTableData);
-        //   const newLeftTableData = leftTableData.filter((data) => {
-        //     if (data.item.cdEmp === row.item.cdEmp) return false;
-        //     else return true;
-        //   });
-        //   setLeftTableData(newLeftTableData);
-        //   break;
         default:
           console.log("설정되지 않은 테이블 행을 삭제요청받음");
           return;
@@ -529,7 +484,6 @@ const LaborContractModel = () => {
       subTableData,
     },
     actions: {
-      onLoad,
       onSearch,
       onLoadCodeHelper,
       getEmpList,
@@ -541,6 +495,10 @@ const LaborContractModel = () => {
 
       insertEmp,
       updateEmp,
+
+      // insertSwsm,
+      // updateSwsm,
+
       submitMainTabData,
       setMainTabData,
       setEditedSwsm,
@@ -550,7 +508,6 @@ const LaborContractModel = () => {
       updateSwsmOther,
 
       setSelectedRows,
-      deleteSelectedRows,
 
       deleteRow,
 
@@ -559,4 +516,4 @@ const LaborContractModel = () => {
     },
   };
 };
-export default LaborContractModel;
+export default TestModel;

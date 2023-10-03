@@ -7,7 +7,11 @@ import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import "../styles/fonts.css";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -92,17 +96,17 @@ function TextBoxComponent(props) {
     ...(height ? { height: `${height}px` } : {}),
   };
 
-  useEffect(() => {
-    if (selectedOption === "F") {
-      setDisable(true);
-    } else setDisable(false);
-    setSelectedValue(selectedOption || "");
-  }, [selectedOption]);
+  // useEffect(() => {
+  //   if (selectedOption === "F") {
+  //     setDisable(true);
+  //   } else setDisable(false);
+  //   setSelectedValue(selectedOption || "");
+  // }, [selectedOption]);
 
   const handleSelectChange = (event) => {
-    if (event.target.value === "F" || event.target.value === "T") {
-      setDisable(!isDisable);
-    }
+    // if (event.target.value === "F" || event.target.value === "T") {
+    //   setDisable(!isDisable);
+    // }
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
@@ -148,6 +152,17 @@ function TextBoxComponent(props) {
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
       }
     }
+
+    if (onClickCodeHelper) {
+      if (event.key === "Backspace") {
+        setInputValue("");
+        onChange && onChange(event, "", id);
+      } else {
+        event.preventDefault(); // 키보드 입력 막기
+        onClickCodeHelper();
+      }
+    }
+    onKeyDown && onKeyDown(event);
   };
 
   const handleInputChange = (event, index) => {
@@ -194,6 +209,8 @@ function TextBoxComponent(props) {
       }
     } else if (type === "date" && onClickCodeHelper) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    } else if (onClickCodeHelper) {
+      setInputValue("");
     } else {
       setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
@@ -325,14 +342,20 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  onClick={onClickCodeHelper}
+                />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
+                  <FontAwesomeIcon
+                    icon={faCopyright}
+                    onClick={onClickCodeHelper}
+                  />
                 </div>
               </div>
             )

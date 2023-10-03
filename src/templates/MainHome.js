@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
 import "../styles/fonts.css";
+import { useLogin } from "../Login/LoginProvider";
 
 const slides = [
   {
@@ -80,8 +81,11 @@ const slides = [
 ];
 
 function MainHome() {
+  const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
+
+  console.log(updateToken);
+  console.log(updateLoginInfo);
   const navigate = useNavigate();
-  // const userInfoString = localStorage.getItem("userInfo");
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
@@ -95,8 +99,27 @@ function MainHome() {
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
 
-  let userToken = localStorage.getItem("token");
-  let userTokenObject = JSON.parse(userToken);
+  // let userToken = localStorage.getItem("token");
+  // let userTokenObject = JSON.parse(userToken);
+
+  const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  };
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, 10000); // 10초마다 슬라이드 변경
+
+    return () => clearInterval(interval);
+  }, []);
+
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
     if (localStorage.getItem("userInfo") != null) {
@@ -112,24 +135,11 @@ function MainHome() {
       navigate("/login");
     }
   }
-  console.log("------HEADER--------------");
-  console.log(userInfoObject);
-  console.log("TOKEN: " + userTokenObject);
-  console.log("------HEADER--------------");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const toggleProfileDropdown = () => {
-    setShowProfileDropdown(!showProfileDropdown);
-  };
 
-  const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  };
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
-    );
-  };
+  // const toggleProfileDropdown = () => {
+  //   setShowProfileDropdown(!showProfileDropdown);
+  // };
 
   useEffect(() => {
     const interval = setInterval(() => {

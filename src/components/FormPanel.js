@@ -198,6 +198,10 @@ const FormPanel = ({
             value={getValueFromCode(id, value)}
             onClickCodeHelper={codeHelper}
             onEnter={submitData}
+            onChange={(e, value) =>{
+              (onChangeFn && onChangeFn(value));
+            }
+            }
           />
         );
         break;
@@ -246,6 +250,22 @@ const FormPanel = ({
             labelKey={input.field}
             labelKey2={input.subField}
             valueMd={input.valueMd}
+          />
+        );
+        break;
+      case INPUT_TYPE.selectCustom:
+        component = (
+          <SelectForm
+            id={id}
+            label={label}
+            disabled={disabled}
+            optionList={input?.optionList || SELECT_LIST[input.field]}
+            selectedOption={value}
+            onChange={submitData}
+            // onChange={(e, value) => onChangeFn && onChangeFn(value)}
+            // laborContract
+            subLabel={input.subLabel}
+            endLabel={input.endLabel}
           />
         );
         break;

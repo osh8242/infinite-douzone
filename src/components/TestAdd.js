@@ -16,6 +16,7 @@ const TestAdd = (props) => {
     md = 4,
     actions,
     disabled,
+    onChange,
   } = props;
 
   const [zonecode, setZonecode] = useState(value || "");
@@ -39,6 +40,11 @@ const TestAdd = (props) => {
     setModalState({ ...modalState, show: false });
   };
 
+  const onChangeHandeler = (e) => {
+    setAddress(address);
+    onChange && onChange(e, value);
+  };
+
   const [modalState, setModalState] = useState({
     show: false,
     props: {},
@@ -57,7 +63,7 @@ const TestAdd = (props) => {
                 name="address"
                 value={address}
                 size={size}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={onChangeHandeler}
                 disabled={isDisabled}
               />
             </div>

@@ -7,7 +7,7 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
@@ -28,6 +28,28 @@ const Header = () => {
   );
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
+
+  const searchFormRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      console.log("Keydown event triggered");
+      if (e.key === "F10" && searchFormRef.current) {
+        e.preventDefault();
+        searchFormRef.current.focusInput();
+      }
+      if (e.key === "Escape" && searchFormRef.current) {
+        searchFormRef.current.blurInput();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   function onClickLoginHandler(e) {
     if (localStorage.getItem("userInfo") != null) {
       setBtnByState("로그인");
@@ -85,10 +107,16 @@ const Header = () => {
             </select>
           </div>
           <div id="topRightNotificationHeader">
-            <SearchForm
+            {/* <SearchForm
               type="text"
               id="findMenuBar"
-              placeholder={"찾고싶은 메뉴를 검색하세요"}
+              placeholder={"메뉴명을 입력해주세요.  [ F10 ]    "}
+            /> */}
+            <SearchForm
+              ref={searchFormRef}
+              type="text"
+              id="findMenuBar"
+              placeholder={"메뉴명을 입력해주세요.  [ F10 ]"}
             />
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
