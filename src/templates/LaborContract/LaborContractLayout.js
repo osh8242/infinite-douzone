@@ -189,14 +189,15 @@ const LaborContractLayout = () => {
                         <Scrollbars
                           style={{
                             height: 380,
-                            overflow: "hidden",
+                            overflowX: "hidden",
                             marginBottom: 30,
                           }}
                           key={"scrollKey"}
                         >
                           <Row
                             key={"menuKey1"}
-                            className="mt-4 mb-5 justify-content-center"
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
                             <FormPanel
                               INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
@@ -205,7 +206,6 @@ const LaborContractLayout = () => {
                               actions={actions}
                             />
                           </Row>
-                          ,
                         </Scrollbars>,
                       ]}
                     </MenuTab>
