@@ -21,6 +21,7 @@
   */
   font-weight: 700;
   background-color: var(--lightSkyblue);
+  z-index: -1;
 }
 
 .siEmpDetail-container .col-md-12 .label {
@@ -59,8 +60,8 @@
 }
 
 .deleteLabelBackground .label {
-  background-color: transparent;
-  font-weight: 700;
+  background-color: transparent !important;
+  font-weight: 700 !important;
 }
 
 .labelAndContent {

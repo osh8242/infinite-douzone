@@ -57,9 +57,8 @@ const LaborContractLayout = () => {
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
   const themeLabel = increaseBrightness(themeColor, 75);
-  const labels = document.querySelectorAll(
-    ".label:not(.deleteLabelBackground)"
-  );
+  const labels = document.querySelectorAll(".label");
+
   labels.forEach((label) => {
     label.style.backgroundColor = themeLabel;
   });
