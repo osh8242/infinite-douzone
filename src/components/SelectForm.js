@@ -98,19 +98,21 @@ function SelectForm(props) {
             </div>
           ) : (
             // 일반 Select
-            <Form.Select
-              id={id}
-              ref={selectRef}
-              value={selectedValue}
-              onChange={(e) => handleSelectChange(e)}
-              disabled={isDisabled}
-            >
-              {optionList.map((option, index) => (
-                <option value={option.key} key={index}>
-                  {option.value}
-                </option>
-              ))}
-            </Form.Select>
+            <div className="widthFull">
+              <Form.Select
+                id={id}
+                ref={selectRef}
+                value={selectedValue}
+                onChange={(e) => handleSelectChange(e)}
+                disabled={isDisabled}
+              >
+                {optionList.map((option, index) => (
+                  <option value={option.key} key={index}>
+                    {option.value}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
           )}
         </div>
       </div>

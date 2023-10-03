@@ -1,5 +1,6 @@
 @import url("context.css");
 
+/* 유효성 */
 .invalid {
   outline-style: solid !important;
   outline-width: 1px !important;
@@ -8,20 +9,20 @@
   box-shadow: 0 0px 4px 2px rgba(255, 20, 52, 0.5) !important;
 }
 
+/* 라벨 */
 .col-md-12 .label,
 .label {
-  width: 25%;
+  min-width: 120px;
   max-width: 120px;
-  height: 120%;
+  height: 128%;
   display: flex;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   align-items: center;
   justify-content: center;
   /* background-color: rgb(233, 236, 239);
   */
   font-weight: 700;
   background-color: var(--lightSkyblue);
-  z-index: -1;
 }
 
 .siEmpDetail-container .col-md-12 .label {
@@ -34,9 +35,9 @@
 .col-md-6 .label {
   min-width: 120px;
   max-width: 120px;
-  height: 150%;
+  height: 136%;
   display: flex;
-  border-radius: 2px;
+  /* border-radius: 2px; */
   align-items: center;
   justify-content: center;
   background-color: var(--lightSkyblue);
@@ -48,7 +49,7 @@
 .col-md-4 .label {
   min-width: 120px;
   max-width: 120px;
-  height: 160%;
+  height: 130%;
   display: flex;
   border-radius: 2px;
   align-items: center;
@@ -70,11 +71,16 @@
   gap: 16px;
 }
 
+.outline-4 {
+  outline: 4px solid white;
+}
+
+/* 너비 및 높이 관련 */
 .widthFull {
   width: 100%;
 }
 
-.regNum {
+/* .regNum {
   position: relative;
 }
 
@@ -85,7 +91,7 @@
   color: var(--dark);
   border: none;
   background-color: transparent;
-}
+} */
 
 .modal-body {
   position: relative;
