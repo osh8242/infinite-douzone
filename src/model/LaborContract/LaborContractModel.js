@@ -63,6 +63,9 @@ const LaborContractModel = () => {
   function onLoad() {
     console.log("load Test");
     setLeftTableData([]);
+    setLengthEmp("0");
+    setLengthEmpAll("0");
+    setLengthTempEmp("0");
     // setMainTabData({});
   }
 

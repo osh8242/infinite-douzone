@@ -188,7 +188,7 @@ const LaborContractLayout = () => {
                       {[
                         <Scrollbars
                           style={{
-                            height: 380,
+                            height: 370,
                             overflowX: "hidden",
                             marginBottom: 30,
                           }}
@@ -305,7 +305,7 @@ const LaborContractLayout = () => {
                       {[
                         <Scrollbars
                           style={{
-                            height: 380,
+                            height: 370,
                             overflow: "hidden",
                             marginBottom: 20,
                           }}
@@ -313,7 +313,8 @@ const LaborContractLayout = () => {
                         >
                           <Row
                             key={"menuKeySearchSub"}
-                            className="mt-4 mb-5 justify-content-center"
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
                             <FormPanel
                               INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
@@ -322,7 +323,6 @@ const LaborContractLayout = () => {
                               actions={actions}
                             />
                           </Row>
-                          ,
                         </Scrollbars>,
                       ]}
                     </MenuTab>
