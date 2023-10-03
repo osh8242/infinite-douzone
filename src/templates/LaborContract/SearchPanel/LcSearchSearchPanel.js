@@ -22,7 +22,7 @@ const LcSearchSearchPanel = (props) => {
       <Row className="searchPanel">
         <Col className="mx-1 col-md-7">
           <DateForm
-            label={"작성일자"}
+            label={"작성기간"}
             sub="true"
             dateType="month"
             selectRef={dateSelectRef}

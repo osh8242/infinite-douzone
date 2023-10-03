@@ -11,22 +11,13 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Col, Nav } from "react-bootstrap";
-import emp from "../..//styles/img/empRegisterLogo.png";
-import { useState } from "react";
-import { EmpRegisterUndeletedEmpHeaders } from "../../model/EmpRegister/EmpConstant";
-import ModalComponent from "../../components/ModalComponent";
-import ConfirmComponent from "../../components/ConfirmComponent";
+import { React, useState } from "react";
+import { Button, Nav } from "react-bootstrap";
+import ConfirmComponent from "../../../components/ConfirmComponent";
 import "../../styles/header.css";
-import "../../styles/fonts.css";
+import empAdd from "../../styles/img/empAddLogo.png";
 
-// 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
-// const logoUrl = {
-//   emp: "../styles/img/empRegisterLogo.png",
-//   empAdd: "../styles/img/empAddLogo.png",
-// };
-
-function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
+const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -38,12 +29,10 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
     setShowSidebar(!showSidebar);
   };
 
-  const clickTrashCanHandler = (event) => {
-    if (existSelectedRows) {
+  const faTrashCanClickHandler = (event) => {
+    if (existSelectedRows)
       setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
-    } else {
-      setShowModal({ show: true, message: "삭제할 행이 없습니다" });
-    }
+    else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
   return (
@@ -69,7 +58,6 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
           </Nav.Link>
         </Nav>
       </div>
-      {/* 헤더 콘텐츠 */}
       <div id="secondTopHeaderContents">
         <Button
           id="toggleSidebarBtn"
@@ -79,29 +67,29 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
           <i className={`fa fa-bars colorWhite`} />
         </Button>
         {/* 로고 */}
-        <img id="logo" src={emp} alt="" />
+        <img id="logo" src={empAdd} alt="" />
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            className="colorWhite backgroundBorderNone forbid"
+            className="colorWhite backgroundBorderNone"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
         </button>
         <button
           className="backgroundBorderNone"
-          onClick={(e) => clickTrashCanHandler(e)}
+          onClick={(e) => faTrashCanClickHandler(e)}
         >
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite forbid" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
       <ConfirmComponent
@@ -116,6 +104,6 @@ function EmpRegisterHeader({ deleteButtonHandler, existSelectedRows }) {
       />
     </div>
   );
-}
+};
 
-export default EmpRegisterHeader;
+export default HrManagementHeader;

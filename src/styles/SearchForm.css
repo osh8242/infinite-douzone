@@ -65,7 +65,7 @@
 }
 
 .search-results li.selected {
-  background-color: #e0e0e0;
+    background-color: #e0e0e0;
 }
 .search-bar__input.expanded {
     width: 300px;

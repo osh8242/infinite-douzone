@@ -328,11 +328,11 @@ function SignUpLayout() {
               <Row className="d-flex justify-content-center align-items-center">
                 {cdCheck === "SUCCESS" && companyCode.length > 0 ? (
                   <p className={"successMessageWrap"}>
-                    사용 가능한 아이디입니다.
+                    사용 가능한 코드입니다.
                   </p>
                 ) : cdCheck === "FAIL" && companyCode.length > 0 ? (
                   <p className={"errorMessageWrap"}>
-                    사용 불가능한 아이디입니다.
+                    사용 불가능한 코드입니다.
                   </p>
                 ) : companyCode.length === 0 ? (
                   <p> </p>
@@ -513,21 +513,48 @@ function SignUpLayout() {
                 <label className="color-option">
                   <input
                     type="radio"
-                    value="#FFFF33"
-                    checked={themeColor === "#FFFF33"}
+                    value="rgb(18, 204, 108)"
+                    checked={themeColor === "rgb(18, 204, 108)"}
                     onChange={(e) => setThemeColor(e.target.value)}
                   />
-                  <span style={{ backgroundColor: "#FFFF33" }}></span>
+                  <span style={{ backgroundColor: "rgb(18, 204, 108)" }}></span>
                 </label>
 
                 <label className="color-option">
                   <input
                     type="radio"
-                    value="#FF9933"
-                    checked={themeColor === "#FF9933"}
+                    value="rgb(254, 213, 51)"
+                    checked={themeColor === "rgb(254, 213, 51)"}
                     onChange={(e) => setThemeColor(e.target.value)}
                   />
-                  <span style={{ backgroundColor: "#FF9933" }}></span>
+                  <span style={{ backgroundColor: "rgb(254, 213, 51)" }}></span>
+                </label>
+                <label className="color-option">
+                  <input
+                    type="radio"
+                    value="rgb(255, 134, 48)"
+                    checked={themeColor === "rgb(255, 134, 48)"}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                  />
+                  <span style={{ backgroundColor: "rgb(255, 134, 48)" }}></span>
+                </label>
+                <label className="color-option">
+                  <input
+                    type="radio"
+                    value="rgb(255, 82, 82)"
+                    checked={themeColor === "rgb(255, 82, 82)"}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                  />
+                  <span style={{ backgroundColor: "rgb(255, 82, 82)" }}></span>
+                </label>
+                <label className="color-option">
+                  <input
+                    type="radio"
+                    value="rgb(126, 58, 243)"
+                    checked={themeColor === "rgb(126, 58, 243)"}
+                    onChange={(e) => setThemeColor(e.target.value)}
+                  />
+                  <span style={{ backgroundColor: "rgb(126, 58, 243)" }}></span>
                 </label>
               </Col>
             </Col>

@@ -14,7 +14,10 @@ import "../styles/header.css";
 import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
+import { useLog } from "../model/useLog";
+
 const Header = () => {
+  const log = useLog();
   const navigate = useNavigate();
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const [btnByState, setBtnByState] = useState(
@@ -33,7 +36,6 @@ const Header = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      console.log("Keydown event triggered");
       if (e.key === "F10" && searchFormRef.current) {
         e.preventDefault();
         searchFormRef.current.focusInput();
@@ -56,6 +58,7 @@ const Header = () => {
       setHrefState("/login");
       localStorage.removeItem("userInfo");
       localStorage.removeItem("authToken");
+      log();
       setUserName("비회원");
     } else {
       setHrefState("/login");
@@ -116,7 +119,7 @@ const Header = () => {
               ref={searchFormRef}
               type="text"
               id="findMenuBar"
-              placeholder={"메뉴명을 입력해주세요. [ F10 ]"}
+              placeholder={"메뉴명을 입력해주세요.  [ F10 ]"}
             />
             <button className="backgroundBorderNone">
               <FontAwesomeIcon

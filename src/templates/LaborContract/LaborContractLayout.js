@@ -23,6 +23,7 @@ import FormPanel from "../../components/FormPanel";
 import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
+import "../../styles/fonts.css";
 
 import {
   TAB_MENU_LIST,
@@ -105,9 +106,12 @@ const LaborContractLayout = () => {
 
   return (
     <>
-      <LaborContractHeader />
+      <LaborContractHeader
+        deleteButtonHandler={actions.deleteSelectedRows}
+        existSelectedRows={selectedRows.length !== 0}
+      />
       <Container>
-        <Row className="mt-3">
+        <Row className="mt-4 SUITE p-12">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
@@ -123,7 +127,7 @@ const LaborContractLayout = () => {
                   searchOption={searchOption}
                   onSelect={actions.submitMainTabData}
                 />
-                <Row>
+                <Row className="mt-4">
                   <Col md="3">
                     <Row>
                       <div className="leftTable">
@@ -232,7 +236,7 @@ const LaborContractLayout = () => {
                   searchOption={searchOption}
                   onSelect={actions.submitMainTabData}
                 />
-                <Row>
+                <Row className="mt-4">
                   <Col md="3">
                     <Row>
                       <div className="leftTable">
@@ -278,15 +282,52 @@ const LaborContractLayout = () => {
                   <Col md="9" className="px-5">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
-                        <Row
-                          key={"menuKeySearchSub"}
-                          className="mt-4 mb-5 justify-content-center"
+                        <Scrollbars
+                          style={{
+                            height: 380,
+                            overflow: "hidden",
+                            marginBottom: 20,
+                          }}
+                          key={"scrollKey"}
                         >
-                          <FormPanel
-                            INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
-                            formData={mainTabData}
-                            submitData={actions.submitMainTabData}
-                            actions={actions}
+                          <Row
+                            key={"menuKeySearchSub"}
+                            className="mt-4 mb-5 justify-content-center"
+                          >
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>
+                          ,
+                        </Scrollbars>,
+                      ]}
+                    </MenuTab>
+                    <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                      {[
+                        <Row
+                          key={"menuKey2"}
+                          className="mt-4 mb-4 justify-content-center"
+                        >
+                          <TableForm
+                            tableName="SwsmOther"
+                            // rowAddable
+                            // sortable
+                            // showCheckbox
+                            tableHeaders={SubTabHeaders}
+                            tableData={subTableData}
+                            pkValue={leftTablePkValue}
+                            selectedRows={selectedRows}
+                            actions={{
+                              setTableData: actions.setSubTableData,
+                              setSelectedRows: actions.setSelectedRows,
+                              insertNewRow: actions.insertSwsmOther,
+                              updateEditedRow: actions.updateSwsmOther,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: SwsmOther,
+                            }}
                           />
                         </Row>,
                       ]}

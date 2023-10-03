@@ -35,7 +35,6 @@ const SalaryInformationEntryLayout = () => {
   const [isRightTabVisible, setIsRightTabVisible] = useState(false);
   const [modalType, setModalType] = useState("");
 
-
   const toggleRightTabVisibility = () => {
     setIsRightTabVisible(!isRightTabVisible);
   };
@@ -52,7 +51,7 @@ const SalaryInformationEntryLayout = () => {
           let url = data.url ? data.url : "";
           let params = data.params ? data.params : setParams;
 
-          if(url!=="") codeDataList = await fetchData(api, url, params);
+          if (url !== "") codeDataList = await fetchData(api, url, params);
 
           actions.setModalState((prevState) => ({
             ...prevState,
@@ -139,7 +138,6 @@ const SalaryInformationEntryLayout = () => {
         allowYear={state.allowYear}
       />
 
-
       {/* <Container fluid> */}
       <>
         <Container>
@@ -156,23 +154,30 @@ const SalaryInformationEntryLayout = () => {
               {/* 메인영역 */}
               <Row>
                 <Col md={3}>
-                  <EmpList actions={actions} saInfoListData={state.saInfoListData} />
-                </Col>
-                <Col md={3}>
-                  <SalaryAllowPayList 
-                    actions={actions} 
-                    salAllowData={state.salAllowData} 
-                    ynComplete = {state.ynComplete}
+                  <EmpList
+                    actions={actions}
+                    saInfoListData={state.saInfoListData}
                   />
                 </Col>
                 <Col md={3}>
-                  <SalaryDeductPayList actions={actions} salDeductData={state.deductData} ynComplete={state.ynComplete} />
+                  <SalaryAllowPayList
+                    actions={actions}
+                    salAllowData={state.salAllowData}
+                    ynComplete={state.ynComplete}
+                  />
                 </Col>
-                <Col className="selectDivision">
+                <Col md={3}>
+                  <SalaryDeductPayList
+                    actions={actions}
+                    salDeductData={state.deductData}
+                    ynComplete={state.ynComplete}
+                  />
+                </Col>
+                <Col className="selectDivision deleteLabelBackground">
                   <SelctDivisionList actions={actions} state={state} />
                 </Col>
               </Row>
-          </Col>
+            </Col>
 
             {/* 우측 상세정보 버튼 */}
             <FontAwesomeIcon

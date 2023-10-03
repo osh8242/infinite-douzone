@@ -11,7 +11,7 @@ import EmpRegisterHeader from "./EmpRegisterHeader";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 // import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
-import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Form, Row, Spinner, Table } from "react-bootstrap";
 import FormPanel from "../../components/FormPanel";
 import TableForm from "../../components/TableForm";
 import {
@@ -138,6 +138,7 @@ function EmpRegisterationLayout() {
                 showCheckbox
                 sortable
                 rowAddable
+                defaultFocus
                 actions={{
                   setTableData: actions.setLeftTableData,
                   setPkValue: actions.setMainTablePkValue,
