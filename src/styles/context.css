@@ -1,9 +1,18 @@
 :root {
+  /* theme */
+  --custom-theme-header: var(--blue);
+  --custom-theme-label: var(--skyblue);
+
   --darkBlue: rgb(0, 129, 255);
   --blue: rgb(48, 150, 255);
   --lightBlue: rgb(151, 202, 255);
   --skyblue: rgb(224, 239, 255);
   --lightSkyblue: rgb(233, 244, 255);
+
+  --coral: rgb(235, 70, 70);
+  --orange: rgb(255, 120, 48);
+  --yellow: rgb(224, 188, 44);
+  --green: rgb(44, 218, 128);
 
   --red: rgb(255, 20, 52);
 

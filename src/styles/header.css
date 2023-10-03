@@ -98,13 +98,14 @@
   text-decoration: none;
 }
 
+/* 색깔있는 헤더 */
 #secondTopHeader {
   width: 100vw;
   height: 48px;
   position: relative;
   display: flex;
   justify-content: space-between;
-  background-color: var(--blue);
+  background-color: var(--custom-theme-header);
 }
 
 #secondTopHeader #secondTopHeaderContents {
