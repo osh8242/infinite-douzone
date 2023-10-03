@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 import axios from "axios";
 import { url } from "../CommonConstant";
 import Swsm from "../../vo/LaborContract/Swsm";
@@ -92,6 +98,50 @@ const LaborContractModel = () => {
     dateEndRef.current = dateEndSelectRef.current.value;
     getEmpList();
   };
+
+  //사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    let empAll = 0;
+    let empRegistration = 0;
+    let tempEmpRegistration = 0;
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        empAll = response.data.length;
+        console.log("EMPALL");
+        console.log(empAll);
+        console.log(jobRef.current);
+        console.log(leftTableData);
+        console.log(leftTableData.length);
+
+        if (jobRef.current === "empRegistration") {
+          empRegistration = leftTableData.length;
+          tempEmpRegistration = empAll - empRegistration;
+        } else if (jobRef.current === "tempEmpRegistration") {
+          tempEmpRegistration = leftTableData.length;
+          empRegistration = empAll - empRegistration;
+        }
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+    console.log("result");
+    console.log(empAll);
+    console.log(empRegistration);
+    console.log(tempEmpRegistration);
+
+    return [
+      {
+        item: {
+          empAll: empAll,
+          empRegistration: empRegistration,
+          tempEmpRegistration: tempEmpRegistration,
+        },
+      },
+    ];
+  }, [leftTableData]);
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
@@ -528,6 +578,7 @@ const LaborContractModel = () => {
       modalState,
       codeHelperTableData,
       subTableData,
+      leftStaticsTableData,
     },
     actions: {
       onLoad,

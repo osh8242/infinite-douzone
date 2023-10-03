@@ -14,6 +14,7 @@ import {
   CODE_HELPER_DATA,
   searchOption,
   leftTableConstant,
+  leftStaticsTableConstant,
 } from "../../model/LaborContract/LaborContractConstant";
 
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
@@ -50,6 +51,7 @@ const LaborContractLayout = () => {
     dateSelectRef,
     dateEndSelectRef,
     dateSetSelectRef,
+    leftStaticsTableData,
   } = state;
 
   // const tabRef = useRef(null);
@@ -239,7 +241,7 @@ const LaborContractLayout = () => {
                 <Row className="mt-4">
                   <Col md="3">
                     <Row>
-                      <div className="leftTable">
+                      <div className="leftSearchTable">
                         <TableForm
                           readOnly
                           tableName="swsm"
@@ -276,6 +278,14 @@ const LaborContractLayout = () => {
                           }}
                         />
                       </div>
+                    </Row>
+                    <Row className="mt-3">
+                      <TableForm
+                        tableName="EMPSTATICS"
+                        tableHeaders={leftStaticsTableConstant.headers}
+                        tableData={leftStaticsTableData}
+                        readOnly
+                      />
                     </Row>
                   </Col>
 
