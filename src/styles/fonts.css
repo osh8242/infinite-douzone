@@ -82,6 +82,9 @@
 .p-16 {
   font-size: 16pt;
 }
+.p-14 {
+  font-size: 14pt;
+}
 .p-12 {
   font-size: 12pt;
 }
@@ -90,4 +93,8 @@
 }
 .p-8 {
   font-size: 8pt;
+}
+
+.semi-bold {
+  font-weight: 600;
 }
