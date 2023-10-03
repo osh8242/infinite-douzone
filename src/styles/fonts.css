@@ -69,10 +69,16 @@
   letter-spacing: 2px;
 }
 
+.p-32 {
+  font-size: 32pt;
+}
 .p-24 {
   font-size: 24pt;
 }
 
+.p-20 {
+  font-size: 20pt;
+}
 .p-16 {
   font-size: 16pt;
 }

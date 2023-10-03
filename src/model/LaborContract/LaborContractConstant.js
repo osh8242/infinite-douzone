@@ -1,11 +1,45 @@
+import { CODE_TYPE, CODE_VALUE, SELECT_LIST } from "../CommonConstant";
+
 export const swsmUrlPattern = {
   getAllEmp: "/emp/getAllEmp",
   getSwsm: "/swsm/getSwsmByCdEmp",
   getSwsmOther: "/swsmOther/getSwsmOtherByCdEmp",
   updateSwsm: "/swsm/updateSwsm",
+  insertSwsm: "/swsm/insertSwsm",
+  deleteSwsm: "/swsm/deleteSwsm",
   insertSwsmOther: "/swsmOther/insertSwsmOther",
   updateSwsmOther: "/swsmOther/updateSwsmOtherByCdEmp",
   deleteSwsmOther: "/swsmOther/deleteSwsmOther",
+};
+
+export const CODE_HELPER_DATA = {
+  leftTableCodeHelper: {
+    title: "사원 조회",
+    headers: [
+      { field: "cdEmp", text: "사원코드" },
+      { field: "nmKrname", text: "사원명" },
+    ],
+    tableData: [],
+    searchField: ["cdEmp", "nmKrname"],
+  },
+
+  cdOffduty: {
+    title: "직무 조회",
+    headers: [
+      { field: "cdOffduty", text: "직무코드" },
+      { field: "nmCdOffduty", text: "직무명" },
+    ],
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdOffduty"]]).map((key) => {
+      return {
+        item: {
+          cdOffduty: key,
+          nmCdOffduty: CODE_VALUE[CODE_TYPE["cdOffduty"]][key],
+        },
+      };
+    }),
+    searchField: ["cdOffduty", "nmCdOffduty"],
+    usePk: "cdOffduty",
+  },
 };
 
 export const labels = {
@@ -31,16 +65,58 @@ export const labels = {
 };
 
 // 상단 조회 - 소득구분 목록
+export const searchSelectList = [
+  { key: "empAll", value: "0. 전체" },
+  { key: "empRegistration", value: "1. 사원등록" },
+  { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
+];
+
+///search 정리후 삭제 예정
+// 상단 조회 - 소득구분 목록
 export const incomeClassficationList = [
   { key: "empAll", value: "0. 전체" },
   { key: "empRegistration", value: "1. 사원등록" },
   { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
 ];
 
+// 상단 조회 - 소득구분 목록
+export const searchOption = [
+  { key: "empAll", value: "0. 전체" },
+  { key: "empRegistration", value: "1. 사원등록" },
+  { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
+];
+///////
+// export const searchOption = [
+//   {
+//     key: "yAndOnThisYear",
+//     value: "재직자 + 당해년도 퇴사자",
+//   },
+//   { key: "Y", value: "재직자" },
+//   { key: "N", value: "퇴직자" },
+// ];
+
+// export const orderList = [
+//   { key: "cdEmp", value: "코드순" },
+//   { key: "nmKrname", value: "이름순" },
+// ];
+
+export const mainTabMenuList = {
+  WorkInformation: "계약서 작성",
+  otherBenefit: "계약서 조회",
+};
+
 // 추가 구분 목록
 export const subTabMenuList = {
   WorkInformation: "근로정보",
   otherBenefit: "기타급여",
+};
+
+export const leftTableConstant = {
+  headers: [
+    { field: "cdEmp", text: "사원코드", orderBy: "asc", isPk: true },
+    { field: "nmKrname", text: "성명", orderBy: "asc" },
+    { field: "noSocial", text: "주민번호" },
+  ],
 };
 
 // 좌측테이블 - 사원 목록

@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
 import SearchPanel from "../../../components/SearchPanel";
 
-import { SI_MAIN_SEARCHFIELD, SI_SUB_SEARCHFIELD } from "./SiSearchPenelConstant";
-import { codeHelperData_cdDept, codeHelperData_emplist, codeHelperData_occup, codeHelperData_paymentDate, codeHelperData_rankNo, forLaborOption, salaryDivisionOption, unitOption } from '../../../model/SalaryInformationEntry/SalConstant';
-import FormPanel from '../../../components/FormPanel';
-import ConfirmComponent from '../../../components/ConfirmComponent';
-import { currentDateStr } from '../../../utils/DateUtils';
+import {
+  SI_MAIN_SEARCHFIELD,
+  SI_SUB_SEARCHFIELD,
+} from "./SiSearchPenelConstant";
+import {
+  codeHelperData_cdDept,
+  codeHelperData_emplist,
+  codeHelperData_occup,
+  codeHelperData_paymentDate,
+  codeHelperData_rankNo,
+  forLaborOption,
+  salaryDivisionOption,
+  unitOption,
+} from "../../../model/SalaryInformationEntry/SalConstant";
+import FormPanel from "../../../components/FormPanel";
+import ConfirmComponent from "../../../components/ConfirmComponent";
+import { currentDateStr } from "../../../utils/DateUtils";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../../styles/SearchPanel.scss";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -29,104 +42,131 @@ const SiSeacrchPanel = (props) => {
     actions.setSalDivision(value);
 
     // 전월데이터 복사 모달
-    let message = "전월데이터를 복사하시겠습니까?";
-    setShowModal({ show: true, message: message });
+    // let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
+    // setShowModal({ 
+    //   show: true, 
+    //   message: message,
+    //   action : () => {
+    //     setCopyLastMonthData();
+    //   }
+    // });
   };
 
   // 작성일자 코드헬퍼 클릭 이벤트
   const clickPaymentDateCodeHelper = (e, row) => {
-    actions.setPaymentDate(row.paymentDate);
-    actions.onSearch();
+    let message = "해당 지급일로 검색하시겠습니까?";
+    setShowModal({
+      show: true,
+      message: message,
+      action: () => {
+        actions.setPaymentDate(row.paymentDate);
+        actions.onSearch();
+      },
+    });
   };
 
-    // 지급일 설정 날짜비교 유효성
-    const validationPaymentDate = (newValue) =>{
-      const allowMonth = new Date(state.searchVo.allowMonth);
-      const paymentDate = new Date(newValue);
-      console.log("validationPaymentDate",validationPaymentDate);
-      if(allowMonth > paymentDate){
-        alert("귀속년월보다 지급일이 앞섭니다.");
-        actions.setPaymentDate(currentDateStr());
-        return false;
-      }
-
-      // 지급일 setting 해주기
-      actions.setPaymentDate(newValue);
-      return true;
+  // 지급일 설정 날짜비교 유효성
+  const validationPaymentDate = (newValue) => {
+    const allowMonth = new Date(state.searchVo.allowMonth);
+    const paymentDate = new Date(newValue);
+    console.log("validationPaymentDate", validationPaymentDate);
+    if (allowMonth > paymentDate) {
+      setShowModal({
+        show: true,
+        message: "귀속년월보다 지급일이 앞섭니다.",
+        onlyConfirm: true,
+      });
+      actions.setPaymentDate(currentDateStr());
+      return false;
     }
 
-    return (
-        <div>
-          {/* <FormPanel
-            INPUT_CONSTANT={SI_SUB_SEARCHFIELD}
-            formData={{
-              item: {
-                searchCdEmp: state.searchVo.searchCdEmp,
-                searchCdDept: state.searchVo.searchCdDept,
-                searchRankNo: state.searchVo.searchRankNo,
-                searchCdOccup: state.searchVo.searchCdOccup,
-              },
-            }}
-            codeHelperFn={{
-              searchCdEmp: () =>
-                modalShow(
-                  "codeHelper",
-                  codeHelperData_emplist,
-                  actions.setSearchCdEmp
-                ),
-              searchCdDept: () =>
-                modalShow(
-                  "codeHelper",
-                  codeHelperData_cdDept,
-                  actions.setSearchCdDept
-                ),
-              searchRankNo: () =>
-                modalShow(
-                  "codeHelper",
-                  codeHelperData_rankNo,
-                  actions.setSearchRankNo
-                ),
-              searchCdOccup: () =>
-                modalShow(
-                  "codeHelper",
-                  codeHelperData_occup,
-                  actions.setSearchCdOccup
-                ),
-            }}
-          /> */}
+    // 지급일 setting 해주기
+    actions.setPaymentDate(newValue);
+    return true;
+  };
 
-          {/* 기본 검색조건 */}
-          {/* <SearchPanel onSearch={()=> onSearch()} showAccordion>  */}
-          <SearchPanel onSearch={()=> onSearch()}>
-            <FormPanel
-              INPUT_CONSTANT = {SI_MAIN_SEARCHFIELD}
-              formData={formPanelData}
-              codeHelperFn = {{paymentDate : () => modalShow('codeHelper', codeHelperData_paymentDate, clickPaymentDateCodeHelper , {allowYear : state.allowYear, allowMonth : state.allowMonth, paymentDate : state.paymentDate })}}
-              onChange={{
-                allowMonth: (newValue)=> actions.setAllowMonth(newValue),
-                salDivision: (newValue) => selectOptionHandler(newValue),
-                // paymentDate: (newValue) => {if(!validationPaymentDate(newValue)) 원래대로 돌려놓는 함수}
-                paymentDate: (newValue) => validationPaymentDate(newValue)
-              }}
-              columnNumber={3}
-            /> 
+  return (
+    <div className="deleteLabelBackground">
+      <ConfirmComponent
+        show={showModal.show}
+        message={showModal.message}
+        onlyConfirm={showModal.onlyConfirm}
+        onHide={() => setShowModal(false)}
+        onConfirm={() => {
+          showModal.action && showModal.action();
+          setShowModal(false);
+        }}
+      />
+      <div>
+        {/* 기본 검색조건 */}
+        {/* <SearchPanel onSearch={()=> onSearch()} showAccordion>  */}
+        <SearchPanel onSearch={() => onSearch()}>
+          <FormPanel
+            INPUT_CONSTANT={SI_MAIN_SEARCHFIELD}
+            formData={formPanelData}
+            codeHelperFn={{
+              paymentDate: () =>
+                modalShow(
+                  "codeHelper",
+                  codeHelperData_paymentDate,
+                  clickPaymentDateCodeHelper,
+                  {
+                    allowYear: state.allowYear,
+                    allowMonth: state.allowMonth,
+                    paymentDate: state.paymentDate,
+                  }
+                ),
+            }}
+            onChange={{
+              allowMonth: (newValue) => actions.setAllowMonth(newValue),
+              salDivision: (newValue) => selectOptionHandler(newValue),
+              // paymentDate: (newValue) => {if(!validationPaymentDate(newValue)) 원래대로 돌려놓는 함수}
+              paymentDate: (newValue) => validationPaymentDate(newValue),
+            }}
+            columnNumber={3}
+          />
           {/* 상세 검색조건 */}
-           {/* <div>
-           <FormPanel
-              INPUT_CONSTANT = {SI_SUB_SEARCHFIELD}
-              formData={
-                { item: { searchCdEmp: state.searchVo.searchCdEmp, searchCdDept: state.searchVo.searchCdDept, searchRankNo : state.searchVo.searchRankNo,searchCdOccup : state.searchVo.searchCdOccup }}
-              }
-              codeHelperFn={{
-                searchCdEmp: () => modalShow('codeHelper', codeHelperData_emplist, actions.setSearchCdEmp),
-                searchCdDept: () => modalShow('codeHelper', codeHelperData_cdDept, actions.setSearchCdDept),
-                searchRankNo: () => modalShow('codeHelper', codeHelperData_rankNo, actions.setSearchRankNo),
-                searchCdOccup: () => modalShow('codeHelper', codeHelperData_occup, actions.setSearchCdOccup)
+          <div>
+            <FormPanel
+              INPUT_CONSTANT={SI_SUB_SEARCHFIELD}
+              submitData={actions.submitMainTabData}
+              formData={{
+                item: {
+                  searchCdEmp: state.searchVo.searchCdEmp,
+                  searchCdDept: state.searchVo.searchCdDept,
+                  searchCdOccup: state.searchVo.searchCdOccup,
+                },
               }}
-            /> 
-          </div>  */}
+              codeHelperFn={{
+                searchCdEmp: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_emplist,
+                    (e,row) => actions.setSearchCdEmp(row.cdEmp)
+                  ),
+                searchCdDept: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_cdDept,
+                    (e,row) => actions.setSearchCdDept(row.cdDept)
+                  ),
+                searchCdOccup: () =>
+                  modalShow(
+                    "codeHelper",
+                    codeHelperData_occup,
+                    (e,row) => actions.setSearchCdOccup(row.codeId)
+                  ),
+              }}
+              onChange={{
+                searchCdEmp: (e, newValue) => actions.setSearchCdEmp(newValue),
+                searchCdDept: (e, newValue) => actions.setSearchCdDept(newValue),
+                searchCdOccup: (e, newValue) => actions.setSearchCdOccup(newValue),
+              }}
+            />
+          </div>
         </SearchPanel>
-        </div>
+      </div>
+    </div>
   );
 };
 

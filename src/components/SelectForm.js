@@ -1,17 +1,15 @@
 // 작성자 : 오승환
 // 1. 파라미터 설명
 // label : 선택폼의 라벨명
-// optionList : 선택폼의 옵션리스트 (ex. optionList = [{key:name, value:"이름"}, {key:birth-date, value:"생년월일"}])
+// optionList : 선택폼의 옵션리스트 (ex. optionList = [{key:name, value:"이름"},
+// { key: birth - date, value: "생년월일" }])
 
 // 2. 사용예시
 //    const optionList = [
 //      { key: "ename", value: "이름" },
 //      { key: "ecode", value: "사원번호" },
 //    ];
-//
 //    <SelectForm label="구분" optionList={optionList}/>
-//
-
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
@@ -31,9 +29,17 @@ function SelectForm(props) {
     onChange,
     subLabel,
     endLabel,
+    disabled,
   } = props;
 
   const [selectedValue, setSelectedValue] = useState(selectedOption || "");
+  const [isDisabled, setDisabled] = useState();
+
+  useEffect(() => {
+    if (disabled) setDisabled(true);
+    else setDisabled(false);
+  }, [isDisabled]);
+
   useEffect(() => {
     setSelectedValue(selectedOption || "");
   }, [selectedOption]);
@@ -41,7 +47,7 @@ function SelectForm(props) {
   const handleSelectChange = (event) => {
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChange) onChange(event, newValue);
-    console.log(newValue);
+    // console.log(newValue);
     setSelectedValue(newValue);
   };
 
@@ -70,6 +76,7 @@ function SelectForm(props) {
                     ref={selectRef}
                     value={selectedValue}
                     onChange={(e) => handleSelectChange(e)}
+                    disabled={isDisabled}
                   >
                     {optionList.map((option, index) => (
                       <option value={option.key} key={index}>
@@ -96,6 +103,7 @@ function SelectForm(props) {
               ref={selectRef}
               value={selectedValue}
               onChange={(e) => handleSelectChange(e)}
+              disabled={isDisabled}
             >
               {optionList.map((option, index) => (
                 <option value={option.key} key={index}>

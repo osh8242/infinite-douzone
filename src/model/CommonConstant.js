@@ -39,6 +39,7 @@ export const INPUT_TYPE = {
   email: 101,
   dateCustom: 300,
   addressCustom: 301,
+  selectCustom: 302,
   month: 401,
   dateCodeHelper: 402,
 };
@@ -145,6 +146,7 @@ export const LABELS = {
   dcMidretire: "중도퇴직정산",
   ynDrawContracts: "근로계약서",
   daEnter: "입사년월일",
+  dateOfcreate: "작성일자",
   daRetire: "퇴사년월일",
   cdFamrel: "관계",
   ynFor: "외국인",
@@ -234,6 +236,7 @@ export const LABELS = {
   healthInsurance: "건강보험",
   dateOfCreation: " 작성일자",
   incomeClassfication: "소득구분", ///
+  dateOfcreate: "작성일자", ///
 
   address: "근무장소",
   startWorktime: "시작근로시간",

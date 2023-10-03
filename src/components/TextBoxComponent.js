@@ -1,18 +1,17 @@
 // 작성자 : 현소현
-import { faC } from "@fortawesome/free-solid-svg-icons";
+import { faCopyright } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Form, Row } from "react-bootstrap";
 import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
+import "../styles/fonts.css";
 import {
   isNumber,
-  isValidNoSocial,
   makeCommaNumber,
   makePureNumber,
 } from "../utils/NumberUtils";
-import SelectForm from "./SelectForm";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -43,6 +42,7 @@ function TextBoxComponent(props) {
     onFocus,
     onKeyDown,
     onEnter,
+    className,
 
     // [선택] true false 옵션
     disabled,
@@ -60,24 +60,62 @@ function TextBoxComponent(props) {
     isPeriod,
     subLabel = "",
     endLabel = "",
-    selectList,
-  } = props;
 
+    // select
+    onChangeSelect,
+    selectId,
+    selectList,
+    selectedOption,
+    selectRef,
+    subField,
+    disabledSelect,
+  } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
   const [inputCallValue, setInputCallValue] = useState(["", "", ""]); // 보여줄 값 (전화번호)
   // const [inputSubValue, setInputSubValue] = useState(subValue || ""); // 보여줄 값
   const [sendValue, setSendValue] = useState(value || ""); // 보낼 값
   // const [sendSubValue, setSendSubValue] = useState(subValue || ""); // 보낼 값
-  const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   const [securityValue, setSecurityValue] = useState("");
   const [isValid, setIsValid] = useState(true); // 기본 유효성 검사 상태 값
   const [isCallValid, setIsCallValid] = useState([true, true, true]); //callNumber 유효값 검사 결과
 
+  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
+  const [isDisable, setDisable] = useState(
+    disabled || disabledSelect || selectedOption === "F" ? true : false
+  );
+
+  useEffect(() => {
+    if (disabled) setDisable(true);
+    else setDisable(false);
+  }, [isDisable]);
+  // const style = height ? { height: `${height}px` } : {}; // 스타일 값
+  const style = {
+    // ...(isDisable ? { color: "transparent" } : {}),
+    ...(height ? { height: `${height}px` } : {}),
+  };
+
+  // useEffect(() => {
+  //   if (selectedOption === "F") {
+  //     setDisable(true);
+  //   } else setDisable(false);
+  //   setSelectedValue(selectedOption || "");
+  // }, [selectedOption]);
+
+  const handleSelectChange = (event) => {
+    // if (event.target.value === "F" || event.target.value === "T") {
+    //   setDisable(!isDisable);
+    // }
+    event.target.id = subField;
+    const newValue = selectRef ? selectRef.current.value : event.target.value;
+    if (onChangeSelect) onChangeSelect(event, newValue);
+    // console.log(newValue);
+    setSelectedValue(newValue);
+  };
+
   useEffect(() => {
     setInputValue(value || "");
-    // setInputSubValue(subValue || "");
     if (type === "callNumber") {
       let callNumber = value.split("-");
       setInputCallValue(callNumber);
@@ -114,6 +152,17 @@ function TextBoxComponent(props) {
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
       }
     }
+
+    if (onClickCodeHelper) {
+      if (event.key === "Backspace") {
+        setInputValue("");
+        onChange && onChange(event, "", id);
+      } else {
+        event.preventDefault(); // 키보드 입력 막기
+        onClickCodeHelper();
+      }
+    }
+    onKeyDown && onKeyDown(event);
   };
 
   const handleInputChange = (event, index) => {
@@ -153,18 +202,20 @@ function TextBoxComponent(props) {
       //주민등록번호 유효값 검사
       setInputValue(newValue);
       makeProcessedValue(newValue);
-      if (!isValidNoSocial(newValue)) {
+      if (!/^\d{6}-\d{1,7}$/.test(newValue)) {
         setIsValid(false);
       } else {
         setIsValid(true);
       }
-    } else if(type==='date' && onClickCodeHelper){      
-      if(!(onChange && onChange(event, newValue, id))) setInputValue(value);
-    }else {
-      // setSendValue(inputValue);
+    } else if (type === "date" && onClickCodeHelper) {
+      if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
+    } else if (onClickCodeHelper) {
+      setInputValue("");
+    } else {
+      setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
-      setInputValue(makeProcessedValue(newValue)); // data 가공
+      setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
       onChange && onChange(event, newValue, id);
     }
@@ -281,7 +332,7 @@ function TextBoxComponent(props) {
 
   // 화면 render
   return (
-    <Row className="py-1">
+    <Row className="py-1 SUITE">
       <div className="labelAndContent">
         {label && <div className="label">{label}</div>}
 
@@ -291,14 +342,20 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  onClick={onClickCodeHelper}
+                />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon icon={faC} onClick={onClickCodeHelper} />
+                  <FontAwesomeIcon
+                    icon={faCopyright}
+                    onClick={onClickCodeHelper}
+                  />
                 </div>
               </div>
             )
@@ -307,7 +364,19 @@ function TextBoxComponent(props) {
               {selectList ? (
                 <div className="widthFull d-flex align-items-center gap-2">
                   <div style={{ width: "40%" }}>
-                    <SelectForm optionList={selectList}></SelectForm>
+                    <Form.Select
+                      id={id}
+                      ref={selectRef}
+                      value={selectedValue}
+                      onChange={(e) => handleSelectChange(e)}
+                      disabled={isDisable}
+                    >
+                      {selectList.map((option, index) => (
+                        <option value={option.key} key={index}>
+                          {option.value}
+                        </option>
+                      ))}
+                    </Form.Select>
                   </div>
                   <div>{renderFormControl()} </div>
                   <div> {endLabel}</div>
@@ -413,7 +482,7 @@ function TextBoxComponent(props) {
               id={id}
               name={name}
               size={size}
-              disabled={disabled}
+              disabled={isDisable}
               readOnly={readOnly}
               plaintext={plaintext}
               onChange={handleInputChange}

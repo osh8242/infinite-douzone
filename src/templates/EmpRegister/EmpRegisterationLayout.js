@@ -4,8 +4,6 @@
 import React, { useCallback, useState } from "react";
 import MenuTab from "../../components/MenuTab";
 import EmpRegisterationModel from "../../model/EmpRegister/EmpRegisterationModel";
-import "../../styles/EmpRegister/empRegisterationLayout.css";
-import "../../styles/commonComponent.css";
 import Emp from "../../vo/EmpRegister/Emp";
 import EmpRegisterHeader from "./EmpRegisterHeader";
 // import TextBoxComponent from "../../components/TextBoxComponent";
@@ -13,7 +11,7 @@ import EmpRegisterHeader from "./EmpRegisterHeader";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import ModalComponent from "../../components/ModalComponent";
 // import NoSocialFormForEmpRegister from "../../components/NoSocialFormForEmpRegister";
-import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Form, Row, Spinner, Table } from "react-bootstrap";
 import FormPanel from "../../components/FormPanel";
 import TableForm from "../../components/TableForm";
 import {
@@ -29,8 +27,11 @@ import {
   codeHelperData_rankNo,
   tabConstant,
 } from "../../model/EmpRegister/EmpConstant";
-import "../../styles/EmpRegister/empRegisterationLayout.css";
 import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
+
+import "../../styles/commonComponent.css";
+import "../../styles/EmpRegister/empRegisterationLayout.css";
+import "../../styles/fonts.css";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
@@ -122,11 +123,10 @@ function EmpRegisterationLayout() {
     <>
       {/* 사원등록 전용 헤더 */}
       <EmpRegisterHeader
-        selectedRows={state.selectedRows}
-        actions={{ deleteSelectedRows: actions.deleteSelectedRows }}
-        modalShow={modalShow}
+        deleteButtonHandler={actions.deleteEmp}
+        existSelectedRows={state.selectedRows.length !== 0}
       />
-      <Container>
+      <Container className="SUITE p-12">
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
@@ -138,6 +138,7 @@ function EmpRegisterationLayout() {
                 showCheckbox
                 sortable
                 rowAddable
+                defaultFocus
                 actions={{
                   setTableData: actions.setLeftTableData,
                   setPkValue: actions.setMainTablePkValue,

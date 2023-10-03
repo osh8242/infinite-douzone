@@ -7,9 +7,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const TestAdd = (props) => {
-  const { label, isZonecode, value, size, mb, md = 4, actions } = props;
+  const {
+    label,
+    isZonecode,
+    value,
+    size,
+    mb,
+    md = 4,
+    actions,
+    disabled,
+    onChange,
+  } = props;
+
   const [zonecode, setZonecode] = useState(value || "");
   const [address, setAddress] = useState(value || "");
+  const [isDisabled, setDisabled] = useState();
+
+  useEffect(() => {
+    if (disabled) setDisabled(true);
+    else setDisabled(false);
+  }, [isDisabled]);
 
   useEffect(() => {
     setAddress(value || "");
@@ -17,10 +34,32 @@ const TestAdd = (props) => {
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {
+    console.log("address value is?");
+    console.log(address);
     actions.setEdited({ address: address });
     setZonecode(zonecode);
     setAddress(address);
     setModalState({ ...modalState, show: false });
+  };
+
+  function eventCreate() {
+    console.log("create: vaentente");
+    const event = {
+      action: "change",
+      target: { id: "address", value: address },
+    };
+
+    onChange && onChange(event, address);
+  }
+
+  useEffect(() => {
+    eventCreate();
+  }, [address]);
+
+  const onChangeHandeler = (e) => {
+    setAddress(address);
+    onChange && onChange(e, value);
+    // onChange && onChange(e, value);
   };
 
   const [modalState, setModalState] = useState({
@@ -30,18 +69,19 @@ const TestAdd = (props) => {
 
   return (
     <>
-      <Row>
+      <Row className="mt-1">
         <div className="labelAndContent">
           <div className="label">{label}</div>
           <div className="widthFull d-flex align-items-center gap-2">
-            <div className="widthFull ">
+            <div className="widthFull">
               <Form.Control
                 id="address"
                 type="text"
                 name="address"
                 value={address}
                 size={size}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={onChangeHandeler}
+                disabled={isDisabled}
               />
             </div>
             <div>
@@ -49,6 +89,7 @@ const TestAdd = (props) => {
                 id="addressSearchBtn"
                 variant="secondary"
                 onClick={() => setModalState({ ...modalState, show: true })}
+                disabled={isDisabled}
               >
                 <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
               </Button>

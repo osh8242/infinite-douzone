@@ -1,16 +1,29 @@
 :root {
+  /* theme */
+  --custom-theme-header: var(--blue);
+  --custom-theme-label: var(--skyblue);
+
   --darkBlue: rgb(0, 129, 255);
   --blue: rgb(48, 150, 255);
   --lightBlue: rgb(151, 202, 255);
   --skyblue: rgb(224, 239, 255);
   --lightSkyblue: rgb(233, 244, 255);
 
+  --coral: rgb(255, 82, 82);
+  --orange: rgb(255, 134, 48);
+  --yellow: rgb(254, 213, 51);
+  --green: rgb(18, 204, 108);
+  --purple: rgb(126, 58, 243);
+
   --red: rgb(255, 20, 52);
 
   --whiteGray: rgba(230, 230, 230, 0.2);
   --lightGray: rgb(230, 230, 230);
   --gray: rgb(127, 127, 127);
+  --darkGray: rgb(97, 97, 97);
   --dark: rgb(57, 63, 80);
+  --transDark: rgba(57, 63, 80, 0.8);
+  --transBlack: rgba(0, 0, 0, 0.2);
 
   --lightBlueGray: rgb(233, 236, 239); /* input disabled 색상 */
 }
