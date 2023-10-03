@@ -157,10 +157,10 @@ const Login = () => {
                 height={45}
                 onBlur={LoginUser}
               />
+              <Col md="8" className="mt-4">
+                <p className={"errorMessageWrap"}>{errorMessage}</p>
+              </Col>
             </Col>
-          </Row>
-          <Row>
-            <p className={"errorMessageWrap"}>{errorMessage}</p>
           </Row>
           <Row className="justify-content-center mb-4">
             <Col md="10" className="d-flex flex-column align-items-center">

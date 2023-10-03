@@ -114,6 +114,7 @@ const LaborContractModel = () => {
         // 필요에 따라 다른 오류 처리 로직 추가
       });
   };
+
   const getLeftTableData = (newLeftCodeHelperTableData) => {
     api
       .get(`/swsm/getSwsmListForSwsm?job=${jobRef.current}`)
@@ -423,6 +424,46 @@ const LaborContractModel = () => {
     [leftTablePkValue]
   );
 
+  //선택된 행들 delete 요청
+  const deleteSelectedRows = useCallback(() => {
+    const editedTableNames = {};
+    console.log("삭제요청된 행들", selectedRows);
+
+    // 각 row에 대한 delete 요청을 생성
+    const deletePromises = selectedRows.map((row) => {
+      let pattern;
+      switch (row.table) {
+        case "swsm":
+          pattern = swsmUrlPattern.deleteSwsm;
+          break;
+        default:
+          return Promise.resolve();
+      }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+      return api.delete(pattern, { data: row.item });
+    });
+
+    Promise.all(deletePromises)
+      .then((responses) => {
+        console.log("선택된 모든 행의 삭제 완료");
+        console.log("selectedRows", selectedRows);
+        setSelectedRows([]); // 선택행 배열 비우기
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "swsm":
+              getEmpList();
+              break;
+            default:
+              break;
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [selectedRows]);
+
   //현재행 삭제요청
   const deleteRow = useCallback(
     (row) => {
@@ -430,7 +471,7 @@ const LaborContractModel = () => {
       let pattern;
       switch (row["table"]) {
         case "swsm":
-          pattern = urlPattern.deleteEmpAdd;
+          pattern = swsmUrlPattern.deleteSwsm;
           console.log("지우려는 row", row);
           const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
           newLeftCodeHelperTableData.push(row);
@@ -509,6 +550,7 @@ const LaborContractModel = () => {
       updateSwsmOther,
 
       setSelectedRows,
+      deleteSelectedRows,
 
       deleteRow,
 
