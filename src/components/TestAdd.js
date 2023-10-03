@@ -34,15 +34,32 @@ const TestAdd = (props) => {
 
   // 선택된 주소를 주소 필드에 업데이트
   const handleAddressSelected = ({ address, zonecode }) => {
+    console.log("address value is?");
+    console.log(address);
     actions.setEdited({ address: address });
     setZonecode(zonecode);
     setAddress(address);
     setModalState({ ...modalState, show: false });
   };
 
+  function eventCreate() {
+    console.log("create: vaentente");
+    const event = {
+      action: "change",
+      target: { id: "address", value: address },
+    };
+
+    onChange && onChange(event, address);
+  }
+
+  useEffect(() => {
+    eventCreate();
+  }, [address]);
+
   const onChangeHandeler = (e) => {
     setAddress(address);
     onChange && onChange(e, value);
+    // onChange && onChange(e, value);
   };
 
   const [modalState, setModalState] = useState({
