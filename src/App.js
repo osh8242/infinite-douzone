@@ -24,6 +24,7 @@ import SuccessSignUp from "./templates/SuccessSignUp";
 import { LoadingContext } from "./Loading/LoadingProvider";
 import Loading from "./components/Loading";
 import SignUpLayout from "./SignUp/SignUpLayout";
+import Footer from "./templates/Footer";
 
 function ConditionalHeader() {
   const location = useLocation();
@@ -93,6 +94,7 @@ function App() {
               <Route path="/mypage" element={<MyPage />} />
             </Routes>
           </ProtectedRoutesWrapper>
+          <Footer />
         </BrowserRouter>
       </LoginProvider>
     </div>
