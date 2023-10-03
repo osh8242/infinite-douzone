@@ -23,6 +23,7 @@ import FormPanel from "../../components/FormPanel";
 import Spinner from "react-bootstrap/Spinner";
 import MenuTab from "../../components/MenuTab";
 import "../../styles/LaborContract/LaborContractLayout.scss";
+import "../../styles/fonts.css";
 
 import {
   TAB_MENU_LIST,
@@ -110,7 +111,7 @@ const LaborContractLayout = () => {
         existSelectedRows={selectedRows.length !== 0}
       />
       <Container>
-        <Row className="mt-4">
+        <Row className="mt-4 SUITE p-12">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
