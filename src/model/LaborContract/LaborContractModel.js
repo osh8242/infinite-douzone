@@ -53,7 +53,7 @@ const LaborContractModel = () => {
   function onLoad() {
     console.log("load Test");
     setLeftTableData([]);
-    setMainTabData({});
+    // setMainTabData({});
   }
 
   const getCodeHelperList = () => {
