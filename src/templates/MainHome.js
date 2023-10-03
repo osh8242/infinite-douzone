@@ -27,11 +27,11 @@ const slides = [
     background: wehago_backImg, //main
     content: (
       <div>
-        <p className="NIXGONFONTS p-24">
+        <p className="NIXGON p-24">
           기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
         </p>
         <p className="Jost p-48">WEHAGO</p>
-        <p className="NIXGONFONTS p-16">
+        <p className="NIXGON p-16">
           업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
           전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
         </p>
@@ -42,7 +42,7 @@ const slides = [
     background: erIntro, //사원등록
     content: (
       <div>
-        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+        <p className="NIXGON p-24" style={{ color: "black" }}>
           사원등록 페이지에 대한 정보 넣으면 됨
         </p>
       </div>
@@ -52,7 +52,7 @@ const slides = [
     background: hrIntro, //인사관리등록
     content: (
       <div>
-        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+        <p className="NIXGON p-24" style={{ color: "black" }}>
           인사관리등록 정보 넣으면 됨
         </p>
       </div>
@@ -62,7 +62,7 @@ const slides = [
     background: lrIntro, //표준근로계약서
     content: (
       <div>
-        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+        <p className="NIXGON p-24" style={{ color: "black" }}>
           표준근로계약서 정보 넣으면 됩니다
         </p>
       </div>
@@ -72,7 +72,7 @@ const slides = [
     background: siIntro, //급여자료입력
     content: (
       <div>
-        <p className="NIXGONFONTS p-24" style={{ color: "black" }}>
+        <p className="NIXGON p-24" style={{ color: "black" }}>
           급여자료 입력에 대한 정보
         </p>
       </div>
