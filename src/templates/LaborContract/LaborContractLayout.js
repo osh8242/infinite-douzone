@@ -291,7 +291,7 @@ const LaborContractLayout = () => {
                         />
                       </div>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className="mt-3 EMPSTATICS">
                       <TableForm
                         tableName="EMPSTATICS"
                         tableHeaders={leftStaticsTableConstant.headers}
