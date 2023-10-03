@@ -7,6 +7,7 @@ import MenuTab from "../../components/MenuTab";
 import ModalComponent from "../../components/ModalComponent";
 import ProfileImageForm from "../../components/ProfileImageForm";
 import TableForm from "../../components/TableForm";
+
 import {
   CODE_HELPER_DATA,
   leftStaticsTableConstant,
@@ -16,6 +17,7 @@ import {
   subTableConstant,
   tabConstant,
 } from "../../model/HrManagement/HrManagementConstant";
+
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import "../../styles/fonts.css";
@@ -244,13 +246,15 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef)
+            modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef)
+              modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}

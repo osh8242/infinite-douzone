@@ -34,6 +34,10 @@ const SalaryInformationEntryHeader = ({
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -45,15 +49,16 @@ const SalaryInformationEntryHeader = ({
       message = "선택된 사원이 없습니다";
       setShowModal({ show: true, message: message });
       return true;
-    } 
+    }
 
     setShowModal({
       show: true,
       message: "선택된 사원목록의 지급항목을 모두 삭제하시겠습니까? ",
-      action: () => {actions.deleteSelectedRows()},
+      action: () => {
+        actions.deleteSelectedRows();
+      },
       onlyConfirm: !existSelectedRows,
     });
-    
   };
 
   // 수당/공제 등록
@@ -63,13 +68,13 @@ const SalaryInformationEntryHeader = ({
 
   // 재계산 모달
   const reCalculationHandler = (event) => {
-    if (ynComplete === "Y"){
+    if (ynComplete === "Y") {
       setShowModal({
         show: true,
         message: "완료 해제 후 재계산이 가능합니다.",
         onlyConfirm: true,
       });
-    }else if (dateId === "") {
+    } else if (dateId === "") {
       setShowModal({
         show: true,
         message: "선택된 날짜에 등록된 급여항목이 없습니다.",
@@ -85,7 +90,7 @@ const SalaryInformationEntryHeader = ({
       modalShow("reCalculation", modal_reCalculationList);
     }
   };
-  
+
   // 지급일자 모달
   const getDateListHandler = (event) => {
     modalShow("codeHelper", codeHelperData_paymentDate, setSearchDate, {
@@ -94,19 +99,19 @@ const SalaryInformationEntryHeader = ({
   };
 
   // 지급일자 모달_지급일자 선택시 함수
-  const setSearchDate = (e,row) => {
+  const setSearchDate = (e, row) => {
     setShowModal({
-        show: true,
-        message: "해당 지급일자로 조회하시겠습니까?",
-        action: () => {
-          actions.setPaymentDate(row.paymentDate);
-          actions.setSalDivision(row.salDivision);
-          actions.setAllowMonth(row.allowMonth);
-          actions.setDateId(row.dateId);
-          actions.onSearch();
-        },
-        onlyConfirm: false,
-      });
+      show: true,
+      message: "해당 지급일자로 조회하시겠습니까?",
+      action: () => {
+        actions.setPaymentDate(row.paymentDate);
+        actions.setSalDivision(row.salDivision);
+        actions.setAllowMonth(row.allowMonth);
+        actions.setDateId(row.dateId);
+        actions.onSearch();
+      },
+      onlyConfirm: false,
+    });
   };
 
   // 완료
@@ -129,7 +134,7 @@ const SalaryInformationEntryHeader = ({
   };
 
   return (
-    <div id="secondTopHeader">
+    <div id="secondTopHeader" style={{ background: themeColor }}>
       {/* 사이드바 */}
       <div className={`sidebar SUITE p-12 ${showSidebar ? "right" : "left"}`}>
         <Nav defaultActiveKey="/home" className="flex-column">
@@ -189,9 +194,13 @@ const SalaryInformationEntryHeader = ({
           재계산
         </Button>
 
-        <Button id="extraDeductBtn" className="extraDeductBtn" onClick={(e) => ynCompleteButtonHandler(e)} >
-          {ynComplete === 'Y'? '해제': '완료'}
-        </Button>        
+        <Button
+          id="extraDeductBtn"
+          className="extraDeductBtn"
+          onClick={(e) => ynCompleteButtonHandler(e)}
+        >
+          {ynComplete === "Y" ? "해제" : "완료"}
+        </Button>
 
         <button className="backgroundBorderNone">
           <FontAwesomeIcon icon={faPrint} className="colorWhite" />

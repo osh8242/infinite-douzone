@@ -23,8 +23,10 @@ function SignUpLayout() {
 
   const [stateModal, setStateModal] = useState("");
   const [invalid, setInvalid] = useState("");
+  const [invalidCd, setInvalidCd] = useState("");
   const [pwdCheckVaild, setPwdCheckVaild] = useState("");
   const [id, setId] = useState("");
+  const [companyCode, setCompanyCode] = useState("");
   const [tempId, setTempId] = useState("");
   const [tempPwd, setTempPwd] = useState("");
   const [tempEmail, setTempEmail] = useState("");
@@ -33,6 +35,7 @@ function SignUpLayout() {
   const [tempGender, setTempGender] = useState("");
   const [tempPhone, setTempPhone] = useState("");
   const [idCheck, setIdCheck] = useState("");
+  const [cdCheck, setCdCheck] = useState("");
 
   const [phoneValid, setPhoneValid] = useState("");
   const [emailValid, setEmailValid] = useState("");
@@ -61,6 +64,27 @@ function SignUpLayout() {
 
   const handlePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
+    checkPwdCheck();
+  };
+
+  const checkPwdCheck = (e) => {
+    if (tempPwd.length > 7 && passwordConfirm.length > 7) {
+      if (tempPwd === passwordConfirm) {
+        setPassConfirmValid(true);
+        setPwdCheckVaild("");
+      } else {
+        setPassConfirmValid(false);
+        setPwdCheckVaild("invalid");
+      }
+    } else if (e && e.type && tempPwd.length > 0) {
+      if (tempPwd === passwordConfirm) {
+        setPassConfirmValid(true);
+        setPwdCheckVaild("");
+      } else {
+        setPassConfirmValid(false);
+        setPwdCheckVaild("invalid");
+      }
+    }
   };
 
   // 유효성검사
@@ -84,19 +108,7 @@ function SignUpLayout() {
       setPwdValid("invalid");
     }
 
-    if (tempPwd.length > 7 && passwordConfirm.length > 7) {
-      if (tempPwd === passwordConfirm) {
-        setPassConfirmValid(true);
-        setPwdCheckVaild("");
-      } else {
-        setPassConfirmValid(false);
-        setPwdCheckVaild("invalid");
-      }
-    } else {
-      // setPassConfirmValid(false);
-      // 이거 여뷰에 때라서 초기 가 달라짐
-      // 여기서 invalid 해놓으면 문제생김????
-    }
+    checkPwdCheck();
 
     const emailRegex =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/;
@@ -118,7 +130,7 @@ function SignUpLayout() {
     } else {
       setPhoneValid("invalid");
     }
-  }, [tempPwd, tempEmail, passConfirmValid, tempPhone]);
+  }, [tempPwd, tempEmail, passConfirmValid, tempPhone, passwordConfirm]);
 
   const RegisterUser = () => {
     console.log("Register GO!");
@@ -146,6 +158,7 @@ function SignUpLayout() {
       userPwd: tempPwd,
       userName: tempName,
       email: tempEmail,
+      companyCode: companyCode,
       // birth: tempDate,
       // gender: tempGender,
       phone: tempPhone,
@@ -183,9 +196,12 @@ function SignUpLayout() {
     window.location.href = { stateModal };
   };
 
+  const handleTemporaryCd = (e) => {
+    setCompanyCode(e.target.value);
+  };
+
   const handleTemporaryId = (e) => {
     setTempId(e.target.value);
-    // setIdValid(false);
   };
 
   const handleTemporaryPwd = (e) => {
@@ -258,22 +274,74 @@ function SignUpLayout() {
       .catch(console.errors);
   };
 
+  const checkVaildCd = () => {
+    console.log("아이디 중복 검사 실시");
+    //    const response = axios.post(`${url}/auth/checkVaildId`, data);
+    axios
+      .post(`${url}/auth/checkVaildCd`, { companyCode: companyCode })
+      .then((response) => {
+        console.log("reesult::" + response.data);
+        if (response.data === "SUCCESS") {
+          console.log("Check ID SUDSSCCEESS");
+          setCdCheck("SUCCESS");
+          console.log(idCheck);
+          setInvalidCd(""); // neceesssaarrr
+        } else if (response.data === "FAIL") {
+          console.log("already exist Cd///");
+          setCdCheck("FAIL");
+          setInvalidCd("invalid");
+          // TODO : 아이디 재입력 요청 문구 처리 필요
+        }
+      })
+      .catch(console.errors);
+  };
+
   return (
     <Container
       id="SignUp"
       className="d-flex justify-content-center align-items-center"
-      style={{ height: "90vh" }}
+      style={{ height: "100vh" }}
     >
       <Row className="justify-content-center mb-4">
         <Row className="justify-content-center mb-4">
           <img
             src={imgLogo}
             alt="Logo"
-            style={{ width: "500px", padding: "70px 0px 15px 0px" }}
+            style={{ width: "400px", padding: "0px 0px 15px 0px" }}
           />
           <h2 className="subLabel">회원가입</h2>
         </Row>
         <Col md="15">
+          <Row className="d-flex justify-content-center align-items-center">
+            <Col md="5">
+              회사 코드
+              <Form.Control
+                name="companyCode"
+                value={companyCode}
+                onChange={handleTemporaryCd}
+                type={"textbox"}
+                placeholder="아이디를 입력해 주세요."
+                height={40}
+                onBlur={checkVaildCd}
+                className={invalidCd}
+              />
+              <Row className="d-flex justify-content-center align-items-center">
+                {cdCheck === "SUCCESS" && companyCode.length > 0 ? (
+                  <p className={"successMessageWrap"}>
+                    사용 가능한 코드입니다.
+                  </p>
+                ) : cdCheck === "FAIL" && companyCode.length > 0 ? (
+                  <p className={"errorMessageWrap"}>
+                    사용 불가능한 코드입니다.
+                  </p>
+                ) : companyCode.length === 0 ? (
+                  <p> </p>
+                ) : (
+                  <p> </p>
+                )}
+              </Row>
+            </Col>
+          </Row>
           <Row className="d-flex justify-content-center align-items-center">
             <Col md="5">
               아이디
@@ -340,7 +408,7 @@ function SignUpLayout() {
               <Form.Control
                 type={"password"}
                 onChange={handlePasswordConfirm}
-                onBlur={handlePasswordConfirm}
+                onBlur={checkPwdCheck}
                 placeholder="비밀번호를 다시 입력해 주세요."
                 height={40}
                 className={pwdCheckVaild}
@@ -462,9 +530,6 @@ function SignUpLayout() {
                   <span style={{ backgroundColor: "#FF9933" }}></span>
                 </label>
               </Col>
-              <Row className="d-flex justify-content-center align-items-center">
-                <p> </p>
-              </Row>
             </Col>
           </Row>
         </Col>

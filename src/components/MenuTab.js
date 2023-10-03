@@ -8,7 +8,9 @@ function MenuTab(props) {
 
   const handleSelect = (k) => {
     setKey(k);
-    onSelect(k);
+    if (onSelect) {
+      onSelect(k);
+    }
   };
 
   return (
