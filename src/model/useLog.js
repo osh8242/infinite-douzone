@@ -1,7 +1,7 @@
 import axios from "axios";
 import { url } from "./CommonConstant";
 
-export const useLog = () => () => {
+export const getLogFunction = () => async () => {
   try {
     const token = localStorage.getItem("authToken");
 
@@ -10,7 +10,7 @@ export const useLog = () => () => {
       return;
     }
 
-    const response = axios.post("/api/logout", null, {
+    const response = await axios.post(`${url}/auth/logout`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -18,6 +18,7 @@ export const useLog = () => () => {
 
     if (response.status === 200) {
       localStorage.removeItem("authToken");
+      localStorage.removeItem("userInfo");
       window.location.href = "/login";
       console.log(response.data);
     }
