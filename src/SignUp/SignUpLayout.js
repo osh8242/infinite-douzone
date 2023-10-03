@@ -328,11 +328,11 @@ function SignUpLayout() {
               <Row className="d-flex justify-content-center align-items-center">
                 {cdCheck === "SUCCESS" && companyCode.length > 0 ? (
                   <p className={"successMessageWrap"}>
-                    사용 가능한 아이디입니다.
+                    사용 가능한 코드입니다.
                   </p>
                 ) : cdCheck === "FAIL" && companyCode.length > 0 ? (
                   <p className={"errorMessageWrap"}>
-                    사용 불가능한 아이디입니다.
+                    사용 불가능한 코드입니다.
                   </p>
                 ) : companyCode.length === 0 ? (
                   <p> </p>

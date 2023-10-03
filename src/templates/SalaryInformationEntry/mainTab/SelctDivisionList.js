@@ -22,7 +22,7 @@ const SelctDivisionList = (props) => {
         onChange={(e,value) => actions.getSalTotalSum(value)}
       />
       <Row>
-          <div className="hr-leftTable" style={{height: '25vh'}}>
+          <div className="hr-leftTable" style={{height: '27vh'}}>
             <TableForm
               tableHeaders={salAllowSum.headers}
               tableData={state.salPaySumData.allowPay}
@@ -30,7 +30,7 @@ const SelctDivisionList = (props) => {
               readOnly
             />
           </div>
-          <div className="hr-leftTable" style={{height: '7vh', overflow:'hidden'}}>
+          <div className="hr-leftTable" style={{height: '8vh', overflow:'hidden'}}>
             <TableForm
               tableHeaders={sumAllowPay.headers}
               tableData={state.salPaySumData.totalAllowPay}
@@ -39,7 +39,7 @@ const SelctDivisionList = (props) => {
           </div>
       </Row>
       <Row>
-        <div className="hr-leftTable" style={{height: '25vh'}}>
+        <div className="hr-leftTable" style={{height: '27vh'}}>
           <TableForm
             tableHeaders={salDeductSum.headers}
             tableData={state.salPaySumData.deductPay}
@@ -47,7 +47,7 @@ const SelctDivisionList = (props) => {
             readOnly
           />
         </div>
-        <div className="hr-leftTable" style={{height: '7vh',overflow:'hidden'}}>
+        <div className="hr-leftTable" style={{height: '8vh',overflow:'hidden'}}>
             <TableForm
               tableHeaders={sumDeductPay.headers}
               tableData={state.salPaySumData.totalDeductPay}

@@ -153,27 +153,27 @@ const SalaryInformationEntryLayout = () => {
               />
               {/* 메인영역 */}
               <Row>
-                <Col md={3}>
+                <Col md={3} className="hr-left-col">
                   <EmpList
                     actions={actions}
                     saInfoListData={state.saInfoListData}
                   />
                 </Col>
-                <Col md={3}>
+                <Col md={3} className="hr-left-col">
                   <SalaryAllowPayList
                     actions={actions}
                     salAllowData={state.salAllowData}
                     ynComplete={state.ynComplete}
                   />
                 </Col>
-                <Col md={3}>
+                <Col md={3} className="hr-left-col">
                   <SalaryDeductPayList
                     actions={actions}
                     salDeductData={state.deductData}
                     ynComplete={state.ynComplete}
                   />
                 </Col>
-                <Col className="selectDivision deleteLabelBackground">
+                <Col className="hr-left-col deleteLabelBackground">
                   <SelctDivisionList actions={actions} state={state} />
                 </Col>
               </Row>

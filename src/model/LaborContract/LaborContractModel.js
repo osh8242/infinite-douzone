@@ -53,7 +53,7 @@ const LaborContractModel = () => {
   function onLoad() {
     console.log("load Test");
     setLeftTableData([]);
-    setMainTabData({});
+    // setMainTabData({});
   }
 
   const getCodeHelperList = () => {
@@ -331,8 +331,12 @@ const LaborContractModel = () => {
         updateEmp(newEmp);
         // setMainTabData(Emp(newEmp));
       }
-      if (event.key === "Enter" || event.type === "change") {
-        event.target.blur();
+      if (
+        event.key === "Enter" ||
+        event.type === "change" ||
+        event.action === "change"
+      ) {
+        // event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newSwsm = { ...mainTabData };
@@ -433,6 +437,9 @@ const LaborContractModel = () => {
     const deletePromises = selectedRows.map((row) => {
       let pattern;
       switch (row.table) {
+        case "swsmOther":
+          pattern = swsmUrlPattern.deleteSwsmOther;
+          break;
         case "swsm":
           pattern = swsmUrlPattern.deleteSwsm;
           break;
@@ -450,6 +457,8 @@ const LaborContractModel = () => {
         setSelectedRows([]); // 선택행 배열 비우기
         Object.keys(editedTableNames).forEach((tableName) => {
           switch (tableName) {
+            case "swsmOther":
+              break;
             case "swsm":
               getEmpList();
               break;
@@ -470,6 +479,10 @@ const LaborContractModel = () => {
       console.log("삭제요청 해당 테이블", row["table"]);
       let pattern;
       switch (row["table"]) {
+        case "swsmOther":
+          console.log("가족 딜리트 요청", row);
+          pattern = swsmUrlPattern.deleteSwsmOther;
+          break;
         case "swsm":
           pattern = swsmUrlPattern.deleteSwsm;
           console.log("지우려는 row", row);
@@ -482,18 +495,6 @@ const LaborContractModel = () => {
           });
           setLeftTableData(newLeftTableData);
           break;
-        // case "swsmOther":
-        //   // pattern = urlPattern.deleteEmpAdd;
-        //   console.log("지우려는 row", row);
-        //   const newLeftCodeHelperTableData = [...leftCodeHelperTableData];
-        //   newLeftCodeHelperTableData.push(row);
-        //   setLeftCodeHelperTableData(newLeftCodeHelperTableData);
-        //   const newLeftTableData = leftTableData.filter((data) => {
-        //     if (data.item.cdEmp === row.item.cdEmp) return false;
-        //     else return true;
-        //   });
-        //   setLeftTableData(newLeftTableData);
-        //   break;
         default:
           console.log("설정되지 않은 테이블 행을 삭제요청받음");
           return;
