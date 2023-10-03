@@ -52,7 +52,7 @@ function DateForm(props) {
   };
 
   return (
-    <Row>
+    <Row className="mt-1 mb-1">
       <div className="labelAndContent">
         {label && <div className="label">{label}</div>}
         <div className="widthFull d-flex align-items-center gap-3">
