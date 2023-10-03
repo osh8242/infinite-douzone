@@ -33,6 +33,7 @@ import {
 
 import LcSearchSearchPanel from "./SearchPanel/LcSearchSearchPanel";
 import LcSearchPanel from "./SearchPanel/LcSearchPanel";
+import increaseBrightness from "../../model/increaseBrightness";
 
 const LaborContractLayout = () => {
   const { state, actions } = LaborContractModel();
@@ -51,6 +52,17 @@ const LaborContractLayout = () => {
     dateEndSelectRef,
     dateSetSelectRef,
   } = state;
+
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 75);
+  const labels = document.querySelectorAll(
+    ".label:not(.deleteLabelBackground)"
+  );
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   // const tabRef = useRef(null);
 
