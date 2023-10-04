@@ -142,7 +142,7 @@ const LaborContractLayout = () => {
                 />
                 <Row className="mt-4">
                   <Col md="3">
-                    <Row>
+                    <Row key={"mainTab2"}>
                       <div className="leftTable">
                         <TableForm
                           readOnly
@@ -186,28 +186,27 @@ const LaborContractLayout = () => {
                   <Col md="9" className="px-5">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
-                        <div style={{ marginTop: "30px" }}>
-                          <Scrollbars
-                            style={{
-                              height: 320,
-                              overflow: "hidden",
-                              marginBottom: 33,
-                            }}
+                        <Scrollbars
+                          style={{
+                            height: 370,
+                            overflowX: "hidden",
+                            marginBottom: 30,
+                          }}
+                          key={"scrollKey"}
+                        >
+                          <Row
+                            key={"menuKey1"}
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
-                            <Row
-                              key={"menuKey1"}
-                              className="mb-1 justify-content-center"
-                              style={{ width: "100%" }}
-                            >
-                              <FormPanel
-                                INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
-                                formData={mainTabData}
-                                submitData={actions.submitMainTabData}
-                                actions={actions}
-                              />
-                            </Row>
-                          </Scrollbars>
-                        </div>,
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>
+                        </Scrollbars>,
                       ]}
                     </MenuTab>
                     <MenuTab menuList={[subTabMenuList.otherBenefit]}>
@@ -250,7 +249,7 @@ const LaborContractLayout = () => {
                   searchOption={searchOption}
                   onSelect={actions.submitMainTabData}
                 />
-                <Row className="mt-4">
+                <Row className="mt-4" key={"menuKeySearch2"}>
                   <Col md="3">
                     <Row>
                       <div className="leftSearchTable">
@@ -291,7 +290,7 @@ const LaborContractLayout = () => {
                         />
                       </div>
                     </Row>
-                    <Row className="mt-3 EMPSTATICS">
+                    <Row className="mt-3">
                       <TableForm
                         tableName="EMPSTATICS"
                         tableHeaders={leftStaticsTableConstant.headers}
@@ -304,31 +303,27 @@ const LaborContractLayout = () => {
                   <Col md="9" className="px-5">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
-                        <div style={{ marginTop: "30px" }}>
-                          <Scrollbars
-                            style={{
-                              height: 320,
-                              overflow: "hidden",
-                              marginBottom: 33,
-                            }}
-                            key={"scrollKey"}
+                        <Scrollbars
+                          style={{
+                            height: 370,
+                            overflow: "hidden",
+                            marginBottom: 20,
+                          }}
+                          key={"scrollKey"}
+                        >
+                          <Row
+                            key={"menuKeySearchSub"}
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
-                            <Row
-                              key={"menuKeySearchSub"}
-                              className="mb-1 justify-content-center"
-                              style={{ width: "100%" }}
-                            >
-                              <FormPanel
-                                INPUT_CONSTANT={
-                                  MAIN_TAB_SEARCH.primaryTabInputs
-                                }
-                                formData={mainTabData}
-                                submitData={actions.submitMainTabData}
-                                actions={actions}
-                              />
-                            </Row>
-                          </Scrollbars>
-                        </div>,
+                            <FormPanel
+                              INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
+                              formData={mainTabData}
+                              submitData={actions.submitMainTabData}
+                              actions={actions}
+                            />
+                          </Row>
+                        </Scrollbars>,
                       ]}
                     </MenuTab>
                     <MenuTab menuList={[subTabMenuList.otherBenefit]}>

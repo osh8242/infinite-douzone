@@ -55,7 +55,7 @@ function TextBoxComponent(props) {
     // md = 4, // [선택]
     // valueMd = 8,
     placeholder, // [선택]
-    height, // [선택] 스타일
+    style,
 
     isPeriod,
     subLabel = "",
@@ -91,10 +91,6 @@ function TextBoxComponent(props) {
     else setDisable(false);
   }, [isDisable]);
   // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-  const style = {
-    // ...(isDisable ? { color: "transparent" } : {}),
-    ...(height ? { height: `${height}px` } : {}),
-  };
 
   // useEffect(() => {
   //   if (selectedOption === "F") {
@@ -221,11 +217,12 @@ function TextBoxComponent(props) {
       setInputValue("");
     } else {
       setSendValue(newValue);
+      console.log("newValue", newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
       setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
-      onChange && onChange(event, newValue, id);
+      onChange && onChange(event, newValue);
     }
   };
 
@@ -348,7 +345,7 @@ function TextBoxComponent(props) {
           {onClickCodeHelper ? (
             type === "date" ? (
               //<div className="">
-              <div className="svg-container2 svg-wrapper">
+              <div className="widthFull svg-container2 svg-wrapper">
                 {renderFormControl()}
                 <FontAwesomeIcon
                   icon={faCopyright}
@@ -357,8 +354,8 @@ function TextBoxComponent(props) {
               </div>
             ) : (
               //</div>
-              <div className="svg-wrapper">
-                <div className="svg-container">
+              <div className="widthFull svg-wrapper">
+                <div className="widthFull svg-container">
                   {renderFormControl()}
                   <FontAwesomeIcon
                     icon={faCopyright}
@@ -421,7 +418,19 @@ function TextBoxComponent(props) {
                     </div>
                   ) : (
                     // 일반 TextBoxContent
-                    <>{renderFormControl()}</>
+                    <>
+                      {renderFormControl()}
+                      {endLabel && (
+                        <div
+                          style={{
+                            width: "30%",
+                            paddingLeft: 12,
+                          }}
+                        >
+                          {endLabel}
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -437,6 +446,7 @@ function TextBoxComponent(props) {
         return (
           <div className="widthFull">
             <Form.Control
+              style={{ width: "100%" }}
               as="textarea"
               id={id}
               name={name}

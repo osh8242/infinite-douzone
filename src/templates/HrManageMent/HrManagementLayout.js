@@ -176,7 +176,7 @@ const HrManagementLayout = () => {
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
-            <Col md="9" className="px-5">
+            <Col md="9" className="px-4">
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList}>
                 {[

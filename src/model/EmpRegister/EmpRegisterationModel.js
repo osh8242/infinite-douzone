@@ -146,19 +146,19 @@ function EmpRegisterationModel() {
 
   //leftTableData 가져오는 비동기 GET 요청 (사원정보)
   useEffect(() => {
-    setLeftTableData();
+    // setLeftTableData();
     api
       .get("/emp/getAllEmp")
       .then((response) => {
-        const data = response.data.map((item) => {
+        const data = response.data.map((row) => {
           const empData = {
-            cdEmp: item.cdEmp,
-            nmKrname: item.nmKrname,
-            ynFor: item.ynFor,
-            noSocial: item.noSocial,
-            jobOk: item.jobOk,
+            cdEmp: row.cdEmp,
+            nmKrname: row.nmKrname,
+            ynFor: row.ynFor,
+            noSocial: row.noSocial,
+            jobOk: row.jobOk,
           };
-          return Emp(empData);
+          return { item: empData, table: "emp" };
         });
         setLeftTableData(data);
       })
@@ -166,7 +166,7 @@ function EmpRegisterationModel() {
         console.log("에러발생: ", error);
         //에러 처리
       });
-  }, [editedEmp, reloadSubTableData]);
+  }, []);
 
   // SELECT mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
@@ -235,7 +235,7 @@ function EmpRegisterationModel() {
       newEditedEmp.item = {
         ...newEditedEmp.item,
         //현재의 날짜를 입사일자의 기본값으로 추가
-        daEnter: currentDateStr(),
+        // daEnter: currentDateStr(),
       };
       console.log("여기를 보십시오 => 모델 insert 데이터", newEditedEmp.item);
       api

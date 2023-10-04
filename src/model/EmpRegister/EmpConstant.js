@@ -16,11 +16,23 @@ export const tabConstant = {
 
 //왼쪽 테이블 헤더
 export const EmpRegisterLeftHeaders = [
-  { field: "cdEmp", text: "사원코드", isPk: true },
+  { field: "cdEmp", text: "사원코드", isPk: true, width: "70px" },
   { field: "nmKrname", text: "성명" },
-  { field: "ynFor", text: "내외국인" },
+  {
+    field: "ynFor",
+    text: "내외국인",
+    type: "select",
+    optionList: SELECT_LIST.ynFor,
+    width: "70px",
+  },
   { field: "noSocial", text: "주민번호" },
-  { field: "jobOk", text: "구분" },
+  {
+    field: "jobOk",
+    text: "구분",
+    type: "select",
+    optionList: SELECT_LIST.jobOk,
+    width: "70px",
+  },
 ];
 
 //메인 탭 사용 필드
