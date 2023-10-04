@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
+import { CODE_VALUE } from "../model/CommonConstant";
 import "../styles/tableForm.css";
 import { makeCommaNumber } from "../utils/NumberUtils";
 import CodeHelperModal from "./CodeHelperModal";
@@ -287,6 +288,25 @@ const TableForm = ({
     [tableHeaders]
   );
 
+  const findKeyByValue = (obj, value) => {
+    for (let key in obj) {
+      if (obj[key] === value) {
+        return key;
+      }
+    }
+    return null;
+  };
+
+  const findKeyInCodeValue = (value) => {
+    for (let type in CODE_VALUE) {
+      const key = findKeyByValue(CODE_VALUE[type], value);
+      if (key) {
+        return key;
+      }
+    }
+    return null;
+  };
+
   // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
   const getEditedRow = useCallback(
     (event, rowIndex, columnIndex) => {
@@ -304,7 +324,16 @@ const TableForm = ({
       // 각 입력 필드의 값을 editedRow에 업데이트
       currentRowInputs.forEach((input, index) => {
         const field = input.id;
-        editedRow.item[field] = input.value;
+        const targetIndex = tableHeaders.findIndex(
+          (thead, index) => thead.field === input.id
+        );
+        const type = tableHeaders[targetIndex]?.type;
+        if (type && type === "textCodeHelper") {
+          console.log("findKeyInCodeValue", findKeyInCodeValue(input.value));
+          editedRow.item[field] = findKeyInCodeValue(input.value);
+        } else {
+          editedRow.item[field] = input.value;
+        }
       });
 
       return editedRow;
@@ -545,7 +574,6 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        console.log("event키", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
