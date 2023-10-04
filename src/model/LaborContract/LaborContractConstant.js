@@ -119,6 +119,23 @@ export const leftTableConstant = {
   ],
 };
 
+export const leftStaticsTableConstant = {
+  headers: [
+    {
+      field: "empAll",
+      text: "전체",
+    },
+    {
+      field: "empRegistration",
+      text: "사원",
+    },
+    {
+      field: "tempEmpRegistration",
+      text: "일용직",
+    },
+  ],
+};
+
 // 좌측테이블 - 사원 목록
 export const LeftTableHeaders = [
   { field: "cdEmp", text: "사원코드", orderBy: "asc", isPk: true },
