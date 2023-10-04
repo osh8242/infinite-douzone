@@ -155,7 +155,7 @@ function EmpRegisterationLayout() {
                 setSelectedRows: actions.setSelectedRows,
                 insertNewRow: actions.insertEmp,
                 updateEditedRow: actions.updateEmp,
-                deleteRow: actions.deleteRow,
+                deleteRow: actions.deleteEmp,
                 getRowObject: Emp,
               }}
             />
