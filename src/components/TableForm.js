@@ -59,11 +59,10 @@ const TableForm = ({
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
+    if (tableName === "swsm") console.log("swsm테이블 유즈이펙트", tableRows);
 
-      setTableRows(tableData);
-      defaultFocus && setRefresh(!refresh);
-
+    setTableRows(tableData);
+    defaultFocus && setRefresh(!refresh);
   }, [tableData]);
 
   useEffect(() => {
