@@ -670,48 +670,6 @@ const TableForm = ({
     };
   }, [tableMouseDownHandler, tableKeyDownHandler]);
 
-  const renderTableRows = React.memo((row, rowIndex) => {
-    return (
-      <tr
-        key={rowIndex}
-        className={getRowClassName(row, rowIndex)}
-        onClick={(e) => {
-          if (onRowClick) onRowClick(e, row.item);
-        }}
-      >
-        {/* 각 row 의 checkBox */}
-        {showCheckbox && (
-          <td>
-            <div className="tableCheckBoxArea">
-              <input
-                type="checkbox"
-                checked={row.checked}
-                onChange={() => checkboxHandler(rowIndex)}
-              />
-            </div>
-          </td>
-        )}
-        {/* 각 row의 td */}
-        {tableHeaders.map((thead, columnIndex) => (
-          <td
-            key={columnIndex}
-            className={getTdClassName(rowIndex, columnIndex)}
-            onClick={(e) => handleRowClick(e, rowIndex, columnIndex)}
-            onDoubleClick={(e) => handleDoubleClick(e, rowIndex, columnIndex)}
-          >
-            {row.isEditable && !thead.readOnly ? (
-              getInputTd(rowIndex, columnIndex)
-            ) : (
-              <div className="tableContents">
-                {getTdValue(rowIndex, columnIndex)}
-              </div>
-            )}
-          </td>
-        ))}
-      </tr>
-    );
-  });
-
   return (
     <>
       <Table className="table" size="sm" bordered hover ref={myRef}>
@@ -747,9 +705,49 @@ const TableForm = ({
         </thead>
         {/* content */}
         <tbody ref={tbodyRef}>
-          {tableRows.map((row, rowIndex) => (
-            <renderTableRows key={rowIndex} row={row} rowIndex={rowIndex} />
-          ))}
+          {tableRows.map((row, rowIndex) => {
+            return (
+              <tr
+                key={rowIndex}
+                className={getRowClassName(row, rowIndex)}
+                onClick={(e) => {
+                  if (onRowClick) onRowClick(e, row.item);
+                }}
+              >
+                {/* 각 row 의 checkBox */}
+                {showCheckbox && (
+                  <td>
+                    <div className="tableCheckBoxArea">
+                      <input
+                        type="checkbox"
+                        checked={row.checked}
+                        onChange={() => checkboxHandler(rowIndex)}
+                      />
+                    </div>
+                  </td>
+                )}
+                {/* 각 row의 td */}
+                {tableHeaders.map((thead, columnIndex) => (
+                  <td
+                    key={columnIndex}
+                    className={getTdClassName(rowIndex, columnIndex)}
+                    onClick={(e) => handleRowClick(e, rowIndex, columnIndex)}
+                    onDoubleClick={(e) =>
+                      handleDoubleClick(e, rowIndex, columnIndex)
+                    }
+                  >
+                    {row.isEditable && !thead.readOnly ? (
+                      getInputTd(rowIndex, columnIndex)
+                    ) : (
+                      <div className="tableContents">
+                        {getTdValue(rowIndex, columnIndex)}
+                      </div>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
           {/* 행추가가 가능한 rowAddable 옵션이 true 인 경우 */}
           {rowAddable && (
             <tr
