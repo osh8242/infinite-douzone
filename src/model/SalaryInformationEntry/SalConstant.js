@@ -26,8 +26,8 @@ export const salEmp = {
 /* 급여항목 영역 */
 export const salAllow = {
   headers: [
-    { field: "nmAllow", text: "급여항목", readOnly: true },
-    { field: "allowPay", text: "지급금액", type: "number" },
+    { field: "nmAllow", text: "급여항목", readOnly: true , width : '150px'},
+    { field: "allowPay", text: "지급금액", type: "number",  width : '150px'},
   ],
 };
 
@@ -58,7 +58,7 @@ export const salAllowWithCalculation = {
 /* 공제항목 영역 */
 export const salDeduct = {
   headers: [
-    { field: "nmDeduct", text: "공제항목", readOnly: true },
+    { field: "nmDeduct", text: "공제항목", readOnly: true , width : '150px'},
     { field: "allowPay", text: "지급금액", type: "number" },
   ],
 };
