@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 import axios from "axios";
 import { url } from "../CommonConstant";
 import Swsm from "../../vo/LaborContract/Swsm";
@@ -27,6 +33,10 @@ const LaborContractModel = () => {
   const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
+  const [lengthEmpAll, setLengthEmpAll] = useState("0");
+  const [lengthEmp, setLengthEmp] = useState("0");
+  const [lengthTempEmp, setLengthTempEmp] = useState("0");
+
   //search
   const jobRef = useRef("empAll"); // 소득구분
   const jobSelectRef = useRef("empAll");
@@ -53,6 +63,9 @@ const LaborContractModel = () => {
   function onLoad() {
     console.log("load Test");
     setLeftTableData([]);
+    setLengthEmp("0");
+    setLengthEmpAll("0");
+    setLengthTempEmp("0");
     // setMainTabData({});
   }
 
@@ -91,7 +104,61 @@ const LaborContractModel = () => {
     dateRef.current = dateSelectRef.current.value;
     dateEndRef.current = dateEndSelectRef.current.value;
     getEmpList();
+    setLength();
   };
+
+  const setLength = () => {
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthEmpAll(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=empRegistration&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthEmp(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=tempEmpRegistration&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthTempEmp(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+
+    if (jobRef.current === "empRegistration") {
+      console.log("jobRef.");
+      console.log(jobRef.current);
+      setLengthTempEmp(0);
+    }
+  };
+
+  //사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    return [
+      {
+        item: {
+          empAll: lengthEmpAll,
+          empRegistration: lengthEmp,
+          tempEmpRegistration: lengthTempEmp,
+        },
+      },
+    ];
+  }, [leftTableData]);
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
@@ -528,6 +595,7 @@ const LaborContractModel = () => {
       modalState,
       codeHelperTableData,
       subTableData,
+      leftStaticsTableData,
     },
     actions: {
       onLoad,

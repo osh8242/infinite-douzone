@@ -26,6 +26,7 @@ const Login = () => {
   };
 
   const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
+
   const navigate = useNavigate();
 
   const handleFormSubmit = (e) => {
@@ -47,16 +48,18 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post(`${url}/auth/login`, loginUser);
+      const response = await axios.post(`${url}/auth/login`, loginUser, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log("=========================");
       console.log(response);
 
       // console.log(response.headers["authorization"]);
       // 현재 임시 토큰 값 : header 값으로 변경 필요
       const token = response.data.token;
-      // const token = response.headers["authorization"];
       console.log("token" + token);
-      // console.log("response.headers", response.headers);
 
       // 토큰이 반환된 경우
       if (token) {

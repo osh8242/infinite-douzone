@@ -367,7 +367,7 @@ function TextBoxComponent(props) {
             <>
               {selectList ? (
                 <div className="widthFull d-flex align-items-center gap-2">
-                  <div style={{ width: "40%" }}>
+                  <div style={{ width: "45%" }}>
                     <Form.Select
                       id={id}
                       ref={selectRef}
