@@ -26,7 +26,8 @@ const SearchPanel = ({
     <>
       <Row className="mt-3">
         {showAccordion ? (
-          <div className="search-panel border rounded px-5">
+          // <div className = {`search-panel ${animation? }`}>
+          <div>
             <div className="header d-flex flex-row px-5">
               {/* 귀속연월/조회구분/작성일자 */}
               <Col className="my-1">{children[0]}</Col>

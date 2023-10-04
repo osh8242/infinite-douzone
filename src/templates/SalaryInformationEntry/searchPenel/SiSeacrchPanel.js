@@ -10,10 +10,6 @@ import {
   codeHelperData_emplist,
   codeHelperData_occup,
   codeHelperData_paymentDate,
-  codeHelperData_rankNo,
-  forLaborOption,
-  salaryDivisionOption,
-  unitOption,
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import FormPanel from "../../../components/FormPanel";
 import ConfirmComponent from "../../../components/ConfirmComponent";
@@ -99,8 +95,7 @@ const SiSeacrchPanel = (props) => {
       />
       <div>
         {/* 기본 검색조건 */}
-        {/* <SearchPanel onSearch={()=> onSearch()} showAccordion>  */}
-        <SearchPanel onSearch={() => onSearch()}>
+        <SearchPanel onSearch={()=> onSearch()} showAccordion>
           <FormPanel
             INPUT_CONSTANT={SI_MAIN_SEARCHFIELD}
             formData={formPanelData}

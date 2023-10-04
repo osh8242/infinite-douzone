@@ -9,7 +9,7 @@ const LcSearchPanel = (props) => {
     props;
   return (
     <SearchPanel onSearch={() => onSearch(searchOption)} hideButton>
-      <Row className="searchPanel">
+      <Row className="searchPanel deleteLabelBackground">
         <Col md="4">
           <DateForm
             label={"작성일자"}

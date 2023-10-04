@@ -55,7 +55,7 @@ function TextBoxComponent(props) {
     // md = 4, // [선택]
     // valueMd = 8,
     placeholder, // [선택]
-    height, // [선택] 스타일
+    style,
 
     isPeriod,
     subLabel = "",
@@ -91,10 +91,6 @@ function TextBoxComponent(props) {
     else setDisable(false);
   }, [isDisable]);
   // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-  const style = {
-    // ...(isDisable ? { color: "transparent" } : {}),
-    ...(height ? { height: `${height}px` } : {}),
-  };
 
   // useEffect(() => {
   //   if (selectedOption === "F") {
@@ -154,12 +150,20 @@ function TextBoxComponent(props) {
     }
 
     if (onClickCodeHelper) {
-      if (event.key === "Backspace") {
-        setInputValue("");
-        onChange && onChange(event, "", id);
-      } else {
-        event.preventDefault(); // 키보드 입력 막기
-        onClickCodeHelper();
+      if (event.key !== "Tab" && event.key !== "F10") {
+        if (event.key === "Enter") {
+          onEnter && onEnter(event, sendValue, id);
+        } else if (
+          event.key === "Backspace" ||
+          event.key === "Delete" ||
+          event.key === "Del"
+        ) {
+          setInputValue("");
+          onChange && onChange(event, "", id);
+        } else {
+          event.preventDefault(); // 키보드 입력 막기
+          onClickCodeHelper();
+        }
       }
     }
     onKeyDown && onKeyDown(event);
@@ -340,7 +344,7 @@ function TextBoxComponent(props) {
           {onClickCodeHelper ? (
             type === "date" ? (
               //<div className="">
-              <div className="svg-container2 svg-wrapper">
+              <div className="widthFull svg-container2 svg-wrapper">
                 {renderFormControl()}
                 <FontAwesomeIcon
                   icon={faCopyright}
@@ -349,8 +353,8 @@ function TextBoxComponent(props) {
               </div>
             ) : (
               //</div>
-              <div className="svg-wrapper">
-                <div className="svg-container">
+              <div className="widthFull svg-wrapper">
+                <div className="widthFull svg-container">
                   {renderFormControl()}
                   <FontAwesomeIcon
                     icon={faCopyright}
@@ -413,7 +417,19 @@ function TextBoxComponent(props) {
                     </div>
                   ) : (
                     // 일반 TextBoxContent
-                    <>{renderFormControl()}</>
+                    <>
+                      {renderFormControl()}
+                      {endLabel && (
+                        <div
+                          style={{
+                            width: "30%",
+                            paddingLeft: 12,
+                          }}
+                        >
+                          {endLabel}
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -429,6 +445,7 @@ function TextBoxComponent(props) {
         return (
           <div className="widthFull">
             <Form.Control
+              style={{ width: "100%" }}
               as="textarea"
               id={id}
               name={name}

@@ -8,7 +8,7 @@ const EmpList = (props) => {
   const { saInfoListData, actions } = props;
   return (
     <div>
-        <Row>
+      <Row>
           <div className="hr-leftTable">
             <TableForm
               tableName="SI_EMPLIST"
