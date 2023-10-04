@@ -154,13 +154,17 @@ function TextBoxComponent(props) {
     }
 
     if (onClickCodeHelper) {
-      if(event.key!=='Tab' && event.key!=='F10'){
+      if (event.key !== "Tab" && event.key !== "F10") {
         if (event.key === "Enter") {
           onEnter && onEnter(event, sendValue, id);
-        }else if(event.key === "Backspace" || event.key === "Delete" || event.key === "Del"){
+        } else if (
+          event.key === "Backspace" ||
+          event.key === "Delete" ||
+          event.key === "Del"
+        ) {
           setInputValue("");
           onChange && onChange(event, "", id);
-        }else{
+        } else {
           event.preventDefault(); // 키보드 입력 막기
           onClickCodeHelper();
         }
@@ -344,7 +348,7 @@ function TextBoxComponent(props) {
           {onClickCodeHelper ? (
             type === "date" ? (
               //<div className="">
-              <div className="svg-container2 svg-wrapper">
+              <div className="widthFull svg-container2 svg-wrapper">
                 {renderFormControl()}
                 <FontAwesomeIcon
                   icon={faCopyright}
@@ -353,8 +357,8 @@ function TextBoxComponent(props) {
               </div>
             ) : (
               //</div>
-              <div className="svg-wrapper">
-                <div className="svg-container">
+              <div className="widthFull svg-wrapper">
+                <div className="widthFull svg-container">
                   {renderFormControl()}
                   <FontAwesomeIcon
                     icon={faCopyright}
@@ -417,7 +421,19 @@ function TextBoxComponent(props) {
                     </div>
                   ) : (
                     // 일반 TextBoxContent
-                    <>{renderFormControl()}</>
+                    <>
+                      {renderFormControl()}
+                      {endLabel && (
+                        <div
+                          style={{
+                            width: "30%",
+                            paddingLeft: 12,
+                          }}
+                        >
+                          {endLabel}
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -433,6 +449,7 @@ function TextBoxComponent(props) {
         return (
           <div className="widthFull">
             <Form.Control
+              style={{ width: "100%" }}
               as="textarea"
               id={id}
               name={name}
@@ -446,7 +463,7 @@ function TextBoxComponent(props) {
       case "callNumber":
         // 전화번호
         return (
-          <div className="widthFull d-flex align-items-center gap-2">
+          <div className="widthFull d-flex align-items-center gap-2 py-1">
             {callNumberComponents}
           </div>
         );

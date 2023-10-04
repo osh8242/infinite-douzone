@@ -33,6 +33,7 @@ import {
 
 import LcSearchSearchPanel from "./SearchPanel/LcSearchSearchPanel";
 import LcSearchPanel from "./SearchPanel/LcSearchPanel";
+import increaseBrightness from "../../model/increaseBrightness";
 
 const LaborContractLayout = () => {
   const { state, actions } = LaborContractModel();
@@ -51,6 +52,16 @@ const LaborContractLayout = () => {
     dateEndSelectRef,
     dateSetSelectRef,
   } = state;
+
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 75);
+  const labels = document.querySelectorAll(".label");
+
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   // const tabRef = useRef(null);
 
@@ -176,14 +187,15 @@ const LaborContractLayout = () => {
                         <Scrollbars
                           style={{
                             height: 380,
-                            overflow: "hidden",
+                            overflowX: "hidden",
                             marginBottom: 30,
                           }}
                           key={"scrollKey"}
                         >
                           <Row
                             key={"menuKey1"}
-                            className="mt-4 mb-5 justify-content-center"
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
                             <FormPanel
                               INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
@@ -192,7 +204,6 @@ const LaborContractLayout = () => {
                               actions={actions}
                             />
                           </Row>
-                          ,
                         </Scrollbars>,
                       ]}
                     </MenuTab>

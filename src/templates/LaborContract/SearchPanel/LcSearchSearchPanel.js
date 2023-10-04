@@ -19,7 +19,7 @@ const LcSearchSearchPanel = (props) => {
     <SearchPanel
       onSearch={() => onSearch(jobSelectRef, dateSelectRef, dateEndSelectRef)}
     >
-      <Row className="searchPanel">
+      <Row className="searchPanel deleteLabelBackground">
         <Col className="mx-1 col-md-7">
           <DateForm
             label={"작성기간"}
