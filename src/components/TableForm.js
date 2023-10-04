@@ -1,17 +1,7 @@
-import {
-  faPlus,
-  faSortDown,
-  faSortUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/tableForm.css";
 import { makeCommaNumber } from "../utils/NumberUtils";
@@ -61,9 +51,8 @@ const TableForm = ({
   useEffect(() => {
     if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
 
-      setTableRows(tableData);
-      defaultFocus && setRefresh(!refresh);
-
+    setTableRows(tableData);
+    defaultFocus && setRefresh(!refresh);
   }, [tableData]);
 
   useEffect(() => {
@@ -521,9 +510,7 @@ const TableForm = ({
         case "textCodeHelper":
           let codeHelperData = codeHelper[field];
           let tableData = codeHelperData.tableData;
-          let targetIndex = tableData.findIndex(
-            (row) => row.item[field] === value
-          );
+          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
           const newField = field.charAt(0).toUpperCase() + field.slice(1);
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
@@ -597,8 +584,7 @@ const TableForm = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1)
-                setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
               break;
 
             case "Home":
@@ -705,9 +691,7 @@ const TableForm = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={
-                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
-                }
+                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -792,9 +776,7 @@ const TableForm = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onClick={(e) =>
-                    handleRowClick(e, tableRows.length, columnIndex)
-                  }
+                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (

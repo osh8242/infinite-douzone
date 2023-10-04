@@ -133,7 +133,7 @@ export const subTableConstant = {
     { field: "fgGraduation", text: "졸업구분", width: "70px" },
     { field: "ynTogether", text: "동거", width: "40px" },
     { field: "ynLunarbir", text: "양음", width: "40px" },
-    { field: "daBirth", text: "생년월일", type: "date", width: "114px" },
+    { field: "daBirth", text: "생년월일", type: "date", width: "143px" },
     { field: "cdJob", text: "직업", width: "65px" },
     { field: "nmKrcom", text: "직장명", width: "65px" },
     { field: "cdOffpos", text: "직급", width: "65px", type: "textCodeHelper" },

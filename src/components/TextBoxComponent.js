@@ -7,11 +7,7 @@ import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import "../styles/fonts.css";
-import {
-  isNumber,
-  makeCommaNumber,
-  makePureNumber,
-} from "../utils/NumberUtils";
+import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -213,11 +209,12 @@ function TextBoxComponent(props) {
       setInputValue("");
     } else {
       setSendValue(newValue);
+      console.log("newValue", newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
       setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
-      onChange && onChange(event, newValue, id);
+      onChange && onChange(event, newValue);
     }
   };
 
@@ -342,20 +339,14 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon
-                  icon={faCopyright}
-                  onClick={onClickCodeHelper}
-                />
+                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
               </div>
             ) : (
               //</div>
               <div className="svg-wrapper">
                 <div className="svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon
-                    icon={faCopyright}
-                    onClick={onClickCodeHelper}
-                  />
+                  <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
                 </div>
               </div>
             )
