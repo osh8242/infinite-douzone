@@ -133,7 +133,7 @@ function EmpRegisterationLayout() {
     <>
       {/* 사원등록 전용 헤더 */}
       <EmpRegisterHeader
-        deleteButtonHandler={actions.deleteEmp}
+        deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={state.selectedRows.length !== 0}
       />
       <Container className="SUITE p-12">
@@ -156,7 +156,9 @@ function EmpRegisterationLayout() {
                 insertNewRow: actions.insertEmp,
                 updateEditedRow: actions.updateEmp,
                 deleteRow: actions.deleteEmp,
-                getRowObject: Emp,
+                getRowObject: (data) => {
+                  return { item: Emp(data), table: "emp" };
+                },
               }}
             />
             {/* ) : (

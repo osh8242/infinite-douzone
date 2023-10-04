@@ -193,9 +193,10 @@ function EmpRegisterationModel() {
         .catch((error) => {
           console.error("에러발생: ", error);
         });
-    } else {
-      setMainTabData({});
     }
+    // else {
+    //   setMainTabData({});
+    // }
   }, [mainTablePkValue]);
 
   // useEffect(() => {
@@ -302,42 +303,35 @@ function EmpRegisterationModel() {
   //사원 정보 DELETE 요청
   const deleteSelectedRows = useCallback(() => {
     // 각 row에 대한 delete 요청을 생성
-    // console.log("selectedRows axios 직전", selectedRows);
+    const editedTableNames = {};
+    console.log("selectedRows axios 직전", selectedRows);
     const deletePromises = selectedRows.map((row) => {
       let pattern;
       switch (row.table) {
         case "emp":
-          pattern = "/emp/deleteEmp";
+          pattern = urlPattern.deleteEmp;
           break;
         default:
           return Promise.resolve(); // 이 부분이 중요합니다. 모든 경우에 프로미스를 반환해야 합니다.
       }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
       return api.delete(pattern, { data: row.item });
-    }, []);
+    });
 
     Promise.all(deletePromises)
       .then((responses) => {
         if (responses) console.log("선택된 모든 행의 삭제 완료");
+        console.log("selectedRows", selectedRows);
         setSelectedRows([]); // 선택행 배열 비우기
-        setReloadSubTableData(!reloadSubTableData);
-        setEditedEmp([]);
-        // console.log("선택한 모든 행 =>", responses);
-        //삭제된 데이터 필터링
-        // const undeletedEmpData = responses.filter((response) => {
-        //   return response.data != "";
-        // });
-        //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
-        // console.log("undeletedEmpData !!!!!", undeletedEmpData);
-        // const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
-        //   const undeletedEmp = {
-        //     cdEmp: item.data.cdEmp,
-        //     nmKrname: item.data.nmKrname,
-        //     useMenuList: item.data.useMenuList,
-        //   };
-        //   return EmpMenuUsage(undeletedEmp);
-        // });
-        // setUndeletedEmpTableData(undeletedEmpTableDataContent);
-        setModalState({ show: true });
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "emp":
+              setReloadSubTableData(!reloadSubTableData); //reload
+              break;
+            default:
+              break;
+          }
+        });
       })
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
@@ -346,55 +340,37 @@ function EmpRegisterationModel() {
   }, [selectedRows]);
 
   //사원 delete 함수
-  const deleteEmp = useCallback(() => {
+  const deleteEmp = useCallback((row) => {
     // 각 row에 대한 delete 요청을 생성
-    // console.log("selectedRows axios 직전", selectedRows);
-    const deletePromises = selectedRows.map((row) => {
-      let pattern;
-      switch (row.table) {
-        case "emp":
-          pattern = urlPattern.deleteEmp;
-          break;
-        default:
-          console.log("행이 선택되지 않았습니다");
-          return Promise.resolve();
-      }
-      return api.delete(pattern, { data: row.item });
-    });
-
-    Promise.all(deletePromises)
-      .then((responses) => {
-        if (responses) console.log("선택된 모든 행의 삭제 완료");
-        setSelectedRows([]); // 선택행 배열 비우기
-        setReloadSubTableData(!reloadSubTableData);
-        setEditedEmp([]);
-        // console.log("선택한 모든 행 =>", responses);
-        // //삭제된 데이터 필터링
-        // const undeletedEmpData = responses.filter((response) => {
-        //   return response.data != "";
-        // });
-        // //삭제되지 않은 사원들의 데이터(사원코드, 이름, 사용중인 메뉴)
-        // console.log("undeletedEmpData !!!!!", undeletedEmpData);
-        // const undeletedEmpTableDataContent = undeletedEmpData.map((item) => {
-        //   const undeletedEmp = {
-        //     cdEmp: item.data.cdEmp,
-        //     nmKrname: item.data.nmKrname,
-        //     useMenuList: item.data.useMenuList,
-        //   };
-        //   return EmpMenuUsage(undeletedEmp);
-        // });
-        // const itemUndeletedEmpTableDataContent = {
-        //   item: undeletedEmpTableDataContent,
-        // };
-        // setUndeletedEmpTableData(itemUndeletedEmpTableDataContent);
-
-        // // setModalState({ show: true });
-      })
+    console.log("selectedRows axios 직전", row["table"]);
+    let pattern;
+    switch (row["table"]) {
+      case "emp":
+        pattern = urlPattern.deleteEmp;
+        break;
+      default:
+        console.log("행이 선택되지 않았습니다");
+        return Promise.resolve();
+    }
+    api
+      .delete(pattern, { data: row.item })
+      .then(console.log("삭제완료~"))
       .catch((error) => {
         console.error("하나 이상의 요청에서 에러 발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
       });
-  }, [selectedRows]);
+
+    // Promise.all(deletePromises)
+    //   .then((responses) => {
+    //     if (responses) console.log("선택된 모든 행의 삭제 완료");
+    //     setSelectedRows([]); // 선택행 배열 비우기
+    //     setReloadSubTableData(!reloadSubTableData);
+    //     setEditedEmp([]);
+    //   })
+    //   .catch((error) => {
+    //     console.error("하나 이상의 요청에서 에러 발생: ", error);
+    //     // 필요에 따라 다른 오류 처리 로직 추가
+    //   });
+  }, []);
 
   // ================================================================================
   //subTableData 가져오는 비동기 POST 요청 (사원의 가족사항)
