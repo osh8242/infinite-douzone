@@ -142,6 +142,6 @@
 #empRegisterLayoutLeft::-webkit-scrollbar-track,
 .leftTable::-webkit-scrollbar-track {
   height: 100%;
-  background: var(--red);
+  background: var(--lightSkyblue);
   /*스크롤바 뒷 배경*/
 }

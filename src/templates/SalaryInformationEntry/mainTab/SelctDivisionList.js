@@ -15,31 +15,34 @@ import "../../../styles/HrManagement/HrManagementLayout.scss";
 const SelctDivisionList = (props) => {
   const { state, actions } = props;
   return (
-    <div>
+    <div className="deleteLabelBackground">
       <SelectForm
         label={LABELS.inquiryYype}
         optionList={totalSalaryByPeriodOption}
-        onChange={(e,value) => actions.getSalTotalSum(value)}
+        onChange={(e, value) => actions.getSalTotalSum(value)}
       />
       <Row>
-          <div className="hr-leftTable" style={{height: '27vh'}}>
-            <TableForm
-              tableHeaders={salAllowSum.headers}
-              tableData={state.salPaySumData.allowPay}
-              actions={{}}
-              readOnly
-            />
-          </div>
-          <div className="hr-leftTable" style={{height: '8vh', overflow:'hidden'}}>
-            <TableForm
-              tableHeaders={sumAllowPay.headers}
-              tableData={state.salPaySumData.totalAllowPay}
-              readOnly
-            />
-          </div>
+        <div className="hr-leftTable" style={{ height: "27vh" }}>
+          <TableForm
+            tableHeaders={salAllowSum.headers}
+            tableData={state.salPaySumData.allowPay}
+            actions={{}}
+            readOnly
+          />
+        </div>
+        <div
+          className="hr-leftTable"
+          style={{ height: "8vh", overflow: "hidden" }}
+        >
+          <TableForm
+            tableHeaders={sumAllowPay.headers}
+            tableData={state.salPaySumData.totalAllowPay}
+            readOnly
+          />
+        </div>
       </Row>
       <Row>
-        <div className="hr-leftTable" style={{height: '27vh'}}>
+        <div className="hr-leftTable" style={{ height: "27vh" }}>
           <TableForm
             tableHeaders={salDeductSum.headers}
             tableData={state.salPaySumData.deductPay}
@@ -47,14 +50,17 @@ const SelctDivisionList = (props) => {
             readOnly
           />
         </div>
-        <div className="hr-leftTable" style={{height: '8vh',overflow:'hidden'}}>
-            <TableForm
-              tableHeaders={sumDeductPay.headers}
-              tableData={state.salPaySumData.totalDeductPay}
-              readOnly
-            />
-          </div>
-      </Row> 
+        <div
+          className="hr-leftTable"
+          style={{ height: "8vh", overflow: "hidden" }}
+        >
+          <TableForm
+            tableHeaders={sumDeductPay.headers}
+            tableData={state.salPaySumData.totalDeductPay}
+            readOnly
+          />
+        </div>
+      </Row>
     </div>
   );
 };

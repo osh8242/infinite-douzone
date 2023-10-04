@@ -65,7 +65,7 @@ function ModalComponent(props) {
       backdrop={backdrop}
       animation={animation}
       centered
-      className="SUITE p-12"
+      className="SUITE p-12 deleteLabelBackground"
     >
       <Modal.Header>
         <Modal.Title>{title}</Modal.Title>
