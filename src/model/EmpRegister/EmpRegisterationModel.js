@@ -356,6 +356,7 @@ function EmpRegisterationModel() {
           pattern = urlPattern.deleteEmp;
           break;
         default:
+          console.log("행이 선택되지 않았습니다");
           return Promise.resolve();
       }
       return api.delete(pattern, { data: row.item });
