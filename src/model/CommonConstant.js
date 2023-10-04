@@ -120,6 +120,7 @@ export const RADIO_LIST = {
 };
 
 export const EMAIL_LIST = [
+  { key: "empty", value: "선택없음" },
   { key: "daum", value: "daum.net" },
   { key: "gmail", value: "gmail.com" },
   { key: "hanmail", value: "hanmail.net" },
