@@ -17,7 +17,7 @@ function TextBoxComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
-    // custom type 옵션          ex) callNumber, email( text & select )
+    // custom type 옵션          ex) callNumber, email( text & select ), rate
     id,
     // subId,
     name,
@@ -56,6 +56,7 @@ function TextBoxComponent(props) {
     // valueMd = 8,
     placeholder, // [선택]
     height, // [선택] 스타일
+    rate,
 
     isPeriod,
     subLabel = "",
@@ -69,6 +70,9 @@ function TextBoxComponent(props) {
     selectRef,
     subField,
     disabledSelect,
+
+    //number
+    step
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -219,7 +223,20 @@ function TextBoxComponent(props) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
     } else if (onClickCodeHelper) {
       setInputValue("");
-    } else {
+    } else if(rate){
+      setIsValid(true); // 스타일 초기화
+      if(newValue < 0 || newValue > 100){
+        setIsValid(false);
+        return false;
+      }
+      setIsValid(true);
+      setInputValue(newValue);
+    }else if(type === "commaNumber"){
+      let processedValue = newValue;
+    
+      setInputValue(processThousandSeparator(processedValue));
+      setSendValue(makePureNumber(processedValue));
+    }else {
       setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
@@ -255,7 +272,7 @@ function TextBoxComponent(props) {
 
   const processThousandSeparator = (value) => {
     const numValue = value.replaceAll(/,/g, "");
-    return makeCommaNumber(numValue.toString());
+    return makeCommaNumber(numValue);
   };
 
   //유효성 검사
@@ -513,6 +530,7 @@ function TextBoxComponent(props) {
               placeholder={placeholder ? placeholder : undefined}
               style={style}
               className={isValid ? "" : "invalid"}
+              step={step}
             />
             {/* {type === "regNum" && (
               <FontAwesomeIcon

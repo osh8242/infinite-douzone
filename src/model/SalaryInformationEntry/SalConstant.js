@@ -295,9 +295,9 @@ export const modal_insertSalaryDeductData = {
       { key: "N", value: "X" },
     ],},
     { field: "rate"
-    , text: "비율(%)" 
-    , type : "number"
+    , text: "비율(%)"
     , isPk: true
+    , type : "rate"
   },
   ],
   params : {static: 'N'}
