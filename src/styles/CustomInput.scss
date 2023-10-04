@@ -25,8 +25,8 @@
   caret-color: transparent;
 
   appearance: none;
-  // background-color: var(--bs-body-bg);
-  background-color: #efefef;
+  background-color: var(--bs-body-bg);
+  // background-color: #efefef;
   background-clip: padding-box;
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
@@ -34,9 +34,9 @@
   // z-index: -1;
 }
 
-.svg-container input:focus {
-  background-color: #efefef; 
-}
+// .svg-container input:focus {
+//   background-color: #efefef;
+// }
 
 .svg-container svg {
   position: absolute;
@@ -44,7 +44,7 @@
   right: 14.5px;
   transform: translateY(-50%);
   cursor: pointer;
-  
+
   // z-index: 2;
 }
 

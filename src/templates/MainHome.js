@@ -8,6 +8,8 @@ import lrIntro from "../styles/img/lrIntro.png";
 import siIntro from "../styles/img/siIntro.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
+  faChevronLeft,
+  faChevronRight,
   faCircleArrowLeft,
   faCircleArrowRight,
   faFileInvoice,
@@ -21,6 +23,7 @@ import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
 import "../styles/fonts.css";
 import { useLogin } from "../Login/LoginProvider";
+import { getLogFunction } from "../model/useLog";
 
 const slides = [
   {
@@ -38,49 +41,10 @@ const slides = [
       </div>
     ),
   },
-  {
-    background: erIntro, //사원등록
-    content: (
-      <div>
-        <p className="NIXGON p-24" style={{ color: "black" }}>
-          사원등록 페이지에 대한 정보 넣으면 됨
-        </p>
-      </div>
-    ),
-  },
-  {
-    background: hrIntro, //인사관리등록
-    content: (
-      <div>
-        <p className="NIXGON p-24" style={{ color: "black" }}>
-          인사관리등록 정보 넣으면 됨
-        </p>
-      </div>
-    ),
-  },
-  {
-    background: lrIntro, //표준근로계약서
-    content: (
-      <div>
-        <p className="NIXGON p-24" style={{ color: "black" }}>
-          표준근로계약서 정보 넣으면 됩니다
-        </p>
-      </div>
-    ),
-  },
-  {
-    background: siIntro, //급여자료입력
-    content: (
-      <div>
-        <p className="NIXGON p-24" style={{ color: "black" }}>
-          급여자료 입력에 대한 정보
-        </p>
-      </div>
-    ),
-  },
 ];
 
 function MainHome() {
+  const logout = getLogFunction();
   const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
 
   console.log(updateToken);
@@ -98,9 +62,6 @@ function MainHome() {
   );
   const location = useLocation();
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
-
-  // let userToken = localStorage.getItem("token");
-  // let userTokenObject = JSON.parse(userToken);
 
   const [currentSlide, setCurrentSlide] = useState(0); // 슬라이드 효과
   const nextSlide = () => {
@@ -125,9 +86,7 @@ function MainHome() {
     if (localStorage.getItem("userInfo") != null) {
       console.log("local 값 잇서?");
       setBtnByState("로그인");
-      setHrefState("/login");
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("authToken");
+      logout();
       setUserName("비회원");
     } else {
       setHrefState("/login");
@@ -135,11 +94,6 @@ function MainHome() {
       navigate("/login");
     }
   }
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-
-  // const toggleProfileDropdown = () => {
-  //   setShowProfileDropdown(!showProfileDropdown);
-  // };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -183,50 +137,49 @@ function MainHome() {
             }}
           >
             <div className="textBox">{slides[currentSlide].content}</div>
-          </div>
-          {/* <div>사원등록을 손쉽게</div>
-          <div>인사관리를 한눈에</div>
-          <div>표준근로계약서 작성도 꼼꼼하게</div>
-          <div>급여자료 입력도 간편하게</div> */}
-        </div>
-        {/* 하단 4가지 메뉴 이동 버튼 */}
-        <div className="menuBtnList SUITE p-12">
-          <div>
-            <a href="/er" className="menuBtn er">
-              <FontAwesomeIcon icon={faUserPlus} />
-            </a>
-            <p>사원등록</p>
-          </div>
-          <div>
-            <a href="/hr" className="menuBtn hr">
-              <FontAwesomeIcon icon={faAddressCard} />
-            </a>
-            <p>인사관리등록</p>
-          </div>
-          <div>
-            <a href="/lc" className="menuBtn lc">
-              <FontAwesomeIcon icon={faFileInvoice} />
-            </a>
-            <p>표준근로계약서</p>
-          </div>
-          <div>
-            <a href="/si" className="menuBtn si">
-              <FontAwesomeIcon icon={faSackDollar} />
-            </a>
-            <p>급여관리</p>
+
+            {/* 하단 4가지 메뉴 이동 버튼 */}
+            <div className="menuBtnList NIXGON p-14 semi-bold">
+              <div>
+                <a href="/er" className="menuBtn er">
+                  <FontAwesomeIcon icon={faUserPlus} />
+                </a>
+                <p>사원등록</p>
+              </div>
+              <div>
+                <a href="/hr" className="menuBtn hr">
+                  <FontAwesomeIcon icon={faAddressCard} />
+                </a>
+                <p>인사관리등록</p>
+              </div>
+              <div>
+                <a href="/lc" className="menuBtn lc">
+                  <FontAwesomeIcon icon={faFileInvoice} />
+                </a>
+                <p>표준근로계약서</p>
+              </div>
+              <div>
+                <a href="/si" className="menuBtn si">
+                  <FontAwesomeIcon icon={faSackDollar} />
+                </a>
+                <p>급여관리</p>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* 좌우 슬라이드용 버튼 */}
         <a href="#!" id="leftArrowBtn">
-          <FontAwesomeIcon icon={faCircleArrowLeft} onClick={prevSlide} />
+          <FontAwesomeIcon icon={faChevronLeft} onClick={prevSlide} />
         </a>
         <a href="#!" id="leftArrowBtn-animation">
-          <FontAwesomeIcon icon={faCircleArrowLeft} onClick={prevSlide} />
+          <FontAwesomeIcon icon={faChevronLeft} onClick={prevSlide} />
         </a>
         <a href="#!" id="rightArrowBtn">
-          <FontAwesomeIcon icon={faCircleArrowRight} onClick={nextSlide} />
+          <FontAwesomeIcon icon={faChevronRight} onClick={nextSlide} />
         </a>
         <a href="#!" id="rightArrowBtn-animation">
-          <FontAwesomeIcon icon={faCircleArrowRight} onClick={nextSlide} />
+          <FontAwesomeIcon icon={faChevronRight} onClick={nextSlide} />
         </a>
       </div>
       <div id="page2"></div>

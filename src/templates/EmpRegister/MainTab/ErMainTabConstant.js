@@ -50,7 +50,7 @@ export const MAIN_TAB = {
       label: LABELS_EMP.addHome2,
       span: 2,
     },
-    { type: INPUT_TYPE.date, field: "daRetire", span: 2 },
+    { type: INPUT_TYPE.date, field: "daRetire", span: 1 },
     {
       type: INPUT_TYPE.textCodeHelper,
       field: "abbNation",
@@ -66,7 +66,7 @@ export const MAIN_TAB = {
     { type: INPUT_TYPE.textCodeHelper, field: "cdProject", span: 1 },
     { type: INPUT_TYPE.textCodeHelper, field: "cdBank", span: 1 },
     { type: INPUT_TYPE.text, field: "nmBnkowner", span: 1 },
-    { type: INPUT_TYPE.text, field: "noBnkacct", span: 2 },
+    { type: INPUT_TYPE.text, field: "noBnkacct", span: 1 },
   ],
   secondaryTabInputs: [
     {

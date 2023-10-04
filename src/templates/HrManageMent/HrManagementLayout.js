@@ -26,6 +26,7 @@ import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
+import increaseBrightness from "../../model/increaseBrightness";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -48,6 +49,16 @@ const HrManagementLayout = () => {
     modalState,
     codeHelperTableData,
   } = state;
+
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 75);
+  const labels = document.querySelectorAll(".label");
+
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
@@ -165,7 +176,7 @@ const HrManagementLayout = () => {
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
-            <Col md="9" className="px-5">
+            <Col md="9" className="px-4">
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList}>
                 {[
