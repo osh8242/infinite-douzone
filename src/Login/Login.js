@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TextComponent from "./TextComponents";
 import useLoginModel from "./useLoginModel";
 import { Row, Col, Button, Container, Form } from "react-bootstrap";
@@ -14,8 +14,21 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
+  const clientIp = useRef("0.0.0.0");
   const [invalid, setInvalid] = useState("");
   const [invalidPwd, setInvalidPwd] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("https://api.ipify.org?format=json")
+      .then((response) => {
+        console.log("접속 IP", response.data.ip);
+        clientIp.current = response.data.ip;
+      })
+      .catch((error) => {
+        console.log("에러가 발생하였습니다.", error);
+      });
+  }, []);
 
   const handleId = (e) => {
     setId(e.target.value);
@@ -47,7 +60,10 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post(`${url}/auth/login`, loginUser);
+      const response = await axios.post(
+        `${url}/auth/login?clientIp=${clientIp.current}`,
+        loginUser
+      );
       console.log("=========================");
       console.log(response);
 
