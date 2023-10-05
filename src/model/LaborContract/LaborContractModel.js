@@ -67,9 +67,9 @@ const LaborContractModel = () => {
     setLengthTempEmp("0");
     // setMainTabData({});
   }
-  function stateUpdate() {
+  function stateUpdate(state) {
     console.log("rowAbleState");
-    setRowAbleState("T");
+    setRowAbleState(state);
     console.log(rowAbleState);
   }
 
@@ -100,11 +100,9 @@ const LaborContractModel = () => {
   };
 
   useEffect(() => {
-    console.log("result rr");
-    console.log(date);
-    console.log(job);
-    if (job && date) {
-      stateUpdate(); // addable true
+    if (job === "none") stateUpdate("F");
+    else if (job && date) {
+      stateUpdate("T"); // addable true
     }
   }, [job, date]);
 

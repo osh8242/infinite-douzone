@@ -88,7 +88,7 @@ export const searchOptionSearch = [
 
 // 상단 조회 - 소득구분 목록
 export const searchOption = [
-  // { key: "empAll", value: "0. 전체" },
+  { key: "none", value: "0. 선택" },
   { key: "empRegistration", value: "1. 사원등록" },
   { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
 ];
