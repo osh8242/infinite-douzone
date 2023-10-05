@@ -116,9 +116,9 @@ function MainHome() {
             <a href="#page1" className="colorWhite">
               HOME
             </a>
-            <a href="#page2" className="colorWhite">
+            {/* <a href="#page2" className="colorWhite">
               서비스소개
-            </a>
+            </a> */}
             {/* 로그인 여부에 따라 버튼 토글 */}
             <div id="signUpSignInBtn">
               {!userInfoObject && <a href="/signup">회원가입</a>}
@@ -184,7 +184,7 @@ function MainHome() {
           <FontAwesomeIcon icon={faChevronRight} onClick={nextSlide} />
         </a>
       </div>
-      <div id="page2">
+      {/* <div id="page2">
         <div id="page2-content">
           <div id="page2-title" className="Jost p-32">
             INFINITE SERVICE
@@ -196,7 +196,7 @@ function MainHome() {
             <div className="page2-item1-service">급여관리</div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
