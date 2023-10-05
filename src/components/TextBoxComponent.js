@@ -287,7 +287,7 @@ function TextBoxComponent(props) {
       }
     }
 
-    //validationFunction && validationFunction(value);
+    validationFunction && validationFunction(value);
     return returnValue;
   };
 
