@@ -55,7 +55,8 @@ function TextBoxComponent(props) {
     // md = 4, // [선택]
     // valueMd = 8,
     placeholder, // [선택]
-    height, // [선택] 스타일
+    style,
+    heigth,
     rate,
 
     isPeriod,
@@ -95,10 +96,6 @@ function TextBoxComponent(props) {
     else setDisable(false);
   }, [isDisable]);
   // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-  const style = {
-    // ...(isDisable ? { color: "transparent" } : {}),
-    ...(height ? { height: `${height}px` } : {}),
-  };
 
   // useEffect(() => {
   //   if (selectedOption === "F") {
@@ -240,11 +237,12 @@ function TextBoxComponent(props) {
 
     }else {
       setSendValue(newValue);
+      console.log("newValue", newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
       setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
-      onChange && onChange(event, newValue, id);
+      onChange && onChange(event, newValue);
     }
   };
 
@@ -390,7 +388,7 @@ function TextBoxComponent(props) {
             <>
               {selectList ? (
                 <div className="widthFull d-flex align-items-center gap-2">
-                  <div style={{ width: "40%" }}>
+                  <div style={{ width: "45%" }}>
                     <Form.Select
                       id={id}
                       ref={selectRef}
@@ -482,7 +480,7 @@ function TextBoxComponent(props) {
       case "callNumber":
         // 전화번호
         return (
-          <div className="widthFull d-flex align-items-center gap-2 py-1">
+          <div className="widthFull d-flex align-items-center gap-2">
             {callNumberComponents}
           </div>
         );

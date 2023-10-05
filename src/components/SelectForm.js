@@ -32,7 +32,7 @@ function SelectForm(props) {
     disabled,
   } = props;
 
-  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
+  const [selectedValue, setSelectedValue] = useState(optionList[0].key || "");
   const [isDisabled, setDisabled] = useState();
 
   useEffect(() => {

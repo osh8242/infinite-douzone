@@ -3,7 +3,7 @@
 // 모든 페이지의 스크롤바
 body {
   &::-webkit-scrollbar {
-    width: 10px; /* 세로 스크롤바의 너비 */
+    width: 0px; /* 세로 스크롤바의 너비 */
     height: 0px; /* 가로 스크롤바의 높이 */
   }
 

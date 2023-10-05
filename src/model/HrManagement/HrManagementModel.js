@@ -70,10 +70,7 @@ const HrManagementModel = () => {
           }
         });
         console.log("세팅된 newLeftTableData", newLeftTableData);
-        console.log(
-          "세팅된 newLeftCodeHelperTableData",
-          newLeftCodeHelperTableData
-        );
+        console.log("세팅된 newLeftCodeHelperTableData", newLeftCodeHelperTableData);
         setLeftCodeHelperTableData(newLeftCodeHelperTableData);
         setLeftTableData(newLeftTableData);
       })
@@ -233,7 +230,7 @@ const HrManagementModel = () => {
     (event, value) => {
       console.log("서브밋메인탭 데이터", event, value);
       if (event.key === "Enter" || event.type === "change") {
-        event.target.blur();
+        if (event.key === "Enter") event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newEmpAdd = { ...mainTabData };
@@ -276,7 +273,6 @@ const HrManagementModel = () => {
         .put(urlPattern.updateEmpAdd, EmpAdd)
         .then((response) => {
           if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-          setLeftTablePkValue({ ...leftTablePkValue });
         })
         .catch((error) => {
           console.error("에러발생: ", error);
@@ -405,7 +401,6 @@ const HrManagementModel = () => {
         .put(urlPattern.updateEmpFam, empFam)
         .then((response) => {
           if (response.data === 1) console.log("EmpFam 업데이트 성공");
-          setLeftTablePkValue({ ...leftTablePkValue });
         })
         .catch((error) => {
           console.error("에러발생: ", error);

@@ -54,17 +54,17 @@ export const SELECT_LIST = {
     { key: "islam", value: "이슬람교" },
   ],
   jobOk: [
-    { key: "재직", value: "재직" },
-    { key: "퇴직", value: "퇴직" },
+    { key: "Y", value: "재직" },
+    { key: "N", value: "퇴직" },
   ],
   ynFor: [
-    { key: "내국인", value: "내국인" },
-    { key: "외국인", value: "외국인" },
-    { key: "외계인", value: "외계인" },
+    { key: "K", value: "내국인" },
+    { key: "F", value: "외국인" },
+    { key: "A", value: "외계인" },
   ],
   fgSex: [
-    { key: "남자", value: "남자" },
-    { key: "여자", value: "여자" },
+    { key: "M", value: "남자" },
+    { key: "W", value: "여자" },
   ],
   ynEmploy: [
     { key: "Y", value: "0.여" },
@@ -120,6 +120,7 @@ export const RADIO_LIST = {
 };
 
 export const EMAIL_LIST = [
+  { key: "empty", value: "선택없음" },
   { key: "daum", value: "daum.net" },
   { key: "gmail", value: "gmail.com" },
   { key: "hanmail", value: "hanmail.net" },

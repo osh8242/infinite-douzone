@@ -61,9 +61,8 @@ const TableForm = ({
   useEffect(() => {
     if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
 
-      setTableRows(tableData);
-      defaultFocus && setRefresh(!refresh);
-
+    setTableRows(tableData);
+    defaultFocus && setRefresh(!refresh);
   }, [tableData]);
 
   useEffect(() => {
