@@ -86,10 +86,11 @@ function TextBoxComponent(props) {
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
 
-  useEffect(() => {
-    if (disabled) setDisable(true);
-    else setDisable(false);
-  }, [isDisable]);
+  // useEffect(() => {
+  //   if (disabled) setDisable(true);
+  //   else setDisable(false);
+  // }, [isDisable]);
+
   // const style = height ? { height: `${height}px` } : {}; // 스타일 값
 
   // useEffect(() => {
@@ -100,9 +101,11 @@ function TextBoxComponent(props) {
   // }, [selectedOption]);
 
   const handleSelectChange = (event) => {
-    // if (event.target.value === "F" || event.target.value === "T") {
-    //   setDisable(!isDisable);
-    // }
+    if (event.target.value === "F") {
+      setDisable(true);
+    } else if (event.target.value === "T") {
+      setDisable(false);
+    }
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
@@ -378,7 +381,7 @@ function TextBoxComponent(props) {
                       ref={selectRef}
                       value={selectedValue}
                       onChange={(e) => handleSelectChange(e)}
-                      disabled={isDisable}
+                      // disabled={isDisable}
                     >
                       {selectList.map((option, index) => (
                         <option value={option.key} key={index}>
