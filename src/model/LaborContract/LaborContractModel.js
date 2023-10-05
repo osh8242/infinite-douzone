@@ -566,6 +566,7 @@ const LaborContractModel = () => {
         Object.keys(editedTableNames).forEach((tableName) => {
           switch (tableName) {
             case "swsmOther":
+              getEmpList();
               break;
             case "swsm":
               getEmpList();

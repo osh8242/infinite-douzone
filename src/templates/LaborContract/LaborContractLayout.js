@@ -262,8 +262,6 @@ const LaborContractLayout = () => {
                           <TableForm
                             tableName="SwsmOther"
                             rowAddable
-                            // sortable
-                            showCheckbox
                             tableHeaders={SubTabHeaders}
                             tableData={subTableData}
                             pkValue={leftTablePkValue}
