@@ -86,20 +86,6 @@ function TextBoxComponent(props) {
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
 
-  // useEffect(() => {
-  //   if (disabled) setDisable(true);
-  //   else setDisable(false);
-  // }, [isDisable]);
-
-  // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-
-  // useEffect(() => {
-  //   if (selectedOption === "F") {
-  //     setDisable(true);
-  //   } else setDisable(false);
-  //   setSelectedValue(selectedOption || "");
-  // }, [selectedOption]);
-
   const handleSelectChange = (event) => {
     if (event.target.value === "F") {
       setDisable(true);
