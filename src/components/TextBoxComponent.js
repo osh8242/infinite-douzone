@@ -208,6 +208,10 @@ function TextBoxComponent(props) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
     } else if (onClickCodeHelper) {
       setInputValue("");
+    } else if (type === "time") {
+      setSendValue(newValue);
+      setInputValue(newValue);
+      onChangeSelect(event, newValue);
     } else {
       setSendValue(newValue);
       console.log("newValue", newValue);
