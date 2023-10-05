@@ -26,7 +26,6 @@ const Login = () => {
   };
 
   const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
-
   const navigate = useNavigate();
 
   const handleFormSubmit = (e) => {
@@ -48,18 +47,16 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post(`${url}/auth/login`, loginUser, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(`${url}/auth/login`, loginUser);
       console.log("=========================");
       console.log(response);
 
       // console.log(response.headers["authorization"]);
       // 현재 임시 토큰 값 : header 값으로 변경 필요
       const token = response.data.token;
+      // const token = response.headers["authorization"];
       console.log("token" + token);
+      // console.log("response.headers", response.headers);
 
       // 토큰이 반환된 경우
       if (token) {
@@ -160,10 +157,10 @@ const Login = () => {
                 height={45}
                 onBlur={LoginUser}
               />
-              <Col md="8" className="mt-4">
-                <p className={"errorMessageWrap"}>{errorMessage}</p>
-              </Col>
             </Col>
+          </Row>
+          <Row>
+            <p className={"errorMessageWrap"}>{errorMessage}</p>
           </Row>
           <Row className="justify-content-center mb-4">
             <Col md="10" className="d-flex flex-column align-items-center">
