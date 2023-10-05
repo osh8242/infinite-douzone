@@ -110,7 +110,7 @@ const LaborContractModel = () => {
   const setLength = () => {
     api
       .get(
-        `/swsm/getEmpListForSwsmDate?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+        `/swsm/getEmpListForSwsmDateExceptJob?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
       )
       .then((response) => {
         setLengthEmpAll(response.data.length);

@@ -15,6 +15,7 @@ import {
   searchOption,
   leftTableConstant,
   leftStaticsTableConstant,
+  searchOptionSearch,
 } from "../../model/LaborContract/LaborContractConstant";
 
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
@@ -246,7 +247,7 @@ const LaborContractLayout = () => {
                   jobSelectRef={jobSelectRef}
                   dateSelectRef={dateSelectRef}
                   dateEndSelectRef={dateEndSelectRef}
-                  searchOption={searchOption}
+                  searchOption={searchOptionSearch}
                   onSelect={actions.submitMainTabData}
                 />
                 <Row className="mt-4" key={"menuKeySearch2"}>
