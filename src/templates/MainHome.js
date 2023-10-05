@@ -186,8 +186,8 @@ function MainHome() {
       </div>
       <div id="page2">
         <div id="page2-content">
-          <div id="page2-title" className="JOST p-24">
-            INFINITE DOUZONE
+          <div id="page2-title" className="Jost p-32">
+            INFINITE SERVICE
           </div>
           <div id="page2-item1">
             <div className="page2-item1-service">사원등록</div>

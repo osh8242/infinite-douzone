@@ -226,12 +226,13 @@ body {
 #page2-title {
   margin-top: 120px;
   width: fit-content;
+  height: fit-content;
   padding: 8px;
   border-radius: 8px;
   justify-content: center;
   color: white;
   font-weight: 700;
-  background-color: var(--darkBlue);
+  background: linear-gradient(to right, var(--blue), var(--lightGray));
 }
 
 #page2-item1 {
