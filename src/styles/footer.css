@@ -1,4 +1,10 @@
-.divide-x-1 {
-  border-right-width: 0px;
-  border-left-width: 2px;
+.team-member {
+  display: flex;
+  gap: 4px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
 }
