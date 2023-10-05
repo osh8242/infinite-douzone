@@ -22,7 +22,7 @@ const SelctDivisionList = (props) => {
         onChange={(e, value) => actions.getSalTotalSum(value)}
       />
       <Row>
-        <div className="hr-leftTable" style={{ height: "27vh" }}>
+        <div className="hr-leftTable" style={{ height: "27vh" ,marginBottom: "-15px"}}>
           <TableForm
             tableHeaders={salAllowSum.headers}
             tableData={state.salPaySumData.allowPay}
@@ -32,7 +32,7 @@ const SelctDivisionList = (props) => {
         </div>
         <div
           className="hr-leftTable"
-          style={{ height: "8vh", overflow: "hidden" }}
+          style={{ height: "9vh", overflow: "hidden" }}
         >
           <TableForm
             tableHeaders={sumAllowPay.headers}
@@ -42,7 +42,7 @@ const SelctDivisionList = (props) => {
         </div>
       </Row>
       <Row>
-        <div className="hr-leftTable" style={{ height: "27vh" }}>
+        <div className="hr-leftTable" style={{ height: "27vh" , marginBottom: "-15px"}}>
           <TableForm
             tableHeaders={salDeductSum.headers}
             tableData={state.salPaySumData.deductPay}
@@ -52,7 +52,7 @@ const SelctDivisionList = (props) => {
         </div>
         <div
           className="hr-leftTable"
-          style={{ height: "8vh", overflow: "hidden" }}
+          style={{ height: "9vh", overflow: "hidden" }}
         >
           <TableForm
             tableHeaders={sumDeductPay.headers}
