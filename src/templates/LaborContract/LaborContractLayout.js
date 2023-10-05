@@ -66,8 +66,6 @@ const LaborContractLayout = () => {
     label.style.backgroundColor = themeLabel;
   });
 
-  // const tabRef = useRef(null);
-
   useEffect(() => {
     actions.onLoad();
   }, []);
@@ -170,7 +168,9 @@ const LaborContractLayout = () => {
                             setPkValue: actions.setLeftTablePkValue,
                             insertNewRow: (row) => {
                               actions.insertSwsm(row);
-                              actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
+                              actions.setLeftTablePkValue({
+                                cdEmp: row.cdEmp,
+                              });
                             },
                             updateEditedRow: actions.updateEmp,
                             setSelectedRows: actions.setSelectedRows,

@@ -29,7 +29,7 @@ const LaborContractModel = () => {
   const [subTableData, setSubTableData] = useState([]); // 서브 그리드 데이터
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
-
+  const [rowAbleState, setRowAbleState] = useState("F");
   const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
@@ -62,6 +62,7 @@ const LaborContractModel = () => {
 
   function onLoad() {
     console.log("load Test");
+    setRowAbleState(false);
     setLeftTableData([]);
     setLengthEmp("0");
     setLengthEmpAll("0");
@@ -86,10 +87,22 @@ const LaborContractModel = () => {
         // 필요에 따라 다른 오류 처리 로직 추가
       });
   };
+  function stateUpdate() {
+    setRowAbleState(true);
+    console.log("rowAbleState");
+    console.log(rowAbleState);
+  }
 
   // 검색에 대한 것만 타고 있어서 변화시에 대한 대응 법으로 변경필요
   const onSetSearch = (jobSelectRef, dateSelectRef) => {
     console.log("model ; 검색 조건 변화 감지?");
+    console.log(jobSelectRef);
+    console.log(dateSelectRef);
+    console.log("----");
+    if (jobSelectRef !== null && dateSelectRef !== null) {
+      console.log("테이블 추가 준비 완료");
+      stateUpdate();
+    }
     // setLeftCodeHelperTableData();
     onLoad();
     // setLeftTableData();
@@ -601,6 +614,7 @@ const LaborContractModel = () => {
       codeHelperTableData,
       subTableData,
       leftStaticsTableData,
+      rowAbleState,
     },
     actions: {
       onLoad,
