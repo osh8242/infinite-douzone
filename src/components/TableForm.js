@@ -13,6 +13,7 @@ import React, {
   useState,
 } from "react";
 import { Table } from "react-bootstrap";
+import { CODE_VALUE } from "../model/CommonConstant";
 import "../styles/tableForm.css";
 import { makeCommaNumber } from "../utils/NumberUtils";
 import CodeHelperModal from "./CodeHelperModal";
@@ -59,8 +60,6 @@ const TableForm = ({
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
-
     setTableRows(tableData);
     defaultFocus && setRefresh(!refresh);
   }, [tableData]);
@@ -128,7 +127,6 @@ const TableForm = ({
 
   //rowRef에 따라서 updatePkValue하기
   useEffect(() => {
-    console.log("업데이트 pkValue");
     actions.setPkValue && actions.setPkValue(getPkValue(rowRef));
   }, [tableRows, rowRef]);
 
@@ -194,7 +192,9 @@ const TableForm = ({
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback((event, rowIndex, columnIndex) => {
-    return tbodyRef.current.children[rowIndex].querySelectorAll("input");
+    return tbodyRef.current.children[rowIndex].querySelectorAll(
+      "input, select"
+    );
   }, []);
 
   // 새로운 행(빈행)을 만드는 함수
@@ -300,6 +300,25 @@ const TableForm = ({
     [tableHeaders]
   );
 
+  const findKeyByValue = (obj, value) => {
+    for (let key in obj) {
+      if (obj[key] === value) {
+        return key;
+      }
+    }
+    return null;
+  };
+
+  const findKeyInCodeValue = (value) => {
+    for (let type in CODE_VALUE) {
+      const key = findKeyByValue(CODE_VALUE[type], value);
+      if (key) {
+        return key;
+      }
+    }
+    return null;
+  };
+
   // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
   const getEditedRow = useCallback(
     (event, rowIndex, columnIndex) => {
@@ -317,7 +336,13 @@ const TableForm = ({
       // 각 입력 필드의 값을 editedRow에 업데이트
       currentRowInputs.forEach((input, index) => {
         const field = input.id;
-        editedRow.item[field] = input.value;
+        const type = tableHeaders[index]?.type;
+        if (type && type === "textCodeHelper") {
+          console.log("findKeyInCodeValue", findKeyInCodeValue(input.value));
+          editedRow.item[field] = findKeyInCodeValue(input.value);
+        } else {
+          editedRow.item[field] = input.value;
+        }
       });
 
       return editedRow;
@@ -350,7 +375,7 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
-        //console.log("엔터키처리 newtableRows", newTableRows);
+        console.log("엔터키처리 newtableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
@@ -484,6 +509,7 @@ const TableForm = ({
                   usePk: codeHelperData.usePk,
                   setRowData: (e, pkValue) => {
                     actions.updateEditedRow(Object.assign(empFam, pkValue));
+                    releaseEditable();
                   },
                 });
               }}
@@ -559,12 +585,20 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        // event.preventDefault();
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
               removeNewRow();
               releaseEditable();
+              break;
+            case "Tab":
+              event.preventDefault();
+              if (event.shiftKey) {
+                if (columnRef > 0) setColumnRef(columnRef - 1);
+              } else {
+                if (columnRef < tableHeaders.length - 1)
+                  setColumnRef(columnRef + 1);
+              }
               break;
             default:
               break;

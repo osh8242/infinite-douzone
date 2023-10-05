@@ -1,4 +1,4 @@
-export const url = "http://localhost:8888";
+export const url = "http://10.107.0.236/8888";
 
 export const CODE_TYPE = {
   cdOffduty: "직무",
