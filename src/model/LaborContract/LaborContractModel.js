@@ -110,10 +110,11 @@ const LaborContractModel = () => {
   const setLength = () => {
     api
       .get(
-        `/swsm/getEmpListForSwsmDateExceptJob?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+        `/swsm/getEmpListForSwsmDate?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
       )
       .then((response) => {
         setLengthEmpAll(response.data.length);
+        // 이쪽 로직 swsm list 로 해줘야 함
       })
       .catch((error) => {
         console.error("에러발생: ", error);
@@ -359,6 +360,7 @@ const LaborContractModel = () => {
 
   const updateEmp = useCallback((emp) => {
     console.log("updateEmp 업데이트 요청", emp);
+
     let newEmp = {
       ...emp,
     };
@@ -371,16 +373,21 @@ const LaborContractModel = () => {
     }
 
     console.log("newEmp", newEmp);
-    api
-      .put(urlPattern.updateEmp, newEmp)
-      .then((response) => {
-        if (response.data === 1) console.log("Emp update 성공");
-        setEditedEmp();
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
+    if (emp.cdEmp !== undefined) {
+      console.log("cdEmp Value is...");
+      console.log(emp.cdEmp);
+      console.log("조건 충족. update start");
+      api
+        .put(urlPattern.updateEmp, newEmp)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp update 성공");
+          setEditedEmp();
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    }
   }, []);
 
   // const submitMi = useCallback();
