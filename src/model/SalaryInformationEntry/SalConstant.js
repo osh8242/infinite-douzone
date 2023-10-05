@@ -90,7 +90,7 @@ export const salDeductSum = {
 // 구분
 export const salaryDivisionOption = [
   { key: "SAL", value: "1.급여" },
-  { key: "", value: "2.급여+상여" },
+  { key: "SALBONUS", value: "2.급여+상여" },
   { key: "BONUS", value: "3.상여" },
 ];
 

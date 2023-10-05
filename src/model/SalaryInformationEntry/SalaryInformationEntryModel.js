@@ -401,9 +401,9 @@ const deleteSelectedRows = () => {
   
   /* 급여 지급액 수정 */
   const updateSalaryAllowPay = useCallback((salaryAllowPay) => {
-    const updatedData = {...salaryAllowPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate};
+    const updatedData = {...salaryAllowPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate, salDivision : salDivision};
     saveSalAllowPay(updatedData); // 저장
-  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate]);
+  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate, salDivision]);
 
   /* 급여테이블 수정 + 공제항목테이블 update */
   const saveSalAllowPay = (updatedData) => {
