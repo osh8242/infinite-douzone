@@ -341,7 +341,7 @@ function TextBoxComponent(props) {
 
   // 화면 render
   return (
-    <Row className="py-1 SUITE">
+    <Row className="py-1 SUITE p-10">
       <div className="labelAndContent">
         {label && <div className="label">{label}</div>}
 

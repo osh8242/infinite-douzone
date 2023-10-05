@@ -108,7 +108,7 @@ const HrManagementLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container className="hr-container SUITE p-12">
+      <Container className="hr-container SUITE p-10">
         {/* 조회영역 */}
         <Row className="hr-search-row deleteLabelBackground pb-3">
           <HrSearchPanel

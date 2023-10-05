@@ -124,7 +124,7 @@ const LaborContractLayout = () => {
         existSelectedRows={selectedRows.length !== 0}
       />
       <Container>
-        <Row className="mt-4 SUITE p-12">
+        <Row className="mt-4 SUITE p-10">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
