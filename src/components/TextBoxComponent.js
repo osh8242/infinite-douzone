@@ -85,6 +85,9 @@ function TextBoxComponent(props) {
   const [isDisable, setDisable] = useState(
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
+  const [isDisableSelect, setDisableSelct] = useState(
+    disabled || disabledSelect || selectedOption === "F" ? true : false
+  );
 
   const handleSelectChange = (event) => {
     if (event.target.value === "F") {
@@ -371,7 +374,7 @@ function TextBoxComponent(props) {
                       ref={selectRef}
                       value={selectedValue}
                       onChange={(e) => handleSelectChange(e)}
-                      // disabled={isDisable}
+                      disabled={isDisableSelect}
                     >
                       {selectList.map((option, index) => (
                         <option value={option.key} key={index}>

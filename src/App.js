@@ -36,7 +36,7 @@ function ConditionalHeader() {
   } else if (location.pathname === "/loginFindPwd") {
     return <LoginFindPwd />;
   } else if (location.pathname === "/signup") {
-    return <SignUpLayout />; // SignupLayout 제거함. 필요하다면 반환하세요.
+    return <SignUpLayout />;
   } else if (location.pathname === "/error") {
     return <ErrorPage />;
   } else if (location.pathname === "/successSignup") {

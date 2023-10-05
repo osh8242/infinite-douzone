@@ -65,10 +65,9 @@ const LaborContractModel = () => {
     setLengthEmp("0");
     setLengthEmpAll("0");
     setLengthTempEmp("0");
-    // setMainTabData({});
+    // setMainTabData([]);
   }
   function stateUpdate(state) {
-    console.log("rowAbleState");
     setRowAbleState(state);
     console.log(rowAbleState);
   }
@@ -93,9 +92,6 @@ const LaborContractModel = () => {
     if (type === "date") {
       setDate(event.target?.value);
     }
-
-    console.log("테이블 추가 준비 완료");
-
     onLoad(); // table reload
   };
 
@@ -570,6 +566,7 @@ const LaborContractModel = () => {
               break;
             case "swsm":
               getEmpList();
+              setLeftTableData([]);
               break;
             default:
               break;

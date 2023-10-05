@@ -76,9 +76,6 @@ const LaborContractLayout = () => {
     // actions.setMainTabData({});
   }, []);
 
-  console.log("STATE:::");
-  console.log(rowAbleState);
-
   const modalShow = useCallback(
     async (type, data, setRowData, parentFocusRef) => {
       actions.setModalState({
