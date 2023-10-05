@@ -503,18 +503,18 @@ const TableForm = ({
               step="0.1"
             />
           );
-          case "number":
-          return (
-            <TextBoxComponent
-              id={field}
-              type={"commaNumber"}
-              readOnly={!row.isEditable}
-              onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
-              value={row.isNew ? "" : row.item[field]}
-              placeholder = "숫자입력"
-              processThousandSeparator
-            />
-          );
+          // case "number":
+          // return (
+          //   <TextBoxComponent
+          //     id={field}
+          //     type={"commaNumber"}
+          //     readOnly={!row.isEditable}
+          //     onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
+          //     value={row.isNew ? "" : row.item[field]}
+          //     placeholder = "숫자입력"
+          //     processThousandSeparator
+          //   />
+          // );
         default: // 타입이 명시되지않으면 일반 text 타입 반환
           return (
             <TextBoxComponent

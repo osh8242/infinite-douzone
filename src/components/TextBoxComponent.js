@@ -151,6 +151,9 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
+      }else if (type === "commaNumber"){
+        console.log(makePureNumber(inputValue));
+        onEnter && onEnter(event, makePureNumber(inputValue), id);
       } else {
         onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
@@ -233,9 +236,8 @@ function TextBoxComponent(props) {
       setInputValue(newValue);
     }else if(type === "commaNumber"){
       let processedValue = newValue;
-    
       setInputValue(processThousandSeparator(processedValue));
-      setSendValue(makePureNumber(processedValue));
+
     }else {
       setSendValue(newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
