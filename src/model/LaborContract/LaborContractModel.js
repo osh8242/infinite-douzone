@@ -208,6 +208,7 @@ const LaborContractModel = () => {
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
+    onLoad();
     api
       .get(
         `/swsm/getEmpListForSwsmDate?job=${jobRef.current}&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
