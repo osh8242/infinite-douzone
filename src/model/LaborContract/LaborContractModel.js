@@ -147,7 +147,7 @@ const LaborContractModel = () => {
     }
   };
 
-  //사원 테이블 재직 통계 계산
+  //통계 계산
   const leftStaticsTableData = useMemo(() => {
     return [
       {
@@ -239,6 +239,7 @@ const LaborContractModel = () => {
 
   // insert 요청
   const insertSwsm = useCallback((emp) => {
+    console.log(emp + "emplist임....");
     api
       .post(`/swsm/insertSwsm`, emp)
       .then((response) => {
@@ -322,6 +323,8 @@ const LaborContractModel = () => {
 
   //수정된 사원 update 요청
   useEffect(() => {
+    console.log("editedEmp");
+    console.log(editedEmp);
     if (editedEmp)
       if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
         api
@@ -367,6 +370,7 @@ const LaborContractModel = () => {
       };
     }
 
+    console.log("newEmp", newEmp);
     api
       .put(urlPattern.updateEmp, newEmp)
       .then((response) => {
