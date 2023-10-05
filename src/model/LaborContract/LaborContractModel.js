@@ -51,23 +51,47 @@ const LaborContractModel = () => {
   const dateSetRef = useRef(""); // 소득구분
   const dateSetSelectRef = useRef(""); // 소득구분
 
-  // const tabRef = useRef(null);
+  function setJobSet() {
+    jobSetRef.current = jobSelectRef.current.value;
+  }
+
+  function setDateSet() {
+    dateSetRef.current = dateSetSelectRef.current.value;
+  }
+
+  function onLoad() {
+    console.log("load Test");
+    setLeftTableData([]);
+    setLengthEmp("0");
+    setLengthEmpAll("0");
+    setLengthTempEmp("0");
+    // setMainTabData({});
+  }
+  function stateUpdate() {
+    console.log("rowAbleState");
+    setRowAbleState("T");
+    console.log(rowAbleState);
+  }
+
+  // 검색 조건 들어왔을시 table reload
+  const onSetSearch = (jobSelectRef, dateSelectRef) => {
+    console.log("model ; 검색 조건 변화 감지?");
+    console.log(jobSelectRef);
+    console.log(dateSelectRef);
+    console.log("----");
+    console.log("테이블 추가 준비 완료");
+    stateUpdate();
+    // setLeftCodeHelperTableData();
+    onLoad();
+    // setLeftTableData();
+    // setLeftTableData([]); //// 절대 안됨
+  };
 
   function onLoadCodeHelper() {
     if (jobSelectRef.current.value === "empAll") {
       jobRef.current = "empAll";
     }
     getCodeHelperList();
-  }
-
-  function onLoad() {
-    console.log("load Test");
-    setRowAbleState(false);
-    setLeftTableData([]);
-    setLengthEmp("0");
-    setLengthEmpAll("0");
-    setLengthTempEmp("0");
-    // setMainTabData({});
   }
 
   const getCodeHelperList = () => {
@@ -86,27 +110,6 @@ const LaborContractModel = () => {
         console.error("에러발생: ", error);
         // 필요에 따라 다른 오류 처리 로직 추가
       });
-  };
-  function stateUpdate() {
-    setRowAbleState(true);
-    console.log("rowAbleState");
-    console.log(rowAbleState);
-  }
-
-  // 검색에 대한 것만 타고 있어서 변화시에 대한 대응 법으로 변경필요
-  const onSetSearch = (jobSelectRef, dateSelectRef) => {
-    console.log("model ; 검색 조건 변화 감지?");
-    console.log(jobSelectRef);
-    console.log(dateSelectRef);
-    console.log("----");
-    if (jobSelectRef !== null && dateSelectRef !== null) {
-      console.log("테이블 추가 준비 완료");
-      stateUpdate();
-    }
-    // setLeftCodeHelperTableData();
-    onLoad();
-    // setLeftTableData();
-    // setLeftTableData([]); //// 절대 안됨
   };
 
   //조회버튼 클릭시  업데이트
@@ -421,7 +424,7 @@ const LaborContractModel = () => {
         event.type === "change" ||
         event.action === "change"
       ) {
-        // event.target.blur();
+        // if (event.key === "Enter") event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newSwsm = { ...mainTabData };

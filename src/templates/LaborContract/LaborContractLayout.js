@@ -54,6 +54,7 @@ const LaborContractLayout = () => {
     dateEndSelectRef,
     dateSetSelectRef,
     leftStaticsTableData,
+    rowAbleState,
   } = state;
 
   // 테마 컬러 설정
@@ -74,6 +75,9 @@ const LaborContractLayout = () => {
     actions.onLoadCodeHelper();
     // actions.setMainTabData({});
   }, []);
+
+  console.log("STATE:::");
+  console.log(rowAbleState);
 
   const modalShow = useCallback(
     async (type, data, setRowData, parentFocusRef) => {
@@ -143,43 +147,82 @@ const LaborContractLayout = () => {
                   <Col md="3">
                     <Row key={"mainTab2"}>
                       <div className="leftTable">
-                        <TableForm
-                          readOnly
-                          tableName="swsm"
-                          sortable
-                          rowAddable
-                          showCheckbox
-                          tableHeaders={leftTableConstant.headers}
-                          tableData={leftTableData}
-                          selectedRows={selectedRows}
-                          codeHelper
-                          defaultFocus
-                          actions={{
-                            setTableData: actions.setLeftTableData,
-                            newRowCodeHelper: (parentFocusRef) => {
-                              parentFocusRef.current = false;
-                              modalShow(
-                                "leftTable",
-                                CODE_HELPER_DATA.leftTableCodeHelper,
-                                actions.registSwsm,
-                                parentFocusRef
-                              );
-                            },
-                            setPkValue: actions.setLeftTablePkValue,
-                            insertNewRow: (row) => {
-                              actions.insertSwsm(row);
-                              actions.setLeftTablePkValue({
-                                cdEmp: row.cdEmp,
-                              });
-                            },
-                            updateEditedRow: actions.updateEmp,
-                            setSelectedRows: actions.setSelectedRows,
-                            deleteRow: actions.deleteRow,
-                            getRowObject: (data) => {
-                              return { item: Swsm(data), table: "swsm" };
-                            },
-                          }}
-                        />
+                        {rowAbleState === "F" || !rowAbleState ? (
+                          <TableForm
+                            readOnly
+                            tableName="swsm"
+                            sortable
+                            showCheckbox
+                            tableHeaders={leftTableConstant.headers}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            codeHelper
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              newRowCodeHelper: (parentFocusRef) => {
+                                parentFocusRef.current = false;
+                                modalShow(
+                                  "leftTable",
+                                  CODE_HELPER_DATA.leftTableCodeHelper,
+                                  actions.registSwsm,
+                                  parentFocusRef
+                                );
+                              },
+                              setPkValue: actions.setLeftTablePkValue,
+                              insertNewRow: (row) => {
+                                actions.insertSwsm(row);
+                                actions.setLeftTablePkValue({
+                                  cdEmp: row.cdEmp,
+                                });
+                              },
+                              updateEditedRow: actions.updateEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: (data) => {
+                                return { item: Swsm(data), table: "swsm" };
+                              },
+                            }}
+                          />
+                        ) : (
+                          <TableForm
+                            readOnly
+                            tableName="swsm"
+                            sortable
+                            rowAddable
+                            showCheckbox
+                            tableHeaders={leftTableConstant.headers}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            codeHelper
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              newRowCodeHelper: (parentFocusRef) => {
+                                parentFocusRef.current = false;
+                                modalShow(
+                                  "leftTable",
+                                  CODE_HELPER_DATA.leftTableCodeHelper,
+                                  actions.registSwsm,
+                                  parentFocusRef
+                                );
+                              },
+                              setPkValue: actions.setLeftTablePkValue,
+                              insertNewRow: (row) => {
+                                actions.insertSwsm(row);
+                                actions.setLeftTablePkValue({
+                                  cdEmp: row.cdEmp,
+                                });
+                              },
+                              updateEditedRow: actions.updateEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: (data) => {
+                                return { item: Swsm(data), table: "swsm" };
+                              },
+                            }}
+                          />
+                        )}
                       </div>
                     </Row>
                   </Col>
