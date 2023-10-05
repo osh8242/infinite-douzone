@@ -14,7 +14,7 @@ export default function Footer() {
         <p>이서연</p>
         <p>현소현</p>
         <p>김진</p>
-        <p>
+        <p style={{ marginLeft: "10px" }}>
           Copyright <FontAwesomeIcon icon={faCopyright} /> INFINITE DOUZONE. All
           rights reserved.
         </p>
