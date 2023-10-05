@@ -236,15 +236,15 @@ function EmpRegisterationLayout() {
                       />
                     </Col>
                   </Row>,
-                  <Row key={"mainTeb2"}>
-                    <Col>
-                      <FormPanel
-                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
-                        formData={state.mainTabData}
-                        submitData={actions.submitMainTabData} // update 함수
-                      />
-                    </Col>
-                  </Row>,
+                  // <Row key={"mainTeb2"}>
+                  //   <Col>
+                  //     <FormPanel
+                  //       INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                  //       formData={state.mainTabData}
+                  //       submitData={actions.submitMainTabData} // update 함수
+                  //     />
+                  //   </Col>
+                  // </Row>,
                 ]}
               </MenuTab>
             </Col>

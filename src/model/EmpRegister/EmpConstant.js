@@ -11,7 +11,7 @@ export const urlPattern = {
 
 //메뉴 탭 리스트
 export const tabConstant = {
-  mainTabMenuListForEmpRegister: ["기초정보", "공제등록"],
+  mainTabMenuListForEmpRegister: ["기초정보"],
 };
 
 //왼쪽 테이블 헤더

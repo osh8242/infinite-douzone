@@ -100,21 +100,21 @@ const Header = () => {
               <FontAwesomeIcon
                 icon={faPlus}
                 size={"lg"}
-                className="colorDark"
+                className="colorDark forbid"
               />
             </button>
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faBell}
                 size={"lg"}
-                className="colorDark"
+                className="colorDark forbid"
               />
             </button>
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faQuestionCircle}
                 size={"lg"}
-                className="colorDark"
+                className="colorDark forbid"
               />
             </button>
             <button className="backgroundBorderNone">
