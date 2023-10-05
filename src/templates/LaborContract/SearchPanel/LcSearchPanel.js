@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import SearchPanel from "../../../components/SearchPanel";
 import SelectForm from "../../../components/SelectForm";
@@ -7,6 +7,7 @@ import DateForm from "../../../components/DateForm";
 const LcSearchPanel = (props) => {
   const { onSearch, jobSetSelectRef, searchOption, onSelect, dateSelectRef } =
     props;
+
   return (
     <Col className="border light-grey-border p-3">
       <div style={{ marginTop: "-12px" }}>

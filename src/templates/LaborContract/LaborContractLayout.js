@@ -135,11 +135,11 @@ const LaborContractLayout = () => {
                 {/* 계약서 작성 */}
                 <LcSearchPanel
                   // <LcSearchSearchPanel
-                  onSearch={actions.onSearch}
+                  // onSearch={actions.onSetSearch}
                   jobSetSelectRef={jobSetSelectRef}
                   dateSelectRef={dateSetSelectRef}
                   searchOption={searchOption}
-                  onSelect={actions.submitMainTabData}
+                  onSelect={actions.onSetSearch}
                 />
                 <Row className="mt-4">
                   <Col md="3">

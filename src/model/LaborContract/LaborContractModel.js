@@ -87,6 +87,15 @@ const LaborContractModel = () => {
       });
   };
 
+  // 검색에 대한 것만 타고 있어서 변화시에 대한 대응 법으로 변경필요
+  const onSetSearch = (jobSelectRef, dateSelectRef) => {
+    console.log("model ; 검색 조건 변화 감지?");
+    // setLeftCodeHelperTableData();
+    onLoad();
+    // setLeftTableData();
+    // setLeftTableData([]); //// 절대 안됨
+  };
+
   //조회버튼 클릭시  업데이트
   const onSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
     if (jobSelectRef.current.value === "empAll") {
@@ -103,6 +112,7 @@ const LaborContractModel = () => {
     console.log(dateEndSelectRef.current.value);
     dateRef.current = dateSelectRef.current.value;
     dateEndRef.current = dateEndSelectRef.current.value;
+
     getEmpList();
     setLength();
   };
@@ -340,27 +350,7 @@ const LaborContractModel = () => {
           });
   }, [editedEmp]);
 
-  const onSetSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
-    if (jobSelectRef.current.value === "empAll") {
-      jobRef.current = "empAll";
-    } else if (jobSelectRef.current.value === "empRegistration") {
-      jobRef.current = "empRegistration";
-    } else if (jobSelectRef.current.value === "tempEmpRegistration") {
-      jobRef.current = "tempEmpRegistration";
-    } else {
-      jobRef.current = jobSelectRef.current.value;
-    }
-    // console.log("searrdddss");
-    console.log(dateSelectRef.current.value);
-    console.log(dateEndSelectRef.current.value);
-    dateRef.current = dateSelectRef.current.value;
-    dateEndRef.current = dateEndSelectRef.current.value;
-    getEmpList();
-  };
-
   const updateEmp = useCallback((emp) => {
-    console.log("updateEmp 업데이트 요청", emp);
-
     let newEmp = {
       ...emp,
     };
@@ -374,9 +364,7 @@ const LaborContractModel = () => {
 
     console.log("newEmp", newEmp);
     if (emp.cdEmp !== undefined) {
-      console.log("cdEmp Value is...");
-      console.log(emp.cdEmp);
-      console.log("조건 충족. update start");
+      console.log("updateEmp 업데이트 요청", emp);
       api
         .put(urlPattern.updateEmp, newEmp)
         .then((response) => {
@@ -390,7 +378,13 @@ const LaborContractModel = () => {
     }
   }, []);
 
-  // const submitMi = useCallback();
+  useEffect(() => {
+    console.log("jobSetSelectRef changed:", jobSetSelectRef);
+    console.log("setSearch 변화 감지...");
+    //setLeft 철
+    setLeftCodeHelperTableData();
+    setLeftTableData();
+  }, [jobSetSelectRef]);
 
   //mainTab에서 Enter 입력시 swsm 업데이트
   const submitMainTabData = useCallback(
@@ -422,7 +416,7 @@ const LaborContractModel = () => {
 
         newSwsm["cdEmp"] = leftTablePkValue.cdEmp;
         console.log("newSwsm", newSwsm);
-        updateSwsm(newSwsm);
+        if (leftTablePkValue.cdEmp !== undefined) updateSwsm(newSwsm);
       }
       if (event.type === "click" || typeof value === "object") {
         let newSwsm = { ...mainTabData };
@@ -611,6 +605,7 @@ const LaborContractModel = () => {
     actions: {
       onLoad,
       onSearch,
+      onSetSearch,
       onLoadCodeHelper,
       getEmpList,
 
