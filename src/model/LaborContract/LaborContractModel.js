@@ -47,17 +47,17 @@ const LaborContractModel = () => {
 
   // settingSearch
   const jobSetRef = useRef(""); // 소득구분
-  const jobSetSelectRef = useRef("empAll");
+  const jobSetSelectRef = useRef("");
   const dateSetRef = useRef(""); // 소득구분
   const dateSetSelectRef = useRef(""); // 소득구분
 
-  function setJobSet() {
-    jobSetRef.current = jobSelectRef.current.value;
-  }
+  // function setJobSet() {
+  //   jobSetRef.current = jobSelectRef.current.value;
+  // }
 
-  function setDateSet() {
-    dateSetRef.current = dateSetSelectRef.current.value;
-  }
+  // function setDateSet() {
+  //   dateSetRef.current = dateSetSelectRef.current.value;
+  // }
 
   function onLoad() {
     console.log("load Test");
@@ -73,19 +73,40 @@ const LaborContractModel = () => {
     console.log(rowAbleState);
   }
 
-  // 검색 조건 들어왔을시 table reload
-  const onSetSearch = (jobSelectRef, dateSelectRef) => {
+  const [date, setDate] = useState();
+  const [job, setJob] = useState();
+
+  useEffect(() => {
+    console.log(job); // 이 로직은 job이 업데이트 될 때마다 실행됩니다.
+  }, [job]);
+
+  useEffect(() => {
+    console.log(date); // 이 로직은 date가 업데이트 될 때마다 실행됩니다.
+  }, [date]);
+
+  // 검색 조건 변경 시 마다
+  const onSetSearch = (type, event) => {
     console.log("model ; 검색 조건 변화 감지?");
-    console.log(jobSelectRef);
-    console.log(dateSelectRef);
-    console.log("----");
+    if (type === "job") {
+      setJob(event.target?.value);
+    }
+    if (type === "date") {
+      setDate(event.target?.value);
+    }
+
     console.log("테이블 추가 준비 완료");
-    stateUpdate();
-    // setLeftCodeHelperTableData();
-    onLoad();
-    // setLeftTableData();
-    // setLeftTableData([]); //// 절대 안됨
+
+    onLoad(); // table reload
   };
+
+  useEffect(() => {
+    console.log("result rr");
+    console.log(date);
+    console.log(job);
+    if (job && date) {
+      stateUpdate(); // addable true
+    }
+  }, [job, date]);
 
   function onLoadCodeHelper() {
     if (jobSelectRef.current.value === "empAll") {

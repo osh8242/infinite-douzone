@@ -18,7 +18,8 @@ const LcSearchPanel = (props) => {
                 label={"작성일자"}
                 dateType="month"
                 selectRef={dateSelectRef}
-                onChange={onSelect}
+                // onChange={onSelect}
+                onChange={(selectedDate) => onSelect("date", selectedDate)}
                 id={"dateOfcreate"}
               />
             </Col>
@@ -28,7 +29,8 @@ const LcSearchPanel = (props) => {
                 optionList={searchOption}
                 selectRef={jobSetSelectRef}
                 id={"incomeClassfication"}
-                onChange={onSelect}
+                // onChange={onSelect}
+                onChange={(selectedJob) => onSelect("job", selectedJob)}
               />
             </Col>
           </Row>
