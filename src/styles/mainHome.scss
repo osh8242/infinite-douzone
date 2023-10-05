@@ -218,6 +218,34 @@ body {
   animation: pulseAnimation 1s infinite;
 }
 
+#page2-content {
+  width: 100%;
+  display: flex;
+}
+
+#page2-title {
+  margin-top: 120px;
+  width: fit-content;
+  padding: 8px;
+  border-radius: 8px;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  background-color: var(--darkBlue);
+}
+
+#page2-item1 {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  background-color: aquamarine;
+}
+
+.page2-item1-service {
+  width: 200px;
+  height: 100px;
+  background-color: bisque;
+}
+
 @keyframes scaleBackground {
   0% {
     background-size: 100%;

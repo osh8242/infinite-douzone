@@ -33,7 +33,7 @@ const slides = [
         <p className="NIXGON p-24">
           기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
         </p>
-        <p className="Jost p-48">WEHAGO</p>
+        <p className="Jost p-48">INFINITE DOUZONE</p>
         <p className="NIXGON p-16">
           업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
           전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
@@ -183,7 +183,19 @@ function MainHome() {
           <FontAwesomeIcon icon={faChevronRight} onClick={nextSlide} />
         </a>
       </div>
-      <div id="page2"></div>
+      <div id="page2">
+        <div id="page2-content">
+          <div id="page2-title" className="JOST p-24">
+            INFINITE DOUZONE
+          </div>
+          <div id="page2-item1">
+            <div className="page2-item1-service">사원등록</div>
+            <div className="page2-item1-service">인사관리</div>
+            <div className="page2-item1-service">계약서작성</div>
+            <div className="page2-item1-service">급여관리</div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
