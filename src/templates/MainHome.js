@@ -86,7 +86,8 @@ function MainHome() {
     if (localStorage.getItem("userInfo") != null) {
       console.log("local 값 잇서?");
       setBtnByState("로그인");
-
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userInfo");
       logout();
       setUserName("비회원");
     } else {
