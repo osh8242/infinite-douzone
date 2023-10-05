@@ -40,10 +40,10 @@ const Header = () => {
   function onClickLoginHandler(e) {
     if (localStorage.getItem("userInfo") != null) {
       setBtnByState("로그인");
-      // setHrefState("/login");
-      // localStorage.removeItem("authToken");
-      // localStorage.removeItem("userInfo");
-      logout();
+      setHrefState("/login");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userInfo");
+      // logout();
       setUserName("비회원");
     } else {
       setHrefState("/login");
