@@ -53,6 +53,11 @@
   src: url("./fonts/Yeongdeok_Haeparang.ttf") format("truetype");
   /* font-weight: normal; */
 }
+@font-face {
+  font-family: "KangWonBold";
+  src: url("./fonts/KangWonBold.ttf") format("truetype");
+  /* font-weight: normal; */
+}
 
 /* fonts */
 .NIXGON {
@@ -85,10 +90,16 @@
 .Haeparang {
   font-family: "Haeparang";
 }
+.KangWonBold {
+  font-family: "KangWonBold";
+}
 
 /* logo */
 .p-64 {
   font-size: 64pt;
+}
+.p-52 {
+  font-size: 52pt;
 }
 .p-48 {
   font-size: 48pt;
