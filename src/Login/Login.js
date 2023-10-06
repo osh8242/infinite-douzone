@@ -152,9 +152,9 @@ const Login = () => {
                 onChange={handleId}
                 value={id}
               />
-              {/* </div> */}
-              {/* 비밀번호 */}
-              {/* <div className="justify-content-center"> */}
+            </div>
+            {/* 비밀번호 */}
+            <div className="justify-content-center">
               <label for="pwd">비밀번호 </label>
               <Form.Control
                 id="pwd"
@@ -172,73 +172,60 @@ const Login = () => {
             <p className={"errorMessageWrap"}>{errorMessage}</p>
           </div>
           {/* 로그인 버튼 및 아이디 찾기 ... 세부 추가  메뉴 */}
-          <Row className="justify-content-center mb-4">
-            <Col md="10" className="d-flex flex-column align-items-center">
-              <Col md="10">
-                <Button
-                  className="btn-custom"
-                  type="submit"
-                  style={{
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                    padding: "10px 40px",
-                    marginLeft: "35px",
-                    fontSize: "16px",
-                    width: "85%",
-                    alignItems: "center",
-                    borderRadius: "15px",
-                  }}
-                  onClick={LoginUser}
-                >
-                  로그인
-                </Button>
-              </Col>
-              <div
+          <div className="justify-content-center mb-4">
+            {/* <Col className="d-flex flex-column align-items-center"> */}
+            <Button
+              id="loginBtn"
+              className="p-16"
+              type="submit"
+              onClick={LoginUser}
+            >
+              로그인
+            </Button>
+            <div
+              style={{
+                marginTop: "10px",
+                fontSize: "20px",
+                width: "85%",
+                textAlign: "center",
+              }}
+            >
+              <a
+                href="/loginFindId"
                 style={{
-                  marginTop: "10px",
-                  fontSize: "20px",
-                  width: "85%",
-                  textAlign: "center",
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginRight: "20px",
                 }}
               >
-                <Link
-                  to="/loginFindId"
-                  style={{
-                    textDecoration: "none",
-                    color: "darkblue",
-                    marginRight: "20px",
-                  }}
-                >
-                  아이디 찾기
-                </Link>
-                <span style={{ marginRight: "10px" }}>|</span>
-                <Link
-                  to="/loginFindPwd"
-                  style={{
-                    textDecoration: "none",
-                    color: "darkblue",
-                    marginLeft: "20px",
-                    marginRight: "20px",
-                  }}
-                >
-                  비밀번호 찾기
-                </Link>
-                <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-                  |
-                </span>
-                <Link
-                  to="/signup"
-                  style={{
-                    textDecoration: "none",
-                    color: "darkblue",
-                    marginLeft: "20px",
-                  }}
-                >
-                  회원가입
-                </Link>
-              </div>
-            </Col>
-          </Row>
+                아이디 찾기
+              </a>
+              <span>|</span>
+              <a
+                href="/loginFindPwd"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginLeft: "20px",
+                  marginRight: "20px",
+                }}
+              >
+                비밀번호 찾기
+              </a>
+              <span>|</span>
+              <a
+                href="/signup"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginLeft: "20px",
+                }}
+              >
+                회원가입
+              </a>
+            </div>
+            {/* </Col> */}
+          </div>
         </form>
       </Container>
     </>
