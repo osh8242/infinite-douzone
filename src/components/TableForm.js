@@ -349,7 +349,10 @@ const TableForm = ({
     (event, rowIndex, columnIndex) => {
       event.preventDefault();
       event.stopPropagation();
-      if (readOnly) return;
+      if (readOnly) {
+        onRowClick();
+        return;
+      }
       if (event.key === "Enter" && editableRowIndex !== -1) {
         const editedRow = getEditedRow(event, rowIndex, columnIndex);
 
@@ -488,7 +491,7 @@ const TableForm = ({
               value={row.isNew ? "" : getTdValue(rowIndex, columnIndex)}
               onClickCodeHelper={() => {
                 let codeHelperData = codeHelper[field];
-                let rowItem = tableRows[rowIndex].item;
+                let rowItem = getEditedRow(null, rowIndex, columnIndex).item;
 
                 setModalState({
                   show: true,
@@ -499,7 +502,6 @@ const TableForm = ({
                   usePk: codeHelperData.usePk,
                   setRowData: (e, pkValue) => {
                     actions.updateEditedRow(Object.assign(rowItem, pkValue));
-                    TdKeyDownHandler(e, rowIndex, columnIndex);
                     releaseEditable();
                   },
                 });
