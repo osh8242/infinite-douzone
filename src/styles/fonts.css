@@ -2,41 +2,46 @@
 @font-face {
   font-family: "EsamanruL";
   src: url("./fonts/esamanru_Light.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "EsamanruB";
   src: url("./fonts/esamanru_Bold.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "SintonyB";
   src: url("./fonts/Sintony-Bold.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
+}
+@font-face {
+  font-family: "Cabin";
+  src: url("./fonts/Cabin-VariableFont_wdth.ttf") format("truetype");
+  font-weight: bold;
 }
 
 /* 본문 */
 @font-face {
   font-family: "SUITE";
   src: url("./fonts/SUITE-Variable.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "Sintony";
   src: url("./fonts/Sintony-Regular.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "NIXGON";
   src: url("./fonts/NIXGONFONTS%20L%202.0.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 /* 로고 */
 @font-face {
   font-family: "Jost";
   src: url("./fonts/Jost-VariableFont_wght.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 /* fonts */
@@ -61,12 +66,15 @@
 .Jost {
   font-family: "Jost";
 }
+.Gabarito {
+  font-family: "Cabin";
+}
 
 /* logo */
 .p-48 {
   font-size: 48pt;
-  font-weight: 400;
-  letter-spacing: 2px;
+  /* font-weight: 400; */
+  /* letter-spacing: 2px; */
 }
 .p-36 {
   font-size: 36pt;
@@ -103,9 +111,11 @@
 .semi-bold {
   font-weight: 600;
 }
-
 .bold {
   font-weight: 700;
+}
+.ex-bold {
+  font-weight: 900;
 }
 
 .form-control {

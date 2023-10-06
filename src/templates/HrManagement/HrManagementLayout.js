@@ -1,6 +1,6 @@
 // 작성자 : 오승환
 import { useCallback } from "react";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
@@ -19,6 +19,7 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
+import increaseBrightness from "../../model/increaseBrightness";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import "../../styles/fonts.css";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
@@ -26,7 +27,6 @@ import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
-import increaseBrightness from "../../model/increaseBrightness";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -257,15 +257,13 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          if (modalState.parentFocusRef)
-            modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef)
-              modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}

@@ -79,16 +79,7 @@ const Header = () => {
       {!isMainPage && (
         <div id="topNotificationHeader">
           <div id="topLeftNotificationHeader">
-            <select id="companySelectForm" defaultValue={"douzone"}>
-              <option id="douzone">더존비즈온</option>
-            </select>
-            <select id="periodSelectForm" defaultValue={"5"}>
-              <option id="5">5기 2023.03.13~2023.10.17 (2023년도)</option>
-              {/* <option id="4">4기 2023.03.13~2023.10.17 (2023년도)</option>
-            <option id="3">3기 2023.03.13~2023.10.17 (2023년도)</option>
-            <option id="2">2기 2023.03.13~2023.10.17 (2023년도)</option>
-          <option id="1">1기 2023.03.13~2023.10.17 (2023년도)</option> */}
-            </select>
+            <input id="companySelectForm" disabled value={"더존비즈온"} />
           </div>
           <div id="topRightNotificationHeader">
             <SearchForm

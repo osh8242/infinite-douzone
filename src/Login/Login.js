@@ -9,6 +9,7 @@ import axios from "axios";
 import { useLogin } from "./LoginProvider";
 import { url } from "../model/CommonConstant";
 import "./login.css";
+import "../styles/fonts.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircle,
@@ -111,33 +112,33 @@ const Login = () => {
 
   return (
     <>
-      {/* 로그인 페이지 전용 헤더 영역 */}
-      <div id="login-topHeader" className="JOST p-24 semi-bold">
-        {/* logo */}
-        <a href="/">
-          <FontAwesomeIcon
-            icon={faInfinity}
-            className="p-36 bold icon-infinity"
-          />{" "}
-          D
-          <FontAwesomeIcon icon={faCircleDot} className="p-20 bold icon-text" />
-          UZ
-          <FontAwesomeIcon icon={faCircleDot} className="p-20 bold icon-text" />
-          NE
-        </a>
-      </div>
       {/* 로그인 페이지 영역 */}
-      <Container
+      <div id="login-container-background"></div>
+      <div
         id="login-container"
-        className="SUITE d-flex justify-content-center align-items-center"
+        className="d-flex justify-content-center align-items-center"
       >
+        {/* 로그인 페이지 전용 헤더 영역 */}
+        <div id="login-topHeader" className="Cabin p-20 bold">
+          {/* logo */}
+          <a href="/">
+            D<span className="icon-text ex-bold">O</span>
+            UZ
+            <span className="icon-text ex-bold">O</span>
+            NE
+            <FontAwesomeIcon
+              icon={faInfinity}
+              className="p-24 bold icon-infinity"
+            />
+          </a>
+        </div>
         <form onSubmit={handleFormSubmit}>
           {/* 로그인 제목 */}
-          <div id="login-container-title" className="p-24 bold">
-            로그인
+          <div id="login-container-title" className="Cabin p-24">
+            LOGIN
           </div>
           {/* 아이디 */}
-          <div id="login-container-content">
+          <div id="login-container-content" className="SUITE">
             <div className="justify-content-center">
               <label for="id">아이디</label>
               <Form.Control
@@ -164,11 +165,11 @@ const Login = () => {
             </div>
           </div>
           {/* 에러메시지 */}
-          <div>
+          <div className="SUITE">
             <p className={"errorMessageWrap"}>{errorMessage}</p>
           </div>
           {/* 로그인 버튼 및 아이디 찾기 ... 세부 추가  메뉴 */}
-          <div className="justify-content-center mb-4">
+          <div className="SUITE justify-content-center mb-4">
             {/* <Col className="d-flex flex-column align-items-center"> */}
             <Button
               id="loginBtn"
@@ -178,52 +179,17 @@ const Login = () => {
             >
               로그인
             </Button>
-            <div
-              style={{
-                marginTop: "10px",
-                fontSize: "20px",
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              <a
-                href="/loginFindId"
-                style={{
-                  textDecoration: "none",
-                  color: "darkblue",
-                  marginRight: "20px",
-                }}
-              >
-                아이디 찾기
-              </a>
+            <div id="login-find-userInfo">
+              <a href="/loginFindId">아이디 찾기</a>
               <span>|</span>
-              <a
-                href="/loginFindPwd"
-                style={{
-                  textDecoration: "none",
-                  color: "darkblue",
-                  marginLeft: "20px",
-                  marginRight: "20px",
-                }}
-              >
-                비밀번호 찾기
-              </a>
+              <a href="/loginFindPwd">비밀번호 찾기</a>
               <span>|</span>
-              <a
-                href="/signup"
-                style={{
-                  textDecoration: "none",
-                  color: "darkblue",
-                  marginLeft: "20px",
-                }}
-              >
-                회원가입
-              </a>
+              <a href="/signup">회원가입</a>
             </div>
             {/* </Col> */}
           </div>
         </form>
-      </Container>
+      </div>
     </>
   );
 };
