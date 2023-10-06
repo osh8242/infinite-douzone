@@ -37,6 +37,7 @@ const TableForm = ({
   tableName, //[선택] console.log에 출력해볼 테이블이름..
   codeHelper, //[선택] 코드헬퍼 사용시
   onRowClick, //[선택] 로우클릭 커스텀 이벤트 추가(파라미터 row 전달)
+  deleteMessage, //[선택] 삭제메세지
 
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
@@ -835,7 +836,7 @@ const TableForm = ({
       </Table>
       <ConfirmComponent
         show={confirmModalState.show}
-        message={confirmModalState.message}
+        message={deleteMessage || confirmModalState.message}
         onlyConfirm={confirmModalState.onlyConfirm}
         onConfirm={() => {
           confirmModalState.onConfirm();
