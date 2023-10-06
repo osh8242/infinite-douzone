@@ -163,7 +163,8 @@ function SignUpLayout() {
       userPwd: tempPwd,
       userName: tempName,
       email: tempEmail,
-      companyCode: companyCode,
+      companyName: companyCode,
+      companyCode: tempId,
       // birth: tempDate,
       // gender: tempGender,
       phone: tempPhone,
@@ -322,13 +323,13 @@ function SignUpLayout() {
         <Col md="15">
           <Row className="d-flex justify-content-center align-items-center">
             <Col md="5">
-              회사 코드
+              회사 이름
               <Form.Control
                 name="companyCode"
                 value={companyCode}
                 onChange={handleTemporaryCd}
                 type={"textbox"}
-                placeholder="회사코드를 입력해 주세요."
+                placeholder="회사이름을 입력해 주세요."
                 height={40}
                 onBlur={checkVaildCd}
                 className={invalidCd}
