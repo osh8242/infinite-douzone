@@ -91,15 +91,6 @@ function SignUpLayout() {
 
   // 유효성검사
   useEffect(() => {
-    // const idRegex = /^(?=.*[0-9]+)[a-zA-Z][a-zA-Z0-9]{7,12}$/g;
-    // if (idRegex.test(id)) {
-    //   setInvalid("");
-    // } else if (tempId === "") {
-    //   setInvalid("");
-    // } else {
-    //   setInvalid("invalid");
-    // }
-
     const passwordRegex =
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
     if (passwordRegex.test(tempPwd)) {
