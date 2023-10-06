@@ -42,7 +42,7 @@ function EmpRegisterationLayout() {
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
-  const themeLabel = increaseBrightness(themeColor, 75);
+  const themeLabel = increaseBrightness(themeColor, 85);
   const labels = document.querySelectorAll(".label");
 
   labels.forEach((label) => {
@@ -136,7 +136,7 @@ function EmpRegisterationLayout() {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={state.selectedRows.length !== 0}
       />
-      <Container className="SUITE p-12">
+      <div id="er-container" className="SUITE p-10">
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
@@ -236,15 +236,15 @@ function EmpRegisterationLayout() {
                       />
                     </Col>
                   </Row>,
-                  <Row key={"mainTeb2"}>
-                    <Col>
-                      <FormPanel
-                        INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
-                        formData={state.mainTabData}
-                        submitData={actions.submitMainTabData} // update 함수
-                      />
-                    </Col>
-                  </Row>,
+                  // <Row key={"mainTeb2"}>
+                  //   <Col>
+                  //     <FormPanel
+                  //       INPUT_CONSTANT={MAIN_TAB.secondaryTabInputs}
+                  //       formData={state.mainTabData}
+                  //       submitData={actions.submitMainTabData} // update 함수
+                  //     />
+                  //   </Col>
+                  // </Row>,
                 ]}
               </MenuTab>
             </Col>
@@ -252,7 +252,7 @@ function EmpRegisterationLayout() {
             <Spinner animation="border" variant="primary" />
           )}
         </Row>
-      </Container>
+      </div>
 
       {/* 모달영역 */}
       <ModalComponent
