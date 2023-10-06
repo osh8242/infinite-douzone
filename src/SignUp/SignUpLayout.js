@@ -106,6 +106,9 @@ function SignUpLayout() {
       setPwdValid("");
     } else if (tempPwd === "") {
       setPwdValid("");
+    } else if (tempPwd.length < 1) {
+      console.log("비번 1보다 작으므로 유효성 검사 안함" + tempPwd.length);
+      setPwdValid("");
     } else {
       setPwdValid("invalid");
     }
@@ -160,7 +163,8 @@ function SignUpLayout() {
       userPwd: tempPwd,
       userName: tempName,
       email: tempEmail,
-      companyCode: companyCode,
+      companyName: companyCode,
+      companyCode: tempId,
       // birth: tempDate,
       // gender: tempGender,
       phone: tempPhone,
@@ -229,13 +233,16 @@ function SignUpLayout() {
   const checkVaildPwd = () => {
     const passwordRegex =
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+
     if (passwordRegex.test(tempPwd)) {
+      setPwdValid("");
+    } else if (tempPwd.length < 1) {
+      console.log("비번 1보다 작으므로 유효성 검사 안함" + tempPwd.length);
       setPwdValid("");
     } else {
       setPwdValid("invalid");
     }
   };
-
   const checkVaildEmail = () => {
     axios
       .post(`${url}/auth/checkVaildEmail`, { email: tempEmail })
@@ -316,13 +323,13 @@ function SignUpLayout() {
         <Col md="15">
           <Row className="d-flex justify-content-center align-items-center">
             <Col md="5">
-              회사 코드
+              회사 이름
               <Form.Control
                 name="companyCode"
                 value={companyCode}
                 onChange={handleTemporaryCd}
                 type={"textbox"}
-                placeholder="아이디를 입력해 주세요."
+                placeholder="회사이름을 입력해 주세요."
                 height={40}
                 onBlur={checkVaildCd}
                 className={invalidCd}
@@ -481,7 +488,7 @@ function SignUpLayout() {
                 value={tempPhone}
                 onChange={handleTempPhone}
                 height={40}
-                placeholder="010-1234-5678"
+                placeholder="ex) 010-1234-5678"
                 className={phoneValid}
               />
               <Row className="d-flex justify-content-center align-items-center">

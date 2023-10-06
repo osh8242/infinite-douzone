@@ -194,6 +194,7 @@ const FormPanel = ({
             id={id}
             type="text"
             label={label}
+            disabled={disabled}
             value={getValueFromCode(id, value)}
             onClickCodeHelper={codeHelper}
             onEnter={submitData}
