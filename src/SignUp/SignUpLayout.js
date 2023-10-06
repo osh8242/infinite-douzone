@@ -17,8 +17,10 @@ import { url } from "../model/CommonConstant";
 import { useNavigate } from "react-router-dom";
 import { invalid } from "moment/moment";
 import ConfirmComponent from "../components/ConfirmComponent";
+import { useApi } from "../model/Api";
 
 function SignUpLayout() {
+  const api = useApi();
   const navigate = useNavigate();
 
   const [stateModal, setStateModal] = useState("");
@@ -166,7 +168,7 @@ function SignUpLayout() {
     };
 
     async function fetchData() {
-      let result = await axios.post(`${url}/auth/register`, RegisterVo);
+      let result = await api.post(`${url}/auth/register`, RegisterVo);
       console.log(result.data);
       if (result.data === "SUCCESS") {
         setLocation("/SUCCESS");

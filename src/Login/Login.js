@@ -52,6 +52,8 @@ const Login = () => {
       userPwd: pwd,
     };
 
+    // console.log(response.headers["authorization"]);
+    // 현재 임시 토큰 값 : header 값으로 변경 필요
     try {
       const response = await axios.post(
         `${url}/auth/login?clientIp=${sessionStorage.getItem("clientIp")}`,
@@ -60,19 +62,13 @@ const Login = () => {
       console.log("=========================");
       console.log(response);
 
-      // console.log(response.headers["authorization"]);
-      // 현재 임시 토큰 값 : header 값으로 변경 필요
       const token = response.data.token;
-      // const token = response.headers["authorization"];
       console.log("token" + token);
-      // console.log("response.headers", response.headers);
 
-      // 토큰이 반환된 경우
       if (token) {
         updateToken(response.data.token);
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
         localStorage.setItem("authToken", response.data.token);
-        // localStorage.setItem("userInfo", loginInfo);
         localStorage.setItem("userInfo", JSON.stringify(response.data.user));
 
         console.log("로그인에 성공하였습니다.");
@@ -81,7 +77,7 @@ const Login = () => {
         setErrorMessage("");
         console.log("response.data", response.data);
         console.log("response.headers", response.headers);
-        // console.log("response.headerss", response.headers["authorization"]);
+
         if (event.type !== "blur") {
           navigate("/");
         }
