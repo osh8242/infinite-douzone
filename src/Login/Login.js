@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TextComponent from "./TextComponents";
 import useLoginModel from "./useLoginModel";
 import { Row, Col, Button, Container, Form } from "react-bootstrap";
@@ -49,7 +49,10 @@ const Login = () => {
     // console.log(response.headers["authorization"]);
     // 현재 임시 토큰 값 : header 값으로 변경 필요
     try {
-      const response = await axios.post(`${url}/auth/login`, loginUser);
+      const response = await axios.post(
+        `${url}/auth/login?clientIp=${sessionStorage.getItem("clientIp")}`,
+        loginUser
+      );
       console.log("=========================");
       console.log(response);
 

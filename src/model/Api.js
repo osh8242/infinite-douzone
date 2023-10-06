@@ -18,6 +18,8 @@ export const useApi = () => {
       if (token) {
         config.headers["authorization"] = "Bearer " + token;
       }
+      const clientIp = sessionStorage.getItem("clientIp");
+      config.headers["Client-IP"] = clientIp;
       return config;
     },
     (error) => {
