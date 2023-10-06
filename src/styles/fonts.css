@@ -43,6 +43,16 @@
   src: url("./fonts/Jost-VariableFont_wght.ttf") format("truetype");
   /* font-weight: normal; */
 }
+@font-face {
+  font-family: "BlackHan";
+  src: url("./fonts/BlackHanSans-Regular.ttf") format("truetype");
+  /* font-weight: normal; */
+}
+@font-face {
+  font-family: "Haeparang";
+  src: url("./fonts/Yeongdeok_Haeparang.ttf") format("truetype");
+  /* font-weight: normal; */
+}
 
 /* fonts */
 .NIXGON {
@@ -69,8 +79,17 @@
 .Gabarito {
   font-family: "Cabin";
 }
+.BlackHan {
+  font-family: "BlackHan";
+}
+.Haeparang {
+  font-family: "Haeparang";
+}
 
 /* logo */
+.p-64 {
+  font-size: 64pt;
+}
 .p-48 {
   font-size: 48pt;
   /* font-weight: 400; */
