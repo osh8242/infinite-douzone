@@ -70,7 +70,10 @@ const HrManagementModel = () => {
           }
         });
         console.log("세팅된 newLeftTableData", newLeftTableData);
-        console.log("세팅된 newLeftCodeHelperTableData", newLeftCodeHelperTableData);
+        console.log(
+          "세팅된 newLeftCodeHelperTableData",
+          newLeftCodeHelperTableData
+        );
         setLeftCodeHelperTableData(newLeftCodeHelperTableData);
         setLeftTableData(newLeftTableData);
       })
@@ -268,7 +271,6 @@ const HrManagementModel = () => {
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
-    setSubTableData([]);
     if (leftTablePkValue?.cdEmp) {
       api
         .post(urlPattern.getEmpFamListByCdEmp, leftTablePkValue)
@@ -363,6 +365,7 @@ const HrManagementModel = () => {
   //추가된 사원가족 insert 요청
   const insertEmpFam = useCallback(
     (empFam) => {
+      console.log("insertNewRow called with data:", empFam);
       api
         .post(urlPattern.insertEmpFam, empFam)
         .then((response) => {
