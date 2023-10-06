@@ -3,6 +3,7 @@
   --custom-theme-header: var(--blue);
   --custom-theme-label: var(--skyblue);
 
+  --blackBlue: rgb(0, 56, 112);
   --darkBlue: rgb(0, 129, 255);
   --blue: rgb(48, 150, 255);
   --lightBlue: rgb(151, 202, 255);
