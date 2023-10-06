@@ -250,31 +250,33 @@ const LaborContractLayout = () => {
                         </Scrollbars>,
                       ]}
                     </MenuTab>
-                    <MenuTab menuList={[subTabMenuList.otherBenefit]}>
-                      {[
-                        <Row
-                          key={"menuKey2"}
-                          className="mt-4 mb-4 justify-content-center"
-                        >
-                          <TableForm
-                            tableName="SwsmOther"
-                            rowAddable
-                            tableHeaders={SubTabHeaders}
-                            tableData={subTableData}
-                            pkValue={leftTablePkValue}
-                            selectedRows={selectedRows}
-                            actions={{
-                              setTableData: actions.setSubTableData,
-                              setSelectedRows: actions.setSelectedRows,
-                              insertNewRow: actions.insertSwsmOther,
-                              updateEditedRow: actions.updateSwsmOther,
-                              deleteRow: actions.deleteRow,
-                              getRowObject: SwsmOther,
-                            }}
-                          />
-                        </Row>,
-                      ]}
-                    </MenuTab>
+                    <Row className="mt-4" style={{ paddingTop: "22px" }}>
+                      <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                        {[
+                          <Row
+                            key={"menuKey2"}
+                            className="mb-4 justify-content-center"
+                          >
+                            <TableForm
+                              tableName="SwsmOther"
+                              rowAddable
+                              tableHeaders={SubTabHeaders}
+                              tableData={subTableData}
+                              pkValue={leftTablePkValue}
+                              selectedRows={selectedRows}
+                              actions={{
+                                setTableData: actions.setSubTableData,
+                                setSelectedRows: actions.setSelectedRows,
+                                insertNewRow: actions.insertSwsmOther,
+                                updateEditedRow: actions.updateSwsmOther,
+                                deleteRow: actions.deleteRow,
+                                getRowObject: SwsmOther,
+                              }}
+                            />
+                          </Row>,
+                        ]}
+                      </MenuTab>
+                    </Row>
                   </Col>
                 </Row>
               </Row>,

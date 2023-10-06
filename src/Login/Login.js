@@ -182,7 +182,7 @@ const Login = () => {
               style={{
                 marginTop: "10px",
                 fontSize: "20px",
-                width: "85%",
+                width: "100%",
                 textAlign: "center",
               }}
             >
