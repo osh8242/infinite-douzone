@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../styles/commonComponent.css";
+import "../styles/fonts.css";
 
 SelectForm.defaultProps = {
   optionList: [],
@@ -77,6 +78,7 @@ function SelectForm(props) {
                     value={selectedValue}
                     onChange={(e) => handleSelectChange(e)}
                     disabled={isDisabled}
+                    className="p-10"
                   >
                     {optionList.map((option, index) => (
                       <option value={option.key} key={index}>

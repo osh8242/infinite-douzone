@@ -58,7 +58,7 @@ const LaborContractLayout = () => {
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
-  const themeLabel = increaseBrightness(themeColor, 75);
+  const themeLabel = increaseBrightness(themeColor, 85);
   const labels = document.querySelectorAll(".label");
 
   labels.forEach((label) => {
@@ -123,8 +123,8 @@ const LaborContractLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container>
-        <Row className="mt-4 SUITE p-12">
+      <div id="lc-container">
+        <Row className="mt-4 SUITE p-10">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
@@ -359,7 +359,7 @@ const LaborContractLayout = () => {
             ]}
           </MenuTab>
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

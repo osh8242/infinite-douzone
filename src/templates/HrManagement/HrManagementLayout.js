@@ -53,7 +53,7 @@ const HrManagementLayout = () => {
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
-  const themeLabel = increaseBrightness(themeColor, 75);
+  const themeLabel = increaseBrightness(themeColor, 85);
   const labels = document.querySelectorAll(".label");
 
   labels.forEach((label) => {
@@ -108,7 +108,7 @@ const HrManagementLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container className="hr-container SUITE p-12">
+      <div id="hr-container" className="SUITE p-10">
         {/* 조회영역 */}
         <Row className="hr-search-row deleteLabelBackground pb-3">
           <HrSearchPanel
@@ -250,7 +250,7 @@ const HrManagementLayout = () => {
             <Spinner animation="border" variant="primary" />
           )}
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

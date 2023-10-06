@@ -11,11 +11,12 @@ import {
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import TableForm from "../../../components/TableForm";
 import "../../../styles/HrManagement/HrManagementLayout.scss";
+import "../../../styles/fonts.css";
 
 const SelctDivisionList = (props) => {
   const { state, actions } = props;
   return (
-    <div className="deleteLabelBackground">
+    <div className="deleteLabelBackground p-10">
       <SelectForm
         label={LABELS.inquiryYype}
         optionList={totalSalaryByPeriodOption}

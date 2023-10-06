@@ -35,7 +35,7 @@ const slides = [
         <p className="NIXGON p-24">
           기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
         </p>
-        <p className="Jost p-48">WEHAGO</p>
+        <p className="Jost p-48">INFINITE DOUZONE</p>
         <p className="NIXGON p-16">
           업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
           전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
@@ -88,9 +88,9 @@ function MainHome() {
     if (localStorage.getItem("userInfo") != null) {
       console.log("local 값 잇서?");
       setBtnByState("로그인");
-      setHrefState("/login");
-      localStorage.removeItem("userInfo");
       localStorage.removeItem("authToken");
+      localStorage.removeItem("userInfo");
+      logout();
       setUserName("비회원");
     } else {
       setHrefState("/login");
@@ -115,12 +115,12 @@ function MainHome() {
             <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
           </a>
           <div id="mainPageTopHeaderContents">
-            <a href="#page1" className="colorWhite">
+            {/* <a href="#page1" className="colorWhite">
               HOME
-            </a>
-            <a href="#page2" className="colorWhite">
+            </a> */}
+            {/* <a href="#page2" className="colorWhite">
               서비스소개
-            </a>
+            </a> */}
             {/* 로그인 여부에 따라 버튼 토글 */}
             <div id="signUpSignInBtn">
               {!userInfoObject && <a href="/signup">회원가입</a>}
@@ -186,7 +186,19 @@ function MainHome() {
           <FontAwesomeIcon icon={faChevronRight} onClick={nextSlide} />
         </a>
       </div>
-      <div id="page2"></div>
+      {/* <div id="page2">
+        <div id="page2-content">
+          <div id="page2-title" className="Jost p-32">
+            INFINITE SERVICE
+          </div>
+          <div id="page2-item1">
+            <div className="page2-item1-service">사원등록</div>
+            <div className="page2-item1-service">인사관리</div>
+            <div className="page2-item1-service">계약서작성</div>
+            <div className="page2-item1-service">급여관리</div>
+          </div>
+        </div>
+      </div> */}
     </>
   );
 }

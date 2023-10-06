@@ -1,4 +1,38 @@
-.divide-x-1 {
+@import url("context.css");
+
+#footer-area {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 4px 0px;
+  background-color: var(--transBlack);
+  color: white;
+}
+
+#footer {
+  margin: 0px 10%;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0px;
+}
+
+#team-member {
+  /* margin-left: 16px; */
+  height: fit-content;
+  display: flex;
+  gap: 16px;
+}
+
+#team-member div {
   border-right-width: 0px;
-  border-left-width: 2px;
+  border-left-width: 1px;
+}
+
+#footer-copyright {
+  margin-left: 24%;
+  width: fit-content;
+  text-align: center;
+  font-size: 8pt;
 }

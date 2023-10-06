@@ -15,6 +15,7 @@ import { React, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../styles/fonts.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
 import {
   codeHelperData_paymentDate,
@@ -173,7 +174,7 @@ const SalaryInformationEntryHeader = ({
           />
         </button>
       </div>
-      <div id="secondTopHeaderMenuList" className="SUITE p-12">
+      <div id="secondTopHeaderMenuList" className="SUITE p-10">
         <Button
           className="extraDeductBtn"
           onClick={(e) => getDateListHandler(e)}
@@ -203,19 +204,19 @@ const SalaryInformationEntryHeader = ({
         </Button>
 
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite p-12" />
         </button>
         <button
           className="backgroundBorderNone"
           onClick={(e) => faTrashCanClickHandler(e)}
         >
-          <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
+          <FontAwesomeIcon icon={faTrashCan} className="colorWhite p-12" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite p-12" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite p-12" />
         </button>
       </div>
       <ConfirmComponent

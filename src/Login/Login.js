@@ -9,6 +9,12 @@ import axios from "axios";
 import { useLogin } from "./LoginProvider";
 import { url } from "../model/CommonConstant";
 import "./login.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircle,
+  faCircleDot,
+  faInfinity,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -108,63 +114,64 @@ const Login = () => {
   };
 
   return (
-    <Container
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "80vh" }}
-    >
-      <Col md="7" className="px-5">
+    <>
+      {/* 로그인 페이지 전용 헤더 영역 */}
+      <div id="login-topHeader" className="JOST p-24 semi-bold">
+        {/* logo */}
+        <a href="/">
+          <FontAwesomeIcon
+            icon={faInfinity}
+            className="p-36 bold icon-infinity"
+          />{" "}
+          D
+          <FontAwesomeIcon icon={faCircleDot} className="p-20 bold icon-text" />
+          UZ
+          <FontAwesomeIcon icon={faCircleDot} className="p-20 bold icon-text" />
+          NE
+        </a>
+      </div>
+      {/* 로그인 페이지 영역 */}
+      <Container
+        id="login-container"
+        className="SUITE d-flex justify-content-center align-items-center"
+      >
         <form onSubmit={handleFormSubmit}>
-          <Row className="justify-content-center mb-4">
-            <img
-              src={imgLogo}
-              alt="Logo"
-              style={{ width: "500px", padding: "70px 0px 15px 0px" }}
-            />
-            <h2
-              style={{
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              로그인
-            </h2>
-          </Row>
-          <Row className="justify-content-center mb-4">
-            <Col md="7">
-              <Col md="8">아이디</Col>
+          {/* 로그인 제목 */}
+          <div id="login-container-title" className="p-24 bold">
+            로그인
+          </div>
+          {/* 아이디 */}
+          <div id="login-container-content">
+            <div className="justify-content-center">
+              <label for="id">아이디</label>
               <Form.Control
-                className={invalid}
-                onChange={handleId}
                 id="id"
-                value={id}
                 name="userId"
                 type="text"
-                label="ID"
-                placeholder="ID"
-                height={50}
-              />
-            </Col>
-          </Row>
-          <Row className="justify-content-center mb-4">
-            <Col md="7">
-              <Col md="8">비밀번호 </Col>
-              <Form.Control
                 className={invalid}
-                onChange={handlePwd}
+                onChange={handleId}
+                value={id}
+              />
+              {/* </div> */}
+              {/* 비밀번호 */}
+              {/* <div className="justify-content-center"> */}
+              <label for="pwd">비밀번호 </label>
+              <Form.Control
                 id="pwd"
-                value={pwd}
                 name="userPwd"
                 type="password"
-                label="Password"
-                placeholder="PASSWORD"
-                height={45}
+                className={invalid}
+                onChange={handlePwd}
+                value={pwd}
                 onBlur={LoginUser}
               />
-            </Col>
-          </Row>
-          <Row>
+            </div>
+          </div>
+          {/* 에러메시지 */}
+          <div>
             <p className={"errorMessageWrap"}>{errorMessage}</p>
-          </Row>
+          </div>
+          {/* 로그인 버튼 및 아이디 찾기 ... 세부 추가  메뉴 */}
           <Row className="justify-content-center mb-4">
             <Col md="10" className="d-flex flex-column align-items-center">
               <Col md="10">
@@ -233,8 +240,8 @@ const Login = () => {
             </Col>
           </Row>
         </form>
-      </Col>
-    </Container>
+      </Container>
+    </>
   );
 };
 

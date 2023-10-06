@@ -11,6 +11,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ContextModel from "../model/ContextModel";
 import "../styles/header.css";
+import "../styles/fonts.css";
 import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
@@ -73,7 +74,7 @@ const Header = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
   return (
-    <div>
+    <div className="SUITE p-10">
       {/* 사원등록/인사관리/급여자료입력/표준근로계약서 4개 메뉴에서 쓰이는 헤더 */}
       {!isMainPage && (
         <div id="topNotificationHeader">
@@ -100,21 +101,21 @@ const Header = () => {
               <FontAwesomeIcon
                 icon={faPlus}
                 size={"lg"}
-                className="colorDark"
+                className="colorDark forbid"
               />
             </button>
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faBell}
                 size={"lg"}
-                className="colorDark"
+                className="colorDark forbid"
               />
             </button>
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faQuestionCircle}
                 size={"lg"}
-                className="colorDark"
+                className="colorDark forbid"
               />
             </button>
             <button className="backgroundBorderNone">
