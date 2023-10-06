@@ -27,7 +27,7 @@ const slides = [
         <p className="NIXGON p-24">
           기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
         </p>
-        <p className="Haeparang p-48">INFINITE DOUZONE</p>
+        <p className="KangWonBold bold p-52">INFINITE DOUZONE</p>
         <p className="NIXGON p-16">
           업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
           전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
