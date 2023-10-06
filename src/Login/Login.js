@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TextComponent from "./TextComponents";
 import useLoginModel from "./useLoginModel";
 import { Row, Col, Button, Container, Form } from "react-bootstrap";
@@ -53,7 +53,10 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post(`${url}/auth/login`, loginUser);
+      const response = await axios.post(
+        `${url}/auth/login?clientIp=${sessionStorage.getItem("clientIp")}`,
+        loginUser
+      );
       console.log("=========================");
       console.log(response);
 

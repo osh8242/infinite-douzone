@@ -24,6 +24,8 @@ import "../styles/mainHome.scss";
 import "../styles/fonts.css";
 import { useLogin } from "../Login/LoginProvider";
 import { getLogFunction } from "../model/useLog";
+import axios from "axios";
+import { url } from "../model/CommonConstant";
 
 const slides = [
   {
