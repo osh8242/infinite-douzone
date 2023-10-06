@@ -15,6 +15,7 @@ import {
   searchOption,
   leftTableConstant,
   leftStaticsTableConstant,
+  searchOptionSearch,
 } from "../../model/LaborContract/LaborContractConstant";
 
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
@@ -53,19 +54,18 @@ const LaborContractLayout = () => {
     dateEndSelectRef,
     dateSetSelectRef,
     leftStaticsTableData,
+    rowAbleState,
   } = state;
 
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
-  const themeLabel = increaseBrightness(themeColor, 75);
+  const themeLabel = increaseBrightness(themeColor, 85);
   const labels = document.querySelectorAll(".label");
 
   labels.forEach((label) => {
     label.style.backgroundColor = themeLabel;
   });
-
-  // const tabRef = useRef(null);
 
   useEffect(() => {
     actions.onLoad();
@@ -123,8 +123,8 @@ const LaborContractLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container>
-        <Row className="mt-4 SUITE p-12">
+      <div id="lc-container">
+        <Row className="mt-4 SUITE p-10">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
@@ -134,51 +134,92 @@ const LaborContractLayout = () => {
                 {/* 계약서 작성 */}
                 <LcSearchPanel
                   // <LcSearchSearchPanel
-                  onSearch={actions.onSearch}
+                  // onSearch={actions.onSetSearch}
                   jobSetSelectRef={jobSetSelectRef}
                   dateSelectRef={dateSetSelectRef}
                   searchOption={searchOption}
-                  onSelect={actions.submitMainTabData}
+                  onSelect={actions.onSetSearch}
                 />
                 <Row className="mt-4">
                   <Col md="3">
                     <Row key={"mainTab2"}>
                       <div className="leftTable">
-                        <TableForm
-                          readOnly
-                          tableName="swsm"
-                          sortable
-                          rowAddable
-                          showCheckbox
-                          tableHeaders={leftTableConstant.headers}
-                          tableData={leftTableData}
-                          selectedRows={selectedRows}
-                          codeHelper
-                          defaultFocus
-                          actions={{
-                            setTableData: actions.setLeftTableData,
-                            newRowCodeHelper: (parentFocusRef) => {
-                              parentFocusRef.current = false;
-                              modalShow(
-                                "leftTable",
-                                CODE_HELPER_DATA.leftTableCodeHelper,
-                                actions.registSwsm,
-                                parentFocusRef
-                              );
-                            },
-                            setPkValue: actions.setLeftTablePkValue,
-                            insertNewRow: (row) => {
-                              actions.insertSwsm(row);
-                              actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
-                            },
-                            updateEditedRow: actions.updateEmp,
-                            setSelectedRows: actions.setSelectedRows,
-                            deleteRow: actions.deleteRow,
-                            getRowObject: (data) => {
-                              return { item: Swsm(data), table: "swsm" };
-                            },
-                          }}
-                        />
+                        {rowAbleState === "F" || !rowAbleState ? (
+                          <TableForm
+                            readOnly
+                            tableName="swsm"
+                            sortable
+                            showCheckbox
+                            tableHeaders={leftTableConstant.headers}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            codeHelper
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              newRowCodeHelper: (parentFocusRef) => {
+                                parentFocusRef.current = false;
+                                modalShow(
+                                  "leftTable",
+                                  CODE_HELPER_DATA.leftTableCodeHelper,
+                                  actions.registSwsm,
+                                  parentFocusRef
+                                );
+                              },
+                              setPkValue: actions.setLeftTablePkValue,
+                              insertNewRow: (row) => {
+                                actions.insertSwsm(row);
+                                actions.setLeftTablePkValue({
+                                  cdEmp: row.cdEmp,
+                                });
+                              },
+                              updateEditedRow: actions.updateEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: (data) => {
+                                return { item: Swsm(data), table: "swsm" };
+                              },
+                            }}
+                          />
+                        ) : (
+                          <TableForm
+                            readOnly
+                            tableName="swsm"
+                            sortable
+                            rowAddable
+                            showCheckbox
+                            tableHeaders={leftTableConstant.headers}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            codeHelper
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              newRowCodeHelper: (parentFocusRef) => {
+                                parentFocusRef.current = false;
+                                modalShow(
+                                  "leftTable",
+                                  CODE_HELPER_DATA.leftTableCodeHelper,
+                                  actions.registSwsm,
+                                  parentFocusRef
+                                );
+                              },
+                              setPkValue: actions.setLeftTablePkValue,
+                              insertNewRow: (row) => {
+                                actions.insertSwsm(row);
+                                actions.setLeftTablePkValue({
+                                  cdEmp: row.cdEmp,
+                                });
+                              },
+                              updateEditedRow: actions.updateEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: (data) => {
+                                return { item: Swsm(data), table: "swsm" };
+                              },
+                            }}
+                          />
+                        )}
                       </div>
                     </Row>
                   </Col>
@@ -218,8 +259,6 @@ const LaborContractLayout = () => {
                           <TableForm
                             tableName="SwsmOther"
                             rowAddable
-                            // sortable
-                            showCheckbox
                             tableHeaders={SubTabHeaders}
                             tableData={subTableData}
                             pkValue={leftTablePkValue}
@@ -246,7 +285,7 @@ const LaborContractLayout = () => {
                   jobSelectRef={jobSelectRef}
                   dateSelectRef={dateSelectRef}
                   dateEndSelectRef={dateEndSelectRef}
-                  searchOption={searchOption}
+                  searchOption={searchOptionSearch}
                   onSelect={actions.submitMainTabData}
                 />
                 <Row className="mt-4" key={"menuKeySearch2"}>
@@ -359,7 +398,7 @@ const LaborContractLayout = () => {
             ]}
           </MenuTab>
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

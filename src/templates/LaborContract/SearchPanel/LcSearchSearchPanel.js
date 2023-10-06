@@ -17,7 +17,6 @@ const LcSearchSearchPanel = (props) => {
 
   return (
     <Col className="border light-grey-border p-3">
-      {" "}
       <div style={{ marginTop: "-12px" }}>
         <SearchPanel
           onSearch={() =>

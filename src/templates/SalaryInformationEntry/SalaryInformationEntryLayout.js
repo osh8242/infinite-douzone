@@ -43,7 +43,7 @@ const SalaryInformationEntryLayout = () => {
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
-  const themeLabel = increaseBrightness(themeColor, 75);
+  const themeLabel = increaseBrightness(themeColor, 85);
   const labels = document.querySelectorAll(
     ".label:not(.deleteLabelBackground)"
   );
@@ -152,7 +152,7 @@ const SalaryInformationEntryLayout = () => {
 
       {/* <Container fluid> */}
       <>
-        <Container>
+        <div id="si-container">
           <Row id="salaryInformationEntryLayout" className="SUITE p-10">
             <Col>
               {/* 조회영역 */}
@@ -210,7 +210,7 @@ const SalaryInformationEntryLayout = () => {
               <RigtSideLayout actions={actions} state={state} />
             </div>
           </Row>
-        </Container>
+        </div>
       </>
     </>
   );

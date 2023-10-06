@@ -115,9 +115,9 @@ function MainHome() {
             <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
           </a>
           <div id="mainPageTopHeaderContents">
-            <a href="#page1" className="colorWhite">
+            {/* <a href="#page1" className="colorWhite">
               HOME
-            </a>
+            </a> */}
             {/* <a href="#page2" className="colorWhite">
               서비스소개
             </a> */}

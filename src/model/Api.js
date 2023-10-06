@@ -39,6 +39,9 @@ export const useApi = () => {
       if (error.response && error.response.status === 401) {
         console.log("토큰이 만료되었거나 유효하지 않습니다. ");
         window.location.href = `${url}/login`;
+      } else if (error.response && error.response.status === 403) {
+        console.log("로그인 시간 만료로 인한 토큰 만료");
+        window.location.href = `${url}/login`;
       }
       return Promise.reject(error);
     }

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Row } from "react-bootstrap";
 import "../styles/addressForm.css";
+import "../styles/fonts.css";
 import ModalComponent from "./ModalComponent";
 import Post from "./Post";
 
@@ -109,7 +110,7 @@ const AddressForm = (props) => {
                 onClick={() => setModalState({ ...modalState, show: true })}
               >
                 {iconBtn ? (
-                  <FontAwesomeIcon icon={faSearch} size={"lg"} color={""} />
+                  <FontAwesomeIcon icon={faSearch} size={"md"} color={""} />
                 ) : (
                   "검색"
                 )}

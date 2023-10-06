@@ -68,7 +68,9 @@
   font-weight: 400;
   letter-spacing: 2px;
 }
-
+.p-36 {
+  font-size: 36pt;
+}
 .p-32 {
   font-size: 32pt;
 }
@@ -100,4 +102,20 @@
 
 .semi-bold {
   font-weight: 600;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.form-control {
+  font-size: 10pt !important;
+}
+
+.form-select {
+  font-size: 10pt !important;
+}
+
+.btn-secondary {
+  font-size: 10pt !important;
 }

@@ -1,5 +1,6 @@
-.hr-container{
-  
+#hr-container {
+  width: 82%;
+  margin: auto;
 }
 
 .hr-search-row {
@@ -16,10 +17,10 @@
   padding-right: 0 !important;
   height: 55.4vh;
   overflow: auto;
-  border: 1px solid rgb(222, 226, 230);    
+  border: 1px solid rgb(222, 226, 230);
 }
 
-.hr-subTable { 
+.hr-subTable {
   padding-left: 0;
   padding-right: 0;
   height: 25vh;
@@ -27,7 +28,6 @@
   outline: 1.5px solid rgb(222, 226, 230);
 }
 
-.hr-mainTab{
-  background-color: #E9ECEF;
-
+.hr-mainTab {
+  background-color: #e9ecef;
 }

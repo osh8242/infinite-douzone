@@ -1,16 +1,65 @@
-#SignUp .subLabel{
-    font-weight: bold;
-    padding-bottom : 15px ; 
-    text-align:center;
-    padding-bottom: 15px;
+@import url("../../src/styles/context.css");
+
+#login-topHeader {
+  padding: 4px 0px;
+  margin: 0px 32px;
+  width: 100%;
+  height: fit-content;
+  border-bottom: 1px solid var(--lightGray);
 }
 
-#SignUp .d-flex{
-row-gap: 150;
-column-gap: 100;
+#login-topHeader a {
+  text-decoration: none;
+  color: black;
 }
 
-.inVaild{
+.icon-infinity {
+  color: var(--blue);
+  transform: translateY(6px);
+}
+
+.icon-text {
+  color: var(--blue);
+  transform: translateY(-1px);
+}
+
+#login-container {
+  height: calc(100vh - 100px);
+}
+
+#login-container-title {
+  height: 100px;
+  text-align: center;
+}
+
+#login-container-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#loginBtn {
+  margin-top: 12px;
+  margin-bottom: 36px;
+  padding: 10px 40px;
+  width: 100%;
+  align-items: center;
+  border-radius: 15px;
+}
+
+#SignUp .subLabel {
+  font-weight: bold;
+  padding-bottom: 15px;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+#SignUp .d-flex {
+  row-gap: 150;
+  column-gap: 100;
+}
+
+.inVaild {
   outline-style: solid !important;
   outline-width: 1px !important;
   outline-offset: -1px !important;
@@ -19,17 +68,17 @@ column-gap: 100;
 }
 
 .errorMessageWrap {
-    margin-top: 8px;
-    color: #ef0000;
-    font-size: 12px;
-    text-align: left;
+  margin-top: 8px;
+  color: #ef0000;
+  font-size: 12px;
+  text-align: left;
 }
 
 .successMessageWrap {
-    margin-top: 8px;
-    color: #3CB371;
-    font-size: 12px;
-    text-align: left;
+  margin-top: 8px;
+  color: #3cb371;
+  font-size: 12px;
+  text-align: left;
 }
 
 .color-option {
@@ -39,7 +88,7 @@ column-gap: 100;
   height: 30px;
   margin-right: 15px;
   cursor: pointer;
-  border-radius: 50%; 
+  border-radius: 50%;
 }
 
 .color-option input[type="radio"] {
@@ -55,9 +104,8 @@ column-gap: 100;
 }
 
 .color-option input[type="radio"]:checked + span {
-  transform: scale(1.2); 
+  transform: scale(1.2);
 }
-
 
 .color-option {
   margin-right: 30px; /* 간격 추가 */
@@ -77,4 +125,3 @@ column-gap: 100;
   transform: scale(1.2);
   opacity: 1;
 }
-
