@@ -80,11 +80,11 @@
   align-items: center;
   border-radius: 15px;
   border-color: transparent;
-  background-color: var(--blue);
+  background-color: var(--blackBlue);
 }
 
 #loginBtn:hover {
-  background-color: var(--darkBlue);
+  background-color: var(--brightBlackBlue);
 }
 
 #login-find-userInfo {
@@ -96,7 +96,7 @@
 
 #login-find-userInfo a {
   text-decoration: none;
-  color: var(--darkBlue);
+  color: var(--blackBlue);
 }
 
 #SignUp .subLabel {
