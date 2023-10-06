@@ -5,6 +5,8 @@ import {
   faPlus,
   faHome,
   faChevronDown,
+  faInfinity,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState, useEffect, useRef } from "react";
@@ -25,6 +27,10 @@ const Header = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+
+  // 테마 컬러 설정
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+
   const [btnByState, setBtnByState] = useState(
     localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
   );
@@ -34,6 +40,7 @@ const Header = () => {
   const [userName, setUserName] = useState(
     userInfoObject ? userInfoObject.userName : "비회원"
   );
+  const companyName = userInfoObject.companyName || "";
 
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
   const searchFormRef = useRef(null);
@@ -79,7 +86,32 @@ const Header = () => {
       {!isMainPage && (
         <div id="topNotificationHeader">
           <div id="topLeftNotificationHeader">
-            <input id="companySelectForm" disabled value={"더존비즈온"} />
+            {/* logo */}
+            <a href="/" className="Cabin p-20 ex-bold">
+              D
+              <span
+                className="icon-text ex-bold"
+                style={{ color: `${themeColor}` }}
+              >
+                O
+              </span>
+              UZ
+              <span
+                className="icon-text ex-bold"
+                style={{ color: `${themeColor}` }}
+              >
+                O
+              </span>
+              NE
+              <FontAwesomeIcon
+                icon={faInfinity}
+                className="p-24 bold icon-infinity"
+                style={{ color: `${themeColor}` }}
+              />
+            </a>
+            <div id="companySelectForm" className="p-12">
+              {companyName}
+            </div>
           </div>
           <div id="topRightNotificationHeader">
             <SearchForm
