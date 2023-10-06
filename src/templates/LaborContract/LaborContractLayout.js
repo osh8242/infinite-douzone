@@ -123,7 +123,7 @@ const LaborContractLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container>
+      <div id="lc-container">
         <Row className="mt-4 SUITE p-10">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
@@ -359,7 +359,7 @@ const LaborContractLayout = () => {
             ]}
           </MenuTab>
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

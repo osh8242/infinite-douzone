@@ -108,7 +108,7 @@ const HrManagementLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container className="hr-container SUITE p-10">
+      <div id="hr-container" className="SUITE p-10">
         {/* 조회영역 */}
         <Row className="hr-search-row deleteLabelBackground pb-3">
           <HrSearchPanel
@@ -250,7 +250,7 @@ const HrManagementLayout = () => {
             <Spinner animation="border" variant="primary" />
           )}
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

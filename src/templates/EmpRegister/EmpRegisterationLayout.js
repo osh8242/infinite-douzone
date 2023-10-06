@@ -136,7 +136,7 @@ function EmpRegisterationLayout() {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={state.selectedRows.length !== 0}
       />
-      <Container className="SUITE p-10">
+      <div id="er-container" className="SUITE p-10">
         <Row id="empRegisterLayout">
           <Col md="4" id="empRegisterLayoutLeft">
             {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
@@ -252,7 +252,7 @@ function EmpRegisterationLayout() {
             <Spinner animation="border" variant="primary" />
           )}
         </Row>
-      </Container>
+      </div>
 
       {/* 모달영역 */}
       <ModalComponent

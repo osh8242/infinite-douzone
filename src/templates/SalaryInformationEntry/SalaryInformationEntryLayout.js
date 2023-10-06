@@ -152,7 +152,7 @@ const SalaryInformationEntryLayout = () => {
 
       {/* <Container fluid> */}
       <>
-        <Container>
+        <div id="si-container">
           <Row id="salaryInformationEntryLayout" className="SUITE p-10">
             <Col>
               {/* 조회영역 */}
@@ -210,7 +210,7 @@ const SalaryInformationEntryLayout = () => {
               <RigtSideLayout actions={actions} state={state} />
             </div>
           </Row>
-        </Container>
+        </div>
       </>
     </>
   );
