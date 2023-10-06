@@ -136,6 +136,7 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  deleteMessage="선택된 사원을 삭제하시겠습니까?"
                   codeHelper
                   defaultFocus
                   actions={{
