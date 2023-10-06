@@ -146,7 +146,7 @@ function TextBoxComponent(props) {
     }
 
     if (onClickCodeHelper) {
-      if (event.key !== "Shift") {
+      if (event.key !== "Shift" && event.key !== "Escape") {
         if (event.key === "Tab" && event.shiftKey)
           onEnter && onEnter(event, sendValue, id);
         if (event.key !== "Tab" && event.key !== "F10") {

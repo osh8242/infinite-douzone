@@ -120,6 +120,12 @@ const TableForm = ({
     actions.setPkValue && actions.setPkValue(getPkValue(rowRef));
   }, [tableRows, rowRef]);
 
+  // modal창이 뜨면 테이블 포커스를 비활성화
+  useEffect(() => {
+    if (modalState.show || confirmModalState.show) tableFocus.current = false;
+    else tableFocus.current = true;
+  }, [modalState, confirmModalState]);
+
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
     setRowRef(-1);
@@ -482,7 +488,7 @@ const TableForm = ({
               value={row.isNew ? "" : getTdValue(rowIndex, columnIndex)}
               onClickCodeHelper={() => {
                 let codeHelperData = codeHelper[field];
-                let empFam = tableRows[rowIndex].item;
+                let rowItem = tableRows[rowIndex].item;
 
                 setModalState({
                   show: true,
@@ -492,7 +498,7 @@ const TableForm = ({
                   searchField: codeHelperData.searchField,
                   usePk: codeHelperData.usePk,
                   setRowData: (e, pkValue) => {
-                    actions.updateEditedRow(Object.assign(empFam, pkValue));
+                    actions.updateEditedRow(Object.assign(rowItem, pkValue));
                     TdKeyDownHandler(e, rowIndex, columnIndex);
                     releaseEditable();
                   },
@@ -568,6 +574,7 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
+        console.log("table", tableName, "키이벤트 동작", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
