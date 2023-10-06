@@ -15,6 +15,13 @@
   gap: 12px;
 }
 
+#topLeftNotificationHeader a,
+#topLeftNotificationHeader .icon-text {
+  /* margin-left: 16px; */
+  text-decoration: none;
+  color: var(--dark);
+}
+
 #topNotificationHeader #topRightNotificationHeader {
   display: flex;
   margin-right: 16px;
@@ -126,11 +133,15 @@
 }
 
 #companySelectForm {
-  width: 160px;
+  width: fit-content;
   height: fit-content;
-  padding: 2px;
+  padding: 4px 16px;
   color: var(--gray);
-  border-color: var(--lightGray);
+  border: 1px solid var(--lightGray);
+  border-radius: 32px;
+  color: var(--darkGray);
+  background-color: white;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));
 }
 
 /* #periodSelectForm {

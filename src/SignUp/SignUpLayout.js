@@ -306,7 +306,7 @@ function SignUpLayout() {
   };
 
   return (
-    <>
+    <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       {/* 회원가입 페이지 영역 */}
       <div id="signup-container-background"></div>
       <div
@@ -620,7 +620,7 @@ function SignUpLayout() {
           onlyConfirm
         />
       </div>
-    </>
+    </div>
   );
 }
 export default SignUpLayout;

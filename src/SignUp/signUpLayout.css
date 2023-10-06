@@ -3,7 +3,7 @@
   top: 0;
   padding: 12px 14%;
   margin: 2px 32px;
-  width: 100%;
+  width: 100vw;
   height: fit-content;
   border-bottom: 1px solid whitesmoke;
 }
