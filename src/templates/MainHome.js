@@ -113,12 +113,12 @@ function MainHome() {
             />
           </a>
           <div id="mainPageTopHeaderContents">
-            {/* <a href="#page1" className="colorWhite">
+            <a href="#page1" className="colorWhite">
               HOME
-            </a> */}
-            {/* <a href="#page2" className="colorWhite">
+            </a>{" "}
+            <a href="#page2" className="colorWhite">
               서비스소개
-            </a> */}
+            </a>
             {/* 로그인 여부에 따라 버튼 토글 */}
             <div id="signUpSignInBtn">
               {!userInfoObject && <a href="/signup">회원가입</a>}

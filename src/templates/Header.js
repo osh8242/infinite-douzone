@@ -40,7 +40,7 @@ const Header = () => {
   const [userName, setUserName] = useState(
     userInfoObject ? userInfoObject.userName : "비회원"
   );
-  const companyName = userInfoObject.companyName || "";
+  const companyName = userInfoObject?.companyName || "";
 
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
   const searchFormRef = useRef(null);
