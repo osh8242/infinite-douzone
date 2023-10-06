@@ -22,28 +22,26 @@ const SelctDivisionList = (props) => {
         optionList={totalSalaryByPeriodOption}
         onChange={(e, value) => actions.getSalTotalSum(value)}
       />
+      <div style={{ marginBottom: "3px"}}>
+        <Row>
+          <div className="hr-leftTable" style={{ height: "24vh" , marginBottom: "-18px"}}>
+            <TableForm
+              tableHeaders={salAllowSum.headers}
+              tableData={state.salPaySumData.allowPay}
+              actions={{}}
+              readOnly
+            />
+          </div>
+            <TableForm
+              tableHeaders={sumAllowPay.headers}
+              tableData={state.salPaySumData.totalAllowPay}
+              readOnly
+            />
+        </Row>
+      </div>
+
       <Row>
-        <div className="hr-leftTable" style={{ height: "27vh" ,marginBottom: "-15px"}}>
-          <TableForm
-            tableHeaders={salAllowSum.headers}
-            tableData={state.salPaySumData.allowPay}
-            actions={{}}
-            readOnly
-          />
-        </div>
-        <div
-          className="hr-leftTable"
-          style={{ height: "9vh", overflow: "hidden" }}
-        >
-          <TableForm
-            tableHeaders={sumAllowPay.headers}
-            tableData={state.salPaySumData.totalAllowPay}
-            readOnly
-          />
-        </div>
-      </Row>
-      <Row>
-        <div className="hr-leftTable" style={{ height: "27vh" , marginBottom: "-15px"}}>
+        <div className="hr-leftTable" style={{ height: "24vh" , marginBottom: "-18px"}}>
           <TableForm
             tableHeaders={salDeductSum.headers}
             tableData={state.salPaySumData.deductPay}
@@ -51,16 +49,11 @@ const SelctDivisionList = (props) => {
             readOnly
           />
         </div>
-        <div
-          className="hr-leftTable"
-          style={{ height: "9vh", overflow: "hidden" }}
-        >
           <TableForm
             tableHeaders={sumDeductPay.headers}
             tableData={state.salPaySumData.totalDeductPay}
             readOnly
           />
-        </div>
       </Row>
     </div>
   );
