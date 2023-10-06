@@ -1,32 +1,23 @@
 // 김진 서연
 // 메인 홈페이지
-import React, { useEffect } from "react";
-import wehago_backImg from "../styles/img/wehago_backImg.jpg";
-import erIntro from "../styles/img/erIntro.png";
-import hrIntro from "../styles/img/hrIntro.png";
-import lrIntro from "../styles/img/lrIntro.png";
-import siIntro from "../styles/img/siIntro.png";
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import {
   faChevronLeft,
   faChevronRight,
-  faCircleArrowLeft,
-  faCircleArrowRight,
   faFileInvoice,
   faInfinity,
   faSackDollar,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import imageLogoWhite from "../styles/img/wehago_logo-white.png";
-import "../styles/mainHome.scss";
-import "../styles/fonts.css";
 import { useLogin } from "../Login/LoginProvider";
 import { getLogFunction } from "../model/useLog";
-import axios from "axios";
-import { url } from "../model/CommonConstant";
+import "../styles/fonts.css";
+import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+import imageLogoWhite from "../styles/img/wehago_logo-white.png";
+import "../styles/mainHome.scss";
 
 const slides = [
   {
@@ -38,8 +29,8 @@ const slides = [
         </p>
         <p className="Cabin p-48">INFINITE DOUZONE</p>
         <p className="NIXGON p-16">
-          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
-          전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
+          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로 전문적인
+          경영관리와 쉽고 편리한 협업을 경험해보세요.
         </p>
       </div>
     ),
@@ -50,8 +41,6 @@ function MainHome() {
   const logout = getLogFunction();
   const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
 
-  console.log(updateToken);
-  console.log(updateLoginInfo);
   const navigate = useNavigate();
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const [btnByState, setBtnByState] = useState(
@@ -71,9 +60,7 @@ function MainHome() {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
   };
   const prevSlide = () => {
-    setCurrentSlide(
-      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
-    );
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
   };
 
   useEffect(() => {

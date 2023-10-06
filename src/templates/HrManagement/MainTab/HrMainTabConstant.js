@@ -24,12 +24,12 @@ export const MAIN_TAB = {
     { type: INPUT_TYPE.date, field: "daBirth", label: LABELS.daBirth },
     { type: INPUT_TYPE.radio, field: "fgWedding", label: LABELS.fgWedding },
     {
-      type: INPUT_TYPE.text,
+      type: INPUT_TYPE.textCodeHelper,
       field: "cdDept",
       disabled: true,
     },
     {
-      type: INPUT_TYPE.text,
+      type: INPUT_TYPE.textCodeHelper,
       field: "rankNo",
       disabled: true,
     },
