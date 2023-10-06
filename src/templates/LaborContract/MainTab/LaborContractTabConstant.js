@@ -77,14 +77,15 @@ export const MAIN_TAB = {
     },
     {
       type: INPUT_TYPE.text,
-      field: "jobDescription",
-      label: LABELS.jobDescription,
-    },
-    {
-      type: INPUT_TYPE.text,
       field: "addDetail",
       label: LABELS.addDetail,
     },
+    {
+      type: INPUT_TYPE.text,
+      field: "jobDescription",
+      label: LABELS.jobDescription,
+    },
+
     {
       type: INPUT_TYPE.dateCustom,
       label: "paymentDate",
@@ -96,6 +97,7 @@ export const MAIN_TAB = {
       label: LABELS.startWorktime,
       isPeriod: "true",
       valueMd: "4",
+      typeValue: "time",
     },
     {
       type: INPUT_TYPE.text,
@@ -103,6 +105,7 @@ export const MAIN_TAB = {
       label: LABELS.endWorktime,
       isPeriod: "true",
       valueMd: "4",
+      typeValue: "time",
     },
     {
       type: INPUT_TYPE.text,
@@ -110,6 +113,7 @@ export const MAIN_TAB = {
       label: LABELS.startBreakTime,
       isPeriod: "true",
       valueMd: "4",
+      typeValue: "time",
     },
     {
       type: INPUT_TYPE.text,
@@ -117,6 +121,7 @@ export const MAIN_TAB = {
       label: LABELS.endBreakTime,
       isPeriod: "true",
       valueMd: "4",
+      typeValue: "time",
     },
 
     {

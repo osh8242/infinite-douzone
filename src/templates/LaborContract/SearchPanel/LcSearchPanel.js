@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import SearchPanel from "../../../components/SearchPanel";
 import SelectForm from "../../../components/SelectForm";
@@ -7,6 +7,7 @@ import DateForm from "../../../components/DateForm";
 const LcSearchPanel = (props) => {
   const { onSearch, jobSetSelectRef, searchOption, onSelect, dateSelectRef } =
     props;
+
   return (
     <Col className="border light-grey-border p-3">
       <div style={{ marginTop: "-12px" }}>
@@ -17,7 +18,8 @@ const LcSearchPanel = (props) => {
                 label={"작성일자"}
                 dateType="month"
                 selectRef={dateSelectRef}
-                onChange={onSelect}
+                // onChange={onSelect}
+                onChange={(selectedDate) => onSelect("date", selectedDate)}
                 id={"dateOfcreate"}
               />
             </Col>
@@ -27,7 +29,8 @@ const LcSearchPanel = (props) => {
                 optionList={searchOption}
                 selectRef={jobSetSelectRef}
                 id={"incomeClassfication"}
-                onChange={onSelect}
+                // onChange={onSelect}
+                onChange={(selectedJob) => onSelect("job", selectedJob)}
               />
             </Col>
           </Row>

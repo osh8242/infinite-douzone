@@ -81,24 +81,16 @@ function TextBoxComponent(props) {
   const [isDisable, setDisable] = useState(
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
-
-  useEffect(() => {
-    if (disabled) setDisable(true);
-    else setDisable(false);
-  }, [isDisable]);
-  // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-
-  // useEffect(() => {
-  //   if (selectedOption === "F") {
-  //     setDisable(true);
-  //   } else setDisable(false);
-  //   setSelectedValue(selectedOption || "");
-  // }, [selectedOption]);
+  const [isDisableSelect, setDisableSelct] = useState(
+    disabled || disabledSelect || selectedOption === "F" ? true : false
+  );
 
   const handleSelectChange = (event) => {
-    // if (event.target.value === "F" || event.target.value === "T") {
-    //   setDisable(!isDisable);
-    // }
+    if (event.target.value === "F") {
+      setDisable(true);
+    } else if (event.target.value === "T") {
+      setDisable(false);
+    }
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
@@ -215,6 +207,10 @@ function TextBoxComponent(props) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
     } else if (onClickCodeHelper) {
       setInputValue("");
+    } else if (type === "time") {
+      setSendValue(newValue);
+      setInputValue(newValue);
+      onChangeSelect(event, newValue);
     } else {
       setSendValue(newValue);
       console.log("newValue", newValue);
@@ -373,7 +369,7 @@ function TextBoxComponent(props) {
                       ref={selectRef}
                       value={selectedValue}
                       onChange={(e) => handleSelectChange(e)}
-                      disabled={isDisable}
+                      disabled={isDisableSelect}
                     >
                       {selectList.map((option, index) => (
                         <option value={option.key} key={index}>

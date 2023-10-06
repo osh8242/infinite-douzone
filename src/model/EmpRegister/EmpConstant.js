@@ -214,7 +214,7 @@ export const codeHelperData_cdOccup = {
     { item: { cdOccup: "J011", nmCdOccup: "의료" } },
     { item: { cdOccup: "J012", nmCdOccup: "미디어/문화" } },
     { item: { cdOccup: "J013", nmCdOccup: "전문/특수/연구직" } },
-    { item: { cdOccup: "J013", nmCdOccup: "관광레저서비스" } },
+    { item: { cdOccup: "J014", nmCdOccup: "관광레저서비스" } },
   ],
   searchField: ["cdOccup", "nmCdOccup"],
   usePk: "cdOccup",

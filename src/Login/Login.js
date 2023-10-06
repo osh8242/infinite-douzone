@@ -52,6 +52,8 @@ const Login = () => {
       userPwd: pwd,
     };
 
+    // console.log(response.headers["authorization"]);
+    // 현재 임시 토큰 값 : header 값으로 변경 필요
     try {
       const response = await axios.post(
         `${url}/auth/login?clientIp=${sessionStorage.getItem("clientIp")}`,
@@ -60,19 +62,13 @@ const Login = () => {
       console.log("=========================");
       console.log(response);
 
-      // console.log(response.headers["authorization"]);
-      // 현재 임시 토큰 값 : header 값으로 변경 필요
       const token = response.data.token;
-      // const token = response.headers["authorization"];
       console.log("token" + token);
-      // console.log("response.headers", response.headers);
 
-      // 토큰이 반환된 경우
       if (token) {
         updateToken(response.data.token);
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
         localStorage.setItem("authToken", response.data.token);
-        // localStorage.setItem("userInfo", loginInfo);
         localStorage.setItem("userInfo", JSON.stringify(response.data.user));
 
         console.log("로그인에 성공하였습니다.");
@@ -81,7 +77,7 @@ const Login = () => {
         setErrorMessage("");
         console.log("response.data", response.data);
         console.log("response.headers", response.headers);
-        // console.log("response.headerss", response.headers["authorization"]);
+
         if (event.type !== "blur") {
           navigate("/");
         }
@@ -152,9 +148,9 @@ const Login = () => {
                 onChange={handleId}
                 value={id}
               />
-              {/* </div> */}
-              {/* 비밀번호 */}
-              {/* <div className="justify-content-center"> */}
+            </div>
+            {/* 비밀번호 */}
+            <div className="justify-content-center">
               <label for="pwd">비밀번호 </label>
               <Form.Control
                 id="pwd"
@@ -172,73 +168,60 @@ const Login = () => {
             <p className={"errorMessageWrap"}>{errorMessage}</p>
           </div>
           {/* 로그인 버튼 및 아이디 찾기 ... 세부 추가  메뉴 */}
-          <Row className="justify-content-center mb-4">
-            <Col md="10" className="d-flex flex-column align-items-center">
-              <Col md="10">
-                <Button
-                  className="btn-custom"
-                  type="submit"
-                  style={{
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                    padding: "10px 40px",
-                    marginLeft: "35px",
-                    fontSize: "16px",
-                    width: "85%",
-                    alignItems: "center",
-                    borderRadius: "15px",
-                  }}
-                  onClick={LoginUser}
-                >
-                  로그인
-                </Button>
-              </Col>
-              <div
+          <div className="justify-content-center mb-4">
+            {/* <Col className="d-flex flex-column align-items-center"> */}
+            <Button
+              id="loginBtn"
+              className="p-16"
+              type="submit"
+              onClick={LoginUser}
+            >
+              로그인
+            </Button>
+            <div
+              style={{
+                marginTop: "10px",
+                fontSize: "20px",
+                width: "85%",
+                textAlign: "center",
+              }}
+            >
+              <a
+                href="/loginFindId"
                 style={{
-                  marginTop: "10px",
-                  fontSize: "20px",
-                  width: "85%",
-                  textAlign: "center",
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginRight: "20px",
                 }}
               >
-                <Link
-                  to="/loginFindId"
-                  style={{
-                    textDecoration: "none",
-                    color: "darkblue",
-                    marginRight: "20px",
-                  }}
-                >
-                  아이디 찾기
-                </Link>
-                <span style={{ marginRight: "10px" }}>|</span>
-                <Link
-                  to="/loginFindPwd"
-                  style={{
-                    textDecoration: "none",
-                    color: "darkblue",
-                    marginLeft: "20px",
-                    marginRight: "20px",
-                  }}
-                >
-                  비밀번호 찾기
-                </Link>
-                <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-                  |
-                </span>
-                <Link
-                  to="/signup"
-                  style={{
-                    textDecoration: "none",
-                    color: "darkblue",
-                    marginLeft: "20px",
-                  }}
-                >
-                  회원가입
-                </Link>
-              </div>
-            </Col>
-          </Row>
+                아이디 찾기
+              </a>
+              <span>|</span>
+              <a
+                href="/loginFindPwd"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginLeft: "20px",
+                  marginRight: "20px",
+                }}
+              >
+                비밀번호 찾기
+              </a>
+              <span>|</span>
+              <a
+                href="/signup"
+                style={{
+                  textDecoration: "none",
+                  color: "darkblue",
+                  marginLeft: "20px",
+                }}
+              >
+                회원가입
+              </a>
+            </div>
+            {/* </Col> */}
+          </div>
         </form>
       </Container>
     </>

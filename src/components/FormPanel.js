@@ -47,9 +47,7 @@ const FormPanel = ({
       formData?.[input.field] ||
       { formData }.formData[input.field] ||
       "";
-
     const isZonecode = input.isZonecode || false; // AddressForm 관련 변수
-
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     const onChangeFn = onChange ? onChange[input.field] : null;
@@ -69,6 +67,7 @@ const FormPanel = ({
             disabledSelect={input.disabledSelect}
             value={value}
             onEnter={submitData}
+            type={input.typeValue}
             onChange={(e, value) => onChangeFn && onChangeFn(value)}
             // laborContract
             subValue={{ formData }.formData[input.subField]}
@@ -280,7 +279,9 @@ const FormPanel = ({
     let mdSum = 0;
     let tempRow = [];
     for (let j = i; j < columns.length; j++) {
-      mdSum += inputs[j].span ? Math.min(defaultMd * inputs[j].span, 12) : defaultMd;
+      mdSum += inputs[j].span
+        ? Math.min(defaultMd * inputs[j].span, 12)
+        : defaultMd;
       if (mdSum <= 12) {
         tempRow.push(columns[j]);
         i++;

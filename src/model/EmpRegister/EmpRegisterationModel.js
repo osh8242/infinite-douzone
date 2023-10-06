@@ -101,11 +101,11 @@ function EmpRegisterationModel() {
         event.target.blur();
         let newEmp = { ...mainTabData.item };
         //한글변환~~~~~~~~~~~~~
-        for (const key in mainTabData.item) {
-          if (mainTabData.item[key]) {
-            newEmp[key] = convertToCode(key, mainTabData.item[key]);
-          }
-        }
+        // for (const key in mainTabData.item) {
+        //   if (mainTabData.item[key]) {
+        //     newEmp[key] = convertToCode(key, mainTabData.item[key]);
+        //   }
+        // }
         console.log("newEmp", newEmp);
         if (typeof value === "object" && !Array.isArray(value)) {
           // 넘어온 값이 JSON 객체인 경우
@@ -123,11 +123,11 @@ function EmpRegisterationModel() {
         let newEmp = { ...mainTabData.item };
         console.log("newEmp", newEmp);
         //한글변환~~~~~~~~~~~~~
-        for (const key in mainTabData.item) {
-          if (mainTabData.item[key]) {
-            newEmp[key] = convertToCode(key, mainTabData.item[key]);
-          }
-        }
+        // for (const key in mainTabData.item) {
+        //   if (mainTabData.item[key]) {
+        //     newEmp[key] = convertToCode(key, mainTabData.item[key]);
+        //   }
+        // }
         if (typeof value === "object" && !Array.isArray(value)) {
           // 넘어온 값이 JSON 객체인 경우
           Object.keys(value).forEach((key) => {
@@ -183,11 +183,11 @@ function EmpRegisterationModel() {
 
           // 코드 한글변환
           let newResponseData = { ...response.data };
-          for (const key in response.data) {
-            if (response.data[key]) {
-              newResponseData[key] = convertToName(key, response.data[key]);
-            }
-          }
+          // for (const key in response.data) {
+          //   if (response.data[key]) {
+          //     newResponseData[key] = convertToName(key, response.data[key]);
+          //   }
+          // }
           setMainTabData(Emp(newResponseData));
         })
         .catch((error) => {

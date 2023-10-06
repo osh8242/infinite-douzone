@@ -38,6 +38,15 @@
   gap: 12px;
 }
 
+#loginBtn {
+  margin-top: 12px;
+  margin-bottom: 36px;
+  padding: 10px 40px;
+  width: 100%;
+  align-items: center;
+  border-radius: 15px;
+}
+
 #SignUp .subLabel {
   font-weight: bold;
   padding-bottom: 15px;
