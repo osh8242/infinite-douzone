@@ -24,6 +24,8 @@ import "../styles/mainHome.scss";
 import "../styles/fonts.css";
 import { useLogin } from "../Login/LoginProvider";
 import { getLogFunction } from "../model/useLog";
+import axios from "axios";
+import { url } from "../model/CommonConstant";
 
 const slides = [
   {
@@ -86,9 +88,9 @@ function MainHome() {
     if (localStorage.getItem("userInfo") != null) {
       console.log("local 값 잇서?");
       setBtnByState("로그인");
-      localStorage.removeItem("authToken");
+      setHrefState("/login");
       localStorage.removeItem("userInfo");
-      logout();
+      localStorage.removeItem("authToken");
       setUserName("비회원");
     } else {
       setHrefState("/login");
