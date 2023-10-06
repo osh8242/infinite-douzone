@@ -145,11 +145,15 @@ function SignUpLayout() {
 
       setShowModal({
         show: true,
-        message: "유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.",
+        message: "유효하지 않은 값이 있습니다. 다시 시도해주세요.",
       });
 
-      // alert("유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.");
       return;
+    } else if (tempId === "") {
+      setShowModal({
+        show: true,
+        message: "필수 값을 모두 입력해 주세요.",
+      });
     }
 
     const RegisterVo = {
@@ -166,23 +170,25 @@ function SignUpLayout() {
     };
 
     async function fetchData() {
-      let result = await api.post(`${url}/auth/register`, RegisterVo);
-      console.log(result.data);
-      if (result.data === "SUCCESS") {
-        setLocation("/SUCCESS");
-        setShowModal({
-          show: true,
-          message: "회원가입이 완료되었습니다.",
-        });
-      } else if (result.data === "FAIL" || checkRegister) {
-        setLocation("/FAIL");
-        setShowModal({
-          show: true,
-          message: "회원가입 실패. 다시 시도해 주세요",
-        });
+      if (tempId !== null && tempPwd !== null && tempEmail !== null) {
+        let result = await api.post(`${url}/auth/register`, RegisterVo);
+        console.log(result.data);
+        if (result.data === "SUCCESS") {
+          setLocation("/SUCCESS");
+          setShowModal({
+            show: true,
+            message: "회원가입이 완료되었습니다.",
+          });
+        } else if (result.data === "FAIL" || checkRegister) {
+          setLocation("/FAIL");
+          setShowModal({
+            show: true,
+            message: "회원가입 실패. 다시 시도해 주세요",
+          });
+        }
       }
+      fetchData();
     }
-    fetchData();
   };
 
   const onMove = () => {
@@ -332,7 +338,7 @@ function SignUpLayout() {
           <div id="signup-container-underTitle">
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                회사 이름
+                * 회사 이름
                 <Form.Control
                   name="companyCode"
                   value={companyCode}
@@ -362,7 +368,7 @@ function SignUpLayout() {
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                아이디
+                * 아이디
                 <Form.Control
                   name="userId"
                   value={tempId}
@@ -392,7 +398,7 @@ function SignUpLayout() {
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                비밀번호
+                * 비밀번호
                 <Form.Control
                   name="userPwd"
                   type={"password"}
@@ -422,7 +428,7 @@ function SignUpLayout() {
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                비밀번호 확인
+                * 비밀번호 확인
                 <Form.Control
                   type={"password"}
                   onChange={handlePasswordConfirm}
@@ -590,6 +596,9 @@ function SignUpLayout() {
               </Col>
             </div>
             <div id="signup-btnGroup">
+              <a id="goBackLoginBtn" href="/login" className="btn-custom">
+                취소
+              </a>
               <Button
                 id="signupBtn"
                 className="btn-custom"
@@ -597,9 +606,6 @@ function SignUpLayout() {
               >
                 가입
               </Button>
-              <a id="goBackLoginBtn" href="/login" className="btn-custom">
-                취소
-              </a>
             </div>
           </div>
         </div>
@@ -611,6 +617,7 @@ function SignUpLayout() {
             onMove();
             setShowModal(false);
           }}
+          onlyConfirm
         />
       </div>
     </>
