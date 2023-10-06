@@ -58,7 +58,7 @@ const LaborContractLayout = () => {
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
-  const themeLabel = increaseBrightness(themeColor, 75);
+  const themeLabel = increaseBrightness(themeColor, 85);
   const labels = document.querySelectorAll(".label");
 
   labels.forEach((label) => {
