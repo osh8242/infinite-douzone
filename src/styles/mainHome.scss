@@ -57,6 +57,24 @@ body {
   z-index: 2;
 }
 
+#mainPageTopHeader a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+.icon-infinity {
+  margin-left: 4px;
+  color: whitesmoke;
+  transform: translateY(2px);
+}
+
+.icon-text {
+  /* -webkit-background-clip: text;
+  background-clip: text;
+  background-image: linear-gradient(to bot); */
+  color: whitesmoke;
+}
+
 #mainPageTopHeaderContents {
   width: fit-content;
   display: flex;
