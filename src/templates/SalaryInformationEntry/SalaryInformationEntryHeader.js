@@ -31,6 +31,7 @@ const SalaryInformationEntryHeader = ({
   dateId,
   cdEmp,
   actions,
+  paymentDate
 }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -74,6 +75,14 @@ const SalaryInformationEntryHeader = ({
 
   // 수당/공제 등록
   const insertSalaryDataHandler = (event) => {
+    if(paymentDate !== '' || paymentDate){
+      setShowModal({
+        show: true,
+        message: "지급일자를 클릭하여 비운후 등록 가능합니다.",
+        onlyConfirm: true,
+      });
+      return true;
+    }
     modalShow("insertSalaryData", modal_insertSalaryData);
   };
 
@@ -115,6 +124,7 @@ const SalaryInformationEntryHeader = ({
       show: true,
       message: "해당 지급일자로 조회하시겠습니까?",
       action: () => {
+        alert(row.paymentDate);
         actions.setPaymentDate(row.paymentDate);
         actions.setSalDivision(row.salDivision);
         actions.setAllowMonth(row.allowMonth);

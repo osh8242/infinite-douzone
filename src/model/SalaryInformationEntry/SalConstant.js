@@ -347,7 +347,6 @@ export const modal_nontaxSetup = {
     { field: "nmAllow", text: "비과세 항목", readOnly: true },
     { field: "nonTaxDivison", text: "구분" , readOnly: true},
     { field: "nontaxLimit", text: "한도" ,type:"number"},
-    // { field: "ynBonus", text: "지급명세" },
   ],
 };
 

@@ -148,6 +148,7 @@ const SalaryInformationEntryLayout = () => {
         dateId={state.dateId}
         cdEmp={state.cdEmp}
         allowYear={state.allowYear}
+        paymentDate={state.searchVo.paymentDate}
       />
 
       {/* <Container fluid> */}
