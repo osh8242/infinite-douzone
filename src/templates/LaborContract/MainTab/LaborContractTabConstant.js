@@ -154,6 +154,7 @@ export const MAIN_TAB = {
       selectList: salaryTypeList,
       field: "salaryAmount",
       selectValue: "salaryType",
+      typeValue: "num",
     },
 
     {
@@ -171,6 +172,7 @@ export const MAIN_TAB = {
       selectValue: "bonusPaymentStatus",
       field: "bonusAmount",
       selectId: "bonusPaymentStatus",
+      typeValue: "num",
     },
 
     {
@@ -224,16 +226,17 @@ export const MAIN_TAB_SEARCH = {
       label: "address",
       disabled: "true",
     },
-    {
-      type: INPUT_TYPE.text,
-      field: "jobDescription",
-      label: LABELS.jobDescription,
-      disabled: "true",
-    },
+
     {
       type: INPUT_TYPE.text,
       field: "addDetail",
       label: LABELS.addDetail,
+      disabled: "true",
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "jobDescription",
+      label: LABELS.jobDescription,
       disabled: "true",
     },
     {
@@ -307,6 +310,7 @@ export const MAIN_TAB_SEARCH = {
       selectId: "salaryType",
       selectList: salaryTypeList,
       field: "salaryAmount",
+      thousandSeparator: true,
       selectValue: "salaryType",
       disabled: "true",
     },

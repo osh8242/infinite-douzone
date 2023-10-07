@@ -15,7 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useLogin } from "../Login/LoginProvider";
 import { getLogFunction } from "../model/useLog";
 import "../styles/fonts.css";
-import wehago_backImg from "../styles/img/wehago_backImg.jpg";
+import wehago_backImg from "../styles/img/istockphoto-1467929539-2048x2048.jpg";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
 

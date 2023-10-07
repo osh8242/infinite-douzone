@@ -63,7 +63,7 @@ function TextBoxComponent(props) {
 
     // select
     onChangeSelect,
-    selectId,
+    option,
     selectList,
     selectedOption,
     selectRef,
@@ -88,6 +88,9 @@ function TextBoxComponent(props) {
   const [isDisableSelect, setDisableSelct] = useState(
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
+  useEffect(() => {
+    setSelectedValue(option || "");
+  }, [option]);
 
   const handleSelectChange = (event) => {
     if (event.target.value === "F") {
@@ -135,6 +138,10 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
+      } else if (type === "num") {
+        // setSendValue(inputValue);
+        setInputValue(processThousandSeparator(inputValue));
+        onEnter && onEnter(event, processThousandSeparator(inputValue), id);
       } else {
         !onClickCodeHelper && onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);

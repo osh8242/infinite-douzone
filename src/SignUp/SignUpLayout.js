@@ -11,6 +11,7 @@ import AddressForm from "../components/AddressForm";
 import DateForm from "../components/DateForm";
 import "./signUpLayout.css";
 import "../styles/fonts.css";
+
 import { Radio } from "@mui/material";
 import { RADIO_LIST } from "../model/CommonConstant";
 import useRegisterModel from "./useRegisterModel";
@@ -94,6 +95,15 @@ function SignUpLayout() {
 
   // 유효성검사
   useEffect(() => {
+    // const idRegex = /^(?=.*[0-9]+)[a-zA-Z][a-zA-Z0-9]{7,12}$/g;
+    // if (idRegex.test(id)) {
+    //   setInvalid("");
+    // } else if (tempId === "") {
+    //   setInvalid("");
+    // } else {
+    //   setInvalid("invalid");
+    // }
+
     const passwordRegex =
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
     if (passwordRegex.test(tempPwd)) {
@@ -332,7 +342,7 @@ function SignUpLayout() {
           <div id="signup-container-underTitle">
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                회사 이름
+                * 회사 이름
                 <Form.Control
                   name="companyCode"
                   value={companyCode}
@@ -343,7 +353,7 @@ function SignUpLayout() {
                   onBlur={checkVaildCd}
                   className={invalidCd}
                 />
-                <div className="d-flex justify-content-center align-items-center">
+                <div className="d-flex">
                   {cdCheck === "SUCCESS" && companyCode.length > 0 ? (
                     <p className={"successMessageWrap"}>
                       사용 가능한 코드입니다.
@@ -362,7 +372,7 @@ function SignUpLayout() {
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                아이디
+                * 아이디
                 <Form.Control
                   name="userId"
                   value={tempId}
@@ -392,7 +402,7 @@ function SignUpLayout() {
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                비밀번호
+                * 비밀번호
                 <Form.Control
                   name="userPwd"
                   type={"password"}
@@ -422,7 +432,7 @@ function SignUpLayout() {
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <Col md="7">
-                비밀번호 확인
+                * 비밀번호 확인
                 <Form.Control
                   type={"password"}
                   onChange={handlePasswordConfirm}
@@ -590,6 +600,9 @@ function SignUpLayout() {
               </Col>
             </div>
             <div id="signup-btnGroup">
+              <a id="goBackLoginBtn" href="/login" className="btn-custom">
+                취소
+              </a>
               <Button
                 id="signupBtn"
                 className="btn-custom"
@@ -597,9 +610,6 @@ function SignUpLayout() {
               >
                 가입
               </Button>
-              <a id="goBackLoginBtn" href="/login" className="btn-custom">
-                취소
-              </a>
             </div>
           </div>
         </div>
@@ -611,6 +621,7 @@ function SignUpLayout() {
             onMove();
             setShowModal(false);
           }}
+          onlyConfirm
         />
       </div>
     </div>
