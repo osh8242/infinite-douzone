@@ -17,7 +17,7 @@ function TextBoxComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
-    // custom type 옵션          ex) callNumber, email( text & select )
+    // custom type 옵션          ex) callNumber, email( text & select ), rate
     id,
     // subId,
     name,
@@ -56,6 +56,8 @@ function TextBoxComponent(props) {
     // valueMd = 8,
     placeholder, // [선택]
     style,
+    heigth,
+    rate,
 
     isPeriod,
     subLabel = "",
@@ -69,6 +71,9 @@ function TextBoxComponent(props) {
     selectRef,
     subField,
     disabledSelect,
+
+    //number
+    step,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -138,10 +143,9 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
-      } else if (type === "num") {
-        // setSendValue(inputValue);
-        setInputValue(processThousandSeparator(inputValue));
-        onEnter && onEnter(event, processThousandSeparator(inputValue), id);
+      } else if (type === "commaNumber") {
+        console.log(makePureNumber(inputValue));
+        onEnter && onEnter(event, makePureNumber(inputValue), id);
       } else {
         !onClickCodeHelper && onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
@@ -256,7 +260,7 @@ function TextBoxComponent(props) {
 
   const processThousandSeparator = (value) => {
     const numValue = value.replaceAll(/,/g, "");
-    return makeCommaNumber(numValue.toString());
+    return makeCommaNumber(numValue);
   };
 
   //유효성 검사
@@ -519,6 +523,7 @@ function TextBoxComponent(props) {
               placeholder={placeholder ? placeholder : undefined}
               style={style}
               className={isValid ? "" : "invalid"}
+              step={step}
             />
             {/* {type === "regNum" && (
               <FontAwesomeIcon

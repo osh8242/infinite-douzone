@@ -53,6 +53,7 @@ const ReCalculation = (props) => {
       dateId: state.dateId,
       allowMonth: state.allowMonth,
       allowYear: state.allowYear,
+      salDivision : state.salDivision,
       selectOption: selectOption,
     };
 
