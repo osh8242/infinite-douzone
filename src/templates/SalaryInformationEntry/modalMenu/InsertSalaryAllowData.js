@@ -105,7 +105,7 @@ const InsertSalaryAllowData = (props) => {
             rowAddable
             tableHeaders={modal_insertSalaryAllowData.headers}
             tableData={insertSalaryTableDataRef.current}
-            deleteMessage="수당을 삭제하면 해당 수당항목의 지급내역 모두 삭제됩니다. 삭제하시겠습니까?"
+            // deleteMessage="수당을 삭제하시겠습니까?"
             actions={{
               getRowObject: (data) => {
                 return { item: data };
@@ -119,10 +119,8 @@ const InsertSalaryAllowData = (props) => {
         <div>
           <p>
             *월정액에 따른 수당등록 <br></br>
-            1) 수당을 삭제 하면 수당에 해당되는 모든 지급액이 삭제됩니다.
-            <br></br>
-            2) 수당에 따라 실비 변상 여부를 확인할 수 없으므로 월정액에 따른
-            수당 설정은 각각 해주시기 바랍니다.<br></br>
+            1) 수당코드는 자동생성됩니다.<br></br>
+            2) 수당 삭제시 이미 지급된 해당 항목의 지급내역은 남아있습니다<br></br>
             3) 비과세로 설정한 후 한도가 있는 경우 비과세 감면설정 탭에서 한도를
             설정해주시기 바랍니다.<br></br>
           </p>
