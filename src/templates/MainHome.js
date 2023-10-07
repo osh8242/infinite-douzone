@@ -5,6 +5,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faFileInvoice,
+  faInfinity,
   faSackDollar,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -26,10 +27,10 @@ const slides = [
         <p className="NIXGON p-24">
           기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
         </p>
-        <p className="Jost p-48">INFINITE DOUZONE</p>
+        <p className="KangWonBold bold p-52">INFINITE DOUZONE</p>
         <p className="NIXGON p-16">
-          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로 전문적인
-          경영관리와 쉽고 편리한 협업을 경험해보세요.
+          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
+          전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
         </p>
       </div>
     ),
@@ -59,7 +60,9 @@ function MainHome() {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
   };
   const prevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
+    );
   };
 
   useEffect(() => {
@@ -98,16 +101,24 @@ function MainHome() {
     <>
       <div id="mainPageTopHeader-BackGround" className="SUITE p-12">
         <div id="mainPageTopHeader">
-          <a href="/">
-            <img src={imageLogoWhite} alt="Logo" style={{ width: "124px" }} />
+          {/* logo */}
+          <a href="/" className="Cabin p-20 bold">
+            D<span className="icon-text ex-bold">O</span>
+            UZ
+            <span className="icon-text ex-bold">O</span>
+            NE
+            <FontAwesomeIcon
+              icon={faInfinity}
+              className="p-24 bold icon-infinity"
+            />
           </a>
           <div id="mainPageTopHeaderContents">
-            {/* <a href="#page1" className="colorWhite">
+            <a href="#page1" className="colorWhite">
               HOME
-            </a> */}
-            {/* <a href="#page2" className="colorWhite">
+            </a>{" "}
+            <a href="#page2" className="colorWhite">
               서비스소개
-            </a> */}
+            </a>
             {/* 로그인 여부에 따라 버튼 토글 */}
             <div id="signUpSignInBtn">
               {!userInfoObject && <a href="/signup">회원가입</a>}
