@@ -547,7 +547,12 @@ const deleteSelectedRows = () => {
       updateSalaryDeductPay,
 
       getSaPayByCdEmp,
-      setShowConfirm
+      setShowConfirm,
+      setSumAllowPayByYnTax,
+      setSumDeductPay,
+      setDeductData,
+      setSaInfoDetailData,
+      setSalPaySumData 
       
     },
   };
