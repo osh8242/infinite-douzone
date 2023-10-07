@@ -46,6 +46,16 @@ const SalaryInformationEntryHeader = ({
   // 휴지통_사원리스트 삭제
   const faTrashCanClickHandler = (event) => {
     let message = "";
+
+    if (ynComplete === "Y") {
+      setShowModal({
+        show: true,
+        message: "완료 해제 후 삭제가 가능합니다.",
+        onlyConfirm: true,
+      });
+      return true;
+    }
+    
     if (!existSelectedRows) {
       message = "선택된 사원이 없습니다";
       setShowModal({ show: true, message: message });

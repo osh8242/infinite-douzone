@@ -96,6 +96,7 @@ export const salaryDivisionOption = [
 
 // 생산직 여부 검색조건 옵션
 export const unitOption = [
+  { key: "", value: "전체" },
   { key: "y", value: "생산직" },
   { key: "n", value: "비생산직" },
 ];
@@ -248,24 +249,33 @@ export const modal_insertSalaryAllowData = {
         { key: "BONUS", value: "2.상여" },
       ],
     },
-    {
-      field: "commonlyYn",
-      text: "통상",
-      type: "select",
-      optionList: [
-        { key: "Y", value: "O" },
-        { key: "N", value: "X" },
-      ],
-    },
-    {
-      field: "monthlyYn",
-      text: "월정",
-      type: "select",
-      optionList: [
-        { key: "Y", value: "O" },
-        { key: "N", value: "X" },
-      ],
-    },
+    // {
+    //     field: "ynUse",
+    //     text: "사용여부",
+    //     type: "select",
+    //     optionList: [
+    //       { key: "Y", value: "O" },
+    //       { key: "N", value: "X" },
+    //     ],
+    //   },
+    // {
+    //   field: "commonlyYn",
+    //   text: "통상",
+    //   type: "select",
+    //   optionList: [
+    //     { key: "Y", value: "O" },
+    //     { key: "N", value: "X" },
+    //   ],
+    // },
+    // {
+    //   field: "monthlyYn",
+    //   text: "월정",
+    //   type: "select",
+    //   optionList: [
+    //     { key: "Y", value: "O" },
+    //     { key: "N", value: "X" },
+    //   ],
+    // },
   ],
   headersWithCalculation: [
     { field: "cdAllow", text: "Code" },
