@@ -11,6 +11,7 @@ import AddressForm from "../components/AddressForm";
 import DateForm from "../components/DateForm";
 import "./signUpLayout.css";
 import "../styles/fonts.css";
+
 import { Radio } from "@mui/material";
 import { RADIO_LIST } from "../model/CommonConstant";
 import useRegisterModel from "./useRegisterModel";
@@ -94,6 +95,15 @@ function SignUpLayout() {
 
   // 유효성검사
   useEffect(() => {
+    // const idRegex = /^(?=.*[0-9]+)[a-zA-Z][a-zA-Z0-9]{7,12}$/g;
+    // if (idRegex.test(id)) {
+    //   setInvalid("");
+    // } else if (tempId === "") {
+    //   setInvalid("");
+    // } else {
+    //   setInvalid("invalid");
+    // }
+
     const passwordRegex =
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
     if (passwordRegex.test(tempPwd)) {
@@ -145,15 +155,11 @@ function SignUpLayout() {
 
       setShowModal({
         show: true,
-        message: "유효하지 않은 값이 있습니다. 다시 시도해주세요.",
+        message: "유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.",
       });
 
+      // alert("유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.");
       return;
-    } else if (tempId === "") {
-      setShowModal({
-        show: true,
-        message: "필수 값을 모두 입력해 주세요.",
-      });
     }
 
     const RegisterVo = {
@@ -170,25 +176,23 @@ function SignUpLayout() {
     };
 
     async function fetchData() {
-      if (tempId !== null && tempPwd !== null && tempEmail !== null) {
-        let result = await api.post(`${url}/auth/register`, RegisterVo);
-        console.log(result.data);
-        if (result.data === "SUCCESS") {
-          setLocation("/SUCCESS");
-          setShowModal({
-            show: true,
-            message: "회원가입이 완료되었습니다.",
-          });
-        } else if (result.data === "FAIL" || checkRegister) {
-          setLocation("/FAIL");
-          setShowModal({
-            show: true,
-            message: "회원가입 실패. 다시 시도해 주세요",
-          });
-        }
+      let result = await api.post(`${url}/auth/register`, RegisterVo);
+      console.log(result.data);
+      if (result.data === "SUCCESS") {
+        setLocation("/SUCCESS");
+        setShowModal({
+          show: true,
+          message: "회원가입이 완료되었습니다.",
+        });
+      } else if (result.data === "FAIL" || checkRegister) {
+        setLocation("/FAIL");
+        setShowModal({
+          show: true,
+          message: "회원가입 실패. 다시 시도해 주세요",
+        });
       }
-      fetchData();
     }
+    fetchData();
   };
 
   const onMove = () => {
@@ -349,7 +353,7 @@ function SignUpLayout() {
                   onBlur={checkVaildCd}
                   className={invalidCd}
                 />
-                <div className="d-flex justify-content-center align-items-center">
+                <div className="d-flex">
                   {cdCheck === "SUCCESS" && companyCode.length > 0 ? (
                     <p className={"successMessageWrap"}>
                       사용 가능한 코드입니다.
