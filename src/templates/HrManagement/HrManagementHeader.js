@@ -31,7 +31,7 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
 
   const faTrashCanClickHandler = (event) => {
     if (existSelectedRows)
-      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+      setShowModal({ show: true, message: "체크된 사원들을 삭제하시겠습니까?" });
     else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
@@ -71,13 +71,13 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            className="colorWhite backgroundBorderNone"
+            className="colorWhite backgroundBorderNone forbid"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
         </button>
         <button
           className="backgroundBorderNone"
@@ -86,10 +86,10 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite forbid" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
         </button>
       </div>
       <ConfirmComponent

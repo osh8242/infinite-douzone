@@ -1,6 +1,6 @@
 // 작성자 : 오승환
 import { useCallback } from "react";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import CodeHelperModal from "../../components/CodeHelperModal";
 import FormPanel from "../../components/FormPanel";
 import MenuTab from "../../components/MenuTab";
@@ -19,6 +19,7 @@ import {
 } from "../../model/HrManagement/HrManagementConstant";
 
 import HrManagementModel from "../../model/HrManagement/HrManagementModel";
+import increaseBrightness from "../../model/increaseBrightness";
 import "../../styles/HrManagement/HrManagementLayout.scss";
 import "../../styles/fonts.css";
 import EmpAdd from "../../vo/HrManagement/EmpAdd";
@@ -48,6 +49,16 @@ const HrManagementLayout = () => {
     modalState,
     codeHelperTableData,
   } = state;
+
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 85);
+  const labels = document.querySelectorAll(".label");
+
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   //코드도움 아이콘 클릭이벤트
   const modalShow = useCallback(
@@ -97,7 +108,7 @@ const HrManagementLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container className="hr-container SUITE p-12">
+      <div id="hr-container" className="SUITE p-10">
         {/* 조회영역 */}
         <Row className="hr-search-row deleteLabelBackground pb-3">
           <HrSearchPanel
@@ -125,6 +136,7 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
+                  deleteMessage="선택된 사원을 삭제하시겠습니까?"
                   codeHelper
                   defaultFocus
                   actions={{
@@ -165,7 +177,7 @@ const HrManagementLayout = () => {
           </Col>
           {/* 우측 영역 */}
           {mainTabData ? (
-            <Col md="9" className="px-5">
+            <Col md="9" className="px-4">
               {/* 우측 메인탭 */}
               <MenuTab menuList={tabConstant.mainTabMenuList}>
                 {[
@@ -239,22 +251,20 @@ const HrManagementLayout = () => {
             <Spinner animation="border" variant="primary" />
           )}
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          if (modalState.parentFocusRef)
-            modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef)
-              modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}

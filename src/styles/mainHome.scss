@@ -3,7 +3,7 @@
 // 모든 페이지의 스크롤바
 body {
   &::-webkit-scrollbar {
-    width: 10px; /* 세로 스크롤바의 너비 */
+    width: 0px; /* 세로 스크롤바의 너비 */
     height: 0px; /* 가로 스크롤바의 높이 */
   }
 
@@ -57,6 +57,24 @@ body {
   z-index: 2;
 }
 
+#mainPageTopHeader a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+.icon-infinity {
+  margin-left: 4px;
+  color: whitesmoke;
+  transform: translateY(2px);
+}
+
+.icon-text {
+  /* -webkit-background-clip: text;
+  background-clip: text;
+  background-image: linear-gradient(to bot); */
+  color: whitesmoke;
+}
+
 #mainPageTopHeaderContents {
   width: fit-content;
   display: flex;
@@ -95,7 +113,7 @@ body {
 
 .background {
   width: 100vw;
-  height: 72vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -112,26 +130,27 @@ body {
 
 .textBox {
   width: 100vw;
+  margin-bottom: 30vh;
   text-align: center;
   color: white;
   animation: fadeInUp 1s ease-in-out, moveUp 1s ease-in-out;
 }
 
 .menuBtnList {
-  margin-top: 48px;
+  position: absolute;
+  bottom: 120px;
   display: flex;
   flex-direction: row;
-  gap: 48px;
+  gap: 36px;
   justify-content: center;
   text-align: center;
-  /* font-family: "Esamanru-Light"; */
-  color: dimgray;
+  color: white;
 }
 
 .menuBtn {
   margin: 16px;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -141,6 +160,8 @@ body {
   font-size: 48px;
   border-radius: 16px;
   color: rgb(255, 255, 255);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25),
+    0 4px 6px -4px rgb(0 0 0 / 0.25);
 }
 
 .er {
@@ -185,14 +206,14 @@ body {
 }
 
 #leftArrowBtn {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
   position: absolute;
   top: 45%;
   left: 32px;
   font-size: 48px;
 }
 #leftArrowBtn-animation {
-  color: white;
+  color: rgba(255, 255, 255, 0.25);
   position: absolute;
   top: 45%;
   left: 32px;
@@ -200,19 +221,48 @@ body {
   animation: pulseAnimation 1s infinite;
 }
 #rightArrowBtn {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
   position: absolute;
   top: 45%;
   right: 32px;
   font-size: 48px;
 }
 #rightArrowBtn-animation {
-  color: white;
+  color: rgba(255, 255, 255, 0.25);
   position: absolute;
   top: 45%;
   right: 32px;
   font-size: 48px;
   animation: pulseAnimation 1s infinite;
+}
+
+#page2-content {
+  width: 100%;
+  display: flex;
+}
+
+#page2-title {
+  margin-top: 120px;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px;
+  border-radius: 8px;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--blue), var(--lightGray));
+}
+
+#page2-item1 {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  background-color: aquamarine;
+}
+
+.page2-item1-service {
+  width: 200px;
+  height: 100px;
+  background-color: bisque;
 }
 
 @keyframes scaleBackground {

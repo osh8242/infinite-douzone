@@ -1,12 +1,39 @@
+#lc-container {
+  width: 82%;
+  margin: auto;
+}
+
 .leftTable {
   padding-left: 0 !important;
   padding-right: 0 !important;
-  height: 64vh;
+  height: 59vh;
   overflow: auto;
-  border: 1px solid rgb(222, 226, 230);    
+  border: 1px solid rgb(222, 226, 230);
+  margin-bottom: 50px;
 }
 
-.subTable { 
+.leftSearchTable {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  height: 50vh;
+  overflow: auto;
+  border: 1px solid rgb(222, 226, 230);
+}
+
+.swsmother { 
+  height: 8vh; 
+}
+
+.searchSwsmother { 
+  height: 8vh; 
+}
+
+
+.EMPSTATICS {
+  margin-bottom: 30px;
+}
+
+.subTable {
   padding-left: 0;
   padding-right: 0;
   height: 17vh;
@@ -14,15 +41,14 @@
   outline: 1.5px solid rgb(222, 226, 230);
 }
 
-.sb {  
+.sb {
 }
 
-.mainTab{
-  background-color: #E9ECEF;
-
+.mainTab {
+  background-color: #e9ecef;
 }
 
-.menuGrid{
-    padding-top: 500;
-    margin-top: 500;
+.menuGrid {
+  padding-top: 500;
+  margin-top: 500;
 }

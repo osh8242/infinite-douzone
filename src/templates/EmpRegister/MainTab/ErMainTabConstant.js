@@ -2,7 +2,7 @@ import { INPUT_TYPE, LABELS } from "../../../model/CommonConstant";
 import { LABELS_EMP } from "../../../model/EmpRegister/EmpConstant";
 
 export const TAB_MENU_LIST = {
-  mainTabMenuList: ["기초정보", "공제등록"],
+  mainTabMenuList: ["기초정보"],
 };
 
 export const MAIN_TAB = {
@@ -50,7 +50,7 @@ export const MAIN_TAB = {
       label: LABELS_EMP.addHome2,
       span: 2,
     },
-    { type: INPUT_TYPE.date, field: "daRetire", span: 2 },
+    { type: INPUT_TYPE.date, field: "daRetire", span: 1 },
     {
       type: INPUT_TYPE.textCodeHelper,
       field: "abbNation",
@@ -66,53 +66,53 @@ export const MAIN_TAB = {
     { type: INPUT_TYPE.textCodeHelper, field: "cdProject", span: 1 },
     { type: INPUT_TYPE.textCodeHelper, field: "cdBank", span: 1 },
     { type: INPUT_TYPE.text, field: "nmBnkowner", span: 1 },
-    { type: INPUT_TYPE.text, field: "noBnkacct", span: 2 },
+    { type: INPUT_TYPE.text, field: "noBnkacct", span: 1 },
   ],
-  secondaryTabInputs: [
-    {
-      // 월평균임금
-      type: INPUT_TYPE.text,
-      field: "mnMmaverage",
-      label: LABELS.mnMmaverage,
-      span: 2,
-      endLabel: "원",
-    },
-    // 고용보험적용 /여부
-    {
-      type: INPUT_TYPE.select,
-      field: "ynEmploy",
-      label: LABELS.ynEmploy,
-      span: 1,
-    },
-    // 산재보험적용 /여부
-    {
-      type: INPUT_TYPE.select,
-      field: "ynSanjae",
-      label: LABELS.ynSanjae,
-      span: 1,
-    },
-    // 장기요양보험적용 /여부
-    {
-      type: INPUT_TYPE.select,
-      field: "ynLonginsur",
-      label: LABELS.ynLonginsur,
-      span: 1,
-    },
-    // 국외근로 /여부
-    {
-      type: INPUT_TYPE.select,
-      field: "ynForlabor",
-      label: LABELS.ynForlabor,
-      span: 1,
-    },
-    // 생산직 /여부
-    { type: INPUT_TYPE.select, field: "ynUnit", label: LABELS.ynUnit, span: 1 },
-    // 연장근로 비과세적용 (disabled)
-    {
-      type: INPUT_TYPE.select,
-      field: "ynOverwork",
-      label: LABELS.ynOverwork,
-      span: 1,
-    },
-  ],
+  // secondaryTabInputs: [
+  //   {
+  //     // 월평균임금
+  //     type: INPUT_TYPE.text,
+  //     field: "mnMmaverage",
+  //     label: LABELS.mnMmaverage,
+  //     span: 2,
+  //     endLabel: "원",
+  //   },
+  //   // 고용보험적용 /여부
+  //   {
+  //     type: INPUT_TYPE.select,
+  //     field: "ynEmploy",
+  //     label: LABELS.ynEmploy,
+  //     span: 1,
+  //   },
+  //   // 산재보험적용 /여부
+  //   {
+  //     type: INPUT_TYPE.select,
+  //     field: "ynSanjae",
+  //     label: LABELS.ynSanjae,
+  //     span: 1,
+  //   },
+  //   // 장기요양보험적용 /여부
+  //   {
+  //     type: INPUT_TYPE.select,
+  //     field: "ynLonginsur",
+  //     label: LABELS.ynLonginsur,
+  //     span: 1,
+  //   },
+  //   // 국외근로 /여부
+  //   {
+  //     type: INPUT_TYPE.select,
+  //     field: "ynForlabor",
+  //     label: LABELS.ynForlabor,
+  //     span: 1,
+  //   },
+  //   // 생산직 /여부
+  //   { type: INPUT_TYPE.select, field: "ynUnit", label: LABELS.ynUnit, span: 1 },
+  //   // 연장근로 비과세적용 (disabled)
+  //   {
+  //     type: INPUT_TYPE.select,
+  //     field: "ynOverwork",
+  //     label: LABELS.ynOverwork,
+  //     span: 1,
+  //   },
+  // ],
 };

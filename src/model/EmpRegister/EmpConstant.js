@@ -11,16 +11,28 @@ export const urlPattern = {
 
 //메뉴 탭 리스트
 export const tabConstant = {
-  mainTabMenuListForEmpRegister: ["기초정보", "공제등록"],
+  mainTabMenuListForEmpRegister: ["기초정보"],
 };
 
 //왼쪽 테이블 헤더
 export const EmpRegisterLeftHeaders = [
-  { field: "cdEmp", text: "사원코드", isPk: true },
+  { field: "cdEmp", text: "사원코드", isPk: true, width: "70px" },
   { field: "nmKrname", text: "성명" },
-  { field: "ynFor", text: "내외국인" },
+  {
+    field: "ynFor",
+    text: "내외국인",
+    type: "select",
+    optionList: SELECT_LIST.ynFor,
+    width: "70px",
+  },
   { field: "noSocial", text: "주민번호" },
-  { field: "jobOk", text: "구분" },
+  {
+    field: "jobOk",
+    text: "구분",
+    type: "select",
+    optionList: SELECT_LIST.jobOk,
+    width: "70px",
+  },
 ];
 
 //메인 탭 사용 필드
@@ -202,7 +214,7 @@ export const codeHelperData_cdOccup = {
     { item: { cdOccup: "J011", nmCdOccup: "의료" } },
     { item: { cdOccup: "J012", nmCdOccup: "미디어/문화" } },
     { item: { cdOccup: "J013", nmCdOccup: "전문/특수/연구직" } },
-    { item: { cdOccup: "J013", nmCdOccup: "관광레저서비스" } },
+    { item: { cdOccup: "J014", nmCdOccup: "관광레저서비스" } },
   ],
   searchField: ["cdOccup", "nmCdOccup"],
   usePk: "cdOccup",
@@ -254,6 +266,36 @@ export const codeHelperData_cdSalcls = {
     { item: { cdSalcls: "S008", nmCdSalcls: "8" } },
     { item: { cdSalcls: "S009", nmCdSalcls: "9" } },
     { item: { cdSalcls: "S010", nmCdSalcls: "10" } },
+    { item: { cdSalcls: "S011", nmCdSalcls: "11" } },
+    { item: { cdSalcls: "S012", nmCdSalcls: "12" } },
+    { item: { cdSalcls: "S013", nmCdSalcls: "13" } },
+    { item: { cdSalcls: "S014", nmCdSalcls: "14" } },
+    { item: { cdSalcls: "S015", nmCdSalcls: "15" } },
+    { item: { cdSalcls: "S016", nmCdSalcls: "16" } },
+    { item: { cdSalcls: "S017", nmCdSalcls: "17" } },
+    { item: { cdSalcls: "S018", nmCdSalcls: "18" } },
+    { item: { cdSalcls: "S019", nmCdSalcls: "19" } },
+    { item: { cdSalcls: "S020", nmCdSalcls: "20" } },
+    { item: { cdSalcls: "S021", nmCdSalcls: "21" } },
+    { item: { cdSalcls: "S022", nmCdSalcls: "22" } },
+    { item: { cdSalcls: "S023", nmCdSalcls: "23" } },
+    { item: { cdSalcls: "S024", nmCdSalcls: "24" } },
+    { item: { cdSalcls: "S025", nmCdSalcls: "25" } },
+    { item: { cdSalcls: "S026", nmCdSalcls: "26" } },
+    { item: { cdSalcls: "S027", nmCdSalcls: "27" } },
+    { item: { cdSalcls: "S028", nmCdSalcls: "28" } },
+    { item: { cdSalcls: "S029", nmCdSalcls: "29" } },
+    { item: { cdSalcls: "S030", nmCdSalcls: "30" } },
+    { item: { cdSalcls: "S031", nmCdSalcls: "31" } },
+    { item: { cdSalcls: "S032", nmCdSalcls: "32" } },
+    { item: { cdSalcls: "S033", nmCdSalcls: "33" } },
+    { item: { cdSalcls: "S034", nmCdSalcls: "34" } },
+    { item: { cdSalcls: "S035", nmCdSalcls: "35" } },
+    { item: { cdSalcls: "S036", nmCdSalcls: "36" } },
+    { item: { cdSalcls: "S037", nmCdSalcls: "37" } },
+    { item: { cdSalcls: "S038", nmCdSalcls: "38" } },
+    { item: { cdSalcls: "S039", nmCdSalcls: "39" } },
+    { item: { cdSalcls: "S040", nmCdSalcls: "40" } },
   ],
   searchField: ["cdSalcls", "nmCdSalcls"],
   usePk: "cdSalcls",

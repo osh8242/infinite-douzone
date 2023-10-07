@@ -9,14 +9,14 @@ import ConfirmComponent from "../../../components/ConfirmComponent";
 
 const InsertSalaryAllowData = (props) => {
   const api = useApi();
-  const { actions, } = props;
+  const { actions } = props;
   const insertSalaryTableDataRef = useRef([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchDataAndUpdateState();
   }, []);
-  
+
   const fetchDataAndUpdateState = async () => {
     if (modal_insertSalaryAllowData.url) {
       insertSalaryTableDataRef.current = await fetchData(
@@ -47,7 +47,6 @@ const InsertSalaryAllowData = (props) => {
             onlyConfirm: true,
             action :()=> fetchDataAndUpdateState()
           });
-          
         }
       })
       .catch((error) => {
@@ -106,6 +105,7 @@ const InsertSalaryAllowData = (props) => {
             rowAddable
             tableHeaders={modal_insertSalaryAllowData.headers}
             tableData={insertSalaryTableDataRef.current}
+            // deleteMessage="수당을 삭제하시겠습니까?"
             actions={{
               getRowObject: (data) => {
                 return { item: data };
@@ -119,10 +119,8 @@ const InsertSalaryAllowData = (props) => {
         <div>
           <p>
             *월정액에 따른 수당등록 <br></br>
-            1) (2.식대),[3. 자가운전]등 비과세되는 수당 중 실비변상이 아닌
-            수당은 월정액 포함됩니다.<br></br>
-            2) 수당에 따라 실비 변상 여부를 확인할 수 없으므로 월정액에 따른
-            수당 설정은 각각 해주시기 바랍니다.<br></br>
+            1) 수당코드는 자동생성됩니다.<br></br>
+            2) 수당 삭제시 이미 지급된 해당 항목의 지급내역은 남아있습니다<br></br>
             3) 비과세로 설정한 후 한도가 있는 경우 비과세 감면설정 탭에서 한도를
             설정해주시기 바랍니다.<br></br>
           </p>

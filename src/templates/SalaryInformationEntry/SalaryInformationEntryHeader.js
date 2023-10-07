@@ -15,6 +15,7 @@ import { React, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
+import "../../styles/fonts.css";
 import salaryInformEntry from "../../styles/img/salaryInformEntryLogo.png";
 import {
   codeHelperData_paymentDate,
@@ -30,6 +31,7 @@ const SalaryInformationEntryHeader = ({
   dateId,
   cdEmp,
   actions,
+  paymentDate
 }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -45,6 +47,16 @@ const SalaryInformationEntryHeader = ({
   // 휴지통_사원리스트 삭제
   const faTrashCanClickHandler = (event) => {
     let message = "";
+
+    if (ynComplete === "Y") {
+      setShowModal({
+        show: true,
+        message: "완료 해제 후 삭제가 가능합니다.",
+        onlyConfirm: true,
+      });
+      return true;
+    }
+    
     if (!existSelectedRows) {
       message = "선택된 사원이 없습니다";
       setShowModal({ show: true, message: message });
@@ -63,6 +75,14 @@ const SalaryInformationEntryHeader = ({
 
   // 수당/공제 등록
   const insertSalaryDataHandler = (event) => {
+    if(paymentDate !== '' || paymentDate){
+      setShowModal({
+        show: true,
+        message: "지급일자를 클릭하여 비운후 등록 가능합니다.",
+        onlyConfirm: true,
+      });
+      return true;
+    }
     modalShow("insertSalaryData", modal_insertSalaryData);
   };
 
@@ -104,6 +124,7 @@ const SalaryInformationEntryHeader = ({
       show: true,
       message: "해당 지급일자로 조회하시겠습니까?",
       action: () => {
+        alert(row.paymentDate);
         actions.setPaymentDate(row.paymentDate);
         actions.setSalDivision(row.salDivision);
         actions.setAllowMonth(row.allowMonth);
@@ -173,7 +194,7 @@ const SalaryInformationEntryHeader = ({
           />
         </button>
       </div>
-      <div id="secondTopHeaderMenuList" className="SUITE p-12">
+      <div id="secondTopHeaderMenuList" className="SUITE p-10">
         <Button
           className="extraDeductBtn"
           onClick={(e) => getDateListHandler(e)}
@@ -203,19 +224,19 @@ const SalaryInformationEntryHeader = ({
         </Button>
 
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite p-12" />
         </button>
         <button
           className="backgroundBorderNone"
           onClick={(e) => faTrashCanClickHandler(e)}
         >
-          <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
+          <FontAwesomeIcon icon={faTrashCan} className="colorWhite p-12" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite p-12" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite p-12" />
         </button>
       </div>
       <ConfirmComponent

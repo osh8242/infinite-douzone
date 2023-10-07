@@ -25,6 +25,7 @@ import { LoadingContext } from "./Loading/LoadingProvider";
 import Loading from "./components/Loading";
 import SignUpLayout from "./SignUp/SignUpLayout";
 import Footer from "./templates/Footer";
+import axios from "axios";
 
 function ConditionalHeader() {
   const location = useLocation();
@@ -36,7 +37,7 @@ function ConditionalHeader() {
   } else if (location.pathname === "/loginFindPwd") {
     return <LoginFindPwd />;
   } else if (location.pathname === "/signup") {
-    return <SignUpLayout />; // SignupLayout 제거함. 필요하다면 반환하세요.
+    return <SignUpLayout />;
   } else if (location.pathname === "/error") {
     return <ErrorPage />;
   } else if (location.pathname === "/successSignup") {
@@ -62,6 +63,22 @@ function ProtectedRoutesWrapper({ children }) {
       "/error",
       "/successSignup",
     ];
+
+    // 공인IP 주소 얻기 => 세션 스토리지 저장
+    sessionStorage.setItem("clientIp", "0.0.0.0");
+    async function fetchIP() {
+      try {
+        const response = await axios.get(
+          `http://52.78.198.96:8888/auth/getClientIp`
+        );
+        sessionStorage.setItem("clientIp", response.data);
+        console.log("접속IP 주소 :", response.data);
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+      }
+    }
+
+    fetchIP();
 
     if (!authToken && !publicRoutes.includes(location.pathname)) {
       navigate("/login");

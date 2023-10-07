@@ -17,7 +17,7 @@ function TextBoxComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
-    // custom type 옵션          ex) callNumber, email( text & select )
+    // custom type 옵션          ex) callNumber, email( text & select ), rate
     id,
     // subId,
     name,
@@ -55,7 +55,9 @@ function TextBoxComponent(props) {
     // md = 4, // [선택]
     // valueMd = 8,
     placeholder, // [선택]
-    height, // [선택] 스타일
+    style,
+    heigth,
+    rate,
 
     isPeriod,
     subLabel = "",
@@ -63,12 +65,15 @@ function TextBoxComponent(props) {
 
     // select
     onChangeSelect,
-    selectId,
+    option,
     selectList,
     selectedOption,
     selectRef,
     subField,
     disabledSelect,
+
+    //number
+    step,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -85,28 +90,19 @@ function TextBoxComponent(props) {
   const [isDisable, setDisable] = useState(
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
-
+  const [isDisableSelect, setDisableSelct] = useState(
+    disabled || disabledSelect || selectedOption === "F" ? true : false
+  );
   useEffect(() => {
-    if (disabled) setDisable(true);
-    else setDisable(false);
-  }, [isDisable]);
-  // const style = height ? { height: `${height}px` } : {}; // 스타일 값
-  const style = {
-    // ...(isDisable ? { color: "transparent" } : {}),
-    ...(height ? { height: `${height}px` } : {}),
-  };
-
-  // useEffect(() => {
-  //   if (selectedOption === "F") {
-  //     setDisable(true);
-  //   } else setDisable(false);
-  //   setSelectedValue(selectedOption || "");
-  // }, [selectedOption]);
+    setSelectedValue(option || "");
+  }, [option]);
 
   const handleSelectChange = (event) => {
-    // if (event.target.value === "F" || event.target.value === "T") {
-    //   setDisable(!isDisable);
-    // }
+    if (event.target.value === "F") {
+      setDisable(true);
+    } else if (event.target.value === "T") {
+      setDisable(false);
+    }
     event.target.id = subField;
     const newValue = selectRef ? selectRef.current.value : event.target.value;
     if (onChangeSelect) onChangeSelect(event, newValue);
@@ -147,19 +143,33 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
+      } else if (type === "commaNumber") {
+        console.log(makePureNumber(inputValue));
+        onEnter && onEnter(event, makePureNumber(inputValue), id);
       } else {
-        onEnter && onEnter(event, sendValue, id);
+        !onClickCodeHelper && onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
       }
     }
 
     if (onClickCodeHelper) {
-      if (event.key === "Backspace") {
-        setInputValue("");
-        onChange && onChange(event, "", id);
-      } else {
-        event.preventDefault(); // 키보드 입력 막기
-        onClickCodeHelper();
+      if (event.key !== "Shift" && event.key !== "Escape") {
+        if (event.key !== "Tab" && event.key !== "F10") {
+          if (event.key === "Enter") {
+            onEnter && onEnter(event, sendValue, id);
+            return;
+          } else if (
+            event.key === "Backspace" ||
+            event.key === "Delete" ||
+            event.key === "Del"
+          ) {
+            setInputValue("");
+            onChange && onChange(event, "", id);
+          } else {
+            event.preventDefault(); // 키보드 입력 막기
+            onClickCodeHelper(setInputValue);
+          }
+        }
       }
     }
     onKeyDown && onKeyDown(event);
@@ -209,15 +219,18 @@ function TextBoxComponent(props) {
       }
     } else if (type === "date" && onClickCodeHelper) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
-    } else if (onClickCodeHelper) {
-      setInputValue("");
+    } else if (type === "time") {
+      setSendValue(newValue);
+      setInputValue(newValue);
+      onChangeSelect(event, newValue);
     } else {
       setSendValue(newValue);
+      console.log("newValue", newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
       //if (event.target.id === id)
       setInputValue(newValue); // data 가공
       // else setInputSubValue(makeProcessedValue(newValue));
-      onChange && onChange(event, newValue, id);
+      onChange && onChange(event, newValue);
     }
   };
 
@@ -247,7 +260,7 @@ function TextBoxComponent(props) {
 
   const processThousandSeparator = (value) => {
     const numValue = value.replaceAll(/,/g, "");
-    return makeCommaNumber(numValue.toString());
+    return makeCommaNumber(numValue);
   };
 
   //유효성 검사
@@ -282,7 +295,7 @@ function TextBoxComponent(props) {
       }
     }
 
-    //validationFunction && validationFunction(value);
+    validationFunction && validationFunction(value);
     return returnValue;
   };
 
@@ -332,7 +345,7 @@ function TextBoxComponent(props) {
 
   // 화면 render
   return (
-    <Row className="py-1 SUITE">
+    <Row className="py-1 SUITE p-10">
       <div className="labelAndContent">
         {label && <div className="label">{label}</div>}
 
@@ -340,7 +353,7 @@ function TextBoxComponent(props) {
           {onClickCodeHelper ? (
             type === "date" ? (
               //<div className="">
-              <div className="svg-container2 svg-wrapper">
+              <div className="widthFull svg-container2 svg-wrapper">
                 {renderFormControl()}
                 <FontAwesomeIcon
                   icon={faCopyright}
@@ -349,13 +362,18 @@ function TextBoxComponent(props) {
               </div>
             ) : (
               //</div>
-              <div className="svg-wrapper">
-                <div className="svg-container">
+              <div className="widthFull svg-wrapper">
+                <div className="widthFull svg-container">
                   {renderFormControl()}
-                  <FontAwesomeIcon
-                    icon={faCopyright}
-                    onClick={onClickCodeHelper}
-                  />
+                  {!disabled && (
+                    <FontAwesomeIcon
+                      icon={faCopyright}
+                      onClick={(event) => {
+                        console.log("코드헬퍼에 setInputValue 전달");
+                        onClickCodeHelper(setInputValue);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             )
@@ -363,13 +381,13 @@ function TextBoxComponent(props) {
             <>
               {selectList ? (
                 <div className="widthFull d-flex align-items-center gap-2">
-                  <div style={{ width: "40%" }}>
+                  <div style={{ width: "45%" }}>
                     <Form.Select
                       id={id}
                       ref={selectRef}
                       value={selectedValue}
                       onChange={(e) => handleSelectChange(e)}
-                      disabled={isDisable}
+                      disabled={isDisableSelect}
                     >
                       {selectList.map((option, index) => (
                         <option value={option.key} key={index}>
@@ -413,7 +431,19 @@ function TextBoxComponent(props) {
                     </div>
                   ) : (
                     // 일반 TextBoxContent
-                    <>{renderFormControl()}</>
+                    <>
+                      {renderFormControl()}
+                      {endLabel && (
+                        <div
+                          style={{
+                            width: "30%",
+                            paddingLeft: 12,
+                          }}
+                        >
+                          {endLabel}
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -429,6 +459,7 @@ function TextBoxComponent(props) {
         return (
           <div className="widthFull">
             <Form.Control
+              style={{ width: "100%" }}
               as="textarea"
               id={id}
               name={name}
@@ -492,6 +523,7 @@ function TextBoxComponent(props) {
               placeholder={placeholder ? placeholder : undefined}
               style={style}
               className={isValid ? "" : "invalid"}
+              step={step}
             />
             {/* {type === "regNum" && (
               <FontAwesomeIcon

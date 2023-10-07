@@ -13,6 +13,7 @@ import React, {
   useState,
 } from "react";
 import { Table } from "react-bootstrap";
+import { CODE_VALUE } from "../model/CommonConstant";
 import "../styles/tableForm.css";
 import { makeCommaNumber } from "../utils/NumberUtils";
 import CodeHelperModal from "./CodeHelperModal";
@@ -46,6 +47,7 @@ const TableForm = ({
   tableName, //[선택] console.log에 출력해볼 테이블이름..
   codeHelper, //[선택] 코드헬퍼 사용시
   onRowClick, //[선택] 로우클릭 커스텀 이벤트 추가(파라미터 row 전달)
+  deleteMessage, //[선택] 삭제메세지
 
   // 가령, 이 테이블이 sub테이블이라서 main테이블 pk를 가져와야할 때)
   showCheckbox, // [선택] 체크박스 유무
@@ -59,11 +61,8 @@ const TableForm = ({
 
   //초기행 선택이었으나 부작용으로 인해 잠시 주석처리..
   useEffect(() => {
-    if (tableName === "empFam") console.log("유즈이펙트 tableRows", tableRows);
-
-      setTableRows(tableData);
-      defaultFocus && setRefresh(!refresh);
-
+    setTableRows(tableData);
+    defaultFocus && setRefresh(!refresh);
   }, [tableData]);
 
   useEffect(() => {
@@ -129,9 +128,14 @@ const TableForm = ({
 
   //rowRef에 따라서 updatePkValue하기
   useEffect(() => {
-    console.log("업데이트 pkValue");
     actions.setPkValue && actions.setPkValue(getPkValue(rowRef));
   }, [tableRows, rowRef]);
+
+  // modal창이 뜨면 테이블 포커스를 비활성화
+  useEffect(() => {
+    if (modalState.show || confirmModalState.show) tableFocus.current = false;
+    else tableFocus.current = true;
+  }, [modalState, confirmModalState]);
 
   //로우와 컬럼 ref 해제 함수
   const releaseSelectedRef = useCallback(() => {
@@ -195,7 +199,9 @@ const TableForm = ({
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback((event, rowIndex, columnIndex) => {
-    return tbodyRef.current.children[rowIndex].querySelectorAll("input");
+    return tbodyRef.current.children[rowIndex].querySelectorAll(
+      "input, select"
+    );
   }, []);
 
   // 새로운 행(빈행)을 만드는 함수
@@ -301,6 +307,25 @@ const TableForm = ({
     [tableHeaders]
   );
 
+  const findKeyByValue = (obj, value) => {
+    for (let key in obj) {
+      if (obj[key] === value) {
+        return key;
+      }
+    }
+    return null;
+  };
+
+  const findKeyInCodeValue = (value) => {
+    for (let type in CODE_VALUE) {
+      const key = findKeyByValue(CODE_VALUE[type], value);
+      if (key) {
+        return key;
+      }
+    }
+    return null;
+  };
+
   // 수정중인 행의 모든 입력필드를 업데이트한 행을 반환하는 함수
   const getEditedRow = useCallback(
     (event, rowIndex, columnIndex) => {
@@ -318,7 +343,12 @@ const TableForm = ({
       // 각 입력 필드의 값을 editedRow에 업데이트
       currentRowInputs.forEach((input, index) => {
         const field = input.id;
-        editedRow.item[field] = input.value;
+        const type = tableHeaders[index]?.type;
+        if (type && type === "textCodeHelper") {
+          editedRow.item[field] = findKeyInCodeValue(input.value);
+        } else {
+          editedRow.item[field] = input.value;
+        }
       });
 
       return editedRow;
@@ -331,7 +361,10 @@ const TableForm = ({
     (event, rowIndex, columnIndex) => {
       event.preventDefault();
       event.stopPropagation();
-      if (readOnly) return;
+      if (readOnly) {
+        onRowClick();
+        return;
+      }
       if (event.key === "Enter" && editableRowIndex !== -1) {
         const editedRow = getEditedRow(event, rowIndex, columnIndex);
 
@@ -351,7 +384,7 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
-        //console.log("엔터키처리 newtableRows", newTableRows);
+        console.log("엔터키처리 newtableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
@@ -459,11 +492,7 @@ const TableForm = ({
               type="date"
               id={field}
               value={row.isNew ? "" : row.item[field]}
-              onChange={(e, value) => {
-                let EditedRow = { ...tableRows[rowIndex] }.item;
-                EditedRow[field] = value;
-                actions.updateEditedRow(EditedRow);
-              }}
+              onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
             />
           );
         case "textCodeHelper":
@@ -471,10 +500,12 @@ const TableForm = ({
             <TextBoxComponent
               id={field}
               type="text"
-              value={row.isNew ? "" : getTdValue(rowIndex, columnIndex)}
-              onClickCodeHelper={() => {
+              value={getTdValue(rowIndex, columnIndex)}
+              onEnter={(e) => {
+                TdKeyDownHandler(e, rowIndex, columnIndex);
+              }}
+              onClickCodeHelper={(setInputValue) => {
                 let codeHelperData = codeHelper[field];
-                let empFam = tableRows[rowIndex].item;
 
                 setModalState({
                   show: true,
@@ -484,12 +515,49 @@ const TableForm = ({
                   searchField: codeHelperData.searchField,
                   usePk: codeHelperData.usePk,
                   setRowData: (e, pkValue) => {
-                    actions.updateEditedRow(Object.assign(empFam, pkValue));
+                    let codeHelperData = codeHelper[field];
+                    let tableData = codeHelperData.tableData;
+                    const value = pkValue[field];
+                    let targetIndex = tableData.findIndex(
+                      (row) => row.item[field] === value
+                    );
+                    const newField =
+                      field.charAt(0).toUpperCase() + field.slice(1);
+                    setInputValue(
+                      targetIndex !== -1
+                        ? tableData[targetIndex].item[`nm${newField}`]
+                        : ""
+                    );
                   },
                 });
               }}
             />
           );
+         case "rate": 
+          return (
+            <TextBoxComponent
+              id={field}
+              type={"number"}
+              readOnly={!row.isEditable}
+              onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
+              value={row.isNew ? "" : row.item[field]}
+              placeholder = "0~100 사이 숫자입력"
+              rate
+              step="0.1"
+            />
+          );
+          // case "number":
+          // return (
+          //   <TextBoxComponent
+          //     id={field}
+          //     type={"commaNumber"}
+          //     readOnly={!row.isEditable}
+          //     onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
+          //     value={row.isNew ? "" : row.item[field]}
+          //     placeholder = "숫자입력"
+          //     processThousandSeparator
+          //   />
+          // );
         default: // 타입이 명시되지않으면 일반 text 타입 반환
           return (
             <TextBoxComponent
@@ -498,6 +566,7 @@ const TableForm = ({
               readOnly={!row.isEditable}
               onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
               value={row.isNew ? "" : row.item[field]}
+              thousandSeparator = {type === "number" || true}
             />
           );
       }
@@ -560,12 +629,20 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        // event.preventDefault();
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
               removeNewRow();
               releaseEditable();
+              break;
+            case "Tab":
+              event.preventDefault();
+              if (event.shiftKey) {
+                if (columnRef > 0) setColumnRef(columnRef - 1);
+              } else {
+                if (columnRef < tableHeaders.length - 1)
+                  setColumnRef(columnRef + 1);
+              }
               break;
             default:
               break;
@@ -635,6 +712,7 @@ const TableForm = ({
 
             case "Delete":
               event.preventDefault();
+              if (rowAddable && rowRef === tableRows.length) return;
               tableFocus.current = false;
               setConfirmModalState({
                 show: true,
@@ -816,7 +894,7 @@ const TableForm = ({
       </Table>
       <ConfirmComponent
         show={confirmModalState.show}
-        message={confirmModalState.message}
+        message={deleteMessage || confirmModalState.message}
         onlyConfirm={confirmModalState.onlyConfirm}
         onConfirm={() => {
           confirmModalState.onConfirm();

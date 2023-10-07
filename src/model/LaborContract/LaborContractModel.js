@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 import axios from "axios";
 import { url } from "../CommonConstant";
 import Swsm from "../../vo/LaborContract/Swsm";
@@ -23,9 +29,13 @@ const LaborContractModel = () => {
   const [subTableData, setSubTableData] = useState([]); // 서브 그리드 데이터
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
-
+  const [rowAbleState, setRowAbleState] = useState("F");
   const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
+
+  const [lengthEmpAll, setLengthEmpAll] = useState("0");
+  const [lengthEmp, setLengthEmp] = useState("0");
+  const [lengthTempEmp, setLengthTempEmp] = useState("0");
 
   //search
   const jobRef = useRef("empAll"); // 소득구분
@@ -37,23 +47,66 @@ const LaborContractModel = () => {
 
   // settingSearch
   const jobSetRef = useRef(""); // 소득구분
-  const jobSetSelectRef = useRef("empAll");
+  const jobSetSelectRef = useRef("");
   const dateSetRef = useRef(""); // 소득구분
   const dateSetSelectRef = useRef(""); // 소득구분
 
-  // const tabRef = useRef(null);
+  // function setJobSet() {
+  //   jobSetRef.current = jobSelectRef.current.value;
+  // }
+
+  // function setDateSet() {
+  //   dateSetRef.current = dateSetSelectRef.current.value;
+  // }
+
+  function onLoad() {
+    console.log("load Test");
+    setLeftTableData([]);
+    setLengthEmp("0");
+    setLengthEmpAll("0");
+    setLengthTempEmp("0");
+    // setMainTabData([]);
+  }
+  function stateUpdate(state) {
+    setRowAbleState(state);
+    console.log(rowAbleState);
+  }
+
+  const [date, setDate] = useState();
+  const [job, setJob] = useState();
+
+  useEffect(() => {
+    console.log(job); // 이 로직은 job이 업데이트 될 때마다 실행됩니다.
+  }, [job]);
+
+  useEffect(() => {
+    console.log(date); // 이 로직은 date가 업데이트 될 때마다 실행됩니다.
+  }, [date]);
+
+  // 검색 조건 변경 시 마다
+  const onSetSearch = (type, event) => {
+    console.log("model ; 검색 조건 변화 감지?");
+    if (type === "job") {
+      setJob(event.target?.value);
+    }
+    if (type === "date") {
+      setDate(event.target?.value);
+    }
+    onLoad(); // table reload
+  };
+
+  useEffect(() => {
+    if (job === "none") stateUpdate("F");
+    else if (job && date) {
+      stateUpdate("T"); // addable true
+    }
+  }, [job, date]);
 
   function onLoadCodeHelper() {
     if (jobSelectRef.current.value === "empAll") {
       jobRef.current = "empAll";
     }
     getCodeHelperList();
-  }
-
-  function onLoad() {
-    console.log("load Test");
-    setLeftTableData([]);
-    // setMainTabData({});
   }
 
   const getCodeHelperList = () => {
@@ -90,11 +143,68 @@ const LaborContractModel = () => {
     console.log(dateEndSelectRef.current.value);
     dateRef.current = dateSelectRef.current.value;
     dateEndRef.current = dateEndSelectRef.current.value;
+
     getEmpList();
+    setLength();
   };
+
+  const setLength = () => {
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=empAll&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthEmpAll(response.data.length);
+        // 이쪽 로직 swsm list 로 해줘야 함
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=empRegistration&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthEmp(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+    api
+      .get(
+        `/swsm/getEmpListForSwsmDate?job=tempEmpRegistration&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
+      )
+      .then((response) => {
+        setLengthTempEmp(response.data.length);
+      })
+      .catch((error) => {
+        console.error("에러발생: ", error);
+      });
+
+    if (jobRef.current === "empRegistration") {
+      console.log("jobRef.");
+      console.log(jobRef.current);
+      setLengthTempEmp(0);
+    }
+  };
+
+  //통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    return [
+      {
+        item: {
+          empAll: lengthEmpAll,
+          empRegistration: lengthEmp,
+          tempEmpRegistration: lengthTempEmp,
+        },
+      },
+    ];
+  }, [leftTableData]);
 
   //leftTableData 가져오는 비동기 GET 요청
   const getEmpList = () => {
+    onLoad();
     api
       .get(
         `/swsm/getEmpListForSwsmDate?job=${jobRef.current}&date=${dateRef.current}&dateEnd=${dateEndRef.current}`
@@ -172,6 +282,7 @@ const LaborContractModel = () => {
 
   // insert 요청
   const insertSwsm = useCallback((emp) => {
+    console.log(emp + "emplist임....");
     api
       .post(`/swsm/insertSwsm`, emp)
       .then((response) => {
@@ -255,6 +366,8 @@ const LaborContractModel = () => {
 
   //수정된 사원 update 요청
   useEffect(() => {
+    console.log("editedEmp");
+    console.log(editedEmp);
     if (editedEmp)
       if (!editedEmp.isNew && Object.keys(editedEmp).length !== 0)
         api
@@ -269,26 +382,7 @@ const LaborContractModel = () => {
           });
   }, [editedEmp]);
 
-  const onSetSearch = (jobSelectRef, dateSelectRef, dateEndSelectRef) => {
-    if (jobSelectRef.current.value === "empAll") {
-      jobRef.current = "empAll";
-    } else if (jobSelectRef.current.value === "empRegistration") {
-      jobRef.current = "empRegistration";
-    } else if (jobSelectRef.current.value === "tempEmpRegistration") {
-      jobRef.current = "tempEmpRegistration";
-    } else {
-      jobRef.current = jobSelectRef.current.value;
-    }
-    // console.log("searrdddss");
-    console.log(dateSelectRef.current.value);
-    console.log(dateEndSelectRef.current.value);
-    dateRef.current = dateSelectRef.current.value;
-    dateEndRef.current = dateEndSelectRef.current.value;
-    getEmpList();
-  };
-
   const updateEmp = useCallback((emp) => {
-    console.log("updateEmp 업데이트 요청", emp);
     let newEmp = {
       ...emp,
     };
@@ -300,19 +394,29 @@ const LaborContractModel = () => {
       };
     }
 
-    api
-      .put(urlPattern.updateEmp, newEmp)
-      .then((response) => {
-        if (response.data === 1) console.log("Emp update 성공");
-        setEditedEmp();
-      })
-      .catch((error) => {
-        console.error("에러발생: ", error);
-        // 필요에 따라 다른 오류 처리 로직 추가
-      });
+    console.log("newEmp", newEmp);
+    if (emp.cdEmp !== undefined) {
+      console.log("updateEmp 업데이트 요청", emp);
+      api
+        .put(urlPattern.updateEmp, newEmp)
+        .then((response) => {
+          if (response.data === 1) console.log("Emp update 성공");
+          setEditedEmp();
+        })
+        .catch((error) => {
+          console.error("에러발생: ", error);
+          // 필요에 따라 다른 오류 처리 로직 추가
+        });
+    }
   }, []);
 
-  // const submitMi = useCallback();
+  useEffect(() => {
+    console.log("jobSetSelectRef changed:", jobSetSelectRef);
+    console.log("setSearch 변화 감지...");
+    //setLeft 철
+    setLeftCodeHelperTableData();
+    setLeftTableData();
+  }, [jobSetSelectRef]);
 
   //mainTab에서 Enter 입력시 swsm 업데이트
   const submitMainTabData = useCallback(
@@ -322,7 +426,6 @@ const LaborContractModel = () => {
         event.target.id === "incomeClassfication" ||
         event.target.id === "dateOfcreate"
       ) {
-        console.log("tttessetste");
         let newEmp = { ...mainTabData };
         newEmp[event.target.id] = value;
         console.log("leftTablePkValue");
@@ -336,7 +439,6 @@ const LaborContractModel = () => {
         event.type === "change" ||
         event.action === "change"
       ) {
-        // event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newSwsm = { ...mainTabData };
@@ -344,7 +446,8 @@ const LaborContractModel = () => {
 
         newSwsm["cdEmp"] = leftTablePkValue.cdEmp;
         console.log("newSwsm", newSwsm);
-        updateSwsm(newSwsm);
+        if (leftTablePkValue.cdEmp !== undefined) updateSwsm(newSwsm);
+        if (event.key === "Enter") event.target.blur();
       }
       if (event.type === "click" || typeof value === "object") {
         let newSwsm = { ...mainTabData };
@@ -458,9 +561,11 @@ const LaborContractModel = () => {
         Object.keys(editedTableNames).forEach((tableName) => {
           switch (tableName) {
             case "swsmOther":
+              getEmpList();
               break;
             case "swsm":
               getEmpList();
+              setLeftTableData([]);
               break;
             default:
               break;
@@ -528,10 +633,13 @@ const LaborContractModel = () => {
       modalState,
       codeHelperTableData,
       subTableData,
+      leftStaticsTableData,
+      rowAbleState,
     },
     actions: {
       onLoad,
       onSearch,
+      onSetSearch,
       onLoadCodeHelper,
       getEmpList,
 

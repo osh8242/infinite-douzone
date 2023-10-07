@@ -18,6 +18,8 @@ export const useApi = () => {
       if (token) {
         config.headers["authorization"] = "Bearer " + token;
       }
+      const clientIp = sessionStorage.getItem("clientIp");
+      config.headers["Client-IP"] = clientIp;
       return config;
     },
     (error) => {
@@ -36,6 +38,9 @@ export const useApi = () => {
       setLoading(false); // 응답 실패 시 loading 상태를 false로 설정
       if (error.response && error.response.status === 401) {
         console.log("토큰이 만료되었거나 유효하지 않습니다. ");
+        window.location.href = `${url}/login`;
+      } else if (error.response && error.response.status === 403) {
+        console.log("로그인 시간 만료로 인한 토큰 만료");
         window.location.href = `${url}/login`;
       }
       return Promise.reject(error);

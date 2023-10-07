@@ -19,6 +19,7 @@ import ModalComponent from "../../components/ModalComponent";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import "../../styles/fonts.css";
+import increaseBrightness from "../../model/increaseBrightness";
 
 // 각 페이지별 로고 이미지 링크 (배포시 서버에 저장 후 절대경로로 수정)
 // const logoUrl = {
