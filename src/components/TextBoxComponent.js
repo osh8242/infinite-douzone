@@ -7,7 +7,11 @@ import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import "../styles/fonts.css";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
@@ -343,7 +347,10 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="widthFull svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  onClick={onClickCodeHelper}
+                />
               </div>
             ) : (
               //</div>

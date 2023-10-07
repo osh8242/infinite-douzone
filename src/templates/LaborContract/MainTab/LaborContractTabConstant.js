@@ -224,16 +224,17 @@ export const MAIN_TAB_SEARCH = {
       label: "address",
       disabled: "true",
     },
-    {
-      type: INPUT_TYPE.text,
-      field: "jobDescription",
-      label: LABELS.jobDescription,
-      disabled: "true",
-    },
+
     {
       type: INPUT_TYPE.text,
       field: "addDetail",
       label: LABELS.addDetail,
+      disabled: "true",
+    },
+    {
+      type: INPUT_TYPE.text,
+      field: "jobDescription",
+      label: LABELS.jobDescription,
       disabled: "true",
     },
     {
