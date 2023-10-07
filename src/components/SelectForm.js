@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../styles/commonComponent.css";
+import "../styles/fonts.css";
 
 SelectForm.defaultProps = {
   optionList: [],
@@ -32,7 +33,7 @@ function SelectForm(props) {
     disabled,
   } = props;
 
-  const [selectedValue, setSelectedValue] = useState(selectedOption || "");
+  const [selectedValue, setSelectedValue] = useState(optionList[0].key || "");
   const [isDisabled, setDisabled] = useState();
 
   useEffect(() => {
@@ -77,6 +78,7 @@ function SelectForm(props) {
                     value={selectedValue}
                     onChange={(e) => handleSelectChange(e)}
                     disabled={isDisabled}
+                    className="p-10"
                   >
                     {optionList.map((option, index) => (
                       <option value={option.key} key={index}>
@@ -98,19 +100,21 @@ function SelectForm(props) {
             </div>
           ) : (
             // 일반 Select
-            <Form.Select
-              id={id}
-              ref={selectRef}
-              value={selectedValue}
-              onChange={(e) => handleSelectChange(e)}
-              disabled={isDisabled}
-            >
-              {optionList.map((option, index) => (
-                <option value={option.key} key={index}>
-                  {option.value}
-                </option>
-              ))}
-            </Form.Select>
+            <div className="widthFull">
+              <Form.Select
+                id={id}
+                ref={selectRef}
+                value={selectedValue}
+                onChange={(e) => handleSelectChange(e)}
+                disabled={isDisabled}
+              >
+                {optionList.map((option, index) => (
+                  <option value={option.key} key={index}>
+                    {option.value}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
           )}
         </div>
       </div>

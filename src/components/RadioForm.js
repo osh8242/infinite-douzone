@@ -30,9 +30,9 @@ function RadioForm({
 
   return (
     <Row className="py-1">
-      <div className="labelAndContent d-flex align-items-center justify-content-center mt-2">
+      <div className="labelAndContent d-flex align-items-center justify-content-center">
         {/* <div className="d-flex align-items-center justify-content-start align-self-center px-3 mt-2"> */}
-        {label && <div className="label pb-3">{label}</div>}
+        {label && <div className="label pt-2 pb-2">{label}</div>}
         <div className="widthFull d-flex align-items-center justify-content-center">
           {optionList.map((option) => (
             <div className="form-check form-check-inline" key={option.key}>

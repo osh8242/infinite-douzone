@@ -2,41 +2,61 @@
 @font-face {
   font-family: "EsamanruL";
   src: url("./fonts/esamanru_Light.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "EsamanruB";
   src: url("./fonts/esamanru_Bold.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "SintonyB";
   src: url("./fonts/Sintony-Bold.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
+}
+@font-face {
+  font-family: "Cabin";
+  src: url("./fonts/Cabin-VariableFont_wdth.ttf") format("truetype");
+  font-weight: bold;
 }
 
 /* 본문 */
 @font-face {
   font-family: "SUITE";
   src: url("./fonts/SUITE-Variable.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "Sintony";
   src: url("./fonts/Sintony-Regular.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 @font-face {
   font-family: "NIXGON";
   src: url("./fonts/NIXGONFONTS%20L%202.0.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
 }
 
 /* 로고 */
 @font-face {
   font-family: "Jost";
   src: url("./fonts/Jost-VariableFont_wght.ttf") format("truetype");
-  font-weight: normal;
+  /* font-weight: normal; */
+}
+@font-face {
+  font-family: "BlackHan";
+  src: url("./fonts/BlackHanSans-Regular.ttf") format("truetype");
+  /* font-weight: normal; */
+}
+@font-face {
+  font-family: "Haeparang";
+  src: url("./fonts/Yeongdeok_Haeparang.ttf") format("truetype");
+  /* font-weight: normal; */
+}
+@font-face {
+  font-family: "KangWonBold";
+  src: url("./fonts/KangWonBold.ttf") format("truetype");
+  /* font-weight: normal; */
 }
 
 /* fonts */
@@ -61,16 +81,39 @@
 .Jost {
   font-family: "Jost";
 }
-
-/* logo */
-.p-48 {
-  font-size: 48pt;
-  font-weight: 400;
-  letter-spacing: 2px;
+.Gabarito {
+  font-family: "Cabin";
+}
+.BlackHan {
+  font-family: "BlackHan";
+}
+.Haeparang {
+  font-family: "Haeparang";
+}
+.KangWonBold {
+  font-family: "KangWonBold";
 }
 
+/* logo */
+.p-64 {
+  font-size: 64pt;
+}
+.p-52 {
+  font-size: 52pt;
+}
+.p-48 {
+  font-size: 48pt;
+  /* font-weight: 400; */
+  /* letter-spacing: 2px; */
+}
+.p-36 {
+  font-size: 36pt;
+}
 .p-32 {
   font-size: 32pt;
+}
+.p-28 {
+  font-size: 28pt;
 }
 .p-24 {
   font-size: 24pt;
@@ -82,6 +125,9 @@
 .p-16 {
   font-size: 16pt;
 }
+.p-14 {
+  font-size: 14pt;
+}
 .p-12 {
   font-size: 12pt;
 }
@@ -90,4 +136,32 @@
 }
 .p-8 {
   font-size: 8pt;
+}
+.p-6 {
+  font-size: 6pt;
+}
+.p-4 {
+  font-size: 4pt;
+}
+
+.semi-bold {
+  font-weight: 600;
+}
+.bold {
+  font-weight: 700;
+}
+.ex-bold {
+  font-weight: 900;
+}
+
+.form-control {
+  font-size: 10pt !important;
+}
+
+.form-select {
+  font-size: 10pt !important;
+}
+
+.btn-secondary {
+  font-size: 10pt !important;
 }

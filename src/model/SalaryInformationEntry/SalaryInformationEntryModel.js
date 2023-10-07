@@ -39,7 +39,6 @@ const SalaryInformationEntryModel = () => {
   const api = useApi();
   const [modalState, setModalState] = useState({
     show: false,
-    size: "lg",
     subject: "",
   });
 
@@ -205,6 +204,14 @@ const SalaryInformationEntryModel = () => {
   const onSearch = useCallback(() => {
   
     // 비우기
+    setCdEmp('');
+    setDateId('');
+    setSaInfoListData([]);
+    setSalData([]);                     
+    setSumAllowPayByYnTax([{ item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }},]);
+    setSumDeductPay([ { item: { sumDeductPay: 0 , excessAmount : 0}} ]);
+    setDeductData([]);              
+    setSaInfoDetailData([]);
     setSalPaySumData({...salPaySumData
       , totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}]      // 공제항목 합계테이블 데이터(selectbox 조회)
       , totalDeductPay : [{item: {}}]
@@ -229,13 +236,6 @@ const SalaryInformationEntryModel = () => {
       .then((response) => {
         if (response.data) {
 
-          setCdEmp('');
-          setSaInfoListData([]);
-          setSalData([]);
-          setSumAllowPayByYnTax([ { item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }}]);
-          setDeductData([]);
-          setSaInfoDetailData([]);
-          
           /* dateId set */
           if (response.data.dateInfo) {
             const getDateId = response.data.dateInfo.dateId;
@@ -401,9 +401,9 @@ const deleteSelectedRows = () => {
   
   /* 급여 지급액 수정 */
   const updateSalaryAllowPay = useCallback((salaryAllowPay) => {
-    const updatedData = {...salaryAllowPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate};
+    const updatedData = {...salaryAllowPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate, salDivision : salDivision};
     saveSalAllowPay(updatedData); // 저장
-  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate]);
+  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate, salDivision]);
 
   /* 급여테이블 수정 + 공제항목테이블 update */
   const saveSalAllowPay = (updatedData) => {
@@ -547,7 +547,12 @@ const deleteSelectedRows = () => {
       updateSalaryDeductPay,
 
       getSaPayByCdEmp,
-      setShowConfirm
+      setShowConfirm,
+      setSumAllowPayByYnTax,
+      setSumDeductPay,
+      setDeductData,
+      setSaInfoDetailData,
+      setSalPaySumData 
       
     },
   };

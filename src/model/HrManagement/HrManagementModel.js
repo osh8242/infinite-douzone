@@ -233,7 +233,7 @@ const HrManagementModel = () => {
     (event, value) => {
       console.log("서브밋메인탭 데이터", event, value);
       if (event.key === "Enter" || event.type === "change") {
-        event.target.blur();
+        if (event.key === "Enter") event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newEmpAdd = { ...mainTabData };
@@ -250,23 +250,6 @@ const HrManagementModel = () => {
     },
     [leftTablePkValue, mainTabData]
   );
-
-  //editedEmpAdd에 따라 업데이트 요청을 하는 비동기 put 요청
-  // useEffect(() => {
-  //   if (editedEmpAdd && Object.keys(editedEmpAdd).length !== 0) {
-  //     console.log("editedEmpAdd 업데이트 요청", editedEmpAdd);
-  //     axios
-  //       .put(url + "/empAdd/updateEmpAdd", editedEmpAdd)
-  //       .then((response) => {
-  //         if (response.data === 1) console.log("EmpAdd 업데이트 성공");
-  //         setLeftTablePkValue({...leftTablePkValue});
-  //       })
-  //       .catch((error) => {
-  //         console.error("에러발생: ", error);
-  //         // 필요에 따라 다른 오류 처리 로직 추가
-  //       });
-  //   }
-  // }, [editedEmpAdd]);
 
   //update EmpAdd
   const updateEmpAdd = useCallback(
@@ -288,7 +271,6 @@ const HrManagementModel = () => {
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
-    setSubTableData([]);
     if (leftTablePkValue?.cdEmp) {
       api
         .post(urlPattern.getEmpFamListByCdEmp, leftTablePkValue)
@@ -383,6 +365,7 @@ const HrManagementModel = () => {
   //추가된 사원가족 insert 요청
   const insertEmpFam = useCallback(
     (empFam) => {
+      console.log("insertNewRow called with data:", empFam);
       api
         .post(urlPattern.insertEmpFam, empFam)
         .then((response) => {
@@ -405,7 +388,6 @@ const HrManagementModel = () => {
         .put(urlPattern.updateEmpFam, empFam)
         .then((response) => {
           if (response.data === 1) console.log("EmpFam 업데이트 성공");
-          setLeftTablePkValue({ ...leftTablePkValue });
         })
         .catch((error) => {
           console.error("에러발생: ", error);

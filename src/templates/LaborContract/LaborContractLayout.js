@@ -14,6 +14,8 @@ import {
   CODE_HELPER_DATA,
   searchOption,
   leftTableConstant,
+  leftStaticsTableConstant,
+  searchOptionSearch,
 } from "../../model/LaborContract/LaborContractConstant";
 
 import { SubTabHeaders } from "../../model/LaborContract/LaborContractConstant";
@@ -33,6 +35,7 @@ import {
 
 import LcSearchSearchPanel from "./SearchPanel/LcSearchSearchPanel";
 import LcSearchPanel from "./SearchPanel/LcSearchPanel";
+import increaseBrightness from "../../model/increaseBrightness";
 
 const LaborContractLayout = () => {
   const { state, actions } = LaborContractModel();
@@ -50,9 +53,19 @@ const LaborContractLayout = () => {
     dateSelectRef,
     dateEndSelectRef,
     dateSetSelectRef,
+    leftStaticsTableData,
+    rowAbleState,
   } = state;
 
-  // const tabRef = useRef(null);
+  // 테마 컬러 설정
+  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
+  const themeLabel = increaseBrightness(themeColor, 85);
+  const labels = document.querySelectorAll(".label");
+
+  labels.forEach((label) => {
+    label.style.backgroundColor = themeLabel;
+  });
 
   useEffect(() => {
     actions.onLoad();
@@ -110,8 +123,8 @@ const LaborContractLayout = () => {
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />
-      <Container>
-        <Row className="mt-4 SUITE p-12">
+      <div id="lc-container">
+        <Row className="mt-4 SUITE p-10">
           <MenuTab
             menuList={TAB_MENU_LIST.mainTabMenuList}
             onSelect={actions.onLoad}
@@ -121,51 +134,92 @@ const LaborContractLayout = () => {
                 {/* 계약서 작성 */}
                 <LcSearchPanel
                   // <LcSearchSearchPanel
-                  onSearch={actions.onSearch}
+                  // onSearch={actions.onSetSearch}
                   jobSetSelectRef={jobSetSelectRef}
                   dateSelectRef={dateSetSelectRef}
                   searchOption={searchOption}
-                  onSelect={actions.submitMainTabData}
+                  onSelect={actions.onSetSearch}
                 />
                 <Row className="mt-4">
                   <Col md="3">
-                    <Row>
+                    <Row key={"mainTab2"}>
                       <div className="leftTable">
-                        <TableForm
-                          readOnly
-                          tableName="swsm"
-                          sortable
-                          rowAddable
-                          showCheckbox
-                          tableHeaders={leftTableConstant.headers}
-                          tableData={leftTableData}
-                          selectedRows={selectedRows}
-                          codeHelper
-                          defaultFocus
-                          actions={{
-                            setTableData: actions.setLeftTableData,
-                            newRowCodeHelper: (parentFocusRef) => {
-                              parentFocusRef.current = false;
-                              modalShow(
-                                "leftTable",
-                                CODE_HELPER_DATA.leftTableCodeHelper,
-                                actions.registSwsm,
-                                parentFocusRef
-                              );
-                            },
-                            setPkValue: actions.setLeftTablePkValue,
-                            insertNewRow: (row) => {
-                              actions.insertSwsm(row);
-                              actions.setLeftTablePkValue({ cdEmp: row.cdEmp });
-                            },
-                            updateEditedRow: actions.updateEmp,
-                            setSelectedRows: actions.setSelectedRows,
-                            deleteRow: actions.deleteRow,
-                            getRowObject: (data) => {
-                              return { item: Swsm(data), table: "swsm" };
-                            },
-                          }}
-                        />
+                        {rowAbleState === "F" || !rowAbleState ? (
+                          <TableForm
+                            readOnly
+                            tableName="swsm"
+                            sortable
+                            showCheckbox
+                            tableHeaders={leftTableConstant.headers}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            codeHelper
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              newRowCodeHelper: (parentFocusRef) => {
+                                parentFocusRef.current = false;
+                                modalShow(
+                                  "leftTable",
+                                  CODE_HELPER_DATA.leftTableCodeHelper,
+                                  actions.registSwsm,
+                                  parentFocusRef
+                                );
+                              },
+                              setPkValue: actions.setLeftTablePkValue,
+                              insertNewRow: (row) => {
+                                actions.insertSwsm(row);
+                                actions.setLeftTablePkValue({
+                                  cdEmp: row.cdEmp,
+                                });
+                              },
+                              updateEditedRow: actions.updateEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: (data) => {
+                                return { item: Swsm(data), table: "swsm" };
+                              },
+                            }}
+                          />
+                        ) : (
+                          <TableForm
+                            readOnly
+                            tableName="swsm"
+                            sortable
+                            rowAddable
+                            showCheckbox
+                            tableHeaders={leftTableConstant.headers}
+                            tableData={leftTableData}
+                            selectedRows={selectedRows}
+                            codeHelper
+                            defaultFocus
+                            actions={{
+                              setTableData: actions.setLeftTableData,
+                              newRowCodeHelper: (parentFocusRef) => {
+                                parentFocusRef.current = false;
+                                modalShow(
+                                  "leftTable",
+                                  CODE_HELPER_DATA.leftTableCodeHelper,
+                                  actions.registSwsm,
+                                  parentFocusRef
+                                );
+                              },
+                              setPkValue: actions.setLeftTablePkValue,
+                              insertNewRow: (row) => {
+                                actions.insertSwsm(row);
+                                actions.setLeftTablePkValue({
+                                  cdEmp: row.cdEmp,
+                                });
+                              },
+                              updateEditedRow: actions.updateEmp,
+                              setSelectedRows: actions.setSelectedRows,
+                              deleteRow: actions.deleteRow,
+                              getRowObject: (data) => {
+                                return { item: Swsm(data), table: "swsm" };
+                              },
+                            }}
+                          />
+                        )}
                       </div>
                     </Row>
                   </Col>
@@ -175,15 +229,16 @@ const LaborContractLayout = () => {
                       {[
                         <Scrollbars
                           style={{
-                            height: 380,
-                            overflow: "hidden",
+                            height: 337,
+                            overflowX: "hidden",
                             marginBottom: 30,
                           }}
                           key={"scrollKey"}
                         >
                           <Row
                             key={"menuKey1"}
-                            className="mt-4 mb-5 justify-content-center"
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
                             <FormPanel
                               INPUT_CONSTANT={MAIN_TAB.primaryTabInputs}
@@ -192,37 +247,36 @@ const LaborContractLayout = () => {
                               actions={actions}
                             />
                           </Row>
-                          ,
                         </Scrollbars>,
                       ]}
                     </MenuTab>
-                    <MenuTab menuList={[subTabMenuList.otherBenefit]}>
-                      {[
-                        <Row
-                          key={"menuKey2"}
-                          className="mt-4 mb-4 justify-content-center"
-                        >
-                          <TableForm
-                            tableName="SwsmOther"
-                            rowAddable
-                            // sortable
-                            showCheckbox
-                            tableHeaders={SubTabHeaders}
-                            tableData={subTableData}
-                            pkValue={leftTablePkValue}
-                            selectedRows={selectedRows}
-                            actions={{
-                              setTableData: actions.setSubTableData,
-                              setSelectedRows: actions.setSelectedRows,
-                              insertNewRow: actions.insertSwsmOther,
-                              updateEditedRow: actions.updateSwsmOther,
-                              deleteRow: actions.deleteRow,
-                              getRowObject: SwsmOther,
-                            }}
-                          />
-                        </Row>,
-                      ]}
-                    </MenuTab>
+                    <Row className="mt-4" style={{ paddingTop: "22px" }}>
+                      <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                        {[
+                          <Row
+                            key={"menuKey2"}
+                            className="swsmother mb-4 justify-content-center"
+                          >
+                            <TableForm
+                              tableName="SwsmOther"
+                              rowAddable
+                              tableHeaders={SubTabHeaders}
+                              tableData={subTableData}
+                              pkValue={leftTablePkValue}
+                              selectedRows={selectedRows}
+                              actions={{
+                                setTableData: actions.setSubTableData,
+                                setSelectedRows: actions.setSelectedRows,
+                                insertNewRow: actions.insertSwsmOther,
+                                updateEditedRow: actions.updateSwsmOther,
+                                deleteRow: actions.deleteRow,
+                                getRowObject: SwsmOther,
+                              }}
+                            />
+                          </Row>,
+                        ]}
+                      </MenuTab>
+                    </Row>
                   </Col>
                 </Row>
               </Row>,
@@ -233,13 +287,13 @@ const LaborContractLayout = () => {
                   jobSelectRef={jobSelectRef}
                   dateSelectRef={dateSelectRef}
                   dateEndSelectRef={dateEndSelectRef}
-                  searchOption={searchOption}
+                  searchOption={searchOptionSearch}
                   onSelect={actions.submitMainTabData}
                 />
-                <Row className="mt-4">
+                <Row className="mt-4" key={"menuKeySearch2"}>
                   <Col md="3">
                     <Row>
-                      <div className="leftTable">
+                      <div className="leftSearchTable">
                         <TableForm
                           readOnly
                           tableName="swsm"
@@ -277,6 +331,14 @@ const LaborContractLayout = () => {
                         />
                       </div>
                     </Row>
+                    <Row className="mt-3">
+                      <TableForm
+                        tableName="EMPSTATICS"
+                        tableHeaders={leftStaticsTableConstant.headers}
+                        tableData={leftStaticsTableData}
+                        readOnly
+                      />
+                    </Row>
                   </Col>
 
                   <Col md="9" className="px-5">
@@ -284,7 +346,7 @@ const LaborContractLayout = () => {
                       {[
                         <Scrollbars
                           style={{
-                            height: 380,
+                            height: 337,
                             overflow: "hidden",
                             marginBottom: 20,
                           }}
@@ -292,7 +354,8 @@ const LaborContractLayout = () => {
                         >
                           <Row
                             key={"menuKeySearchSub"}
-                            className="mt-4 mb-5 justify-content-center"
+                            className="mt-1 mb-1 justify-content-center"
+                            style={{ width: "100%" }}
                           >
                             <FormPanel
                               INPUT_CONSTANT={MAIN_TAB_SEARCH.primaryTabInputs}
@@ -301,44 +364,45 @@ const LaborContractLayout = () => {
                               actions={actions}
                             />
                           </Row>
-                          ,
                         </Scrollbars>,
                       ]}
                     </MenuTab>
-                    <MenuTab menuList={[subTabMenuList.otherBenefit]}>
-                      {[
-                        <Row
-                          key={"menuKey2"}
-                          className="mt-4 mb-4 justify-content-center"
-                        >
-                          <TableForm
-                            tableName="SwsmOther"
-                            // rowAddable
-                            // sortable
-                            // showCheckbox
-                            tableHeaders={SubTabHeaders}
-                            tableData={subTableData}
-                            pkValue={leftTablePkValue}
-                            selectedRows={selectedRows}
-                            actions={{
-                              setTableData: actions.setSubTableData,
-                              setSelectedRows: actions.setSelectedRows,
-                              insertNewRow: actions.insertSwsmOther,
-                              updateEditedRow: actions.updateSwsmOther,
-                              deleteRow: actions.deleteRow,
-                              getRowObject: SwsmOther,
-                            }}
-                          />
-                        </Row>,
-                      ]}
-                    </MenuTab>
+                    <Row className="mt-4" style={{ paddingTop: "22px" }}>
+                      <MenuTab menuList={[subTabMenuList.otherBenefit]}>
+                        {[
+                          <Row
+                            key={"menuKey2"}
+                            className="searchSwsmother mb-4 justify-content-center"
+                          >
+                            <TableForm
+                              tableName="SwsmOther"
+                              // rowAddable
+                              // sortable
+                              // showCheckbox
+                              tableHeaders={SubTabHeaders}
+                              tableData={subTableData}
+                              pkValue={leftTablePkValue}
+                              selectedRows={selectedRows}
+                              actions={{
+                                setTableData: actions.setSubTableData,
+                                setSelectedRows: actions.setSelectedRows,
+                                insertNewRow: actions.insertSwsmOther,
+                                updateEditedRow: actions.updateSwsmOther,
+                                deleteRow: actions.deleteRow,
+                                getRowObject: SwsmOther,
+                              }}
+                            />
+                          </Row>,
+                        ]}
+                      </MenuTab>
+                    </Row>
                   </Col>
                 </Row>
               </Row>,
             ]}
           </MenuTab>
         </Row>
-      </Container>
+      </div>
       <ModalComponent
         title={modalState.title}
         size={modalState.size}

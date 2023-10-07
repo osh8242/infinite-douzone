@@ -14,7 +14,7 @@ export const swsmUrlPattern = {
 
 export const CODE_HELPER_DATA = {
   leftTableCodeHelper: {
-    title: "사원 조회",
+    title: "등록할 사원 조회",
     headers: [
       { field: "cdEmp", text: "사원코드" },
       { field: "nmKrname", text: "사원명" },
@@ -80,8 +80,15 @@ export const incomeClassficationList = [
 ];
 
 // 상단 조회 - 소득구분 목록
-export const searchOption = [
+export const searchOptionSearch = [
   { key: "empAll", value: "0. 전체" },
+  { key: "empRegistration", value: "1. 사원등록" },
+  { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
+];
+
+// 상단 조회 - 소득구분 목록
+export const searchOption = [
+  { key: "none", value: "0. 선택" },
   { key: "empRegistration", value: "1. 사원등록" },
   { key: "tempEmpRegistration", value: "2. 일용직 사원등록" },
 ];
@@ -116,6 +123,23 @@ export const leftTableConstant = {
     { field: "cdEmp", text: "사원코드", orderBy: "asc", isPk: true },
     { field: "nmKrname", text: "성명", orderBy: "asc" },
     { field: "noSocial", text: "주민번호" },
+  ],
+};
+
+export const leftStaticsTableConstant = {
+  headers: [
+    {
+      field: "empAll",
+      text: "전체",
+    },
+    {
+      field: "empRegistration",
+      text: "사원",
+    },
+    {
+      field: "tempEmpRegistration",
+      text: "일용직",
+    },
   ],
 };
 

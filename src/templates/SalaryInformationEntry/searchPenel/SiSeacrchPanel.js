@@ -10,10 +10,6 @@ import {
   codeHelperData_emplist,
   codeHelperData_occup,
   codeHelperData_paymentDate,
-  codeHelperData_rankNo,
-  forLaborOption,
-  salaryDivisionOption,
-  unitOption,
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import FormPanel from "../../../components/FormPanel";
 import ConfirmComponent from "../../../components/ConfirmComponent";
@@ -85,6 +81,24 @@ const SiSeacrchPanel = (props) => {
     return true;
   };
 
+  const clickPaymentDate = () => {
+    actions.setPaymentDate("");
+    actions.setCdEmp('');
+    actions.setDateId('');
+    actions.setSaInfoListData([]);
+    actions.setSalData([]);                     
+    actions.setSumAllowPayByYnTax([{ item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }},]);
+    actions.setSumDeductPay([ { item: { sumDeductPay: 0 , excessAmount : 0}} ]);
+    actions.setDeductData([]);              
+    actions.setSaInfoDetailData([]);
+    actions.setSalPaySumData({       
+      allowPay: [],
+      totalAllowPay : [{item : { sumAllowPay: 0, sumByN: 0, sumByY: 0 }}], 
+      deductPay: [],
+      totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
+    });
+  }
+
   return (
     <div className="deleteLabelBackground">
       <ConfirmComponent
@@ -99,8 +113,7 @@ const SiSeacrchPanel = (props) => {
       />
       <div>
         {/* 기본 검색조건 */}
-        {/* <SearchPanel onSearch={()=> onSearch()} showAccordion>  */}
-        <SearchPanel onSearch={() => onSearch()}>
+        <SearchPanel onSearch={()=> onSearch()} showAccordion>
           <FormPanel
             INPUT_CONSTANT={SI_MAIN_SEARCHFIELD}
             formData={formPanelData}
@@ -123,6 +136,9 @@ const SiSeacrchPanel = (props) => {
               // paymentDate: (newValue) => {if(!validationPaymentDate(newValue)) 원래대로 돌려놓는 함수}
               paymentDate: (newValue) => validationPaymentDate(newValue),
             }}
+            onClick={{
+              paymentDate: () => clickPaymentDate(),
+            }}
             columnNumber={3}
           />
           {/* 상세 검색조건 */}
@@ -135,6 +151,7 @@ const SiSeacrchPanel = (props) => {
                   searchCdEmp: state.searchVo.searchCdEmp,
                   searchCdDept: state.searchVo.searchCdDept,
                   searchCdOccup: state.searchVo.searchCdOccup,
+                  searchYnUnit: state.searchVo.searchYnUnit,
                 },
               }}
               codeHelperFn={{
@@ -161,6 +178,7 @@ const SiSeacrchPanel = (props) => {
                 searchCdEmp: (e, newValue) => actions.setSearchCdEmp(newValue),
                 searchCdDept: (e, newValue) => actions.setSearchCdDept(newValue),
                 searchCdOccup: (e, newValue) => actions.setSearchCdOccup(newValue),
+                searchYnUnit: (e, newValue) => actions.setSearchYnUnit(newValue),
               }}
             />
           </div>

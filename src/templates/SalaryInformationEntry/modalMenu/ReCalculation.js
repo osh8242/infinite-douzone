@@ -6,7 +6,6 @@ import {
 } from "../../../model/SalaryInformationEntry/SalConstant";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
-import axios from "axios";
 import { url } from "../../../model/CommonConstant";
 import { useApi } from "../../../model/Api";
 import ConfirmComponent from "../../../components/ConfirmComponent";
@@ -16,8 +15,15 @@ const ReCalculation = (props) => {
   const { actions, state } = props;
   const [selectedRows, setSelectedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [tableData, setTableData] = useState([]);
 
-  let reCalculationTableData = modal_reCalculationList.tableData;
+  useEffect(() => {
+    setTableData([
+      { item: { cdOption: "recalculateTaxYn", nmOption: "과세, 비과세 재계산" },},
+      { item: { cdOption: "recalculateDeductInfo", nmOption: "공제항목 재계산", },},
+      { item: { cdOption: "editEmpInfo", nmOption: "사원정보 변경" } },
+    ]);
+  }, []);
 
   const confirmButtonHandler = () => {
     if (selectedRows.length !== 0) {
@@ -27,7 +33,7 @@ const ReCalculation = (props) => {
         action: selectOptionRecalculation, // selectOptionRecalculation 함수를 직접 전달
         onlyConfirm: false,
       });
-    }else{
+    } else {
       setShowModal({
         show: true,
         message: "재계산할 항목을 체크해주세요.",
@@ -35,21 +41,22 @@ const ReCalculation = (props) => {
       });
     }
   };
-  
+
   const selectOptionRecalculation = () => {
     let selectOption = [];
     selectedRows.forEach((element) => {
       selectOption.push(element.item.cdOption);
     });
-  
+
     const submitReCalculationInfo = {
       cdEmp: state.cdEmp,
       dateId: state.dateId,
       allowMonth: state.allowMonth,
       allowYear: state.allowYear,
+      salDivision : state.salDivision,
       selectOption: selectOption,
     };
-    
+
     api
       .post(url + RECALCULATION_URL, submitReCalculationInfo)
       .then(() => {
@@ -60,7 +67,7 @@ const ReCalculation = (props) => {
           action: () => {
             setSelectedRows([]);
             actions.getSaPayByCdEmp();
-            actions.getSalTotalSum('EmpAllThisMonth');
+            actions.getSalTotalSum("EmpAllThisMonth");
             actions.setModalState({ show: false });
           },
           onlyConfirm: true,
@@ -78,9 +85,7 @@ const ReCalculation = (props) => {
           onlyConfirm: true,
         });
       });
-    
   };
-  
 
   return (
     <div>
@@ -91,24 +96,26 @@ const ReCalculation = (props) => {
         showCheckbox
         showHeaderArrow
         tableHeaders={modal_reCalculationList.headers}
-        tableData={reCalculationTableData}
+        tableData={tableData}
         actions={{
           setSelectedRows: setSelectedRows,
         }}
       />
-      <div><Button onClick={() => confirmButtonHandler()}>확인</Button></div>
+      <div>
+        <Button onClick={() => confirmButtonHandler()}>확인</Button>
+      </div>
       <ConfirmComponent
         show={showModal.show}
         message={showModal.message}
         onlyConfirm={showModal.onlyConfirm}
         onHide={() => {
-          setShowModal(false)} 
-        }
+          setShowModal(false);
+        }}
         onConfirm={() => {
           showModal.action && showModal.action();
           setShowModal(false);
         }}
-        />
+      />
     </div>
   );
 };
