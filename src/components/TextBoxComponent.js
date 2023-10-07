@@ -63,7 +63,7 @@ function TextBoxComponent(props) {
 
     // select
     onChangeSelect,
-    selectId,
+    option,
     selectList,
     selectedOption,
     selectRef,
@@ -88,6 +88,9 @@ function TextBoxComponent(props) {
   const [isDisableSelect, setDisableSelct] = useState(
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
+  useEffect(() => {
+    setSelectedValue(option || "");
+  }, [option]);
 
   const handleSelectChange = (event) => {
     if (event.target.value === "F") {

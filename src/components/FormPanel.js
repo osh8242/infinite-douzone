@@ -78,7 +78,7 @@ const FormPanel = ({
             subField={input.selectId}
             onChangeSelect={submitData}
             selectedOption={{ formData }.formData[input.selectValue]}
-            option={value}
+            option={formData?.[input.selectValue] || ""}
           />
         );
         break;
