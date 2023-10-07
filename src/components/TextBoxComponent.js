@@ -138,6 +138,10 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
+      } else if (type === "num") {
+        // setSendValue(inputValue);
+        setInputValue(processThousandSeparator(inputValue));
+        onEnter && onEnter(event, processThousandSeparator(inputValue), id);
       } else {
         onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);

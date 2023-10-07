@@ -255,7 +255,7 @@ const LaborContractLayout = () => {
                         {[
                           <Row
                             key={"menuKey2"}
-                            className="mb-4 justify-content-center"
+                            className="swsmother mb-4 justify-content-center"
                           >
                             <TableForm
                               tableName="SwsmOther"
@@ -372,7 +372,7 @@ const LaborContractLayout = () => {
                         {[
                           <Row
                             key={"menuKey2"}
-                            className="mb-4 justify-content-center"
+                            className="searchSwsmother mb-4 justify-content-center"
                           >
                             <TableForm
                               tableName="SwsmOther"
