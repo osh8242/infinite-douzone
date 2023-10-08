@@ -10,8 +10,10 @@
   border-right: 10px solid transparent;
   border-bottom: 10px solid white;
 } */
+
+
 .profileDropdown {
-  background-image: linear-gradient(to bottom, rgb(224, 239, 255) 53%, #FFFFFF 0%);
+  background-image: linear-gradient(to bottom, rgb(224, 239, 255) 51%, #FFFFFF 0%);
   position: absolute;
   right: 85px;
   top: 55px;
@@ -31,7 +33,7 @@
 .profileHeader {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .textContainer{
@@ -81,12 +83,12 @@
 }
  
 .profileDropdown img {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 35px;
-  margin-left: 20px;
+  margin-left: 25px;
 }
 
 .profileDropdown .userInfo {

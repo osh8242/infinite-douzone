@@ -32,7 +32,7 @@ const DropDownMenu = (props) => {
         <img src={process.env.PUBLIC_URL + imgSrc} alt="Profile" />
         <div className="textContainer">
           <p className="name">{userName} 선임연구원</p>
-          <p className="recentLogin">(주)더존비즈온 / 솔루션사업부문</p>
+          <p className="recentLogin">(주)더존비즈온 &gt; 솔루션사업부문</p>
           <p className="anotherLogin">최근 접속 : {formattedTime}</p>
         </div>
       </div>
