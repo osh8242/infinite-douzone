@@ -17,7 +17,12 @@ const DropDownMenu = (props) => {
   const [userName, setUserName] = useState(userInfoObject.userName);
   // const [loginTime, setLoginTime] = useState(localStorage.getItem("loginTime"));
   const { formattedTime } = useCurrTime();
-  const { loginInfo } = useLogin();
+  // const { loginInfo } = useLogin();
+  const [profileDropdown, setProfileDropdown] = useState("profileDropdown");
+
+  // useEffect(() => {
+  //   setProfileDropdown("profileDropdown");
+  // }, [profileDropdown]);
 
   useEffect(() => {
     let userInfoString = localStorage.getItem("userInfo");
@@ -26,6 +31,22 @@ const DropDownMenu = (props) => {
       console.log("user value return");
       console.log(userInfoObject);
 
+      //theme
+      if (userInfoObject.theme === "rgb(255, 134, 48)") {
+        setProfileDropdown("profileDropdown orange");
+      } else if (userInfoObject.theme === "rgb(18, 204, 108)  ") {
+        setProfileDropdown("profileDropdown green");
+      } else if (userInfoObject.theme === "rgb(254, 213, 51)") {
+        setProfileDropdown("profileDropdown yellow");
+      } else if (userInfoObject.theme === "rgb(255, 82, 82)") {
+        setProfileDropdown("profileDropdown pink");
+      } else if (userInfoObject.theme === "rgb(126, 58, 243)") {
+        setProfileDropdown("profileDropdown pupple");
+      } else {
+        setProfileDropdown("profileDropdown blue");
+      }
+      console.log(userInfoObject.theme);
+      // img
       if (userInfoObject.img) {
         setImgSrc(userInfoObject.img);
       }
@@ -39,7 +60,7 @@ const DropDownMenu = (props) => {
   };
 
   return (
-    <div className="profileDropdown">
+    <div className={profileDropdown}>
       {/* <FontAwesomeIcon icon={faBell} size="2xl" className="faBell" /> */}
       <FontAwesomeIcon
         icon={faArrowRightFromBracket}

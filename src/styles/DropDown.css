@@ -10,7 +10,6 @@
   }
 }
 .profileDropdown { 
-   background-image: linear-gradient(to bottom, rgb(224, 239, 255) 45%, #FFFFFF 0%);
   position: absolute;
   right:80px;
   top: 55px;
@@ -26,9 +25,27 @@
   align-items: center;
   gap: 10px;
   padding: 20px;
-    animation: fadeIn 0.3s ease-out;
-
+  animation: fadeIn 0.3s ease-out;
 } 
+.blue{
+  background-image: linear-gradient(to bottom, rgb(224, 239, 255) 45%, #FFFFFF 0%);
+}
+.orange{
+  background-image: linear-gradient(to bottom, rgb(255, 237, 224) 45%, #FFFFFF 0%);
+}
+.green{
+  background-image: linear-gradient(to bottom, rgb(219, 247, 233) 45%, #FFFFFF 0%);
+}
+.yellow{
+  background-image: linear-gradient(to bottom, rgb(255, 249, 224) 45%, #FFFFFF 0%);
+}
+.pink{
+  background-image: linear-gradient(to bottom, rgb(255, 229, 229) 45%, #FFFFFF 0%);
+}
+.pupple{
+  background-image: linear-gradient(to bottom, rgb(236, 225, 253) 45%, #FFFFFF 0%);
+}
+
 
 .faBell {
   position: absolute;
@@ -104,7 +121,6 @@
   color: #000000;
 }
  
-
 .recentLogin {
   padding-top: 5px;
   font-size: 12px;  
