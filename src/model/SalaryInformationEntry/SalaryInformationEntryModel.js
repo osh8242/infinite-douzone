@@ -3,7 +3,7 @@ import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_DEDUCTDATA_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
 import { useApi } from '../Api';
-import { codeHelperData_cdDept, codeHelperData_cdOccup } from '../EmpRegister/EmpConstant';
+import { codeHelperData_cdDept, codeHelperData_cdOccup, codeHelperData_rankNo } from '../EmpRegister/EmpConstant';
 import { isEmpty } from '../../utils/StringUtils';
 
 const SalaryInformationEntryModel = () => {
@@ -86,10 +86,11 @@ const SalaryInformationEntryModel = () => {
   });
 
   const setSearchNmOccup = useCallback((fieldName, value) => { 
-    const matchedItem = codeHelperData_cdOccup.tableData.find(
+   
+    const matchedItem = codeHelperData_rankNo.tableData.find(
       (item) => item.item[fieldName] === value
     );
-    setSearchCdOccup(matchedItem.item.nmCdOccup);
+    setSearchCdOccup(matchedItem.item.nmRankNo);
   });
   
   const resetSearchCdDept = useCallback((value) => { 
@@ -107,13 +108,13 @@ const SalaryInformationEntryModel = () => {
     if(isEmpty(value)){
       return value;
     }else{
-      const matchedItem = codeHelperData_cdOccup.tableData.find(
-        (item) => item.item.nmCdOccup === value
+      const matchedItem = codeHelperData_rankNo.tableData.find(
+        (item) => item.item.nmRankNo === value
       );
-    return matchedItem.item.cdOccup;
+    return matchedItem.item.rankNo;
    }
   });
-  
+
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
@@ -381,6 +382,7 @@ const SalaryInformationEntryModel = () => {
 
           /* 사원정보 */
           const saEmpDetail = response.data.saEmpDetail;
+
           setSaInfoDetailData(saEmpDetail);
           
           /* 조회구분 */

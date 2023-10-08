@@ -8,6 +8,7 @@ import {
 import {
   codeHelperData_emplist,
   codeHelperData_paymentDate,
+ 
 } from "../../../model/SalaryInformationEntry/SalConstant";
 
 import FormPanel from "../../../components/FormPanel";
@@ -15,7 +16,7 @@ import ConfirmComponent from "../../../components/ConfirmComponent";
 import { currentDateStr } from "../../../utils/DateUtils";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import "../../../styles/SearchPanel.scss";
-import { codeHelperData_cdDept, codeHelperData_cdOccup } from "../../../model/EmpRegister/EmpConstant";
+import { codeHelperData_cdDept,  codeHelperData_rankNo } from "../../../model/EmpRegister/EmpConstant";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -178,13 +179,13 @@ const SiSeacrchPanel = (props) => {
                   modalShow(
                     "codeHelper",
                     codeHelperData_cdDept,
-                    (e,row) => actions.setSearchNmDept(row)
+                    (e,row) => actions.setSearchNmDept("cdDept", row.cdDept)
                   ),
                 searchCdOccup: () =>
                   modalShow(
                     "codeHelper",
-                    codeHelperData_cdOccup,
-                    (e,row) => actions.setSearchNmOccup(row)
+                    codeHelperData_rankNo,
+                    (e,row) => actions.setSearchNmOccup("rankNo", row.rankNo)
                   ),
               }}
               onChange={{
