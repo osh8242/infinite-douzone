@@ -15,7 +15,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useLogin } from "../Login/LoginProvider";
 import { getLogFunction } from "../model/useLog";
 import "../styles/fonts.css";
-import wehago_backImg from "../styles/img/istockphoto-1467929539-2048x2048.jpg";
+import wehago_backImg from "../styles/img/KakaoTalk_20231005_114525806.png";
+import wehago_backImg2 from "../styles/img/presentation1.jpg";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
 
@@ -30,6 +31,19 @@ const slides = [
         <p className="KangWonBold bold p-52">INFINITE DOUZONE</p>
         <p className="NIXGON p-16">
           업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
+          전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
+        </p>
+      </div>
+    ),
+  },
+  {
+    background: wehago_backImg2, //main2
+    content: (
+      <div>
+        <p className="NIXGON p-24">비쿠냐에게 무료로 웹페이지를 선물하세요</p>
+        {/* <p className="KangWonBold bold p-52">INFINITE DOUZONE</p> */}
+        <p className="NIXGON p-16">
+          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Vicugna A 10으로
           전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
         </p>
       </div>
