@@ -28,6 +28,7 @@
   --transDark: rgba(57, 63, 80, 0.8);
   --transLightBlack: rgba(0, 0, 0, 0.1);
   --transBlack: rgba(0, 0, 0, 0.2);
+    --transLightBlack:  rgba(0, 0, 0, 0.1);
 
   --lightBlueGray: rgb(233, 236, 239); /* input disabled 색상 */
 }

@@ -7,13 +7,17 @@ import { EMAIL_LIST } from "../model/CommonConstant";
 import "../styles/CustomInput.scss";
 import "../styles/commonComponent.css";
 import "../styles/fonts.css";
-import { isNumber, makeCommaNumber, makePureNumber } from "../utils/NumberUtils";
+import {
+  isNumber,
+  makeCommaNumber,
+  makePureNumber,
+} from "../utils/NumberUtils";
 
 function TextBoxComponent(props) {
   /* props 속성들*/
   const {
     type, // bootstrap type옵션  ex) textbox, regNum, email, password, file, date, color...
-    // custom type 옵션          ex) callNumber, email( text & select )
+    // custom type 옵션          ex) callNumber, email( text & select ), rate
     id,
     // subId,
     name,
@@ -52,6 +56,8 @@ function TextBoxComponent(props) {
     // valueMd = 8,
     placeholder, // [선택]
     style,
+    heigth,
+    rate,
 
     isPeriod,
     subLabel = "",
@@ -59,12 +65,15 @@ function TextBoxComponent(props) {
 
     // select
     onChangeSelect,
-    selectId,
+    option,
     selectList,
     selectedOption,
     selectRef,
     subField,
     disabledSelect,
+
+    //number
+    step,
   } = props;
   // 입력값
   const [inputValue, setInputValue] = useState(value || ""); // 보여줄 값
@@ -84,6 +93,9 @@ function TextBoxComponent(props) {
   const [isDisableSelect, setDisableSelct] = useState(
     disabled || disabledSelect || selectedOption === "F" ? true : false
   );
+  useEffect(() => {
+    setSelectedValue(option || "");
+  }, [option]);
 
   const handleSelectChange = (event) => {
     if (event.target.value === "F") {
@@ -131,19 +143,21 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
+      } else if (type === "commaNumber") {
+        console.log(makePureNumber(inputValue));
+        onEnter && onEnter(event, makePureNumber(inputValue), id);
       } else {
-        onEnter && onEnter(event, sendValue, id);
+        !onClickCodeHelper && onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);
       }
     }
 
     if (onClickCodeHelper) {
       if (event.key !== "Shift" && event.key !== "Escape") {
-        if (event.key === "Tab" && event.shiftKey)
-          onEnter && onEnter(event, sendValue, id);
         if (event.key !== "Tab" && event.key !== "F10") {
           if (event.key === "Enter") {
             onEnter && onEnter(event, sendValue, id);
+            return;
           } else if (
             event.key === "Backspace" ||
             event.key === "Delete" ||
@@ -153,7 +167,7 @@ function TextBoxComponent(props) {
             onChange && onChange(event, "", id);
           } else {
             event.preventDefault(); // 키보드 입력 막기
-            onClickCodeHelper();
+            onClickCodeHelper(setInputValue);
           }
         }
       }
@@ -205,8 +219,6 @@ function TextBoxComponent(props) {
       }
     } else if (type === "date" && onClickCodeHelper) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
-    } else if (onClickCodeHelper) {
-      setInputValue("");
     } else if (type === "time") {
       setSendValue(newValue);
       setInputValue(newValue);
@@ -248,7 +260,7 @@ function TextBoxComponent(props) {
 
   const processThousandSeparator = (value) => {
     const numValue = value.replaceAll(/,/g, "");
-    return makeCommaNumber(numValue.toString());
+    return makeCommaNumber(numValue);
   };
 
   //유효성 검사
@@ -343,7 +355,10 @@ function TextBoxComponent(props) {
               //<div className="">
               <div className="widthFull svg-container2 svg-wrapper">
                 {renderFormControl()}
-                <FontAwesomeIcon icon={faCopyright} onClick={onClickCodeHelper} />
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  onClick={onClickCodeHelper}
+                />
               </div>
             ) : (
               //</div>
@@ -353,7 +368,10 @@ function TextBoxComponent(props) {
                   {!disabled && (
                     <FontAwesomeIcon
                       icon={faCopyright}
-                      onClick={onClickCodeHelper}
+                      onClick={(event) => {
+                        console.log("코드헬퍼에 setInputValue 전달");
+                        onClickCodeHelper(setInputValue);
+                      }}
                     />
                   )}
                 </div>
@@ -505,6 +523,7 @@ function TextBoxComponent(props) {
               placeholder={placeholder ? placeholder : undefined}
               style={style}
               className={isValid ? "" : "invalid"}
+              step={step}
             />
             {/* {type === "regNum" && (
               <FontAwesomeIcon

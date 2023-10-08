@@ -26,8 +26,8 @@ export const salEmp = {
 /* 급여항목 영역 */
 export const salAllow = {
   headers: [
-    { field: "nmAllow", text: "급여항목", readOnly: true },
-    { field: "allowPay", text: "지급금액", type: "number" },
+    { field: "nmAllow", text: "급여항목", readOnly: true , width : '150px'},
+    { field: "allowPay", text: "지급금액", type: "number",  width : '150px'},
   ],
 };
 
@@ -58,7 +58,7 @@ export const salAllowWithCalculation = {
 /* 공제항목 영역 */
 export const salDeduct = {
   headers: [
-    { field: "nmDeduct", text: "공제항목", readOnly: true },
+    { field: "nmDeduct", text: "공제항목", readOnly: true , width : '150px'},
     { field: "allowPay", text: "지급금액", type: "number" },
   ],
 };
@@ -90,12 +90,13 @@ export const salDeductSum = {
 // 구분
 export const salaryDivisionOption = [
   { key: "SAL", value: "1.급여" },
-  { key: "", value: "2.급여+상여" },
+  { key: "SALBONUS", value: "2.급여+상여" },
   { key: "BONUS", value: "3.상여" },
 ];
 
 // 생산직 여부 검색조건 옵션
 export const unitOption = [
+  { key: "", value: "전체" },
   { key: "y", value: "생산직" },
   { key: "n", value: "비생산직" },
 ];
@@ -248,24 +249,33 @@ export const modal_insertSalaryAllowData = {
         { key: "BONUS", value: "2.상여" },
       ],
     },
-    {
-      field: "commonlyYn",
-      text: "통상",
-      type: "select",
-      optionList: [
-        { key: "Y", value: "O" },
-        { key: "N", value: "X" },
-      ],
-    },
-    {
-      field: "monthlyYn",
-      text: "월정",
-      type: "select",
-      optionList: [
-        { key: "Y", value: "O" },
-        { key: "N", value: "X" },
-      ],
-    },
+    // {
+    //     field: "ynUse",
+    //     text: "사용여부",
+    //     type: "select",
+    //     optionList: [
+    //       { key: "Y", value: "O" },
+    //       { key: "N", value: "X" },
+    //     ],
+    //   },
+    // {
+    //   field: "commonlyYn",
+    //   text: "통상",
+    //   type: "select",
+    //   optionList: [
+    //     { key: "Y", value: "O" },
+    //     { key: "N", value: "X" },
+    //   ],
+    // },
+    // {
+    //   field: "monthlyYn",
+    //   text: "월정",
+    //   type: "select",
+    //   optionList: [
+    //     { key: "Y", value: "O" },
+    //     { key: "N", value: "X" },
+    //   ],
+    // },
   ],
   headersWithCalculation: [
     { field: "cdAllow", text: "Code" },
@@ -295,9 +305,9 @@ export const modal_insertSalaryDeductData = {
       { key: "N", value: "X" },
     ],},
     { field: "rate"
-    , text: "비율(%)" 
-    , type : "number"
+    , text: "비율(%)"
     , isPk: true
+    , type : "rate"
   },
   ],
   params : {static: 'N'}
@@ -337,7 +347,6 @@ export const modal_nontaxSetup = {
     { field: "nmAllow", text: "비과세 항목", readOnly: true },
     { field: "nonTaxDivison", text: "구분" , readOnly: true},
     { field: "nontaxLimit", text: "한도" ,type:"number"},
-    // { field: "ynBonus", text: "지급명세" },
   ],
 };
 

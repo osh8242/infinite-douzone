@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import { CODE_VALUE } from "../model/CommonConstant";
 import "../styles/tableForm.css";
@@ -189,7 +199,9 @@ const TableForm = ({
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback((event, rowIndex, columnIndex) => {
-    return tbodyRef.current.children[rowIndex].querySelectorAll("input, select");
+    return tbodyRef.current.children[rowIndex].querySelectorAll(
+      "input, select"
+    );
   }, []);
 
   // 새로운 행(빈행)을 만드는 함수
@@ -333,7 +345,6 @@ const TableForm = ({
         const field = input.id;
         const type = tableHeaders[index]?.type;
         if (type && type === "textCodeHelper") {
-          console.log("findKeyInCodeValue", findKeyInCodeValue(input.value));
           editedRow.item[field] = findKeyInCodeValue(input.value);
         } else {
           editedRow.item[field] = input.value;
@@ -489,10 +500,12 @@ const TableForm = ({
             <TextBoxComponent
               id={field}
               type="text"
-              value={row.isNew ? "" : getTdValue(rowIndex, columnIndex)}
-              onClickCodeHelper={() => {
+              value={getTdValue(rowIndex, columnIndex)}
+              onEnter={(e) => {
+                TdKeyDownHandler(e, rowIndex, columnIndex);
+              }}
+              onClickCodeHelper={(setInputValue) => {
                 let codeHelperData = codeHelper[field];
-                let rowItem = getEditedRow(null, rowIndex, columnIndex).item;
 
                 setModalState({
                   show: true,
@@ -502,13 +515,49 @@ const TableForm = ({
                   searchField: codeHelperData.searchField,
                   usePk: codeHelperData.usePk,
                   setRowData: (e, pkValue) => {
-                    actions.updateEditedRow(Object.assign(rowItem, pkValue));
-                    releaseEditable();
+                    let codeHelperData = codeHelper[field];
+                    let tableData = codeHelperData.tableData;
+                    const value = pkValue[field];
+                    let targetIndex = tableData.findIndex(
+                      (row) => row.item[field] === value
+                    );
+                    const newField =
+                      field.charAt(0).toUpperCase() + field.slice(1);
+                    setInputValue(
+                      targetIndex !== -1
+                        ? tableData[targetIndex].item[`nm${newField}`]
+                        : ""
+                    );
                   },
                 });
               }}
             />
           );
+         case "rate": 
+          return (
+            <TextBoxComponent
+              id={field}
+              type={"number"}
+              readOnly={!row.isEditable}
+              onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
+              value={row.isNew ? "" : row.item[field]}
+              placeholder = "0~100 사이 숫자입력"
+              rate
+              step="0.1"
+            />
+          );
+          // case "number":
+          // return (
+          //   <TextBoxComponent
+          //     id={field}
+          //     type={"commaNumber"}
+          //     readOnly={!row.isEditable}
+          //     onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
+          //     value={row.isNew ? "" : row.item[field]}
+          //     placeholder = "숫자입력"
+          //     processThousandSeparator
+          //   />
+          // );
         default: // 타입이 명시되지않으면 일반 text 타입 반환
           return (
             <TextBoxComponent
@@ -517,6 +566,7 @@ const TableForm = ({
               readOnly={!row.isEditable}
               onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
               value={row.isNew ? "" : row.item[field]}
+              thousandSeparator = {type === "number" || true}
             />
           );
       }
@@ -540,7 +590,9 @@ const TableForm = ({
         case "textCodeHelper":
           let codeHelperData = codeHelper[field];
           let tableData = codeHelperData.tableData;
-          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
+          let targetIndex = tableData.findIndex(
+            (row) => row.item[field] === value
+          );
           const newField = field.charAt(0).toUpperCase() + field.slice(1);
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
@@ -577,7 +629,6 @@ const TableForm = ({
   const tableKeyDownHandler = useCallback(
     (event) => {
       if (tableFocus.current) {
-        console.log("table", tableName, "키이벤트 동작", event.key);
         if (editableRowIndex !== -1) {
           switch (event.key) {
             case "Escape":
@@ -589,7 +640,8 @@ const TableForm = ({
               if (event.shiftKey) {
                 if (columnRef > 0) setColumnRef(columnRef - 1);
               } else {
-                if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+                if (columnRef < tableHeaders.length - 1)
+                  setColumnRef(columnRef + 1);
               }
               break;
             default:
@@ -622,7 +674,8 @@ const TableForm = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Home":
@@ -659,6 +712,7 @@ const TableForm = ({
 
             case "Delete":
               event.preventDefault();
+              if (rowAddable && rowRef === tableRows.length) return;
               tableFocus.current = false;
               setConfirmModalState({
                 show: true,
@@ -729,7 +783,9 @@ const TableForm = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -814,7 +870,9 @@ const TableForm = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (

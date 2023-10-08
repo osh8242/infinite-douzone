@@ -24,6 +24,7 @@ const FormPanel = ({
   codeHelperFn,
   onChange,
   actions,
+  onClick
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -51,6 +52,7 @@ const FormPanel = ({
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
     const onChangeFn = onChange ? onChange[input.field] : null;
+    const onClickFn = onClick ? onClick[input.field] : null;
 
     const getValueFromCode = (field, code) => {
       if (CODE_TYPE[field]) return CODE_VALUE[CODE_TYPE[field]]?.[code] || "";
@@ -78,6 +80,7 @@ const FormPanel = ({
             subField={input.selectId}
             onChangeSelect={submitData}
             selectedOption={{ formData }.formData[input.selectValue]}
+            option={formData?.[input.selectValue] || ""}
           />
         );
         break;
@@ -212,6 +215,7 @@ const FormPanel = ({
             type="date"
             label={label}
             value={value}
+            onClick = {onClickFn}
             onClickCodeHelper={codeHelper}
             onChange={(e, value) => {
               onChangeFn(value);

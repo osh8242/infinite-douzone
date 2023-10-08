@@ -118,7 +118,7 @@ const Header = () => {
               ref={searchFormRef}
               type="text"
               id="findMenuBar"
-              placeholder={"메뉴명을 입력해주세요.  [ F10 ]"}
+              placeholder={"메뉴 명을 입력해주세요.  [ F10 ]"}
             />
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
