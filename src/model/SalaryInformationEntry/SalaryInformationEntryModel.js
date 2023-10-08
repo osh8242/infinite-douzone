@@ -3,6 +3,8 @@ import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_DEDUCTDATA_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
 import { useApi } from '../Api';
+import { codeHelperData_cdDept, codeHelperData_cdOccup } from '../EmpRegister/EmpConstant';
+import { isEmpty } from '../../utils/StringUtils';
 
 const SalaryInformationEntryModel = () => {
 
@@ -76,6 +78,46 @@ const SalaryInformationEntryModel = () => {
 
   const [showConfirm, setShowConfirm] = useState(false);
   
+  
+  const findAndSetSearchValue = useCallback((codeHelperData, setSearchValue, fieldName, value) => {
+    if (isEmpty(value)) {
+      setSearchValue(value);
+    } else {
+      const matchedItem = codeHelperData.tableData.find(
+        (item) => item.item[fieldName] === value
+      );
+      setSearchValue(matchedItem?.item[fieldName] || "");
+    }
+  });
+  
+  const resetSearchValue = (codeHelperData, fieldName, value) => {
+    if (isEmpty(value)) {
+      return value;
+    } else {
+      const matchedItem = codeHelperData.tableData.find(
+        (item) => item.item[fieldName] === value
+      );
+      return matchedItem?.item[fieldName] || "";
+    }
+  };
+
+  
+  const setSearchNmDept = useCallback((fieldName, value) => {
+    findAndSetSearchValue(codeHelperData_cdDept, setSearchCdDept, fieldName, value);
+  });
+  
+  const setSearchNmOccup = useCallback((fieldName, value) => {
+    findAndSetSearchValue(codeHelperData_cdOccup, setSearchCdOccup, fieldName, value);
+  });
+  
+  const resetSearchCdDept = (value) => {
+    return resetSearchValue(codeHelperData_cdDept, "nmCdDept", value);
+  };
+  
+  const resetSearchCdOccup = (value) => {
+    return resetSearchValue(codeHelperData_cdOccup, "nmCdOccup", value);
+  };
+
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
@@ -216,6 +258,12 @@ const SalaryInformationEntryModel = () => {
       , totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}]      // 공제항목 합계테이블 데이터(selectbox 조회)
       , totalDeductPay : [{item: {}}]
     });
+    setSalPaySumData({       
+      allowPay: [],
+      totalAllowPay : [{item : { sumAllowPay: 0, sumByN: 0, sumByY: 0 }}], 
+      deductPay: [],
+      totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
+    });
 
     let searchParams = {
       allowYear: allowYear,
@@ -225,8 +273,8 @@ const SalaryInformationEntryModel = () => {
       dateId : dateId,
 
       searchCdEmp: searchCdEmp,
-      searchCdDept: searchCdDept,
-      searchCdOccup: searchCdOccup,
+      searchCdDept: resetSearchCdDept(searchCdDept),
+      searchCdOccup: resetSearchCdOccup(searchCdOccup),
       searchYnUnit: searchYnUnit,
       paymentDateFlag: 'true'
     };
@@ -258,7 +306,7 @@ const SalaryInformationEntryModel = () => {
           setSaInfoListData(getEmplist);
 
           /* select box 지급액 통계 합계 */
-          getSalTotalSum('EmpAllThisMonth');
+          if(paymentDate!=="") getSalTotalSum('EmpAllThisMonth');
         }
       })
       .catch((error) => {
@@ -552,7 +600,9 @@ const deleteSelectedRows = () => {
       setSumDeductPay,
       setDeductData,
       setSaInfoDetailData,
-      setSalPaySumData 
+      setSalPaySumData,
+      setSearchNmDept,
+      setSearchNmOccup
       
     },
   };

@@ -124,7 +124,6 @@ const SalaryInformationEntryHeader = ({
       show: true,
       message: "해당 지급일자로 조회하시겠습니까?",
       action: () => {
-        alert(row.paymentDate);
         actions.setPaymentDate(row.paymentDate);
         actions.setSalDivision(row.salDivision);
         actions.setAllowMonth(row.allowMonth);
