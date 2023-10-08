@@ -33,7 +33,7 @@ const Login = () => {
     LoginUser(e);
   };
 
-  const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
+  const { updateToken, updateLoginInfo } = useLogin();
   const navigate = useNavigate();
 
   const handleFormSubmit = (e) => {
@@ -76,7 +76,6 @@ const Login = () => {
         localStorage.setItem("userInfo", JSON.stringify(response.data.user));
         const currentTime = new Date();
         localStorage.setItem("loginTime", currentTime);
-
         console.log("로그인에 성공하였습니다.");
         setInvalidPwd("");
         setInvalid("");

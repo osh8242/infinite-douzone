@@ -6,6 +6,7 @@ import { LoadingContext } from "../Loading/LoadingProvider";
 
 export const useApi = () => {
   const { setCurrentTime } = useContext(TimeContext);
+  const { cp } = useContext(TimeContext);
   const { setLoading } = useContext(LoadingContext);
 
   const api = axios.create({
