@@ -78,46 +78,42 @@ const SalaryInformationEntryModel = () => {
 
   const [showConfirm, setShowConfirm] = useState(false);
   
-  
-  const findAndSetSearchValue = useCallback((codeHelperData, setSearchValue, fieldName, value) => {
-    if (isEmpty(value)) {
-      setSearchValue(value);
-    } else {
-      const matchedItem = codeHelperData.tableData.find(
-        (item) => item.item[fieldName] === value
-      );
-      setSearchValue(matchedItem?.item[fieldName] || "");
-    }
+  const setSearchNmDept = useCallback((fieldName, value) => { 
+    const matchedItem = codeHelperData_cdDept.tableData.find(
+      (item) => item.item[fieldName] === value
+    );
+    setSearchCdDept(matchedItem.item.nmCdDept);
+  });
+
+  const setSearchNmOccup = useCallback((fieldName, value) => { 
+    const matchedItem = codeHelperData_cdOccup.tableData.find(
+      (item) => item.item[fieldName] === value
+    );
+    setSearchCdOccup(matchedItem.item.nmCdOccup);
   });
   
-  const resetSearchValue = (codeHelperData, fieldName, value) => {
-    if (isEmpty(value)) {
+  const resetSearchCdDept = useCallback((value) => { 
+    if(isEmpty(value)){
       return value;
-    } else {
-      const matchedItem = codeHelperData.tableData.find(
-        (item) => item.item[fieldName] === value
+    }else{
+      const matchedItem = codeHelperData_cdDept.tableData.find(
+        (item) => item.item.nmCdDept === value
       );
-      return matchedItem?.item[fieldName] || "";
+      return matchedItem.item.cdDept;
     }
-  };
+  });
 
-  
-  const setSearchNmDept = useCallback((fieldName, value) => {
-    findAndSetSearchValue(codeHelperData_cdDept, setSearchCdDept, fieldName, value);
+  const resetSearchCdOccup = useCallback((value) => { 
+    if(isEmpty(value)){
+      return value;
+    }else{
+      const matchedItem = codeHelperData_cdOccup.tableData.find(
+        (item) => item.item.nmCdOccup === value
+      );
+    return matchedItem.item.cdOccup;
+   }
   });
   
-  const setSearchNmOccup = useCallback((fieldName, value) => {
-    findAndSetSearchValue(codeHelperData_cdOccup, setSearchCdOccup, fieldName, value);
-  });
-  
-  const resetSearchCdDept = (value) => {
-    return resetSearchValue(codeHelperData_cdDept, "nmCdDept", value);
-  };
-  
-  const resetSearchCdOccup = (value) => {
-    return resetSearchValue(codeHelperData_cdOccup, "nmCdOccup", value);
-  };
-
   /* 사원 선택시 발생함수 */
   useEffect(() => {
     getSaPayByCdEmp();
