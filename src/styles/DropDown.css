@@ -28,7 +28,24 @@
   padding: 20px;
     animation: fadeIn 0.3s ease-out;
 
+} 
+
+.faBell {
+  position: absolute;
+  top: 20px;   
+  left: 22px;     
+  color:darkgray;
+
 }
+
+.profileDropdown .faArrow {
+  position: absolute;
+  top: 20px;   
+  right: 22px;  
+  color:darkgray;
+}
+
+
 
 .profileDropdown img {
   margin-top: 42px;
@@ -86,18 +103,19 @@
   font-weight: bold;
   color: #000000;
 }
+ 
 
 .recentLogin {
-  padding-top: 5x;
+  padding-top: 5px;
   font-size: 12px;  
   font-weight: bold;
   color: #000000;
 }
 
-.anotherLogin {
+.anotherLogin {  padding-top: 2px;
   font-size: 12px;  
   font-weight: normal;
-  color: #777777;  
+  color: #474747;  
 }
 
 

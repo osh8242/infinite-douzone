@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import imgLogo from "../../src/styles/img/defaultProfile.jpg";
 import "../styles/DropDown.css";
 import { useCurrTime } from "../Login/TimeProvider";
 import { useLogin } from "../Login/LoginProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+// import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { getLogFunction } from "../model/useLog";
 
 const DropDownMenu = (props) => {
+  const logout = getLogFunction();
   const [imgSrc, setImgSrc] = useState(imgLogo);
   let userInfoString = localStorage.getItem("userInfo");
   let userInfoObject = JSON.parse(userInfoString);
@@ -28,8 +34,20 @@ const DropDownMenu = (props) => {
     }
   }, []);
 
+  const handleIconClick = () => {
+    logout();
+  };
+
   return (
     <div className="profileDropdown">
+      {/* <FontAwesomeIcon icon={faBell} size="2xl" className="faBell" /> */}
+      <FontAwesomeIcon
+        icon={faArrowRightFromBracket}
+        size="2xl"
+        className="faArrow"
+        onClick={handleIconClick}
+        style={{ cursor: "pointer" }}
+      />
       <img src={process.env.PUBLIC_URL + imgSrc} alt="Profile" />
       <div className="textContainer">
         <p className="name">{userName} 선임연구원</p>
