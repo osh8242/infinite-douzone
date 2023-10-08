@@ -14,7 +14,7 @@ export const swsmUrlPattern = {
 
 export const CODE_HELPER_DATA = {
   leftTableCodeHelper: {
-    title: "사원 조회",
+    title: "등록할 사원 조회",
     headers: [
       { field: "cdEmp", text: "사원코드" },
       { field: "nmKrname", text: "사원명" },

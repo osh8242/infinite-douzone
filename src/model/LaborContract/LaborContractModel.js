@@ -426,7 +426,6 @@ const LaborContractModel = () => {
         event.target.id === "incomeClassfication" ||
         event.target.id === "dateOfcreate"
       ) {
-        console.log("tttessetste");
         let newEmp = { ...mainTabData };
         newEmp[event.target.id] = value;
         console.log("leftTablePkValue");
@@ -440,7 +439,6 @@ const LaborContractModel = () => {
         event.type === "change" ||
         event.action === "change"
       ) {
-        // if (event.key === "Enter") event.target.blur();
         console.log("event.target.id", event.target.id);
         console.log("value", value);
         let newSwsm = { ...mainTabData };
@@ -449,6 +447,7 @@ const LaborContractModel = () => {
         newSwsm["cdEmp"] = leftTablePkValue.cdEmp;
         console.log("newSwsm", newSwsm);
         if (leftTablePkValue.cdEmp !== undefined) updateSwsm(newSwsm);
+        if (event.key === "Enter") event.target.blur();
       }
       if (event.type === "click" || typeof value === "object") {
         let newSwsm = { ...mainTabData };

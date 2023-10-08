@@ -24,7 +24,7 @@ const FormPanel = ({
   codeHelperFn,
   onChange,
   actions,
-  onClick
+  onClick,
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -80,6 +80,7 @@ const FormPanel = ({
             subField={input.selectId}
             onChangeSelect={submitData}
             selectedOption={{ formData }.formData[input.selectValue]}
+            option={formData?.[input.selectValue] || ""}
           />
         );
         break;
@@ -121,7 +122,7 @@ const FormPanel = ({
             disabled={disabled}
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
-            // onChange={submitData}
+            onEnter={submitData}
             onChange={(e, value) =>
               (onChangeFn && onChangeFn(value)) || submitData(e, value)
             }
@@ -214,7 +215,7 @@ const FormPanel = ({
             type="date"
             label={label}
             value={value}
-            onClick = {onClickFn}
+            onClick={onClickFn}
             onClickCodeHelper={codeHelper}
             onChange={(e, value) => {
               onChangeFn(value);
