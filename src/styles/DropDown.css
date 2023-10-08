@@ -1,0 +1,153 @@
+ 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.profileDropdown { 
+  position: absolute;
+  right:80px;
+  top: 55px;
+  background-color: white;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  height: 250px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+} 
+.blue{
+  background-image: linear-gradient(to bottom, rgb(224, 239, 255) 45%, #FFFFFF 0%);
+}
+.orange{
+  background-image: linear-gradient(to bottom, rgb(255, 237, 224) 45%, #FFFFFF 0%);
+}
+.green{
+  background-image: linear-gradient(to bottom, rgb(219, 247, 233) 45%, #FFFFFF 0%);
+}
+.yellow{
+  background-image: linear-gradient(to bottom, rgb(255, 249, 224) 45%, #FFFFFF 0%);
+}
+.pink{
+  background-image: linear-gradient(to bottom, rgb(255, 229, 229) 45%, #FFFFFF 0%);
+}
+.pupple{
+  background-image: linear-gradient(to bottom, rgb(236, 225, 253) 45%, #FFFFFF 0%);
+}
+
+
+.faBell {
+  position: absolute;
+  top: 20px;   
+  left: 22px;     
+  color:darkgray;
+
+}
+
+.profileDropdown .faArrow {
+  position: absolute;
+  top: 20px;   
+  right: 22px;  
+  color:darkgray;
+}
+
+
+
+.profileDropdown img {
+  margin-top: 42px;
+  /* padding-top: 10px; */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+ 
+
+.profileDropdown a {
+  text-decoration: none;
+  color: dimgray;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.profileDropdown a:hover {
+  background-color: #e1e1e1;
+}
+
+#topRightNotificationHeader {
+  position: relative;
+}
+
+.profileDropdown,
+.miniMap {
+  border-radius: 8px;
+  padding: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.profileDropdown:hover,
+.miniMap:hover {
+  background-color: #f2f2f2;
+}
+
+ 
+.profileDropdown img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.textContainer{
+  align-items: center;    
+  text-align: center;
+}
+
+.name {
+  text-align: center;
+  font-size: 22px;  
+  font-weight: bold;
+  color: #000000;
+}
+ 
+.recentLogin {
+  padding-top: 5px;
+  font-size: 12px;  
+  font-weight: bold;
+  color: #000000;
+}
+
+.anotherLogin {  padding-top: 2px;
+  font-size: 12px;  
+  font-weight: normal;
+  color: #474747;  
+}
+
+
+.textContainer p {
+  margin: 0;  
+}
+ 
+
+.profileDropdown a,
+.miniMap a {
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.profileDropdown a:hover,
+.miniMap a:hover {
+  background-color: #e6e6e6;
+}
