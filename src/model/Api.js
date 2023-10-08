@@ -1,9 +1,11 @@
 import axios from "axios";
 import { url } from "./CommonConstant";
 import { useContext } from "react";
+import { TimeContext } from "../Login/TimeProvider";
 import { LoadingContext } from "../Loading/LoadingProvider";
 
 export const useApi = () => {
+  const { setCurrentTime } = useContext(TimeContext);
   const { setLoading } = useContext(LoadingContext);
 
   const api = axios.create({
@@ -31,6 +33,7 @@ export const useApi = () => {
   // 응답 인터셉터
   api.interceptors.response.use(
     (response) => {
+      setCurrentTime(new Date());
       setLoading(false); // 응답 시 loading 상태를 false로 설정
       return response;
     },

@@ -77,9 +77,11 @@ const Header = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
+
   return (
     <div className="SUITE p-10">
       {/* 사원등록/인사관리/급여자료입력/표준근로계약서 4개 메뉴에서 쓰이는 헤더 */}
