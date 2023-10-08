@@ -170,13 +170,13 @@ function TextBoxComponent(props) {
       //       onClickCodeHelper(setInputValue);
       //     }
       //   }
-      // }    
+      // }
 
       const disallowedKeys = ["Shift", "Escape", "Tab", "F10"];
       const deleteKeys = ["Backspace", "Delete", "Del"];
-      
+
       switch (event.key) {
-        case "F2":  // 코드헬퍼창 단축키
+        case "F2": // 코드헬퍼창 단축키
           onClickCodeHelper(setInputValue);
           break;
         case "Enter":
@@ -187,15 +187,15 @@ function TextBoxComponent(props) {
             if (deleteKeys.includes(event.key)) {
               setInputValue("");
               onChange && onChange(event, "", id);
-            }else{
+            } else {
               event.preventDefault(); //키보드입력 막기
             }
           }
       }
 
       onKeyDown && onKeyDown(event);
-    };
-  }
+    }
+  };
 
   const handleInputChange = (event, index) => {
     const newValue = event.target.value;

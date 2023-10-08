@@ -4,6 +4,8 @@ export const url = "http://localhost:8888";
 export const CODE_TYPE = {
   cdOffduty: "직무",
   cdOffpos: "직급",
+  cdFamrel: "연말정산관계",
+  cdJob: "직업",
   abbNation: "거주지국",
   cdNation: "국적",
   cdDept: "부서",
@@ -24,6 +26,24 @@ export const CODE_VALUE = {
     C006: "보건의료",
     C007: "문화예술",
     C008: "농림어업",
+  },
+  [CODE_TYPE.cdFamrel]: {
+    CF1: "직계존속",
+    CF2: "배우자",
+    CF3: "직계비속",
+    CF4: "직계비속예외",
+    CF5: "형제자매",
+    CF6: "수급자",
+    CF7: "기타",
+  },
+  [CODE_TYPE.cdJob]: {
+    "001": "회사원",
+    "002": "공무원",
+    "003": "서비스업",
+    "004": "판매업",
+    "005": "농림어업",
+    "006": "사업",
+    "007": "기타",
   },
   [CODE_TYPE.cdOffpos]: {
     R001: "사원",
@@ -270,7 +290,33 @@ export const SELECT_LIST = {
   ynFor: [
     { key: "K", value: "내국인" },
     { key: "F", value: "외국인" },
-    { key: "A", value: "외계인" },
+  ],
+  fgSchool: [
+    { key: "1", value: "무학" },
+    { key: "2", value: "초등학교" },
+    { key: "3", value: "중학교" },
+    { key: "4", value: "고등학교" },
+    { key: "5", value: "전문대학" },
+    { key: "6", value: "대학교" },
+    { key: "7", value: "대학원" },
+    { key: "8", value: "기타" },
+  ],
+  fgGraduation: [
+    { key: "1", value: "검정" },
+    { key: "2", value: "수료" },
+    { key: "3", value: "입학" },
+    { key: "4", value: "재학" },
+    { key: "5", value: "졸업" },
+    { key: "6", value: "증퇴" },
+    { key: "7", value: "기타" },
+  ],
+  ynTogether: [
+    { key: "0", value: "여" },
+    { key: "1", value: "부" },
+  ],
+  ynLunarbir: [
+    { key: "0", value: "양" },
+    { key: "1", value: "음" },
   ],
   fgSex: [
     { key: "M", value: "남자" },
