@@ -384,7 +384,6 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
-        console.log("엔터키처리 newtableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
@@ -482,11 +481,11 @@ const TableForm = ({
               onEnter={(e) => {
                 TdKeyDownHandler(e, rowIndex, columnIndex);
               }}
-              onChange={(e, value) => {
-                let EditedRow = { ...tableRows[rowIndex] }.item;
-                EditedRow[field] = value;
-                actions.updateEditedRow(EditedRow);
-              }}
+              // onChange={(e, value) => {
+              //   let EditedRow = { ...tableRows[rowIndex] }.item;
+              //   EditedRow[field] = value;
+              //   actions.updateEditedRow(EditedRow);
+              // }}
             />
           );
         case "date":
@@ -504,6 +503,7 @@ const TableForm = ({
               id={field}
               type="text"
               value={getTdValue(rowIndex, columnIndex)}
+              readOnly
               onEnter={(e) => {
                 TdKeyDownHandler(e, rowIndex, columnIndex);
               }}

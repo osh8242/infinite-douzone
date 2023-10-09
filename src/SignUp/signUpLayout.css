@@ -184,7 +184,7 @@
   border-radius: 50%;
   transition: all 0.3s;
   opacity: 0.5;
-  transform: scale(0.8); /* 크기를 기본적으로 80%로 설정합니다. */
+  transform: scale(0.8);  
 }
 
 .color-option input[type="radio"]:checked + span {

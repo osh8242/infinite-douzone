@@ -191,7 +191,7 @@ const SiSeacrchPanel = (props) => {
                 searchCdEmp: (e, newValue) => actions.setSearchCdEmp(newValue),
                 searchCdDept: (e, newValue) => actions.setSearchCdDept(newValue),
                 searchCdOccup: (e, newValue) => actions.setSearchCdOccup(newValue),
-                searchYnUnit: (e, newValue) => actions.setSearchYnUnit(newValue),
+                searchYnUnit: (newValue) => actions.setSearchYnUnit(newValue),
               }}
             />
           </div>
