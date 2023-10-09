@@ -97,14 +97,16 @@ export const CODE_HELPER_DATA = {
       { field: "cdFamrel", text: "코드" },
       { field: "nmCdFamrel", text: "관계명" },
     ],
-    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdFamrel"]]).map((key) => {
-      return {
-        item: {
-          cdFamrel: key,
-          nmCdFamrel: CODE_VALUE[CODE_TYPE["cdFamrel"]][key],
-        },
-      };
-    }),
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdFamrel"]])
+      .filter((key) => key !== "CF0")
+      .map((key) => {
+        return {
+          item: {
+            cdFamrel: key,
+            nmCdFamrel: CODE_VALUE[CODE_TYPE["cdFamrel"]][key],
+          },
+        };
+      }),
     searchField: ["cdFamrel", "nmCdFamrel"],
     usePk: "cdFamrel",
   },
@@ -149,7 +151,7 @@ export const CODE_HELPER_DATA = {
 /////////////////////////////////// 우측 메인탭
 export const tabConstant = {
   mainTabMenuList: ["기초정보", "인적정보"],
-  subTabMenuList: ["가족", "학력", "경력", "신체", "병역"],
+  subTabMenuList: ["가족사항"],
 };
 
 ////////////////////////////////// 우측 서브그리드
@@ -198,9 +200,9 @@ export const subTableConstant = {
       type: "select",
       optionList: SELECT_LIST.ynLunarbir,
     },
-    { field: "daBirth", text: "생년월일", type: "date" },
+    { field: "daBirth", text: "생년월일", type: "date", width: "155px" },
     { field: "cdJob", text: "직업", width: "90px", type: "textCodeHelper" },
-    { field: "nmKrcom", text: "직장명", width: "90px" },
+    { field: "nmKrcom", text: "직장명" },
     { field: "cdOffpos", text: "직급", width: "80px", type: "textCodeHelper" },
   ],
 };
