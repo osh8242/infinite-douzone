@@ -57,6 +57,8 @@ const SiSeacrchPanel = (props) => {
       show: true,
       message: message,
       action: () => {
+        actions.setAllowMonth(row.allowMonth);
+        actions.setSalDivision(row.salDivision);
         actions.setPaymentDate(row.paymentDate);
         actions.onSearch(row);
       },
@@ -100,7 +102,7 @@ const SiSeacrchPanel = (props) => {
       deductPay: [],
       totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
     });
-    actions.setSalDivision("");
+    // actions.setSalDivision("");
   }
 
   const onSearchClick = () =>{
@@ -119,6 +121,24 @@ const SiSeacrchPanel = (props) => {
 
   const changeAllowMonth = (newValue) =>{
     actions.setPaymentDate("");
+    actions.setCdEmp('');
+    actions.setDateId('');
+    actions.setYnComplete('');
+    actions.setSaInfoListData([]);
+    actions.setSalData([]);                     
+    actions.setSumAllowPayByYnTax([{ item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }},]);
+    actions.setSumDeductPay([ { item: { sumDeductPay: 0 , excessAmount : 0}} ]);
+    actions.setDeductData([]);              
+    actions.setSaInfoDetailData([]);
+    actions.setSalPaySumData({       
+      allowPay: [],
+      totalAllowPay : [{item : { sumAllowPay: 0, sumByN: 0, sumByY: 0 }}], 
+      deductPay: [],
+      totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
+    });
+    actions.setSalDivision("");
+    actions.setSalDivision("");
+    actions.setPaymentDate("");
     actions.setAllowMonth(newValue);
   }
 
@@ -134,7 +154,7 @@ const SiSeacrchPanel = (props) => {
           setShowModal(false);
         }}
       />
-      <div>
+      <div className="border light-grey-border m-3">
         {/* 기본 검색조건 */}
         <SearchPanel onSearch={()=> onSearchClick()} showAccordion>
           <FormPanel
@@ -156,7 +176,6 @@ const SiSeacrchPanel = (props) => {
             onChange={{
               allowMonth: (newValue) => changeAllowMonth(newValue),
               salDivision: (newValue) => selectOptionHandler(newValue),
-              // paymentDate: (newValue) => {if(!validationPaymentDate(newValue)) 원래대로 돌려놓는 함수}
               paymentDate: (newValue) => validationPaymentDate(newValue),
             }}
             onClick={{

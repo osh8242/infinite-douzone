@@ -26,16 +26,14 @@ const SearchPanel = ({
     <>
       <Row className="mt-3">
         {showAccordion ? (
-          // <div className = {`search-panel ${animation? }`}>
-          <div>
+          <div style={{padding:'13px'}}>
             <div className="header d-flex flex-row px-5">
-              {/* 귀속연월/조회구분/작성일자 */}
               <Col className="my-1">{children[0]}</Col>
-              {/* 조회버튼 */}
               <Col
                 className="d-flex align-items-center justify-content-center"
                 md={{ span: 1, offset: 1 }}
               >
+                {/* 조회버튼 */}
                 {isBodyOpen ? (
                   <>
                   <Button variant="secondary" onClick={onSearch}>
@@ -64,15 +62,17 @@ const SearchPanel = ({
               </Col>
             </div>
             {isBodyOpen && (
-              <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
-                <Row>
-                  <Col className="my-1">{children[1]}</Col>
-                </Row>
+              <div style={{marginLeft:'30px'}}>
+                <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
+                  <Row>
+                    <Col className="my-1">{children[1]}</Col>
+                  </Row>
+                </div>
               </div>
             )}
           </div>
         ) : (
-          <div className="my-1 col" style={{paddingLeft:'50px', paddingRight:'220px'}}>
+          <div className="my-1 col">
             <Row>
               <Col className="my-1" md="8">
                 {children}
