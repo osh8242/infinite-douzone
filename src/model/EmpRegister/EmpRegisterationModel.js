@@ -102,13 +102,16 @@ function EmpRegisterationModel() {
         let newEmp = { ...mainTabData.item };
         newEmp[event.target.id] = value;
         console.log("newEmp", newEmp);
-        if (event.type === "click" || typeof value === "object") {
-          // 넘어온 값이 JSON 객체인 경우
-          let newEmp = { ...mainTabData.item };
-          Object.assign(newEmp, value);
-        } else {
-          newEmp[event.target.id] = value;
-        }
+        updateEmp(newEmp);
+      }
+      if (event.type === "click" || typeof value === "object") {
+        // 넘어온 값이 JSON 객체인 경우
+        let newEmp = { ...mainTabData.item };
+        Object.assign(newEmp, value);
+        updateEmp(newEmp);
+      } else {
+        let newEmp = { ...mainTabData.item };
+        newEmp[event.target.id] = value;
         updateEmp(newEmp);
       }
     },
