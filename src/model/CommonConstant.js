@@ -28,6 +28,7 @@ export const CODE_VALUE = {
     C008: "농림어업",
   },
   [CODE_TYPE.cdFamrel]: {
+    CF0: "본인",
     CF1: "직계존속",
     CF2: "배우자",
     CF3: "직계비속",

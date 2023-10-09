@@ -97,7 +97,8 @@ export const CODE_HELPER_DATA = {
       { field: "cdFamrel", text: "코드" },
       { field: "nmCdFamrel", text: "관계명" },
     ],
-    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdFamrel"]]).map((key) => {
+    tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdFamrel"]])
+    .map((key) => {
       return {
         item: {
           cdFamrel: key,
@@ -164,7 +165,7 @@ export const subTableConstant = {
     { field: "nmKrname", text: "성명", width: "75px" },
     {
       field: "ynFor",
-      text: "외국인",
+      text: "내/외국인",
       width: "95px",
       type: "select",
       optionList: SELECT_LIST.ynFor,
