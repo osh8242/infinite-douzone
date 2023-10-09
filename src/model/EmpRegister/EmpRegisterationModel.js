@@ -103,8 +103,8 @@ function EmpRegisterationModel() {
         newEmp[event.target.id] = value;
         console.log("newEmp", newEmp);
         updateEmp(newEmp);
-      }
-      if (event.type === "click" || typeof value === "object") {
+        // return;
+      } else if (event.type === "click" || typeof value === "object") {
         // 넘어온 값이 JSON 객체인 경우
         let newEmp = { ...mainTabData.item };
         Object.assign(newEmp, value);
@@ -246,20 +246,20 @@ function EmpRegisterationModel() {
   }, []);
 
   //사원 정보 UPDATE POST 요청 (사원의 기초자료)
-  useEffect(() => {
-    if (editedEmp && Object.keys(editedEmp).length !== 0) {
-      console.log("emp useEffect update요청: ", editedEmp);
-      api
-        .put(urlPattern.updateEmp, editedEmp.item)
-        .then((response) => {
-          if (response.data === 1) console.log("Emp 업데이트 성공");
-          setEditedEmp();
-        })
-        .catch((error) => {
-          console.log("에러발생 -> ", error);
-        });
-    }
-  }, [editedEmp]);
+  // useEffect(() => {
+  //   if (editedEmp && Object.keys(editedEmp).length !== 0) {
+  //     console.log("emp useEffect update요청: ", editedEmp);
+  //     api
+  //       .put(urlPattern.updateEmp, editedEmp.item)
+  //       .then((response) => {
+  //         if (response.data === 1) console.log("Emp 업데이트 성공");
+  //         setEditedEmp();
+  //       })
+  //       .catch((error) => {
+  //         console.log("에러발생 -> ", error);
+  //       });
+  //   }
+  // }, []);
 
   //사원 update 함수
   const updateEmp = useCallback((emp) => {
@@ -268,12 +268,12 @@ function EmpRegisterationModel() {
       .put(urlPattern.updateEmp, emp)
       .then((response) => {
         if (response.data !== 0) console.log("Emp 업데이트 성공");
-        setEditedEmp();
+        setMainTablePkValue({ ...mainTablePkValue });
       })
       .catch((error) => {
         console.log("에러발생 -> ", error);
       });
-  }, []);
+  });
 
   //사원 정보 DELETE 요청
   const deleteSelectedRows = useCallback(() => {

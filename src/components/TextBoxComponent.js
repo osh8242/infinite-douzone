@@ -128,7 +128,10 @@ function TextBoxComponent(props) {
       if (type === "callNumber") {
         if (isValid) {
           // 해당하는 전화번호 input의 값만 update
+          // console.log("callNumbre event id >> ", event.target.id);
+          // console.log("callNumbre event value >> ", event.target.value);
           onEnter && onEnter(event, event.target.value);
+          return;
         } else {
           alertErrorMessage();
         }
@@ -344,7 +347,7 @@ function TextBoxComponent(props) {
     callNumberComponents.push(
       <Form.Control
         id={`${id}${i}`}
-        key={i}
+        key={i - 1}
         type="callNumber"
         value={inputCallValue[i - 1] || ""}
         disabled={disabled}
