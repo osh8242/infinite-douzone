@@ -113,6 +113,14 @@ const SalaryInformationEntryHeader = ({
 
   // 지급일자 모달
   const getDateListHandler = (event) => {
+    if(paymentDate !== '' || paymentDate){
+      setShowModal({
+        show: true,
+        message: "지급일자를 클릭하여 비운후 등록 가능합니다.",
+        onlyConfirm: true,
+      });
+      return true;
+    }
     modalShow("codeHelper", codeHelperData_paymentDate, setSearchDate, {
       allowYear: allowYear,
     });
@@ -124,11 +132,12 @@ const SalaryInformationEntryHeader = ({
       show: true,
       message: "해당 지급일자로 조회하시겠습니까?",
       action: () => {
+        actions.setYnComplete("");        
         actions.setPaymentDate(row.paymentDate);
         actions.setSalDivision(row.salDivision);
         actions.setAllowMonth(row.allowMonth);
         actions.setDateId(row.dateId);
-        actions.onSearch();
+        actions.onSearch(row);
       },
       onlyConfirm: false,
     });

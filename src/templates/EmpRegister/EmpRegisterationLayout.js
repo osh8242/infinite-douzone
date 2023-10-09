@@ -33,6 +33,7 @@ import "../../styles/commonComponent.css";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/fonts.css";
 import increaseBrightness from "../../model/increaseBrightness";
+import { CODE_TYPE, CODE_VALUE } from "../../model/CommonConstant";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
@@ -93,6 +94,11 @@ function EmpRegisterationLayout() {
     },
     [state]
   );
+
+  const getValueFromCode = (field, code) => {
+    if (CODE_TYPE[field]) return CODE_VALUE[CODE_TYPE[field]]?.[code] || "";
+    else return code;
+  };
 
   //mainTab Enter 이벤트 발생시 Emp 업데이트
   // const submitMainTabData = (value, id) => {
@@ -178,59 +184,122 @@ function EmpRegisterationLayout() {
                         submitData={actions.submitMainTabData} // update 함수
                         codeHelperFn={{
                           //코드도움 함수모음
-                          abbNation: () =>
+                          abbNation: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_abbNation,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode(
+                                    "abbNation",
+                                    pkValue["abbNation"]
+                                  )
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdNation: () =>
+                          cdNation: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdNation,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode(
+                                    "cdNation",
+                                    pkValue["cdNation"]
+                                  )
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdDept: () =>
+                          cdDept: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdDept,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode("cdDept", pkValue["cdDept"])
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdOccup: () =>
+                          cdOccup: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdOccup,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode(
+                                    "cdOccup",
+                                    pkValue["cdOccup"]
+                                  )
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          rankNo: () =>
+                          rankNo: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_rankNo,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode("rankNo", pkValue["rankNo"])
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdSalcls: () =>
+                          cdSalcls: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdSalcls,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode(
+                                    "cdSalcls",
+                                    pkValue["cdSalcls"]
+                                  )
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdField: () =>
+                          cdField: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdField,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode(
+                                    "cdField",
+                                    pkValue["cdField"]
+                                  )
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdProject: () =>
+                          cdProject: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdProject,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode(
+                                    "cdProject",
+                                    pkValue["cdProject"]
+                                  )
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
-                          cdBank: () =>
+                          cdBank: (setInputValue) =>
                             modalShow(
                               "default",
                               codeHelperData_cdBank,
-                              actions.submitMainTabData
+                              (e, pkValue) => {
+                                setInputValue(
+                                  getValueFromCode("cdBank", pkValue["cdBank"])
+                                );
+                                actions.submitMainTabData(e, pkValue);
+                              }
                             ),
                         }}
                       />

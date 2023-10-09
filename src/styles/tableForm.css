@@ -53,9 +53,8 @@ td div {
   margin: 0 !important;
 }
 
-td input {
-  text-align: center;
-  padding: 0 !important;
+td input {  
+  padding-left: 10px;
   margin: 0 !important;
   height: 2rem;
   width: 100%;

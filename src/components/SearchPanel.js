@@ -1,7 +1,7 @@
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useRef } from "react";
-import { Accordion, Button, Col, Row } from "react-bootstrap";
+import { useRef, useState } from "react";
+import { Button, Col, Row } from "react-bootstrap";
 import "../styles/SearchPanel.scss"; // SCSS 파일 불러오기
 
 const SearchPanel = ({
@@ -87,7 +87,13 @@ const SearchPanel = ({
                 md={{ span: 2, offset: 2 }}
               >
                 {!hideButton && (
-                  <Button variant="secondary" onClick={onSearch}>
+                  <Button
+                    variant="secondary"
+                    onClick={(e) => {
+                      e.target.blur();
+                      onSearch(e);
+                    }}
+                  >
                     조회
                   </Button>
                 )}

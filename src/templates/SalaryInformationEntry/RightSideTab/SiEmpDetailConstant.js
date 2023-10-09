@@ -31,9 +31,9 @@ export const SI_EMP_DETAIL = [
   },
   {
     type: INPUT_TYPE.text,
-    field: "cdOccup",
-    id: "cdOccup",
-    label: "직책",
+    field: "rankNoName",
+    id: "rankNoName",
+    label: "직급",
     disabled : "disabled"
   },
   // {
