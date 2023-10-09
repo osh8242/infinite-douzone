@@ -135,6 +135,7 @@ const HrManagementModel = () => {
         return true;
       });
       console.log("인사관리 등록후", newLeftTableData);
+      setLeftTablePkValue(pkValue);
       setLeftCodeHelperTableData(newLeftCodeHelperTableData);
       setLeftTableData(newLeftTableData);
     },
@@ -271,7 +272,7 @@ const HrManagementModel = () => {
 
   //subTableData 가져오는 비동기 post 요청
   useEffect(() => {
-    if (leftTablePkValue?.cdEmp) {
+    if (leftTablePkValue?.cdEmp && Object.keys(leftTablePkValue).length !== 0) {
       api
         .post(urlPattern.getEmpFamListByCdEmp, leftTablePkValue)
         .then((response) => {
@@ -285,6 +286,9 @@ const HrManagementModel = () => {
           console.error("에러발생: ", error);
           // 필요에 따라 다른 오류 처리 로직 추가
         });
+    } else {
+      console.log("setSubtableData[]");
+      setSubTableData([]);
     }
   }, [leftTablePkValue]);
 

@@ -384,7 +384,6 @@ const TableForm = ({
         let newTableRows = [...tableRows];
         newTableRows[rowIndex] = { ...editedRow, isEditable: false };
         delete newTableRows[rowIndex].isNew;
-        console.log("엔터키처리 newtableRows", newTableRows);
         setTableRows(newTableRows);
       }
     },
