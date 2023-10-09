@@ -91,8 +91,8 @@ export const MAIN_TAB = {
     },
     {
       type: INPUT_TYPE.text,
-      field: "mnKeepstate",
-      label: LABELS.mnKeepstate,
+      field: "mnKeepestate",
+      label: LABELS.mnKeepestate,
     },
     {
       type: INPUT_TYPE.radio,
