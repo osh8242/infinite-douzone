@@ -30,20 +30,23 @@ const Login = () => {
 
   const handlePwd = (e) => {
     setPwd(e.target.value);
+    LoginUser(e);
   };
 
-  const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
+  const { updateToken, updateLoginInfo } = useLogin();
   const navigate = useNavigate();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    LoginUser();
+    // LoginUser();
   };
 
   const handleOnBlur = (event) => {
     console.log(event);
     console.log(event.type);
   };
+
+  const Login = () => {};
 
   const LoginUser = async (event) => {
     // console.log("loginInfo", loginInfo);
@@ -71,7 +74,8 @@ const Login = () => {
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userInfo", JSON.stringify(response.data.user));
-
+        const currentTime = new Date();
+        localStorage.setItem("loginTime", currentTime);
         console.log("로그인에 성공하였습니다.");
         setInvalidPwd("");
         setInvalid("");

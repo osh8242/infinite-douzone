@@ -53,9 +53,10 @@ const ReCalculation = (props) => {
       dateId: state.dateId,
       allowMonth: state.allowMonth,
       allowYear: state.allowYear,
-      salDivision : state.salDivision,
+      salDivision : state.searchVo.salDivision,
       selectOption: selectOption,
     };
+    
 
     api
       .post(url + RECALCULATION_URL, submitReCalculationInfo)

@@ -6,16 +6,16 @@ import {
   SI_SUB_SEARCHFIELD,
 } from "./SiSearchPenelConstant";
 import {
-  codeHelperData_cdDept,
   codeHelperData_emplist,
-  codeHelperData_occup,
   codeHelperData_paymentDate,
 } from "../../../model/SalaryInformationEntry/SalConstant";
+
 import FormPanel from "../../../components/FormPanel";
 import ConfirmComponent from "../../../components/ConfirmComponent";
 import { currentDateStr } from "../../../utils/DateUtils";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import "../../../styles/SearchPanel.scss";
+import { codeHelperData_cdDept, codeHelperData_cdOccup } from "../../../model/EmpRegister/EmpConstant";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -99,6 +99,19 @@ const SiSeacrchPanel = (props) => {
     });
   }
 
+  const onSearchClick = () =>{
+    if(state.searchVo.allowMonth ==='' || state.searchVo.salDivision ===''|| state.searchVo.paymentDate ==='' ){
+      
+      setShowModal({
+        show: true,
+        message: "검색조건을 모두 입력해주세요.",
+        onlyConfirm: true,
+      });
+
+      return true;
+    }
+    onSearch();
+  }
   return (
     <div className="deleteLabelBackground">
       <ConfirmComponent
@@ -113,7 +126,7 @@ const SiSeacrchPanel = (props) => {
       />
       <div>
         {/* 기본 검색조건 */}
-        <SearchPanel onSearch={()=> onSearch()} showAccordion>
+        <SearchPanel onSearch={()=> onSearchClick()} showAccordion>
           <FormPanel
             INPUT_CONSTANT={SI_MAIN_SEARCHFIELD}
             formData={formPanelData}
@@ -165,20 +178,20 @@ const SiSeacrchPanel = (props) => {
                   modalShow(
                     "codeHelper",
                     codeHelperData_cdDept,
-                    (e,row) => actions.setSearchCdDept(row.cdDept)
+                    (e,row) => actions.setSearchNmDept(row)
                   ),
                 searchCdOccup: () =>
                   modalShow(
                     "codeHelper",
-                    codeHelperData_occup,
-                    (e,row) => actions.setSearchCdOccup(row.codeId)
+                    codeHelperData_cdOccup,
+                    (e,row) => actions.setSearchNmOccup(row)
                   ),
               }}
               onChange={{
                 searchCdEmp: (e, newValue) => actions.setSearchCdEmp(newValue),
                 searchCdDept: (e, newValue) => actions.setSearchCdDept(newValue),
                 searchCdOccup: (e, newValue) => actions.setSearchCdOccup(newValue),
-                searchYnUnit: (e, newValue) => actions.setSearchYnUnit(newValue),
+                searchYnUnit: (newValue) => actions.setSearchYnUnit(newValue),
               }}
             />
           </div>

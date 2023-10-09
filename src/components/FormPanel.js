@@ -24,7 +24,7 @@ const FormPanel = ({
   codeHelperFn,
   onChange,
   actions,
-  onClick
+  onClick,
 }) => {
   const defaultMd = 12 / columnNumber;
   const columns = [];
@@ -51,6 +51,7 @@ const FormPanel = ({
     const isZonecode = input.isZonecode || false; // AddressForm 관련 변수
     const codeHelper = codeHelperFn ? codeHelperFn[input.field] : null; // 배열에서 해당 인덱스의 codeHelperFn 가져오기
     const disabled = input.disabled;
+    const readOnly = input.readOnly;
     const onChangeFn = onChange ? onChange[input.field] : null;
     const onClickFn = onClick ? onClick[input.field] : null;
 
@@ -122,7 +123,7 @@ const FormPanel = ({
             disabled={disabled}
             optionList={input?.optionList || SELECT_LIST[input.field]}
             selectedOption={value}
-            // onChange={submitData}
+            onEnter={submitData}
             onChange={(e, value) =>
               (onChangeFn && onChangeFn(value)) || submitData(e, value)
             }
@@ -205,6 +206,7 @@ const FormPanel = ({
               onChangeFn && onChangeFn(value);
               submitData && submitData(e, value);
             }}
+            readOnly = {readOnly}
           />
         );
         break;
@@ -215,7 +217,7 @@ const FormPanel = ({
             type="date"
             label={label}
             value={value}
-            onClick = {onClickFn}
+            onClick={onClickFn}
             onClickCodeHelper={codeHelper}
             onChange={(e, value) => {
               onChangeFn(value);

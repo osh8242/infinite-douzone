@@ -26,6 +26,7 @@ import Loading from "./components/Loading";
 import SignUpLayout from "./SignUp/SignUpLayout";
 import Footer from "./templates/Footer";
 import axios from "axios";
+import TimeProvider from "./Login/TimeProvider";
 
 function ConditionalHeader() {
   const location = useLocation();
@@ -96,24 +97,26 @@ function App() {
   const { loading } = useContext(LoadingContext);
   return (
     <div>
-      <LoginProvider>
-        <BrowserRouter>
-          <ConditionalHeader />
-          {loading && <Loading />}
-          <ProtectedRoutesWrapper>
-            <Routes>
-              <Route path="/mypageTest" element={<MainTestPage />} />
-              <Route path="/" element={<MainHome />} />
-              <Route path="/er" element={<EmpRegisterationLayout />} />
-              <Route path="/hr" element={<HrManagementLayout />} />
-              <Route path="/lc/*" element={<LaborContractLayout />} />
-              <Route path="/si" element={<SalaryInformationEntryLayout />} />
-              <Route path="/mypage" element={<MyPage />} />
-            </Routes>
-          </ProtectedRoutesWrapper>
-          <Footer />
-        </BrowserRouter>
-      </LoginProvider>
+      <TimeProvider>
+        <LoginProvider>
+          <BrowserRouter>
+            <ConditionalHeader />
+            {loading && <Loading />}
+            <ProtectedRoutesWrapper>
+              <Routes>
+                <Route path="/mypageTest" element={<MainTestPage />} />
+                <Route path="/" element={<MainHome />} />
+                <Route path="/er" element={<EmpRegisterationLayout />} />
+                <Route path="/hr" element={<HrManagementLayout />} />
+                <Route path="/lc/*" element={<LaborContractLayout />} />
+                <Route path="/si" element={<SalaryInformationEntryLayout />} />
+                <Route path="/mypage" element={<MyPage />} />
+              </Routes>
+            </ProtectedRoutesWrapper>
+            <Footer />
+          </BrowserRouter>
+        </LoginProvider>
+      </TimeProvider>
     </div>
   );
 }

@@ -27,6 +27,7 @@ function SelectForm(props) {
     optionList,
     selectedOption,
     selectRef,
+    onEnter,
     onChange,
     subLabel,
     endLabel,
@@ -50,6 +51,21 @@ function SelectForm(props) {
     if (onChange) onChange(event, newValue);
     // console.log(newValue);
     setSelectedValue(newValue);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // Select가 펼쳐져 있는지 확인
+      if (!event.target.size) {
+        // Select가 닫혀있는 상태에서 엔터 키를 눌렀을 때
+        if (onEnter) {
+          console.log("셀렉트폼 엔터");
+          event.preventDefault();
+          event.stopPropagation();
+          onEnter(event, event.target.value);
+        }
+      }
+    }
   };
 
   return (
@@ -105,6 +121,7 @@ function SelectForm(props) {
                 id={id}
                 ref={selectRef}
                 value={selectedValue}
+                onKeyDown={handleKeyDown}
                 onChange={(e) => handleSelectChange(e)}
                 disabled={isDisabled}
               >

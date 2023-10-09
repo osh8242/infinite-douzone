@@ -3,6 +3,8 @@ import { currentDateStr, currentMonthStr} from '../../utils/DateUtils';
 import { DELETE_EMPLIST_URL, GET_SALINFO_BY_DATE_URL, GET_SALINFO_BY_EMP_URL, GET_SAL_TOTAL_SUM_URL, SAVE_DEDUCTDATA_URL, SAVE_SALDATA_URL, SET_COPYSALDATA_LASTMONTH_URL, UPDATE_DATEINFO_URL, UPDATE_SALEMP_DETAIL_URL } from './SalConstant';
 import { url } from '../CommonConstant';
 import { useApi } from '../Api';
+import { codeHelperData_cdDept, codeHelperData_cdOccup } from '../EmpRegister/EmpConstant';
+import { isEmpty } from '../../utils/StringUtils';
 
 const SalaryInformationEntryModel = () => {
 
@@ -75,6 +77,42 @@ const SalaryInformationEntryModel = () => {
   const [searchYnUnit, setSearchYnUnit] = useState(""); // 생산직여부 검색
 
   const [showConfirm, setShowConfirm] = useState(false);
+  
+  const setSearchNmDept = useCallback((fieldName, value) => { 
+    const matchedItem = codeHelperData_cdDept.tableData.find(
+      (item) => item.item[fieldName] === value
+    );
+    setSearchCdDept(matchedItem.item.nmCdDept);
+  });
+
+  const setSearchNmOccup = useCallback((fieldName, value) => { 
+    const matchedItem = codeHelperData_cdOccup.tableData.find(
+      (item) => item.item[fieldName] === value
+    );
+    setSearchCdOccup(matchedItem.item.nmCdOccup);
+  });
+  
+  const resetSearchCdDept = useCallback((value) => { 
+    if(isEmpty(value)){
+      return value;
+    }else{
+      const matchedItem = codeHelperData_cdDept.tableData.find(
+        (item) => item.item.nmCdDept === value
+      );
+      return matchedItem.item.cdDept;
+    }
+  });
+
+  const resetSearchCdOccup = useCallback((value) => { 
+    if(isEmpty(value)){
+      return value;
+    }else{
+      const matchedItem = codeHelperData_cdOccup.tableData.find(
+        (item) => item.item.nmCdOccup === value
+      );
+    return matchedItem.item.cdOccup;
+   }
+  });
   
   /* 사원 선택시 발생함수 */
   useEffect(() => {
@@ -216,6 +254,12 @@ const SalaryInformationEntryModel = () => {
       , totalAllowPay : [{item : { totalSalAllowPaySumTaxY : 0, totalSalAllowPaySumTaxN : 0, totalSalAllowPaySum : 0 }}]      // 공제항목 합계테이블 데이터(selectbox 조회)
       , totalDeductPay : [{item: {}}]
     });
+    setSalPaySumData({       
+      allowPay: [],
+      totalAllowPay : [{item : { sumAllowPay: 0, sumByN: 0, sumByY: 0 }}], 
+      deductPay: [],
+      totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
+    });
 
     let searchParams = {
       allowYear: allowYear,
@@ -225,8 +269,8 @@ const SalaryInformationEntryModel = () => {
       dateId : dateId,
 
       searchCdEmp: searchCdEmp,
-      searchCdDept: searchCdDept,
-      searchCdOccup: searchCdOccup,
+      searchCdDept: resetSearchCdDept(searchCdDept),
+      searchCdOccup: resetSearchCdOccup(searchCdOccup),
       searchYnUnit: searchYnUnit,
       paymentDateFlag: 'true'
     };
@@ -258,7 +302,7 @@ const SalaryInformationEntryModel = () => {
           setSaInfoListData(getEmplist);
 
           /* select box 지급액 통계 합계 */
-          getSalTotalSum('EmpAllThisMonth');
+          if(paymentDate!=="") getSalTotalSum('EmpAllThisMonth');
         }
       })
       .catch((error) => {
@@ -425,9 +469,9 @@ const deleteSelectedRows = () => {
 
   /* 공제 지급액 수정 */
   const updateSalaryDeductPay = useCallback((salaryDeductPay) => {
-    const updatedData = {...salaryDeductPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate};
+    const updatedData = {...salaryDeductPay, dateId: dateId, cdEmp: cdEmp, allowYear: allowYear, allowMonth: allowMonth, paymentDate : paymentDate, salDivision : salDivision};
     saveSalDeductPay(updatedData); // 저장
-  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate]);
+  }, [cdEmp, dateId, allowYear, allowMonth, paymentDate,salDivision]);
 
   /* 급여테이블 수정 + 공제항목테이블 update */
   const saveSalDeductPay = (updatedData) => {
@@ -552,7 +596,9 @@ const deleteSelectedRows = () => {
       setSumDeductPay,
       setDeductData,
       setSaInfoDetailData,
-      setSalPaySumData 
+      setSalPaySumData,
+      setSearchNmDept,
+      setSearchNmOccup
       
     },
   };
