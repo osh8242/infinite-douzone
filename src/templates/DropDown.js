@@ -6,6 +6,7 @@ import { useCurrTime } from "../Login/TimeProvider";
 import { useLogin } from "../Login/LoginProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 // import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { getLogFunction } from "../model/useLog";
 
@@ -61,7 +62,11 @@ const DropDownMenu = (props) => {
 
   return (
     <div className={profileDropdown}>
-      {/* <FontAwesomeIcon icon={faBell} size="2xl" className="faBell" /> */}
+      <FontAwesomeIcon
+        icon={faPenToSquare}
+        size="xl"
+        className="faPenToSquare"
+      />
       <FontAwesomeIcon
         icon={faArrowRightFromBracket}
         size="xl"

@@ -26,7 +26,7 @@
   display: flex;
   margin-right: 16px;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
 }
 
 #topHeaderButtonGroup {
@@ -235,4 +235,21 @@
 
 .miniMap a:hover {
   background-color: #f7f7f7;
+}
+
+.backgroundBorderNone:disabled {
+  color: black; 
+  opacity: 1;  
+  font-size: 16px;
+}
+
+
+.clickableIcon {
+  margin-left:-10px;
+  cursor: pointer;  
+  margin-right:7px;
+}
+
+.stateBtn{
+  margin-right:7px;
 }
