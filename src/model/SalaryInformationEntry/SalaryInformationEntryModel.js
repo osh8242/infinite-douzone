@@ -68,7 +68,7 @@ const SalaryInformationEntryModel = () => {
 
   const [cdEmp, setCdEmp] = useState(""); // 사원번호
   const [allowMonth, setAllowMonth] = useState(currentMonthStr); // 귀속년월
-  const [salDivision, setSalDivision] = useState("SAL"); // 구분
+  const [salDivision, setSalDivision] = useState(""); // 구분
   const [paymentDate, setPaymentDate] = useState(currentDateStr); // 지급일
 
   const [searchCdEmp, setSearchCdEmp] = useState(""); // 사원코드 검색
@@ -84,6 +84,7 @@ const SalaryInformationEntryModel = () => {
     );
     setSearchCdDept(matchedItem.item.nmCdDept);
   });
+
 
   const setSearchNmOccup = useCallback((fieldName, value) => { 
    
@@ -119,6 +120,8 @@ const SalaryInformationEntryModel = () => {
   useEffect(() => {
     getSaPayByCdEmp();
   }, [cdEmp, dateId, salDivision]);
+
+  /* 귀속연월 변경시 지급일자 비우기 */
 
   const changeCdEmp = useCallback(
     (cdEmp) => {
@@ -240,7 +243,7 @@ const SalaryInformationEntryModel = () => {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /* 검색 */
-  const onSearch = useCallback(() => {
+  const onSearch = useCallback((searchParam) => {
   
     // 비우기
     setCdEmp('');
@@ -275,6 +278,18 @@ const SalaryInformationEntryModel = () => {
       searchYnUnit: searchYnUnit,
       paymentDateFlag: 'true'
     };
+
+    if(searchParam){
+      searchParams = {
+        allowYear: "2023",
+        allowMonth: searchParam.allowMonth,
+        salDivision: searchParam.salDivision,
+        dateId : searchParam.dateId,
+        paymentDate : searchParam.paymentDate
+      };
+    }
+
+    console.log(searchParams);
 
     api
       .post(url + GET_SALINFO_BY_DATE_URL, searchParams)
@@ -492,14 +507,14 @@ const deleteSelectedRows = () => {
   };
 
   /* 전월데이터 복사 */
-  const setCopyLastMonthData = useCallback(() => {
+  const setCopyLastMonthData = useCallback((newSalDivision) => {
 
     api
       .post(url + SET_COPYSALDATA_LASTMONTH_URL, {
         allowYear: allowYear,
         allowMonth: allowMonth,
         paymentDate : paymentDate,
-        salDivision : salDivision
+        salDivision : newSalDivision
       })
       .then((response) => {
         let message = "";
@@ -515,13 +530,23 @@ const deleteSelectedRows = () => {
           onlyConfirm: true
         });
 
-        //리로드
+        
+        // 데이터 비우기
+        setPaymentDate('');
+        setCdEmp('');
+        setDateId('');
+        setSaInfoListData([]);
+        setSalData([]);                     
+        setSumAllowPayByYnTax([{ item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }},]);
+        setSumDeductPay([ { item: { sumDeductPay: 0 , excessAmount : 0}} ]);
+        setDeductData([]);              
+        setSaInfoDetailData([]);
         //onSearch();
       })
       .catch((error) => {
         console.log("에러발생 -> ", error);
       });
-  }, [allowMonth, salDivision]);
+  }, [allowMonth]);
 
   return {
     state: {
