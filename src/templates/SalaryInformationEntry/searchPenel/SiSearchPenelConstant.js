@@ -29,11 +29,12 @@ export const SI_SUB_SEARCHFIELD = [
     type: INPUT_TYPE.textCodeHelper,
     field: "searchCdDept",
     label: LABELS.cdDept,
-    
+    readOnly : true
   },{
     type: INPUT_TYPE.textCodeHelper,
     field: "searchCdOccup",
     label: LABELS.rankNo,
+    readOnly : true
   },{
     type: INPUT_TYPE.select,
     field: "searchYnUnit",

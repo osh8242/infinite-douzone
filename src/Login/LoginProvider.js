@@ -9,14 +9,12 @@ const LoginContext = createContext();
 export const LoginProvider = ({ children }) => {
   // id와 pwd의 상태를 관리하는 state
   const [loginInfo, setLoginInfo] = useState({
-    companyCode: "",
+    companyName: "",
     userId: "",
     userPwd: "",
     userName: "",
     empImg: "",
-    // master: "",
     theme: "",
-    // gender: "",
     email: "",
   });
 

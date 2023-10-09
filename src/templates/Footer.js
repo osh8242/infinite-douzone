@@ -23,8 +23,8 @@ export default function Footer() {
     <>
       {!isExcludedPage && (
         <div id="footer-area">
-          <div id="footer" className="SUITE p-12 px-5">
-            <div>INFINITE DOUZONE</div>
+          <div id="footer" className="SUITE p-12">
+            <div id="footer-companyname">INFINITE DOUZONE</div>
             <div id="footer-copyright">
               Copyright <FontAwesomeIcon icon={faCopyright} /> INFINITE DOUZONE.
               All rights reserved.
