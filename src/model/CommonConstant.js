@@ -25,7 +25,7 @@ export const CODE_VALUE = {
     C005: "법률행정",
     C006: "보건의료",
     C007: "문화예술",
-    C008: "농림어업",
+    C008: "수산농업",
   },
   [CODE_TYPE.cdFamrel]: {
     CF0: "본인",

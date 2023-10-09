@@ -130,6 +130,7 @@ export const MAIN_TAB = {
       subLabel: "매 주 ",
       endLabel: "일 ",
       field: "workingDay",
+      style: { textAlign: "center" },
     },
     {
       type: INPUT_TYPE.selectCustom,
@@ -155,6 +156,7 @@ export const MAIN_TAB = {
       field: "salaryAmount",
       selectValue: "salaryType",
       typeValue: "num",
+      style: { textAlign: "right" },
     },
 
     {
@@ -173,6 +175,7 @@ export const MAIN_TAB = {
       field: "bonusAmount",
       selectId: "bonusPaymentStatus",
       typeValue: "num",
+      style: { textAlign: "right" },
     },
 
     {
@@ -285,6 +288,7 @@ export const MAIN_TAB_SEARCH = {
       endLabel: "일 ",
       field: "workingDay",
       disabled: "true",
+      style: { textAlign: "center" },
     },
     {
       type: INPUT_TYPE.selectCustom,
@@ -313,6 +317,7 @@ export const MAIN_TAB_SEARCH = {
       thousandSeparator: true,
       selectValue: "salaryType",
       disabled: "true",
+      style: { textAlign: "right" },
     },
 
     {
@@ -332,6 +337,7 @@ export const MAIN_TAB_SEARCH = {
       field: "bonusAmount",
       selectId: "bonusPaymentStatus",
       disabled: true,
+      style: { textAlign: "right" },
     },
 
     {

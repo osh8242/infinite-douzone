@@ -82,6 +82,7 @@ const FormPanel = ({
             onChangeSelect={submitData}
             selectedOption={{ formData }.formData[input.selectValue]}
             option={formData?.[input.selectValue] || ""}
+            style={input.style}
           />
         );
         break;
@@ -206,7 +207,7 @@ const FormPanel = ({
               onChangeFn && onChangeFn(value);
               submitData && submitData(e, value);
             }}
-            readOnly = {readOnly}
+            readOnly={readOnly}
           />
         );
         break;
