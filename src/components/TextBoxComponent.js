@@ -139,7 +139,6 @@ function TextBoxComponent(props) {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
       } else if (type === "num") {
-        // setSendValue(inputValue);
         setInputValue(processThousandSeparator(inputValue));
         onEnter && onEnter(event, processThousandSeparator(inputValue), id);
       } else {
