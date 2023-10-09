@@ -71,8 +71,8 @@ const SearchPanel = ({
               </div>
             )}
           </div>
-        ) : (l
-          <div className="my-1 col" style={{paddingLeft:'100px', paddingRight:'220px'}}>
+        ) : (
+          <div className="my-1 col" style={{paddingLeft:'50px', paddingRight:'220px'}}>
             <Row>
               <Col className="my-1" md="8">
                 {children}
