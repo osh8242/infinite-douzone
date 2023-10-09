@@ -37,9 +37,14 @@ const SearchPanel = ({
                 md={{ span: 1, offset: 1 }}
               >
                 {isBodyOpen ? (
+                  <>
+                  <Button variant="secondary" onClick={onSearch}>
+                    조회
+                  </Button>
                   <Button variant="secondary" onClick={toggleArrowIcon}>
                     <FontAwesomeIcon icon={faCaretUp} />
                   </Button>
+                  </>
                 ) : (
                   <>
                     <Button variant="secondary" onClick={onSearch}>
@@ -60,24 +65,14 @@ const SearchPanel = ({
             </div>
             {isBodyOpen && (
               <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
-                {/* {isBodyOpen && ( */}
                 <Row>
-                  {children[1]}
-                  <div
-                    className="d-flex justify-content-md-center"
-                    style={{ marginTop: "12px" }}
-                  >
-                    <Button variant="secondary" onClick={onSearch}>
-                      조회
-                    </Button>
-                  </div>
+                  <Col className="my-1">{children[1]}</Col>
                 </Row>
-                {/* )} */}
               </div>
             )}
           </div>
-        ) : (
-          <div className="search-panel">
+        ) : (l
+          <div className="my-1 col" style={{paddingLeft:'100px', paddingRight:'220px'}}>
             <Row>
               <Col className="my-1" md="8">
                 {children}
