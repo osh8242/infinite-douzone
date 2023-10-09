@@ -128,7 +128,10 @@ function TextBoxComponent(props) {
       if (type === "callNumber") {
         if (isValid) {
           // 해당하는 전화번호 input의 값만 update
+          // console.log("callNumbre event id >> ", event.target.id);
+          // console.log("callNumbre event value >> ", event.target.value);
           onEnter && onEnter(event, event.target.value);
+          return;
         } else {
           alertErrorMessage();
         }
@@ -153,45 +156,45 @@ function TextBoxComponent(props) {
     }
 
     if (onClickCodeHelper) {
-      // if (event.key !== "Shift" && event.key !== "Escape") {
-      //   if (event.key !== "Tab" && event.key !== "F10") {
-      //     if (event.key === "Enter") {
-      //       onEnter && onEnter(event, sendValue, id);
-      //       return;
-      //     } else if (
-      //       event.key === "Backspace" ||
-      //       event.key === "Delete" ||
-      //       event.key === "Del"
-      //     ) {
-      //       setInputValue("");
-      //       onChange && onChange(event, "", id);
-      //     } else {
-      //       event.preventDefault(); // 키보드 입력 막기
-      //       onClickCodeHelper(setInputValue);
-      //     }
-      //   }
-      // }
-
-      const disallowedKeys = ["Shift", "Escape", "Tab", "F10"];
-      const deleteKeys = ["Backspace", "Delete", "Del"];
-
-      switch (event.key) {
-        case "F2": // 코드헬퍼창 단축키
-          onClickCodeHelper(setInputValue);
-          break;
-        case "Enter":
-          onEnter && onEnter(event, sendValue, id);
-          break;
-        default:
-          if (!disallowedKeys.includes(event.key)) {
-            if (deleteKeys.includes(event.key)) {
-              setInputValue("");
-              onChange && onChange(event, "", id);
-            } else {
-              event.preventDefault(); //키보드입력 막기
-            }
+      if (event.key !== "Shift" && event.key !== "Escape") {
+        if (event.key !== "Tab" && event.key !== "F10") {
+          if (event.key === "Enter") {
+            onEnter && onEnter(event, sendValue, id);
+            return;
+          } else if (
+            event.key === "Backspace" ||
+            event.key === "Delete" ||
+            event.key === "Del"
+          ) {
+            setInputValue("");
+            onChange && onChange(event, "", id);
+          } else {
+            event.preventDefault(); // 키보드 입력 막기
+            onClickCodeHelper(setInputValue);
           }
+        }
       }
+
+      // const disallowedKeys = ["Shift", "Escape", "Tab", "F10"];
+      // const deleteKeys = ["Backspace", "Delete", "Del"];
+
+      // switch (event.key) {
+      //   case "F2": // 코드헬퍼창 단축키
+      //     onClickCodeHelper(setInputValue);
+      //     break;
+      //   case "Enter":
+      //     onEnter && onEnter(event, sendValue, id);
+      //     break;
+      //   default:
+      //     if (!disallowedKeys.includes(event.key)) {
+      //       if (deleteKeys.includes(event.key)) {
+      //         setInputValue("");
+      //         onChange && onChange(event, "", id);
+      //       } else {
+      //         event.preventDefault(); //키보드입력 막기
+      //       }
+      //     }
+      // }
 
       onKeyDown && onKeyDown(event);
     }
@@ -344,7 +347,7 @@ function TextBoxComponent(props) {
     callNumberComponents.push(
       <Form.Control
         id={`${id}${i}`}
-        key={i}
+        key={i - 1}
         type="callNumber"
         value={inputCallValue[i - 1] || ""}
         disabled={disabled}
