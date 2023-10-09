@@ -782,7 +782,7 @@ const TableForm = ({
                 <input
                   type="checkbox"
                   onChange={() => allCheckboxChangeHandler()}
-                  checked={checkedBoxCounter() === tableRows.length}
+                  checked={checkedBoxCounter() === tableRows.length || false}
                 />
               </th>
             )}
@@ -912,7 +912,7 @@ const TableForm = ({
           confirmModalState.onHide();
           tableFocus.current = true;
         }}
-      ></ConfirmComponent>
+      />
       <ModalComponent
         title={modalState.title}
         size={modalState.size}
