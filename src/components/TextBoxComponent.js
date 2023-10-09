@@ -156,45 +156,45 @@ function TextBoxComponent(props) {
     }
 
     if (onClickCodeHelper) {
-      if (event.key !== "Shift" && event.key !== "Escape") {
-        if (event.key !== "Tab" && event.key !== "F10") {
-          if (event.key === "Enter") {
-            onEnter && onEnter(event, sendValue, id);
-            return;
-          } else if (
-            event.key === "Backspace" ||
-            event.key === "Delete" ||
-            event.key === "Del"
-          ) {
-            setInputValue("");
-            onChange && onChange(event, "", id);
-          } else {
-            event.preventDefault(); // 키보드 입력 막기
-            onClickCodeHelper(setInputValue);
-          }
-        }
-      }
-
-      // const disallowedKeys = ["Shift", "Escape", "Tab", "F10"];
-      // const deleteKeys = ["Backspace", "Delete", "Del"];
-
-      // switch (event.key) {
-      //   case "F2": // 코드헬퍼창 단축키
-      //     onClickCodeHelper(setInputValue);
-      //     break;
-      //   case "Enter":
-      //     onEnter && onEnter(event, sendValue, id);
-      //     break;
-      //   default:
-      //     if (!disallowedKeys.includes(event.key)) {
-      //       if (deleteKeys.includes(event.key)) {
-      //         setInputValue("");
-      //         onChange && onChange(event, "", id);
-      //       } else {
-      //         event.preventDefault(); //키보드입력 막기
-      //       }
+      // if (event.key !== "Shift" && event.key !== "Escape") {
+      //   if (event.key !== "Tab" && event.key !== "F10") {
+      //     if (event.key === "Enter") {
+      //       onEnter && onEnter(event, sendValue, id);
+      //       return;
+      //     } else if (
+      //       event.key === "Backspace" ||
+      //       event.key === "Delete" ||
+      //       event.key === "Del"
+      //     ) {
+      //       setInputValue("");
+      //       onChange && onChange(event, "", id);
+      //     } else {
+      //       event.preventDefault(); // 키보드 입력 막기
+      //       onClickCodeHelper(setInputValue);
       //     }
+      //   }
       // }
+
+      const disallowedKeys = ["Shift", "Escape", "Tab", "F10"];
+      const deleteKeys = ["Backspace", "Delete", "Del"];
+
+      switch (event.key) {
+        case "F2": // 코드헬퍼창 단축키
+          onClickCodeHelper(setInputValue);
+          break;
+        case "Enter":
+          onEnter && onEnter(event, sendValue, id);
+          break;
+        default:
+          if (!disallowedKeys.includes(event.key)) {
+            if (deleteKeys.includes(event.key)) {
+              setInputValue("");
+              onChange && onChange(event, "", id);
+            } else {
+              event.preventDefault(); //키보드입력 막기
+            }
+          }
+      }
 
       onKeyDown && onKeyDown(event);
     }
