@@ -33,9 +33,9 @@ export const salAllow = {
 
 export const sumAllowPay = {
   headers: [
-    { field: "sumByY", text: "과세", type: "number" },
-    { field: "sumByN", text: "비과세", type: "number" },
-    { field: "sumAllowPay", text: "합계", type: "number" },
+    { field: "sumByY", text: "과세", type: "number" , width : '100px'},
+    { field: "sumByN", text: "비과세", type: "number" , width : '100px'},
+    { field: "sumAllowPay", text: "합계", type: "number" , width : '100px'},
   ],
 };
 
@@ -73,9 +73,9 @@ export const salDeductWithCalculation = {
 /* 조회구분 영역 */
 export const salAllowSum = {
   headers: [
-    { field: "nmAllow", text: "항목" },
-    { field: "ynTax", text: "TX" },
-    { field: "sumAllowPay", text: "금액", type: "number" },
+    { field: "nmAllow", text: "항목" , width : '100px'},
+    { field: "ynTax", text: "TX" , width : '100px'},
+    { field: "sumAllowPay", text: "금액", type: "number", width : '100px' },
   ],
 };
 
@@ -89,6 +89,7 @@ export const salDeductSum = {
 /* 검색옵션 */
 // 구분
 export const salaryDivisionOption = [
+  { key: "", value: "0.선택" },
   { key: "SAL", value: "1.급여" },
   { key: "SALBONUS", value: "2.급여+상여" },
   { key: "BONUS", value: "3.상여" },

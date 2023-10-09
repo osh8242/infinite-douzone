@@ -63,19 +63,17 @@ const Login = () => {
         `${url}/auth/login?clientIp=${sessionStorage.getItem("clientIp")}`,
         loginUser
       );
-      console.log("=========================");
-      console.log(response);
-
       const token = response.data.token;
-      console.log("token" + token);
 
       if (token) {
-        updateToken(response.data.token);
+        updateToken(token);
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
-        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("authToken", token);
         localStorage.setItem("userInfo", JSON.stringify(response.data.user));
-        const currentTime = new Date();
-        localStorage.setItem("loginTime", currentTime);
+
+        // const currentTime = new Date();
+        localStorage.setItem("loginTime", new Date());
+
         console.log("로그인에 성공하였습니다.");
         setInvalidPwd("");
         setInvalid("");

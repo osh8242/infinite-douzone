@@ -8,6 +8,7 @@ import {
 import {
   codeHelperData_emplist,
   codeHelperData_paymentDate,
+ 
 } from "../../../model/SalaryInformationEntry/SalConstant";
 
 import FormPanel from "../../../components/FormPanel";
@@ -15,7 +16,7 @@ import ConfirmComponent from "../../../components/ConfirmComponent";
 import { currentDateStr } from "../../../utils/DateUtils";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import "../../../styles/SearchPanel.scss";
-import { codeHelperData_cdDept, codeHelperData_cdOccup } from "../../../model/EmpRegister/EmpConstant";
+import { codeHelperData_cdDept,  codeHelperData_rankNo } from "../../../model/EmpRegister/EmpConstant";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -34,18 +35,19 @@ const SiSeacrchPanel = (props) => {
   }, [state.searchVo]);
 
   const selectOptionHandler = (value) => {
-    // set data
-    actions.setSalDivision(value);
+    if(value === "") return true; 
+    //전월데이터 복사 모달
+    let message = "현재 귀속연월과 조회구분에 해당되는 모든 데이터 삭제후  전월데이터를 복사하시겠습니까?";
+    setShowModal({ 
+      show: true, 
+      message: message,
+      action : () => {
+        actions.setSalDivision(value);
+        setCopyLastMonthData(value);
+      }
+    });
 
-    // 전월데이터 복사 모달
-    // let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
-    // setShowModal({ 
-    //   show: true, 
-    //   message: message,
-    //   action : () => {
-    //     setCopyLastMonthData();
-    //   }
-    // });
+    actions.setSalDivision(value);
   };
 
   // 작성일자 코드헬퍼 클릭 이벤트
@@ -56,7 +58,7 @@ const SiSeacrchPanel = (props) => {
       message: message,
       action: () => {
         actions.setPaymentDate(row.paymentDate);
-        actions.onSearch();
+        actions.onSearch(row);
       },
     });
   };
@@ -85,6 +87,7 @@ const SiSeacrchPanel = (props) => {
     actions.setPaymentDate("");
     actions.setCdEmp('');
     actions.setDateId('');
+    actions.setYnComplete('');
     actions.setSaInfoListData([]);
     actions.setSalData([]);                     
     actions.setSumAllowPayByYnTax([{ item: { sumByY: 0, sumByN: 0, sumAllowPay: 0 }},]);
@@ -97,6 +100,7 @@ const SiSeacrchPanel = (props) => {
       deductPay: [],
       totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
     });
+    actions.setSalDivision("");
   }
 
   const onSearchClick = () =>{
@@ -112,6 +116,12 @@ const SiSeacrchPanel = (props) => {
     }
     onSearch();
   }
+
+  const changeAllowMonth = (newValue) =>{
+    actions.setPaymentDate("");
+    actions.setAllowMonth(newValue);
+  }
+
   return (
     <div className="deleteLabelBackground">
       <ConfirmComponent
@@ -144,7 +154,7 @@ const SiSeacrchPanel = (props) => {
                 ),
             }}
             onChange={{
-              allowMonth: (newValue) => actions.setAllowMonth(newValue),
+              allowMonth: (newValue) => changeAllowMonth(newValue),
               salDivision: (newValue) => selectOptionHandler(newValue),
               // paymentDate: (newValue) => {if(!validationPaymentDate(newValue)) 원래대로 돌려놓는 함수}
               paymentDate: (newValue) => validationPaymentDate(newValue),
@@ -178,13 +188,13 @@ const SiSeacrchPanel = (props) => {
                   modalShow(
                     "codeHelper",
                     codeHelperData_cdDept,
-                    (e,row) => actions.setSearchNmDept(row)
+                    (e,row) => actions.setSearchNmDept("cdDept", row.cdDept)
                   ),
                 searchCdOccup: () =>
                   modalShow(
                     "codeHelper",
-                    codeHelperData_cdOccup,
-                    (e,row) => actions.setSearchNmOccup(row)
+                    codeHelperData_rankNo,
+                    (e,row) => actions.setSearchNmOccup("rankNo", row.rankNo)
                   ),
               }}
               onChange={{

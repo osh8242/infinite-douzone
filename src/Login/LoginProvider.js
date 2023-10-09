@@ -20,6 +20,7 @@ export const LoginProvider = ({ children }) => {
 
   // JWT 토큰 상태 관리
   const [token, setToken] = useState(null);
+  // const [theme, setTheme] = useState("blue");
 
   const updateLoginInfo = (key, value) => {
     setLoginInfo((prev) => ({ ...prev, [key]: value }));
@@ -50,3 +51,21 @@ export const LoginProvider = ({ children }) => {
 export const useLogin = () => {
   return useContext(LoginContext);
 };
+
+// const getTheme = (rgb) => {
+//   let theme;
+//   if (rgb === "rgb(255, 134, 48)") {
+//     theme = "orange";
+//   } else if (rgb === "rgb(18, 204, 108)  ") {
+//     theme = "green";
+//   } else if (rgb === "rgb(254, 213, 51)") {
+//     theme = "yellow";
+//   } else if (rgb === "rgb(255, 82, 82)") {
+//     theme = "pink";
+//   } else if (rgb === "rgb(126, 58, 243)") {
+//     theme = "pupple";
+//   } else {
+//     theme = "blue";
+//   }
+//   return theme;
+// };

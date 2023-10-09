@@ -6,7 +6,8 @@
   display: flex;
   align-items: center;
   border-radius: 4px;
-  border: solid 2px rgba(0, 0, 0, 0.3);
+  border: solid 2px lightgray;    
+  margin-right: 20px;
 }
 
 .search-bar:focus-within {
@@ -25,7 +26,6 @@
     overflow: auto;
     z-index: 1;
     font-size: 15px;
-    
     background-color: rgba(230, 230, 230, 0.1);
 }  
 
@@ -36,7 +36,7 @@
 }
 
 .search-bar__input:focus::placeholder {
-  color: grey;
+  color: lightgray;
 }
 
 .search-results {

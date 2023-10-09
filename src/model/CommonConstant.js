@@ -426,7 +426,7 @@ export const LABELS = {
   addOrgin1: "본적주소",
   addOrgin2: "본적 상세주소",
   mnKeepgarden: "소유동산",
-  mnKeepstate: "소유부동산",
+  mnKeepestate: "소유부동산",
   fgOwnHouse: "자택소유",
   mnMmaverage: "월평균임금",
   ynEmploy: "고용보험적용",
