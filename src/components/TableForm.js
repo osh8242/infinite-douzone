@@ -1,7 +1,17 @@
-import { faPlus, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Table } from "react-bootstrap";
 import { CODE_VALUE } from "../model/CommonConstant";
 import "../styles/tableForm.css";
@@ -189,7 +199,9 @@ const TableForm = ({
 
   // 현재 테이블의 모든 인풋요소들을 가져옴
   const getInputElements = useCallback((event, rowIndex, columnIndex) => {
-    return tbodyRef.current.children[rowIndex].querySelectorAll("input, select");
+    return tbodyRef.current.children[rowIndex].querySelectorAll(
+      "input, select"
+    );
   }, []);
 
   // 새로운 행(빈행)을 만드는 함수
@@ -512,7 +524,8 @@ const TableForm = ({
                     let targetIndex = tableData.findIndex(
                       (row) => row.item[field] === value
                     );
-                    const newField = field.charAt(0).toUpperCase() + field.slice(1);
+                    const newField =
+                      field.charAt(0).toUpperCase() + field.slice(1);
                     setInputValue(
                       targetIndex !== -1
                         ? tableData[targetIndex].item[`nm${newField}`]
@@ -578,11 +591,16 @@ const TableForm = ({
           });
           return selectFormValue;
         case "textCodeHelper":
-          if (tableName === "empFam" && tableRows[rowIndex].item[field] === "CF0")
+          if (
+            tableName === "empFam" &&
+            tableRows[rowIndex].item[field] === "CF0"
+          )
             return "본인";
           let codeHelperData = codeHelper[field];
           let tableData = codeHelperData.tableData;
-          let targetIndex = tableData.findIndex((row) => row.item[field] === value);
+          let targetIndex = tableData.findIndex(
+            (row) => row.item[field] === value
+          );
           const newField = field.charAt(0).toUpperCase() + field.slice(1);
           return targetIndex !== -1
             ? tableData[targetIndex].item[`nm${newField}`]
@@ -630,7 +648,8 @@ const TableForm = ({
               if (event.shiftKey) {
                 if (columnRef > 0) setColumnRef(columnRef - 1);
               } else {
-                if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+                if (columnRef < tableHeaders.length - 1)
+                  setColumnRef(columnRef + 1);
               }
               break;
             default:
@@ -663,7 +682,8 @@ const TableForm = ({
 
             case "ArrowRight":
               event.preventDefault();
-              if (columnRef < tableHeaders.length - 1) setColumnRef(columnRef + 1);
+              if (columnRef < tableHeaders.length - 1)
+                setColumnRef(columnRef + 1);
               break;
 
             case "Home":
@@ -771,7 +791,9 @@ const TableForm = ({
               <th
                 className="tableHeader"
                 data-field={thead.field}
-                onClick={sortable ? (e) => rowsOrderHandler(e, thead.field) : null}
+                onClick={
+                  sortable ? (e) => rowsOrderHandler(e, thead.field) : null
+                }
                 key={rowIndex}
                 style={thead.width && { width: thead.width }}
               >
@@ -856,7 +878,9 @@ const TableForm = ({
                 <td
                   className={getTdClassName(tableRows.length, columnIndex)}
                   key={columnIndex}
-                  onClick={(e) => handleRowClick(e, tableRows.length, columnIndex)}
+                  onClick={(e) =>
+                    handleRowClick(e, tableRows.length, columnIndex)
+                  }
                 >
                   <div className="tableContents">
                     {!showCheckbox && columnIndex === 0 && (
