@@ -27,6 +27,7 @@ import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
+import ConfirmComponent from "../../components/ConfirmComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -36,6 +37,7 @@ const HrManagementLayout = () => {
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
   const {
+    confirmModalState,
     jobOkSelectRef,
     orderSelectRef,
     leftTableData,
@@ -258,13 +260,15 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef)
+            modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef)
+              modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}
