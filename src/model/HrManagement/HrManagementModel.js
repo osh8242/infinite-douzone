@@ -70,10 +70,7 @@ const HrManagementModel = () => {
           }
         });
         console.log("세팅된 newLeftTableData", newLeftTableData);
-        console.log(
-          "세팅된 newLeftCodeHelperTableData",
-          newLeftCodeHelperTableData
-        );
+        console.log("세팅된 newLeftCodeHelperTableData", newLeftCodeHelperTableData);
         setLeftCodeHelperTableData(newLeftCodeHelperTableData);
         setLeftTableData(newLeftTableData);
       })

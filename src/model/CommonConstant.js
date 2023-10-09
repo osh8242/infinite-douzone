@@ -25,7 +25,7 @@ export const CODE_VALUE = {
     C005: "법률행정",
     C006: "보건의료",
     C007: "문화예술",
-    C008: "농림어업",
+    C008: "수산농업",
   },
   [CODE_TYPE.cdFamrel]: {
     CF0: "본인",
@@ -426,7 +426,7 @@ export const LABELS = {
   addOrgin1: "본적주소",
   addOrgin2: "본적 상세주소",
   mnKeepgarden: "소유동산",
-  mnKeepstate: "소유부동산",
+  mnKeepestate: "소유부동산",
   fgOwnHouse: "자택소유",
   mnMmaverage: "월평균임금",
   ynEmploy: "고용보험적용",

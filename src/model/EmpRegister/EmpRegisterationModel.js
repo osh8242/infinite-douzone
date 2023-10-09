@@ -22,7 +22,7 @@ function EmpRegisterationModel() {
 
   // 로그인, 회원가입 기능 구현 후, 현재 로그인한 사용자의 code값을 가져오도록 수정 예정
   // const [cdEmp, setCdEmp] = useState("E001");
-  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "E001" }); // cdEmp
+  const [mainTablePkValue, setMainTablePkValue] = useState({ cdEmp: "" }); // cdEmp
   const [editedEmp, setEditedEmp] = useState({});
   const [leftTableData, setLeftTableData] = useState([]);
   const [mainTabData, setMainTabData] = useState([]);
@@ -98,47 +98,21 @@ function EmpRegisterationModel() {
   const submitMainTabData = useCallback(
     (event, value, id) => {
       if (event.key === "Enter" || event.type === "change") {
-        event.target.blur();
+        if (event.key === "Enter") event.target.blur();
         let newEmp = { ...mainTabData.item };
-        //한글변환~~~~~~~~~~~~~
-        // for (const key in mainTabData.item) {
-        //   if (mainTabData.item[key]) {
-        //     newEmp[key] = convertToCode(key, mainTabData.item[key]);
-        //   }
-        // }
+        newEmp[event.target.id] = value;
         console.log("newEmp", newEmp);
-        if (typeof value === "object" && !Array.isArray(value)) {
-          // 넘어온 값이 JSON 객체인 경우
-          Object.keys(value).forEach((key) => {
-            const columnValue = value[key];
-            newEmp[key] = columnValue;
-          });
-        } else {
-          newEmp[event.target.id] = value;
-        }
         updateEmp(newEmp);
-        setMainTablePkValue({ ...mainTablePkValue });
+        // return;
+      } else if (event.type === "click" || typeof value === "object") {
+        // 넘어온 값이 JSON 객체인 경우
+        let newEmp = { ...mainTabData.item };
+        Object.assign(newEmp, value);
+        updateEmp(newEmp);
       } else {
-        // 이벤트가 없는 경우
         let newEmp = { ...mainTabData.item };
-        console.log("newEmp", newEmp);
-        //한글변환~~~~~~~~~~~~~
-        // for (const key in mainTabData.item) {
-        //   if (mainTabData.item[key]) {
-        //     newEmp[key] = convertToCode(key, mainTabData.item[key]);
-        //   }
-        // }
-        if (typeof value === "object" && !Array.isArray(value)) {
-          // 넘어온 값이 JSON 객체인 경우
-          Object.keys(value).forEach((key) => {
-            const columnValue = value[key];
-            newEmp[key] = columnValue;
-          });
-        } else {
-          newEmp[id] = value;
-        }
+        newEmp[id] = value;
         updateEmp(newEmp);
-        setMainTablePkValue({ ...mainTablePkValue });
       }
     },
     [mainTablePkValue, mainTabData]
@@ -172,32 +146,37 @@ function EmpRegisterationModel() {
   useEffect(() => {
     if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
       api
-        .post("/emp/getEmpByCdEmp", mainTablePkValue, {
-          ContentType: "application/json",
-        })
+        .post(urlPattern.getEmpByCdEmp, mainTablePkValue)
         .then((response) => {
           console.log(
             "EmpRegisterationModel > /emp/getEmpByCdEmp",
             response.data
           );
 
-          // 코드 한글변환
-          let newResponseData = { ...response.data };
-          // for (const key in response.data) {
-          //   if (response.data[key]) {
-          //     newResponseData[key] = convertToName(key, response.data[key]);
-          //   }
-          // }
-          setMainTabData(Emp(newResponseData));
+          setMainTabData(Emp(response.data));
         })
         .catch((error) => {
           console.error("에러발생: ", error);
+          setMainTabData({});
+        });
+    } else {
+      setMainTabData({});
+    }
+  }, [mainTablePkValue]);
+
+  const getEmpByCdEmp = useCallback((mainTablePkValue) => {
+    if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
+      api
+        .post(urlPattern.getEmpByCdEmp, mainTablePkValue)
+        .then((response) => {
+          console.log("getEmpByCdEmp 함수 실행!! >>", response);
+          setMainTabData(Emp(response.data));
+        })
+        .catch((error) => {
+          console.log("에러 발생: ", error);
         });
     }
-    // else {
-    //   setMainTabData({});
-    // }
-  }, [mainTablePkValue]);
+  });
 
   // useEffect(() => {
   //   if (mainTablePkValue?.cdEmp && Object.keys(mainTablePkValue).length !== 0) {
@@ -273,32 +252,31 @@ function EmpRegisterationModel() {
   // useEffect(() => {
   //   if (editedEmp && Object.keys(editedEmp).length !== 0) {
   //     console.log("emp useEffect update요청: ", editedEmp);
-  //     axios
-  //       .put(url + "/emp/updateEmp", editedEmp)
+  //     api
+  //       .put(urlPattern.updateEmp, editedEmp.item)
   //       .then((response) => {
   //         if (response.data === 1) console.log("Emp 업데이트 성공");
-  //         setEditedEmp({});
+  //         setEditedEmp();
   //       })
   //       .catch((error) => {
   //         console.log("에러발생 -> ", error);
   //       });
   //   }
-  //   console.log("update useEffect 함수실행", editedEmp);
-  // }, [editedEmp]);
+  // }, []);
 
   //사원 update 함수
   const updateEmp = useCallback((emp) => {
     console.log("emp 함수 update요청: ", emp);
     api
-      .put("/emp/updateEmp", emp)
+      .put(urlPattern.updateEmp, emp)
       .then((response) => {
         if (response.data !== 0) console.log("Emp 업데이트 성공");
-        setEditedEmp({});
+        setMainTablePkValue({ ...mainTablePkValue });
       })
       .catch((error) => {
         console.log("에러발생 -> ", error);
       });
-  }, []);
+  });
 
   //사원 정보 DELETE 요청
   const deleteSelectedRows = useCallback(() => {
@@ -435,6 +413,7 @@ function EmpRegisterationModel() {
       setCodeHelperState,
       setAddRow,
       submitMainTabData, //mainTab update 함수
+      getEmpByCdEmp,
     },
   };
 }

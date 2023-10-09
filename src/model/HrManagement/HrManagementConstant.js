@@ -98,14 +98,15 @@ export const CODE_HELPER_DATA = {
       { field: "nmCdFamrel", text: "관계명" },
     ],
     tableData: Object.keys(CODE_VALUE[CODE_TYPE["cdFamrel"]])
-    .map((key) => {
-      return {
-        item: {
-          cdFamrel: key,
-          nmCdFamrel: CODE_VALUE[CODE_TYPE["cdFamrel"]][key],
-        },
-      };
-    }),
+      .filter((key) => key !== "CF0")
+      .map((key) => {
+        return {
+          item: {
+            cdFamrel: key,
+            nmCdFamrel: CODE_VALUE[CODE_TYPE["cdFamrel"]][key],
+          },
+        };
+      }),
     searchField: ["cdFamrel", "nmCdFamrel"],
     usePk: "cdFamrel",
   },
@@ -150,7 +151,7 @@ export const CODE_HELPER_DATA = {
 /////////////////////////////////// 우측 메인탭
 export const tabConstant = {
   mainTabMenuList: ["기초정보", "인적정보"],
-  subTabMenuList: ["가족", "학력", "경력", "신체", "병역"],
+  subTabMenuList: ["가족사항"],
 };
 
 ////////////////////////////////// 우측 서브그리드
@@ -159,7 +160,7 @@ export const subTableConstant = {
     {
       field: "cdFamrel",
       text: "연말정산관계",
-      width: "120px",
+      width: "100px",
       type: "textCodeHelper",
     },
     { field: "nmKrname", text: "성명", width: "75px" },
@@ -170,7 +171,7 @@ export const subTableConstant = {
       type: "select",
       optionList: SELECT_LIST.ynFor,
     },
-    { field: "noSocial", text: "주민등록번호", width: "150px" },
+    { field: "noSocial", text: "주민등록번호", width: "145px" },
     {
       field: "fgSchool",
       text: "학력",
@@ -180,28 +181,28 @@ export const subTableConstant = {
     },
     {
       field: "fgGraduation",
-      text: "졸업구분",
-      width: "85px",
+      text: "졸업",
+      width: "82px",
       type: "select",
       optionList: SELECT_LIST.fgGraduation,
     },
     {
       field: "ynTogether",
       text: "동거",
-      width: "75px",
+      width: "70px",
       type: "select",
       optionList: SELECT_LIST.ynTogether,
     },
     {
       field: "ynLunarbir",
       text: "양음",
-      width: "75px",
+      width: "70px",
       type: "select",
       optionList: SELECT_LIST.ynLunarbir,
     },
-    { field: "daBirth", text: "생년월일", type: "date" },
-    { field: "cdJob", text: "직업", width: "120px", type: "textCodeHelper" },
-    { field: "nmKrcom", text: "직장명", width: "70px" },
-    { field: "cdOffpos", text: "직급", width: "120px", type: "textCodeHelper" },
+    { field: "daBirth", text: "생년월일", type: "date", width: "155px" },
+    { field: "cdJob", text: "직업", width: "90px", type: "textCodeHelper" },
+    { field: "nmKrcom", text: "직장명" },
+    { field: "cdOffpos", text: "직급", width: "80px", type: "textCodeHelper" },
   ],
 };

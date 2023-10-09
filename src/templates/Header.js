@@ -25,7 +25,7 @@ const Header = () => {
   const location = useLocation();
 
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-
+  const [showProfileBtn, setShowProfileBtn] = useState();
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
 
   // 테마 컬러 설정
@@ -152,16 +152,22 @@ const Header = () => {
                 />
               </a>
             </button>
-            <button
-              className="backgroundBorderNone"
-              onClick={toggleProfileDropdown}
-            >
-              {userName} 관리자님 <FontAwesomeIcon icon={faChevronDown} />
+            <button className="backgroundBorderNone" disabled>
+              {userName} 관리자님
             </button>
+            <FontAwesomeIcon
+              className="clickableIcon"
+              icon={faChevronDown}
+              onClick={toggleProfileDropdown}
+            />
             {showProfileDropdown && <DropDownMenu />}
             <div id="loginButtonGroup">
               {!userInfoObject && <a href="/signup">회원가입</a>}
-              <a href={hrefState} onClick={onClickLoginHandler}>
+              <a
+                href={hrefState}
+                className="stateBtn"
+                onClick={onClickLoginHandler}
+              >
                 {btnByState}
               </a>
             </div>
