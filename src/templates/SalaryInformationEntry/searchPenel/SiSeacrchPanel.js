@@ -38,15 +38,15 @@ const SiSeacrchPanel = (props) => {
     // set data
     actions.setSalDivision(value);
 
-    // 전월데이터 복사 모달
-    // let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
-    // setShowModal({ 
-    //   show: true, 
-    //   message: message,
-    //   action : () => {
-    //     setCopyLastMonthData();
-    //   }
-    // });
+    //전월데이터 복사 모달
+    let message = "조회구분에 해당되는 전월데이터를 복사하고 재계산하시겠습니까?";
+    setShowModal({ 
+      show: true, 
+      message: message,
+      action : () => {
+        setCopyLastMonthData();
+      }
+    });
   };
 
   // 작성일자 코드헬퍼 클릭 이벤트

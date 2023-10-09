@@ -493,24 +493,35 @@ const deleteSelectedRows = () => {
 
   /* 전월데이터 복사 */
   const setCopyLastMonthData = useCallback(() => {
+
     api
       .post(url + SET_COPYSALDATA_LASTMONTH_URL, {
         allowYear: allowYear,
         allowMonth: allowMonth,
+        paymentDate : paymentDate,
         salDivision : salDivision
       })
       .then((response) => {
-        if (response.data.dateId) {
-          console.log("전월데이터 복사 성공");
-          response.data.dateId && setDateId(response.data.dateId);
-          //리로드
-          onSearch();
+        let message = "";
+        
+        if (response.data > 0) {
+            message =  "전월데이터 복사가 완료되었습니다.";
+        }else{
+          message =  "복사된 데이터가 없습니다.";
         }
+        setShowConfirm({
+          show: true,
+          message: message,
+          onlyConfirm: true
+        });
+
+        //리로드
+        //onSearch();
       })
       .catch((error) => {
         console.log("에러발생 -> ", error);
       });
-  }, []);
+  }, [allowMonth, salDivision]);
 
   return {
     state: {
