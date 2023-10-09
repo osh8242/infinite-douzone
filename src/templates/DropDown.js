@@ -64,7 +64,7 @@ const DropDownMenu = (props) => {
       {/* <FontAwesomeIcon icon={faBell} size="2xl" className="faBell" /> */}
       <FontAwesomeIcon
         icon={faArrowRightFromBracket}
-        size="2xl"
+        size="xl"
         className="faArrow"
         onClick={handleIconClick}
         style={{ cursor: "pointer" }}
