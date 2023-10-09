@@ -48,18 +48,21 @@ const ReCalculation = (props) => {
       selectOption.push(element.item.cdOption);
     });
 
-    const submitReCalculationInfo = {
-      cdEmp: state.cdEmp,
-      dateId: state.dateId,
-      allowMonth: state.allowMonth,
-      allowYear: state.allowYear,
-      salDivision : state.searchVo.salDivision,
-      selectOption: selectOption,
-    };
+    let recalculateEmpList = [];
     
+    state.selectedRows.forEach((item) => {
+      recalculateEmpList.push({  
+        dateId: state.dateId,
+        allowMonth: state.allowMonth,
+        allowYear: state.allowYear,
+        salDivision : state.searchVo.salDivision,
+        selectOption: selectOption, 
+        cdEmp: item.item.cdEmp 
+      });
+  });
 
     api
-      .post(url + RECALCULATION_URL, submitReCalculationInfo)
+      .post(url + RECALCULATION_URL, recalculateEmpList)
       .then(() => {
         setSelectedRows([]);
         setShowModal({
