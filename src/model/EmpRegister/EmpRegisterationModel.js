@@ -157,7 +157,10 @@ function EmpRegisterationModel() {
         })
         .catch((error) => {
           console.error("에러발생: ", error);
+          setMainTabData({});
         });
+    } else {
+      setMainTabData({});
     }
   }, [mainTablePkValue]);
 
