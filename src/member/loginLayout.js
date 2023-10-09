@@ -48,11 +48,14 @@ const LoginLayout = () => {
         console.log("======================++");
 
         // localStorage.setItem("token", JSON.stringify(responseData.token));
-        localStorage.setItem("userInfo", JSON.stringify(responseData.user));
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify(responseData.user) || null
+        );
         let userInfoString = localStorage.getItem("userInfo");
 
         if (userInfoString) {
-          let userInfoObject = JSON.parse(userInfoString);
+          let userInfoObject = JSON.parse(userInfoString) || null;
           console.log("     ----- localStorage Value: ");
           console.log(userInfoObject.userName);
           dispatch(loginSuccess(userInfoObject));
