@@ -35,7 +35,7 @@ const SiSeacrchPanel = (props) => {
   }, [state.searchVo]);
 
   const selectOptionHandler = (value) => {
-    
+    if(value === "") return true; 
     //전월데이터 복사 모달
     let message = "현재 귀속연월과 조회구분에 해당되는 모든 데이터 삭제후  전월데이터를 복사하시겠습니까?";
     setShowModal({ 
@@ -100,6 +100,7 @@ const SiSeacrchPanel = (props) => {
       deductPay: [],
       totalDeductPay : [{item: { excessAmount  : 0, sumDeductPay : 0,}}]
     });
+    actions.setSalDivision("");
   }
 
   const onSearchClick = () =>{

@@ -473,11 +473,11 @@ const deleteSelectedRows = () => {
     .then(async (response) => {
       setDateId(response.data);
       await getSaPayByCdEmp();
-      setShowConfirm({
-        show: true,
-        message: "급여 지급액이 수정되었습니다.",
-        onlyConfirm: true
-      });
+      // setShowConfirm({
+      //   show: true,
+      //   message: "급여 지급액이 수정되었습니다.",
+      //   onlyConfirm: true
+      // });
     })
     .catch((error) => {
       console.error("에러발생: ", error);
@@ -496,11 +496,12 @@ const deleteSelectedRows = () => {
     .post(url + SAVE_DEDUCTDATA_URL, updatedData)
     .then((response) => { 
       getSaPayByCdEmp(); 
-      setShowConfirm({
-        show: true,
-        message: "공제 지급액이 수정되었습니다.",
-        onlyConfirm: true
-      });})
+      // setShowConfirm({
+      //   show: true,
+      //   message: "공제 지급액이 수정되었습니다.",
+      //   onlyConfirm: true
+      // });
+    })
     .catch((error) => {
       console.error("에러발생: ", error);
     });
