@@ -111,7 +111,7 @@ function EmpRegisterationModel() {
         updateEmp(newEmp);
       } else {
         let newEmp = { ...mainTabData.item };
-        newEmp[event.target.id] = value;
+        newEmp[id] = value;
         updateEmp(newEmp);
       }
     },
