@@ -40,7 +40,7 @@ export const loginUser = async (username, password) => {
       let userInfoString = localStorage.getItem("userInfo");
 
       if (userInfoString) {
-        let userInfoObject = JSON.parse(userInfoString);
+        let userInfoObject = JSON.parse(userInfoString || null);
         console.log("     ----- localStorage Value: ");
         console.log(userInfoObject.userName);
         // dispatch(loginSuccess(userInfoObject));
