@@ -8,6 +8,7 @@ import {
 import {
   codeHelperData_emplist,
   codeHelperData_paymentDate,
+ 
 } from "../../../model/SalaryInformationEntry/SalConstant";
 
 import FormPanel from "../../../components/FormPanel";
@@ -15,7 +16,7 @@ import ConfirmComponent from "../../../components/ConfirmComponent";
 import { currentDateStr } from "../../../utils/DateUtils";
 import "../../../styles/SalaryInformationEntry/SalaryInformationEntryLayout.scss";
 import "../../../styles/SearchPanel.scss";
-import { codeHelperData_cdDept, codeHelperData_cdOccup } from "../../../model/EmpRegister/EmpConstant";
+import { codeHelperData_cdDept,  codeHelperData_rankNo } from "../../../model/EmpRegister/EmpConstant";
 
 const SiSeacrchPanel = (props) => {
   const { onSearch, modalShow, state, actions, setCopyLastMonthData } = props;
@@ -37,15 +38,15 @@ const SiSeacrchPanel = (props) => {
     // set data
     actions.setSalDivision(value);
 
-    // 전월데이터 복사 모달
-    // let message = "이번달의 모든 지급항목과 공제항목 삭제 후 전월데이터를 복사하시겠습니까?";
-    // setShowModal({ 
-    //   show: true, 
-    //   message: message,
-    //   action : () => {
-    //     setCopyLastMonthData();
-    //   }
-    // });
+    //전월데이터 복사 모달
+    let message = "조회구분에 해당되는 전월데이터를 복사하고 재계산하시겠습니까?";
+    setShowModal({ 
+      show: true, 
+      message: message,
+      action : () => {
+        setCopyLastMonthData();
+      }
+    });
   };
 
   // 작성일자 코드헬퍼 클릭 이벤트
@@ -178,13 +179,13 @@ const SiSeacrchPanel = (props) => {
                   modalShow(
                     "codeHelper",
                     codeHelperData_cdDept,
-                    (e,row) => actions.setSearchNmDept(row)
+                    (e,row) => actions.setSearchNmDept("cdDept", row.cdDept)
                   ),
                 searchCdOccup: () =>
                   modalShow(
                     "codeHelper",
-                    codeHelperData_cdOccup,
-                    (e,row) => actions.setSearchNmOccup(row)
+                    codeHelperData_rankNo,
+                    (e,row) => actions.setSearchNmOccup("rankNo", row.rankNo)
                   ),
               }}
               onChange={{
