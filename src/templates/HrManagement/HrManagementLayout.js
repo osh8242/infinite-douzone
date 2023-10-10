@@ -36,6 +36,7 @@ const HrManagementLayout = () => {
   //Model로 관리되는 값들
   const { state, actions } = HrManagementModel();
   const {
+    confirmModalState,
     jobOkSelectRef,
     orderSelectRef,
     leftTableData,
@@ -110,7 +111,7 @@ const HrManagementLayout = () => {
       />
       <div id="hr-container" className="SUITE p-10">
         {/* 조회영역 */}
-        <Row className="hr-search-row deleteLabelBackground pb-3">
+        <Row className="hr-search-row border light-grey-border deleteLabelBackground my-3 pb-3 mx-3">
           <HrSearchPanel
             onSearch={actions.onSearch}
             jobOkSelectRef={jobOkSelectRef}
@@ -120,7 +121,7 @@ const HrManagementLayout = () => {
           />
         </Row>
         {/* 메인영역 */}
-        <Row>
+        <Row className="pt-1">
           {/* 좌측 영역 */}
           <Col md="3" className="hr-left-col">
             {/* 좌측 그리드 */}

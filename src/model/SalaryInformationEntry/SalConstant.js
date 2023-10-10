@@ -89,10 +89,10 @@ export const salDeductSum = {
 /* 검색옵션 */
 // 구분
 export const salaryDivisionOption = [
-  { key: "", value: "0.선택" },
-  { key: "SAL", value: "1.급여" },
-  { key: "SALBONUS", value: "2.급여+상여" },
-  { key: "BONUS", value: "3.상여" },
+  { key: "", value: "0. 선택" },
+  { key: "SAL", value: "1. 급여" },
+  { key: "SALBONUS", value: "2. 급여+상여" },
+  { key: "BONUS", value: "3. 상여" },
 ];
 
 // 생산직 여부 검색조건 옵션
@@ -230,8 +230,8 @@ export const modal_reCalculationList = {
 export const modal_insertSalaryAllowData = {
   url: "/sallowpay/getsalAllowList",
   headers: [
-    { field: "cdAllow", text: "Code" , readOnly : true},
-    { field: "nmAllow", text: "수당명" , isPk:true},
+    { field: "cdAllow", text: "Code" , readOnly : true, width:'200px'},
+    { field: "nmAllow", text: "수당명" , isPk:true, width:'200px'},
     {
       field: "ynTax",
       text: "과세여부",
@@ -239,7 +239,7 @@ export const modal_insertSalaryAllowData = {
       optionList: [
         { key: "Y", value: "과세" },
         { key: "N", value: "비과" },
-      ],
+      ], width:'200px'
     },
     {
       field: "salDivision",
@@ -248,7 +248,7 @@ export const modal_insertSalaryAllowData = {
       optionList: [
         { key: "SAL", value: "1.급여" },
         { key: "BONUS", value: "2.상여" },
-      ],
+      ], width:'200px'
     },
     // {
     //     field: "ynUse",
@@ -290,26 +290,26 @@ export const modal_insertSalaryAllowData = {
 export const modal_insertSalaryDeductData = {
   url: "/sadeductpay/getsalDeductList",
   headers: [
-    { field: "cdDeduct", text: "Code", readOnly:true },
-    { field: "nmDeduct", text: "공제항목명", isPk: true },
+    { field: "cdDeduct", text: "Code", readOnly:true , width:'200px'},
+    { field: "nmDeduct", text: "공제항목명", isPk: true , width:'200px'},
     { field: "ynSal", text: "급여" 
     , type: "select",
       optionList: [
         { key: "Y", value: "O" },
         { key: "N", value: "X" },
-      ],
+      ], width:'200px'
   },
     { field: "ynBonus", text: "상여" ,
     type: "select",
     optionList: [
       { key: "Y", value: "O" },
       { key: "N", value: "X" },
-    ],},
+    ], width:'200px'},
     { field: "rate"
     , text: "비율(%)"
     , isPk: true
     , type : "rate"
-  },
+    , width:'200px'  }
   ],
   params : {static: 'N'}
 };
@@ -344,10 +344,10 @@ export const modal_staticSalaryDeductData = {
 export const modal_nontaxSetup = {
   url: "/sallowpay/getNonTaxSalAllowList",
   headers: [
-    { field: "cdAllow", text: "Code" , readOnly: true  },
-    { field: "nmAllow", text: "비과세 항목", readOnly: true },
-    { field: "nonTaxDivison", text: "구분" , readOnly: true},
-    { field: "nontaxLimit", text: "한도" ,type:"number"},
+    { field: "cdAllow", text: "Code" , readOnly: true , width:'200px'},
+    { field: "nmAllow", text: "비과세 항목", readOnly: true , width:'200px'},
+    { field: "nonTaxDivison", text: "구분" , readOnly: true , width:'200px'},
+    { field: "nontaxLimit", text: "한도" ,type:"number", width:'200px'},
   ],
 };
 

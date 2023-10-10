@@ -146,9 +146,9 @@ function TextBoxComponent(props) {
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
-      } else if (type === "commaNumber") {
-        console.log(makePureNumber(inputValue));
-        onEnter && onEnter(event, makePureNumber(inputValue), id);
+      } else if (type === "num") {
+        setInputValue(processThousandSeparator(inputValue));
+        onEnter && onEnter(event, processThousandSeparator(inputValue), id);
       } else {
         !onClickCodeHelper && onEnter && onEnter(event, sendValue, id);
         // if (subValue) onEnter && onEnter(event, sendSubValue, subId);

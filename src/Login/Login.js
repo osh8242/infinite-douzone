@@ -68,8 +68,11 @@ const Login = () => {
       if (token) {
         updateToken(token);
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
-        localStorage.setItem("authToken", token);
-        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+        localStorage.setItem("authToken", token || null);
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify(response.data.user) || null
+        );
 
         // const currentTime = new Date();
         localStorage.setItem("loginTime", new Date());
