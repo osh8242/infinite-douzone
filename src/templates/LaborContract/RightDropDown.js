@@ -8,12 +8,43 @@ import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState, useEffect, useRef } from "react";
 import Scrollbars from "react-custom-scrollbars";
 
-const RightDropdown = ({ toggleDropdown }) => {
+const RightDropdown = ({ toggleDropdown, showDropdown }) => {
   const [boards, setBoards] = useState([]);
   const [activeBoardId, setActiveBoardId] = useState(null);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const dropdownRef = useRef(null);
+  const plusIconRef = useRef(null);
 
-  const addBoard = () => {
+  useEffect(() => {
+    localStorage.setItem("boards", JSON.stringify(boards));
+  }, [boards]);
+
+  useEffect(() => {
+    if (showDropdown) {
+      const savedBoards = localStorage.getItem("boards");
+      if (savedBoards) {
+        setBoards(JSON.parse(savedBoards));
+      }
+    }
+  }, [showDropdown]);
+
+  useEffect(() => {
+    const savedBoards = localStorage.getItem("boards");
+    if (savedBoards) {
+      setBoards(JSON.parse(savedBoards));
+    }
+  }, []);
+
+  const loadBoardsFromLocalStorage = () => {
+    const savedBoards = localStorage.getItem("boards");
+    if (savedBoards) {
+      setBoards(JSON.parse(savedBoards));
+    }
+  };
+
+  const addBoard = (event) => {
+    event.stopPropagation();
+
     setBoards((prevBoards) => [
       ...prevBoards,
       { id: prevBoards.length, text: "", isEditing: true },
@@ -51,12 +82,40 @@ const RightDropdown = ({ toggleDropdown }) => {
     );
   };
 
+  // const handleSave = (id, text) => {
+  //   updateBoardText(id, text, false);
+  // };
   const handleSave = (id, text) => {
-    updateBoardText(id, text, false);
+    if (text.trim() === "") {
+      alert("Text cannot be empty!"); // 혹은 다른 UI 피드백 메커니즘 사용
+    } else {
+      updateBoardText(id, text, false);
+    }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      console.log("Event Target: ", event.target); // 이벤트 대상 로깅
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        plusIconRef.current &&
+        !plusIconRef.current.contains(event.target)
+      ) {
+        console.log("Closing Dropdown"); // 드롭다운 닫는 조건이 충족되면 로깅
+        toggleDropdown(event);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [toggleDropdown]);
+
   return (
-    <div className="Container">
+    <div className="Container" ref={dropdownRef}>
       <div className="inner">
         <Row className="dropHead">
           <Col>

@@ -48,6 +48,8 @@ const Header = () => {
 
   const [showDropdown, setShowDropdown] = useState(false); // rightDropDown
 
+  const plusIconRef = useRef(null);
+
   const toggleDropdown = (event) => {
     setShowDropdown(!showDropdown);
     event.stopPropagation();
@@ -130,7 +132,13 @@ const Header = () => {
               id="findMenuBar"
               placeholder={" 메뉴 명을 입력해 주세요.  [ F10 ] "}
             />
-            <button className="backgroundBorderNone">
+            <div
+              className="backgroundBorderNone"
+              role="button"
+              tabIndex={0}
+              onClick={toggleDropdown}
+              ref={plusIconRef}
+            >
               <FontAwesomeIcon
                 icon={faPlus}
                 size={"lg"}
@@ -138,9 +146,13 @@ const Header = () => {
                 onClick={toggleDropdown}
               />
               {showDropdown && (
-                <RightDropdown toggleDropdown={toggleDropdown} />
+                <RightDropdown
+                  toggleDropdown={toggleDropdown}
+                  showDropdown={showDropdown}
+                  plusIconRef={plusIconRef}
+                />
               )}
-            </button>
+            </div>
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faBell}

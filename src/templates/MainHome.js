@@ -15,7 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useLogin } from "../Login/LoginProvider";
 import { getLogFunction } from "../model/useLog";
 import "../styles/fonts.css";
-import wehago_backImg from "../styles/img/KakaoTalk_20231005_114525806.png";
+import wehago_backImg from "../styles/img/skyscraper-2561415_1280.jpg";
 import wehago_backImg2 from "../styles/img/presentation1.jpg";
 import imageLogoWhite from "../styles/img/wehago_logo-white.png";
 import "../styles/mainHome.scss";
@@ -25,30 +25,89 @@ const slides = [
     background: wehago_backImg, //main
     content: (
       <div>
-        <p className="NIXGON p-24">
-          기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
-        </p>
-        <p className="KangWonBold bold p-52">INFINITE DOUZONE</p>
-        <p className="NIXGON p-16">
-          업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
-          전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
-        </p>
+        <div>
+          <p className="NIXGON p-24">
+            기업에 필요한 다양한 업무환경을 제공하는 비즈니스 플랫폼
+          </p>
+          <p className="KangWonBold bold p-52">INFINITE DOUZONE</p>
+          <p className="NIXGON p-16">
+            업무에 필요한 모든 서비스를 한 공간에서! <br></br>Smart A 10으로
+            전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
+          </p>
+          {/* 하단 4가지 메뉴 이동 버튼 */}
+        </div>
+        <div
+          className="menuBtnList NIXGON p-14 semi-bold"
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            // position: "absolute",
+            // bottom: "120px",
+            flexDirection: "row",
+            gap: "36px",
+            textAlign: "center",
+            color: "white",
+          }}
+        >
+          <div>
+            <a href="/er" className="menuBtn er">
+              <FontAwesomeIcon icon={faUserPlus} />
+            </a>
+            <p>사원등록</p>
+          </div>
+          <div>
+            <a href="/hr" className="menuBtn hr">
+              <FontAwesomeIcon icon={faAddressCard} />
+            </a>
+            <p>인사관리등록</p>
+          </div>
+          <div>
+            <a href="/lc" className="menuBtn lc">
+              <FontAwesomeIcon icon={faFileInvoice} />
+            </a>
+            <p>표준근로계약서</p>
+          </div>
+          <div>
+            <a href="/si" className="menuBtn si">
+              <FontAwesomeIcon icon={faSackDollar} />
+            </a>
+            <p>급여관리</p>
+          </div>
+        </div>
       </div>
     ),
   },
-  // {
-  //   background: wehago_backImg2, //main2
-  //   content: (
-  //     <div>
-  //       <p className="NIXGON p-24">비쿠냐에게 무료로 웹페이지를 선물하세요</p>
-  //       {/* <p className="KangWonBold bold p-52">INFINITE DOUZONE</p> */}
-  //       <p className="NIXGON p-16">
-  //         업무에 필요한 모든 서비스를 한 공간에서! <br></br>Vicugna A 10으로
-  //         전문적인 경영관리와 쉽고 편리한 협업을 경험해보세요.
-  //       </p>
-  //     </div>
-  //   ),
-  // },
+  {
+    background: wehago_backImg2, //main2
+    content: (
+      <div style={{ width: "100vw" }}>
+        <div
+          style={{
+            backgroundColor: "rgb(57, 63, 80)",
+            display: "flex",
+            flexDirection: "column",
+            alignItem: "center",
+            justifyContent: "center",
+            width: "45%",
+            height: "100vh",
+            marginLeft: "55%",
+            marginTop: "16%",
+            // borderRadius: "16px",
+          }}
+        >
+          <p className="KangWonBold bold p-48">SMART I-10</p>
+          <p className="NIXGON bold p-16">
+            사원등록, 인사관리, 근로계약서, 급여자료 입력기능
+          </p>
+          <p className="NIXGON bold p-16">
+            사원 데이터 입력, 조회, 수정, 삭제 기능과 <br />
+            계약서 작성 및 급여관리 기능
+          </p>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 function MainHome() {
@@ -82,7 +141,7 @@ function MainHome() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 10000); // 10초마다 슬라이드 변경
+    }, 7000); // 10초마다 슬라이드 변경
 
     return () => clearInterval(interval);
   }, []);
@@ -154,7 +213,7 @@ function MainHome() {
           >
             <div className="textBox">{slides[currentSlide].content}</div>
 
-            {/* 하단 4가지 메뉴 이동 버튼 */}
+            {/* 하단 4가지 메뉴 이동 버튼
             <div className="menuBtnList NIXGON p-14 semi-bold">
               <div>
                 <a href="/er" className="menuBtn er">
@@ -180,7 +239,7 @@ function MainHome() {
                 </a>
                 <p>급여관리</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
