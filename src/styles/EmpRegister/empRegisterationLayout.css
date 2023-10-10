@@ -1,6 +1,7 @@
 #er-container {
   width: 80%;
   margin: auto;
+  min-height: calc(100vh - 176px);
 }
 
 #empRegisterLayout {

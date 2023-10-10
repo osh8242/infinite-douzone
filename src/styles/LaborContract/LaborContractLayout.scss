@@ -1,6 +1,7 @@
 #lc-container {
   width: 82%;
   margin: auto;
+  min-height: calc(100vh - 160px);
 }
 
 .leftTable {
@@ -20,14 +21,13 @@
   border: 1px solid rgb(222, 226, 230);
 }
 
-.swsmother { 
-  height: 8vh; 
+.swsmother {
+  height: 8vh;
 }
 
-.searchSwsmother { 
-  height: 8vh; 
+.searchSwsmother {
+  height: 8vh;
 }
-
 
 .EMPSTATICS {
   margin-bottom: 30px;

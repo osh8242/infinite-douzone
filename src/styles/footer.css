@@ -1,8 +1,8 @@
 @import url("context.css");
 
 #footer-area {
-  position: absolute;
-  bottom: 0;
+  /* position: absolute;
+  bottom: 0; */
   width: 100vw;
   padding: 4px 0px;
   background-color: var(--transLightBlack);
