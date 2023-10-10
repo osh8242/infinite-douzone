@@ -44,6 +44,9 @@ const Login = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    if (e.type !== "blur") {
+      navigate("/");
+    }
     // LoginUser();
   };
 
@@ -89,6 +92,7 @@ const Login = () => {
         localStorage.setItem("loginTime", new Date());
 
         console.log("로그인에 성공하였습니다.");
+        setIsSuccess(true);
         setInvalidPwd("");
         setInvalid("");
         setErrorMessage("");
@@ -113,7 +117,7 @@ const Login = () => {
         ) {
           console.log("비밀번호가 틀렸습니다.");
 
-          if (event.type === "blur") {
+          if (event.type === "blur" || event.type === "Enter") {
             setInvalidPwd("invalid");
             setInvalid("invalid");
             setErrorMessage("비밀번호가 틀렸습니다.");
