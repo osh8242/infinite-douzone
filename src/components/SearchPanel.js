@@ -26,20 +26,23 @@ const SearchPanel = ({
     <>
       <Row className="mt-3">
         {showAccordion ? (
-          // <div className = {`search-panel ${animation? }`}>
-          <div>
+          <div style={{padding:'13px'}}>
             <div className="header d-flex flex-row px-5">
-              {/* 귀속연월/조회구분/작성일자 */}
               <Col className="my-1">{children[0]}</Col>
-              {/* 조회버튼 */}
               <Col
                 className="d-flex align-items-center justify-content-center"
                 md={{ span: 1, offset: 1 }}
               >
+                {/* 조회버튼 */}
                 {isBodyOpen ? (
+                  <>
+                  <Button variant="secondary" onClick={onSearch}>
+                    조회
+                  </Button>
                   <Button variant="secondary" onClick={toggleArrowIcon}>
                     <FontAwesomeIcon icon={faCaretUp} />
                   </Button>
+                  </>
                 ) : (
                   <>
                     <Button variant="secondary" onClick={onSearch}>
@@ -59,25 +62,17 @@ const SearchPanel = ({
               </Col>
             </div>
             {isBodyOpen && (
-              <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
-                {/* {isBodyOpen && ( */}
-                <Row>
-                  {children[1]}
-                  <div
-                    className="d-flex justify-content-md-center"
-                    style={{ marginTop: "12px" }}
-                  >
-                    <Button variant="secondary" onClick={onSearch}>
-                      조회
-                    </Button>
-                  </div>
-                </Row>
-                {/* )} */}
+              <div style={{marginLeft:'30px'}}>
+                <div className={`px-5 ${isBodyOpen ? "visible" : "hidden"}`}>
+                  <Row>
+                    <Col className="my-1">{children[1]}</Col>
+                  </Row>
+                </div>
               </div>
             )}
           </div>
         ) : (
-          <div className="search-panel">
+          <div className="my-1 col">
             <Row>
               <Col className="my-1" md="8">
                 {children}

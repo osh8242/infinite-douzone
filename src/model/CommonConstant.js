@@ -20,12 +20,13 @@ export const CODE_TYPE = {
 export const CODE_VALUE = {
   [CODE_TYPE.cdOffduty]: {
     C001: "경영회계",
+    C002: "국방안보",
     C003: "금융보험",
     C004: "교육과학",
     C005: "법률행정",
     C006: "보건의료",
     C007: "문화예술",
-    C008: "농림어업",
+    C008: "농수산업",
   },
   [CODE_TYPE.cdFamrel]: {
     CF0: "본인",

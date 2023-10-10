@@ -18,6 +18,7 @@ import SearchForm from "../components/AutoCompleteSearch";
 import DropDownMenu from "./DropDown";
 import { useLocation } from "react-router-dom";
 import { getLogFunction } from "../model/useLog";
+import RightDropdown from "./LaborContract/RightDropDown";
 
 const Header = () => {
   const logout = getLogFunction();
@@ -44,6 +45,13 @@ const Header = () => {
 
   const isMainPage = location.pathname === "/"; // 현재 경로가 메인 페이지인지 확인
   const searchFormRef = useRef(null);
+
+  const [showDropdown, setShowDropdown] = useState(false); // rightDropDown
+
+  const toggleDropdown = (event) => {
+    setShowDropdown(!showDropdown);
+    event.stopPropagation();
+  };
 
   function onClickLoginHandler(e) {
     if (localStorage.getItem("userInfo") != null) {
@@ -120,14 +128,18 @@ const Header = () => {
               ref={searchFormRef}
               type="text"
               id="findMenuBar"
-              placeholder={"메뉴 명을 입력해주세요.  [ F10 ]"}
+              placeholder={" 메뉴 명을 입력해 주세요.  [ F10 ] "}
             />
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
                 icon={faPlus}
                 size={"lg"}
-                className="colorDark forbid"
+                className="colorDark"
+                onClick={toggleDropdown}
               />
+              {showDropdown && (
+                <RightDropdown toggleDropdown={toggleDropdown} />
+              )}
             </button>
             <button className="backgroundBorderNone">
               <FontAwesomeIcon
