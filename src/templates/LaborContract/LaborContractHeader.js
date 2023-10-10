@@ -16,10 +16,12 @@ import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
 import empAdd from "../../styles/img/swsmLogo.png";
+import { useCurrTime } from "../../Login/TimeProvider";
 
 const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { formattedTime } = useCurrTime();
 
   // 테마 컬러 설정
   const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
@@ -80,6 +82,16 @@ const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
+        <p
+          style={{
+            color: "white",
+            fontSize: "14px",
+            marginTop: "15px",
+            marginRight: "40px",
+          }}
+        >
+          최근 업데이트 : {formattedTime}
+        </p>
         <button className="backgroundBorderNone">
           <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
         </button>

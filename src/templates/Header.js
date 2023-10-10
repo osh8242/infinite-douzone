@@ -27,7 +27,16 @@ const Header = () => {
 
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showProfileBtn, setShowProfileBtn] = useState();
-  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  // const userInfoString = JSON.parse(localStorage.getItem("userInfo"));
+  // const userInfoObject = JSON.parse(localStorage.getItem("userInfo")) || "";
+  // const userInfoObject = userInfoString || "";
+  let userInfoObject;
+  try {
+    userInfoObject = JSON.parse(localStorage.getItem("userInfo")) || {};
+  } catch (error) {
+    console.error("Parsing error:", error);
+    userInfoObject = {};
+  }
 
   // 테마 컬러 설정
   const themeColor = userInfoObject?.theme || "rgb(48, 150, 255)";
