@@ -78,13 +78,14 @@ const Login = () => {
         updateToken(token);
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
         ///////////////////////////
-        localStorage.setItem("authToken", token || null);
-        localStorage.setItem(
-          "userInfo",
-          JSON.stringify(response.data.user) || null
-        );
+
         if (event.type !== "blur") {
           navigate("/");
+          localStorage.setItem("authToken", token || null);
+          localStorage.setItem(
+            "userInfo",
+            JSON.stringify(response.data.user) || null
+          );
         }
         ///////////////////////////
 

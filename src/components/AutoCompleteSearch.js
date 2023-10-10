@@ -50,7 +50,7 @@ const AutoCompleteSearch = forwardRef(({ placeholder }, ref) => {
   const mockData = [
     "사원관리",
     "인사관리",
-    "표준근로계약관리",
+    "표준근약관리",
     "급여관리",
     "메인페이지",
     "마이페이지",
