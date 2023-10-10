@@ -36,7 +36,7 @@ const slides = [
           </p>
           {/* 하단 4가지 메뉴 이동 버튼 */}
         </div>
-        <div
+        {/* <div
           className="menuBtnList NIXGON p-14 semi-bold"
           style={{
             width: "100%",
@@ -74,40 +74,40 @@ const slides = [
             </a>
             <p>급여관리</p>
           </div>
-        </div>
+        </div> */}
       </div>
     ),
   },
-  {
-    background: wehago_backImg2, //main2
-    content: (
-      <div style={{ width: "100vw" }}>
-        <div
-          style={{
-            backgroundColor: "rgb(57, 63, 80)",
-            display: "flex",
-            flexDirection: "column",
-            alignItem: "center",
-            justifyContent: "center",
-            width: "45%",
-            height: "100vh",
-            marginLeft: "55%",
-            marginTop: "16%",
-            // borderRadius: "16px",
-          }}
-        >
-          <p className="KangWonBold bold p-48">SMART I-10</p>
-          <p className="NIXGON bold p-16">
-            사원등록, 인사관리, 근로계약서, 급여자료 입력기능
-          </p>
-          <p className="NIXGON bold p-16">
-            사원 데이터 입력, 조회, 수정, 삭제 기능과 <br />
-            계약서 작성 및 급여관리 기능
-          </p>
-        </div>
-      </div>
-    ),
-  },
+  // {
+  //   background: wehago_backImg2, //main2
+  //   content: (
+  //     <div style={{ width: "100vw" }}>
+  //       <div
+  //         style={{
+  //           backgroundColor: "rgb(57, 63, 80)",
+  //           display: "flex",
+  //           flexDirection: "column",
+  //           alignItem: "center",
+  //           justifyContent: "center",
+  //           width: "45%",
+  //           height: "100vh",
+  //           marginLeft: "55%",
+  //           marginTop: "16%",
+  //           // borderRadius: "16px",
+  //         }}
+  //       >
+  //         <p className="KangWonBold bold p-48">SMART I-10</p>
+  //         <p className="NIXGON bold p-16">
+  //           사원등록, 인사관리, 근로계약서, 급여자료 입력기능
+  //         </p>
+  //         <p className="NIXGON bold p-16">
+  //           사원 데이터 입력, 조회, 수정, 삭제 기능과 <br />
+  //           계약서 작성 및 급여관리 기능
+  //         </p>
+  //       </div>
+  //     </div>
+  //   ),
+  // },
 ];
 
 function MainHome() {
@@ -138,13 +138,13 @@ function MainHome() {
     );
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 7000); // 10초마다 슬라이드 변경
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  //   }, 7000); // 10초마다 슬라이드 변경
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
@@ -205,7 +205,7 @@ function MainHome() {
           >
             <div className="textBox">{slides[currentSlide].content}</div>
 
-            {/* 하단 4가지 메뉴 이동 버튼
+            {/* 하단 4가지 메뉴 이동 버튼 */}
             <div className="menuBtnList NIXGON p-14 semi-bold">
               <div>
                 <a href="/er" className="menuBtn er">
@@ -231,12 +231,12 @@ function MainHome() {
                 </a>
                 <p>급여관리</p>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
 
         {/* 좌우 슬라이드용 버튼 */}
-        <a href="#!" id="leftArrowBtn">
+        {/* <a href="#!" id="leftArrowBtn">
           <FontAwesomeIcon icon={faChevronLeft} onClick={prevSlide} />
         </a>
         <a href="#!" id="leftArrowBtn-animation">
@@ -247,7 +247,7 @@ function MainHome() {
         </a>
         <a href="#!" id="rightArrowBtn-animation">
           <FontAwesomeIcon icon={faChevronRight} onClick={nextSlide} />
-        </a>
+        </a> */}
       </div>
       {/* <div id="page2">
         <div id="page2-content">
