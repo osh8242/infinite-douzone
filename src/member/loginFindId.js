@@ -9,9 +9,12 @@ import imgLogo from "../../src/styles/img/wehago_logo.png";
 import "./login.css";
 import { url } from "../model/CommonConstant";
 import axios from "axios";
+import ConfirmComponent from "../components/ConfirmComponent";
 
 const LoginFindId = () => {
   const [email, setEmail] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalState, setModalState] = useState({ show: false });
 
   const sendEmail = async () => {
     console.log("click");
@@ -21,6 +24,12 @@ const LoginFindId = () => {
       });
       console.log("OK");
       // console.log(response.data);
+
+      // window.location.href = "/"; // 임시
+      setShowModal({
+        show: true,
+        message: "메일 전송이 완료되었습니다.",
+      });
     } catch (error) {
       if (error.response) {
         // 서버에서 응답을 받은 경우
@@ -33,6 +42,10 @@ const LoginFindId = () => {
         console.error("Error setting up the request:", error.message);
       }
     }
+  };
+
+  const onMove = () => {
+    window.location.href = "/login";
   };
 
   return (
@@ -86,6 +99,16 @@ const LoginFindId = () => {
             </Button>
           </Col>
         </Row>
+        <ConfirmComponent
+          show={showModal.show}
+          message={showModal.message}
+          onHide={() => setModalState({ show: false })}
+          onConfirm={() => {
+            onMove();
+            setShowModal(false);
+          }}
+          onlyConfirm
+        />
       </Col>
     </Container>
   );
