@@ -171,14 +171,6 @@ function MainHome() {
     }
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 10000); // 10초마다 슬라이드 변경
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <>
       <div id="mainPageTopHeader-BackGround" className="SUITE p-12">
