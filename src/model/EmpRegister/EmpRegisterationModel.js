@@ -99,18 +99,28 @@ function EmpRegisterationModel() {
     (event, value, id) => {
       if (event.key === "Enter" || event.type === "change") {
         if (event.key === "Enter") event.target.blur();
-        let newEmp = { ...mainTabData.item };
-        newEmp[event.target.id] = value;
-        console.log("newEmp", newEmp);
-        updateEmp(newEmp);
+        if (typeof value === "object") {
+          // 코드도움일때
+          let newEmp = { ...mainTabData.item };
+          const valueKeys = Object.keys(value);
+          newEmp[valueKeys] = value[valueKeys];
+          updateEmp(newEmp);
+        } else {
+          let newEmp = { ...mainTabData.item };
+          newEmp[event.target.id] = value;
+          console.log("newEmp", newEmp);
+          updateEmp(newEmp);
+        }
         // return;
       } else if (event.type === "click" || typeof value === "object") {
         // 넘어온 값이 JSON 객체인 경우
         let newEmp = { ...mainTabData.item };
+        console.log("newEmp###########################", newEmp);
         Object.assign(newEmp, value);
         updateEmp(newEmp);
       } else {
         let newEmp = { ...mainTabData.item };
+        console.log("newEmp###########################333", newEmp);
         newEmp[id] = value;
         updateEmp(newEmp);
       }
