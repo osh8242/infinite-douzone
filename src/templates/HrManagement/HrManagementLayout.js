@@ -137,7 +137,7 @@ const HrManagementLayout = () => {
                   tableHeaders={leftTableConstant.headers}
                   tableData={leftTableData}
                   selectedRows={selectedRows}
-                  deleteMessage="선택된 사원을 삭제하시겠습니까?"
+                  deleteMessage="선택된 사원의 인사관리등록을 삭제하시겠습니까?"
                   codeHelper
                   defaultFocus
                   actions={{
@@ -232,6 +232,7 @@ const HrManagementLayout = () => {
                   tableName="empFam"
                   rowAddable
                   sortable
+                  deleteMessage="선택된 사원가족항목을 삭제하시겠습니까?"
                   tableHeaders={subTableConstant.headers}
                   tableData={subTableData}
                   codeHelper={CODE_HELPER_DATA}
