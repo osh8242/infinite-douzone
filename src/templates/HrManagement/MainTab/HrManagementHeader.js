@@ -13,7 +13,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { React, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
-import ConfirmComponent from "../../components/ConfirmComponent";
+import ConfirmComponent from "../../../components/ConfirmComponent";
 import "../../styles/header.css";
 import empAdd from "../../styles/img/empAddLogo.png";
 
@@ -31,7 +31,7 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
 
   const faTrashCanClickHandler = (event) => {
     if (existSelectedRows)
-      setShowModal({ show: true, message: "체크된 사원들의 인사관리등록을 삭제하시겠습니까?" });
+      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
     else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
@@ -71,13 +71,13 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
         <button className="backgroundBorderNone">
           <FontAwesomeIcon
             icon={faArrowUpRightFromSquare}
-            className="colorWhite backgroundBorderNone forbid"
+            className="colorWhite backgroundBorderNone"
           />
         </button>
       </div>
       <div id="secondTopHeaderMenuList">
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite" />
         </button>
         <button
           className="backgroundBorderNone"
@@ -86,10 +86,10 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite forbid" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite forbid" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite" />
         </button>
       </div>
       <ConfirmComponent

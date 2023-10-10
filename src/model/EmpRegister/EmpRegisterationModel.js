@@ -99,18 +99,28 @@ function EmpRegisterationModel() {
     (event, value, id) => {
       if (event.key === "Enter" || event.type === "change") {
         if (event.key === "Enter") event.target.blur();
-        let newEmp = { ...mainTabData.item };
-        newEmp[event.target.id] = value;
-        console.log("newEmp", newEmp);
-        updateEmp(newEmp);
+        if (typeof value === "object") {
+          // 코드도움일때
+          let newEmp = { ...mainTabData.item };
+          const valueKeys = Object.keys(value);
+          newEmp[valueKeys] = value[valueKeys];
+          updateEmp(newEmp);
+        } else {
+          let newEmp = { ...mainTabData.item };
+          newEmp[event.target.id] = value;
+          console.log("newEmp", newEmp);
+          updateEmp(newEmp);
+        }
         // return;
       } else if (event.type === "click" || typeof value === "object") {
         // 넘어온 값이 JSON 객체인 경우
         let newEmp = { ...mainTabData.item };
+        console.log("newEmp###########################", newEmp);
         Object.assign(newEmp, value);
         updateEmp(newEmp);
       } else {
         let newEmp = { ...mainTabData.item };
+        console.log("newEmp###########################333", newEmp);
         newEmp[id] = value;
         updateEmp(newEmp);
       }
@@ -234,12 +244,27 @@ function EmpRegisterationModel() {
 
   // 사원 insert 함수
   const insertEmp = useCallback((emp) => {
+    // jobOk가 N이면...(퇴직자)
+    if (emp.jobOk === "N" && !emp.daRetire) {
+      const today = new Date();
+      const year = today.getFullYear(); // 연도
+      const month = today.getMonth() + 1; // 월 (0부터 시작하므로 1을 더함)
+      const day = today.getDate(); // 일
+      const retireDate = `${year}-${month}-${day}`;
+      console.log(retireDate);
+      emp.daRetire = retireDate;
+    } else if (emp.jobOk === "Y") {
+      emp.daRetire = "";
+    }
+
     api
       .post(urlPattern.insertEmp, emp, {
         "Content-Type": "qpplication/json",
       })
       .then((response) => {
         if (response.data !== 0) console.log("Emp insert 성공");
+        console.log("*****", emp);
+
         setEditedEmp({});
       })
       .catch((error) => {
@@ -267,6 +292,18 @@ function EmpRegisterationModel() {
   //사원 update 함수
   const updateEmp = useCallback((emp) => {
     console.log("emp 함수 update요청: ", emp);
+    // jobOk가 N이면...(퇴직자)
+    if (emp.jobOk === "N" && !emp.daRetire) {
+      const today = new Date();
+      const year = today.getFullYear(); // 연도
+      const month = today.getMonth() + 1; // 월 (0부터 시작하므로 1을 더함)
+      const day = today.getDate(); // 일
+      const retireDate = `${year}-${month}-${day}`;
+      console.log(retireDate);
+      emp.daRetire = retireDate;
+    } else if (emp.jobOk === "Y") {
+      emp.daRetire = "";
+    }
     api
       .put(urlPattern.updateEmp, emp)
       .then((response) => {
