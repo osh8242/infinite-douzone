@@ -100,10 +100,10 @@ const SalaryInformationEntryHeader = ({
         message: "선택된 날짜에 등록된 급여항목이 없습니다.",
         onlyConfirm: true,
       });
-    } else if (cdEmp === "") {
+    } else if (!existSelectedRows) {
       setShowModal({
         show: true,
-        message: "사원을 선택해주세요",
+        message: "선택된 사원이 없습니다",
         onlyConfirm: true,
       });
     } else {
@@ -232,7 +232,7 @@ const SalaryInformationEntryHeader = ({
         </Button>
 
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faPrint} className="colorWhite p-12" />
+          <FontAwesomeIcon icon={faPrint} className="colorWhite p-12 forbid" />
         </button>
         <button
           className="backgroundBorderNone"
@@ -241,10 +241,10 @@ const SalaryInformationEntryHeader = ({
           <FontAwesomeIcon icon={faTrashCan} className="colorWhite p-12" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faCalculator} className="colorWhite p-12" />
+          <FontAwesomeIcon icon={faCalculator} className="colorWhite p-12 forbid" />
         </button>
         <button className="backgroundBorderNone">
-          <FontAwesomeIcon icon={faBorderAll} className="colorWhite p-12" />
+          <FontAwesomeIcon icon={faBorderAll} className="colorWhite p-12 forbid" />
         </button>
       </div>
       <ConfirmComponent
