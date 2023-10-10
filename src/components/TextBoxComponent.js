@@ -156,6 +156,25 @@ function TextBoxComponent(props) {
     }
 
     if (onClickCodeHelper) {
+      // if (event.key !== "Shift" && event.key !== "Escape") {
+      //   if (event.key !== "Tab" && event.key !== "F10") {
+      //     if (event.key === "Enter") {
+      //       onEnter && onEnter(event, sendValue, id);
+      //       return;
+      //     } else if (
+      //       event.key === "Backspace" ||
+      //       event.key === "Delete" ||
+      //       event.key === "Del"
+      //     ) {
+      //       setInputValue("");
+      //       onChange && onChange(event, "", id);
+      //     } else {
+      //       event.preventDefault(); // 키보드 입력 막기
+      //       onClickCodeHelper(setInputValue);
+      //     }
+      //   }
+      // }
+
       const disallowedKeys = ["Shift", "Escape", "Tab", "F10"];
       const deleteKeys = ["Backspace", "Delete", "Del"];
 
@@ -176,23 +195,9 @@ function TextBoxComponent(props) {
             }
           }
       }
-     
-    }
-    
-    if(type === "number"){
-      if(rate){
-        if (!/^\d$|^Backspace$|^ArrowLeft$|^ArrowRight$|^.$/.test(event.key)) {
-          event.preventDefault();
-        }
-      }else{
-        if (!/^\d$|^Backspace$|^ArrowLeft$|^ArrowRight$/.test(event.key)) { // 숫자 아닌 수 입력차단
-          event.preventDefault();
-        }
-      }
-     
-    }
 
-    onKeyDown && onKeyDown(event);
+      onKeyDown && onKeyDown(event);
+    }
   };
 
   const handleInputChange = (event, index) => {
@@ -243,15 +248,7 @@ function TextBoxComponent(props) {
       setSendValue(newValue);
       setInputValue(newValue);
       onChangeSelect(event, newValue);
-    } else if(type === "number"){
-      
-        if(newValue.length > 9){
-          setInputValue(newValue.slice(0,9));
-        }else{
-          setInputValue(newValue);
-          onChange && onChange(event, newValue);
-        }
-    }else {
+    } else {
       setSendValue(newValue);
       console.log("newValue", newValue);
       //setInputValue(makeProcessedValue(validation(event.target, newValue)));  //유효성 + data 가공
@@ -552,8 +549,6 @@ function TextBoxComponent(props) {
               style={style}
               className={isValid ? "" : "invalid"}
               step={step}
-              max={9999999999}
-              min={0}
             />
             {/* {type === "regNum" && (
               <FontAwesomeIcon
