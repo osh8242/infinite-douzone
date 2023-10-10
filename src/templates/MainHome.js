@@ -115,9 +115,18 @@ function MainHome() {
   const { loginInfo = "", updateToken, updateLoginInfo } = useLogin();
 
   const navigate = useNavigate();
-  const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+  // const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
+
+  let userInfoObject;
+  try {
+    userInfoObject = JSON.parse(localStorage.getItem("userInfo")) || {};
+  } catch (error) {
+    console.error("Parsing error:", error);
+    userInfoObject = {};
+  }
+
   const [btnByState, setBtnByState] = useState(
-    localStorage.getItem("userInfo") != null ? "로그아웃" : "로그인"
+    userInfoObject != null ? "로그아웃" : "로그인"
   );
   const [hrefState, setHrefState] = useState(
     userInfoObject != null ? "/" : "/login"
@@ -161,14 +170,6 @@ function MainHome() {
       navigate("/login");
     }
   }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 10000); // 10초마다 슬라이드 변경
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>
