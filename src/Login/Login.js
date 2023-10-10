@@ -23,6 +23,7 @@ const Login = () => {
   const [pwd, setPwd] = useState("");
   const [invalid, setInvalid] = useState("");
   const [invalidPwd, setInvalidPwd] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleId = (e) => {
     setId(e.target.value);
@@ -31,6 +32,11 @@ const Login = () => {
   const handlePwd = (e) => {
     setPwd(e.target.value);
     LoginUser(e);
+    if (e.target.value === "") {
+      setInvalidPwd("");
+      setInvalid("");
+      setErrorMessage("");
+    }
   };
 
   const { updateToken, updateLoginInfo } = useLogin();
@@ -68,11 +74,16 @@ const Login = () => {
       if (token) {
         updateToken(token);
         updateLoginInfo(JSON.parse(localStorage.getItem("userInfo")));
+        ///////////////////////////
         localStorage.setItem("authToken", token || null);
         localStorage.setItem(
           "userInfo",
           JSON.stringify(response.data.user) || null
         );
+        if (event.type !== "blur") {
+          navigate("/");
+        }
+        ///////////////////////////
 
         // const currentTime = new Date();
         localStorage.setItem("loginTime", new Date());
@@ -83,10 +94,6 @@ const Login = () => {
         setErrorMessage("");
         console.log("response.data", response.data);
         console.log("response.headers", response.headers);
-
-        if (event.type !== "blur") {
-          navigate("/");
-        }
       } else {
         console.log("로그인에 실패하였습니다.");
       }
@@ -104,10 +111,13 @@ const Login = () => {
           error.response.status === 401 &&
           error.response.data.message === "CHECK_PWD"
         ) {
-          setInvalidPwd("invalid");
-          setInvalid("invalid");
           console.log("비밀번호가 틀렸습니다.");
-          setErrorMessage("비밀번호가 틀렸습니다.");
+
+          if (event.type === "blur") {
+            setInvalidPwd("invalid");
+            setInvalid("invalid");
+            setErrorMessage("비밀번호가 틀렸습니다.");
+          }
         } else {
           console.log("로그인 처리 중 오류가 발생했습니다.");
         }
