@@ -34,6 +34,7 @@ function EmpRegisterationModel() {
   const [modalState, setModalState] = useState({ show: false }); //일반 모달 창의 상태관리
   const [codeHelperState, setCodeHelperState] = useState({ show: false }); //코드 도움 모달 창의 상태관리
   const [addRow, setAddRow] = useState(); //코드도움 addRow
+  const [countEmpAndJobOkEmp, setCountEmpAndJobOkEmp] = useState("0/0");
 
   // 코드도움 테이블 data
   const [codeHelperTableData, setCodeHelperTableData] = useState([
@@ -134,6 +135,8 @@ function EmpRegisterationModel() {
     api
       .get("/emp/getAllEmp")
       .then((response) => {
+        let countJobOkEmp = 0;
+        let countEmp = 0;
         const data = response.data.map((row) => {
           const empData = {
             cdEmp: row.cdEmp,
@@ -142,9 +145,15 @@ function EmpRegisterationModel() {
             noSocial: row.noSocial,
             jobOk: row.jobOk,
           };
+          if (row.jobOk === "Y") {
+            countJobOkEmp += 1;
+          }
+          countEmp += 1;
           return { item: empData, table: "emp" };
         });
         setLeftTableData(data);
+        const count = countJobOkEmp + "/" + countEmp;
+        setCountEmpAndJobOkEmp(count);
       })
       .catch((error) => {
         console.log("에러발생: ", error);
@@ -431,6 +440,7 @@ function EmpRegisterationModel() {
       codeHelperTableData,
       undeletedEmpTableData,
       codeHelperState,
+      countEmpAndJobOkEmp,
     },
     actions: {
       insertEmp,
