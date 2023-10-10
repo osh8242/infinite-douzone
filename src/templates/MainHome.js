@@ -42,6 +42,12 @@ const slides = [
             width: "100%",
             display: "flex",
             justifyContent: "center",
+            // position: "absolute",
+            // bottom: "120px",
+            flexDirection: "row",
+            gap: "36px",
+            textAlign: "center",
+            color: "white",
           }}
         >
           <div>
