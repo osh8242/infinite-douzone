@@ -27,7 +27,6 @@ import EmpFam from "../../vo/HrManagement/EmpFam";
 import HrManagementHeader from "./HrManagementHeader";
 import { MAIN_TAB } from "./MainTab/HrMainTabConstant";
 import HrSearchPanel from "./SearchPanel/HrSearchPanel";
-import ConfirmComponent from "../../components/ConfirmComponent";
 
 //grid : 좌측 그리드의 테이블 데이터 grid.data
 //mainTab : 메인탭의 입력폼 데이터 mainTab.menuList mainTab.data
@@ -112,7 +111,7 @@ const HrManagementLayout = () => {
       />
       <div id="hr-container" className="SUITE p-10">
         {/* 조회영역 */}
-        <Row className="hr-search-row deleteLabelBackground pb-3">
+        <Row className="hr-search-row border light-grey-border deleteLabelBackground my-3 pb-3 mx-3">
           <HrSearchPanel
             onSearch={actions.onSearch}
             jobOkSelectRef={jobOkSelectRef}
@@ -122,7 +121,7 @@ const HrManagementLayout = () => {
           />
         </Row>
         {/* 메인영역 */}
-        <Row>
+        <Row className="pt-1">
           {/* 좌측 영역 */}
           <Col md="3" className="hr-left-col">
             {/* 좌측 그리드 */}
@@ -260,15 +259,13 @@ const HrManagementLayout = () => {
         show={modalState.show}
         onHide={() => {
           actions.setModalState({ show: false });
-          if (modalState.parentFocusRef)
-            modalState.parentFocusRef.current = true;
+          if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
         }}
       >
         <CodeHelperModal
           onHide={() => {
             actions.setModalState({ show: false });
-            if (modalState.parentFocusRef)
-              modalState.parentFocusRef.current = true;
+            if (modalState.parentFocusRef) modalState.parentFocusRef.current = true;
           }}
           setRowData={codeHelperTableData.setRowData}
           tableHeaders={codeHelperTableData.tableHeaders}
