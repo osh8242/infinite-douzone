@@ -80,12 +80,12 @@ const Login = () => {
         ///////////////////////////
 
         if (event.type !== "blur") {
-          navigate("/");
           localStorage.setItem("authToken", token || null);
           localStorage.setItem(
             "userInfo",
             JSON.stringify(response.data.user) || null
           );
+          navigate("/");
         }
         ///////////////////////////
 
