@@ -6,6 +6,7 @@
   margin-right: 10px;
   justify-content: space-between;
   background-color: var(--whiteGray);
+  z-index: 100px;
 }
 
 #topNotificationHeader #topLeftNotificationHeader {
@@ -13,6 +14,7 @@
   margin-left: 16px;
   align-items: center;
   gap: 12px;
+    z-index: 100px;
 }
 
 #topLeftNotificationHeader a,
@@ -20,6 +22,7 @@
   /* margin-left: 16px; */
   text-decoration: none;
   color: var(--dark);
+    z-index: 100px;
 }
 
 #topNotificationHeader #topRightNotificationHeader {
@@ -27,11 +30,13 @@
   margin-right: 16px;
   align-items: center;
   gap: 15px;
+    z-index: 100px;
 }
 
 #topHeaderButtonGroup {
   display: flex;
   gap: 8px;
+    z-index: 100px;
 }
 
 #userInformation {
@@ -242,6 +247,7 @@
   opacity: 1;  
   font-size: 16px;
 }
+
 
 
 .clickableIcon {

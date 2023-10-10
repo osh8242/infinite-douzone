@@ -140,10 +140,10 @@ const LaborContractLayout = () => {
                   searchOption={searchOption}
                   onSelect={actions.onSetSearch}
                 />
-                <Row className="mt-4">
-                  <Col md="3">
+                <Row className="mt-4" key={"mainTabRow"}>
+                  <Col md="3" key={"mainTabCol"}>
                     <Row key={"mainTab2"}>
-                      <div className="leftTable">
+                      <div className="leftTable" key={"mainTabDiv"}>
                         {rowAbleState === "F" || !rowAbleState ? (
                           <TableForm
                             readOnly
@@ -224,7 +224,7 @@ const LaborContractLayout = () => {
                     </Row>
                   </Col>
 
-                  <Col md="9" className="px-5">
+                  <Col md="9" className="px-5" key="mainSecond">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
                         <Scrollbars
@@ -250,7 +250,11 @@ const LaborContractLayout = () => {
                         </Scrollbars>,
                       ]}
                     </MenuTab>
-                    <Row className="mt-4" style={{ paddingTop: "22px" }}>
+                    <Row
+                      className="mt-4"
+                      style={{ paddingTop: "22px" }}
+                      key="mainSecond2"
+                    >
                       <MenuTab menuList={[subTabMenuList.otherBenefit]}>
                         {[
                           <Row
@@ -291,9 +295,9 @@ const LaborContractLayout = () => {
                   onSelect={actions.submitMainTabData}
                 />
                 <Row className="mt-4" key={"menuKeySearch2"}>
-                  <Col md="3">
-                    <Row>
-                      <div className="leftSearchTable">
+                  <Col md="3" key={"menuKeySearch2Col"}>
+                    <Row key={"menuKeySearch2Row"}>
+                      <div className="leftSearchTable" key={"menuSearchDiv"}>
                         <TableForm
                           readOnly
                           tableName="swsm"
@@ -331,7 +335,7 @@ const LaborContractLayout = () => {
                         />
                       </div>
                     </Row>
-                    <Row className="mt-3">
+                    <Row className="mt-3" key="searchRow2">
                       <TableForm
                         tableName="EMPSTATICS"
                         tableHeaders={leftStaticsTableConstant.headers}
@@ -341,7 +345,7 @@ const LaborContractLayout = () => {
                     </Row>
                   </Col>
 
-                  <Col md="9" className="px-5">
+                  <Col md="9" className="px-5" key="searchCol2">
                     <MenuTab menuList={[subTabMenuList.WorkInformation]}>
                       {[
                         <Scrollbars
@@ -367,7 +371,11 @@ const LaborContractLayout = () => {
                         </Scrollbars>,
                       ]}
                     </MenuTab>
-                    <Row className="mt-4" style={{ paddingTop: "22px" }}>
+                    <Row
+                      className="mt-4"
+                      style={{ paddingTop: "22px" }}
+                      key="searchRowSub2"
+                    >
                       <MenuTab menuList={[subTabMenuList.otherBenefit]}>
                         {[
                           <Row
