@@ -19,9 +19,8 @@ const LoginFindId = () => {
       const response = await axios.post(url + "/auth/findEmail", {
         email: email,
       });
-
       console.log("OK");
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       if (error.response) {
         // 서버에서 응답을 받은 경우
