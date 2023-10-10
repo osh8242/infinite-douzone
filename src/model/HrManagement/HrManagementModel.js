@@ -148,8 +148,10 @@ const HrManagementModel = () => {
       api
         .post(urlPattern.getEmpAddByCdEmp, leftTablePkValue)
         .then((response) => {
-          let data = response.data;
+          console.log("pkValue",leftTablePkValue);
+          let data = response.data;        
           console.log("mainTabData", data);
+          if(data === '') return;
           setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
