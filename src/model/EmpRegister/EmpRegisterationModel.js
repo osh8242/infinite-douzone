@@ -253,6 +253,8 @@ function EmpRegisterationModel() {
       const retireDate = `${year}-${month}-${day}`;
       console.log(retireDate);
       emp.daRetire = retireDate;
+    } else if (emp.jobOk === "Y") {
+      emp.daRetire = "";
     }
 
     api
@@ -299,7 +301,7 @@ function EmpRegisterationModel() {
       const retireDate = `${year}-${month}-${day}`;
       console.log(retireDate);
       emp.daRetire = retireDate;
-    } else {
+    } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
     }
     api
