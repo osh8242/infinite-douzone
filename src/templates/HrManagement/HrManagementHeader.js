@@ -11,7 +11,7 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { React, useState } from "react";
+import { React, useCallback, useEffect, useState } from "react";
 import { Button, Nav } from "react-bootstrap";
 import ConfirmComponent from "../../components/ConfirmComponent";
 import "../../styles/header.css";
@@ -29,11 +29,36 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
     setShowSidebar(!showSidebar);
   };
 
-  const faTrashCanClickHandler = (event) => {
-    if (existSelectedRows)
-      setShowModal({ show: true, message: "체크된 사원들의 인사관리등록을 삭제하시겠습니까?" });
-    else setShowModal({ show: true, message: "선택된 행이 없습니다" });
-  };
+  const faTrashCanClickHandler = useCallback(
+    (event) => {
+      if (existSelectedRows)
+        setShowModal({
+          show: true,
+          message: "체크된 사원들의 인사관리등록을 삭제하시겠습니까?",
+        });
+      else setShowModal({ show: true, message: "선택된 행이 없습니다" });
+    },
+    [existSelectedRows]
+  );
+
+  const headerKeyDownHandler = useCallback(
+    (event) => {
+      if (event.key === "F5") {
+        event.preventDefault();
+        faTrashCanClickHandler();
+      }
+    },
+    [faTrashCanClickHandler]
+  );
+
+  //componentDidMount
+  useEffect(() => {
+    document.addEventListener("keydown", headerKeyDownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", headerKeyDownHandler);
+    };
+  }, [headerKeyDownHandler]);
 
   return (
     <div id="secondTopHeader" style={{ background: themeColor }}>
