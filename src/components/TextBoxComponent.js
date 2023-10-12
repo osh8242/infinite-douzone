@@ -119,9 +119,9 @@ function TextBoxComponent(props) {
   }, [value]);
 
   // 유효하지 않은 값이 있을 때 alert 창을 띄우는 함수
-  const alertErrorMessage = () => {
-    alert("입력된 값이 유효하지 않습니다");
-  };
+  // const alertErrorMessage = () => {
+  //   alert("입력된 값이 유효하지 않습니다");
+  // };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -133,16 +133,19 @@ function TextBoxComponent(props) {
           onEnter && onEnter(event, event.target.value);
           return;
         } else {
-          alertErrorMessage();
+          // alertErrorMessage();
         }
       } else if (type === "regNum") {
-        if (/^\d{6}-\d{7}$/.test(inputValue) || "") {
-          //유효성에 맞다면 update 요청을 보낼 수 있다
-          setSendValue(inputValue);
-          onEnter && onEnter(event, inputValue, id);
-        } else {
-          alertErrorMessage();
-        }
+        // if (/^\d{6}-\d{7}$/.test(inputValue) || inputValue === "") {
+        //유효성에 맞다면 update 요청을 보낼 수 있다
+        let maskInputValue = inputValue.replace(/-(\d)(\d{6})/, "-$1******");
+        // setSendValue(inputValue);
+        setInputValue(maskInputValue);
+        // onEnter && onEnter(event, inputValue, id);
+        // alertErrorMessage();
+        console.log("eeeeeeeeeeeeeee", maskInputValue);
+        onEnter && onEnter(event, maskInputValue, id);
+        // }
       } else if (type === "email") {
         setSendValue(inputValue);
         onEnter && onEnter(event, inputValue, id);
@@ -236,13 +239,13 @@ function TextBoxComponent(props) {
     } else if (type === "regNum") {
       //주민등록번호 유효값 검사
       setIsValid(true);
-      setInputValue(newValue);
-      makeProcessedValue(newValue);
-      if (!/^\d{6}-\d{1,7}$/.test(newValue)) {
+      if (!/^\d{6}-\d{1,7}$/.test(newValue) || newValue !== "") {
         setIsValid(false);
       } else {
         setIsValid(true);
       }
+      const newRegNum = makeProcessedValue(newValue);
+      setInputValue(newRegNum);
     } else if (type === "date" && onClickCodeHelper) {
       if (!(onChange && onChange(event, newValue, id))) setInputValue(value);
     } else if (type === "time") {
@@ -307,7 +310,7 @@ function TextBoxComponent(props) {
     if (type === "regNum") {
       // 주민등록번호 유효성
       if (value.length >= 14) {
-        alert("13자리 입력해주세요.");
+        // alert("13자리 입력해주세요.");
         returnValue = value.slice(0, 14);
 
         setSendValue(value);
@@ -339,7 +342,14 @@ function TextBoxComponent(props) {
 
   const handleInputFocus = (e) => {
     const obj = e.target;
-    onFocus && onFocus(obj); // onFocus 이벤트 처리
+    console.log("objjjjj", obj.id);
+    // 주민번호
+    if (inputValue && obj.id === "noSocial") {
+      setInputValue("");
+      console.log("안녕?????????????");
+    } else {
+      onFocus && onFocus(obj); // onFocus 이벤트 처리
+    }
   };
 
   // callNumber 타입 컴포넌트 배열
@@ -527,6 +537,30 @@ function TextBoxComponent(props) {
                 </option>
               ))}
             </Form.Select>
+          </div>
+        );
+      // 주민번호
+      case "regNum":
+        return (
+          <div className="widthFull">
+            <Form.Control
+              value={inputValue}
+              type={"regNum"}
+              id={id}
+              name={name}
+              size={size}
+              disabled={isDisable}
+              readOnly={readOnly}
+              plaintext={plaintext}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
+              onClick={onClick}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder ? placeholder : undefined}
+              style={style}
+              // className={isValid ? "" : "invalid"}
+              step={step}
+            />
           </div>
         );
       default:
