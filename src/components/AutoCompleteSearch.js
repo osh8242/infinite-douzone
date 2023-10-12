@@ -90,7 +90,7 @@ const AutoCompleteSearch = forwardRef(({ placeholder }, ref) => {
       사원관리: "/er",
       인사관리: "/hr",
       표준근로계약관리: "/lc/*",
-      // 급여관리: "/si",
+      급여관리: "/si",
       메인페이지: "/",
     };
     navigate(urlMappings[selectedWord] || "/");

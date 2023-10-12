@@ -59,8 +59,9 @@ function MainHome() {
   // const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
 
   let userInfoObject;
+
   try {
-    userInfoObject = JSON.parse(localStorage.getItem("userInfo")) || {};
+    userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   } catch (error) {
     console.error("Parsing error:", error);
     userInfoObject = {};
