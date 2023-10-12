@@ -1,4 +1,4 @@
-// export const url = "http://localhost:8888";
+//export const url = "http://localhost:8888";
 export const url = "http://52.78.198.96:8888"; // AWS 백엔드 서버
 
 export const CODE_TYPE = {

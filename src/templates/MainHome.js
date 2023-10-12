@@ -118,8 +118,9 @@ function MainHome() {
   // const userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
 
   let userInfoObject;
+
   try {
-    userInfoObject = JSON.parse(localStorage.getItem("userInfo")) || {};
+    userInfoObject = JSON.parse(localStorage.getItem("userInfo"));
   } catch (error) {
     console.error("Parsing error:", error);
     userInfoObject = {};
@@ -157,7 +158,8 @@ function MainHome() {
 
   function onClickLoginHandler(e) {
     console.log("click hanglder!");
-    if (localStorage.getItem("userInfo") != null) {
+    // if (localStorage.getItem("userInfo") != null) {
+    if (btnByState === "로그아웃") {
       console.log("local 값 잇서?");
       setBtnByState("로그인");
       setHrefState("/login");
