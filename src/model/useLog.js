@@ -20,6 +20,7 @@ export const getLogFunction = () => async () => {
       localStorage.removeItem("authToken");
       localStorage.removeItem("userInfo");
       window.location.href = "/login";
+      localStorage.clear();
       console.log(response.data);
     }
   } catch (error) {
