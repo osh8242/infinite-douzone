@@ -14,14 +14,61 @@ const AutoCompleteSearch = forwardRef(({ placeholder }, ref) => {
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
+  const getChosung = (char) => {
+    const cho = [
+      "ㄱ",
+      "ㄲ",
+      "ㄴ",
+      "ㄷ",
+      "ㄸ",
+      "ㄹ",
+      "ㅁ",
+      "ㅂ",
+      "ㅃ",
+      "ㅅ",
+      "ㅆ",
+      "ㅇ",
+      "ㅈ",
+      "ㅉ",
+      "ㅊ",
+      "ㅋ",
+      "ㅌ",
+      "ㅍ",
+      "ㅎ",
+    ];
+    const uniCode = char.charCodeAt(0);
+    if (uniCode >= 44032 && uniCode <= 55203) {
+      return cho[Math.floor((uniCode - 44032) / 588)];
+    }
+    return char;
+  };
+
+  const getChosungString = (str) => {
+    return Array.from(str).map(getChosung).join("");
+  };
+
   const mockData = [
     "사원관리",
     "인사관리",
-    "표준근로계약관리",
-    // "급여관리",
+    "표준근약관리",
+    "급여관리",
     "메인페이지",
     "마이페이지",
   ];
+
+  useEffect(() => {
+    if (inputValue) {
+      setSearchResults(
+        mockData.filter(
+          (item) =>
+            item.includes(inputValue) ||
+            getChosungString(item).includes(getChosungString(inputValue))
+        )
+      );
+    } else {
+      setSearchResults([]);
+    }
+  }, [inputValue]);
 
   const inputRef = useRef(null);
 
@@ -37,14 +84,6 @@ const AutoCompleteSearch = forwardRef(({ placeholder }, ref) => {
       }
     },
   }));
-
-  useEffect(() => {
-    if (inputValue) {
-      setSearchResults(mockData.filter((item) => item.includes(inputValue)));
-    } else {
-      setSearchResults([]);
-    }
-  }, [inputValue]);
 
   const navigateTo = (selectedWord) => {
     const urlMappings = {

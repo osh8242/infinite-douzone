@@ -32,6 +32,7 @@
 #si-container {
   width: 82%;
   margin: auto;
+  min-height: calc(100vh - 136px);
 }
 
 #salaryInformationEntryLayout {
