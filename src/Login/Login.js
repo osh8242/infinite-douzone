@@ -25,11 +25,19 @@ const Login = () => {
   const { updateToken, updateLoginInfo } = useLogin();
   const navigate = useNavigate();
 
-  // const handleFocus = () => {
-  //   setPwd("");
-  //   setInvalid("");
-  //   setErrorMessage("");
-  // };
+  const handleFocus = () => {
+    setPwd("");
+    setInvalid("");
+    setErrorMessage("");
+  };
+
+  useEffect(() => {
+    if (id === "") {
+      setId("");
+      setInvalid("");
+      setErrorMessage("");
+    }
+  }, [id]);
 
   useEffect(() => {
     if (pwd === "") {
@@ -161,7 +169,7 @@ const Login = () => {
                 onChange={(e) => {
                   setPwd(e.target.value);
                 }}
-                // onFocus={handleFocus}
+                onFocus={handleFocus}
               />
             </div>
           </div>
