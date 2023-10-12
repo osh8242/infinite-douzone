@@ -141,9 +141,9 @@ const Login = () => {
         <div id="login-topHeader" className="Cabin p-20 bold">
           {/* logo */}
           <a href="/">
-            D<span className="icon-text ex-bold">O</span>
+            D<span className="icon-text">O</span>
             UZ
-            <span className="icon-text ex-bold">O</span>
+            <span className="icon-text">O</span>
             NE
             <FontAwesomeIcon
               icon={faInfinity}

@@ -1,12 +1,12 @@
 @import url("../../src/styles/context.css");
 
 #login-topHeader {
-  position: absolute;
+  position: fixed;
   top: 0;
-  padding: 12px 14%;
-  margin: 2px 32px;
+  padding: 10px 14%;
+  margin: 0px 14%;
   width: 100%;
-  height: fit-content;
+  height: 64px;
   border-bottom: 1px solid whitesmoke;
 }
 

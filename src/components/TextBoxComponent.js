@@ -235,6 +235,7 @@ function TextBoxComponent(props) {
       }
     } else if (type === "regNum") {
       //주민등록번호 유효값 검사
+      setIsValid(true);
       setInputValue(newValue);
       makeProcessedValue(newValue);
       if (!/^\d{6}-\d{1,7}$/.test(newValue)) {
