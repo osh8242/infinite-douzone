@@ -120,6 +120,7 @@ const LaborContractLayout = () => {
   return (
     <>
       <LaborContractHeader
+        sendMailBtnhandler={actions.sendMailRows}
         deleteButtonHandler={actions.deleteSelectedRows}
         existSelectedRows={selectedRows.length !== 0}
       />

@@ -10,6 +10,7 @@ export const swsmUrlPattern = {
   insertSwsmOther: "/swsmOther/insertSwsmOther",
   updateSwsmOther: "/swsmOther/updateSwsmOtherByCdEmp",
   deleteSwsmOther: "/swsmOther/deleteSwsmOther",
+  sendMailSwsm: "/mail/sendMailSwsm",
 };
 
 export const CODE_HELPER_DATA = {
