@@ -69,7 +69,8 @@ const SalaryInformationEntryModel = () => {
   const [cdEmp, setCdEmp] = useState(""); // 사원번호
   const [allowMonth, setAllowMonth] = useState(currentMonthStr); // 귀속년월
   const [salDivision, setSalDivision] = useState(""); // 구분
-  const [paymentDate, setPaymentDate] = useState(currentDateStr); // 지급일
+  //const [paymentDate, setPaymentDate] = useState(currentDateStr); // 지급일
+  const [paymentDate, setPaymentDate] = useState(""); // 지급일
 
   const [searchCdEmp, setSearchCdEmp] = useState(""); // 사원코드 검색
   const [searchCdDept, setSearchCdDept] = useState(""); // 부서코드 검색

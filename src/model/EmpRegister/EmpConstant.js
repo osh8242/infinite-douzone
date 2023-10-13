@@ -25,7 +25,7 @@ export const EmpRegisterLeftHeaders = [
     optionList: SELECT_LIST.ynFor,
     width: "70px",
   },
-  { field: "noSocial", text: "주민번호" },
+  { field: "noSocial", text: "주민번호", width: "140px" },
   {
     field: "jobOk",
     text: "구분",

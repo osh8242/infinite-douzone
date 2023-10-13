@@ -1,6 +1,7 @@
 #er-container {
   width: 80%;
   margin: auto;
+  min-height: calc(100vh - 176px);
 }
 
 #empRegisterLayout {
@@ -10,8 +11,7 @@
 #empRegisterLayoutLeft {
   padding-left: 0 !important;
   padding-right: 0 !important;
-  height: 72vh;
-  overflow: auto;
+  height: 63vh;
   border: 1px solid rgb(222, 226, 230);
 }
 #empRegisterLayoutRight {

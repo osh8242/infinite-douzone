@@ -24,7 +24,7 @@ const HrManagementModel = () => {
 
   const [selectedRows, setSelectedRows] = useState([]); // 체크된 행(삭제를 위한)
 
-  const [modalState, setModalState] = useState({ show: false }); // 모달컨트롤
+  const [modalState, setModalState] = useState({ show: false }); // 확인모달컨트롤
   const [codeHelperTableData, setCodeHelperTableData] = useState([]);
 
   //검색조건 : 재직구분, 정렬기준
@@ -70,7 +70,10 @@ const HrManagementModel = () => {
           }
         });
         console.log("세팅된 newLeftTableData", newLeftTableData);
-        console.log("세팅된 newLeftCodeHelperTableData", newLeftCodeHelperTableData);
+        console.log(
+          "세팅된 newLeftCodeHelperTableData",
+          newLeftCodeHelperTableData
+        );
         setLeftCodeHelperTableData(newLeftCodeHelperTableData);
         setLeftTableData(newLeftTableData);
       })
@@ -145,8 +148,10 @@ const HrManagementModel = () => {
       api
         .post(urlPattern.getEmpAddByCdEmp, leftTablePkValue)
         .then((response) => {
-          let data = response.data;
+          console.log("pkValue",leftTablePkValue);
+          let data = response.data;        
           console.log("mainTabData", data);
+          if(data === '') return;
           setMainTabData(EmpAdd(data));
         })
         .catch((error) => {
@@ -451,6 +456,7 @@ const HrManagementModel = () => {
       let pattern;
       switch (row["table"]) {
         case "empFam":
+          if (row.item["cdFamrel"] === "CF0") return;
           console.log("가족 딜리트 요청", row);
           pattern = urlPattern.deleteEmpFam;
           break;
