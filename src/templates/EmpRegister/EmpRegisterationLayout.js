@@ -27,7 +27,7 @@ import {
   codeHelperData_rankNo,
   tabConstant,
 } from "../../model/EmpRegister/EmpConstant";
-import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
+import { MAIN_TAB, leftTableFooterHeader } from "./MainTab/ErMainTabConstant";
 
 import "../../styles/commonComponent.css";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
@@ -149,6 +149,7 @@ function EmpRegisterationLayout() {
             md="4"
             id="empRegisterLayoutLeft"
             style={{
+              height: "54vh",
               position: "relative",
               display: "flex",
               flexDirection: "column",
@@ -188,31 +189,33 @@ function EmpRegisterationLayout() {
             {/* ) : (
               <div>Loading...</div> //로딩중 화면 표시 내용
             )} */}
-            <div
+
+            {/* <Table
+              className="fixed"
               style={{
-                top: "100%",
-                left: "0px",
-                width: "100%",
+                border: "1px solid lightgray",
+                textAlign: "center",
+                marginBottom: "0px",
               }}
             >
-              <Table
-                className="fixed"
-                style={{
-                  border: "1px solid lightgray",
-                  textAlign: "center",
-                  marginBottom: "0px",
-                }}
-              >
-                <tbody>
-                  <tr>
-                    <td style={{ border: "1px solid lightgray", width: "50%" }}>
-                      재직/전체
-                    </td>
-                    <td>{state.countEmpAndJobOkEmp}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
+              <tbody>
+                <tr>
+                  <td>재직</td>
+                  <td>전체</td>
+                </tr>
+                <tr>
+                  <td>state.countJobOkEmp</td>
+                  <td>state.countEmp</td>
+                </tr>
+              </tbody>
+            </Table> */}
+            {/* <Row className="mt-3">
+                <TableForm
+                  tableHeaders={leftTableFooterHeader}
+                  tableData={state.countEmpAndJobOkEmp}
+                  readOnly
+                />
+              </Row> */}
           </Col>
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (
