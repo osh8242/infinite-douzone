@@ -530,6 +530,56 @@ const LaborContractModel = () => {
     },
     [leftTablePkValue]
   );
+  //선택된 행들 sendMain 요청
+  const sendMailRows = useCallback(() => {
+    const editedTableNames = {};
+    console.log("메일요청 행들");
+    const userInf = JSON.parse(localStorage.getItem("userInfo"));
+
+    // 각 row에 대한 sendMain 요청을 생성
+    const deletePromises = selectedRows.map((row) => {
+      let pattern;
+      switch (row.table) {
+        case "swsmOther":
+          pattern = swsmUrlPattern.deleteSwsmOther;
+          break;
+        case "swsm":
+          pattern = swsmUrlPattern.deleteSwsm;
+          break;
+        default:
+          return Promise.resolve();
+      }
+      if (!editedTableNames[row.table]) editedTableNames[row.table] = true;
+      return api.post(
+        `${swsmUrlPattern.sendMailSwsm}?cdEmp=${row.item.cdEmp}`,
+        userInf
+      );
+    });
+
+    Promise.all(deletePromises)
+      .then((responses) => {
+        console.log("선택된 모든 행의 전송 완료");
+        console.log("selectedRows", selectedRows);
+        setSelectedRows([]); // 선택행 배열 비우기
+        Object.keys(editedTableNames).forEach((tableName) => {
+          switch (tableName) {
+            case "swsmOther":
+              getEmpList();
+              break;
+            case "swsm":
+              getEmpList();
+              setLeftTableData([]);
+              break;
+            default:
+              break;
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("하나 이상의 요청에서 에러 발생: ", error);
+        // 필요에 따라 다른 오류 처리 로직 추가
+      });
+  }, [selectedRows]);
 
   //선택된 행들 delete 요청
   const deleteSelectedRows = useCallback(() => {
@@ -660,6 +710,7 @@ const LaborContractModel = () => {
 
       setSelectedRows,
       deleteSelectedRows,
+      sendMailRows,
 
       deleteRow,
 

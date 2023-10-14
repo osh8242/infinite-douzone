@@ -248,6 +248,18 @@
   font-size: 16px;
 }
 
+.sendMailBtn{
+  padding: 0px 16px !important;
+  width: fit-content !important;
+  height: 32px !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid white !important;
+ }
+
+
+.sendMailBtn:hover {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
 
 
 .clickableIcon {
