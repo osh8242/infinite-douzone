@@ -1,5 +1,5 @@
-export const url = "http://localhost:8888";
-// export const url = "http://52.78.198.96:8888"; // AWS 백엔드 서버
+// export const url = "http://localhost:8888";
+export const url = "http://52.78.198.96:8888"; // AWS 백엔드 서버
 
 export const CODE_TYPE = {
   cdOffduty: "직무",
@@ -322,7 +322,7 @@ export const SELECT_LIST = {
   ],
   fgSex: [
     { key: "M", value: "남자" },
-    { key: "W", value: "여자" },
+    { key: "F", value: "여자" },
   ],
   ynEmploy: [
     { key: "Y", value: "0.여" },
