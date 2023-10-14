@@ -18,7 +18,11 @@ import "../../styles/header.css";
 import empAdd from "../../styles/img/swsmLogo.png";
 import { useCurrTime } from "../../Login/TimeProvider";
 
-const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
+const LaborContractHeader = ({
+  sendMailBtnhandler,
+  deleteButtonHandler,
+  existSelectedRows,
+}) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { formattedTime } = useCurrTime();
@@ -33,7 +37,21 @@ const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
 
   const faTrashCanClickHandler = (event) => {
     if (existSelectedRows)
-      setShowModal({ show: true, message: "선택된 행들을 삭제하시겠습니까?" });
+      setShowModal({
+        show: true,
+        message: "선택된 행들을 삭제하시겠습니까?",
+        action: deleteButtonHandler(),
+      });
+    else setShowModal({ show: true, message: "선택된 행이 없습니다" });
+  };
+
+  const sendMail = (event) => {
+    if (existSelectedRows)
+      setShowModal({
+        show: true,
+        message: "전송하시겠습니까?",
+        action: sendMailBtnhandler(),
+      });
     else setShowModal({ show: true, message: "선택된 행이 없습니다" });
   };
 
@@ -92,6 +110,13 @@ const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
         >
           최근 업데이트 : {formattedTime}
         </p>
+        <Button
+          className="sendMailBtn"
+          onClick={(e) => sendMail(e)}
+          style={{ fontSize: "14px" }}
+        >
+          계약서 발송
+        </Button>
         <button className="backgroundBorderNone">
           <FontAwesomeIcon icon={faPrint} className="colorWhite forbid" />
         </button>
@@ -114,7 +139,10 @@ const LaborContractHeader = ({ deleteButtonHandler, existSelectedRows }) => {
         onlyConfirm={!existSelectedRows}
         onHide={() => setShowModal(false)}
         onConfirm={() => {
-          deleteButtonHandler();
+          showModal.action && showModal.action();
+
+          // sendMailBtnhandler();
+          // deleteButtonHandler();
           setShowModal(false);
         }}
       />
