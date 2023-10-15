@@ -21,7 +21,7 @@ const ReCalculation = (props) => {
     setTableData([
       { item: { cdOption: "recalculateTaxYn", nmOption: "과세, 비과세 재계산" },},
       { item: { cdOption: "recalculateDeductInfo", nmOption: "공제항목 재계산", },},
-      { item: { cdOption: "editEmpInfo", nmOption: "사원정보 변경" } },
+      // { item: { cdOption: "editEmpInfo", nmOption: "사원정보 변경" } },
     ]);
   }, []);
 
@@ -105,8 +105,8 @@ const ReCalculation = (props) => {
           setSelectedRows: setSelectedRows,
         }}
       />
-      <div>
-        <Button onClick={() => confirmButtonHandler()}>확인</Button>
+      <div style={{textAlign:'center', padding:'10px'}} >
+        <Button onClick={() => confirmButtonHandler()}>재계산</Button>
       </div>
       <ConfirmComponent
         show={showModal.show}
