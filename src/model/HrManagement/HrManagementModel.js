@@ -111,6 +111,7 @@ const HrManagementModel = () => {
       .post(urlPattern.insertEmpAdd, emp)
       .then((response) => {
         if (response.data === 1) console.log("EmpAdd insert 성공");
+        setLeftTablePkValue({cdEmp:emp.cdEmp});
       })
       .catch((error) => {
         console.error("에러발생: ", error);

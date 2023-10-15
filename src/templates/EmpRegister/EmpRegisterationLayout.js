@@ -26,6 +26,7 @@ import {
   codeHelperData_cdSalcls,
   codeHelperData_rankNo,
   tabConstant,
+  leftStaticsTableConstant,
 } from "../../model/EmpRegister/EmpConstant";
 import { MAIN_TAB, leftTableFooterHeader } from "./MainTab/ErMainTabConstant";
 
@@ -147,24 +148,23 @@ function EmpRegisterationLayout() {
         <Row id="empRegisterLayout">
           <Col
             md="4"
-            id="empRegisterLayoutLeft"
             style={{
-              height: "54vh",
               position: "relative",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
-            <div
+            {/* <div
               style={{
                 alignItems: "stretch",
                 minHeight: "100% - 36px",
                 overflow: "auto",
               }}
-            >
-              {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
-              {/* {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링 */}
+            > */}
+            {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
+            {/* {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링 */}
+            <Row id="empRegisterLayoutLeft">
               <TableForm
                 tableHeaders={EmpRegisterLeftHeaders}
                 tableData={state.leftTableData}
@@ -185,7 +185,8 @@ function EmpRegisterationLayout() {
                   },
                 }}
               />
-            </div>
+            </Row>
+            {/* </div> */}
             {/* ) : (
               <div>Loading...</div> //로딩중 화면 표시 내용
             )} */}
@@ -209,13 +210,13 @@ function EmpRegisterationLayout() {
                 </tr>
               </tbody>
             </Table> */}
-            {/* <Row className="mt-3">
-                <TableForm
-                  tableHeaders={leftTableFooterHeader}
-                  tableData={state.countEmpAndJobOkEmp}
-                  readOnly
-                />
-              </Row> */}
+            <Row className="mt-3">
+              <TableForm
+                tableHeaders={leftStaticsTableConstant.headers}
+                tableData={state.leftStaticsTableData}
+                readOnly
+              />
+            </Row>
           </Col>
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (

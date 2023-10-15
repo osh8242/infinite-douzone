@@ -34,7 +34,7 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
       if (existSelectedRows)
         setShowModal({
           show: true,
-          message: "선택된 행들을 삭제하시겠습니까?",
+          message: "체크된 사원들의 인사관리등록을 삭제하시겠습니까?",
         });
       else setShowModal({ show: true, message: "선택된 행이 없습니다" });
     },
