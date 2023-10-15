@@ -1,9 +1,10 @@
 #hr-container {
   width: 82%;
   margin: auto;
+  min-height: calc(100vh - 152px);
 }
 
-.hr-search-row {  
+.hr-search-row {
   // padding-left: 25px !important;
   // padding-right: 23px !important;
 }

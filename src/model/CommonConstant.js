@@ -45,7 +45,7 @@ export const CODE_VALUE = {
     "004": "판매업",
     "005": "농림어업",
     "006": "사업",
-    "007": "기타",
+    "007": "기타 ",
   },
   [CODE_TYPE.cdOffpos]: {
     R001: "사원",
@@ -322,7 +322,7 @@ export const SELECT_LIST = {
   ],
   fgSex: [
     { key: "M", value: "남자" },
-    { key: "W", value: "여자" },
+    { key: "F", value: "여자" },
   ],
   ynEmploy: [
     { key: "Y", value: "0.여" },

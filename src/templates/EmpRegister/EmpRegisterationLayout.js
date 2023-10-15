@@ -27,13 +27,14 @@ import {
   codeHelperData_rankNo,
   tabConstant,
 } from "../../model/EmpRegister/EmpConstant";
-import { MAIN_TAB } from "./MainTab/ErMainTabConstant";
+import { MAIN_TAB, leftTableFooterHeader } from "./MainTab/ErMainTabConstant";
 
 import "../../styles/commonComponent.css";
 import "../../styles/EmpRegister/empRegisterationLayout.css";
 import "../../styles/fonts.css";
 import increaseBrightness from "../../model/increaseBrightness";
 import { CODE_TYPE, CODE_VALUE } from "../../model/CommonConstant";
+import { useEffect } from "react";
 
 function EmpRegisterationLayout() {
   //Model로 관리되는 state들
@@ -144,32 +145,77 @@ function EmpRegisterationLayout() {
       />
       <div id="er-container" className="SUITE p-10">
         <Row id="empRegisterLayout">
-          <Col md="4" id="empRegisterLayoutLeft">
-            {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
-            {/* {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링 */}
-            <TableForm
-              tableHeaders={EmpRegisterLeftHeaders}
-              tableData={state.leftTableData}
-              selectedRows={state.selectedRows}
-              showCheckbox
-              sortable
-              rowAddable
-              defaultFocus
-              actions={{
-                setTableData: actions.setLeftTableData,
-                setPkValue: actions.setMainTablePkValue,
-                setSelectedRows: actions.setSelectedRows,
-                insertNewRow: actions.insertEmp,
-                updateEditedRow: actions.updateEmp,
-                deleteRow: actions.deleteEmp,
-                getRowObject: (data) => {
-                  return { item: Emp(data), table: "emp" };
-                },
+          <Col
+            md="4"
+            id="empRegisterLayoutLeft"
+            style={{
+              height: "54vh",
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                alignItems: "stretch",
+                minHeight: "100% - 36px",
+                overflow: "auto",
               }}
-            />
+            >
+              {/* 좌측 그리드 / 좌측 사원목록 테이블 */}
+              {/* {state.leftTableData ? ( //tableData가 준비되었을 경우에만 TableForm 컴포넌트 렌더링 */}
+              <TableForm
+                tableHeaders={EmpRegisterLeftHeaders}
+                tableData={state.leftTableData}
+                selectedRows={state.selectedRows}
+                showCheckbox
+                sortable
+                rowAddable
+                defaultFocus
+                actions={{
+                  setTableData: actions.setLeftTableData,
+                  setPkValue: actions.setMainTablePkValue,
+                  setSelectedRows: actions.setSelectedRows,
+                  insertNewRow: actions.insertEmp,
+                  updateEditedRow: actions.updateEmp,
+                  deleteRow: actions.deleteEmp,
+                  getRowObject: (data) => {
+                    return { item: Emp(data), table: "emp" };
+                  },
+                }}
+              />
+            </div>
             {/* ) : (
               <div>Loading...</div> //로딩중 화면 표시 내용
             )} */}
+
+            {/* <Table
+              className="fixed"
+              style={{
+                border: "1px solid lightgray",
+                textAlign: "center",
+                marginBottom: "0px",
+              }}
+            >
+              <tbody>
+                <tr>
+                  <td>재직</td>
+                  <td>전체</td>
+                </tr>
+                <tr>
+                  <td>state.countJobOkEmp</td>
+                  <td>state.countEmp</td>
+                </tr>
+              </tbody>
+            </Table> */}
+            {/* <Row className="mt-3">
+                <TableForm
+                  tableHeaders={leftTableFooterHeader}
+                  tableData={state.countEmpAndJobOkEmp}
+                  readOnly
+                />
+              </Row> */}
           </Col>
           {/* 우측 메인 탭 영역 */}
           {state.mainTabData ? (

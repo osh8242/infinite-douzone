@@ -157,9 +157,8 @@ function SignUpLayout() {
         show: true,
         message: "유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.",
       });
-
       // alert("유효하지 않은 입력이 있습니다. 확인 후 다시 시도해주세요.");
-      return;
+      // return;
     }
 
     const RegisterVo = {
