@@ -15,6 +15,7 @@ import {
   codeHelperData_rankNo,
   urlPattern,
 } from "./EmpConstant";
+import { useMemo } from "react";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -449,6 +450,25 @@ function EmpRegisterationModel() {
   //     });
   // }, [mainTablePkValue, subTabData]);
 
+  ////사원 테이블 재직 통계 계산
+  const leftStaticsTableData = useMemo(() => {
+    let jobOkY = 0;
+    let jobOkA = 0;
+    leftTableData.forEach((row) => {
+      if (row.item?.["jobOk"] === "Y") jobOkY++;
+      jobOkA++;
+    });
+    console.log("오잉");
+    return [
+      {
+        item: {
+          jobOkY: jobOkY,
+          jobOkA: jobOkA,
+        },
+      },
+    ];
+  }, [leftTableData]);
+
   return {
     state: {
       leftTableData,
@@ -461,8 +481,8 @@ function EmpRegisterationModel() {
       codeHelperTableData,
       undeletedEmpTableData,
       codeHelperState,
-      // countEmp,
-      // countJobOkEmp,
+
+      leftStaticsTableData,
     },
     actions: {
       insertEmp,

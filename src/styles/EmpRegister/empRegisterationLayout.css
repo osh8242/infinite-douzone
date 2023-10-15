@@ -9,9 +9,10 @@
 }
 
 #empRegisterLayoutLeft {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  height: 63vh;
+  display: block;
+  padding: 0;
+  min-height: 54vh;
+  max-height: 64vh;
   border: 1px solid rgb(222, 226, 230);
 }
 #empRegisterLayoutRight {
