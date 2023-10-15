@@ -34,7 +34,8 @@ function EmpRegisterationModel() {
   const [modalState, setModalState] = useState({ show: false }); //일반 모달 창의 상태관리
   const [codeHelperState, setCodeHelperState] = useState({ show: false }); //코드 도움 모달 창의 상태관리
   const [addRow, setAddRow] = useState(); //코드도움 addRow
-  const [countEmpAndJobOkEmp, setCountEmpAndJobOkEmp] = useState("0/0");
+  const [countEmp, setCountEmp] = useState("0");
+  const [countJobOkEmp, setCountJobOkEmp] = useState("0");
 
   // 코드도움 테이블 data
   const [codeHelperTableData, setCodeHelperTableData] = useState([
@@ -108,7 +109,15 @@ function EmpRegisterationModel() {
           updateEmp(newEmp);
         } else {
           let newEmp = { ...mainTabData.item };
-          newEmp[event.target.id] = value;
+          //주민번호
+          if (event.target.id === "noSocial") {
+            let ee = newEmp["noSocial"].replace(/-(\d)(\d{6})/, "-$1******");
+            console.log("11111111111111111111", ee);
+            newEmp["noSocial"] = ee;
+          } else {
+            newEmp[event.target.id] = value;
+          }
+
           console.log("newEmp", newEmp);
           updateEmp(newEmp);
         }
@@ -153,7 +162,7 @@ function EmpRegisterationModel() {
         });
         setLeftTableData(data);
         const count = countJobOkEmp + "/" + countEmp;
-        setCountEmpAndJobOkEmp(count);
+        // setCountEmpAndJobOkEmp(count);
       })
       .catch((error) => {
         console.log("에러발생: ", error);
@@ -265,6 +274,11 @@ function EmpRegisterationModel() {
     } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
     }
+    //주민번호
+    if (emp.noSocial) {
+      let ee = emp.noSocial.replace(/-(\d)(\d{6})/, "-$1******");
+      emp.noSocial = ee;
+    }
 
     api
       .post(urlPattern.insertEmp, emp, {
@@ -313,6 +327,13 @@ function EmpRegisterationModel() {
     } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
     }
+
+    //주민번호
+    if (emp.noSocial) {
+      let ee = emp.noSocial.replace(/-(\d)(\d{6})/, "-$1******");
+      emp.noSocial = ee;
+    }
+
     api
       .put(urlPattern.updateEmp, emp)
       .then((response) => {
@@ -440,7 +461,8 @@ function EmpRegisterationModel() {
       codeHelperTableData,
       undeletedEmpTableData,
       codeHelperState,
-      countEmpAndJobOkEmp,
+      // countEmp,
+      // countJobOkEmp,
     },
     actions: {
       insertEmp,

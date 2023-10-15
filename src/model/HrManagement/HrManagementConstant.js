@@ -171,7 +171,7 @@ export const subTableConstant = {
       type: "select",
       optionList: SELECT_LIST.ynFor,
     },
-    { field: "noSocial", text: "주민등록번호", width: "145px" },
+    { field: "noSocial", text: "주민등록번호", width: "145px", type: "regNum" },
     {
       field: "fgSchool",
       text: "학력",

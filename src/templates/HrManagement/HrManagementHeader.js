@@ -50,11 +50,9 @@ const HrManagementHeader = ({ deleteButtonHandler, existSelectedRows }) => {
     },
     [faTrashCanClickHandler]
   );
-
   //componentDidMount
   useEffect(() => {
     document.addEventListener("keydown", headerKeyDownHandler);
-
     return () => {
       document.removeEventListener("keydown", headerKeyDownHandler);
     };

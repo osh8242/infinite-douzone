@@ -322,7 +322,7 @@ export const SELECT_LIST = {
   ],
   fgSex: [
     { key: "M", value: "남자" },
-    { key: "W", value: "여자" },
+    { key: "F", value: "여자" },
   ],
   ynEmploy: [
     { key: "Y", value: "0.여" },

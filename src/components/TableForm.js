@@ -346,6 +346,11 @@ const TableForm = ({
         const type = tableHeaders[index]?.type;
         if (type && type === "textCodeHelper") {
           editedRow.item[field] = findKeyInCodeValue(input.value);
+        } else if (type && type === "regNum") {
+          editedRow.item[field] = input.value.replace(
+            /-(\d)(\d{6})/,
+            "-$1******"
+          );
         } else {
           editedRow.item[field] = input.value;
         }
@@ -486,6 +491,15 @@ const TableForm = ({
               //   EditedRow[field] = value;
               //   actions.updateEditedRow(EditedRow);
               // }}
+            />
+          );
+        case "regNum":
+          return (
+            <TextBoxComponent
+              type="regNum"
+              id={field}
+              value={row.isNew ? "" : row.item[field]}
+              onEnter={(e) => TdKeyDownHandler(e, rowIndex, columnIndex)}
             />
           );
         case "date":
