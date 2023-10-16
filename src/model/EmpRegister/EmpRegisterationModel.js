@@ -152,7 +152,7 @@ function EmpRegisterationModel() {
             cdEmp: row.cdEmp,
             nmKrname: row.nmKrname,
             ynFor: row.ynFor,
-            noSocial: row.noSocial.replace(/-(\d)(\d{6})/, "-$1******"),
+            noSocial: row.noSocial,
             jobOk: row.jobOk,
           };
           if (row.jobOk === "Y") {
@@ -170,7 +170,7 @@ function EmpRegisterationModel() {
         console.log("에러발생: ", error);
         //에러 처리
       });
-  }, [reloadSubTableData]);
+  }, [reloadSubTableData, editedEmp]);
 
   // SELECT mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
@@ -184,13 +184,13 @@ function EmpRegisterationModel() {
           );
 
           //주민번호
-          if (response.data.noSocial) {
-            let ee = response.data.noSocial.replace(
-              /-(\d)(\d{6})/,
-              "-$1******"
-            );
-            response.data.noSocial = ee;
-          }
+          // if (response.data.noSocial) {
+          //   let ee = response.data.noSocial.replace(
+          //     /-(\d)(\d{6})/,
+          //     "-$1******"
+          //   );
+          //   response.data.noSocial = ee;
+          // }
           setMainTabData(Emp(response.data));
         })
         .catch((error) => {

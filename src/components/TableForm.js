@@ -346,11 +346,6 @@ const TableForm = ({
         const type = tableHeaders[index]?.type;
         if (type && type === "textCodeHelper") {
           editedRow.item[field] = findKeyInCodeValue(input.value);
-        } else if (type && type === "regNum") {
-          editedRow.item[field] = input.value.replace(
-            /-(\d)(\d{6})/,
-            "-$1******"
-          );
         } else {
           editedRow.item[field] = input.value;
         }
@@ -604,6 +599,8 @@ const TableForm = ({
             if (option.key === value) selectFormValue = option.value;
           });
           return selectFormValue;
+        case "regNum":
+          return value.replace(/-(\d)(\d{6})/, "-$1******");
         case "textCodeHelper":
           if (
             tableName === "empFam" &&
