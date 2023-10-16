@@ -115,6 +115,9 @@ function TextBoxComponent(props) {
     if (type === "callNumber") {
       let callNumber = value.split("-");
       setInputCallValue(callNumber);
+    } else if (type === "regNum") {
+      let regNum = value ? value.replace(/-(\d)(\d{6})/, "-$1******") : "";
+      setInputValue(regNum);
     }
   }, [value]);
 
@@ -138,13 +141,14 @@ function TextBoxComponent(props) {
       } else if (type === "regNum") {
         // if (/^\d{6}-\d{7}$/.test(inputValue) || inputValue === "") {
         //유효성에 맞다면 update 요청을 보낼 수 있다
+        let originData = inputValue;
         let maskInputValue = inputValue.replace(/-(\d)(\d{6})/, "-$1******");
         // setSendValue(inputValue);
         setInputValue(maskInputValue);
         // onEnter && onEnter(event, inputValue, id);
         // alertErrorMessage();
         console.log("eeeeeeeeeeeeeee", maskInputValue);
-        onEnter && onEnter(event, maskInputValue, id);
+        onEnter && onEnter(event, originData, id);
         // }
       } else if (type === "email") {
         setSendValue(inputValue);
