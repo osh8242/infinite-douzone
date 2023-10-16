@@ -152,13 +152,14 @@ function EmpRegisterationModel() {
             cdEmp: row.cdEmp,
             nmKrname: row.nmKrname,
             ynFor: row.ynFor,
-            noSocial: row.noSocial,
+            noSocial: row.noSocial.replace(/-(\d)(\d{6})/, "-$1******"),
             jobOk: row.jobOk,
           };
           if (row.jobOk === "Y") {
             countJobOkEmp += 1;
           }
           countEmp += 1;
+
           return { item: empData, table: "emp" };
         });
         setLeftTableData(data);
@@ -182,6 +183,14 @@ function EmpRegisterationModel() {
             response.data
           );
 
+          //주민번호
+          if (response.data.noSocial) {
+            let ee = response.data.noSocial.replace(
+              /-(\d)(\d{6})/,
+              "-$1******"
+            );
+            response.data.noSocial = ee;
+          }
           setMainTabData(Emp(response.data));
         })
         .catch((error) => {
@@ -275,11 +284,6 @@ function EmpRegisterationModel() {
     } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
     }
-    //주민번호
-    if (emp.noSocial) {
-      let ee = emp.noSocial.replace(/-(\d)(\d{6})/, "-$1******");
-      emp.noSocial = ee;
-    }
 
     api
       .post(urlPattern.insertEmp, emp, {
@@ -327,12 +331,6 @@ function EmpRegisterationModel() {
       emp.daRetire = retireDate;
     } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
-    }
-
-    //주민번호
-    if (emp.noSocial) {
-      let ee = emp.noSocial.replace(/-(\d)(\d{6})/, "-$1******");
-      emp.noSocial = ee;
     }
 
     api
