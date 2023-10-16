@@ -122,7 +122,7 @@ export const leftTableConstant = {
   headers: [
     { field: "cdEmp", text: "사원코드", orderBy: "asc", isPk: true },
     { field: "nmKrname", text: "성명", orderBy: "asc" },
-    { field: "noSocial", text: "주민번호" },
+    { field: "noSocial", text: "주민번호", type: "regNum" },
   ],
 };
 
