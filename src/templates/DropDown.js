@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import imgLogo from "../../src/styles/img/defaultProfile.jpg";
-import "../styles/DropDown.css";
-import { useCurrTime } from "../Login/TimeProvider";
-import { useLogin } from "../Login/LoginProvider";
+import {
+  faArrowRightFromBracket,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
+import imgLogo from "../../src/styles/img/defaultProfile.jpg";
+import { useCurrTime } from "../Login/TimeProvider";
+import "../styles/DropDown.css";
 // import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { getLogFunction } from "../model/useLog";
 
@@ -62,11 +62,7 @@ const DropDownMenu = (props) => {
 
   return (
     <div className={profileDropdown}>
-      <FontAwesomeIcon
-        icon={faPenToSquare}
-        size="xl"
-        className="faPenToSquare"
-      />
+      <FontAwesomeIcon icon={faPenToSquare} size="xl" className="faPenToSquare" />
       <FontAwesomeIcon
         icon={faArrowRightFromBracket}
         size="xl"
@@ -78,7 +74,7 @@ const DropDownMenu = (props) => {
       <div className="textContainer">
         <p className="name">{userName} 선임연구원</p>
         <p className="recentLogin">
-          (주){userInfoObject.companyName}&gt; 솔루션사업부문
+          (주){userInfoObject.companyName}&gt; 플랫폼사업부문
         </p>
         <p className="anotherLogin">최근 접속 : {formattedTime}</p>
       </div>
