@@ -35,6 +35,20 @@ export const EmpRegisterLeftHeaders = [
   },
 ];
 
+//왼쪽 통계 테이블
+export const leftStaticsTableConstant = {
+  headers: [
+    {
+      field: "jobOkA",
+      text: "전체",
+    },
+    {
+      field: "jobOkY",
+      text: "재직",
+    },
+  ],
+};
+
 //메인 탭 사용 필드
 export const EmpRegisterMainHeaders = [
   { field: "daEnter", text: "입사일자" },
