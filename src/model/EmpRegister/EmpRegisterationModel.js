@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { currentDateStr } from "../../utils/DateUtils.js";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Emp from "../../vo/EmpRegister/Emp";
-import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 import { useApi } from "../Api";
 import {
   codeHelperData_abbNation,
@@ -15,7 +13,6 @@ import {
   codeHelperData_rankNo,
   urlPattern,
 } from "./EmpConstant";
-import { useMemo } from "react";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -69,9 +66,7 @@ function EmpRegisterationModel() {
         (item) => item.item[fieldName] === value
       );
       return matchedItem
-        ? matchedItem.item[
-            `nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`
-          ]
+        ? matchedItem.item[`nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`]
         : value;
     } else {
       // console.error(`Code helper data not found for field: ${fieldName}`);
@@ -178,10 +173,7 @@ function EmpRegisterationModel() {
       api
         .post(urlPattern.getEmpByCdEmp, mainTablePkValue)
         .then((response) => {
-          console.log(
-            "EmpRegisterationModel > /emp/getEmpByCdEmp",
-            response.data
-          );
+          console.log("EmpRegisterationModel > /emp/getEmpByCdEmp", response.data);
 
           //주민번호
           // if (response.data.noSocial) {
