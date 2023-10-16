@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { currentDateStr } from "../../utils/DateUtils.js";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Emp from "../../vo/EmpRegister/Emp";
-import EmpMenuUsage from "../../vo/EmpRegister/EmpMenuUsage";
 import { useApi } from "../Api";
 import {
   codeHelperData_abbNation,
@@ -15,7 +13,6 @@ import {
   codeHelperData_rankNo,
   urlPattern,
 } from "./EmpConstant";
-import { useMemo } from "react";
 
 function EmpRegisterationModel() {
   const url = "http://localhost:8888";
@@ -69,9 +66,7 @@ function EmpRegisterationModel() {
         (item) => item.item[fieldName] === value
       );
       return matchedItem
-        ? matchedItem.item[
-            `nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`
-          ]
+        ? matchedItem.item[`nm${fieldName[0].toUpperCase()}${fieldName.slice(1)}`]
         : value;
     } else {
       // console.error(`Code helper data not found for field: ${fieldName}`);
@@ -159,6 +154,7 @@ function EmpRegisterationModel() {
             countJobOkEmp += 1;
           }
           countEmp += 1;
+
           return { item: empData, table: "emp" };
         });
         setLeftTableData(data);
@@ -169,7 +165,7 @@ function EmpRegisterationModel() {
         console.log("에러발생: ", error);
         //에러 처리
       });
-  }, [reloadSubTableData]);
+  }, [reloadSubTableData, editedEmp]);
 
   // SELECT mainTabData 가져오는 비동기 POST 요청 (사원의 기초자료)
   useEffect(() => {
@@ -177,11 +173,16 @@ function EmpRegisterationModel() {
       api
         .post(urlPattern.getEmpByCdEmp, mainTablePkValue)
         .then((response) => {
-          console.log(
-            "EmpRegisterationModel > /emp/getEmpByCdEmp",
-            response.data
-          );
+          console.log("EmpRegisterationModel > /emp/getEmpByCdEmp", response.data);
 
+          //주민번호
+          // if (response.data.noSocial) {
+          //   let ee = response.data.noSocial.replace(
+          //     /-(\d)(\d{6})/,
+          //     "-$1******"
+          //   );
+          //   response.data.noSocial = ee;
+          // }
           setMainTabData(Emp(response.data));
         })
         .catch((error) => {
@@ -275,11 +276,6 @@ function EmpRegisterationModel() {
     } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
     }
-    //주민번호
-    if (emp.noSocial) {
-      let ee = emp.noSocial.replace(/-(\d)(\d{6})/, "-$1******");
-      emp.noSocial = ee;
-    }
 
     api
       .post(urlPattern.insertEmp, emp, {
@@ -327,12 +323,6 @@ function EmpRegisterationModel() {
       emp.daRetire = retireDate;
     } else if (emp.jobOk === "Y") {
       emp.daRetire = "";
-    }
-
-    //주민번호
-    if (emp.noSocial) {
-      let ee = emp.noSocial.replace(/-(\d)(\d{6})/, "-$1******");
-      emp.noSocial = ee;
     }
 
     api

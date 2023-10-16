@@ -26,16 +26,16 @@ export const salEmp = {
 /* 급여항목 영역 */
 export const salAllow = {
   headers: [
-    { field: "nmAllow", text: "급여항목", readOnly: true , width : '150px'},
-    { field: "allowPay", text: "지급금액", type: "number",  width : '150px'},
+    { field: "nmAllow", text: "급여항목", readOnly: true, width: "150px" },
+    { field: "allowPay", text: "지급금액", type: "number", width: "150px" },
   ],
 };
 
 export const sumAllowPay = {
   headers: [
-    { field: "sumByY", text: "과세", type: "number" , width : '100px'},
-    { field: "sumByN", text: "비과세", type: "number" , width : '100px'},
-    { field: "sumAllowPay", text: "합계", type: "number" , width : '100px'},
+    { field: "sumByY", text: "과세", type: "number", width: "100px" },
+    { field: "sumByN", text: "비과세", type: "number", width: "100px" },
+    { field: "sumAllowPay", text: "합계", type: "number", width: "100px" },
   ],
 };
 
@@ -58,7 +58,7 @@ export const salAllowWithCalculation = {
 /* 공제항목 영역 */
 export const salDeduct = {
   headers: [
-    { field: "nmDeduct", text: "공제항목", readOnly: true , width : '150px'},
+    { field: "nmDeduct", text: "공제항목", readOnly: true, width: "150px" },
     { field: "allowPay", text: "지급금액", type: "number" },
   ],
 };
@@ -73,9 +73,9 @@ export const salDeductWithCalculation = {
 /* 조회구분 영역 */
 export const salAllowSum = {
   headers: [
-    { field: "nmAllow", text: "항목" , width : '100px'},
-    { field: "ynTax", text: "TX" , width : '100px'},
-    { field: "sumAllowPay", text: "금액", type: "number", width : '100px' },
+    { field: "nmAllow", text: "항목", width: "100px" },
+    { field: "ynTax", text: "TX", width: "100px" },
+    { field: "sumAllowPay", text: "금액", type: "number", width: "100px" },
   ],
 };
 
@@ -157,7 +157,7 @@ export const codeHelperData_emplist = {
   headers: [
     { field: "cdEmp", text: "사원코드" },
     { field: "nmKrname", text: "사원명" },
-    { field: "noSocial", text: "주민(외국인)번호" },
+    { field: "noSocial", text: "주민(외국인)번호", type: "regNum" },
     { field: "daRetire", text: "퇴사일자" },
   ],
   // params : { ynFor: 'n', refYear: '2023' },
@@ -222,7 +222,9 @@ export const modal_reCalculationList = {
   headers: [{ field: "nmOption", text: "재계산 목록" }],
   tableData: [
     { item: { cdOption: "recalculateTaxYn", nmOption: "과세, 비과세 재계산" } },
-    { item: { cdOption: "recalculateDeductInfo", nmOption: "공제항목 재계산" } },
+    {
+      item: { cdOption: "recalculateDeductInfo", nmOption: "공제항목 재계산" },
+    },
     { item: { cdOption: "editEmpInfo", nmOption: "사원정보 변경" } },
   ],
 };
@@ -230,8 +232,8 @@ export const modal_reCalculationList = {
 export const modal_insertSalaryAllowData = {
   url: "/sallowpay/getsalAllowList",
   headers: [
-    { field: "cdAllow", text: "Code" , readOnly : true, width:'200px'},
-    { field: "nmAllow", text: "수당명" , isPk:true, width:'200px'},
+    { field: "cdAllow", text: "Code", readOnly: true, width: "200px" },
+    { field: "nmAllow", text: "수당명", isPk: true, width: "200px" },
     {
       field: "ynTax",
       text: "과세여부",
@@ -239,7 +241,8 @@ export const modal_insertSalaryAllowData = {
       optionList: [
         { key: "Y", value: "과세" },
         { key: "N", value: "비과" },
-      ], width:'200px'
+      ],
+      width: "200px",
     },
     {
       field: "salDivision",
@@ -248,7 +251,8 @@ export const modal_insertSalaryAllowData = {
       optionList: [
         { key: "SAL", value: "1.급여" },
         { key: "BONUS", value: "2.상여" },
-      ], width:'200px'
+      ],
+      width: "200px",
     },
     // {
     //     field: "ynUse",
@@ -290,64 +294,79 @@ export const modal_insertSalaryAllowData = {
 export const modal_insertSalaryDeductData = {
   url: "/sadeductpay/getsalDeductList",
   headers: [
-    { field: "cdDeduct", text: "Code", readOnly:true , width:'200px'},
-    { field: "nmDeduct", text: "공제항목명", isPk: true , width:'200px'},
-    { field: "ynSal", text: "급여" 
-    , type: "select",
-      optionList: [
-        { key: "Y", value: "O" },
-        { key: "N", value: "X" },
-      ], width:'200px'
-  },
-    { field: "ynBonus", text: "상여" ,
-    type: "select",
-    optionList: [
-      { key: "Y", value: "O" },
-      { key: "N", value: "X" },
-    ], width:'200px'},
-    { field: "rate"
-    , text: "비율(%)"
-    , isPk: true
-    , type : "rate"
-    , width:'200px'  }
-  ],
-  params : {static: 'N'}
-};
-
-
-export const modal_staticSalaryDeductData = {
-  url: "/sadeductpay/getsalDeductList",
-  headers: [
-    { field: "cdDeduct", text: "Code", readOnly:true },
-    { field: "nmDeduct", text: "공제항목명" },
-    { field: "ynSal", text: "급여" 
-    , type: "select",
+    { field: "cdDeduct", text: "Code", readOnly: true, width: "200px" },
+    { field: "nmDeduct", text: "공제항목명", isPk: true, width: "200px" },
+    {
+      field: "ynSal",
+      text: "급여",
+      type: "select",
       optionList: [
         { key: "Y", value: "O" },
         { key: "N", value: "X" },
       ],
-  },
-    { field: "ynBonus", text: "상여" ,
-    type: "select",
-    optionList: [
-      { key: "Y", value: "O" },
-      { key: "N", value: "X" },
-    ],},
-    { field: "calculation"
-    , text: "산출식 또는 산출방법" 
-    , type : "codeHelper"
-    , readOnly: true},
+      width: "200px",
+    },
+    {
+      field: "ynBonus",
+      text: "상여",
+      type: "select",
+      optionList: [
+        { key: "Y", value: "O" },
+        { key: "N", value: "X" },
+      ],
+      width: "200px",
+    },
+    {
+      field: "rate",
+      text: "비율(%)",
+      isPk: true,
+      type: "rate",
+      width: "200px",
+    },
   ],
-  params : { static: 'Y'}
+  params: { static: "N" },
+};
+
+export const modal_staticSalaryDeductData = {
+  url: "/sadeductpay/getsalDeductList",
+  headers: [
+    { field: "cdDeduct", text: "Code", readOnly: true },
+    { field: "nmDeduct", text: "공제항목명" },
+    {
+      field: "ynSal",
+      text: "급여",
+      type: "select",
+      optionList: [
+        { key: "Y", value: "O" },
+        { key: "N", value: "X" },
+      ],
+    },
+    {
+      field: "ynBonus",
+      text: "상여",
+      type: "select",
+      optionList: [
+        { key: "Y", value: "O" },
+        { key: "N", value: "X" },
+      ],
+    },
+    {
+      field: "calculation",
+      text: "산출식 또는 산출방법",
+      type: "codeHelper",
+      readOnly: true,
+    },
+  ],
+  params: { static: "Y" },
 };
 
 export const modal_nontaxSetup = {
   url: "/sallowpay/getNonTaxSalAllowList",
   headers: [
-    { field: "cdAllow", text: "Code" , readOnly: true , width:'200px'},
-    { field: "nmAllow", text: "비과세 항목", readOnly: true , width:'200px'},
-    { field: "nonTaxDivison", text: "구분" , readOnly: true , width:'200px'},
-    { field: "nontaxLimit", text: "한도" ,type:"number", width:'200px'},
+    { field: "cdAllow", text: "Code", readOnly: true, width: "200px" },
+    { field: "nmAllow", text: "비과세 항목", readOnly: true, width: "200px" },
+    { field: "nonTaxDivison", text: "구분", readOnly: true, width: "200px" },
+    { field: "nontaxLimit", text: "한도", type: "number", width: "200px" },
   ],
 };
 
@@ -359,7 +378,6 @@ export const modal_calculationModal = {
     { field: "cdAllow", text: "Code" },
     { field: "nmAllow", text: "수당명" },
     { field: "ynTax", text: "과세여부" },
-    { field: "calculation", text: "산출식 또는 산출방법", readOnly: true},
+    { field: "calculation", text: "산출식 또는 산출방법", readOnly: true },
   ],
 };
-
