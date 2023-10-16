@@ -600,7 +600,7 @@ const TableForm = ({
           });
           return selectFormValue;
         case "regNum":
-          return value.replace(/-(\d)(\d{6})/, "-$1******");
+          return value ? value.replace(/-(\d)(\d{6})/, "-$1******") : "";
         case "textCodeHelper":
           if (
             tableName === "empFam" &&
